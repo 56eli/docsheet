@@ -1,0 +1,353 @@
+/* ==========================================================================
+   Live Spreadsheet — Google Sheets-inspired UI
+   ========================================================================== */
+
+/* ---- Design tokens (light mode) ---- */
+:root {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface-2: #f1f3f4;
+  --text: #202124;
+  --text-muted: #5f6368;
+  --border: #dadce0;
+  --accent: #188038;          /* Google Sheets green */
+  --accent-hover: #137333;
+  --accent-contrast: #ffffff;
+  --header-bg: #f1f3f4;
+  --header-text: #3c4043;
+  --zebra: #f7f9f8;
+  --row-hover: #e8f0fe;       /* soft blue highlight */
+  --shadow: 0 1px 3px rgba(60, 64, 67, 0.18);
+  --topbar-h: 58px;
+  --footer-h: 40px;
+}
+
+/* ---- Design tokens (dark mode) ----
+   Applied to <html> (see inline script in index.html) so dark-mode users
+   don't see a flash of the light theme on first paint. */
+:root.dark {
+  --bg: #202124;
+  --surface: #292a2d;
+  --surface-2: #35363a;
+  --text: #e8eaed;
+  --text-muted: #9aa0a6;
+  --border: #3c4043;
+  --accent: #34a853;
+  --accent-hover: #4cbf6e;
+  --accent-contrast: #202124;
+  --header-bg: #35363a;
+  --header-text: #e8eaed;
+  --zebra: #2c2d31;
+  --row-hover: #1e3a5f;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- Base ---- */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Roboto", "Google Sans", "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ==========================================================================
+   Top bar
+   ========================================================================== */
+.topbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-height: var(--topbar-h);
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.brand-icon { flex: 0 0 auto; filter: drop-shadow(0 1px 1px rgba(0,0,0,.15)); }
+
+.brand-text { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.brand-text h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+/* ---- Search ---- */
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+#global-search {
+  width: min(320px, 42vw);
+  padding: 8px 12px 8px 32px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#global-search::placeholder { color: var(--text-muted); }
+#global-search:focus {
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* ---- Buttons ---- */
+#export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+  white-space: nowrap;
+}
+#export-btn:hover { background: var(--accent-hover); }
+#export-btn:active { transform: scale(0.97); }
+#export-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- Dark mode toggle switch ---- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  inset: 0;
+  background: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.switch input:checked + .slider { background: var(--accent); }
+.switch input:checked + .slider::before { transform: translateX(18px); }
+.switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ==========================================================================
+   Spreadsheet area (fills remaining height; table scrolls inside)
+   ========================================================================== */
+#table-container {
+  position: relative;               /* anchor for #spreadsheet */
+  flex: 1 1 auto;
+  min-height: 0;                    /* allow shrink inside flex column */
+  padding: 0 12px;
+}
+/* Absolutely positioned so the Tabulator table gets a definite height and
+   its maxHeight:"100%" resolves → frozen header + internal body scroll. */
+#spreadsheet {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+}
+
+/* Loading / error state inside the table area */
+.load-error {
+  padding: 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---- Tabulator: Google-Sheets-style header & rows (applies to both themes) ---- */
+#spreadsheet .tabulator {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: inherit;
+  background: var(--surface);
+}
+
+/* Frozen header row: bold, muted background, subtle bottom border */
+#spreadsheet .tabulator .tabulator-header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+#spreadsheet .tabulator .tabulator-header .tabulator-col {
+  background: var(--header-bg);
+  color: var(--header-text);
+  border-right: 1px solid var(--border);
+}
+#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+  padding: 9px 8px;
+}
+#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-title {
+  white-space: normal;   /* wrap long headers like "WE HAVE?" */
+  line-height: 1.3;
+}
+#spreadsheet .tabulator .tabulator-header .tabulator-col:hover {
+  background: color-mix(in srgb, var(--accent) 10%, var(--header-bg));
+}
+
+/* Zebra striping */
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even { background: var(--zebra); }
+#spreadsheet .tabulator .tabulator-row { background: var(--surface); color: var(--text); }
+
+/* Hover highlighting */
+#spreadsheet .tabulator .tabulator-row:hover {
+  background: var(--row-hover);
+  color: var(--text);
+}
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even:hover { background: var(--row-hover); }
+
+#spreadsheet .tabulator .tabulator-cell {
+  border-right: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 35%, transparent);
+  padding: 7px 8px;
+  color: var(--text);
+}
+/* URL cells: keep links clearly styled */
+#spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
+
+/* Edit-ready cursor hint */
+#spreadsheet .tabulator .tabulator-cell.tabulator-editing {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Pagination bar */
+#spreadsheet .tabulator .tabulator-footer {
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+#spreadsheet .tabulator .tabulator-footer .tabulator-paginator label,
+#spreadsheet .tabulator .tabulator-footer .tabulator-page-counter { color: var(--text-muted); }
+#spreadsheet .tabulator .tabulator-footer .tabulator-page {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+}
+#spreadsheet .tabulator .tabulator-footer .tabulator-page.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+#spreadsheet .tabulator .tabulator-footer .tabulator-page:not(.disabled):hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+}
+
+/* Resize handle visible on hover */
+#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-resize-handle {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 5px;
+}
+
+/* Placeholder text */
+#spreadsheet .tabulator .tabulator-placeholder {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Footer bar
+   ========================================================================== */
+.footerbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-height: var(--footer-h);
+  padding: 6px 16px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.footerbar span { white-space: nowrap; }
+.footer-note { margin-left: auto; }
+.footerbar .updated { font-weight: 500; color: var(--text); }
+
+/* ==========================================================================
+   Responsive (mobile)
+   ========================================================================== */
+@media (max-width: 720px) {
+  .topbar { padding: 8px 10px; gap: 8px; }
+  .brand-text h1 { font-size: 16px; }
+  .badge { display: none; }
+  .controls { width: 100%; order: 3; }
+  #global-search { width: 100%; }
+  #export-btn { margin-left: auto; }
+  #table-container { padding: 0 6px; }
+  #spreadsheet { top: 8px; left: 6px; right: 6px; bottom: 8px; }
+  .footerbar { gap: 8px 16px; font-size: 12px; }
+  .footer-note { display: none; }   /* hide the edit hint on small screens */
+}

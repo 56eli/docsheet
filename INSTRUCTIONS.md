@@ -1,0 +1,131 @@
+# 📊 INSTRUCTIONS — Live Spreadsheet Pipeline
+
+This repository hosts a **Live Spreadsheet**: your CSV is rendered as an
+interactive, searchable web table on GitHub Pages. The data flows through a
+repeatable pipeline, so whenever the source file changes you can regenerate
+the site in one click.
+
+```
+hawkins archive clone - Sheet1.csv        (source of truth — you edit this)
+        │
+        ▼  python process_data.py   (GitHub Actions: "Update Spreadsheet")
+public/data.json  +  public/meta.json
+        │
+        ▼  GitHub Pages serves /public
+https://<username>.github.io/<repo-name>   (the live site)
+```
+
+---
+
+## 1️⃣ Set up GitHub Pages (one-time)
+
+1. Open your repository on GitHub.
+2. Go to **Settings → Pages** (left sidebar, under "Code and automation").
+3. Under **Build and deployment → Source**, select **"Deploy from a branch"**.
+4. Set **Branch** to `main` and **Folder** to **`/public`**, then click **Save**.
+5. Wait ~1 minute for the first deployment. Your site is now live at:
+
+   **`https://<username>.github.io/<repo-name>`**
+
+   For this repository: **`https://56eli.github.io/docsheet`**
+
+---
+
+## 2️⃣ Add data transformation rules (when you're ready)
+
+The pipeline is intentionally **pass-through right now** — it displays your CSV
+exactly as-is. No enrichment logic has been added.
+
+When you're ready to transform the data:
+
+1. Open **`process_data.py`** and find the section marked:
+
+   ```
+   === DATA TRANSFORMATION RULES ===
+   ```
+
+   (It's the `apply_transformations()` function near the top of the file —
+   the DataFrame is already loaded for you as **`df`**.)
+
+2. Add your Pandas code below the marker line, e.g.:
+
+   ```python
+   df['New Column'] = df['Existing Column'].apply(some_function)
+   ```
+
+   ⚠️ Only edit that section. Everything else in the script is infrastructure.
+
+3. Commit and push your change.
+4. In GitHub, go to **Actions → "Update Spreadsheet" → Run workflow** (or just
+   push a change to the CSV — the workflow also auto-triggers on that).
+5. The workflow regenerates `public/data.json` and commits it automatically.
+   GitHub Pages picks up the new file within a minute or two.
+
+---
+
+## 3️⃣ Live site URL format
+
+| Item | Value |
+|---|---|
+| Format | `https://[username].github.io/[repo-name]` |
+| This repo | `https://56eli.github.io/docsheet` |
+| Deploy source | Branch `main` → folder `/public` |
+
+---
+
+## 4️⃣ Test locally
+
+```bash
+pip install -r requirements.txt   # installs pandas
+python process_data.py            # regenerates public/data.json + meta.json
+```
+
+Then serve the site over HTTP (the page uses `fetch()`, which doesn't work
+when opening the file directly from disk):
+
+```bash
+python -m http.server 8000
+# open http://localhost:8000/public/
+```
+
+---
+
+## 🔧 How the pieces fit together
+
+| File | Purpose |
+|---|---|
+| `hawkins archive clone - Sheet1.csv` | Your source data — never modified by the pipeline. |
+| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `public/data.json` (array of objects) + `public/meta.json` (row count, timestamp). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
+| `requirements.txt` | Python dependencies (pandas only, for now). |
+| `public/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
+| `public/app.js` | Boots Tabulator with sorting, pagination (25/page), inline editing, CSV export, column resizing, responsive collapse, and the footer stats. |
+| `public/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
+| `.github/workflows/update_spreadsheet.yml` | Rebuilds `public/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
+
+### Notes & current behavior
+
+- **Header row:** the CSV's first line is a stray Google Sheets title row
+  (`archive clbs`); the real header (`uuid, tempid, title, ...`) is line 2, so
+  `process_data.py` reads with `header=1`. Cell values are passed through
+  **unchanged**.
+- **Footer:** shows *Total Rows* and *Last Updated* from `public/meta.json`
+  (falls back to the file's `Last-Modified` header if metadata is missing).
+- **Inline editing:** double-click any cell to edit. Edits are **session-only**
+  — they are not written back to the CSV. (If you want edits to persist, that
+  can be wired up later, e.g. via a backend or your transformation rules.)
+- **Search:** the search box filters **all** columns live as you type.
+- **Export CSV:** downloads the currently filtered/sorted view.
+- **Dark mode:** toggle in the top-right; your choice is remembered
+  (localStorage) and respects your OS preference the first time.
+
+## ❓ Troubleshooting
+
+- **Workflow fails** → open the run in **Actions**, read the log, and try
+  `python process_data.py` locally. The script prints a clear error.
+- **Site shows stale data** → re-run the workflow (or push a CSV change) and
+  confirm the Pages deployment finished in **Actions → Pages** / **Environments**.
+- **Table is empty / "Could not load data.json"** → you opened the file via
+  `file://`. Serve over HTTP (see section 4) or use the deployed site.
+- **CSV renamed** → pass the new name to the script:
+  `python process_data.py "new name.csv"` (the workflow always uses the
+  default filename; update `DEFAULT_CSV` in `process_data.py` if you rename it).

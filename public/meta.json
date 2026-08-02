@@ -1,0 +1,21 @@
+{
+  "source_file": "hawkins archive clone - Sheet1.csv",
+  "total_rows": 374,
+  "column_count": 13,
+  "columns": [
+    "uuid",
+    "tempid",
+    "title",
+    "WE HAVE?",
+    "original source",
+    "Unnamed: 5",
+    "format",
+    "product link",
+    "Unnamed: 8",
+    "Unnamed: 9",
+    "Unnamed: 10",
+    "Unnamed: 11",
+    "other links"
+  ],
+  "generated_at_utc": "2026-08-02T22:20:47+00:00"
+}
