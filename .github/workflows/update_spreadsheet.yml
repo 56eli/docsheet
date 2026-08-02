@@ -1,0 +1,56 @@
+# ============================================================================
+# Update Spreadsheet — regenerates public/data.json from the source CSV.
+#
+# Triggers:
+#   - workflow_dispatch  : manual "Run workflow" button in the Actions tab
+#   - push on main       : only when the source CSV itself changes
+#
+# No schedule is defined yet (can be added later if needed).
+# ============================================================================
+name: Update Spreadsheet
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "hawkins archive clone - Sheet1.csv"
+
+# Allow the workflow to commit the regenerated data back to the branch.
+permissions:
+  contents: write
+
+# Avoid overlapping runs (e.g. manual trigger while a push-triggered run
+# is still going) — cancel the older run.
+concurrency:
+  group: update-spreadsheet
+  cancel-in-progress: true
+
+jobs:
+  update-data:
+    name: Regenerate public/data.json
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the pipeline
+        run: python process_data.py
+
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update public/data.json via Live Spreadsheet pipeline"
+          file_pattern: public/data.json public/meta.json
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com

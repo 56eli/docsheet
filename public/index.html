@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hawkins Archive — Live Spreadsheet</title>
+  <meta name="description" content="Live, searchable spreadsheet rendered from the Hawkins Archive CSV. Sort, filter, edit, and export — no data has been modified.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tabulator (pinned) — light theme by default, midnight theme for dark mode -->
+  <link id="tabulator-light-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator.min.css">
+  <link id="tabulator-dark-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator_midnight.min.css" disabled>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Apply dark mode before first paint (no flash of white). -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("docsheet-dark-mode");
+        var prefersDark = window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (stored !== null ? stored === "1" : prefersDark) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) { /* storage unavailable — ignore */ }
+    })();
+  </script>
+</head>
+<body>
+  <!-- ===== Top bar ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <rect x="2" y="3" width="20" height="18" rx="2" fill="#188038"/>
+        <path d="M2 8h20M9 8v13M15 8v13" stroke="#ffffff" stroke-width="1.6" fill="none"/>
+      </svg>
+      <div class="brand-text">
+        <h1>Hawkins Archive</h1>
+        <span class="badge">Live Spreadsheet</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="global-search" placeholder="Search across all columns…" autocomplete="off" aria-label="Search across all columns">
+      </div>
+      <button id="export-btn" type="button" title="Download the current view as a CSV file">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+          <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export CSV
+      </button>
+      <label class="switch" title="Toggle dark mode">
+        <input type="checkbox" id="dark-toggle" aria-label="Toggle dark mode">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <!-- ===== Spreadsheet ===== -->
+  <main id="table-container">
+    <div id="spreadsheet"></div>
+  </main>
+
+  <!-- ===== Footer bar ===== -->
+  <footer class="footerbar">
+    <span id="footer-stats">Total Rows: —</span>
+    <span id="footer-updated">Last Updated: —</span>
+    <span class="footer-note" id="footer-note">Double-click any cell to edit (session only)</span>
+  </footer>
+
+  <!-- Tabulator (pinned) -->
+  <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

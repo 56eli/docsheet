@@ -1,0 +1,3 @@
+# Python dependencies for the Live Spreadsheet pipeline.
+# Add more packages here as the transformation rules grow.
+pandas>=2.0
