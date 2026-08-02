@@ -79,6 +79,7 @@
       }
     }
     footerStats.textContent = `Total Rows: ${allData.length}`;
+    return allData;
   }
 
   /* ------------------------------------------------------------------ *
@@ -144,6 +145,7 @@
       movableColumns: true,        // drag headers to reorder (bonus)
       responsiveLayout: "collapse",// stacks columns on narrow screens
       /* editing */
+      editTriggerEvent: "dblclick", // double-click any cell to edit
       selectableRows: false,
     });
 

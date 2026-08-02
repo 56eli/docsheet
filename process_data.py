@@ -37,8 +37,6 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pandas as pd
-
 # ---------------------------------------------------------------------------
 # Configuration (edit paths here if files move)
 # ---------------------------------------------------------------------------
@@ -48,25 +46,16 @@ META_OUTPUT = Path("public") / "meta.json"          # footer metadata
 JSON_INDENT = 2                                     # pretty-print for git diffs
 
 
-def apply_transformations(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    ==========================================================================
-    === DATA TRANSFORMATION RULES ===
-    Add your data enrichment instructions below this line.
-
-    The DataFrame is available as 'df'.
-
-    Example: df['New Column'] = df['Existing Column'].apply(some_function)
-
-    Save your changes by modifying this section only.
-    ==========================================================================
-    """
-
-    # ------------------------------------------------------------------------
-    # Your rules go BELOW this line (between here and the return statement).
-    # For Phase 1 nothing is defined on purpose — the data is passed through
-    # unchanged. Do not edit anything outside this section.
-    # ------------------------------------------------------------------------
+def apply_transformations(df):
+    # === DATA TRANSFORMATION RULES ===
+    #
+    # Add your data enrichment instructions below this line.
+    #
+    # The DataFrame is available as 'df'.
+    #
+    # Example: df['New Column'] = df['Existing Column'].apply(some_function)
+    #
+    # Save your changes by modifying this section only.
 
     # (No transformation rules yet — data is passed through as-is.)
 
@@ -93,6 +82,8 @@ def find_source_csv(preferred: str) -> Path:
 
 def main() -> int:
     try:
+        import pandas as pd
+
         # --- 1. Locate and read the source CSV -------------------------------
         csv_path = find_source_csv(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CSV)
         print(f"[process_data] Reading {csv_path}")
@@ -100,7 +91,7 @@ def main() -> int:
         # header=1 skips the Google Sheets title row (line 1: "archive clbs").
         # The real header (uuid, tempid, title, ...) is on line 2. All cell
         # values are kept exactly as they appear in the CSV.
-        df = pd.read_csv(csv_path, header=1, dtype=str, keep_default_na=True)
+        df = pd.read_csv(csv_path, header=1, dtype=str, keep_default_na=False)
         print(f"[process_data] Loaded {len(df)} rows x {len(df.columns)} columns")
 
         # --- 2. Apply transformation rules (see section above) ---------------
