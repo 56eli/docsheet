@@ -26,20 +26,21 @@
    Applied to <html> (see inline script in index.html) so dark-mode users
    don't see a flash of the light theme on first paint. */
 :root.dark {
-  --bg: #202124;
-  --surface: #292a2d;
-  --surface-2: #35363a;
-  --text: #e8eaed;
-  --text-muted: #9aa0a6;
-  --border: #3c4043;
-  --accent: #34a853;
-  --accent-hover: #4cbf6e;
-  --accent-contrast: #202124;
-  --header-bg: #35363a;
-  --header-text: #e8eaed;
-  --zebra: #2c2d31;
-  --row-hover: #1e3a5f;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  /* Low-contrast charcoal and soft off-white reduce glare during long reads. */
+  --bg: #20252b;
+  --surface: #282e36;
+  --surface-2: #333b45;
+  --text: #edf1f5;
+  --text-muted: #b4bec9;
+  --border: #45505d;
+  --accent: #76c893;
+  --accent-hover: #96d5aa;
+  --accent-contrast: #172019;
+  --header-bg: #343d47;
+  --header-text: #f2f5f7;
+  --zebra: #2c333c;
+  --row-hover: #35485a;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
 }
 
 /* ---- Base ---- */
@@ -131,7 +132,7 @@ body {
 }
 #global-search {
   width: min(320px, 42vw);
-  padding: 8px 12px 8px 32px;
+  padding: 8px 34px 8px 32px;
   font: inherit;
   color: var(--text);
   background: var(--surface-2);
@@ -141,6 +142,25 @@ body {
   transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 #global-search::placeholder { color: var(--text-muted); }
+.clear-search {
+  position: absolute;
+  right: 5px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  place-items: center;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 21px;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.clear-search:hover { color: var(--text); background: color-mix(in srgb, var(--text-muted) 14%, transparent); }
+.clear-search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 #global-search:focus {
   background: var(--surface);
   border-color: var(--accent);
@@ -220,11 +240,30 @@ body {
 }
 
 /* Loading / error state inside the table area */
+.table-loading,
 .load-error {
+  display: flex;
+  min-height: 160px;
   padding: 24px;
+  align-items: center;
+  justify-content: center;
   color: var(--text-muted);
   font-size: 14px;
   text-align: center;
+}
+.table-loading { flex-direction: column; gap: 12px; }
+.table-loading::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: table-spinner 0.75s linear infinite;
+}
+@keyframes table-spinner { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .table-loading::before { animation: none; }
 }
 
 /* ---- Tabulator: Google-Sheets-style header & rows (applies to both themes) ---- */

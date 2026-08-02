@@ -51,7 +51,10 @@
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
           <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <input type="search" id="global-search" placeholder="Search across all columns…" autocomplete="off" aria-label="Search across all columns">
+        <input type="search" id="global-search" placeholder="Search across all columns…" autocomplete="off" aria-label="Search across all columns" aria-describedby="search-status">
+        <button id="clear-search-btn" class="clear-search" type="button" aria-label="Clear search" title="Clear search" hidden>
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
       <button id="export-btn" type="button" title="Download the current view as a CSV file">
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
@@ -67,13 +70,16 @@
   </header>
 
   <!-- ===== Spreadsheet ===== -->
-  <main id="table-container">
-    <div id="spreadsheet"></div>
+  <main id="table-container" aria-label="Hawkins Archive spreadsheet">
+    <div id="spreadsheet" aria-live="polite" aria-busy="true">
+      <div class="table-loading">Loading spreadsheet…</div>
+    </div>
   </main>
 
   <!-- ===== Footer bar ===== -->
-  <footer class="footerbar">
+  <footer class="footerbar" aria-label="Spreadsheet status">
     <span id="footer-stats">Total Rows: —</span>
+    <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Double-click any cell to edit (session only)</span>
   </footer>

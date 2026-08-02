@@ -2,22 +2,24 @@
    Live Spreadsheet — app.js
    Loads docs/data.json (+ docs/meta.json) and renders it as an
    interactive Tabulator table: sortable headers, global live search,
-   pagination (25/page), inline editing, CSV export, column resizing,
-   responsive collapsing, dark mode with localStorage persistence.
+   all rows in a scrollable view, inline editing, CSV export, column resizing,
+   horizontal overflow for every column, dark mode with localStorage persistence.
    ========================================================================== */
 (function () {
   "use strict";
 
-  const PAGE_SIZE = 25;
   const STORAGE_KEY = "docsheet-dark-mode";
 
   const $ = (id) => document.getElementById(id);
   const searchInput = $("global-search");
+  const clearSearchBtn = $("clear-search-btn");
   const exportBtn = $("export-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
+  const searchStatus = $("search-status");
   const footerUpdated = $("footer-updated");
   const footerNote = $("footer-note");
+  const spreadsheet = $("spreadsheet");
 
   let table = null;
   let allData = [];
@@ -41,6 +43,15 @@
       year: "numeric", month: "short", day: "numeric",
       hour: "2-digit", minute: "2-digit",
     });
+  }
+
+  function updateSearchStatus() {
+    if (!table) return;
+    const visibleRows = table.getData("active").length;
+    const isSearching = Boolean(searchInput.value.trim());
+    searchStatus.textContent = isSearching
+      ? `Showing: ${visibleRows} of ${allData.length}`
+      : `Showing: ${visibleRows}`;
   }
 
   /* ------------------------------------------------------------------ *
@@ -135,26 +146,26 @@
       renderComplete: () => fitTableToContainer(),
       /* sorting */
       headerSort: true,
-      /* pagination — 25 rows per page by default */
-      pagination: true,
-      paginationSize: PAGE_SIZE,
-      paginationSizeSelector: [10, 25, 50, 100],
-      paginationCounter: "rows",
+      /* All records stay in one scrollable view — no pagination. */
+      pagination: false,
       /* columns */
       resizableColumns: true,
       movableColumns: true,        // drag headers to reorder (bonus)
-      responsiveLayout: "collapse",// stacks columns on narrow screens
+      responsiveLayout: false,     // keep every column visible; scroll horizontally when needed
       /* editing */
       editTriggerEvent: "dblclick", // double-click any cell to edit
       selectableRows: false,
     });
 
+    table.on("dataFiltered", updateSearchStatus);
     table.on("cellEdited", (cell) => {
       const row = cell.getRow().getData();
       const label = `${cell.getColumn().getField()}`;
       const id = row.tempid || row.uuid || `row ${cell.getRow().getPosition(true)}`;
       flashNote(`✎ Edited “${label}” (${id}) — local only, not saved back to the CSV`);
     });
+    spreadsheet.setAttribute("aria-busy", "false");
+    updateSearchStatus();
   }
 
   /* Keep the table filling its container (frozen header + internal scroll).
@@ -187,9 +198,10 @@
   function applySearch(query) {
     if (!table) return;
     const q = query.trim().toLowerCase();
+    clearSearchBtn.hidden = !q;
     if (!q) {
       table.clearFilter();
-      table.setPage(1);
+      updateSearchStatus();
       return;
     }
     table.setFilter((data) =>
@@ -197,7 +209,7 @@
         (v) => v !== null && v !== undefined && String(v).toLowerCase().includes(q)
       )
     );
-    table.setPage(1);
+    updateSearchStatus();
   }
 
   /* ------------------------------------------------------------------ *
@@ -243,6 +255,11 @@
   async function boot() {
     initDarkMode();
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      applySearch("");
+      searchInput.focus();
+    });
     exportBtn.addEventListener("click", exportCsv);
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); }
@@ -261,10 +278,12 @@
       console.info(`[docsheet] Loaded ${data.length} rows`);
     } catch (err) {
       console.error("[docsheet] Failed to load data.json:", err);
-      $("spreadsheet").innerHTML =
+      spreadsheet.innerHTML =
         '<div class="load-error">Could not load data.json — make sure the site is served over HTTP ' +
         '(e.g. GitHub Pages or `python -m http.server`), not opened directly from disk.</div>';
+      spreadsheet.setAttribute("aria-busy", "false");
       footerStats.textContent = "Total Rows: —";
+      searchStatus.textContent = "Showing: —";
       footerUpdated.textContent = "Last Updated: —";
     }
   }
