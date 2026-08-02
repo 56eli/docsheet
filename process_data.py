@@ -6,10 +6,10 @@ Reads the source CSV into a Pandas DataFrame, applies any user-defined
 rules in the clearly-marked DATA TRANSFORMATION RULES section below, and
 writes the result to:
 
-    public/data.json   -> array of objects (one object per row)
-    public/meta.json   -> build metadata (row count, timestamp, ...)
+    docs/data.json   -> array of objects (one object per row)
+    docs/meta.json   -> build metadata (row count, timestamp, ...)
 
-The web UI in public/ fetches these files and renders them with Tabulator.
+The web UI in docs/ fetches these files and renders them with Tabulator.
 
 HOW TO ADD TRANSFORMATION RULES
 -------------------------------
@@ -41,8 +41,8 @@ from pathlib import Path
 # Configuration (edit paths here if files move)
 # ---------------------------------------------------------------------------
 DEFAULT_CSV = "hawkins archive clone - Sheet1.csv"  # source spreadsheet
-DATA_OUTPUT = Path("public") / "data.json"          # array of objects
-META_OUTPUT = Path("public") / "meta.json"          # footer metadata
+DATA_OUTPUT = Path("docs") / "data.json"          # array of objects
+META_OUTPUT = Path("docs") / "meta.json"          # footer metadata
 JSON_INDENT = 2                                     # pretty-print for git diffs
 
 

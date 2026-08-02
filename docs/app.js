@@ -1,6 +1,6 @@
 /* ==========================================================================
    Live Spreadsheet — app.js
-   Loads public/data.json (+ public/meta.json) and renders it as an
+   Loads docs/data.json (+ docs/meta.json) and renders it as an
    interactive Tabulator table: sortable headers, global live search,
    pagination (25/page), inline editing, CSV export, column resizing,
    responsive collapsing, dark mode with localStorage persistence.

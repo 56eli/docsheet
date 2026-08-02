@@ -9,9 +9,9 @@ the site in one click.
 hawkins archive clone - Sheet1.csv        (source of truth — you edit this)
         │
         ▼  python process_data.py   (GitHub Actions: "Update Spreadsheet")
-public/data.json  +  public/meta.json
+docs/data.json  +  docs/meta.json
         │
-        ▼  GitHub Pages serves /public
+        ▼  GitHub Pages serves /docs
 https://<username>.github.io/<repo-name>   (the live site)
 ```
 
@@ -22,7 +22,7 @@ https://<username>.github.io/<repo-name>   (the live site)
 1. Open your repository on GitHub.
 2. Go to **Settings → Pages** (left sidebar, under "Code and automation").
 3. Under **Build and deployment → Source**, select **"Deploy from a branch"**.
-4. Set **Branch** to `main` and **Folder** to **`/public`**, then click **Save**.
+4. Set **Branch** to `main` and **Folder** to **`/docs`**, then click **Save**.
 5. Wait ~1 minute for the first deployment. Your site is now live at:
 
    **`https://<username>.github.io/<repo-name>`**
@@ -58,7 +58,7 @@ When you're ready to transform the data:
 3. Commit and push your change.
 4. In GitHub, go to **Actions → "Update Spreadsheet" → Run workflow** (or just
    push a change to the CSV — the workflow also auto-triggers on that).
-5. The workflow regenerates `public/data.json` and commits it automatically.
+5. The workflow regenerates `docs/data.json` and commits it automatically.
    GitHub Pages picks up the new file within a minute or two.
 
 ---
@@ -69,7 +69,7 @@ When you're ready to transform the data:
 |---|---|
 | Format | `https://[username].github.io/[repo-name]` |
 | This repo | `https://56eli.github.io/docsheet` |
-| Deploy source | Branch `main` → folder `/public` |
+| Deploy source | Branch `main` → folder `/docs` |
 
 ---
 
@@ -77,7 +77,7 @@ When you're ready to transform the data:
 
 ```bash
 pip install -r requirements.txt   # installs pandas
-python process_data.py            # regenerates public/data.json + meta.json
+python process_data.py            # regenerates docs/data.json + meta.json
 ```
 
 Then serve the site over HTTP (the page uses `fetch()`, which doesn't work
@@ -85,7 +85,7 @@ when opening the file directly from disk):
 
 ```bash
 python -m http.server 8000
-# open http://localhost:8000/public/
+# open http://localhost:8000/docs/
 ```
 
 ---
@@ -95,12 +95,12 @@ python -m http.server 8000
 | File | Purpose |
 |---|---|
 | `hawkins archive clone - Sheet1.csv` | Your source data — never modified by the pipeline. |
-| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `public/data.json` (array of objects) + `public/meta.json` (row count, timestamp). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
+| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects) + `docs/meta.json` (row count, timestamp). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Python dependencies (pandas only, for now). |
-| `public/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
-| `public/app.js` | Boots Tabulator with sorting, pagination (25/page), inline editing, CSV export, column resizing, responsive collapse, and the footer stats. |
-| `public/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
-| `.github/workflows/update_spreadsheet.yml` | Rebuilds `public/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
+| `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
+| `docs/app.js` | Boots Tabulator with sorting, pagination (25/page), inline editing, CSV export, column resizing, responsive collapse, and the footer stats. |
+| `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
+| `.github/workflows/update_spreadsheet.yml` | Rebuilds `docs/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
 
 ### Notes & current behavior
 
@@ -108,7 +108,7 @@ python -m http.server 8000
   (`archive clbs`); the real header (`uuid, tempid, title, ...`) is line 2, so
   `process_data.py` reads with `header=1`. Cell values are passed through
   **unchanged**.
-- **Footer:** shows *Total Rows* and *Last Updated* from `public/meta.json`
+- **Footer:** shows *Total Rows* and *Last Updated* from `docs/meta.json`
   (falls back to the file's `Last-Modified` header if metadata is missing).
 - **Inline editing:** double-click any cell to edit. Edits are **session-only**
   — they are not written back to the CSV. (If you want edits to persist, that
