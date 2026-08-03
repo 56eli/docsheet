@@ -68,9 +68,10 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (306) |
+| `master` | A curated master catalogue record (317) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
+| `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
 
 Only `master` rows are catalogue records. Use the Record Type filter on that tab
 to isolate curated data before exporting. Counts per class are published in

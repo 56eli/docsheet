@@ -388,12 +388,17 @@ def json_text(data: object) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
-def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = False) -> CatalogueBuild:
+def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:
     """Prepare catalogue Pages files in memory.
 
     ``master_items`` exists for read-only reconciliation: it lets callers
     project the Pages site from a ledger-derived master without overwriting the
     committed master draft first. Normal builds read ``MASTER`` unchanged.
+
+    ``include_pending`` defaults to ``True`` so the committed Everything view
+    surfaces unpromoted reviewed manual candidates for owner review; pass
+    ``False`` (``--no-include-pending``) only for a reduced local inspection
+    view — never for committed outputs.
     """
     master_records = list(master_items) if master_items is not None else read_csv(MASTER)
     migrated_items = len(master_records)
@@ -416,7 +421,8 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
 
-    # Optional pending-promotion candidates (owner decision via --include-pending)
+    # Pending-promotion candidates are surfaced for owner review by default
+    # (opt out locally with --no-include-pending).
     if include_pending:
         promoted_keys: set[str] = set()
         prom_path = Path("data/manual_candidate_promotions.csv")
@@ -607,6 +613,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
                     RECORD_TYPE_CANDIDATE_VERITAS,
                     RECORD_TYPE_CANDIDATE_HAYHOUSE,
                     RECORD_TYPE_CANDIDATE_AUDIBLE,
+                    RECORD_TYPE_CANDIDATE_PENDING,
                 )
             },
             "reviewed_manual_candidates": len(manual_candidates),
@@ -685,8 +692,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--include-pending",
-        action="store_true",
-        help="also include the 6 unpromoted reviewed manual candidates as candidate_pending_promotion rows in Everything",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="include the unpromoted reviewed manual candidates as "
+        "candidate_pending_promotion rows in Everything (default; "
+        "--no-include-pending builds a reduced view for local inspection only)",
     )
     return parser.parse_args(argv)
 

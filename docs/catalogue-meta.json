@@ -6,7 +6,8 @@
     "candidate_discovery": 4,
     "candidate_veritas": 24,
     "candidate_hayhouse": 4,
-    "candidate_audible": 4
+    "candidate_audible": 4,
+    "candidate_pending_promotion": 6
   },
   "reviewed_manual_candidates": 17,
   "manual_research_leads": 1,
