@@ -498,3 +498,15 @@ desired. Suite: 90 tests, coverage 92%, all five `--check` green.
 Man) — the two programs the audit §2.2 documented as distinct. Families now
 **184 works / 317 members**; work_id coverage stays 341/341. All checks
 green; 90 tests, coverage 92%.
+
+### 11s. Satsang ruling evidence prepared (owner)
+
+Cross-checked the 9 Satsang monthlies in the New Work Review queue against
+the master's 16 Satsang/Q&A rows and `decisions/SATSANG_MAPPING_DECISIONS.md`:
+**all nine are new-work candidates** — empty `matched_master_uuids`, no URL
+overlap with the 13 approved Satsang records, no raw-sheet provenance
+(owned unknown), and they are exactly the collection's missing months
+(e.g. Jun/Sep 2010 vs the approved Feb/Nov 2010). Evidence added as an
+Addendum to the decisions doc + the queue rows' review_notes; proposed
+candidate shape documented (title/type/series/year/format CD/owned blank).
+Awaiting the owner's promotion ruling.
