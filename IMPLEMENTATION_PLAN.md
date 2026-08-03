@@ -24,7 +24,7 @@ The rebuild comparison above was performed in a temporary isolated directory; it
 
 **P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 40 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
-**P2 seed outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer and records the 2006 lecture set and distinct 2012 interview associated with *Live Your Life Like a Prayer* without duplicating master items. See `PRODUCT_RELATIONSHIP_SCHEMA.md`.
+**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 254 exact primary Veritas item/product associations plus the separately reviewed 2012 *Live Your Life Like a Prayer* interview. Title-only matches remain unpromoted pending evidence. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and `RELATIONSHIP_EXPANSION_AUDIT.md`.
 
 ## Guiding rules
 
@@ -145,6 +145,6 @@ The rebuild comparison above was performed in a temporary isolated directory; it
 | 6 | Schema validation and build manifest | Milestone 5 |
 | 7 | Structured UI filters, public-count clarity, and browser tests | Milestone 6 |
 
-## First implementation recommendation
+## Next implementation recommendation
 
-Start with **P0, items 1–4**: fix the workflow path defect, produce a read-only reconciliation report for the 314-versus-308 master discrepancy, select a durable reviewed-overrides mechanism for the six non-ledger draft records, and add deterministic `--check` modes. This removes the immediate risk of a successful workflow leaving Pages stale or a routine rebuild deleting curated research decisions.
+Start the next P2 batch with the title-only candidates documented in `RELATIONSHIP_EXPANSION_AUDIT.md`. Review a bounded group by evidence rather than promoting normalized-title matches wholesale; Satsang date variants, books/audiobooks that share a lecture title, compilations, and related interviews require distinct relationship decisions.

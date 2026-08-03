@@ -37,9 +37,13 @@ The table is intentionally separate from the flat research-master schema. It can
 | `related_material` | A distinct product is materially related by title/topic/source but is not the same catalogue item. |
 | `unresolved` | A candidate relationship is recorded for review without asserting identity. |
 
-## Current seed: *Live Your Life Like a Prayer*
+## Current reviewed coverage
 
-The 2006 Veritas product is a three-disc lecture set, so it has one reviewed `primary_product_for_item_part` relationship for each of the master’s DVD01, DVD02, and DVD03 records. The 2012 Veritas product is a separate one-DVD 60-minute interview, so it is a reviewed `related_material` relationship to DVD01 rather than a replacement source URL or a duplicate master item.
+Every non-empty master `source_url_veritas` is represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. This currently yields 254 item-to-product relationships across 111 distinct primary products; a single product can therefore be related to multiple top-level DVD/CD parts without duplicating an item.
+
+The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. The distinct 2012 one-DVD 60-minute interview is a reviewed `related_material` relationship to DVD01 rather than a replacement source URL or a duplicate master item.
+
+See `RELATIONSHIP_EXPANSION_AUDIT.md` for the coverage counts and the title-only product matches deliberately left unpromoted for individual review.
 
 ## Validation and build behavior
 

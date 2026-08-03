@@ -16,25 +16,25 @@
 | Products excluded as non-teaching material | 4 |
 | Existing migrated master items | 308 |
 | Existing Nightingale-Conant discovery candidates | 4 |
-| Page 1 “Everything” records after adding unreviewed official products | 393 |
+| Current “Everything” records (including all approved-source candidates) | 348 |
 
 ## Hybrid model implemented
 
-- **Everything** is the broad discovery/master view. It contains the clean migrated items, the existing Nightingale-Conant discovery candidates, and the 81 unreviewed Veritas products that did not automatically match a migrated item.
+- **Everything** is the broad discovery/master view. It contains the 308 reconciled master items, four Nightingale-Conant candidates, 28 reviewed Veritas unique/compilation products, four Hay House candidates, and four non-Spanish Audible candidates.
 - **Veritas Products** is the complete 191-row official commercial-product inventory. It keeps product title, URL, published date, product-category classes, normalized-match count, matched master UUID/title where available, and mapping status.
 - A normalized title match is an aid, not a final identity decision. Commercial listings may represent a compilation, edition, set, or related product rather than the same material record.
-- Matching products are not duplicated in the Everything view. Their relationship remains visible in the Veritas Products inventory.
+- Matching products are not duplicated in the Everything view. Reviewed item-to-product assertions are available separately in the **Product Relationships** tab.
 
-## Implemented but unreviewed items
+## Reviewed candidate products
 
-The previously unmatched 81 official Veritas products have now been fully reviewed and mapped. The unique items and compilations have been added to the broad Everything view with the official Veritas URL and a documentation note. They intentionally have no UUID, catalogue code, ownership value, or claimed item type until reviewed.
+The 28 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. They intentionally have no UUID, catalogue code, ownership value, or claimed item type until a separate master-item decision is approved.
 
-This approach preserves the instruction to show everything while retaining the approved human-review boundary for durable research-master identity data.
+This approach preserves broad discovery coverage while retaining the approved human-review boundary for durable research-master identity data.
 
 ## Review workflow
 
-1. Filter `data/veritas_official_products.csv` by `mapping_status = unreviewed_official_product`.
-2. Decide whether each product is a distinct material item, an edition/format of an existing item, a compilation, or a related product.
+1. Review the existing `unique_item`, `compilation_or_new_edition`, and `excluded_related_material` decisions in `data/veritas_official_products.csv` when new evidence appears.
+2. Add a relationship in `data/product_relationships.csv` only when product-page evidence supports a controlled relationship type; title matching alone is not enough.
 3. For a distinct material item, approve type/year/format/title and then assign a UUID and code in a later master build.
 4. For an existing material item, attach the official URL/source relationship without creating a duplicate master record.
 5. Keep the inventory row regardless of the decision so official commercial provenance remains auditable.

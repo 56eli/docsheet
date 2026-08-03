@@ -6,16 +6,16 @@
 ## Delivered
 
 - A multi-view static catalogue interface was implemented in `docs/`:
-  - **Everything**: 314 clean migrated records, four initial Nightingale-Conant candidates, and 28 unmatched unique/compilation official Veritas products.
+  - **Everything**: 308 reconciled master records, four Nightingale-Conant candidates, 28 reviewed unique/compilation Veritas products, four Hay House candidates, and four non-Spanish Audible candidates.
   - **Veritas Products**: 191 official product records fetched through the public Veritas WordPress API, with normalized-title match results.
   - **Hay House Products**: 24 initial official product/format records.
   - **Audible Products**: Official Audible product entries fetched and mapped, fully populating the Audible integration.
   - **Approved Publishers** and **Original Spreadsheet** remain available as additional tabs.
 - The original spreadsheet remains preserved and viewable as the raw table; no source rows were deleted.
-- A clean draft research-master dataset is in `data/research_master_draft.csv` and JSON, with 314 candidate material records and UUIDv4/UUIDv7 identifiers.
+- A reconciled research-master dataset is in `data/research_master_draft.csv` and JSON, with 308 candidate material records and stable UUIDv7 identifiers.
 - A row-level migration review ledger, exclusions file, source registry, spreadsheet audit, and mapping reports are committed.
 - The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 40 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv`.
-- A validated `data/product_relationships.csv` layer and Product Relationships site tab now distinguish official products from master items; its initial four relationships cover the 2006 lecture set and the distinct 2012 interview associated with *Live Your Life Like a Prayer*. See `PRODUCT_RELATIONSHIP_SCHEMA.md`.
+- A validated `data/product_relationships.csv` layer and Product Relationships site tab now distinguish official products from master items; it records 254 exact primary Veritas item/product associations plus the distinct 2012 interview related to *Live Your Life Like a Prayer*. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and `RELATIONSHIP_EXPANSION_AUDIT.md`.
 - Veritas mapping is reproducible through `fetch_veritas_catalogue.py`; the `Map Veritas Catalogue` workflow writes `data/veritas_official_products.csv` after manual dispatch.
 - **Global Discovery Queue**: A dedicated queue (`data/international_discovery_queue.csv`) was created for the known-but-not-approved international publishers, seeded with early title extractions. These are exposed in a new **International Editions** UI tab.
 
