@@ -7,7 +7,7 @@
 
 ## Executive summary
 
-The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected in code by a 35-row product-ID decision overlay and a review-only candidate/diff workflow synchronized into `main`; one manual Actions run is still needed because this session's GitHub integration cannot dispatch it.
+The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected on this branch by a 35-row product-ID decision overlay, retrying API client, and review-only candidate/diff workflow. The workflow YAML is already in `main`, but the matching code/data changes still require branch merge before another manual Actions run.
 
 ## Validation completed
 
@@ -73,16 +73,16 @@ Review tabs have humanized headers, status badges, visual grouping, and a status
 |---|---|---|
 | GitHub Pages | Public, built from `main` → `/docs` | Healthy configuration; branch changes are not deployed yet. |
 | Update Spreadsheet workflow | `process_data.py` writes and auto-commits `docs/data.json` + `docs/meta.json` on `main` | Path mismatch is resolved in `main` and synchronized into this branch. |
-| Map Veritas Catalogue workflow | Review-only revision fetches a live decision-applied candidate and uploads a CSV/diff artifact; does not auto-commit | Synchronized into `main`; requires one manual live artifact verification run. |
+| Map Veritas Catalogue workflow | `main` has the review-only YAML, but not yet this branch’s matching fetch code/decisions | Merge branch code/data first, then perform one manual live artifact verification run. |
 | Pull-request validation | No workflow | Gap. Local checks are documented but not enforced remotely. |
 
 ## Findings and prioritized backlog
 
-### P0 — Preserve curated Veritas mapping decisions on refresh (code/data complete; manual run pending)
+### P0 — Preserve curated Veritas mapping decisions on refresh (branch implementation complete; merge/run pending)
 
-`data/veritas_mapping_decisions.csv` now stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. The review-only Map Veritas workflow is synchronized into `main`; it writes a candidate CSV and diff artifact, then fails on a diff instead of auto-committing.
+`data/veritas_mapping_decisions.csv` stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. The retrying fetch client handles transient empty/non-JSON API responses with clear diagnostics. The review-only Map Veritas workflow YAML is already in `main`; this branch supplies its required code and decision data.
 
-**Remaining action:** perform one manual Actions run to verify its artifact behavior against the live API.
+**Remaining action:** merge this branch’s code/data, then perform one manual Actions run to verify the candidate/diff artifact behavior against the live API.
 
 ### P1 — Add automated CI and release checks
 

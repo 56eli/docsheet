@@ -15,8 +15,10 @@ import io
 import json
 import re
 import sys
+import time
+from json import JSONDecodeError
 from pathlib import Path
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -40,6 +42,7 @@ DECISION_STATUSES = {
     "matched_by_title", "matched_by_normalized_title",
 }
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+MAX_PAGE_ATTEMPTS = 4
 
 
 def norm(value: str) -> str:
@@ -79,16 +82,51 @@ def satsang_date_key(value: str) -> str | None:
 
 
 def get_page(page: int) -> list[dict]:
+    """Fetch one API page with retries for transient HTML/empty API responses."""
     query = urlencode({"per_page": 100, "page": page, "_fields": "id,date,link,title,class_list"})
-    request = Request(f"{API}?{query}", headers={"User-Agent": "docsheet-catalogue-research/1.0"})
-    try:
-        with urlopen(request, timeout=60) as response:  # nosec B310: fixed HTTPS API endpoint
-            return json.load(response)
-    except HTTPError as error:
-        # WordPress returns 400 rather than an empty array beyond the final page.
-        if error.code == 400 and page > 1:
-            return []
-        raise
+    request = Request(
+        f"{API}?{query}",
+        headers={
+            "User-Agent": "docsheet-catalogue-research/1.0 (+https://github.com/56eli/docsheet)",
+            "Accept": "application/json",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+    last_error: Exception | None = None
+    for attempt in range(1, MAX_PAGE_ATTEMPTS + 1):
+        try:
+            with urlopen(request, timeout=60) as response:  # nosec B310: fixed HTTPS API endpoint
+                body = response.read()
+                try:
+                    payload = json.loads(body)
+                except JSONDecodeError as error:
+                    preview = body[:160].decode("utf-8", errors="replace").replace("\n", " ")
+                    content_type = response.headers.get("Content-Type", "unknown")
+                    last_error = RuntimeError(
+                        f"Veritas API returned non-JSON for page {page} "
+                        f"(Content-Type: {content_type}; preview: {preview!r})"
+                    )
+                else:
+                    if not isinstance(payload, list):
+                        last_error = RuntimeError(
+                            f"Veritas API returned a {type(payload).__name__}, not a product list, for page {page}"
+                        )
+                    else:
+                        return payload
+        except HTTPError as error:
+            # WordPress returns 400 rather than an empty array beyond the final page.
+            if error.code == 400 and page > 1:
+                return []
+            last_error = error
+        except URLError as error:
+            last_error = error
+
+        if attempt < MAX_PAGE_ATTEMPTS:
+            time.sleep(attempt)
+
+    raise RuntimeError(
+        f"Veritas API page {page} failed after {MAX_PAGE_ATTEMPTS} attempts: {last_error}"
+    )
 
 
 def category(classes: list[str]) -> str:

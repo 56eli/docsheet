@@ -37,11 +37,11 @@
 3. **Nine official Satsang products remain inventory-only** pending a separate candidate decision.
 4. **The public deployment remains `main`.** This branch’s Pages review workspace is visible publicly only after merge/deployment.
 5. **Static UI caveats:** Tabulator/Google Fonts are CDN dependencies and inline edits are session-only.
-6. **Veritas workflow operational verification is pending a manual GitHub Actions run.** The review-only YAML is synchronized into `main`, but this session's GitHub integration cannot dispatch it; run it once manually and inspect the candidate/diff artifact against the live API.
+6. **Veritas workflow operational verification is pending branch merge plus a manual GitHub Actions run.** The review-only YAML is already in `main`, but its required retrying fetch code and mapping-decision input are on this branch; merge them, then run it once manually and inspect the candidate/diff artifact against the live API.
 
 ## Recommended next steps
 
-1. Merge and manually run the review-only Map Veritas workflow; inspect its candidate/diff artifact against the live API.
+1. Merge this branch, then manually run the review-only Map Veritas workflow; inspect its candidate/diff artifact against the live API.
 2. Add PR CI for syntax, deterministic build checks, and static/browser smoke checks.
 3. Define/implement selective manual-candidate promotion into the master.
 4. Review the nine unmatched Satsang products and remaining inventory-only dispositions.

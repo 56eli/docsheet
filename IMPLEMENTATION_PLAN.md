@@ -42,16 +42,16 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 
 ## Priority roadmap
 
-### P0 — Make Veritas refresh review-safe (code/data complete; manual run pending)
+### P0 — Make Veritas refresh review-safe (branch implementation complete; merge/run pending)
 
-Delivered:
+Delivered on this branch:
 
 1. `data/veritas_mapping_decisions.csv` stores 35 approved non-primary product-ID decisions.
-2. `fetch_veritas_catalogue.py` reapplies those decisions after deterministic primary-source and date/title matching; `--check` compares the live reviewed result with the committed inventory.
-3. The review-only Map Veritas workflow is synchronized into `main`; it writes a candidate/diff artifact and fails on a diff rather than auto-committing.
+2. `fetch_veritas_catalogue.py` reapplies those decisions after deterministic primary-source and date/title matching, retries transient empty/non-JSON API responses, and supports `--check` / candidate output.
+3. The review-only Map Veritas workflow YAML is already in `main`; it writes a candidate/diff artifact and fails on a diff rather than auto-committing.
 4. The Pages review workspace exposes the Veritas Decisions sheet.
 
-**Remaining verification:** manually run the workflow once in GitHub Actions to confirm the candidate/diff artifact path against the live API.
+**Remaining verification:** merge this branch’s code/data, then manually run the workflow once in GitHub Actions to confirm the candidate/diff artifact path against the live API.
 
 ### P1 — Enforce checks in CI
 
