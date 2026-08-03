@@ -624,7 +624,35 @@ audible URLs into edition rows, D5 plumbing first. Delivered 2026-08-03:
   `load_edition_promotions()` (approved rows mint master rows with the next
   compact ID above max). Product 50411 (PvF book) is a source-override
   candidate for 286, not an edition row.
-- Nothing promoted yet: master stays at 317 rows with empty `work_id` until
-  the owner approves family + edition rows. Suite: **82 tests**, coverage
-  **92%** (every module ≥ 90%), all five `--check` green. Design and
-  decisions: `EDITION_MODEL_PROPOSAL.md`.
+- Nothing promoted yet at that point: master stayed at 317 rows with empty
+  `work_id` until the owner approved the batches. Design and decisions:
+  `EDITION_MODEL_PROPOSAL.md`.
+
+### 12.9 Edition model — full application (owner: "approve everything and apply")
+
+2026-08-03, same day: all drafted batches approved wholesale (incl. the two
+flagged rulings: lecture 202 joins `w-power-vs-force`; the
+`w-tlc-perception` part mapping accepted) and applied through the sanctioned
+pipeline (owner-approved inputs → regenerate → `--check`):
+
+- **Master 317 → 341 rows** (292 lecture / 38 book / 10 discussion /
+  1 untyped): 24 minted edition rows (IDs 320–343) — 19 audiobook/audio rows
+  (Audible + Hay House + Veritas audio) and the TVF CD&DVD set — each with
+  its `work_id` and own source URL; D3 applied (the 7 audiobook URLs moved
+  off the book rows into their audiobook rows). `work_id` populated on 67
+  rows (21 approved work families, 43 members).
+- **Relationships 312 → 318**: 6 new reviewed primary rows (5 for the
+  Veritas edition rows + 50411→286); the coverage guard treats
+  edition-provenance rows as self-covered (the promotion is the reviewed
+  assertion).
+- **Source overrides 80 → 98** (18 approved: 17 Hay House same-carrier links
+  + 50411 for 286). Everything view **363 → 387** rows.
+- Meta semantics verified: `approved_source_overrides` counts only approved;
+  `migrated_items` 341. All five `--check` green; **86 tests**, coverage 92%
+  (every module ≥ 90%).
+- Remaining open items: the source-override mechanism cannot yet target
+  promoted-candidate provenance rows (316/318 Hay House links), the
+  new-work review lane (Satsang monthlies, Unity Church CDs, Giving Up
+  Illness, Don't Set Sail, Peace is the Natural State, Spanish editions),
+  and series-level work regrouping (per-part works vs series works) —
+  `NEXT_AGENT_HANDOFF.md` P1.

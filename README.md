@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 85 tests, no browser/network needed
+python -m unittest discover tests          # 86 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -93,7 +93,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (317) |
+| `master` | A curated master catalogue record (341) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -114,10 +114,10 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **317** records (277 `lecture`, 29 `book`,
+The current curated master has **341** records (292 `lecture`, 38 `book`,
 10 `discussion`, 1 untyped), **225** catalogue codes, **68** retained exclusions,
-**80** approved source overrides (including Nightingale-Conant), **11** promoted
-and **6** unpromoted official candidates, **312** item-to-product relationships,
+**98** approved source overrides (including Nightingale-Conant), **11** promoted
+and **6** unpromoted official candidates, **318** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable.
 
@@ -139,3 +139,15 @@ backward compatibility and must not be used for new classifications.
 publisher's authoritative date. It is **not** taken from the legacy `LSyyyynn_p`
 identifier, whose `nn` segment is an ordinal position within the annual series
 (this distinction caused a 156-record defect that was fixed on 2026-08-03).
+
+### Edition model (work × carrier)
+
+Since 2026-08-03 the master models **one row per edition** of a work: a work
+that exists as book, audiobook, and video has separate rows (DVD lecture
+parts each keep their own row, grouped under one work). `work_id` groups the
+rows of a work and is assigned **only** from approved rows of the reviewed
+`data/work_families.csv` input — never inferred from titles. Audio/CD/DVD
+edition rows are minted from approved rows of `data/edition_promotions.csv`
+(reviewed candidates in `data/edition_candidates.csv`); the audiobook URLs
+moved off the book rows into their audiobook rows (D3). See
+[EDITION_MODEL_PROPOSAL.md](EDITION_MODEL_PROPOSAL.md).

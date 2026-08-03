@@ -1,7 +1,16 @@
 # Edition Model Proposal — one row per work × carrier (book / audio / video)
 
 **Prepared:** 2026-08-03
-**Status:** 🚧 **Owner rulings received (D1–D5) — Phases 1 & 2 implemented.**
+**Status:** ✅ **Applied 2026-08-03.** Owner approved all drafted batches
+("approve everything and apply"): 21 work families (43 members) approved,
+24 edition candidates reviewed + promoted, 18 source overrides approved.
+Master is now **341 rows** (24 minted edition rows 320–343, each with
+`work_id`), Everything **387**, relationships **318**; D3 (audiobook URLs
+moved into their edition rows) applied. See `AUDIT_2026-08-03_FULL.md`
+§12.9. Remaining: new-work review lane, candidate-provenance overrides,
+series-level regrouping (P1).
+
+**History — owner rulings received (D1–D5), Phases 1–3 built:**
 D1 = keep one row per DVD part; D2 = reviewed `edition_candidates.csv`
 layer; D3 = move the 7 audible URLs into audiobook edition rows; D5 = build
 the `work_id` plumbing first.

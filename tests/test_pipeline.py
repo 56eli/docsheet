@@ -842,6 +842,21 @@ class RelationshipCoverageValidationTests(unittest.TestCase):
         finally:
             tempdir.cleanup()
 
+    def test_edition_provenance_rows_are_self_covered(self) -> None:
+        # Promoted edition rows carry their primary product by construction;
+        # a Veritas URL on an edition-provenance master must not be a gap.
+        master = self.master()
+        master.append({
+            "uuid": "320",
+            "source_url_veritas": "https://veritaspub.com/product/tvf-cd-dvd/",
+            "raw_row_number": "candidate:edition-veritas-tvf-cddvd",
+        })
+        covered = [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
+        ]
+        bcp.validate_primary_relationship_coverage(master, covered)
+
     def test_deleting_a_promoted_relationship_row_fails_check(self) -> None:
         # Tamper detection: dropping a primary row must fail --check loudly
         # (the generator's failure contract is an uncaught exception -> exit 1).
@@ -883,16 +898,22 @@ class WorkFamilyTests(unittest.TestCase):
         return (f"{work_id},{member},Truth vs Falsehood,"
                 "Veritas book 50398 + Audible audiobook + CD&DVD set 1728 evidence,approved,2026-08-03")
 
-    def test_committed_empty_families_build_clean(self) -> None:
+    def test_committed_families_build_clean(self) -> None:
+        # The committed work-families batch is fully approved: master rows
+        # carry work_id (book rows + minted edition rows) and --check passes.
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
             result = invoke_script("build_research_master.py", sandbox, "--check")
             self.assertEqual(result.returncode, 0, result.stderr)
             with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
-                rows = list(csv.DictReader(handle))
-            self.assertTrue(all(row["work_id"] == "" for row in rows))
-            self.assertIn("work_id", rows[0])
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertIn("work_id", rows["1"])
+            self.assertEqual(rows["289"]["work_id"], "w-truth-vs-falsehood")
+            self.assertEqual(rows["320"]["work_id"], "w-power-vs-force")  # first minted edition row
+            tvf_audio = next(r for r in rows.values() if r["title"] == "Truth Vs Falsehood (Audiobook)")
+            self.assertEqual(tvf_audio["work_id"], "w-truth-vs-falsehood")
+            self.assertTrue(any(row["work_id"] for row in rows.values()))
         finally:
             tempdir.cleanup()
 
@@ -1075,6 +1096,8 @@ class EditionCandidateTests(unittest.TestCase):
             self.assertEqual(row["format"], "audio")
             self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
             self.assertEqual(row["raw_row_number"], "candidate:edition-audible-tvf")
+            # D3: the audiobook URL moved off the book row into its edition row
+            self.assertEqual(rows["289"]["source_url_audible"], "")
             check = invoke_script("build_research_master.py", sandbox, "--check")
             self.assertEqual(check.returncode, 0, check.stderr)
         finally:

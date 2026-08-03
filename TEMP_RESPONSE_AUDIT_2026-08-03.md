@@ -392,3 +392,26 @@ House inventory, incl. upstream typos kept verbatim) + the Veritas book link
 approved). Excluded: masters 316/318 (promoted-candidate provenance cannot
 take raw-row overrides — needs a mechanism extension), 301 (already has an
 approved HH override). Suite: **85 tests**, coverage 92%.
+
+### 11k. Edition model — FULL APPLICATION (owner: "approve everything and apply")
+
+All three drafted batches were approved wholesale (incl. the two flagged
+rulings: lecture 202 joins w-power-vs-force; w-tlc-perception mapping
+accepted) and applied through the sanctioned pipeline:
+
+- **work_families.csv**: 43/43 rows → approved (21 works).
+- **edition_candidates.csv**: 24/24 → reviewed_candidate + promoted;
+  **edition_promotions.csv**: 24 approved rows.
+- **source_overrides.csv**: 18/18 → approved (98 total).
+- Master rebuilt: **317 → 341 rows** (292 lecture / 38 book / 10 discussion /
+  1 untyped; 24 minted edition rows with IDs 320–343, each with work_id and
+  its own source URL). D3 applied: the 7 audiobook URLs moved off the book
+  rows into their audiobook rows. work_id populated on 67 rows.
+- **6 new primary relationship rows** (5 for the Veritas edition rows + 50411
+  for master 286) → relationships **312 → 318**; the coverage guard treats
+  edition-provenance rows as self-covered (the promotion is the reviewed
+  assertion).
+- Everything view **363 → 387**; Pages outputs + reconciliation report
+  regenerated; all five `--check` green; **86 tests**, coverage 92%.
+- `docs/catalogue-meta.json`: migrated_items 341, approved_source_overrides
+  98, reviewed_product_relationships 318 (the meta fix from §11j held).

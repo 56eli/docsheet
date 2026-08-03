@@ -344,6 +344,10 @@ def validate_primary_relationship_coverage(
             for item in master_items
             if item["source_url_veritas"].strip()
             and item["uuid"].strip() not in primary_masters
+            # Promoted edition rows carry their primary product by
+            # construction: the promotion itself is the reviewed assertion
+            # (see EDITION_MODEL_PROPOSAL.md), so they are self-covered.
+            and not item.get("raw_row_number", "").startswith("candidate:edition-")
         ),
         key=int,
     )

@@ -790,7 +790,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
             "raw_row_number": f"candidate:{key}",
         }
         row_dict[source_column] = candidate["official_product_url"]
-        minted.append(row_dict)
+        minted.append((row_dict, candidate["matched_master_uuid"].strip()))
         seen_keys.add(key)
         existing_ids.add(uuid)
     return minted
@@ -941,7 +941,15 @@ def build_master() -> MasterBuild:
         })
         existing_ids.add(candidate["uuid"])
     edition_rows = load_edition_promotions(existing_ids)
-    items.extend(edition_rows)
+    by_uuid = {item["uuid"]: item for item in items}
+    for row_dict, matched_uuid in edition_rows:
+        # D3 (edition model): the audiobook URL moves from the book row into
+        # its audiobook edition row and is cleared from the book row.
+        if row_dict["source_url_audible"] and matched_uuid in by_uuid:
+            master_row = by_uuid[matched_uuid]
+            if master_row["source_url_audible"] == row_dict["source_url_audible"]:
+                master_row["source_url_audible"] = ""
+        items.append(row_dict)
     backfill_months_from_official_source(items)
 
     # Format backfill from official Veritas inventory (only fills blanks)
