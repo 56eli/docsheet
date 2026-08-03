@@ -194,8 +194,25 @@ success. The handoff's P0 "add CI steps via web editor" is therefore closed.
 | New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
 | New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
 | Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
-| Suite | 54 → **60 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+| Suite | 54 → **62 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
 
 Check battery green at push time: `py_compile`, all five `--check` generators
 (+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
 coverage gate (exit 0), `node --check` ×3, `git diff --check`.
+
+### 11b. F1 resolution (owner-directed: "add the 11 reviewed relationship rows")
+
+- Added 11 reviewed `primary_product_for_item_part` rows for masters
+  **309–319** (`rel-veritas-<pid>-<uuid>`; evidence = official URL;
+  `reviewed_on=2026-08-03`; note cites the owner-approved promotion).
+- Relationships: 301 → **312** (304 primary + 8 related; 304/304 URL-bearing
+  masters covered; 165 distinct products).
+- `warn_uncovered_primary_relationships()` → **hard failure**
+  `validate_primary_relationship_coverage()`; tamper test deletes a promoted
+  row and expects `--check` to fail.
+- Regenerated Pages outputs (`product-relationships.json` 312 rows; Everything
+  still 363); docs updated (README/handoff 312, schema invariant restored,
+  audit §12.6, handoff P1 entry removed).
+
+Battery green: `py_compile`, all five `--check` (no warning now), **62 tests**,
+coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.

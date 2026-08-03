@@ -39,11 +39,9 @@ The table is intentionally separate from the flat research-master schema. It can
 
 ## Current reviewed coverage
 
-**Invariant:** every non-empty master `source_url_veritas` should be represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory.
+**Invariant:** every non-empty master `source_url_veritas` must be represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. `build_catalogue_pages.py` enforces this as a **hard build failure** (`validate_primary_relationship_coverage`); the one historical gap — the 11 promoted candidates (master IDs 309–319), whose promotion path initially did not mint relationship rows — was closed on 2026-08-03 with 11 reviewed rows.
 
-As of 2026-08-03 the relationship layer covers **293** of the **304** URL-bearing master records (293 primary + 8 related = 301 reviewed rows across 154 distinct products). The **11 promoted candidates (master IDs 309–319)** carry their official Veritas URL in the master but do **not** yet have primary relationship rows — the promotion path does not mint relationship rows. `build_catalogue_pages.py` prints a warning listing those masters while the gap exists; the gap is tracked in `NEXT_AGENT_HANDOFF.md` (P1) pending an owner decision.
-
-The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Eight reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
+As of 2026-08-03 the relationship layer covers **all 304** URL-bearing master records: 304 primary + 8 related = **312 reviewed rows** across 165 distinct products. The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Eight reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
 
 See `RELATIONSHIP_EXPANSION_AUDIT.md` for the complete validated coverage and inventory-only disposition boundary.
 

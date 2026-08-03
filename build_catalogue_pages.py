@@ -320,19 +320,18 @@ def validate_product_relationships(
     return enriched
 
 
-def warn_uncovered_primary_relationships(
+def validate_primary_relationship_coverage(
     master_items: list[dict[str, str]],
     relationships: list[dict[str, str]],
 ) -> None:
-    """Warn (non-fatally) when a master's Veritas URL has no primary relationship.
+    """Fail when a master's Veritas URL has no primary relationship row.
 
     The schema invariant in PRODUCT_RELATIONSHIP_SCHEMA.md says every non-empty
-    master ``source_url_veritas`` should be covered by a reviewed
-    ``primary_product_for_item_part`` row. The reviewed relationship layer is a
-    separate, owner-approved input, so a gap must not fail the build — but it
-    must be impossible to miss. The promoted-candidate path (master IDs 309-319)
-    currently leaves exactly such a gap; once the owner adds the reviewed rows,
-    this warning goes silent and can be promoted to a hard failure.
+    master ``source_url_veritas`` must be covered by a reviewed
+    ``primary_product_for_item_part`` row. The promoted-candidate path used to
+    leave such a gap (master IDs 309-319); it was closed with 11 reviewed rows
+    on 2026-08-03 and the guard was then promoted from a warning to a hard
+    failure so the gap can never silently recur.
     """
     primary_masters = {
         relation["master_uuid"].strip()
@@ -349,13 +348,12 @@ def warn_uncovered_primary_relationships(
         key=int,
     )
     if uncovered:
-        print(
-            "WARNING: master record(s) have a Veritas source URL but no reviewed "
+        raise ValueError(
+            "master record(s) have a Veritas source URL but no reviewed "
             f"primary relationship in {PRODUCT_RELATIONSHIPS.name}: "
             + ", ".join(uncovered)
             + " — add reviewed primary_product_for_item_part rows or the "
-            "Product Relationships tab stays incomplete.",
-            file=sys.stderr,
+            "Product Relationships tab stays incomplete."
         )
 
 
@@ -476,7 +474,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     validate_veritas_inventory(veritas_products, master_records)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
-    warn_uncovered_primary_relationships(master_records, product_relationships)
+    validate_primary_relationship_coverage(master_records, product_relationships)
     series_compilations = validate_series_compilations(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)

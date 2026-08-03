@@ -540,6 +540,30 @@ The previous agent fulfilled the prompt to a high standard: the audit was
 real and found real defects, coverage exceeded the target with a working gate,
 and the fail-safes are substantive rather than decorative. The residual gap
 was documentation status drift plus one relationship-layer coverage gap that
-the docs had declared closed; both are now fixed, guarded, and recorded, and
-the only remaining item needing a human decision is F1 (add the 11 reviewed
-relationship rows or hold the promotion URLs).
+the docs had declared closed; both are now fixed, guarded, and recorded.
+
+### 12.6 F1 resolution (same day, owner-directed)
+
+The owner chose **"add the 11 reviewed relationship rows"** (asked via the
+session's direction question). On 2026-08-03 the following landed on branch
+`arena/019fc893-docsheet`:
+
+- **11 reviewed `primary_product_for_item_part` rows added** to
+  `data/product_relationships.csv` for masters 309–319
+  (`rel-veritas-<product_id>-<uuid>`, `reviewed_on=2026-08-03`, evidence =
+  official product URL; evidence note cites the owner-approved promotion).
+  Relationship layer: 301 → **312 rows** (304 primary + 8 related), 304/304
+  URL-bearing masters covered, 165 distinct products referenced.
+- **Guard promoted from warning to hard failure**:
+  `warn_uncovered_primary_relationships()` became
+  `validate_primary_relationship_coverage()` (raises `ValueError` listing any
+  uncovered master). New tests cover: covered state passes, uncovered master
+  fails, URL-less masters are not gaps, the committed state builds clean, and
+  deleting a promoted row fails `--check` (tamper detection).
+- **Docs updated to the resolved state**: README and handoff relationship
+  counts 301 → **312**, `PRODUCT_RELATIONSHIP_SCHEMA.md` invariant restored,
+  `RELATIONSHIP_EXPANSION_AUDIT.md` coverage history, handoff P1 entry
+  removed (no longer open), audit §12.3 F1 superseded by this section.
+- **Re-verified**: Pages outputs regenerated and byte-checked (363 Everything
+  rows unchanged; `product-relationships.json` now 312 rows); 62 tests pass;
+  coverage still 92%; all five `--check` modes green; `git diff --check` clean.

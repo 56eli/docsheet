@@ -747,8 +747,8 @@ class ReconcileDriftTests(unittest.TestCase):
         self.assertIn("is stale", check.stdout)
 
 
-class RelationshipCoverageWarningTests(unittest.TestCase):
-    """URL-bearing masters without a primary relationship row must warn."""
+class RelationshipCoverageValidationTests(unittest.TestCase):
+    """URL-bearing masters without a primary relationship row must fail the build."""
 
     def master(self) -> list[dict[str, str]]:
         return [
@@ -763,32 +763,47 @@ class RelationshipCoverageWarningTests(unittest.TestCase):
             {"master_uuid": "12", "relationship_type": "related_material"},
         ]
 
-    def test_covered_masters_stay_silent(self) -> None:
-        out, err = io.StringIO(), io.StringIO()
-        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-            bcp.warn_uncovered_primary_relationships(self.master(), [
-                {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-                {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
-            ])
-        self.assertNotIn("WARNING", err.getvalue())
+    def test_covered_masters_pass(self) -> None:
+        bcp.validate_primary_relationship_coverage(self.master(), [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
+        ])
 
-    def test_uncovered_master_warns_but_does_not_raise(self) -> None:
-        out, err = io.StringIO(), io.StringIO()
-        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-            bcp.warn_uncovered_primary_relationships(self.master(), self.relationships())
-        self.assertIn("WARNING", err.getvalue())
-        self.assertIn("12", err.getvalue())  # related_material does not cover a primary gap
-        self.assertNotIn("13", err.getvalue())  # no URL -> no gap
+    def test_uncovered_master_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "12"):
+            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
 
-    def test_full_build_warns_on_promoted_candidates(self) -> None:
-        # The committed state has 11 promoted masters (309-319) with URLs but no
-        # primary relationship rows; the build must stay green and say so.
+    def test_master_without_url_is_not_a_gap(self) -> None:
+        # 13 has no URL -> no gap; only 12 (related_material) is uncovered.
+        with self.assertRaises(ValueError) as ctx:
+            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
+        self.assertIn("12", str(ctx.exception))
+        self.assertNotIn("13", str(ctx.exception))
+
+    def test_committed_state_passes_after_promoted_rows_added(self) -> None:
+        # The 11 promoted masters (309-319) now have reviewed primary rows, so
+        # the committed state must build cleanly with no coverage failure.
         tempdir = make_sandbox()
         try:
             result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn("WARNING", result.stderr)
-            self.assertIn("309", result.stderr)
+            self.assertNotIn("WARNING", result.stderr)
+            self.assertNotIn("no reviewed primary relationship", result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_deleting_a_promoted_relationship_row_fails_check(self) -> None:
+        # Tamper detection: dropping a primary row must fail --check loudly
+        # (the generator's failure contract is an uncaught exception -> exit 1).
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "product_relationships.csv"
+            lines = path.read_text(encoding="utf-8").splitlines()
+            kept = [line for line in lines if "rel-veritas-53277-309" not in line]
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "no reviewed primary relationship"):
+                invoke_script("build_catalogue_pages.py", sandbox, "--check")
         finally:
             tempdir.cleanup()
 
