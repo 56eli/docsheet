@@ -173,11 +173,11 @@
   {
     "raw_row_number": "274",
     "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/map-of-consciousness-dr-david-hawkins/",
+    "override_value": "https://veritaspub.com/product/a-map-of-consciousness/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
+    "review_reason": "Official product 50432 'A Map of Consciousness' is in the archival-office-visit-series category, matching this Office Series B-03 recording. Product 1560 'Map of Consciousness (R)' is a printed 8.5x10 wall chart (SKU pm_moc_l, category map-of-consciousness) and cannot be the source of a video item.",
+    "evidence_source": "https://veritaspub.com/wp-json/wp/v2/product (official product_cat taxonomy)"
   },
   {
     "raw_row_number": "275",
@@ -524,11 +524,11 @@
   {
     "raw_row_number": "328",
     "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/truth-vs-falsehood-the-art-of-spiritual-discernment/",
+    "override_value": "https://veritaspub.com/product/truth-vs-falsehood-how-to-tell-the-difference-book/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
+    "review_reason": "This master item is item_type=book in the Books series. Official product 50398 is the book edition (category dr-hawkins-published-books). Product 1728 is a CD & DVD set in media-miscellaneous and is a different edition.",
+    "evidence_source": "https://veritaspub.com/wp-json/wp/v2/product (official product_cat taxonomy)"
   },
   {
     "raw_row_number": "329",
@@ -560,11 +560,11 @@
   {
     "raw_row_number": "330",
     "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/healing-achieving-total-wellness-through-higher-levels-of-consciousness-by-david-r-hawkins-m-d-ph-d/",
+    "override_value": "https://veritaspub.com/product/healing-and-recovery-copy/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
+    "review_reason": "This master item is item_type=book titled 'Healing and Recovery'. Official product 50378 'Healing and Recovery (Book)' is the exact book (category dr-hawkins-published-books). Product 1695 is a differently titled audio program in media-miscellaneous.",
+    "evidence_source": "https://veritaspub.com/wp-json/wp/v2/product (official product_cat taxonomy)"
   },
   {
     "raw_row_number": "331",
@@ -641,11 +641,11 @@
   {
     "raw_row_number": "341",
     "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/in-the-world-but-not-of-it-cd/",
+    "override_value": "https://veritaspub.com/product/in-the-world-but-not-of-it-transforming-everyday-experience-into-a-spiritual-path/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
+    "review_reason": "This master item is item_type=book. Official product 53062 is the book edition (category dr-hawkins-published-books) and was previously unused by any master record. Product 1661 is the Nightingale-Conant 6-CD audio set.",
+    "evidence_source": "https://veritaspub.com/wp-json/wp/v2/product (official product_cat taxonomy)"
   },
   {
     "raw_row_number": "342",
