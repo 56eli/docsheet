@@ -1,0 +1,722 @@
+[
+  {
+    "raw_row_number": "28",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2002-08-advaita-the-way-to-god-through-mind/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50589)"
+  },
+  {
+    "raw_row_number": "29",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2002-08-advaita-the-way-to-god-through-mind/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50589)"
+  },
+  {
+    "raw_row_number": "30",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2002-08-advaita-the-way-to-god-through-mind/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50589)"
+  },
+  {
+    "raw_row_number": "144",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2007-04-relativism-vs-reality-april-2007/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50746)"
+  },
+  {
+    "raw_row_number": "145",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2007-04-relativism-vs-reality-april-2007/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50746)"
+  },
+  {
+    "raw_row_number": "146",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2007-04-relativism-vs-reality-april-2007/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50746)"
+  },
+  {
+    "raw_row_number": "260",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/stress/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "261",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/health/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "262",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/spiritual-first-aid-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "263",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/sexuality-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "264",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-aging-process/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "265",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/handling-major-crises-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "266",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/worry-fear-and-anxiety-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "267",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/pain-and-suffering/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "268",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/losing-weight/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "269",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/depression/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "270",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/illness-and-self-healing/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "271",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/alcoholism/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "272",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/drug-addiction-and-alcoholism/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "274",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/map-of-consciousness-dr-david-hawkins/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "275",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/cancer/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "277",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/death-and-dying/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "280",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-january-2007-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1578)"
+  },
+  {
+    "raw_row_number": "281",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-march-2007-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1584)"
+  },
+  {
+    "raw_row_number": "282",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-may-2007-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1586)"
+  },
+  {
+    "raw_row_number": "283",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-4-july-11-2007/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1592)"
+  },
+  {
+    "raw_row_number": "284",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-sept-2007-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1602)"
+  },
+  {
+    "raw_row_number": "285",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-may-2008-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1633)"
+  },
+  {
+    "raw_row_number": "286",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-3-september-10-2008/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1645)"
+  },
+  {
+    "raw_row_number": "287",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-1-january-7-2009/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1659)"
+  },
+  {
+    "raw_row_number": "288",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-2-may-13-2009/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1671)"
+  },
+  {
+    "raw_row_number": "289",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-september-2009-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1677)"
+  },
+  {
+    "raw_row_number": "290",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-november-2009-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1683)"
+  },
+  {
+    "raw_row_number": "291",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/satsang-series-february-2010/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1687)"
+  },
+  {
+    "raw_row_number": "292",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/2010-11-satsang-series-nov-2010/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact Month/Year Satsang source relationship based on official product title.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1704)"
+  },
+  {
+    "raw_row_number": "297",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "300",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/all-is-divinity/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1826)"
+  },
+  {
+    "raw_row_number": "301",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/compassion-the-pathway-of-the-heart/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 39375)"
+  },
+  {
+    "raw_row_number": "302",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/god-is-hidden-within-the-beauty-of-the-music/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1810)"
+  },
+  {
+    "raw_row_number": "303",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/god-is-the-infinite-field/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1802)"
+  },
+  {
+    "raw_row_number": "304",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/spiritual-reality-3-cd-set/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 46042)"
+  },
+  {
+    "raw_row_number": "305",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-ever-present-joy/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1828)"
+  },
+  {
+    "raw_row_number": "306",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-power-of-devotion/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 1804)"
+  },
+  {
+    "raw_row_number": "307",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/prevailing-silence-3-cd-set/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 37761)"
+  },
+  {
+    "raw_row_number": "308",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/transcending-the-ego/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 48825)"
+  },
+  {
+    "raw_row_number": "309",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/truth-shines-forth-3-cd-set/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 40035)"
+  },
+  {
+    "raw_row_number": "310",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/virtues-the-spiritual-foundation/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 36441)"
+  },
+  {
+    "raw_row_number": "311",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/you-are-light-consciousness/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved exact title/date source relationship based on the official Veritas product inventory.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 37223)"
+  },
+  {
+    "raw_row_number": "316",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/how-to-see-the-reality-of-life/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "317",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/improving-your-relationships-2012/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "319",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-importance-of-family-2014/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "320",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/what-is-meant-by-spiritual-2012/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "322",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/what-you-are-changes-the-world-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "325",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/Power-vs-Force-Audiobook/B002V5GOH0",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "326",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/The-Eye-of-the-I-Audiobook/1401962459",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "326",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-eye-of-the-i-book/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50393)"
+  },
+  {
+    "raw_row_number": "327",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/i-reality-and-subjectivity-book/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50382)"
+  },
+  {
+    "raw_row_number": "328",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "328",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/truth-vs-falsehood-the-art-of-spiritual-discernment/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "329",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/Letting-Go-Audiobook/B00ZJFQN9I",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "329",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/letting-go-the-pathway-of-surrender-book/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "330",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/Healing-and-Recovery-Audiobook/1401962440",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "330",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/healing-achieving-total-wellness-through-higher-levels-of-consciousness-by-david-r-hawkins-m-d-ph-d/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "331",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/discovery-of-the-presence-of-god-devotional-nonduality-sc/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "332",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/reality-spirituality-and-modern-man-book/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50388)"
+  },
+  {
+    "raw_row_number": "333",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/Transcending-the-Levels-of-Consciousness-Audiobook/1401961878",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "333",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/transcending-the-levels-of-consciousness-book/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50407)"
+  },
+  {
+    "raw_row_number": "334",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-map-of-consciousness-explained/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "335",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/success-is-for-you-using-heart-centered-power-principles-for-lasting-abundance-and-fulfillment/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "337",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/daily-reflections-from-dr-david-r-hawkins-365-contemplations-on-surrender-healing-and-consciousness/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "341",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/In-the-World-but-Not-of-It-Audiobook/B00NMUQ8DS",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "341",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/in-the-world-but-not-of-it-cd/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "342",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/The-Highest-Level-of-Enlightenment-Audiobook/B00O3I950G",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/audible_official_products.csv"
+  },
+  {
+    "raw_row_number": "342",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-highest-level-of-enlightenment/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "347",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-path-to-spiritual-advancement-how-to-transcend-the-ego-and-experience-the-presence-of-god/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 54472)"
+  },
+  {
+    "raw_row_number": "348",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-evolution-of-consciousness-navigating-the-levels-of-awareness-and-unlocking-spiritual-potential-transcriptions-from-the-march-and-april-2002-lectures/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 54489)"
+  },
+  {
+    "raw_row_number": "349",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/beyond-illusion-exploring-perception-ego-and-meditation-on-the-path-to-truth/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
+    "evidence_source": "data/veritas_official_products.csv"
+  },
+  {
+    "raw_row_number": "350",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/spiritual-power-and-integrity-uncovering-spiritual-reality-and-realizing-peace-love-and-divinity/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 55424)"
+  },
+  {
+    "raw_row_number": "351",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/karma-and-devotion-the-sacred-path-to-god-through-the-heart/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 55582)"
+  },
+  {
+    "raw_row_number": "352",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/the-final-doorway-to-enlightenment-prayer-transcendence-and-realization-of-the-self/",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 56141)"
+  }
+]

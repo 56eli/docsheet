@@ -88,6 +88,51 @@ python -m http.server 8000
 # open http://localhost:8000/docs/
 ```
 
+### Curated catalogue and review workspace
+
+The raw spreadsheet pipeline is separate from the reviewed research catalogue.
+Before writing curated derivatives, validate the current inputs:
+
+```bash
+python reconcile_research_master.py --check
+python build_research_master.py --check
+python build_catalogue_pages.py --check
+```
+
+After an approved review-input change, rebuild in this order and then repeat the
+checks:
+
+```bash
+python build_research_master.py
+python build_catalogue_pages.py
+python reconcile_research_master.py
+```
+
+The generated Pages workspace includes the catalogue plus dedicated review
+sheets for candidates, leads, exclusions, migration review, source overrides,
+official discovery, Veritas decisions, item-product relationships, and series
+compilations. See
+`PROJECT_STATE_AUDIT.md` and `IMPLEMENTATION_PLAN.md` for current risk and
+roadmap status.
+
+### Veritas refresh review
+
+Do not overwrite the reviewed Veritas inventory directly from the live API.
+The product-ID decisions in `data/veritas_mapping_decisions.csv` are reapplied
+after deterministic matching:
+
+```bash
+python fetch_veritas_catalogue.py --check
+# or write a review candidate without replacing the committed inventory:
+python fetch_veritas_catalogue.py --output data/veritas_official_products_candidate.csv
+```
+
+Review any candidate diff, update decisions deliberately, rebuild the catalogue,
+and run the curated checks. The Map Veritas workflow follows this review-only
+pattern and uploads its candidate/diff artifact instead of auto-committing.
+Merge the branch code/data first, then run it manually in GitHub Actions and
+inspect the artifact before accepting any live-source update.
+
 ---
 
 ## 🔧 How the pieces fit together

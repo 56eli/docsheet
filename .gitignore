@@ -5,6 +5,10 @@ __pycache__/
 venv/
 *.egg-info/
 
+# Generated live-source review candidates (workflow artifacts; never commit)
+data/veritas_official_products_candidate.csv
+data/veritas_inventory_diff.patch
+
 # OS / editor
 .DS_Store
 Thumbs.db

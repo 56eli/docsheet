@@ -1,0 +1,54 @@
+[
+  {
+    "candidate_title": "The Ultimate David Hawkins Library",
+    "item_type": "audio",
+    "series": "",
+    "year": "",
+    "format": "",
+    "source_url_nightingale_conant": "https://www.nightingale.com/products/the-ultimate-david-hawkins-library",
+    "source_url_audible": "https://www.audible.com/pd/The-Ultimate-David-Hawkins-Library-Audiobook/B01ENWKFOQ",
+    "match_status": "not_found_in_current_draft",
+    "match_notes": "Official Nightingale-Conant author catalogue lists this program; it is a compilation and needs content/edition review against existing records.",
+    "approval": "",
+    "review_notes": ""
+  },
+  {
+    "candidate_title": "The Discovery",
+    "item_type": "audio",
+    "series": "",
+    "year": "",
+    "format": "",
+    "source_url_nightingale_conant": "https://www.nightingale.com/products/the-discovery",
+    "source_url_audible": "https://www.audible.com/pd/The-Discovery-Audiobook/B00NO7TMRI",
+    "match_status": "not_found_in_current_draft",
+    "match_notes": "Official Nightingale-Conant author catalogue lists this program; confirm its relationship to existing materials before import.",
+    "approval": "",
+    "review_notes": ""
+  },
+  {
+    "candidate_title": "Healing",
+    "item_type": "audio",
+    "series": "",
+    "year": "",
+    "format": "",
+    "source_url_nightingale_conant": "https://www.nightingale.com/products/healing",
+    "source_url_audible": "https://www.audible.com/pd/Healing-Audiobook/B00NPBHS2Y",
+    "match_status": "possible_related_match",
+    "match_notes": "Current draft has 'Healing and Recovery' but no exact 'Healing' item; review whether this is a distinct audio program.",
+    "approval": "",
+    "review_notes": ""
+  },
+  {
+    "candidate_title": "Naked",
+    "item_type": "audio",
+    "series": "",
+    "year": "",
+    "format": "",
+    "source_url_nightingale_conant": "https://www.nightingale.com/products/naked",
+    "source_url_audible": "https://www.audible.com/pd/Naked-Audiobook/B07DD2NH9L",
+    "match_status": "not_found_in_current_draft",
+    "match_notes": "Official Nightingale-Conant listing credits David Hawkins with multiple contributors; review inclusion under the broad related-material scope.",
+    "approval": "",
+    "review_notes": ""
+  }
+]

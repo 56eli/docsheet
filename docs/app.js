@@ -20,10 +20,23 @@
   const footerUpdated = $("footer-updated");
   const footerNote = $("footer-note");
   const spreadsheet = $("spreadsheet");
+  const reviewToolbar = $("review-toolbar");
+  const reviewFilter = $("review-filter");
+  const reviewFilterHint = $("review-filter-hint");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
+    reviewOverview: { file: "review-overview.json", label: "Review Overview", exportName: "hawkins-review-overview.csv" },
+    manualCandidates: { file: "manual-candidates.json", label: "Master Candidates", exportName: "hawkins-master-candidates.csv" },
+    manualLeads: { file: "manual-leads.json", label: "Manual Leads", exportName: "hawkins-manual-leads.csv" },
+    masterExclusions: { file: "master-exclusions.json", label: "Master Exclusions", exportName: "hawkins-master-exclusions.csv" },
+    migrationReview: { file: "migration-review.json", label: "Migration Review", exportName: "hawkins-migration-review.csv" },
+    sourceOverrides: { file: "source-overrides.json", label: "Source Overrides", exportName: "hawkins-source-overrides.csv" },
+    officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
+    veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Veritas Decisions", exportName: "hawkins-veritas-decisions.csv" },
     veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
+    productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
+    seriesCompilations: { file: "series-compilations.json", label: "Series Compilations", exportName: "hawkins-series-compilations.csv" },
     hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
     audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
     internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
@@ -31,10 +44,51 @@
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
 
+  const COLUMN_LABELS = {
+    uuid: "Master UUID",
+    raw_row_number: "Raw Row",
+    catalog_code: "Catalogue Code",
+    legacy_tempid: "Legacy ID",
+    proposed_item_type: "Proposed Item Type",
+    proposed_format: "Proposed Format",
+    proposed_format_detail: "Proposed Format Detail",
+    proposed_owned: "Proposed Owned",
+    proposed_year: "Proposed Year",
+    proposed_title: "Proposed Title",
+    source_product_id: "Source Product ID",
+    source_name: "Source",
+    official_product_url: "Official Product URL",
+    official_product_title: "Official Product Title",
+    official_catalogue_url: "Official Catalogue URL",
+    official_discovery_url: "Official Discovery URL",
+    review_status: "Review Status",
+    review_reason: "Review Reason",
+    review_notes: "Review Notes",
+    promotion_status: "Promotion Status",
+    promotion_notes: "Promotion Notes",
+    relationship_type: "Relationship Type",
+    mapping_status: "Mapping Status",
+    match_status: "Match Status",
+    evidence_url: "Evidence URL",
+    evidence_note: "Evidence Note",
+    override_value: "Override Value",
+    target_field: "Target Field",
+  };
+  const STATUS_FIELDS = new Set([
+    "review_status", "promotion_status", "mapping_status", "match_status",
+    "disposition", "approval", "owned", "proposed_owned", "relationship_type",
+  ]);
+  const REVIEW_FILTER_FIELDS = [
+    "promotion_status", "review_status", "disposition", "approval", "mapping_status",
+    "match_status", "relationship_type",
+  ];
+
   let table = null;
   let allData = [];
   let activeView = "master";
   let metaLoaded = false;
+  let activeSearchQuery = "";
+  let activeReviewFilter = null;
 
   /* ------------------------------------------------------------------ *
    *  Helpers
@@ -59,8 +113,8 @@
   function updateSearchStatus() {
     if (!table) return;
     const visibleRows = table.getData("active").length;
-    const isSearching = Boolean(searchInput.value.trim());
-    searchStatus.textContent = isSearching
+    const isFiltering = Boolean(activeSearchQuery || activeReviewFilter);
+    searchStatus.textContent = isFiltering
       ? `Showing: ${visibleRows} of ${allData.length}`
       : `Showing: ${visibleRows}`;
   }
@@ -105,6 +159,31 @@
     return typeof value === "string" && /^https?:\/\//i.test(value.trim());
   }
 
+  function humanizeField(key) {
+    if (COLUMN_LABELS[key]) return COLUMN_LABELS[key];
+    return key
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (character) => character.toUpperCase());
+  }
+
+  function statusClass(value) {
+    const normalized = String(value ?? "").toLowerCase();
+    if (/(excluded|rejected)/.test(normalized)) return "status-excluded";
+    if (/(pending|needs|unmatched|not.promoted|unique_item|compilation_or_new_edition|^false$)/.test(normalized)) return "status-pending";
+    if (/(approved|reviewed|matched|^item$|^true$)/.test(normalized)) return "status-approved";
+    return "status-neutral";
+  }
+
+  function statusFormatter(cell) {
+    const value = String(cell.getValue() ?? "");
+    if (!value) return "";
+    const badge = document.createElement("span");
+    badge.className = `status-badge ${statusClass(value)}`;
+    badge.textContent = value.replace(/_/g, " ");
+    badge.title = value;
+    return badge;
+  }
+
   function buildColumns(data) {
     if (!Array.isArray(data) || data.length === 0) return [];
 
@@ -118,7 +197,7 @@
         : 0;
 
       const col = {
-        title: key,
+        title: humanizeField(key),
         field: key,
         headerSort: true,          // click header to sort asc/desc
         resizable: true,           // drag column edge to resize
@@ -127,14 +206,62 @@
         tooltip: (e, cell) => String(cell.getValue() ?? ""),
       };
 
+      if (STATUS_FIELDS.has(key)) {
+        col.formatter = statusFormatter;
+      }
       // Presentation-only nicety: render URL-heavy columns as clickable links.
       // This does NOT modify the underlying data.
-      if (urlRatio >= 0.6) {
+      if (urlRatio >= 0.6 && !STATUS_FIELDS.has(key)) {
         col.formatter = "link";
         col.formatterParams = { target: "_blank", urlPrefix: "" };
       }
       return col;
     });
+  }
+
+  function configureReviewFilter(data) {
+    activeReviewFilter = null;
+    reviewFilter.replaceChildren();
+    reviewToolbar.hidden = true;
+    reviewFilterHint.textContent = "";
+
+    if (!Array.isArray(data) || data.length === 0) return;
+    const field = REVIEW_FILTER_FIELDS.find((candidate) => {
+      const values = new Set(
+        data.map((row) => String(row[candidate] ?? "").trim()).filter(Boolean)
+      );
+      return values.size > 1;
+    });
+    if (!field) return;
+
+    const values = [...new Set(
+      data.map((row) => String(row[field] ?? "").trim()).filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+    const allOption = new Option(`All ${humanizeField(field)} values`, "");
+    reviewFilter.add(allOption);
+    values.forEach((value) => reviewFilter.add(new Option(value.replace(/_/g, " "), value)));
+    reviewToolbar.hidden = false;
+    reviewFilterHint.textContent = `${values.length} ${humanizeField(field).toLowerCase()} values`;
+    reviewFilter.dataset.field = field;
+  }
+
+  function applyActiveFilters() {
+    if (!table) return;
+    if (!activeSearchQuery && !activeReviewFilter) {
+      table.clearFilter();
+      updateSearchStatus();
+      return;
+    }
+    table.setFilter((data) => {
+      const searchMatches = !activeSearchQuery || Object.values(data).some(
+        (value) => value !== null && value !== undefined &&
+          String(value).toLowerCase().includes(activeSearchQuery)
+      );
+      const reviewMatches = !activeReviewFilter ||
+        String(data[activeReviewFilter.field] ?? "") === activeReviewFilter.value;
+      return searchMatches && reviewMatches;
+    });
+    updateSearchStatus();
   }
 
   /* ------------------------------------------------------------------ *
@@ -163,10 +290,11 @@
       selectableRows: false,
     });
 
+    configureReviewFilter(data);
     table.on("dataFiltered", updateSearchStatus);
     table.on("cellEdited", (cell) => {
       const row = cell.getRow().getData();
-      const label = `${cell.getColumn().getField()}`;
+      const label = humanizeField(cell.getColumn().getField());
       const id = row.tempid || row.uuid || `row ${cell.getRow().getPosition(true)}`;
       flashNote(`✎ Edited “${label}” (${id}) — local only, not saved back to the CSV`);
     });
@@ -202,20 +330,9 @@
    *  Global live search (client-side, across every column)
    * ------------------------------------------------------------------ */
   function applySearch(query) {
-    if (!table) return;
-    const q = query.trim().toLowerCase();
-    clearSearchBtn.hidden = !q;
-    if (!q) {
-      table.clearFilter();
-      updateSearchStatus();
-      return;
-    }
-    table.setFilter((data) =>
-      Object.values(data).some(
-        (v) => v !== null && v !== undefined && String(v).toLowerCase().includes(q)
-      )
-    );
-    updateSearchStatus();
+    activeSearchQuery = query.trim().toLowerCase();
+    clearSearchBtn.hidden = !activeSearchQuery;
+    applyActiveFilters();
   }
 
   /* ------------------------------------------------------------------ *
@@ -261,8 +378,11 @@
   async function activateView(viewName) {
     activeView = viewName;
     const view = VIEWS[viewName];
+    activeSearchQuery = "";
+    activeReviewFilter = null;
     searchInput.value = "";
     clearSearchBtn.hidden = true;
+    reviewToolbar.hidden = true;
     spreadsheet.setAttribute("aria-busy", "true");
     if (table) {
       table.destroy();
@@ -300,6 +420,13 @@
       searchInput.focus();
     });
     exportBtn.addEventListener("click", exportCsv);
+    reviewFilter.addEventListener("change", () => {
+      const field = reviewFilter.dataset.field;
+      activeReviewFilter = reviewFilter.value && field
+        ? { field, value: reviewFilter.value }
+        : null;
+      applyActiveFilters();
+    });
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); }
     });

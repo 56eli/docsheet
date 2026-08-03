@@ -8,7 +8,11 @@
 
 The spreadsheet is an inventory/worklist for David R. Hawkins material, dominated by 2002–2011 lecture-series DVDs and supplemented with volume, office-visit, satsang, media, book, transcription, highlight, dissertation, and miscellaneous entries. It contains useful cataloguing progress and 225 product links, but it is not yet a clean relational catalogue: it mixes records, section headings, source URLs, notes, and 31 blank separator rows in the same table; it has an empty primary-ID column; and six of its thirteen exported columns have no usable structured content.
 
-The public site currently exposes all **374 CSV data rows**, including blank rows and non-record headings, rather than a curated set of catalogue records.
+The raw-spreadsheet view exposes all **374 CSV data rows**, including blank rows and non-record headings. The current default catalogue view is now the separate curated master; this document remains a structural audit of the raw source.
+
+## Post-audit resolution note
+
+This audit records the state observed on 2026-08-03 before the reconciliation work. The `public/` workflow-path defect identified below is resolved on `main`; the current research-master, review, relationship, and deployment state is maintained in [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md).
 
 ## 1. File structure and inventory
 
@@ -151,7 +155,7 @@ This explains why `title` has high completeness but is not a clean item-title fi
 
 ### Critical
 
-1. **Automation defect outside the CSV:** `.github/workflows/update_spreadsheet.yml` still commits `public/data.json` and `public/meta.json`, while the live site and pipeline use `docs/`. Source changes therefore may not refresh the published data.
+1. **Automation defect outside the CSV (resolved after this audit):** `.github/workflows/update_spreadsheet.yml` previously committed `public/data.json` and `public/meta.json`, while the live site and pipeline use `docs/`. `main` now commits `docs/data.json` and `docs/meta.json`; keep this historical finding visible when auditing future workflow edits.
 2. **No stable primary key:** `uuid` is entirely empty, and `tempid` has informal and duplicated values.
 3. **Mixed record types in one table:** 31 blank rows plus headers/notes are published as records.
 
