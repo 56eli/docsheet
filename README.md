@@ -38,15 +38,31 @@ and acknowledge any ledger/draft divergence first:
 python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
 ```
 
 `RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
 failure indicates a ledger/draft mismatch; do not run the writing build commands
-until that review is resolved. Approved official links added after the ledger
+until that review is resolved.
+
+`tests/test_pipeline.py` runs all of the above generators plus tamper
+detection and the rule matrices in one command:
+
+```bash
+pip install -r requirements-dev.txt
+python -m unittest discover tests          # 54 tests, no browser/network needed
+coverage run -m unittest discover tests && coverage report
+```
+
+The coverage gate (`fail_under = 80` in `.coveragerc`) passes at **92%** as of
+2026-08-03; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
-`data/manual_master_candidates.csv`.
+`data/manual_master_candidates.csv`. Publisher-taxonomy-to-`series` proposals
+live in `data/series_category_mapping.csv`, reviewed through
+`data/series_taxonomy_review_queue.csv`, and become master data only after
+owner approval — see `SERIES_TAXONOMY_MAPPING.md`.
 
 Approved master-to-product assertions are stored separately in
 `data/product_relationships.csv` and rendered in the **Product Relationships**
@@ -55,10 +71,19 @@ site tab; evidence-backed annual compilation relationships live in
 Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
-`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`. The
+`data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The
 inventory's `normalized_title_match_count` is derived and must always equal the
 number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
 build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
+
+## Documentation layout
+
+Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
+`NEXT_AGENT_HANDOFF`, policies, schemas, proposals, and the generated
+`RECONCILIATION_REPORT.md`). Approved ruling records live in
+[`decisions/`](decisions/README.md); superseded status docs, research drafts,
+and evidence notes live in [`archive/`](archive/README.md) and are not
+normative.
 
 ## Curated records vs. official candidates
 
@@ -68,9 +93,10 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (306) |
+| `master` | A curated master catalogue record (317) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
+| `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
 
 Only `master` rows are catalogue records. Use the Record Type filter on that tab
 to isolate curated data before exporting. Counts per class are published in

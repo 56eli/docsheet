@@ -23,6 +23,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 API = "https://veritaspub.com/wp-json/wp/v2/product"
+API_CAT = "https://veritaspub.com/wp-json/wp/v2/product_cat"
 MASTER = Path("data/research_master_draft.csv")
 OUT = Path("data/veritas_official_products.csv")
 DECISIONS = Path("data/veritas_mapping_decisions.csv")
@@ -81,11 +82,15 @@ def satsang_date_key(value: str) -> str | None:
     return title_date_key(value)
 
 
-def get_page(page: int) -> list[dict]:
+def get_page(page: int, endpoint: str = API) -> list[dict]:
     """Fetch one API page with retries for transient HTML/empty API responses."""
-    query = urlencode({"per_page": 100, "page": page, "_fields": "id,date,link,title,class_list"})
+    if endpoint == API:
+        fields = "id,date,link,title,product_cat"
+    else:
+        fields = "id,name"
+    query = urlencode({"per_page": 100, "page": page, "_fields": fields})
     request = Request(
-        f"{API}?{query}",
+        f"{endpoint}?{query}",
         headers={
             "User-Agent": "docsheet-catalogue-research/1.0 (+https://github.com/56eli/docsheet)",
             "Accept": "application/json",
@@ -129,8 +134,22 @@ def get_page(page: int) -> list[dict]:
     )
 
 
-def category(classes: list[str]) -> str:
-    categories = [item.removeprefix("product_cat_") for item in classes if item.startswith("product_cat_")]
+def category_names(product: dict, term_names: dict[str, str]) -> str:
+    """Resolve a product's ``product_cat`` term IDs to display names.
+
+    IDs are appended to ``term_names`` on the fly when the taxonomy endpoint
+    has never returned them; an ID that cannot be resolved renders as
+    ``unresolved-category-<id>`` so the taxonomic signal is lost neither
+    silently nor destructively (the series mapper routes such values to the
+    review queue).
+    """
+    categories: list[str] = []
+    for term_id in product.get("product_cat", []) or []:
+        key = str(term_id)
+        name = term_names.get(key)
+        if name is None:
+            name = f"unresolved-category-{key}"
+        categories.append(name)
     return "; ".join(categories)
 
 
@@ -150,7 +169,28 @@ def fetch_products() -> list[dict]:
         page += 1
 
 
-def build_inventory_rows(products: list[dict], master: list[dict[str, str]]) -> list[dict[str, str]]:
+def fetch_category_names() -> dict[str, str]:
+    """Fetch the official ``product_cat`` taxonomy as ``{term_id: name}``.
+
+    Category *names* (not slugs) are the review surface used by the
+    Category Dominance Policy, so they are what the inventory persists.
+    """
+    names: dict[str, str] = {}
+    page = 1
+    while True:
+        batch = get_page(page, endpoint=API_CAT)
+        if not batch:
+            return names
+        for term in batch:
+            names[str(term["id"])] = html.unescape(term["name"])
+        page += 1
+
+
+def build_inventory_rows(
+    products: list[dict],
+    master: list[dict[str, str]],
+    term_names: dict[str, str],
+) -> list[dict[str, str]]:
     """Build deterministic source/title/date matches from live products."""
     index: dict[str, list[dict[str, str]]] = {}
     source_url_index: dict[str, list[dict[str, str]]] = {}
@@ -210,7 +250,7 @@ def build_inventory_rows(products: list[dict], master: list[dict[str, str]]) -> 
             "official_title": title,
             "official_product_url": product["link"],
             "published_date": product["date"][:10],
-            "official_categories": category(product.get("class_list", [])),
+            "official_categories": category_names(product, term_names),
             "normalized_title_match_count": str(len(matches)),
             "matched_master_uuids": "; ".join(item["uuid"] for item in matches),
             "matched_master_titles": " | ".join(item["title"] for item in matches),
@@ -314,7 +354,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     try:
         master = read_csv(MASTER)
-        inventory = build_inventory_rows(fetch_products(), master)
+        inventory = build_inventory_rows(fetch_products(), master, fetch_category_names())
         decisions_applied = apply_mapping_decisions(inventory, master)
         output = csv_text(inventory)
 

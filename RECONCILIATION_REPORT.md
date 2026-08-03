@@ -16,11 +16,11 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 | Draft-only CSV records without a matching ledger `item` | 0 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 359 | 353 |
+| `docs/master.json` / ledger-projected Everything records | 363 | 363 |
 
-The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
+All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.
 
-The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. This report identifies the upstream master/ledger divergence that must be resolved first.
+The reviewed build applies 80 approved official-source overrides and validates 17 unpromoted manual candidates; unresolved research leads remain outside the master in their review inputs.
 
 ## Draft-only CSV records requiring a provenance decision
 
@@ -46,16 +46,13 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 359 | 353 |
+| `master_items` | 363 | 363 |
 | `migrated_items` | 317 | 317 |
-| `implemented_unreviewed` | 38 | 38 |
+| `implemented_unreviewed` | 42 | 42 |
 
-## Required resolution before rebuilding
+## Current verification result
 
-1. Decide whether every draft-only record is an approved item, a documented manual candidate, or should remain outside the curated master.
-2. Record approved changes to matching rows in the ledger or a versioned reviewed-overrides input; do not preserve them solely by editing generated draft CSV/JSON files.
-3. Re-run this report until the reconciliation is understood and accepted.
-4. Only then run `python build_research_master.py`, then `python build_catalogue_pages.py`, and verify both `--check` commands.
+The reconciliation is complete. For future approved changes, update the ledger, reviewed source overrides, or manual-lead input as appropriate; rebuild the master and Pages outputs; then run all three checks below.
 
 ## Reproduce
 

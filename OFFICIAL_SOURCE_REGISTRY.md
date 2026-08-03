@@ -12,7 +12,7 @@
 
 ## Decision notes
 
-- **Veritas Publishing**, **Hay House**, **Nightingale-Conant**, and **Audible** were approved as the core source registry from `OFFICIAL_SOURCE_REGISTRY_DRAFT.md`.
+- **Veritas Publishing**, **Hay House**, **Nightingale-Conant**, and **Audible** were approved as the core source registry from `archive/OFFICIAL_SOURCE_REGISTRY_DRAFT.md`.
 - Audible is retained as an official platform catalogue, not a publisher or rights-holder.
 - Veritas Publishing YouTube and Penguin Random House remain out of the approved registry pending a later decision.
 - The registry does not authorize data changes or source-column creation. Those require the next schema and migration-map approval.

@@ -154,16 +154,25 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def validate_veritas_inventory(veritas_products: list[dict[str, str]]) -> None:
-    """Fail if an inventory row's match count contradicts its matched master IDs.
+def validate_veritas_inventory(
+    veritas_products: list[dict[str, str]],
+    master_records: list[dict[str, str]],
+) -> None:
+    """Fail if an inventory row's derived fields contradict its matched master IDs.
 
     ``normalized_title_match_count`` is a derived field: it must always equal the
     number of IDs in ``matched_master_uuids``. A mismatch means the committed
     inventory was written without the approved decision overlay applied, which
     is exactly the drift a live refresh would otherwise report as an upstream
     catalogue change. Catching it here keeps the refresh diff meaningful.
+
+    The same discipline applies to ``matched_master_titles``, a mirror of the
+    referenced master records' current titles: hand-edits to either side
+    (titles in the master or this mirroring column) must fail the build instead
+    of silently diverging.
     """
     inconsistent = []
+    title_by_uuid = {record["uuid"]: record["title"] for record in master_records}
     for product in veritas_products:
         uuids = [
             item.strip()
@@ -177,9 +186,23 @@ def validate_veritas_inventory(veritas_products: list[dict[str, str]]) -> None:
                 f"normalized_title_match_count={declared!r} but "
                 f"{len(uuids)} matched master ID(s)"
             )
+        unknown = [item for item in uuids if item not in title_by_uuid]
+        if unknown:
+            inconsistent.append(
+                f"  - product {product['veritas_product_id']}: "
+                f"unknown matched master ID(s) {unknown}"
+            )
+            continue
+        expected_titles = " | ".join(title_by_uuid[item] for item in uuids)
+        if product["matched_master_titles"] != expected_titles:
+            inconsistent.append(
+                f"  - product {product['veritas_product_id']}: "
+                f"matched_master_titles {product['matched_master_titles']!r} "
+                f"!= master titles {expected_titles!r}"
+            )
     if inconsistent:
         raise ValueError(
-            f"{VERITAS_PRODUCTS} has derived match counts that contradict their "
+            f"{VERITAS_PRODUCTS} has derived fields that contradict their "
             "matched master IDs:\n" + "\n".join(inconsistent)
         )
 
@@ -388,12 +411,17 @@ def json_text(data: object) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
-def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = False) -> CatalogueBuild:
+def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:
     """Prepare catalogue Pages files in memory.
 
     ``master_items`` exists for read-only reconciliation: it lets callers
     project the Pages site from a ledger-derived master without overwriting the
     committed master draft first. Normal builds read ``MASTER`` unchanged.
+
+    ``include_pending`` defaults to ``True`` so the committed Everything view
+    surfaces unpromoted reviewed manual candidates for owner review; pass
+    ``False`` (``--no-include-pending``) only for a reduced local inspection
+    view — never for committed outputs.
     """
     master_records = list(master_items) if master_items is not None else read_csv(MASTER)
     migrated_items = len(master_records)
@@ -406,7 +434,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     ]
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
-    validate_veritas_inventory(veritas_products)
+    validate_veritas_inventory(veritas_products, master_records)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
@@ -416,7 +444,8 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
 
-    # Optional pending-promotion candidates (owner decision via --include-pending)
+    # Pending-promotion candidates are surfaced for owner review by default
+    # (opt out locally with --no-include-pending).
     if include_pending:
         promoted_keys: set[str] = set()
         prom_path = Path("data/manual_candidate_promotions.csv")
@@ -577,6 +606,26 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             "current_state": "reviewed series compilation",
         },
     ]
+    everything_record_types = {
+        record_type: sum(
+            row["record_type"] == record_type for row in items
+        )
+        for record_type in (
+            RECORD_TYPE_MASTER,
+            RECORD_TYPE_CANDIDATE_DISCOVERY,
+            RECORD_TYPE_CANDIDATE_VERITAS,
+            RECORD_TYPE_CANDIDATE_HAYHOUSE,
+            RECORD_TYPE_CANDIDATE_AUDIBLE,
+            RECORD_TYPE_CANDIDATE_PENDING,
+        )
+    }
+    if sum(everything_record_types.values()) != len(items):
+        raise ValueError(
+            "catalogue-meta record-type counts "
+            f"({sum(everything_record_types.values())}) do not cover every "
+            f"Everything row ({len(items)}): an unlabeled record_type leaked in"
+        )
+
     outputs = {
         OUT_MASTER: json_text(items),
         OUT_REVIEW_OVERVIEW: json_text(review_overview),
@@ -597,18 +646,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         OUT_META: json_text({
             "master_items": len(items),
             "migrated_items": migrated_items,
-            "everything_record_types": {
-                record_type: sum(
-                    row["record_type"] == record_type for row in items
-                )
-                for record_type in (
-                    RECORD_TYPE_MASTER,
-                    RECORD_TYPE_CANDIDATE_DISCOVERY,
-                    RECORD_TYPE_CANDIDATE_VERITAS,
-                    RECORD_TYPE_CANDIDATE_HAYHOUSE,
-                    RECORD_TYPE_CANDIDATE_AUDIBLE,
-                )
-            },
+            "everything_record_types": everything_record_types,
             "reviewed_manual_candidates": len(manual_candidates),
             "manual_research_leads": len(manual_leads),
             "master_exclusion_rows": len(master_exclusions),
@@ -685,8 +723,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--include-pending",
-        action="store_true",
-        help="also include the 6 unpromoted reviewed manual candidates as candidate_pending_promotion rows in Everything",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="include the unpromoted reviewed manual candidates as "
+        "candidate_pending_promotion rows in Everything (default; "
+        "--no-include-pending builds a reduced view for local inspection only)",
     )
     return parser.parse_args(argv)
 
