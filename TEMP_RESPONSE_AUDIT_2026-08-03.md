@@ -194,7 +194,7 @@ success. The handoff's P0 "add CI steps via web editor" is therefore closed.
 | New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
 | New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
 | Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
-| Suite | 54 → **72 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+| Suite | 54 → **82 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
 
 Check battery green at push time: `py_compile`, all five `--check` generators
 (+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
@@ -214,7 +214,7 @@ coverage gate (exit 0), `node --check` ×3, `git diff --check`.
   still 363); docs updated (README/handoff 312, schema invariant restored,
   audit §12.6, handoff P1 entry removed).
 
-Battery green: `py_compile`, all five `--check` (no warning now), **72 tests**,
+Battery green: `py_compile`, all five `--check` (no warning now), **82 tests**,
 coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.
 
 ### 11c. Root-cause: why 17 of 29 books have no `format=book` (owner question)
@@ -336,3 +336,20 @@ plumbing first), Phase 1 is implemented:
   builds unchanged. Suite: 72 tests; coverage 92%; all five `--check` green.
 - Next: owner approves the first `work_families.csv` batch, then Phase 2
   (`edition_candidates.csv` + audiobook/CD&DVD-set rows).
+
+### 11h. Edition model — Phase 2 layer implemented (owner: "build Phase 2 next")
+
+`data/edition_candidates.csv` (12 reviewed candidates: 7 Audible audiobook
+rows + 5 Veritas audio/CD/DVD edition rows; all evidence cross-checked
+against the committed inventories) + `data/edition_promotions.csv`
+(owner-approval registry, empty). `build_research_master.py`:
+`validate_edition_candidates()` (work_id must exist in work_families;
+matched master must exist; product must exist in the veritas/audible/hayhouse
+inventory with matching URL+title; reviewed date/status/promotion-registry
+consistency) and `load_edition_promotions()` (approved rows mint master rows
+with the next compact ID above max, work_id + source_url per source, notes
+citing the candidate). Nothing promoted yet → master still 317 rows.
+`EditionCandidateTests` (10 tests) incl. promotion-minting, registry-flip
+guard, tamper detection. Suite: **82 tests**, coverage **92%**, module ≥ 90%.
+50411 (Power vs Force book product) is NOT an edition row — it is a source
+override candidate for master 286 (the book row already exists).

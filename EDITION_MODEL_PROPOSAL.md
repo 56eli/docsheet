@@ -1,17 +1,31 @@
 # Edition Model Proposal — one row per work × carrier (book / audio / video)
 
 **Prepared:** 2026-08-03
-**Status:** 🚧 **Owner rulings received (D1–D5) — Phase 1 implemented.**
+**Status:** 🚧 **Owner rulings received (D1–D5) — Phases 1 & 2 implemented.**
 D1 = keep one row per DVD part; D2 = reviewed `edition_candidates.csv`
 layer; D3 = move the 7 audible URLs into audiobook edition rows; D5 = build
-the `work_id` plumbing first. Phase 1 (2026-08-03): master schema gained the
-`work_id` column, the reviewed `data/work_families.csv` input
-(`work_id, member_master_uuid, canonical_work_title, evidence_note,
-review_status, reviewed_on`; `approved`/`proposed`/`rejected`; approved rows
-only are applied — never title-inferred), generator validation + tests, and
-the Everything view/UI column. No families approved yet, so all master
-`work_id` values are empty until the first review batch. Phase 2 (edition
-candidates) and Phases 3–4 pending.
+the `work_id` plumbing first.
+
+- **Phase 1 (2026-08-03):** master schema gained the `work_id` column; the
+  reviewed `data/work_families.csv` input
+  (`work_id, member_master_uuid, canonical_work_title, evidence_note,
+  review_status, reviewed_on`; `approved`/`proposed`/`rejected`; approved
+  rows only are applied — never title-inferred); generator validation +
+  tests; Everything view/UI column. First proposal batch (9 rows, all
+  `proposed`) committed.
+- **Phase 2 (2026-08-03):** `data/edition_candidates.csv` (12 reviewed
+  candidates: 7 Audible audiobook editions + 5 Veritas audio/CD/DVD editions,
+  inventory-verified) + owner-approval registry
+  `data/edition_promotions.csv`; `validate_edition_candidates()` and
+  `load_edition_promotions()` mint approved editions as master rows (next
+  compact ID above max, `work_id`, per-source URL). Product 50411 (Power vs
+  Force book) is a source-override candidate for master 286, not an edition
+  row.
+
+No families/editions approved yet — master stays at 317 rows with empty
+`work_id` until the owner approves rows in `data/work_families.csv` and
+`data/edition_promotions.csv`. Phases 3–4 (inventory-wide batches, UI/docs
+labels) pending.
 **Related:** `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (content class vs carrier),
 `PRODUCT_RELATIONSHIP_SCHEMA.md`, `VERITAS_PRODUCT_MAPPING.md`,
 `NEXT_AGENT_HANDOFF.md` §5 (binding data rules).

@@ -137,7 +137,7 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 72 deterministic tests
+python -m unittest discover tests      # 82 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 80% floor (.coveragerc)
 ```

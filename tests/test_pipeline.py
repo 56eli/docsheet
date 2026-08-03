@@ -867,6 +867,17 @@ class WorkFamilyTests(unittest.TestCase):
         (sandbox / "data" / "work_families.csv").write_text(
             self.FAMILY_HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
         )
+        # The committed edition candidates reference the committed work ids;
+        # custom family files invalidate them, so clear the edition layer.
+        (sandbox / "data" / "edition_candidates.csv").write_text(
+            "candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+            "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+            "proposed_owned,source_name,source_product_id,official_product_url,"
+            "official_product_title,evidence_note,review_status,reviewed_on,"
+            "promotion_status,promotion_notes\n", encoding="utf-8")
+        (sandbox / "data" / "edition_promotions.csv").write_text(
+            "candidate_key,work_id,edition_role,item_type,format,series,"
+            "approval_status,approved_on,approval_reason\n", encoding="utf-8")
 
     def approved_row(self, member: str = "289", work_id: str = "w-tvf") -> str:
         return (f"{work_id},{member},Truth vs Falsehood,"
@@ -927,6 +938,26 @@ class WorkFamilyTests(unittest.TestCase):
         finally:
             tempdir.cleanup()
 
+    def test_missing_columns_fail(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            (sandbox / "data" / "work_families.csv").write_text(
+                "work_id,member_master_uuid\nw-tvf,289\n", encoding="utf-8")
+            (sandbox / "data" / "edition_candidates.csv").write_text(
+                "candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+                "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+                "proposed_owned,source_name,source_product_id,official_product_url,"
+                "official_product_title,evidence_note,review_status,reviewed_on,"
+                "promotion_status,promotion_notes\n", encoding="utf-8")
+            (sandbox / "data" / "edition_promotions.csv").write_text(
+                "candidate_key,work_id,edition_role,item_type,format,series,"
+                "approval_status,approved_on,approval_reason\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "missing required columns"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
     def test_approved_row_needs_date_evidence_and_canonical_title(self) -> None:
         tempdir = make_sandbox()
         try:
@@ -976,6 +1007,206 @@ class WorkFamilyTests(unittest.TestCase):
                 if cells[0] == "289" and len(cells) > work_idx:
                     cells[work_idx] = ""
                 kept.append(",".join(cells))
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("stale relative to the current ledger", result.stdout)
+        finally:
+            tempdir.cleanup()
+
+
+class EditionCandidateTests(unittest.TestCase):
+    """Edition-candidate layer: validation and promotion-to-master rows."""
+
+    CAND_HEADER = ("candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+                   "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+                   "proposed_owned,source_name,source_product_id,official_product_url,"
+                   "official_product_title,evidence_note,review_status,reviewed_on,"
+                   "promotion_status,promotion_notes")
+    PROMO_HEADER = ("candidate_key,work_id,edition_role,item_type,format,series,"
+                    "approval_status,approved_on,approval_reason")
+
+    def family_rows(self) -> list[str]:
+        return ["w-tvf,289,Truth vs Falsehood,book 50398 + audiobook evidence,approved,2026-08-03"]
+
+    def candidate_rows(self, promotion_status: str = "not_promoted") -> list[str]:
+        return [
+            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audio,Audiobook,true,"
+            f"audible,https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,"
+            f"https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,Truth Vs Falsehood,"
+            f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition",
+        ]
+
+    def write_files(self, sandbox: Path, candidate_rows: list[str], promo_rows: list[str] | None = None,
+                    family_rows: list[str] | None = None) -> None:
+        (sandbox / "data" / "work_families.csv").write_text(
+            "work_id,member_master_uuid,canonical_work_title,evidence_note,review_status,reviewed_on\n"
+            + "\n".join(family_rows if family_rows is not None else self.family_rows()) + "\n",
+            encoding="utf-8")
+        (sandbox / "data" / "edition_candidates.csv").write_text(
+            self.CAND_HEADER + "\n" + "\n".join(candidate_rows) + "\n", encoding="utf-8")
+        (sandbox / "data" / "edition_promotions.csv").write_text(
+            self.PROMO_HEADER + "\n" + ("\n".join(promo_rows) + "\n" if promo_rows else ""),
+            encoding="utf-8")
+
+    def test_committed_candidates_validate_and_build_clean(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_research_master.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_promotion_mints_edition_row(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("promoted"), [
+                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertIn("320", rows)  # next compact ID above current max 319
+            row = rows["320"]
+            self.assertEqual(row["work_id"], "w-tvf")
+            self.assertEqual(row["item_type"], "book")
+            self.assertEqual(row["format"], "audio")
+            self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
+            self.assertEqual(row["raw_row_number"], "candidate:edition-audible-tvf")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_promotion_requires_candidate_status_flip(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("not_promoted"), [
+                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+            ])
+            with self.assertRaisesRegex(ValueError, "must be 'promoted'"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_work_id_or_master_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            bad_work = [self.candidate_rows()[0].replace("w-tvf,audio,289", "w-nope,audio,289")]
+            self.write_files(sandbox, bad_work)
+            with self.assertRaisesRegex(ValueError, "unknown work_id"):
+                invoke_script("build_research_master.py", sandbox)
+            bad_master = [self.candidate_rows()[0].replace(",289,", ",9999,")]
+            self.write_files(sandbox, bad_master)
+            with self.assertRaisesRegex(ValueError, "unknown matched master ID"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_product_and_duplicate_key_fail(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            bad_product = [self.candidate_rows()[0].replace("B00NWS4SQO", "B00NOPE000")]
+            self.write_files(sandbox, bad_product)
+            with self.assertRaisesRegex(ValueError, "unknown audible product"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_files(sandbox, self.candidate_rows() * 2)
+            with self.assertRaisesRegex(ValueError, "unique candidate_key"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_hayhouse_candidate_validates_and_mismatch_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            url = "https://www.hayhouse.com/power-vs-force-paperback"
+            row = (f"edition-hh-pvf,w-power-vs-force,book,286,Power vs Force (Paperback),book,,book,,true,"
+                   f"hayhouse,{url},{url},Power vs Force,"
+                   "hayhouse paperback evidence,reviewed_candidate,2026-08-03,not_promoted,paperback edition")
+            families = ["w-power-vs-force,286,Power vs Force,book + audiobook evidence,approved,2026-08-03"]
+            self.write_files(sandbox, [row], family_rows=families)
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            # keep the valid product reference but corrupt the official URL copy
+            bad_url = row.replace(f",{url},{url},", f",{url},https://www.hayhouse.com/other-page,")
+            self.write_files(sandbox, [bad_url], family_rows=families)
+            with self.assertRaisesRegex(ValueError, "differs from the inventory"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_candidate_shape_validation(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            base = self.candidate_rows()[0]
+            cases = [
+                (base.replace(",book,,audio,", ",book,,vinyl,"), "carrier format"),
+                (base.replace("2026-08-03,not_promoted", "2026-08-03,maybe"), "must be 'not_promoted'"),
+                (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status 'reviewed_candidate'"),
+                (base.replace("reviewed_candidate,2026-08-03", "reviewed_candidate,"), "ISO reviewed_on"),
+            ]
+            for row, expected in cases:
+                self.write_files(sandbox, [row])
+                with self.assertRaisesRegex(ValueError, expected):
+                    invoke_script("build_research_master.py", sandbox)
+            # invalid year
+            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audio",
+                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audio")])
+            with self.assertRaisesRegex(ValueError, "proposed_year"):
+                invoke_script("build_research_master.py", sandbox)
+            # invalid owned
+            self.write_files(sandbox, [base.replace(",true,audible,", ",maybe,audible,")])
+            with self.assertRaisesRegex(ValueError, "proposed_owned"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_promotion_edge_cases(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            promo = "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
+            # rejected promotion: no row minted, candidate stays not_promoted
+            self.write_files(sandbox, self.candidate_rows(), [promo.replace("approved,2026-08-03", "rejected,2026-08-03")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            # approved promotion missing date
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",2026-08-03,", ",,")])
+            with self.assertRaisesRegex(ValueError, "ISO approved_on"):
+                invoke_script("build_research_master.py", sandbox)
+            # work_id mismatch with candidate
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace("w-tvf,audio", "w-other,audio")])
+            with self.assertRaisesRegex(ValueError, "must match the candidate"):
+                invoke_script("build_research_master.py", sandbox)
+            # deprecated item_type in promotion
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audio,", ",video,audio,")])
+            with self.assertRaisesRegex(ValueError, "non-deprecated"):
+                invoke_script("build_research_master.py", sandbox)
+            # unknown approval status
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace("approved,2026-08-03", "pending,2026-08-03")])
+            with self.assertRaisesRegex(ValueError, "approval_status"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_tamper_detection_when_edition_row_vanishes(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("promoted"), [
+                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+            ])
+            invoke_script("build_research_master.py", sandbox)
+            path = sandbox / "data" / "research_master_draft.csv"
+            kept = [line for line in path.read_text(encoding="utf-8").splitlines()
+                    if not line.startswith("320,")]
             path.write_text("\n".join(kept) + "\n", encoding="utf-8")
             result = invoke_script("build_research_master.py", sandbox, "--check")
             self.assertEqual(result.returncode, 1)

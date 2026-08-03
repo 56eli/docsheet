@@ -591,7 +591,7 @@ Hawkins` → `book`, guarded by `item_type=book`, never overwrites). The master
 rebuild changed exactly the 12 predicted records (`''` → `book`): 291, 292,
 295, 296, 297, 300, 303–308. Book format coverage 12/29 → **24/29**; total
 format coverage 231 → **243** of 317 (74 blank). All checks green; suite now
-**65 tests** at that point (72 after §12.8); coverage 92%.
+**65 tests** at that point (82 after §12.8); coverage 92%.
 
 **Remaining 5 books (no Veritas URL) — five distinct causes, all
 review-boundary items:** 286 (PvF book product 50411 is title-matched to
@@ -601,3 +601,30 @@ lecture 202, not to book 286 — C2 rule: no title-minted master URLs); 298/299
 HH override); 302 (no link/tempid/inventory match; same work as 303 → needs a
 duplicate-resolution ruling). Full evidence: `TEMP_RESPONSE_AUDIT_2026-08-03.md`
 §11e; tracked in `NEXT_AGENT_HANDOFF.md` P1.
+
+### 12.8 Edition model — Phase 1 + Phase 2 (owner-directed)
+
+The owner identified a model oversight (works with multiple carriers are
+collapsed into one row; e.g. 289 *Truth vs Falsehood* = book row whose
+audiobook exists only as an Audible URL and whose CD&DVD set only as a
+related product) and directed: **one row per work × carrier**. Rulings:
+D1 keep one row per DVD part, D2 reviewed edition-candidate layer, D3 move
+audible URLs into edition rows, D5 plumbing first. Delivered 2026-08-03:
+
+- **Phase 1:** master + Everything + UI gained `work_id` (25-field schema);
+  reviewed `data/work_families.csv` input (approved rows only, never
+  title-inferred); validation + tamper tests; 9-row proposed first batch
+  (works: Truth vs Falsehood, Power vs Force [202 flagged for ruling], Eye of
+  the I, Letting Go, Healing and Recovery, Transcending the Levels, In the
+  World But Not of It, Highest Level of Enlightenment).
+- **Phase 2:** `data/edition_candidates.csv` — 12 reviewed candidates
+  (7 Audible audiobook editions + 5 Veritas audio/CD/DVD editions) with
+  inventory-verified URL/title evidence — plus the owner-approval registry
+  `data/edition_promotions.csv`; `validate_edition_candidates()` and
+  `load_edition_promotions()` (approved rows mint master rows with the next
+  compact ID above max). Product 50411 (PvF book) is a source-override
+  candidate for 286, not an edition row.
+- Nothing promoted yet: master stays at 317 rows with empty `work_id` until
+  the owner approves family + edition rows. Suite: **82 tests**, coverage
+  **92%** (every module ≥ 90%), all five `--check` green. Design and
+  decisions: `EDITION_MODEL_PROPOSAL.md`.
