@@ -40,7 +40,10 @@ EXCLUSION_FIELDS = [
     "raw_we_have", "raw_original_source", "raw_product_link",
 ]
 SOURCE_OVERRIDE_FIELDS = {
-    "source_url_veritas", "source_url_hay_house", "source_url_audible",
+    "source_url_veritas",
+    "source_url_hay_house",
+    "source_url_audible",
+    "source_url_nightingale_conant",
 }
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
