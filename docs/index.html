@@ -89,6 +89,17 @@
     <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
   </nav>
 
+  <section id="view-summary" class="view-summary" aria-live="polite">
+    <div class="view-summary-copy">
+      <h2 id="view-title">Everything</h2>
+      <p id="view-description">Loading catalogue view details…</p>
+    </div>
+    <dl id="view-meta" class="view-meta" aria-label="Current view details">
+      <div><dt>Rows</dt><dd>—</dd></div>
+      <div><dt>Type</dt><dd>—</dd></div>
+    </dl>
+  </section>
+
   <section id="review-toolbar" class="review-toolbar" aria-label="Review filters" hidden>
     <label for="review-filter">Filter this review sheet</label>
     <select id="review-filter" aria-label="Filter current review sheet">

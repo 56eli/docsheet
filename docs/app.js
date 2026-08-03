@@ -23,6 +23,9 @@
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
   const reviewFilterHint = $("review-filter-hint");
+  const viewTitle = $("view-title");
+  const viewDescription = $("view-description");
+  const viewMeta = $("view-meta");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -42,6 +45,77 @@
     internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
     publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
+  };
+
+  const VIEW_DETAILS = {
+    master: {
+      type: "Catalogue + candidates",
+      description: "The primary working view: curated master records plus selected official candidates that are visible for review but not necessarily promoted master items.",
+    },
+    reviewOverview: {
+      type: "Review index",
+      description: "A guide to the review sheets, their source files, row counts, and current decision state.",
+    },
+    manualCandidates: {
+      type: "Promotion queue",
+      description: "Evidence-backed official candidates that are validated but intentionally not promoted until a separate approval path exists.",
+    },
+    manualLeads: {
+      type: "Research leads",
+      description: "Manual edition, copy, or source leads that remain outside the master until reviewed.",
+    },
+    masterExclusions: {
+      type: "Exclusion ledger",
+      description: "Raw spreadsheet rows intentionally excluded from the curated master, retained with disposition and review reason.",
+    },
+    migrationReview: {
+      type: "Migration ledger",
+      description: "Raw-row provenance and proposed migration metadata used to regenerate the curated master.",
+    },
+    sourceOverrides: {
+      type: "Approved overrides",
+      description: "Reviewed official-source links applied after the original migration ledger pass without editing generated master files.",
+    },
+    officialDiscovery: {
+      type: "Discovery queue",
+      description: "Nightingale-Conant and platform candidates awaiting source, duplicate, or relationship review.",
+    },
+    veritasMappingDecisions: {
+      type: "Refresh decisions",
+      description: "Approved Veritas product-ID dispositions reapplied after every live catalogue refresh.",
+    },
+    veritasProducts: {
+      type: "Official inventory",
+      description: "Reviewed Veritas product inventory and mapping status; commercial products are not automatically master records.",
+    },
+    productRelationships: {
+      type: "Relationship evidence",
+      description: "Reviewed item-to-product assertions kept separate from master identity and source inventory.",
+    },
+    seriesCompilations: {
+      type: "Series evidence",
+      description: "Compilation links to annual lecture series where evidence supports a series/month scope rather than individual DVD parts.",
+    },
+    hayhouseProducts: {
+      type: "Official inventory",
+      description: "Hay House product listings used for source discovery and deduplication review.",
+    },
+    audibleProducts: {
+      type: "Platform inventory",
+      description: "Audible listings used for source discovery, edition review, and international leads.",
+    },
+    internationalProducts: {
+      type: "International leads",
+      description: "Non-English and market-specific products tracked separately from the current English-focused master.",
+    },
+    publishers: {
+      type: "Source registry",
+      description: "Approved publisher/platform sources and their role in the catalogue review process.",
+    },
+    original: {
+      type: "Raw source view",
+      description: "The original spreadsheet rendered unchanged; use this for provenance checks, not curated master decisions.",
+    },
   };
 
   const COLUMN_LABELS = {
@@ -117,6 +191,29 @@
     searchStatus.textContent = isFiltering
       ? `Showing: ${visibleRows} of ${allData.length}`
       : `Showing: ${visibleRows}`;
+  }
+
+  function updateViewSummary(viewName, rowCount = null) {
+    const view = VIEWS[viewName];
+    const details = VIEW_DETAILS[viewName] || {};
+    viewTitle.textContent = view.label;
+    viewDescription.textContent = details.description || "Search, filter, sort, and export this spreadsheet view.";
+    viewMeta.innerHTML = "";
+
+    const metaItems = [
+      ["Rows", rowCount === null ? "Loading…" : rowCount.toLocaleString()],
+      ["Type", details.type || "Spreadsheet"],
+      ["Export", view.exportName],
+    ];
+    metaItems.forEach(([label, value]) => {
+      const wrapper = document.createElement("div");
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+      term.textContent = label;
+      description.textContent = value;
+      wrapper.append(term, description);
+      viewMeta.append(wrapper);
+    });
   }
 
   /* ------------------------------------------------------------------ *
@@ -383,6 +480,7 @@
     searchInput.value = "";
     clearSearchBtn.hidden = true;
     reviewToolbar.hidden = true;
+    updateViewSummary(viewName);
     spreadsheet.setAttribute("aria-busy", "true");
     if (table) {
       table.destroy();
@@ -397,6 +495,7 @@
 
     try {
       const data = await loadData(viewName);
+      updateViewSummary(viewName, data.length);
       initTable(data);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
