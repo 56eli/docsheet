@@ -35,7 +35,9 @@ python build_catalogue_pages.py --check
 failure indicates a ledger/draft mismatch; do not run the writing build commands
 until that review is resolved. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
-edition/copy leads live in `data/research_manual_leads.csv` outside the master.
+edition/copy leads live in `data/research_manual_leads.csv` outside the master;
+reviewed but unpromoted official candidates live in
+`data/manual_master_candidates.csv`.
 
 Approved master-to-product assertions are stored separately in
 `data/product_relationships.csv` and rendered in the **Product Relationships**

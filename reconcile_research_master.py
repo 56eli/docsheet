@@ -127,7 +127,7 @@ def render_report() -> str:
         [
             "All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.",
             "",
-            f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides; unresolved research leads remain outside the master in their review inputs.",
+            f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides and validates {master_build.manual_candidates_validated} unpromoted manual candidates; unresolved research leads remain outside the master in their review inputs.",
         ]
         if is_reconciled
         else [

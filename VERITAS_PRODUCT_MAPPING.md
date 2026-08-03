@@ -29,7 +29,7 @@
 
 ## Reviewed candidate products
 
-The 28 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. They intentionally have no UUID, catalogue code, ownership value, or claimed item type until a separate master-item decision is approved.
+The 28 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. The ten `unique_item` products now have reviewed, unpromoted evidence rows in `data/manual_master_candidates.csv`; they intentionally have no master UUID, catalogue code, ownership value, or master-source relationship until a separate promotion decision is approved. The 18 compilation/new-edition products remain broad discovery candidates pending content comparison.
 
 This approach preserves broad discovery coverage while retaining the approved human-review boundary for durable research-master identity data.
 

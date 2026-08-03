@@ -14,6 +14,7 @@ import csv
 import io
 import json
 import random
+import re
 import sys
 import time
 import uuid
@@ -25,6 +26,8 @@ OUTPUT_CSV = Path("data") / "research_master_draft.csv"
 OUTPUT_JSON = Path("data") / "research_master_draft.json"
 EXCLUSIONS = Path("data") / "research_master_exclusions.csv"
 SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
+MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
+VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
 
 FIELDS = [
     "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
@@ -42,6 +45,18 @@ SOURCE_OVERRIDE_FIELDS = {"source_url_veritas", "source_url_audible"}
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
 }
+MANUAL_CANDIDATE_REQUIRED_COLUMNS = {
+    "candidate_key", "candidate_title", "proposed_item_type", "proposed_year",
+    "proposed_format", "proposed_format_detail", "proposed_owned", "source_name",
+    "source_product_id", "official_product_url", "official_product_title", "evidence_note",
+    "review_status", "reviewed_on", "promotion_status", "promotion_notes",
+}
+MANUAL_CANDIDATE_ITEM_TYPES = {
+    "lecture", "book", "audio", "video", "transcript", "interview", "highlight",
+    "dissertation", "article", "other",
+}
+MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 @dataclass
@@ -51,6 +66,7 @@ class MasterBuild:
     items: list[dict[str, str]]
     exclusions: list[dict[str, str]]
     source_overrides_applied: int
+    manual_candidates_validated: int
     outputs: dict[Path, str]
 
 
@@ -174,6 +190,90 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
     return len(overrides)
 
 
+def validate_manual_candidates() -> int:
+    """Validate reviewed manual candidates without promoting them to the master.
+
+    Manual candidates have no raw spreadsheet row, so their durable candidate
+    key and official-product evidence are validated separately. Promotion is a
+    later explicit action; this function never emits candidate rows into the
+    generated master CSV/JSON.
+    """
+    if not MANUAL_CANDIDATES.exists():
+        return 0
+
+    with MANUAL_CANDIDATES.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing_columns = MANUAL_CANDIDATE_REQUIRED_COLUMNS - columns
+        if missing_columns:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES} is missing required columns: "
+                f"{', '.join(sorted(missing_columns))}"
+            )
+        candidates = list(reader)
+
+    with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+        veritas_by_id = {
+            row["veritas_product_id"]: row
+            for row in csv.DictReader(handle)
+        }
+
+    seen_keys: set[str] = set()
+    for line_number, candidate in enumerate(candidates, start=2):
+        key = candidate["candidate_key"].strip()
+        item_type = candidate["proposed_item_type"].strip()
+        year = candidate["proposed_year"].strip()
+        media_format = candidate["proposed_format"].strip()
+        source_name = candidate["source_name"].strip()
+        product_id = candidate["source_product_id"].strip()
+
+        if not key.startswith("manual-") or key in seen_keys:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} needs a unique candidate_key beginning 'manual-'"
+            )
+        if not candidate["candidate_title"].strip() or item_type not in MANUAL_CANDIDATE_ITEM_TYPES:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} needs a title and valid proposed_item_type"
+            )
+        if year and (len(year) != 4 or not year.isdigit()):
+            raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} proposed_year must be blank or YYYY")
+        if media_format not in MANUAL_CANDIDATE_FORMATS:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} proposed_format is outside the current controlled vocabulary"
+            )
+        if candidate["proposed_owned"].strip() not in {"", "true", "false"}:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} proposed_owned must be blank, true, or false"
+            )
+        if candidate["review_status"].strip() != "reviewed_candidate":
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} must have review_status 'reviewed_candidate'"
+            )
+        if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
+            raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
+        if candidate["promotion_status"].strip() != "not_promoted":
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} must remain not_promoted until a separate approval"
+            )
+        if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
+            raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs evidence and promotion notes")
+        if source_name != "veritas" or product_id not in veritas_by_id:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} needs a known Veritas source product"
+            )
+        product = veritas_by_id[product_id]
+        if candidate["official_product_url"] != product["official_product_url"]:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} official_product_url differs from the inventory"
+            )
+        if candidate["official_product_title"] != product["official_title"]:
+            raise ValueError(
+                f"{MANUAL_CANDIDATES}:{line_number} official_product_title differs from the inventory"
+            )
+        seen_keys.add(key)
+    return len(candidates)
+
+
 def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
     with LEDGER.open(encoding="utf-8", newline="") as handle:
@@ -225,6 +325,7 @@ def build_master() -> MasterBuild:
         })
 
     source_overrides_applied = apply_source_overrides(items)
+    manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}
         for row in excluded_rows
@@ -238,6 +339,7 @@ def build_master() -> MasterBuild:
         items=items,
         exclusions=exclusions,
         source_overrides_applied=source_overrides_applied,
+        manual_candidates_validated=manual_candidates_validated,
         outputs=outputs,
     )
 
@@ -281,7 +383,8 @@ def main(argv: list[str] | None = None) -> int:
         print(
             "Research-master outputs match the current ledger and approved source overrides "
             f"({len(build.items)} items; {len(build.exclusions)} excluded rows; "
-            f"{build.source_overrides_applied} source overrides)."
+            f"{build.source_overrides_applied} source overrides; "
+            f"{build.manual_candidates_validated} manual candidates validated)."
         )
         return 0
 
@@ -289,6 +392,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Wrote {OUTPUT_CSV} and {OUTPUT_JSON} ({len(build.items)} items)")
     print(f"Wrote {EXCLUSIONS} ({len(build.exclusions)} excluded source rows)")
     print(f"Applied {build.source_overrides_applied} approved source overrides")
+    print(f"Validated {build.manual_candidates_validated} reviewed manual candidates")
     return 0
 
 
