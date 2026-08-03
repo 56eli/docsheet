@@ -478,3 +478,14 @@ per-part works under D6a. Awaiting owner ruling.
   (no substring fuzz), covering every uncovered part row incl. collection
   lanes; nothing applied until owner approval. Proposal impact figures
   corrected (§5/§5b). Suite: 90 tests, coverage 92%.
+
+### 11q. D6a bulk approval applied (owner)
+
+All 163 proposed per-title works flipped to approved (2026-08-03). Final
+state: **183 works / 317 members** in `data/work_families.csv`; `work_id`
+coverage **341/341** master rows (integrity-checked: all members exist, no
+duplicates, every work_id valid). One grouping caveat surfaced:
+**w-a-review-of-the-work** merged the 2006 and 2007 programs (same title,
+different series — the audit §2.2 documented them as distinct works); a
+split into year-scoped works is a future one-row-per-member change if
+desired. Suite: 90 tests, coverage 92%, all five `--check` green.
