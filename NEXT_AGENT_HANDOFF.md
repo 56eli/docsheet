@@ -21,15 +21,15 @@ but not sufficient for this project.
 | Layer | Count | Canonical location |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 306 | `data/research_master_draft.{csv,json}` |
-| — `lecture` / `book` / `discussion` / untyped | 274 / 23 / 8 / 1 | |
-| Catalogue codes (unique) | 221 | derived from `item_type` + `year` |
+| Curated master | 317 | `data/research_master_draft.{csv,json}` |
+| — `lecture` / `book` / `discussion` / untyped | 277 / 29 / 10 / 1 | |
+| Catalogue codes (unique) | 223 | derived from `item_type` + `year` |
 | Months (all verified vs official) | 198 | derived from official product slug |
 | Exclusions / overrides | 68 / 79 | `data/research_master_*.csv` |
-| Candidates / leads | 17 / 1 | `data/manual_master_candidates.csv`, `research_manual_leads.csv` |
+| Candidates / leads | 11 promoted / 6 unpromoted / 1 lead | `data/manual_candidate_promotions.csv`, `data/manual_master_candidates.csv`, `research_manual_leads.csv` |
 | Relationships / series compilations | 301 / 7 | `data/product_relationships.csv`, `series_compilation_relationships.csv` |
 | Veritas / Hay House / Audible / International | 191 / 24 / 26 / 36 | `data/*_products.csv`, `international_discovery_queue.csv` |
-| Everything Pages view | 342 | `docs/master.json` (306 `master` + 36 `candidate_*`) |
+| Everything Pages view | 353 | `docs/master.json` (317 `master` + 36 `candidate_*`) |
 
 Required before delivering any data change:
 

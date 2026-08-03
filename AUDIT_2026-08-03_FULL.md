@@ -362,3 +362,49 @@ Pages-catalogue check, reconciliation check, JavaScript syntax checks, and
 `npm audit --omit=dev --audit-level=high` (0 vulnerabilities). The new raw-payload CI step is pending a workflow-permitted push. Local Playwright
 execution remains unavailable solely because this sandbox lacks the Chromium
 binary; the same browser suite is part of the successful GitHub-hosted CI.
+
+---
+
+## 11. Current-state full coherence audit — 2026-08-03
+
+**Scope:** every raw-spreadsheet row, migration-ledger row, generated raw Pages
+row, curated-master row, review candidate, promotion decision, relationship, and
+published Everything row at the current branch tip.
+
+### Results
+
+| Layer / invariant | Result |
+|---|---|
+| Raw spreadsheet → migration ledger | 374/374 rows, sequential raw-row provenance 3–376 |
+| Raw spreadsheet → `docs/data.json` | 374/374 rows; all cell values preserved (Pandas deterministically renames blank header cells to `Unnamed: 5`, `Unnamed: 8`…`Unnamed: 11`) |
+| Curated master schema | 317/317 rows share the declared 24-field schema; every row has a verbatim `legacy_title` |
+| Master IDs | 317 unique IDs; no duplicate master UUIDs |
+| Master ↔ exclusions | 68 excluded raw rows are disjoint from retained raw master rows |
+| Master → Everything view | 317 `master` rows plus 36 official candidate rows = 353 rows |
+| Candidate promotions | 11 promotion-registry keys exactly match the 11 candidate rows marked `promoted`; 6 remain explicitly `not_promoted` |
+| Product relationships | 301/301 reference a current master UUID |
+| Deterministic builds | `process_data --check`, master, Pages, and reconciliation checks all pass |
+| Syntax / supply chain | Python and JavaScript syntax checks pass; production npm audit reports 0 vulnerabilities |
+
+### Remediation during this audit
+
+The audit found an internal-status mismatch: 11 records had been promoted through
+the explicit promotion registry while their source candidate rows still said
+`not_promoted`. The generator now validates candidate status against
+`data/manual_candidate_promotions.csv`; the 11 promoted candidates are marked
+accordingly, with six remaining candidates clearly unpromoted. This keeps the
+review workspace, source input, and published master coherent.
+
+### Known boundaries
+
+- This is a complete **repository-data coherence** audit. It does not claim a
+  fresh live re-fetch of every publisher page: the reviewed 191-product snapshot
+  remains the declared primary-source baseline, while the local Veritas API client
+  is blocked by a TLS EOF in this environment.
+- Playwright is syntax-validated locally; Chromium is unavailable in this
+  sandbox. GitHub-hosted CI previously ran the browser suite successfully. The
+  pending raw-output CI step remains an unpushed workflow-file edit because the
+  GitHub App lacks workflow-write permission.
+- The owner-approved category dominance rules are documented in
+  `CATEGORY_DOMINANCE_POLICY.md`; implementation of the full taxonomy mapper and
+  review queue is the next data-engineering task.

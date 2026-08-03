@@ -104,8 +104,8 @@
     "evidence_note": "Official page identifies a 655-page book compendium of lecture slides from 2002–2011.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-43146",
@@ -122,8 +122,8 @@
     "evidence_note": "Official page identifies Fran Grace’s book dedicated to Hawkins and Susan, with interview material.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-47979",
@@ -140,8 +140,8 @@
     "evidence_note": "Official page identifies a paperback collection of selected Hawkins teachings and quotes.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-50485",
@@ -158,8 +158,8 @@
     "evidence_note": "Official page identifies a 2012 discussion/interview product.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-50488",
@@ -176,8 +176,8 @@
     "evidence_note": "Official page identifies a 2012 one-disc discussion/interview of approximately 60 minutes.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-53036",
@@ -194,8 +194,8 @@
     "evidence_note": "Official page identifies Susan Hawkins’s memoir and inside account.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-53058",
@@ -212,8 +212,8 @@
     "evidence_note": "Official page identifies a book collecting ten core teachings and excerpts.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-53277",
@@ -230,8 +230,8 @@
     "evidence_note": "Official page identifies an On-the-Road UK talk available through streaming video.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-54219",
@@ -248,8 +248,8 @@
     "evidence_note": "Official page identifies a 2003 Science of Mind church lecture available through streaming video.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-55425",
@@ -266,8 +266,8 @@
     "evidence_note": "Official page identifies a biography of Hawkins’s life and legacy.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-55473",
@@ -284,8 +284,8 @@
     "evidence_note": "Official page identifies a 2003 On-the-Road talk and makes the full lecture available through streaming video.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
   },
   {
     "candidate_key": "manual-veritas-55576",

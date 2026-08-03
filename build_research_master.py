@@ -312,6 +312,11 @@ def validate_manual_candidates() -> int:
             for row in csv.DictReader(handle)
         }
 
+    promoted_keys: set[str] = set()
+    if PROMOTIONS.exists():
+        with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+            promoted_keys = {row.get("candidate_key", "").strip() for row in csv.DictReader(handle)}
+
     seen_keys: set[str] = set()
     for line_number, candidate in enumerate(candidates, start=2):
         key = candidate["candidate_key"].strip()
@@ -345,9 +350,11 @@ def validate_manual_candidates() -> int:
             )
         if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
             raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
-        if candidate["promotion_status"].strip() != "not_promoted":
+        expected_promotion_status = "promoted" if key in promoted_keys else "not_promoted"
+        if candidate["promotion_status"].strip() != expected_promotion_status:
             raise ValueError(
-                f"{MANUAL_CANDIDATES}:{line_number} must remain not_promoted until a separate approval"
+                f"{MANUAL_CANDIDATES}:{line_number} must be {expected_promotion_status!r} "
+                "to match the explicit promotion registry"
             )
         if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
             raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs evidence and promotion notes")

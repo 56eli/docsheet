@@ -88,12 +88,12 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **306** records (274 `lecture`, 23 `book`,
-8 `discussion`, 1 untyped), **221** catalogue codes, **68** retained exclusions,
-**79** approved source overrides, **17** reviewed/unpromoted manual candidates,
-**301** item-to-product relationships, and **7** series-compilation relationships. The
-master exposes `legacy_title` alongside the cleaned public title so the verbatim raw
-spreadsheet text is always exportable.
+The current curated master has **317** records (277 `lecture`, 29 `book`,
+10 `discussion`, 1 untyped), **223** catalogue codes, **68** retained exclusions,
+**79** approved source overrides, **11** promoted and **6** unpromoted official
+candidates, **301** item-to-product relationships, and **7** series-compilation
+relationships. The master exposes `legacy_title` alongside the cleaned public title
+so the verbatim raw spreadsheet text is always exportable.
 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
