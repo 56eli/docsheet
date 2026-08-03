@@ -22,7 +22,7 @@ Move from the current useful research/discovery interface to a dependable catalo
 
 The rebuild comparison above was performed in a temporary isolated directory; it made no repository changes.
 
-**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 80 approved source associations are preserved in `data/research_master_source_overrides.csv`, the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`, and ten reviewed official candidates are held in `data/manual_master_candidates.csv` pending separate promotion. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
+**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 80 approved source associations are preserved in `data/research_master_source_overrides.csv`, the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`, and 17 reviewed official candidates are held in `data/manual_master_candidates.csv` pending separate promotion. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
 **P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 294 exact primary Veritas item/product associations and seven separately reviewed related-material products. All former title-only pairs have an explicit disposition. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, and `FINAL_TITLE_MATCH_DECISIONS.md`.
 

@@ -75,11 +75,14 @@ def main() -> None:
     with MASTER.open(encoding="utf-8", newline="") as handle:
         master = list(csv.DictReader(handle))
     index: dict[str, list[dict[str, str]]] = {}
+    source_url_index: dict[str, list[dict[str, str]]] = {}
     dated_index: dict[str, dict[str, list[dict[str, str]]]] = {}
     satsang_index: dict[str, list[dict[str, str]]] = {}
     for row in master:
         normalized_title = norm(row["title"])
         index.setdefault(normalized_title, []).append(row)
+        if row.get("source_url_veritas"):
+            source_url_index.setdefault(row["source_url_veritas"], []).append(row)
         dated_title = row.get("title_source") or row["title"]
         date_key = title_date_key(dated_title)
         if date_key:
@@ -100,7 +103,12 @@ def main() -> None:
     rows = []
     for product in products:
         title = html.unescape(product["title"]["rendered"])
-        if is_satsang(title):
+        source_matches = source_url_index.get(product["link"], [])
+        if source_matches:
+            matches = source_matches
+            mapping_status = "matched_by_primary_source"
+            review_notes = "Exact master primary Veritas URL match."
+        elif is_satsang(title):
             date_key = satsang_date_key(title)
             matches = satsang_index.get(date_key, []) if date_key else []
             mapping_status = "matched_by_date" if matches else "unmatched_official_product"

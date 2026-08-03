@@ -1,7 +1,7 @@
 [
   {
     "review_sheet": "Master Candidates",
-    "record_count": 10,
+    "record_count": 17,
     "purpose": "Evidence-backed official candidates awaiting an explicit master-promotion decision.",
     "source_file": "data/manual_master_candidates.csv",
     "current_state": "reviewed_candidate / not_promoted"

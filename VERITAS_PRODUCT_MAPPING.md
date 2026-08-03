@@ -10,26 +10,25 @@
 | Measure | Count |
 |---|---:|
 | Published official Veritas product records retrieved | 191 |
-| Normalized-title matches to the migrated research master | 86 |
-| Date-aware matches (Satsang and repeated dated titles) | 15 |
-| Products matched manually | 49 |
-| Official products with no date-specific/master match | 9 |
-| Products marked as unique or compilations | 28 |
+| Exact primary-source matches | 147 |
+| Remaining title-based matches | 7 |
+| Official products with no master match | 9 |
+| Products marked as unique or compilations | 24 |
 | Products excluded as non-teaching material | 4 |
 | Existing migrated master items | 308 |
 | Existing Nightingale-Conant discovery candidates | 4 |
-| Current “Everything” records (including all approved-source candidates) | 348 |
+| Current “Everything” records (including all approved-source candidates) | 344 |
 
 ## Hybrid model implemented
 
-- **Everything** is the broad discovery/master view. It contains the 308 reconciled master items, four Nightingale-Conant candidates, 28 reviewed Veritas unique/compilation products, four Hay House candidates, and four non-Spanish Audible candidates.
+- **Everything** is the broad discovery/master view. It contains the 308 reconciled master items, four Nightingale-Conant candidates, 24 reviewed Veritas unique/compilation products, four Hay House candidates, and four non-Spanish Audible candidates.
 - **Veritas Products** is the complete 191-row official commercial-product inventory. It keeps product title, URL, published date, product-category classes, normalized-match count, matched master UUID/title where available, and mapping status.
 - A normalized title match is an aid, not a final identity decision. Commercial listings may represent a compilation, edition, set, or related product rather than the same material record.
 - Matching products are not duplicated in the Everything view. Reviewed item-to-product assertions are available separately in the **Product Relationships** tab.
 
 ## Reviewed candidate products
 
-The 28 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. The ten `unique_item` products now have reviewed, unpromoted evidence rows in `data/manual_master_candidates.csv`; they intentionally have no master UUID, catalogue code, ownership value, or master-source relationship until a separate promotion decision is approved. The 18 compilation/new-edition products remain broad discovery candidates pending content comparison.
+The 24 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. Seventeen have reviewed, unpromoted evidence rows in `data/manual_master_candidates.csv` (nine unique products and eight selected compilation/derivative products); they intentionally have no master UUID, catalogue code, ownership value, or master-source relationship until a separate promotion decision is approved. The remaining annual Highlights compilations stay broad candidates pending inclusion evidence.
 
 This approach preserves broad discovery coverage while retaining the approved human-review boundary for durable research-master identity data.
 

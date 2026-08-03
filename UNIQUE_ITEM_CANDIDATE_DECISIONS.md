@@ -1,11 +1,11 @@
 # Unique-Item Candidate Decisions
 
 **Approved:** 2026-08-03  
-**Scope:** Preserve evidence for the ten official Veritas `unique_item` products without prematurely promoting them into the 308-record research master.
+**Scope:** Preserve evidence for the official Veritas `unique_item` products without prematurely promoting them into the 308-record research master.
 
 ## Decision
 
-The ten products reviewed in `UNIQUE_ITEM_REVIEW_PACKET.md` are recorded in `data/manual_master_candidates.csv` as `reviewed_candidate` rows with:
+Nine `unique_item` products reviewed in `UNIQUE_ITEM_REVIEW_PACKET.md` are recorded in `data/manual_master_candidates.csv` as `reviewed_candidate` rows with:
 
 - a stable `manual-veritas-<product-id>` provenance key;
 - official Veritas product ID, URL, title, and product-page evidence;
@@ -13,7 +13,7 @@ The ten products reviewed in `UNIQUE_ITEM_REVIEW_PACKET.md` are recorded in `dat
 - blank year where the product page did not establish a recording/release year;
 - `promotion_status = not_promoted`.
 
-They remain visible in **Everything** as official broad candidates but do not receive a master UUID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is recorded.
+They remain visible in **Everything** as official broad candidates but do not receive a master UUID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is recorded. *Spiritual Will Inspiring Q & A* is not retained as a candidate because its official URL already maps directly to two existing master parts; see `COMPILATION_CANDIDATE_DECISIONS.md`.
 
 ## Validation boundary
 

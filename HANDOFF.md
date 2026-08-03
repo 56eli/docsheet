@@ -6,7 +6,7 @@
 ## Delivered
 
 - A multi-view static catalogue interface was implemented in `docs/`:
-  - **Everything**: 308 reconciled master records, four Nightingale-Conant candidates, 28 reviewed unique/compilation Veritas products, four Hay House candidates, and four non-Spanish Audible candidates.
+  - **Everything**: 308 reconciled master records, four Nightingale-Conant candidates, 24 reviewed unique/compilation Veritas products, four Hay House candidates, and four non-Spanish Audible candidates.
   - **Veritas Products**: 191 official product records fetched through the public Veritas WordPress API, with normalized-title match results.
   - **Hay House Products**: 24 initial official product/format records.
   - **Audible Products**: Official Audible product entries fetched and mapped, fully populating the Audible integration.
@@ -14,7 +14,7 @@
 - The original spreadsheet remains preserved and viewable as the raw table; no source rows were deleted.
 - A reconciled research-master dataset is in `data/research_master_draft.csv` and JSON, with 308 candidate material records and stable UUIDv7 identifiers.
 - A row-level migration review ledger, exclusions file, source registry, spreadsheet audit, and mapping reports are committed.
-- The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 80 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv` and ten reviewed official candidates remain unpromoted in `data/manual_master_candidates.csv`.
+- The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 80 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv` and 17 reviewed official candidates remain unpromoted in `data/manual_master_candidates.csv`.
 - A validated `data/product_relationships.csv` layer and Product Relationships site tab now distinguish official products from master items; it records 294 exact primary Veritas item/product associations plus seven reviewed related-material products, with no remaining title-only candidate pairs. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, and `FINAL_TITLE_MATCH_DECISIONS.md`.
 - The Pages spreadsheet now exposes separate review sheets for overview, master candidates, manual leads, master exclusions, migration review, source overrides, and official discovery, so review data is accessible without repository-folder navigation; review tabs are grouped visually, headers are humanized, statuses are badged, and multi-value review fields have a sheet filter.
 - Veritas mapping is reproducible through `fetch_veritas_catalogue.py`; the `Map Veritas Catalogue` workflow writes `data/veritas_official_products.csv` after manual dispatch.
