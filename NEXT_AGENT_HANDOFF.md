@@ -69,7 +69,7 @@ Sandbox traps learned the hard way (all still true):
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
 | Everything relationships | 327 product relationships, 7 series compilations | |
 | Candidate pool | 26 reviewed manual candidates (20 promoted incl. 9 Satsang monthlies, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 184 works / 317 members approved | `data/work_families.csv` |
+| Work families | 193 works / 326 members approved; work_id coverage 350/350 | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
 | Test suite | **90 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
@@ -131,6 +131,17 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    **documentation-currency tests** so README/handoff/ledger-doc counts can
    never silently drift from the generated data again. Details in
    `AUDIT_2026-08-03_FULL.md` §12.
+10. **Edition model + session close-out (this turn, branch
+    `arena/019fc893-docsheet`):** owner directed one row per work × carrier.
+    Phases 1–4 implemented (work_id plumbing, edition-candidate layer with
+    pinned UUIDs, inventory-wide batches, Work/Edition UI columns) and the
+    full batch applied: master 317 → **350** (24 edition rows + 9 Satsang
+    monthlies), 193 works / 326 members (work_id 350/350), overrides →100
+    (incl. candidate-provenance support, 316/318 Hay House links), book-format
+    backfill (12 books), relationships →327, Everything →396, New Work Review
+    lane (14 → 5 rows after the Satsang rulings), D6a per-part works + C1
+    split, doc-currency/coverage/tamper tests (90 tests, 92%). Live site
+    checked: serves `main` (363 rows) until this branch merges.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -173,20 +184,23 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 **P1 — Data decisions needing a ruling:**
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  **fully applied.** Master 341 rows incl. 24 minted edition rows (320–343);
-  21 work families (43 members) approved; overrides now support
-  candidate-provenance rows (100 approved, incl. 316/318 Hay House links);
-  D3 audible-URL move done; everything 387; relationships 318. Remaining
-  model work: series-level regrouping of the per-part works (owner
-  decision), the new-work review lane rulings
-  (`data/new_work_review_queue.csv`, 14 unmatched Veritas products), and
-  Phase-3 exclusions (Spanish editions already in the International sheet).
+  **fully applied.** Master **350 rows** (301 lecture / 38 book / 10
+  discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
+  UUIDs in `edition_promotions.csv` — never renumber) and 9 promoted
+  Satsang monthlies (344–352); **193 works / 326 family members approved,
+  work_id coverage 350/350** (D6a per-part ruling + C1 split applied);
+  overrides 100 (candidate-provenance supported, incl. 316/318 Hay House);
+  relationships 327; Everything 396 (6 pending candidates). Remaining model
+  work: rulings for the 5 New Work Review queue rows
+  (`data/new_work_review_queue.csv`: Unity Church CDs ×2, Don't Set Sail,
+  Peace is the Natural State, Giving Up Illness).
 - **Record 264** (`"In the World But Not of It" – Audio`, the 1 untyped record):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
-- **Candidate promotion path:** 6 pending candidates need a promotion-decision
-  input keyed by `candidate_key` (compact ID + catalogue code + provenance).
-- **`format` blank on 74 records** (was 86): the 2026-08-03 book backfill
+- **Candidate promotion path:** 6 pending manual candidates remain (the 9
+  Satsang monthlies were promoted 2026-08-03); the 5 New Work Review queue
+  rows await new-work rulings.
+- **`format` blank on 73 records** (was 86): the 2026-08-03 book backfill
   filled all 12 URL-bearing book records (exact-URL inventory lookup +
   publisher books-category signal); the remaining 5 books have no Veritas URL
   at all — root cause and evidence in `TEMP_RESPONSE_AUDIT_2026-08-03.md`

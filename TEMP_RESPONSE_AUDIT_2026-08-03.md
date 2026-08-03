@@ -534,3 +534,14 @@ promotion rows (master_uuid 344–352) await the owner's approval in
   explicit `master_uuid` values (320–343) like the manual promotions path;
   `load_edition_promotions` validates uniqueness/availability. Build is
   byte-stable again. 90 tests, coverage 92%.
+
+### 11v. Session close-out (final)
+
+- Satsang family rows added (9 per-title works) → **193 works / 326
+  members; work_id coverage 350/350**.
+- Live-site check: https://56eli.github.io/docsheet/ renders and serves
+  `main`'s deployed state (Everything 363 rows) — the branch's edition-model
+  state (350/396, Work + Edition columns) appears after merge to main.
+- Handoff refreshed (§3 table, §4 item 10, §6 P1). Final battery green:
+  py_compile, five `--check`, **90 tests**, coverage **92%**, node checks,
+  `git diff --check`.
