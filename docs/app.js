@@ -30,6 +30,10 @@
   const columnMenu = $("column-menu");
   const columnList = $("column-list");
   const showAllColumnsBtn = $("show-all-columns");
+  const rowDetails = $("row-details");
+  const rowDetailsTitle = $("row-details-title");
+  const rowDetailsBody = $("row-details-body");
+  const closeRowDetailsBtn = $("close-row-details");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -222,6 +226,7 @@
   let metaLoaded = false;
   let activeSearchQuery = "";
   let activeReviewFilter = null;
+  const FOOTER_IDLE_NOTE = "Click a row for details; double-click a cell to edit (session only)";
 
   /* ------------------------------------------------------------------ *
    *  Helpers
@@ -312,6 +317,53 @@
       checkbox.checked = true;
     });
     fitTableToContainer();
+  }
+
+  function rowTitle(data) {
+    return data.title || data.candidate_title || data.official_title ||
+      data.official_product_title || data.master_title || data.review_sheet ||
+      data.publisher || data.relationship_id || data.raw_title || "Selected row";
+  }
+
+  function valueNode(field, value) {
+    const text = String(value ?? "").trim();
+    if (!text) return document.createTextNode("—");
+    if (looksLikeUrl(text)) {
+      const anchor = document.createElement("a");
+      anchor.href = text;
+      anchor.target = "_blank";
+      anchor.rel = "noopener noreferrer";
+      anchor.title = text;
+      anchor.textContent = urlLabelFor(field, text);
+      return anchor;
+    }
+    if (STATUS_FIELDS.has(field)) {
+      const badge = document.createElement("span");
+      badge.className = `status-badge ${statusClass(text)}`;
+      badge.textContent = text.replace(/_/g, " ");
+      return badge;
+    }
+    return document.createTextNode(text);
+  }
+
+  function openRowDetails(data) {
+    rowDetailsTitle.textContent = rowTitle(data);
+    rowDetailsBody.replaceChildren();
+    Object.entries(data).forEach(([field, value]) => {
+      const item = document.createElement("div");
+      item.className = "row-detail-field";
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+      term.textContent = humanizeField(field);
+      description.append(valueNode(field, value));
+      item.append(term, description);
+      rowDetailsBody.append(item);
+    });
+    rowDetails.hidden = false;
+  }
+
+  function closeRowDetails() {
+    rowDetails.hidden = true;
   }
 
   /* ------------------------------------------------------------------ *
@@ -556,6 +608,10 @@
     configureReviewFilter(data);
     configureColumnChooser();
     table.on("dataFiltered", updateSearchStatus);
+    table.on("rowClick", (event, row) => {
+      if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
+      openRowDetails(row.getData());
+    });
     table.on("cellEdited", (cell) => {
       const row = cell.getRow().getData();
       const label = humanizeField(cell.getColumn().getField());
@@ -586,7 +642,7 @@
     footerNote.textContent = message;
     clearTimeout(flashNote._t);
     flashNote._t = setTimeout(() => {
-      footerNote.textContent = "Double-click any cell to edit (session only)";
+      footerNote.textContent = FOOTER_IDLE_NOTE;
     }, 3500);
   }
 
@@ -647,6 +703,7 @@
     searchInput.value = "";
     clearSearchBtn.hidden = true;
     reviewToolbar.hidden = true;
+    closeRowDetails();
     updateViewSummary(viewName);
     spreadsheet.setAttribute("aria-busy", "true");
     if (table) {
@@ -701,8 +758,14 @@
     });
     columnMenu.addEventListener("click", (event) => event.stopPropagation());
     showAllColumnsBtn.addEventListener("click", showAllColumns);
+    closeRowDetailsBtn.addEventListener("click", closeRowDetails);
     document.addEventListener("click", closeColumnMenu);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeColumnMenu(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeColumnMenu();
+        closeRowDetails();
+      }
+    });
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); closeColumnMenu(); }
     });

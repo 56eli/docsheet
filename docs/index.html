@@ -126,12 +126,23 @@
     </div>
   </main>
 
+  <aside id="row-details" class="row-details" aria-labelledby="row-details-title" hidden>
+    <header class="row-details-header">
+      <div>
+        <span class="row-details-kicker">Row details</span>
+        <h2 id="row-details-title">Selected row</h2>
+      </div>
+      <button id="close-row-details" type="button" aria-label="Close row details">×</button>
+    </header>
+    <div id="row-details-body" class="row-details-body"></div>
+  </aside>
+
   <!-- ===== Footer bar ===== -->
   <footer class="footerbar" aria-label="Spreadsheet status">
     <span id="footer-stats">Total Rows: —</span>
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
-    <span class="footer-note" id="footer-note">Double-click any cell to edit (session only)</span>
+    <span class="footer-note" id="footer-note">Click a row for details; double-click a cell to edit (session only)</span>
   </footer>
 
   <!-- Tabulator (pinned) -->
