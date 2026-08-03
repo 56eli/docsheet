@@ -1,0 +1,29 @@
+name: Map Veritas Catalogue
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: map-veritas-catalogue-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  map-catalogue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch and map official Veritas products
+        run: python fetch_veritas_catalogue.py
+      - name: Commit review inventory
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update official Veritas product inventory"
+          file_pattern: data/veritas_official_products.csv
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
