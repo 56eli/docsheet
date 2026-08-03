@@ -196,7 +196,7 @@ official catalogue, which contains exactly the two reconstructed titles
 | `git diff --check` | ✅ |
 | Playwright test discovery | ✅ 3 tests |
 | Playwright browser execution | ❌ sandbox cannot download Chromium |
-| Workflow-file push | ❌ App lacks `workflows` permission (re-probed) |
+| GitHub CI workflow | ✅ successful on `main` at 2026-08-03 12:22 UTC |
 
 ---
 
@@ -244,5 +244,82 @@ generated but unread by the UI; `loadMeta()`/`metaLoaded` are dead code;
 
 All non-critical findings are carried there with evidence and recommendations:
 4 series/type judgement calls, the title-hygiene pass (54 records),
-CI enablement, SRI/CSP hardening, read-only sheets, candidate promotion,
+SRI/CSP hardening, read-only sheets, candidate promotion,
 `format` population, dead-code removal, and documentation consolidation.
+
+
+---
+
+## 9. Post-merge engineering audit — 2026-08-03
+
+This follow-up audit was run against commit `e1f32d4` on 2026-08-03 after the
+CI workflow landed. It supplements the field-level catalogue audit above; it
+does **not** alter approved catalogue data.
+
+### Scope and observed state
+
+- **Repository / deployment:** 92 tracked files (about 3.1 MB working tree).
+  GitHub Pages is configured from `main:/docs` and reports `built` at
+  <https://56eli.github.io/docsheet/>.
+- **Automated CI:** the latest `CI` run on `main` completed successfully at
+  12:22 UTC. It executes Python compilation, the three deterministic catalogue
+  checks, JavaScript syntax checks, and the Chromium Playwright suite.
+- **Supply-chain scan:** `npm ci` completed from the lockfile and `npm audit
+  --omit=dev --audit-level=high` reported **0 vulnerabilities**. No secrets or
+  credentials were found in tracked source (excluding dependency lock metadata).
+- **Data shape:** the checked master contains 308 records (274 lecture, 23 book,
+  8 discussion, 3 untyped); it has 301 reviewed item/product relationships and
+  7 reviewed compilation relationships. All 17 manual candidates remain
+  deliberately unpromoted.
+
+### Local validation results
+
+| Check | Result |
+|---|---|
+| `python -m py_compile *.py` | ✅ passed |
+| `python build_research_master.py --check` | ✅ 308 items, 66 exclusions, 80 overrides |
+| `python build_catalogue_pages.py --check` | ✅ 344 Everything rows |
+| `python reconcile_research_master.py --check` | ✅ report current |
+| JavaScript syntax checks (`app.js`, Playwright config/tests) | ✅ passed |
+| `npm ci` and production dependency audit | ✅ passed; 0 vulnerabilities |
+| Local Playwright execution | ⚠️ blocked: Chromium executable is absent in this sandbox |
+| `python fetch_veritas_catalogue.py --check` | ⚠️ blocked: local TLS EOF to Veritas API after retries |
+| GitHub-hosted CI browser suite | ✅ passed (authoritative browser execution) |
+
+The two local blocked checks are environmental transport/browser-install limits,
+not a demonstrated application failure. The existing manual **Map Veritas
+Catalogue** run is failing intentionally when its review candidate differs from
+the committed inventory; that workflow retains its candidate/diff artifact for
+review rather than silently overwriting catalogue data.
+
+### Findings and recommended order
+
+1. **Medium — client-side supply-chain protections are incomplete.** Tabulator
+   is version-pinned but loaded from jsDelivr without SRI; the page also has no
+   Content Security Policy. Add an appropriate CSP and integrity/crossorigin
+   attributes after verifying the exact CDN asset hashes. Consider a local
+   vendored fallback if availability is important.
+2. **Medium — review data appears editable although it is not persistent.**
+   `buildColumns()` applies the Tabulator input editor to every view, including
+   generated review and catalogue derivatives. Disable editors on derived views
+   (or make the session-only behavior unmissable) to prevent review mistakes.
+3. **Medium — data freshness cannot be established locally today.** The local
+   Veritas client cannot negotiate TLS in this environment, and the latest
+   GitHub refresh reports a candidate difference. Download and review that
+   workflow artifact before accepting any inventory update; do not bypass the
+   review-only process.
+4. **Low — pipeline and documentation drift risks remain.** `process_data.py`
+   has no `--check` mode; its timestamp makes output comparison non-deterministic.
+   `loadMeta()`/`metaLoaded` are unused, the UI does not consume the committed
+   metadata files, `pandas>=2.0` has no upper bound, and several root-level
+   handoff/status documents duplicate current-state figures. Consolidate these
+   only after deciding the desired public UI behavior.
+5. **Low — product decisions are still intentionally open.** Resolve the
+   documented series/type, title hygiene, untyped-record, source-override, and
+   candidate-promotion decisions in `NEXT_AGENT_HANDOFF.md` before data changes.
+
+No critical code, security, referential-integrity, or generated-output defect
+was found by the checks available in this environment. The highest-value next
+implementation task is CSP/SRI plus read-only review sheets; the highest-value
+catalogue task is review of the Map Veritas artifact and the owner decisions
+listed in the handoff.
