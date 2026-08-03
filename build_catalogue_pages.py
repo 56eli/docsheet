@@ -99,6 +99,44 @@ SERIES_COMPILATION_REQUIRED_COLUMNS = {
 SERIES_COMPILATION_TYPE = "compilation_draws_from_series"
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# Everything-view provenance classes. The Everything sheet deliberately shows
+# curated master records next to official candidates so reviewers can compare
+# them, so each row must state which one it is instead of relying on an empty
+# master ID or free-text notes.
+RECORD_TYPE_MASTER = "master"
+RECORD_TYPE_CANDIDATE_DISCOVERY = "candidate_discovery"
+RECORD_TYPE_CANDIDATE_VERITAS = "candidate_veritas"
+RECORD_TYPE_CANDIDATE_HAYHOUSE = "candidate_hayhouse"
+RECORD_TYPE_CANDIDATE_AUDIBLE = "candidate_audible"
+
+# Master identity fields carried into the Everything view. ``record_type`` is a
+# view-level provenance label and is intentionally not part of the master CSV
+# schema, which stays owned by build_research_master.py.
+EVERYTHING_FIELDS = [
+    "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
+    "series", "year", "month", "format", "format_detail", "owned",
+    "location_physical", "location_digital", "location_streaming",
+    "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
+    "source_url_audible", "reference_url_1", "reference_url_2", "notes",
+    "raw_row_number",
+]
+
+
+def everything_record(record_type: str, **values: str) -> dict[str, str]:
+    """Return one Everything-view row with a stated provenance class.
+
+    Every Everything row shares the master field order so the sheet, its CSV
+    export, and the column presets stay stable regardless of which source
+    contributed the row. Unsupplied fields are empty strings rather than
+    missing keys.
+    """
+    unknown = set(values) - set(EVERYTHING_FIELDS)
+    if unknown:
+        raise ValueError(f"Unknown Everything fields: {sorted(unknown)}")
+    row = {"record_type": record_type}
+    row.update({field: values.get(field, "") for field in EVERYTHING_FIELDS})
+    return row
+
 
 @dataclass
 class CatalogueBuild:
@@ -113,6 +151,36 @@ class CatalogueBuild:
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def validate_veritas_inventory(veritas_products: list[dict[str, str]]) -> None:
+    """Fail if an inventory row's match count contradicts its matched master IDs.
+
+    ``normalized_title_match_count`` is a derived field: it must always equal the
+    number of IDs in ``matched_master_uuids``. A mismatch means the committed
+    inventory was written without the approved decision overlay applied, which
+    is exactly the drift a live refresh would otherwise report as an upstream
+    catalogue change. Catching it here keeps the refresh diff meaningful.
+    """
+    inconsistent = []
+    for product in veritas_products:
+        uuids = [
+            item.strip()
+            for item in product["matched_master_uuids"].split(";")
+            if item.strip()
+        ]
+        declared = product["normalized_title_match_count"].strip()
+        if declared != str(len(uuids)):
+            inconsistent.append(
+                f"  - product {product['veritas_product_id']}: "
+                f"normalized_title_match_count={declared!r} but "
+                f"{len(uuids)} matched master ID(s)"
+            )
+    if inconsistent:
+        raise ValueError(
+            f"{VERITAS_PRODUCTS} has derived match counts that contradict their "
+            "matched master IDs:\n" + "\n".join(inconsistent)
+        )
 
 
 def validate_product_relationships(
@@ -326,11 +394,18 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     project the Pages site from a ledger-derived master without overwriting the
     committed master draft first. Normal builds read ``MASTER`` unchanged.
     """
-    items = list(master_items) if master_items is not None else read_csv(MASTER)
-    migrated_items = len(items)
-    master_records = list(items)
+    master_records = list(master_items) if master_items is not None else read_csv(MASTER)
+    migrated_items = len(master_records)
+    items = [
+        everything_record(
+            RECORD_TYPE_MASTER,
+            **{field: record.get(field, "") for field in EVERYTHING_FIELDS},
+        )
+        for record in master_records
+    ]
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    validate_veritas_inventory(veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
@@ -345,31 +420,17 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     intl_items: list[dict[str, str]] = []
 
     for candidate in queue:
-        items.append({
-            "uuid": "",
-            "catalog_code": "",
-            "legacy_tempid": "",
-            "title": candidate["candidate_title"],
-            "title_source": "",
-            "item_type": candidate["item_type"],
-            "series": candidate["series"],
-            "year": candidate["year"],
-            "month": "",
-            "format": candidate["format"],
-            "format_detail": "",
-            "owned": "",
-            "location_physical": "",
-            "location_digital": "",
-            "location_streaming": "",
-            "source_url_veritas": "",
-            "source_url_hay_house": "",
-            "source_url_nightingale_conant": candidate["source_url_nightingale_conant"],
-            "source_url_audible": candidate["source_url_audible"],
-            "reference_url_1": "",
-            "reference_url_2": "",
-            "notes": candidate["match_notes"],
-            "raw_row_number": "",
-        })
+        items.append(everything_record(
+            RECORD_TYPE_CANDIDATE_DISCOVERY,
+            title=candidate["candidate_title"],
+            item_type=candidate["item_type"],
+            series=candidate["series"],
+            year=candidate["year"],
+            format=candidate["format"],
+            source_url_nightingale_conant=candidate["source_url_nightingale_conant"],
+            source_url_audible=candidate["source_url_audible"],
+            notes=candidate["match_notes"],
+        ))
 
     # Products with a matched master title are represented by the existing
     # master item. Only unmatched official products become Everything candidates.
@@ -385,60 +446,24 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
             notes = "Official Veritas product; identified as a unique original item."
         elif product["mapping_status"] == "compilation_or_new_edition":
             notes = "Official Veritas product; identified as a compilation or later edition."
-        items.append({
-            "uuid": "",
-            "catalog_code": "",
-            "legacy_tempid": "",
-            "title": product["official_title"],
-            "title_source": "",
-            "item_type": "",
-            "series": "",
-            "year": product["published_date"][:4],
-            "month": "",
-            "format": "",
-            "format_detail": "",
-            "owned": "",
-            "location_physical": "",
-            "location_digital": "",
-            "location_streaming": "",
-            "source_url_veritas": product["official_product_url"],
-            "source_url_hay_house": "",
-            "source_url_nightingale_conant": "",
-            "source_url_audible": "",
-            "reference_url_1": "",
-            "reference_url_2": "",
-            "notes": notes,
-            "raw_row_number": "",
-        })
+        items.append(everything_record(
+            RECORD_TYPE_CANDIDATE_VERITAS,
+            title=product["official_title"],
+            year=product["published_date"][:4],
+            source_url_veritas=product["official_product_url"],
+            notes=notes,
+        ))
 
     for product in hayhouse_products:
         if product["mapping_status"] != "unreviewed_official_product":
             continue
-        items.append({
-            "uuid": "",
-            "catalog_code": "",
-            "legacy_tempid": "",
-            "title": product["official_title"],
-            "title_source": "",
-            "item_type": "",
-            "series": "",
-            "year": "",
-            "month": "",
-            "format": product.get("format", ""),
-            "format_detail": "",
-            "owned": "",
-            "location_physical": "",
-            "location_digital": "",
-            "location_streaming": "",
-            "source_url_veritas": "",
-            "source_url_hay_house": product["official_product_url"],
-            "source_url_nightingale_conant": "",
-            "source_url_audible": "",
-            "reference_url_1": "",
-            "reference_url_2": "",
-            "notes": "Official Hay House product; unreviewed for deduplication and metadata.",
-            "raw_row_number": "",
-        })
+        items.append(everything_record(
+            RECORD_TYPE_CANDIDATE_HAYHOUSE,
+            title=product["official_title"],
+            format=product.get("format", ""),
+            source_url_hay_house=product["official_product_url"],
+            notes="Official Hay House product; unreviewed for deduplication and metadata.",
+        ))
 
     for product in audible_products:
         # Spanish-language Audible listings are displayed with international leads.
@@ -459,31 +484,13 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
 
         if product["mapping_status"] != "unreviewed_official_product":
             continue
-        items.append({
-            "uuid": "",
-            "catalog_code": "",
-            "legacy_tempid": "",
-            "title": product["official_title"],
-            "title_source": "",
-            "item_type": "",
-            "series": "",
-            "year": "",
-            "month": "",
-            "format": "audio",
-            "format_detail": "",
-            "owned": "",
-            "location_physical": "",
-            "location_digital": "",
-            "location_streaming": "",
-            "source_url_veritas": "",
-            "source_url_hay_house": "",
-            "source_url_nightingale_conant": "",
-            "source_url_audible": product["audible_url"],
-            "reference_url_1": "",
-            "reference_url_2": "",
-            "notes": "Official Audible product; unreviewed for deduplication and metadata.",
-            "raw_row_number": "",
-        })
+        items.append(everything_record(
+            RECORD_TYPE_CANDIDATE_AUDIBLE,
+            title=product["official_title"],
+            format="audio",
+            source_url_audible=product["audible_url"],
+            notes="Official Audible product; unreviewed for deduplication and metadata.",
+        ))
 
     intl_items.extend(intl_queue)
     review_overview = [
@@ -571,6 +578,18 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
         OUT_META: json_text({
             "master_items": len(items),
             "migrated_items": migrated_items,
+            "everything_record_types": {
+                record_type: sum(
+                    row["record_type"] == record_type for row in items
+                )
+                for record_type in (
+                    RECORD_TYPE_MASTER,
+                    RECORD_TYPE_CANDIDATE_DISCOVERY,
+                    RECORD_TYPE_CANDIDATE_VERITAS,
+                    RECORD_TYPE_CANDIDATE_HAYHOUSE,
+                    RECORD_TYPE_CANDIDATE_AUDIBLE,
+                )
+            },
             "reviewed_manual_candidates": len(manual_candidates),
             "manual_research_leads": len(manual_leads),
             "master_exclusion_rows": len(master_exclusions),
@@ -613,7 +632,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
             "hayhouse_official_products": len(hayhouse_products),
             "audible_official_products": len(audible_products),
             "approved_publishers": len(PUBLISHERS),
-            "original_source_rows": 374,
+            "original_source_rows": len(migration_review),
         }),
     }
     return CatalogueBuild(

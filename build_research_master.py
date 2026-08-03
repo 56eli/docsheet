@@ -48,10 +48,24 @@ MANUAL_CANDIDATE_REQUIRED_COLUMNS = {
     "source_product_id", "official_product_url", "official_product_title", "evidence_note",
     "review_status", "reviewed_on", "promotion_status", "promotion_notes",
 }
-MANUAL_CANDIDATE_ITEM_TYPES = {
-    "lecture", "book", "audio", "video", "transcript", "interview", "highlight",
+# Controlled vocabulary for ``item_type``.
+#
+# ``item_type`` records WHAT A RECORD IS (its content class). The physical or
+# digital carrier belongs in ``format`` instead. The established precedent is
+# explicit: DVD lecture recordings are ``item_type='lecture'`` with
+# ``format='DVD'`` -- they are not typed ``video``.
+#
+# ``audio`` and ``video`` are retained only for backward compatibility with
+# existing manual-candidate rows. They describe a medium rather than a content
+# class, so they must not be used for new classifications; use the content class
+# and record the carrier in ``format``.
+CONTENT_ITEM_TYPES = {
+    "lecture", "book", "discussion", "interview", "transcript", "highlight",
     "dissertation", "article", "other",
 }
+DEPRECATED_MEDIUM_ITEM_TYPES = {"audio", "video"}
+ITEM_TYPES = CONTENT_ITEM_TYPES | DEPRECATED_MEDIUM_ITEM_TYPES
+MANUAL_CANDIDATE_ITEM_TYPES = ITEM_TYPES
 MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -156,6 +170,30 @@ def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
     writer.writeheader()
     writer.writerows(rows)
     return buffer.getvalue()
+
+
+def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
+    """Derive a missing lecture month from an approved official product URL.
+
+    ``proposed_month`` in the ledger is derived from the official Veritas
+    product slug, which is the publisher's authoritative statement of when a
+    lecture was given. Some official links only arrive later through the
+    approved source-override input, so the month must be resolved again once
+    those overrides have been applied. Existing months are never overwritten.
+    """
+    import generate_migration_ledger as ledger_tools
+
+    filled = 0
+    for item in items:
+        if item["month"] or not item["legacy_tempid"]:
+            continue
+        month = ledger_tools.proposed_month(
+            item["legacy_tempid"].strip(), item["source_url_veritas"]
+        )
+        if month:
+            item["month"] = month
+            filled += 1
+    return filled
 
 
 def apply_source_overrides(items: list[dict[str, str]]) -> int:
@@ -319,6 +357,15 @@ def build_master() -> MasterBuild:
     for row in item_rows:
         item_type = row["proposed_item_type"]
         year = row["proposed_year"]
+        # The ledger is a hand-maintained review input, so an unknown or
+        # misspelled type must fail loudly instead of silently producing a
+        # stray catalogue-code prefix.
+        if item_type and item_type not in ITEM_TYPES:
+            raise ValueError(
+                f"{LEDGER} raw row {row['raw_row_number']} uses unsupported "
+                f"proposed_item_type {item_type!r}; allowed values are "
+                f"{', '.join(sorted(ITEM_TYPES))}"
+            )
         code = ""
         # The approved rule is ID-only until type and year are verified.
         # This conservative draft assigns readable codes only where both are proposed.
@@ -355,6 +402,7 @@ def build_master() -> MasterBuild:
         })
 
     source_overrides_applied = apply_source_overrides(items)
+    backfill_months_from_official_source(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}

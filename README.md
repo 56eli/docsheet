@@ -54,7 +54,26 @@ site tab; evidence-backed annual compilation relationships live in
 Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
-`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`.
+`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`. The
+inventory's `normalized_title_match_count` is derived and must always equal the
+number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
+build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
+
+## Curated records vs. official candidates
+
+The **Everything** sheet intentionally shows curated master records next to
+official product candidates so they can be compared. Every row therefore carries
+an explicit `record_type`:
+
+| `record_type` | Meaning |
+|---|---|
+| `master` | A curated master catalogue record (308) |
+| `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
+| `candidate_discovery` | An entry from the official discovery queue |
+
+Only `master` rows are catalogue records. Use the Record Type filter on that tab
+to isolate curated data before exporting. Counts per class are published in
+`docs/catalogue-meta.json` under `everything_record_types`.
 
 ## Review workspace
 
@@ -68,8 +87,26 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **308** records, **66** retained exclusions,
+The current curated master has **308** records (274 `lecture`, 23 `book`,
+8 `discussion`, 3 untyped), **221** catalogue codes, **66** retained exclusions,
 **80** approved source overrides, **17** reviewed/unpromoted manual candidates,
-**301** item-to-product relationships, and **7** series-compilation
-relationships. See [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md) for the
-current deployment status, known risks, and prioritized backlog.
+**301** item-to-product relationships, and **7** series-compilation relationships.
+
+Every entry was verified field-by-field against the live Veritas Publishing API
+on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
+months match the publisher's own dates. See
+[AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md) for the full audit and
+[NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
+
+### Field semantics
+
+`item_type` records **what a record is** (its content class: `lecture`, `book`,
+`discussion`, …). `format` records **the carrier it arrives on** (`DVD`, `CD`, …).
+DVD lecture recordings are therefore `item_type=lecture` with `format=DVD`, never
+`item_type=video`. The `audio`/`video` values remain in the vocabulary only for
+backward compatibility and must not be used for new classifications.
+
+`month` is derived from the official Veritas product slug, which is the
+publisher's authoritative date. It is **not** taken from the legacy `LSyyyynn_p`
+identifier, whose `nn` segment is an ordinal position within the annual series
+(this distinction caused a 156-record defect that was fixed on 2026-08-03).

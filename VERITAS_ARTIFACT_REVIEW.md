@@ -2,70 +2,102 @@
 
 **Reviewed:** 2026-08-03
 **Workflow:** `Map Veritas Catalogue`
-**Run:** `30803991007`
-**Branch:** `main`
-**Artifact:** `veritas-inventory-review-30803991007`
-**Artifact ID:** `8851979247`
-**Artifact size reported by GitHub:** 16,922 bytes
-**Artifact ZIP SHA256 digest reported by workflow:** `3f06b4499dd21840abf995725621f1f7724261f2546e1ae7d6da8c2427f15c3d`
-**Artifact download URL:** `https://github.com/56eli/docsheet/actions/runs/30803991007/artifacts/8851979247`
+**Run:** `30803991007` (branch `main`, head SHA `2e95222`)
+**Artifact:** `veritas-inventory-review-30803991007` (ID `8851979247`, 16,922 bytes)
+**Reviewed by:** diff supplied by the repository owner and verified offline against the committed inventory.
+
+## Outcome
+
+**The live Veritas catalogue has not changed.** The refresh reported no new
+products, no delisted products, and no upstream title, date, URL, category, or
+product-ID edits. All 191 products are unchanged.
+
+The diff contained **exactly six changed lines**, each altering **one derived
+field** — `normalized_title_match_count` — from `0` to `1`:
+
+| Product ID | Title | Was | Should be |
+|---:|---|---:|---:|
+| 53062 | In the World But Not Of It: Transforming Everyday Experience… | 0 | 1 |
+| 50491 | How to Live Your Life Like A Prayer (2012) | 0 | 1 |
+| 50411 | Power vs. Force: The Hidden Determinants of Human Behavior book | 0 | 1 |
+| 50398 | Truth vs. Falsehood: How to Tell the Difference (Book) | 0 | 1 |
+| 50432 | A Map of Consciousness | 0 | 1 |
+| 1542 | Power vs. Force Audio Book | 0 | 1 |
+
+All six are `matched_by_title` rows carrying exactly one master ID.
+
+## Root cause — a committed-data defect, not an upstream change
+
+`normalized_title_match_count` is a **derived** field: it must always equal the
+number of IDs in `matched_master_uuids`. In these six rows the committed
+inventory claimed `0` while naming one master ID — an internal contradiction.
+
+The cause is ordering inside `apply_mapping_decisions()` in
+`fetch_veritas_catalogue.py`. When an approved decision is applied, the function
+sets `matched_master_uuids`, `matched_master_titles`, **and** recomputes
+`normalized_title_match_count` from the approved ID list. The committed file had
+been written at a point where the overlay's ID assignment was recorded but the
+recomputed count was not carried through, so the count kept its pre-overlay
+value of `0`.
+
+The live refresh then computed the field correctly and the guard flagged the
+difference. **The workflow behaved exactly as designed** — it surfaced a real
+inconsistency in our own committed data.
+
+### Verification performed
+
+Re-applying the 35 approved decisions to the committed inventory offline
+reproduces the artifact's proposed values precisely:
+
+- The overlay changes **only** `normalized_title_match_count` — no other field
+  in any of the 191 rows differs.
+- It corrects exactly the same six product IDs listed in the artifact.
+- The resulting file is byte-identical to the refresh candidate for these fields.
+
+This means the change is fully reproducible from committed inputs and required
+no trust in the artifact contents.
+
+## Action taken
+
+1. **Corrected `data/veritas_official_products.csv`** by regenerating it through
+   the approved decision overlay. Six rows, one field each; no mapping status,
+   master ID, title, URL, date, or review note changed.
+2. **Added a guard** — `validate_veritas_inventory()` in
+   `build_catalogue_pages.py` now fails the build whenever any inventory row's
+   `normalized_title_match_count` disagrees with its `matched_master_uuids`,
+   naming the offending product IDs. Verified by deliberately reintroducing the
+   defect, which produced:
+
+   ```
+   ValueError: data/veritas_official_products.csv has derived match counts that
+   contradict their matched master IDs:
+     - product 50432: normalized_title_match_count='0' but 1 matched master ID(s)
+   ```
+
+3. Rebuilt `docs/veritas-products.json`; all `--check` modes pass.
+
+## Note on the artifact's master IDs
+
+The artifact was produced from head SHA `2e95222` at 10:03 UTC, **before** the
+compact-ID migration merged at 10:43 UTC. Its `matched_master_uuids` column
+therefore still shows old RFC-style UUIDs (e.g.
+`019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091`). Those values are **stale and were not
+imported**. The current repository uses compact numeric IDs (`1`–`308`), and the
+correction above was derived from current committed inputs, not from the
+artifact's ID column.
+
+## Consequence for the next refresh
+
+With the inventory corrected, a re-run of **Map Veritas Catalogue** against an
+unchanged live catalogue should now **pass** rather than fail, because the
+committed inventory finally matches what deterministic matching plus the
+approved overlay produce. That makes the next failure a meaningful signal of a
+genuine upstream change.
+
+**Recommended:** re-run the workflow once to confirm a clean pass. This also
+retires the standing "unreviewed live divergence" risk.
 
 ## Status
 
-The workflow completed its intended review-only flow up to the comparison guard:
-
-1. Checkout succeeded.
-2. Python setup succeeded.
-3. `Fetch reviewed inventory candidate` succeeded.
-4. `Compare candidate with reviewed inventory` failed.
-5. `Upload candidate and diff for review` succeeded.
-
-That means the live Veritas API candidate was generated successfully in GitHub Actions and differs from the committed reviewed inventory. The workflow failure is therefore an intentional review signal, not an auto-refresh failure.
-
-The user-provided workflow log confirms the guard message:
-
-```text
-A reviewed inventory update is required; inspect the artifact diff.
-Error: Process completed with exit code 1.
-```
-
-The log also reports GitHub Actions runtime deprecation warnings from `actions/upload-artifact@v4` (`punycode` and `url.parse()` deprecation warnings under the Node 24 runtime). These warnings do not invalidate the artifact, but they should be monitored when upgrading Actions dependencies.
-
-## Sandbox retrieval attempts
-
-Artifact content could not be downloaded from this sandbox during this review:
-
-| Attempt | Result |
-|---|---|
-| `gh run download 30803991007 --dir /tmp/veritas-artifact-30803991007` | Failed repeatedly with EOF while connecting to the GitHub Actions Azure Blob artifact URL. |
-| `gh api repos/56eli/docsheet/actions/artifacts/8851979247/zip` | Failed with the same Azure Blob EOF. |
-| `curl -L` to the artifact ZIP endpoint with the configured GitHub token | Failed with `OpenSSL SSL_connect: SSL_ERROR_SYSCALL` against `productionresultssa3.blob.core.windows.net`. |
-| Direct local `python fetch_veritas_catalogue.py --check` | Failed after retries with TLS EOF against `veritaspub.com`. |
-| Direct local `curl`/Node fetch to `veritaspub.com` | Failed with SSL/connection reset. |
-| Arena `fetch_page` to the Veritas API | Succeeded for API page reads, confirming the remote API itself is reachable outside this sandbox's direct TLS path. |
-
-## Content review result
-
-The artifact contents were not inspected because the sandbox could not download the ZIP from GitHub Actions artifact storage. Do not treat the inventory diff as approved or rejected yet.
-
-## Required next manual action
-
-Download the artifact from GitHub Actions in a browser or another environment with working access to GitHub Actions artifact storage:
-
-- Run page: `https://github.com/56eli/docsheet/actions/runs/30803991007`
-- Artifact: `veritas-inventory-review-30803991007`
-
-Inspect these expected files:
-
-1. `data/veritas_inventory_diff.patch`
-2. `data/veritas_official_products_candidate.csv`
-
-Then decide whether the live candidate represents:
-
-- harmless ordering/metadata drift,
-- new official products requiring candidate/relationship decisions,
-- changed product titles/URLs/dates requiring reviewed inventory updates,
-- mapping-status changes requiring updates to `data/veritas_mapping_decisions.csv`, or
-- source noise that should remain rejected.
-
-Do not replace `data/veritas_official_products.csv` directly without reviewed decisions and a regenerated Pages build.
+✅ **Closed.** No upstream catalogue change; internal derived-field defect found,
+corrected, and guarded against recurrence.
