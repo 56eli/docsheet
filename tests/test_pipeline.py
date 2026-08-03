@@ -198,9 +198,18 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_reduced_pending_view_differs_from_committed(self) -> None:
-        result = self.run_script("build_catalogue_pages.py", "--no-include-pending", "--check")
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("stale", result.stdout)
+        # With zero pending candidates in committed data, --no-include-pending matches.
+        # But when a pending candidate is present, --no-include-pending --check must detect divergence.
+        result_clean = self.run_script("build_catalogue_pages.py", "--no-include-pending", "--check")
+        self.assertEqual(result_clean.returncode, 0)
+
+        # Add a temporary pending candidate to prove --no-include-pending strips it
+        row = "manual-veritas-99999,Test Candidate,lecture,2026,CD,,veritas,99999,https://veritaspub.com/test,Test Candidate,evidence,reviewed_candidate,2026-08-03,not_promoted,pending note"
+        with (self.sandbox / "data" / "manual_master_candidates.csv").open("a", encoding="utf-8") as f:
+            f.write(f"{row}\n")
+        result_pending = self.run_script("build_catalogue_pages.py", "--no-include-pending", "--check")
+        self.assertEqual(result_pending.returncode, 1)
+        self.assertIn("stale", result_pending.stdout)
 
 
 class TaxonomyDominanceTests(unittest.TestCase):
@@ -1500,3 +1509,28 @@ class DefensiveDepthTests(unittest.TestCase):
                 invoke_script("build_research_master.py", sandbox)
         finally:
             tempdir.cleanup()
+
+    def test_untyped_master_record_allowlist(self) -> None:
+        """Only UUID 246 is allowed to have an empty item_type."""
+        item = {"uuid": "999", "title": "Some Title", "item_type": "", "work_id": "w-test"}
+        with self.assertRaisesRegex(ValueError, "only UUID 246 is permitted"):
+            brm.validate_master_items_integrity([item])
+        valid_untyped = {
+            "uuid": "246",
+            "title": "In the World But Not of It – Audio",
+            "item_type": "",
+            "work_id": "w-in-the-world-but-not-of-it-audio",
+        }
+        brm.validate_master_items_integrity([valid_untyped])
+
+    def test_malformed_work_id_fails_integrity(self) -> None:
+        """A work_id not starting with 'w-' must fail integrity validation."""
+        item = {"uuid": "100", "title": "Title", "item_type": "lecture", "work_id": "invalid-prefix"}
+        with self.assertRaisesRegex(ValueError, "work_ids must start with 'w-'"):
+            brm.validate_master_items_integrity([item])
+
+    def test_missing_work_id_fails_catalogue_build(self) -> None:
+        """Every master record in catalogue Pages build must have a work_id."""
+        item = {"uuid": "100", "title": "Title", "item_type": "lecture", "work_id": ""}
+        with self.assertRaisesRegex(ValueError, "has a missing work_id"):
+            bcp.validate_work_family_coverage([item])

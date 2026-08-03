@@ -1,13 +1,13 @@
 {
   "master_items": 396,
-  "migrated_items": 350,
+  "migrated_items": 356,
   "everything_record_types": {
-    "master": 350,
+    "master": 356,
     "candidate_discovery": 4,
     "candidate_veritas": 28,
     "candidate_hayhouse": 4,
     "candidate_audible": 4,
-    "candidate_pending_promotion": 6
+    "candidate_pending_promotion": 0
   },
   "reviewed_manual_candidates": 26,
   "manual_research_leads": 1,
@@ -18,7 +18,7 @@
   "approved_veritas_mapping_decisions": 35,
   "implemented_unreviewed": 42,
   "veritas_official_products": 191,
-  "reviewed_product_relationships": 327,
+  "reviewed_product_relationships": 333,
   "pending_product_relationships": 0,
   "reviewed_series_compilations": 7,
   "hayhouse_official_products": 24,

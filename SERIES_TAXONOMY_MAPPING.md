@@ -81,7 +81,7 @@ rows for one master ID fail the generator outright.
 
 ## Baseline (2026-08-03, post-refresh)
 
-150 matched products: **147 approved** (144 bulk approvals at 286/286
+149 matched products: **146 approved** (143 bulk approvals at 286/286
 uuid-level agreement with the curated series, plus 3 individually ruled) and
 **3 rejected** wrong-edition signals (book/audio products title-matched to the
 Volume I DVD record and the 2006 discussion title-matched to the 2006 lecture
@@ -92,5 +92,4 @@ to the 2007 series by title evidence and sibling-product categorization.
 The first 2026-08-03 inventory refresh (pre-mapping) dropped four stale
 primary-source matches from scope (they are now `unreviewed_official_product`
 candidates and no longer propose series), and relinked product 1661 from
-record 300 to record 264 — matching the deferred record-264 decision
-territory without touching sources.
+record 300 to deferred record 264 (rebuilt as 246; product 1661 is unmatched mapping-row only).

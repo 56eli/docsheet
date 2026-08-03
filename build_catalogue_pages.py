@@ -156,6 +156,15 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def validate_work_family_coverage(master_items: list[dict[str, str]]) -> None:
+    """Validate that every curated master record belongs to a work family."""
+    for item in master_items:
+        if not item.get("work_id", "").strip():
+            raise ValueError(
+                f"Master record {item['uuid']} ({item['title']!r}) has a missing work_id"
+            )
+
+
 def validate_veritas_inventory(
     veritas_products: list[dict[str, str]],
     master_records: list[dict[str, str]],
@@ -516,6 +525,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     queue = read_csv(QUEUE)
     new_work_queue = read_csv(NEW_WORK_QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    validate_work_family_coverage(master_records)
     validate_veritas_inventory(veritas_products, master_records)
     validate_new_work_queue(new_work_queue, veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)

@@ -77,21 +77,19 @@
 | Metric | Value | Status |
 |--------|-------|--------|
 | Test Coverage | 92% | ✅ Exceeds 80% gate |
-| Tests Passing | 93/93 | ✅ All pass |
-| Master Records | 350 | ✅ Validated |
-| Work-ID Coverage | 350/350 | ✅ Complete |
-| Product Relationships | 327 | ✅ All reviewed |
+| Tests Passing | 96/96 | ✅ All pass |
+| Master Records | 356 | ✅ Validated |
+| Work-ID Coverage | 356/356 | ✅ Complete |
+| Product Relationships | 333 | ✅ All reviewed |
 | Series Compilations | 7 | ✅ Validated |
-| Source Overrides | 100 | ✅ Applied |
-| Fail-Safes Active | 15+ | ✅ Comprehensive |
+| Source Overrides | 106 | ✅ Applied |
+| Fail-Safes Active | 17+ | ✅ Comprehensive |
 | Documentation Accuracy | 100% | ✅ Verified |
 
 ### Known Issues (Documented, Non-Blocking)
 
-1. **73 records with blank `format`**: Root cause documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d
-2. **Record 264** (untyped): Deferred pending physical-edition confirmation
-3. **6 pending manual candidates**: Awaiting owner promotion decisions
-4. **5 New Work Review queue rows**: Awaiting new-work rulings
+1. **8 records with blank `format`** (was 73): Root cause documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d
+2. **Record 246** (untyped; reassigned from 264): Deferred pending physical-edition confirmation
 
 ---
 

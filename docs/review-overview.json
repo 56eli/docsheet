@@ -43,7 +43,7 @@
   },
   {
     "review_sheet": "New Work Review",
-    "record_count": 5,
+    "record_count": 0,
     "purpose": "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
     "source_file": "data/new_work_review_queue.csv",
     "current_state": "new-work review queue"
@@ -57,7 +57,7 @@
   },
   {
     "review_sheet": "Product Relationships",
-    "record_count": 327,
+    "record_count": 333,
     "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
     "source_file": "data/product_relationships.csv",
     "current_state": "reviewed relationship"

@@ -151,7 +151,7 @@ All counts verified against `docs/catalogue-meta.json` and `data/research_master
 | 1 untyped | 1 | ✅ |
 | 234 catalogue codes | 234 | ✅ |
 | 68 retained exclusions | 68 | ✅ |
-| 100 approved source overrides | 100 | ✅ |
+| 106 approved source overrides | 106 | ✅ |
 | 20 promoted candidates | 20 | ✅ |
 | 6 unpromoted candidates | 6 | ✅ |
 | 327 product relationships | 327 | ✅ |
@@ -168,7 +168,7 @@ All counts match generated data:
 | Curated master: 350 | 350 | ✅ |
 | Everything view: 396 | 396 | ✅ |
 | Exclusions: 68 | 68 | ✅ |
-| Source overrides: 100 | 100 | ✅ |
+| Source overrides: 106 | 106 | ✅ |
 | Product relationships: 327 | 327 | ✅ |
 | Series compilations: 7 | 7 | ✅ |
 | Work families: 193 works / 326 members | 193 / 326 | ✅ |
@@ -282,8 +282,8 @@ docs/catalogue-meta.json (counts)
 
 ### Known Data Issues
 
-1. **73 records with blank `format`**: Documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d. Root cause: 5 books have no Veritas URL; second inference pass evidence exists but is not applied.
-2. **Record 264** (untyped): Deferred pending physical-edition confirmation. Product 1661 is mapping-row only.
+1. **8 records with blank `format`** (was 73): Documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d. Root cause: 5 books have no Veritas URL; second inference pass evidence exists but is not applied.
+2. **Record 246** (untyped; reassigned from 264): Deferred pending physical-edition confirmation. Product 1661 is mapping-row only.
 3. **6 pending manual candidates**: Awaiting owner promotion decisions.
 4. **5 New Work Review queue rows**: Unity Church CDs ×2, Don't Set Sail, Peace is the Natural State, Giving Up Illness—await new-work rulings.
 

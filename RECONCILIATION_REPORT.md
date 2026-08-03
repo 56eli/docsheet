@@ -10,10 +10,10 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 350 | 350 |
-| Research-master JSON records | 350 | 350 |
+| Research-master CSV records | 356 | 356 |
+| Research-master JSON records | 356 | 356 |
 | Research-master exclusion records | 68 | 68 |
-| Draft-only CSV records without a matching ledger `item` | 44 | 0 |
+| Draft-only CSV records without a matching ledger `item` | 50 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
 | `docs/master.json` / ledger-projected Everything records | 396 | 396 |
@@ -33,6 +33,8 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Devotion to Truth Talk | lecture | Promoted from official candidate manual-veritas-55473: Official page identifies a 2003 On-the-Road talk and makes the full lecture available through streaming video. |
 | — | Devotional Nonduality Intensive: Alignment (Audiobook) | lecture | Promoted edition audio of work w-alignment from candidate edition-audible-dni-alignment: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Devotional Nonduality Intensive: Intention (Audiobook) | lecture | Promoted edition audio of work w-intention from candidate edition-audible-dni-intention: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
+| — | Don’t Set Sail Without A Compass – Audio | lecture | Promoted from official candidate manual-veritas-1792: Official page identifies a one-CD 67-minute audio product. |
+| — | Giving Up Illness through A Course in Miracles© – Audio | lecture | Promoted from official candidate manual-veritas-1544: Official page identifies a three-CD 3h45m audio presentation. |
 | — | Healing and Recovery (Audiobook) | book | Promoted edition audio of work w-healing-and-recovery from candidate edition-audible-healing: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Healing: Achieving Total Wellness Through Higher Levels of Consciousness | lecture | Promoted edition audio of work w-healing-and-recovery from candidate edition-veritas-healing-audio: Veritas product 1695; audio edition of the work; inventory status unreviewed_official_product. |
 | — | In The World But Not Of It (Audiobook) | book | Promoted edition audio of work w-in-the-world-but-not-of-it from candidate edition-audible-itwbnoi: Audible audiobook edition; Audible inventory row matched_by_title. |
@@ -40,6 +42,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
 | — | Live Life As A Prayer (Audio) | lecture | Promoted edition audio of work w-live-prayer from candidate edition-hh-liveprayer: Hay House audio edition of the lecture work; Hay House inventory row unreviewed_official_product. |
 | — | Mind, Heart and Service: The Pathway of Devotional Non-Duality | lecture | Promoted from official candidate manual-veritas-54219: Official page identifies a 2003 Science of Mind church lecture available through streaming video. |
+| — | Peace is the Natural State | lecture | Promoted from official candidate manual-veritas-1814: Official page identifies an On-the-Road audio product. |
 | — | Permanent Inner Peace (2012) | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
 | — | Power vs. Force (Audiobook) | book | Promoted edition audio of work w-power-vs-force from candidate edition-audible-pvf: Audible audiobook edition of the Power vs Force work; Audible inventory row matched_by_title. |
 | — | Power vs. Force Audio Book | book | Promoted edition audio of work w-power-vs-force from candidate edition-veritas-pvf-audiobook: Veritas product 1542; audiobook edition of the Power vs Force work; currently related_material on lecture 202 - REQUIRES RULING on family placement. |
@@ -55,6 +58,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Satsang Series (Sep 2010) | lecture | Promoted from official candidate manual-veritas-satsang-1699: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Spiritual Reality and Modern Man: God vs. Science: Limits of the Mind (Audiobook) | lecture | Promoted edition audio of work w-god-vs-science from candidate edition-audible-srmm-godvs: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | The Ego is Not the Real You | book | Promoted from official candidate manual-veritas-47979: Official page identifies a paperback collection of selected Hawkins teachings and quotes. |
+| — | The Essence of Letting Go: A Living Transmission of Truth | lecture | Promoted from official candidate manual-veritas-55576: Official page identifies an original 12-session audio program drawing on multiple earlier teachings. |
 | — | The Eye of the I (Audiobook) | book | Promoted edition audio of work w-eye-of-the-i from candidate edition-audible-eye: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | The Highest Level of Enlightenment (Audiobook) | book | Promoted edition audio of work w-highest-level-of-enlightenment from candidate edition-audible-hle: Audible audiobook edition of the book; Audible inventory row matched_by_title. |
 | — | The Highest Level of Enlightenment – Audio | lecture | Promoted edition audio of work w-highest-level-of-enlightenment from candidate edition-veritas-hle-audio: Veritas product 1742; audio edition (Veritas sells this work audio-only); inventory status unreviewed_official_product. |
@@ -70,6 +74,8 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Transcending the Mind Series: Identification & Illusion (Audiobook) | lecture | Promoted edition audio of work w-identification-illusion from candidate edition-audible-tms-id: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Truth Vs Falsehood (Audiobook) | book | Promoted edition audio of work w-truth-vs-falsehood from candidate edition-audible-tvf: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Truth vs. Falsehood: The Art of Spiritual Discernment (CD & DVD set) | lecture | Promoted edition video of work w-truth-vs-falsehood from candidate edition-veritas-tvf-cddvd: Veritas product 1728; video/audio set edition of the work; inventory status unreviewed_official_product. |
+| — | Unity Church of Sedona 2005 March (CD) | lecture | Promoted from official candidate manual-veritas-1546: Official page identifies a one-CD 67-minute March 2005 presentation. |
+| — | Unity Church of Sedona 2006 June (CD) | lecture | Promoted from official candidate manual-veritas-1548: Official page identifies a one-CD 60-minute June 2006 presentation. |
 | — | What is Real Success? (2012) | discussion | Promoted from official candidate manual-veritas-50488: Official page identifies a 2012 one-disc discussion/interview of approximately 60 minutes. |
 | — | “In the World But Not of It” – Audio | lecture | Promoted edition audio of work w-in-the-world-but-not-of-it from candidate edition-veritas-itwbnoi-audio: Veritas product 1661; Nightingale-Conant 6-CD audio edition; inventory status matched_by_normalized_title. |
 
@@ -90,7 +96,7 @@ No matching-record field differences were found.
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
 | `master_items` | 396 | 396 |
-| `migrated_items` | 350 | 350 |
+| `migrated_items` | 356 | 356 |
 | `implemented_unreviewed` | 42 | 42 |
 
 ## Required resolution before rebuilding
