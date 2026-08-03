@@ -1,6 +1,7 @@
 [
   {
     "uuid": "1",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-001",
     "legacy_tempid": "LS200201_1",
     "title": "Causality: The Ego's Foundation",
@@ -27,6 +28,7 @@
   },
   {
     "uuid": "2",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-002",
     "legacy_tempid": "LS200201_2",
     "title": "Causality: The Ego's Foundation",
@@ -53,6 +55,7 @@
   },
   {
     "uuid": "3",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-003",
     "legacy_tempid": "LS200201_3",
     "title": "Causality: The Ego's Foundation",
@@ -79,6 +82,7 @@
   },
   {
     "uuid": "4",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-004",
     "legacy_tempid": "LS200202_1",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -105,6 +109,7 @@
   },
   {
     "uuid": "5",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-005",
     "legacy_tempid": "LS200202_2",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -131,6 +136,7 @@
   },
   {
     "uuid": "6",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-006",
     "legacy_tempid": "LS200202_3",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -157,6 +163,7 @@
   },
   {
     "uuid": "7",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-007",
     "legacy_tempid": "LS200203_1",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -183,6 +190,7 @@
   },
   {
     "uuid": "8",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-008",
     "legacy_tempid": "LS200203_2",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -209,6 +217,7 @@
   },
   {
     "uuid": "9",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-009",
     "legacy_tempid": "LS200203_3",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -235,6 +244,7 @@
   },
   {
     "uuid": "10",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-010",
     "legacy_tempid": "LS200204_1",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -261,6 +271,7 @@
   },
   {
     "uuid": "11",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-011",
     "legacy_tempid": "LS200204_2",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -287,6 +298,7 @@
   },
   {
     "uuid": "12",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-012",
     "legacy_tempid": "LS200204_3",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -313,6 +325,7 @@
   },
   {
     "uuid": "13",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-013",
     "legacy_tempid": "LS200205_1",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -339,6 +352,7 @@
   },
   {
     "uuid": "14",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-014",
     "legacy_tempid": "LS200205_2",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -365,6 +379,7 @@
   },
   {
     "uuid": "15",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-015",
     "legacy_tempid": "LS200205_3",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -391,6 +406,7 @@
   },
   {
     "uuid": "16",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-016",
     "legacy_tempid": "LS200206_1",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -417,6 +433,7 @@
   },
   {
     "uuid": "17",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-017",
     "legacy_tempid": "LS200206_2",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -443,6 +460,7 @@
   },
   {
     "uuid": "18",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-018",
     "legacy_tempid": "LS200206_3",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -469,6 +487,7 @@
   },
   {
     "uuid": "19",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-019",
     "legacy_tempid": "LS200207_1",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -495,6 +514,7 @@
   },
   {
     "uuid": "20",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-020",
     "legacy_tempid": "LS200207_2",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -521,6 +541,7 @@
   },
   {
     "uuid": "21",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-021",
     "legacy_tempid": "LS200207_3",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -547,6 +568,7 @@
   },
   {
     "uuid": "22",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-022",
     "legacy_tempid": "LS200208_1",
     "title": "Advaita: The Way to God Through Mind",
@@ -573,6 +595,7 @@
   },
   {
     "uuid": "23",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-023",
     "legacy_tempid": "LS200208_2",
     "title": "Advaita: The Way to God Through Mind",
@@ -599,6 +622,7 @@
   },
   {
     "uuid": "24",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-024",
     "legacy_tempid": "LS200208_3",
     "title": "Advaita: The Way to God Through Mind",
@@ -625,6 +649,7 @@
   },
   {
     "uuid": "25",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-025",
     "legacy_tempid": "LS200209_1",
     "title": "Devotion: The Way to God Through the Heart",
@@ -651,6 +676,7 @@
   },
   {
     "uuid": "26",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-026",
     "legacy_tempid": "LS200209_2",
     "title": "Devotion: The Way to God Through the Heart",
@@ -677,6 +703,7 @@
   },
   {
     "uuid": "27",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-027",
     "legacy_tempid": "LS200209_3",
     "title": "Devotion: The Way to God Through the Heart",
@@ -703,6 +730,7 @@
   },
   {
     "uuid": "28",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-028",
     "legacy_tempid": "LS200210_1",
     "title": "Karma and the Afterlife",
@@ -729,6 +757,7 @@
   },
   {
     "uuid": "29",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-029",
     "legacy_tempid": "LS200210_2",
     "title": "Karma and the Afterlife",
@@ -755,6 +784,7 @@
   },
   {
     "uuid": "30",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-030",
     "legacy_tempid": "LS200210_3",
     "title": "Karma and the Afterlife",
@@ -781,6 +811,7 @@
   },
   {
     "uuid": "31",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-031",
     "legacy_tempid": "LS200211_1",
     "title": "God: Transcendent and Immanent",
@@ -807,6 +838,7 @@
   },
   {
     "uuid": "32",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-032",
     "legacy_tempid": "LS200211_2",
     "title": "God: Transcendent and Immanent",
@@ -833,6 +865,7 @@
   },
   {
     "uuid": "33",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-033",
     "legacy_tempid": "LS200211_3",
     "title": "God: Transcendent and Immanent",
@@ -859,6 +892,7 @@
   },
   {
     "uuid": "34",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-034",
     "legacy_tempid": "LS200212_1",
     "title": "Realization of the Self: The Final Moments",
@@ -885,6 +919,7 @@
   },
   {
     "uuid": "35",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-035",
     "legacy_tempid": "LS200212_2",
     "title": "Realization of the Self: The Final Moments",
@@ -911,6 +946,7 @@
   },
   {
     "uuid": "36",
+    "work_id": "",
     "catalog_code": "LECTURE-2002-036",
     "legacy_tempid": "LS200212_3",
     "title": "Realization of the Self: The Final Moments",
@@ -937,6 +973,7 @@
   },
   {
     "uuid": "37",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-001",
     "legacy_tempid": "LS200301_1",
     "title": "Integration of Spirituality and Personal Life",
@@ -963,6 +1000,7 @@
   },
   {
     "uuid": "38",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-002",
     "legacy_tempid": "LS200301_2",
     "title": "Integration of Spirituality and Personal Life",
@@ -989,6 +1027,7 @@
   },
   {
     "uuid": "39",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-003",
     "legacy_tempid": "LS200301_3",
     "title": "Integration of Spirituality and Personal Life",
@@ -1015,6 +1054,7 @@
   },
   {
     "uuid": "40",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-004",
     "legacy_tempid": "LS200302_1",
     "title": "Spirituality and the World",
@@ -1041,6 +1081,7 @@
   },
   {
     "uuid": "41",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-005",
     "legacy_tempid": "LS200302_2",
     "title": "Spirituality and the World",
@@ -1067,6 +1108,7 @@
   },
   {
     "uuid": "42",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-006",
     "legacy_tempid": "LS200302_3",
     "title": "Spirituality and the World",
@@ -1093,6 +1135,7 @@
   },
   {
     "uuid": "43",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-007",
     "legacy_tempid": "LS200303_1",
     "title": "Spiritual Community",
@@ -1119,6 +1162,7 @@
   },
   {
     "uuid": "44",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-008",
     "legacy_tempid": "LS200303_2",
     "title": "Spiritual Community",
@@ -1145,6 +1189,7 @@
   },
   {
     "uuid": "45",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-009",
     "legacy_tempid": "LS200303_3",
     "title": "Spiritual Community",
@@ -1171,6 +1216,7 @@
   },
   {
     "uuid": "46",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-010",
     "legacy_tempid": "LS200304_1",
     "title": "Enlightenment",
@@ -1197,6 +1243,7 @@
   },
   {
     "uuid": "47",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-011",
     "legacy_tempid": "LS200304_2",
     "title": "Enlightenment",
@@ -1223,6 +1270,7 @@
   },
   {
     "uuid": "48",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-012",
     "legacy_tempid": "LS200304_3",
     "title": "Enlightenment",
@@ -1249,6 +1297,7 @@
   },
   {
     "uuid": "49",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-013",
     "legacy_tempid": "LS200305_1",
     "title": "Realization of the Self as the 'I'",
@@ -1275,6 +1324,7 @@
   },
   {
     "uuid": "50",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-014",
     "legacy_tempid": "LS200305_2",
     "title": "Realization of the Self as the 'I'",
@@ -1301,6 +1351,7 @@
   },
   {
     "uuid": "51",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-015",
     "legacy_tempid": "LS200305_3",
     "title": "Realization of the Self as the 'I'",
@@ -1327,6 +1378,7 @@
   },
   {
     "uuid": "52",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-016",
     "legacy_tempid": "LS200306_1",
     "title": "Dialogue, Questions, and Answers",
@@ -1353,6 +1405,7 @@
   },
   {
     "uuid": "53",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-017",
     "legacy_tempid": "LS200306_2",
     "title": "Dialogue, Questions, and Answers",
@@ -1379,6 +1432,7 @@
   },
   {
     "uuid": "54",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-018",
     "legacy_tempid": "LS200306_3",
     "title": "Dialogue, Questions, and Answers",
@@ -1405,6 +1459,7 @@
   },
   {
     "uuid": "55",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-001",
     "legacy_tempid": "LS200401_1",
     "title": "Thought and Ideation",
@@ -1431,6 +1486,7 @@
   },
   {
     "uuid": "56",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-002",
     "legacy_tempid": "LS200401_2",
     "title": "Thought and Ideation",
@@ -1457,6 +1513,7 @@
   },
   {
     "uuid": "57",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-003",
     "legacy_tempid": "LS200401_3",
     "title": "Thought and Ideation",
@@ -1483,6 +1540,7 @@
   },
   {
     "uuid": "58",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-004",
     "legacy_tempid": "LS200402_1",
     "title": "Emotions and Sensations",
@@ -1509,6 +1567,7 @@
   },
   {
     "uuid": "59",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-005",
     "legacy_tempid": "LS200402_2",
     "title": "Emotions and Sensations",
@@ -1535,6 +1594,7 @@
   },
   {
     "uuid": "60",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-006",
     "legacy_tempid": "LS200402_3",
     "title": "Emotions and Sensations",
@@ -1561,6 +1621,7 @@
   },
   {
     "uuid": "61",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-007",
     "legacy_tempid": "LS200403_1",
     "title": "Perception and Positionality",
@@ -1587,6 +1648,7 @@
   },
   {
     "uuid": "62",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-008",
     "legacy_tempid": "LS200403_2",
     "title": "Perception and Positionality",
@@ -1613,6 +1675,7 @@
   },
   {
     "uuid": "63",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-009",
     "legacy_tempid": "LS200403_3",
     "title": "Perception and Positionality",
@@ -1639,6 +1702,7 @@
   },
   {
     "uuid": "64",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-010",
     "legacy_tempid": "LS200404_1",
     "title": "Identification and Illusion",
@@ -1665,6 +1729,7 @@
   },
   {
     "uuid": "65",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-011",
     "legacy_tempid": "LS200404_2",
     "title": "Identification and Illusion",
@@ -1691,6 +1756,7 @@
   },
   {
     "uuid": "66",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-012",
     "legacy_tempid": "LS200404_3",
     "title": "Identification and Illusion",
@@ -1717,6 +1783,7 @@
   },
   {
     "uuid": "67",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-013",
     "legacy_tempid": "LS200405_1",
     "title": "Witnessing and Observing",
@@ -1743,6 +1810,7 @@
   },
   {
     "uuid": "68",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-014",
     "legacy_tempid": "LS200405_2",
     "title": "Witnessing and Observing",
@@ -1769,6 +1837,7 @@
   },
   {
     "uuid": "69",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-015",
     "legacy_tempid": "LS200405_3",
     "title": "Witnessing and Observing",
@@ -1795,6 +1864,7 @@
   },
   {
     "uuid": "70",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-016",
     "legacy_tempid": "LS200406_1",
     "title": "The Ego and The Self",
@@ -1821,6 +1891,7 @@
   },
   {
     "uuid": "71",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-017",
     "legacy_tempid": "LS200406_2",
     "title": "The Ego and The Self",
@@ -1847,6 +1918,7 @@
   },
   {
     "uuid": "72",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-018",
     "legacy_tempid": "LS200406_3",
     "title": "The Ego and The Self",
@@ -1873,6 +1945,7 @@
   },
   {
     "uuid": "73",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-001",
     "legacy_tempid": "LS200501_1",
     "title": "Vision",
@@ -1899,6 +1972,7 @@
   },
   {
     "uuid": "74",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-002",
     "legacy_tempid": "LS200501_2",
     "title": "Vision",
@@ -1925,6 +1999,7 @@
   },
   {
     "uuid": "75",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-003",
     "legacy_tempid": "LS200501_3",
     "title": "Vision",
@@ -1951,6 +2026,7 @@
   },
   {
     "uuid": "76",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-004",
     "legacy_tempid": "LS200502_1",
     "title": "Alignment",
@@ -1977,6 +2053,7 @@
   },
   {
     "uuid": "77",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-005",
     "legacy_tempid": "LS200502_2",
     "title": "Alignment",
@@ -2003,6 +2080,7 @@
   },
   {
     "uuid": "78",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-006",
     "legacy_tempid": "LS200502_3",
     "title": "Alignment",
@@ -2029,6 +2107,7 @@
   },
   {
     "uuid": "79",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-007",
     "legacy_tempid": "LS200503_1",
     "title": "Intention",
@@ -2055,6 +2134,7 @@
   },
   {
     "uuid": "80",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-008",
     "legacy_tempid": "LS200503_2",
     "title": "Intention",
@@ -2081,6 +2161,7 @@
   },
   {
     "uuid": "81",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-009",
     "legacy_tempid": "LS200503_3",
     "title": "Intention",
@@ -2107,6 +2188,7 @@
   },
   {
     "uuid": "82",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-010",
     "legacy_tempid": "LS200504_1",
     "title": "Transcending Barriers",
@@ -2133,6 +2215,7 @@
   },
   {
     "uuid": "83",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-011",
     "legacy_tempid": "LS200504_2",
     "title": "Transcending Barriers",
@@ -2159,6 +2242,7 @@
   },
   {
     "uuid": "84",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-012",
     "legacy_tempid": "LS200504_3",
     "title": "Transcending Barriers",
@@ -2185,6 +2269,7 @@
   },
   {
     "uuid": "85",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-013",
     "legacy_tempid": "LS200505_1",
     "title": "Conviction",
@@ -2211,6 +2296,7 @@
   },
   {
     "uuid": "86",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-014",
     "legacy_tempid": "LS200505_2",
     "title": "Conviction",
@@ -2237,6 +2323,7 @@
   },
   {
     "uuid": "87",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-015",
     "legacy_tempid": "LS200505_3",
     "title": "Conviction",
@@ -2263,6 +2350,7 @@
   },
   {
     "uuid": "88",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-016",
     "legacy_tempid": "LS200506_1",
     "title": "Serenity",
@@ -2289,6 +2377,7 @@
   },
   {
     "uuid": "89",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-017",
     "legacy_tempid": "LS200506_2",
     "title": "Serenity",
@@ -2315,6 +2404,7 @@
   },
   {
     "uuid": "90",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-018",
     "legacy_tempid": "LS200506_3",
     "title": "Serenity",
@@ -2341,6 +2431,7 @@
   },
   {
     "uuid": "91",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-019",
     "legacy_tempid": "LS200507_1",
     "title": "Transcending Obstacles",
@@ -2367,6 +2458,7 @@
   },
   {
     "uuid": "92",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-020",
     "legacy_tempid": "LS200507_2",
     "title": "Transcending Obstacles",
@@ -2393,6 +2485,7 @@
   },
   {
     "uuid": "93",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-021",
     "legacy_tempid": "LS200507_3",
     "title": "Transcending Obstacles",
@@ -2419,6 +2512,7 @@
   },
   {
     "uuid": "94",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-022",
     "legacy_tempid": "LS200508_1",
     "title": "Spiritual Traps",
@@ -2445,6 +2539,7 @@
   },
   {
     "uuid": "95",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-023",
     "legacy_tempid": "LS200508_2",
     "title": "Spiritual Traps",
@@ -2471,6 +2566,7 @@
   },
   {
     "uuid": "96",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-024",
     "legacy_tempid": "LS200508_3",
     "title": "Spiritual Traps",
@@ -2497,6 +2593,7 @@
   },
   {
     "uuid": "97",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-025",
     "legacy_tempid": "LS200509_1",
     "title": "Valid Teachers and Teachings",
@@ -2523,6 +2620,7 @@
   },
   {
     "uuid": "98",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-026",
     "legacy_tempid": "LS200509_2",
     "title": "Valid Teachers and Teachings",
@@ -2549,6 +2647,7 @@
   },
   {
     "uuid": "99",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-027",
     "legacy_tempid": "LS200509_3",
     "title": "Valid Teachers and Teachings",
@@ -2575,6 +2674,7 @@
   },
   {
     "uuid": "100",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-028",
     "legacy_tempid": "LS200510_1",
     "title": "God, Religion, and Spirituality",
@@ -2601,6 +2701,7 @@
   },
   {
     "uuid": "101",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-029",
     "legacy_tempid": "LS200510_2",
     "title": "God, Religion, and Spirituality",
@@ -2627,6 +2728,7 @@
   },
   {
     "uuid": "102",
+    "work_id": "",
     "catalog_code": "LECTURE-2005-030",
     "legacy_tempid": "LS200510_3",
     "title": "God, Religion, and Spirituality",
@@ -2653,6 +2755,7 @@
   },
   {
     "uuid": "103",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-001",
     "legacy_tempid": "LS200601_1",
     "title": "Experiential Reality",
@@ -2679,6 +2782,7 @@
   },
   {
     "uuid": "104",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-002",
     "legacy_tempid": "LS200601_2",
     "title": "Experiential Reality",
@@ -2705,6 +2809,7 @@
   },
   {
     "uuid": "105",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-003",
     "legacy_tempid": "LS200601_3",
     "title": "Experiential Reality",
@@ -2731,6 +2836,7 @@
   },
   {
     "uuid": "106",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-004",
     "legacy_tempid": "LS200602_1",
     "title": "Perception vs Essence",
@@ -2757,6 +2863,7 @@
   },
   {
     "uuid": "107",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-005",
     "legacy_tempid": "LS200602_2",
     "title": "Perception vs Essence",
@@ -2783,6 +2890,7 @@
   },
   {
     "uuid": "108",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-006",
     "legacy_tempid": "LS200602_3",
     "title": "Perception vs Essence",
@@ -2809,6 +2917,7 @@
   },
   {
     "uuid": "109",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-007",
     "legacy_tempid": "LS200603_1",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2835,6 +2944,7 @@
   },
   {
     "uuid": "110",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-008",
     "legacy_tempid": "LS200603_2",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2861,6 +2971,7 @@
   },
   {
     "uuid": "111",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-009",
     "legacy_tempid": "LS200603_3",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2887,6 +2998,7 @@
   },
   {
     "uuid": "112",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-010",
     "legacy_tempid": "LS200604_1",
     "title": "Reason vs Truth",
@@ -2913,6 +3025,7 @@
   },
   {
     "uuid": "113",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-011",
     "legacy_tempid": "LS200604_2",
     "title": "Reason vs Truth",
@@ -2939,6 +3052,7 @@
   },
   {
     "uuid": "114",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-012",
     "legacy_tempid": "LS200604_3",
     "title": "Reason vs Truth",
@@ -2965,6 +3079,7 @@
   },
   {
     "uuid": "115",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-013",
     "legacy_tempid": "LS200605_1",
     "title": "A Review of the Work",
@@ -2991,6 +3106,7 @@
   },
   {
     "uuid": "116",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-014",
     "legacy_tempid": "LS200605_2",
     "title": "A Review of the Work",
@@ -3017,6 +3133,7 @@
   },
   {
     "uuid": "117",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-015",
     "legacy_tempid": "LS200605_3",
     "title": "A Review of the Work",
@@ -3043,6 +3160,7 @@
   },
   {
     "uuid": "118",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-016",
     "legacy_tempid": "LS200606_1",
     "title": "Spiritual Practice and Daily Life",
@@ -3069,6 +3187,7 @@
   },
   {
     "uuid": "119",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-017",
     "legacy_tempid": "LS200606_2",
     "title": "Spiritual Practice and Daily Life",
@@ -3095,6 +3214,7 @@
   },
   {
     "uuid": "120",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-018",
     "legacy_tempid": "LS200606_3",
     "title": "Spiritual Practice and Daily Life",
@@ -3121,6 +3241,7 @@
   },
   {
     "uuid": "121",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-019",
     "legacy_tempid": "LS200607_1",
     "title": "Live Your Life Like a Prayer",
@@ -3147,6 +3268,7 @@
   },
   {
     "uuid": "122",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-020",
     "legacy_tempid": "LS200607_2",
     "title": "Live Your Life Like a Prayer",
@@ -3173,6 +3295,7 @@
   },
   {
     "uuid": "123",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-021",
     "legacy_tempid": "LS200607_3",
     "title": "Live Your Life Like a Prayer",
@@ -3199,6 +3322,7 @@
   },
   {
     "uuid": "124",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-022",
     "legacy_tempid": "LS200608_1",
     "title": "Is the Miraculous Real?",
@@ -3225,6 +3349,7 @@
   },
   {
     "uuid": "125",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-023",
     "legacy_tempid": "LS200608_2",
     "title": "Is the Miraculous Real?",
@@ -3251,6 +3376,7 @@
   },
   {
     "uuid": "126",
+    "work_id": "",
     "catalog_code": "LECTURE-2006-024",
     "legacy_tempid": "LS200608_3",
     "title": "Is the Miraculous Real?",
@@ -3277,6 +3403,7 @@
   },
   {
     "uuid": "127",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-001",
     "legacy_tempid": "LS200701_1",
     "title": "God vs Science: Limits of the Mind",
@@ -3303,6 +3430,7 @@
   },
   {
     "uuid": "128",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-002",
     "legacy_tempid": "LS200701_2",
     "title": "God vs Science: Limits of the Mind",
@@ -3329,6 +3457,7 @@
   },
   {
     "uuid": "129",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-003",
     "legacy_tempid": "LS200701_3",
     "title": "God vs Science: Limits of the Mind",
@@ -3355,6 +3484,7 @@
   },
   {
     "uuid": "130",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-004",
     "legacy_tempid": "LS200702_1",
     "title": "Relativism vs Reality",
@@ -3381,6 +3511,7 @@
   },
   {
     "uuid": "131",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-005",
     "legacy_tempid": "LS200702_2",
     "title": "Relativism vs Reality",
@@ -3407,6 +3538,7 @@
   },
   {
     "uuid": "132",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-006",
     "legacy_tempid": "LS200702_3",
     "title": "Relativism vs Reality",
@@ -3433,6 +3565,7 @@
   },
   {
     "uuid": "133",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-007",
     "legacy_tempid": "LS200703_1",
     "title": "What is 'Real'?",
@@ -3459,6 +3592,7 @@
   },
   {
     "uuid": "134",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-008",
     "legacy_tempid": "LS200703_2",
     "title": "What is 'Real'?",
@@ -3485,6 +3619,7 @@
   },
   {
     "uuid": "135",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-009",
     "legacy_tempid": "LS200703_3",
     "title": "What is 'Real'?",
@@ -3511,6 +3646,7 @@
   },
   {
     "uuid": "136",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-010",
     "legacy_tempid": "LS200704_1",
     "title": "What is Truth? The Absolute",
@@ -3537,6 +3673,7 @@
   },
   {
     "uuid": "137",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-011",
     "legacy_tempid": "LS200704_2",
     "title": "What is Truth? The Absolute",
@@ -3563,6 +3700,7 @@
   },
   {
     "uuid": "138",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-012",
     "legacy_tempid": "LS200704_3",
     "title": "What is Truth? The Absolute",
@@ -3589,6 +3727,7 @@
   },
   {
     "uuid": "139",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-013",
     "legacy_tempid": "LS200705_1",
     "title": "The Human Dilemma",
@@ -3615,6 +3754,7 @@
   },
   {
     "uuid": "140",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-014",
     "legacy_tempid": "LS200705_2",
     "title": "The Human Dilemma",
@@ -3641,6 +3781,7 @@
   },
   {
     "uuid": "141",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-015",
     "legacy_tempid": "LS200705_3",
     "title": "The Human Dilemma",
@@ -3667,6 +3808,7 @@
   },
   {
     "uuid": "142",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-016",
     "legacy_tempid": "LS200706_1",
     "title": "A Review of the Work",
@@ -3693,6 +3835,7 @@
   },
   {
     "uuid": "143",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-017",
     "legacy_tempid": "LS200706_2",
     "title": "A Review of the Work",
@@ -3719,6 +3862,7 @@
   },
   {
     "uuid": "144",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-018",
     "legacy_tempid": "LS200706_3",
     "title": "A Review of the Work",
@@ -3745,6 +3889,7 @@
   },
   {
     "uuid": "145",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-019",
     "legacy_tempid": "LS200707_1",
     "title": "Creation vs Evolution",
@@ -3771,6 +3916,7 @@
   },
   {
     "uuid": "146",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-020",
     "legacy_tempid": "LS200707_2",
     "title": "Creation vs Evolution",
@@ -3797,6 +3943,7 @@
   },
   {
     "uuid": "147",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-021",
     "legacy_tempid": "LS200707_3",
     "title": "Creation vs Evolution",
@@ -3823,6 +3970,7 @@
   },
   {
     "uuid": "148",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-022",
     "legacy_tempid": "LS200708_1",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3849,6 +3997,7 @@
   },
   {
     "uuid": "149",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-023",
     "legacy_tempid": "LS200708_2",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3875,6 +4024,7 @@
   },
   {
     "uuid": "150",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-024",
     "legacy_tempid": "LS200708_3",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3901,6 +4051,7 @@
   },
   {
     "uuid": "151",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-025",
     "legacy_tempid": "LS200709_1",
     "title": "Experiential Reality: The Mystic",
@@ -3927,6 +4078,7 @@
   },
   {
     "uuid": "152",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-026",
     "legacy_tempid": "LS200709_2",
     "title": "Experiential Reality: The Mystic",
@@ -3953,6 +4105,7 @@
   },
   {
     "uuid": "153",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-027",
     "legacy_tempid": "LS200709_3",
     "title": "Experiential Reality: The Mystic",
@@ -3979,6 +4132,7 @@
   },
   {
     "uuid": "154",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-001",
     "legacy_tempid": "LS200801_1",
     "title": "Spirituality: Reason and Faith",
@@ -4005,6 +4159,7 @@
   },
   {
     "uuid": "155",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-002",
     "legacy_tempid": "LS200801_2",
     "title": "Spirituality: Reason and Faith",
@@ -4031,6 +4186,7 @@
   },
   {
     "uuid": "156",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-003",
     "legacy_tempid": "LS200801_3",
     "title": "Spirituality: Reason and Faith",
@@ -4057,6 +4213,7 @@
   },
   {
     "uuid": "157",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-004",
     "legacy_tempid": "LS200802_1",
     "title": "The Clear Pathway to Enlightenment",
@@ -4083,6 +4240,7 @@
   },
   {
     "uuid": "158",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-005",
     "legacy_tempid": "LS200802_2",
     "title": "The Clear Pathway to Enlightenment",
@@ -4109,6 +4267,7 @@
   },
   {
     "uuid": "159",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-006",
     "legacy_tempid": "LS200802_3",
     "title": "The Clear Pathway to Enlightenment",
@@ -4135,6 +4294,7 @@
   },
   {
     "uuid": "160",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-007",
     "legacy_tempid": "LS200803_1",
     "title": "Belief, Trust and Credibility",
@@ -4161,6 +4321,7 @@
   },
   {
     "uuid": "161",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-008",
     "legacy_tempid": "LS200803_2",
     "title": "Belief, Trust and Credibility",
@@ -4187,6 +4348,7 @@
   },
   {
     "uuid": "162",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-009",
     "legacy_tempid": "LS200803_3",
     "title": "Belief, Trust and Credibility",
@@ -4213,6 +4375,7 @@
   },
   {
     "uuid": "163",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-010",
     "legacy_tempid": "LS200804_1",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4239,6 +4402,7 @@
   },
   {
     "uuid": "164",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-011",
     "legacy_tempid": "LS200804_2",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4265,6 +4429,7 @@
   },
   {
     "uuid": "165",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-012",
     "legacy_tempid": "LS200804_3",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4291,6 +4456,7 @@
   },
   {
     "uuid": "166",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-013",
     "legacy_tempid": "LS200805_1",
     "title": "Practical Spirituality",
@@ -4317,6 +4483,7 @@
   },
   {
     "uuid": "167",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-014",
     "legacy_tempid": "LS200805_2",
     "title": "Practical Spirituality",
@@ -4343,6 +4510,7 @@
   },
   {
     "uuid": "168",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-015",
     "legacy_tempid": "LS200805_3",
     "title": "Practical Spirituality",
@@ -4369,6 +4537,7 @@
   },
   {
     "uuid": "169",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-016",
     "legacy_tempid": "LS200806_1",
     "title": "Freedom: Morality and Ethics",
@@ -4395,6 +4564,7 @@
   },
   {
     "uuid": "170",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-017",
     "legacy_tempid": "LS200806_2",
     "title": "Freedom: Morality and Ethics",
@@ -4421,6 +4591,7 @@
   },
   {
     "uuid": "171",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-018",
     "legacy_tempid": "LS200806_3",
     "title": "Freedom: Morality and Ethics",
@@ -4447,6 +4618,7 @@
   },
   {
     "uuid": "172",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-019",
     "legacy_tempid": "LS200807_1",
     "title": "A Unique Sedona Seminar",
@@ -4473,6 +4645,7 @@
   },
   {
     "uuid": "173",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-020",
     "legacy_tempid": "LS200807_2",
     "title": "A Unique Sedona Seminar",
@@ -4499,6 +4672,7 @@
   },
   {
     "uuid": "174",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-021",
     "legacy_tempid": "LS200807_3",
     "title": "A Unique Sedona Seminar",
@@ -4525,6 +4699,7 @@
   },
   {
     "uuid": "175",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-001",
     "legacy_tempid": "LS200901_1",
     "title": "What is the World?",
@@ -4551,6 +4726,7 @@
   },
   {
     "uuid": "176",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-002",
     "legacy_tempid": "LS200901_2",
     "title": "What is the World?",
@@ -4577,6 +4753,7 @@
   },
   {
     "uuid": "177",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-003",
     "legacy_tempid": "LS200901_3",
     "title": "What is the World?",
@@ -4603,6 +4780,7 @@
   },
   {
     "uuid": "178",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-004",
     "legacy_tempid": "LS200902_1",
     "title": "Happiness",
@@ -4629,6 +4807,7 @@
   },
   {
     "uuid": "179",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-005",
     "legacy_tempid": "LS200902_2",
     "title": "Happiness",
@@ -4655,6 +4834,7 @@
   },
   {
     "uuid": "180",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-006",
     "legacy_tempid": "LS200902_3",
     "title": "Happiness",
@@ -4681,6 +4861,7 @@
   },
   {
     "uuid": "181",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-007",
     "legacy_tempid": "LS200903_1",
     "title": "Peace",
@@ -4707,6 +4888,7 @@
   },
   {
     "uuid": "182",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-008",
     "legacy_tempid": "LS200903_2",
     "title": "Peace",
@@ -4733,6 +4915,7 @@
   },
   {
     "uuid": "183",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-009",
     "legacy_tempid": "LS200903_3",
     "title": "Peace",
@@ -4759,6 +4942,7 @@
   },
   {
     "uuid": "184",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-010",
     "legacy_tempid": "LS200904_1",
     "title": "Success",
@@ -4785,6 +4969,7 @@
   },
   {
     "uuid": "185",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-011",
     "legacy_tempid": "LS200904_2",
     "title": "Success",
@@ -4811,6 +4996,7 @@
   },
   {
     "uuid": "186",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-012",
     "legacy_tempid": "LS200904_3",
     "title": "Success",
@@ -4837,6 +5023,7 @@
   },
   {
     "uuid": "187",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-001",
     "legacy_tempid": "LS201001_1",
     "title": "Handling Spiritual Challenges",
@@ -4863,6 +5050,7 @@
   },
   {
     "uuid": "188",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-002",
     "legacy_tempid": "LS201001_2",
     "title": "Handling Spiritual Challenges",
@@ -4889,6 +5077,7 @@
   },
   {
     "uuid": "189",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-003",
     "legacy_tempid": "LS201001_3",
     "title": "Handling Spiritual Challenges",
@@ -4915,6 +5104,7 @@
   },
   {
     "uuid": "190",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-004",
     "legacy_tempid": "LS201002_1",
     "title": "Spiritual Life In Today's World",
@@ -4941,6 +5131,7 @@
   },
   {
     "uuid": "191",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-005",
     "legacy_tempid": "LS201002_2",
     "title": "Spiritual Life In Today's World",
@@ -4967,6 +5158,7 @@
   },
   {
     "uuid": "192",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-006",
     "legacy_tempid": "LS201002_3",
     "title": "Spiritual Life In Today's World",
@@ -4993,6 +5185,7 @@
   },
   {
     "uuid": "193",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-001",
     "legacy_tempid": "LS201101_1",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -5019,6 +5212,7 @@
   },
   {
     "uuid": "194",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-002",
     "legacy_tempid": "LS201101_2",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -5045,6 +5239,7 @@
   },
   {
     "uuid": "195",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-003",
     "legacy_tempid": "LS201101_3",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -5071,6 +5266,7 @@
   },
   {
     "uuid": "196",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-004",
     "legacy_tempid": "LS201102_1",
     "title": "Love",
@@ -5097,6 +5293,7 @@
   },
   {
     "uuid": "197",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-005",
     "legacy_tempid": "LS201102_2",
     "title": "Love",
@@ -5123,6 +5320,7 @@
   },
   {
     "uuid": "198",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-006",
     "legacy_tempid": "LS201102_3",
     "title": "Love",
@@ -5149,6 +5347,7 @@
   },
   {
     "uuid": "199",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-007",
     "legacy_tempid": "SAT2011Q01",
     "title": "Q&A Session (Jan 2011)",
@@ -5175,6 +5374,7 @@
   },
   {
     "uuid": "200",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-008",
     "legacy_tempid": "SAT2011Q02",
     "title": "Q&A Session (Mar 2011)",
@@ -5201,6 +5401,7 @@
   },
   {
     "uuid": "201",
+    "work_id": "",
     "catalog_code": "LECTURE-2011-009",
     "legacy_tempid": "SAT2011Q03",
     "title": "Q&A Session (Jul 2011)",
@@ -5227,6 +5428,7 @@
   },
   {
     "uuid": "202",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL101",
     "title": "Volume I-Power vs Force (Part 1)",
@@ -5253,6 +5455,7 @@
   },
   {
     "uuid": "203",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL102",
     "title": "Volume I-David Hawkins -Applied Kinesiology-Power vs Force - Part 2",
@@ -5279,6 +5482,7 @@
   },
   {
     "uuid": "204",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL201",
     "title": "Volume II-Consciousness and Addiction (Part 1)",
@@ -5305,6 +5509,7 @@
   },
   {
     "uuid": "205",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL202",
     "title": "Volume II-Consciousness and Addiction (Part 2)",
@@ -5331,6 +5536,7 @@
   },
   {
     "uuid": "206",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL301",
     "title": "Volume III-Advanced States of Consciousness (Part 1)",
@@ -5357,6 +5563,7 @@
   },
   {
     "uuid": "207",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL302",
     "title": "Volume III-Advanced States of Consciousness (Part 2)",
@@ -5383,6 +5590,7 @@
   },
   {
     "uuid": "208",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL401",
     "title": "Volume IV-How to Tell the Truth about Anything (Part 1)",
@@ -5409,6 +5617,7 @@
   },
   {
     "uuid": "209",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL402",
     "title": "Volume IV-How to Tell the Truth about Anything (Part 2)",
@@ -5435,6 +5644,7 @@
   },
   {
     "uuid": "210",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL501",
     "title": "Volume V-Undoing the Barriers to Spiritual Progress (Part 1)",
@@ -5461,6 +5671,7 @@
   },
   {
     "uuid": "211",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL502",
     "title": "Volume V-Undoing the Barriers to Spiritual Progress (Part 2)",
@@ -5487,6 +5698,7 @@
   },
   {
     "uuid": "212",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL503",
     "title": "Volume V-Undoing the Barriers to Spiritual Progress (Part 3)",
@@ -5513,6 +5725,7 @@
   },
   {
     "uuid": "213",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL601",
     "title": "Volume VI-How to Raise Your Level of Consciousness",
@@ -5539,6 +5752,7 @@
   },
   {
     "uuid": "214",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "VOL701",
     "title": "Volume VII A-Conversation with Knowingness",
@@ -5565,6 +5779,7 @@
   },
   {
     "uuid": "215",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-019",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART1",
@@ -5591,6 +5806,7 @@
   },
   {
     "uuid": "216",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-020",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART2",
@@ -5617,6 +5833,7 @@
   },
   {
     "uuid": "217",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-021",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART3",
@@ -5643,6 +5860,7 @@
   },
   {
     "uuid": "218",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-022",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART1",
@@ -5669,6 +5887,7 @@
   },
   {
     "uuid": "219",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-023",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART2",
@@ -5695,6 +5914,7 @@
   },
   {
     "uuid": "220",
+    "work_id": "",
     "catalog_code": "LECTURE-2004-024",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART3",
@@ -5721,6 +5941,7 @@
   },
   {
     "uuid": "221",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-019",
     "legacy_tempid": "",
     "title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
@@ -5747,6 +5968,7 @@
   },
   {
     "uuid": "222",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART1",
@@ -5773,6 +5995,7 @@
   },
   {
     "uuid": "223",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART2",
@@ -5799,6 +6022,7 @@
   },
   {
     "uuid": "224",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART3",
@@ -5825,6 +6049,7 @@
   },
   {
     "uuid": "225",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Devotion to Truth",
@@ -5851,6 +6076,7 @@
   },
   {
     "uuid": "226",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Mind, Heart, and Service PART1",
@@ -5877,6 +6103,7 @@
   },
   {
     "uuid": "227",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Mind, Heart, and Service PART2",
@@ -5903,6 +6130,7 @@
   },
   {
     "uuid": "228",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Will PART1",
@@ -5929,6 +6157,7 @@
   },
   {
     "uuid": "229",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Will PART2",
@@ -5955,6 +6184,7 @@
   },
   {
     "uuid": "230",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART1",
@@ -5981,6 +6211,7 @@
   },
   {
     "uuid": "231",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART2",
@@ -6007,6 +6238,7 @@
   },
   {
     "uuid": "232",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART3",
@@ -6033,6 +6265,7 @@
   },
   {
     "uuid": "233",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF01",
     "title": "A-01 Office Series-Stress",
@@ -6059,6 +6292,7 @@
   },
   {
     "uuid": "234",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF02",
     "title": "A-02 Office Series-Health",
@@ -6085,6 +6319,7 @@
   },
   {
     "uuid": "235",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF03",
     "title": "A-03 Office Series-Spiritual First Aid",
@@ -6111,6 +6346,7 @@
   },
   {
     "uuid": "236",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF04",
     "title": "A-04 Office Series-Sexuality",
@@ -6137,6 +6373,7 @@
   },
   {
     "uuid": "237",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF05",
     "title": "A-05 Office Series-The Aging Process",
@@ -6163,6 +6400,7 @@
   },
   {
     "uuid": "238",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF06",
     "title": "A-06 Office Series-Handling Major Crises",
@@ -6189,6 +6427,7 @@
   },
   {
     "uuid": "239",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF07",
     "title": "A-07 Office Series-Worry Fear and Anxiety",
@@ -6215,6 +6454,7 @@
   },
   {
     "uuid": "240",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF08",
     "title": "A-08 Office Series-Pain and Suffering",
@@ -6241,6 +6481,7 @@
   },
   {
     "uuid": "241",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF09",
     "title": "A-09 Office Series-Losing Weight",
@@ -6267,6 +6508,7 @@
   },
   {
     "uuid": "242",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF10",
     "title": "A-10 Office Series-Depression",
@@ -6293,6 +6535,7 @@
   },
   {
     "uuid": "243",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF11",
     "title": "A-11 Office Series-Illness and Self-Healing",
@@ -6319,6 +6562,7 @@
   },
   {
     "uuid": "244",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF12",
     "title": "A-12 Office Series-Alcoholism",
@@ -6345,6 +6589,7 @@
   },
   {
     "uuid": "245",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF13",
     "title": "B-01 Office Series-Drug Addiction and Alcoholism...",
@@ -6371,6 +6616,7 @@
   },
   {
     "uuid": "247",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF15",
     "title": "B-03 Office Series-A Map Of Consciousness",
@@ -6397,6 +6643,7 @@
   },
   {
     "uuid": "248",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF16",
     "title": "B-04 Office Series-Cancer",
@@ -6423,6 +6670,7 @@
   },
   {
     "uuid": "250",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "OFF18",
     "title": "B-06 Office Series-Death and Dying",
@@ -6449,6 +6697,7 @@
   },
   {
     "uuid": "251",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-028",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jan 2007)",
@@ -6475,6 +6724,7 @@
   },
   {
     "uuid": "252",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-029",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Mar 2007)",
@@ -6501,6 +6751,7 @@
   },
   {
     "uuid": "253",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-030",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2007)",
@@ -6527,6 +6778,7 @@
   },
   {
     "uuid": "254",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-031",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jul 2007)",
@@ -6553,6 +6805,7 @@
   },
   {
     "uuid": "255",
+    "work_id": "",
     "catalog_code": "LECTURE-2007-032",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2007)",
@@ -6579,6 +6832,7 @@
   },
   {
     "uuid": "256",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-022",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2008)",
@@ -6605,6 +6859,7 @@
   },
   {
     "uuid": "257",
+    "work_id": "",
     "catalog_code": "LECTURE-2008-023",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2008)",
@@ -6631,6 +6886,7 @@
   },
   {
     "uuid": "258",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-013",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jan 2009)",
@@ -6657,6 +6913,7 @@
   },
   {
     "uuid": "259",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-014",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2009)",
@@ -6683,6 +6940,7 @@
   },
   {
     "uuid": "260",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-015",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2009)",
@@ -6709,6 +6967,7 @@
   },
   {
     "uuid": "261",
+    "work_id": "",
     "catalog_code": "LECTURE-2009-016",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Nov 2009)",
@@ -6735,6 +6994,7 @@
   },
   {
     "uuid": "262",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-007",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Feb 2010)",
@@ -6761,6 +7021,7 @@
   },
   {
     "uuid": "263",
+    "work_id": "",
     "catalog_code": "LECTURE-2010-008",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Nov 2010)",
@@ -6787,6 +7048,7 @@
   },
   {
     "uuid": "264",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "\"In the World But Not of It\" – Audio",
@@ -6813,6 +7075,7 @@
   },
   {
     "uuid": "265",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Golden Word Book Signing – Audio",
@@ -6839,6 +7102,7 @@
   },
   {
     "uuid": "266",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "All is Divinity",
@@ -6865,6 +7129,7 @@
   },
   {
     "uuid": "267",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Compassion: The Pathway of the Heart",
@@ -6891,6 +7156,7 @@
   },
   {
     "uuid": "268",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "God is Hidden Within the Beauty of the Music",
@@ -6917,6 +7183,7 @@
   },
   {
     "uuid": "269",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "God is The Infinite Field",
@@ -6943,6 +7210,7 @@
   },
   {
     "uuid": "270",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Reality",
@@ -6969,6 +7237,7 @@
   },
   {
     "uuid": "271",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Ever-Present Joy",
@@ -6995,6 +7264,7 @@
   },
   {
     "uuid": "272",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Power of Devotion",
@@ -7021,6 +7291,7 @@
   },
   {
     "uuid": "273",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Prevailing Silence",
@@ -7047,6 +7318,7 @@
   },
   {
     "uuid": "274",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Transcending the Ego",
@@ -7073,6 +7345,7 @@
   },
   {
     "uuid": "275",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Truth Shines Forth",
@@ -7099,6 +7372,7 @@
   },
   {
     "uuid": "276",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Virtues: The Spiritual Foundation",
@@ -7125,6 +7399,7 @@
   },
   {
     "uuid": "277",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "You Are the Light of Consciousness",
@@ -7151,6 +7426,7 @@
   },
   {
     "uuid": "278",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "How to Live Your Life Like a Prayer",
@@ -7177,6 +7453,7 @@
   },
   {
     "uuid": "279",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "How to See the Reality of Life",
@@ -7203,6 +7480,7 @@
   },
   {
     "uuid": "280",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Improving Your Relationships",
@@ -7229,6 +7507,7 @@
   },
   {
     "uuid": "281",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Permanent Inner Peace",
@@ -7255,6 +7534,7 @@
   },
   {
     "uuid": "282",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Importance of Family",
@@ -7281,6 +7561,7 @@
   },
   {
     "uuid": "283",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What is Meant by Spiritual",
@@ -7307,6 +7588,7 @@
   },
   {
     "uuid": "284",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What is Real Success",
@@ -7333,6 +7615,7 @@
   },
   {
     "uuid": "285",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What You are Changes the World",
@@ -7359,6 +7642,7 @@
   },
   {
     "uuid": "286",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Power vs Force",
@@ -7385,6 +7669,7 @@
   },
   {
     "uuid": "287",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Eye of the I",
@@ -7411,6 +7696,7 @@
   },
   {
     "uuid": "288",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "I Reality and Subjectivity",
@@ -7437,6 +7723,7 @@
   },
   {
     "uuid": "289",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Truth vs Falsehood",
@@ -7463,6 +7750,7 @@
   },
   {
     "uuid": "290",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Letting Go",
@@ -7489,6 +7777,7 @@
   },
   {
     "uuid": "291",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Healing and Recovery",
@@ -7515,6 +7804,7 @@
   },
   {
     "uuid": "292",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Discovery of the Presence of God",
@@ -7541,6 +7831,7 @@
   },
   {
     "uuid": "293",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Reality, Spirituality and Modern Man",
@@ -7567,6 +7858,7 @@
   },
   {
     "uuid": "294",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Transcending the Levels of Consciousness",
@@ -7593,6 +7885,7 @@
   },
   {
     "uuid": "295",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Map of Consciousness Explained",
@@ -7619,6 +7912,7 @@
   },
   {
     "uuid": "296",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Success Is for You",
@@ -7645,6 +7939,7 @@
   },
   {
     "uuid": "297",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Daily Reflections",
@@ -7671,6 +7966,7 @@
   },
   {
     "uuid": "298",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Along the Path to Enlightenment",
@@ -7697,6 +7993,7 @@
   },
   {
     "uuid": "299",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Dissolving the Ego",
@@ -7723,6 +8020,7 @@
   },
   {
     "uuid": "300",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "In the World, But Not of It",
@@ -7749,6 +8047,7 @@
   },
   {
     "uuid": "301",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Highest Level of Enlightenment",
@@ -7775,6 +8074,7 @@
   },
   {
     "uuid": "302",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Path to Spiritual Advancement",
@@ -7801,6 +8101,7 @@
   },
   {
     "uuid": "303",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Path to Spiritual Advancement: How to Transcend the Ego and Experience the Presence of God",
@@ -7827,6 +8128,7 @@
   },
   {
     "uuid": "304",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Evolution of Consciousness: Navigating the Levels of Awareness and Unlocking Spiritual Potential",
@@ -7853,6 +8155,7 @@
   },
   {
     "uuid": "305",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Beyond Illusion: Exploring Perception, Ego, and Meditation on the Path to Truth",
@@ -7879,6 +8182,7 @@
   },
   {
     "uuid": "306",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Power and Integrity: Uncovering Spiritual Reality and Realizing Peace, Love, and Divinity",
@@ -7905,6 +8209,7 @@
   },
   {
     "uuid": "307",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Karma and Devotion: The Sacred Path to God through the Heart",
@@ -7931,6 +8236,7 @@
   },
   {
     "uuid": "308",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Final Doorway to Enlightenment: Prayer, Transcendence and Realization of the Self",
@@ -7957,6 +8263,7 @@
   },
   {
     "uuid": "309",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Progressive Levels of Consciousness",
@@ -7983,6 +8290,7 @@
   },
   {
     "uuid": "310",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-020",
     "legacy_tempid": "",
     "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
@@ -8009,6 +8317,7 @@
   },
   {
     "uuid": "311",
+    "work_id": "",
     "catalog_code": "LECTURE-2003-021",
     "legacy_tempid": "",
     "title": "Devotion to Truth Talk",
@@ -8035,6 +8344,7 @@
   },
   {
     "uuid": "312",
+    "work_id": "",
     "catalog_code": "DISCUSSION-2012-001",
     "legacy_tempid": "",
     "title": "Permanent Inner Peace (2012)",
@@ -8061,6 +8371,7 @@
   },
   {
     "uuid": "313",
+    "work_id": "",
     "catalog_code": "DISCUSSION-2012-002",
     "legacy_tempid": "",
     "title": "What is Real Success? (2012)",
@@ -8087,6 +8398,7 @@
   },
   {
     "uuid": "314",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Book of Slides (The Complete Collection)",
@@ -8113,6 +8425,7 @@
   },
   {
     "uuid": "315",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Power of Love: A Transformed Heart Changes the World",
@@ -8139,6 +8452,7 @@
   },
   {
     "uuid": "316",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Ego is Not the Real You",
@@ -8165,6 +8479,7 @@
   },
   {
     "uuid": "317",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins",
@@ -8191,6 +8506,7 @@
   },
   {
     "uuid": "318",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Wisdom of Dr. David R. Hawkins: Classic Teachings on Spiritual Truth and Enlightenment",
@@ -8217,6 +8533,7 @@
   },
   {
     "uuid": "319",
+    "work_id": "",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Man Who Mapped Consciousness: Life and Legacy of Dr. David R. Hawkins",

@@ -36,7 +36,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 65 tests, offline, ~2s
+python -m unittest discover tests     # 72 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -70,7 +70,7 @@ Sandbox traps learned the hard way (all still true):
 | Everything relationships | 312 product relationships, 7 series compilations | |
 | Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead | |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
-| Test suite | **65 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **72 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
@@ -94,7 +94,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    into display-only `year_month` (YYYY-MM), Series moved between Master ID and
    Title, CSV export now exports the **whole sheet** (`rowRange "all"`).
 7. **Tests + fail-safes (this turn):**
-   - `tests/test_pipeline.py` — 65 tests: end-to-end write/check/tamper runs of
+   - `tests/test_pipeline.py` — 72 tests: end-to-end write/check/tamper runs of
      all generators in sandboxed input copies, run-twice determinism for the two
      bootstrap generators, offline replay of the live fetcher (synthetic API
      rebuilt from the committed inventory + retry-ladder unit tests), CLI
@@ -112,7 +112,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    changes; run `30834666253` green (includes the full deterministic suite +
    coverage gate + Playwright).
 9. **Independent re-audit + doc-status pass (this turn, branch
-   `arena/019fc893-docsheet`):** verified every previous claim (65 tests,
+   `arena/019fc893-docsheet`):** verified every previous claim (72 tests,
    92% coverage, all `--check` modes, CI green on `main` at `6b28e66`), then
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
@@ -147,6 +147,9 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   master identity.** Four records once linked to the wrong edition because of
   title matching.
 - **Compact master IDs are stable once issued.**
+- **`work_id` comes only from approved `data/work_families.csv` rows.**
+  Never infer work identity from titles alone (C2 lesson); `proposed` rows
+  are validated but never applied.
 - **Relationships stay at the evidence level actually supported** (item-level
   when proven; series-level for annual Highlights).
 - **Merchandise (card decks, wall charts) are products, not master records.**
@@ -168,6 +171,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 
 **P1 — Data decisions needing a ruling:**
 
+- **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):** Phase 1
+  plumbing is live — master rows carry `work_id`, assigned only from approved
+  rows of the reviewed `data/work_families.csv` input (never title-inferred).
+  Next: (a) approve the first `work_families.csv` batches (e.g. the
+  7 Audible-linked books + their audio/video editions), then (b) Phase 2 —
+  `data/edition_candidates.csv` + promotion registry to mint the audiobook /
+  CD&DVD-set edition rows (owner decisions D2/D3/D5: reviewed candidates,
+  move audible URLs into the edition rows, one row per DVD part).
 - **Record 264** (`"In the World But Not of It" – Audio`, the 1 untyped record):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.

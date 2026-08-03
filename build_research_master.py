@@ -27,9 +27,10 @@ MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
 PROMOTIONS = Path("data") / "manual_candidate_promotions.csv"
 SERIES_MAPPING = Path("data") / "series_category_mapping.csv"
+WORK_FAMILIES = Path("data") / "work_families.csv"
 
 FIELDS = [
-    "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -59,6 +60,11 @@ SERIES_MAPPING_REQUIRED_COLUMNS = {
     "veritas_product_id", "matched_master_uuids", "official_categories",
     "dominant_category", "mapped_series", "review_status",
 }
+WORK_FAMILY_REQUIRED_COLUMNS = {
+    "work_id", "member_master_uuid", "canonical_work_title",
+    "evidence_note", "review_status", "reviewed_on",
+}
+WORK_FAMILY_STATUSES = {"approved", "proposed", "rejected"}
 # Controlled vocabulary for ``item_type``.
 #
 # ``item_type`` records WHAT A RECORD IS (its content class). The physical or
@@ -464,6 +470,80 @@ def load_promotions() -> list[dict[str, str]]:
     return promoted
 
 
+def apply_work_families(items: list[dict[str, str]]) -> int:
+    """Assign ``work_id`` from the reviewed work-families input.
+
+    The edition model (see EDITION_MODEL_PROPOSAL.md) groups master rows of
+    the same work (book / audio / video editions) under a stable ``work_id``.
+    Identity must never be inferred from titles alone (the C2 lesson), so the
+    only source of truth is the reviewed ``data/work_families.csv`` input:
+    one row per family member, with ``approved`` rows applied and
+    ``proposed``/``rejected`` rows validated for shape but never applied.
+    """
+    if not WORK_FAMILIES.exists():
+        return 0
+    with WORK_FAMILIES.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = WORK_FAMILY_REQUIRED_COLUMNS - columns
+        if missing:
+            raise ValueError(
+                f"{WORK_FAMILIES.name} is missing required columns: "
+                f"{', '.join(sorted(missing))}"
+            )
+        rows = list(reader)
+
+    master_by_uuid = {item["uuid"]: item for item in items}
+    work_id_by_member: dict[str, str] = {}
+    for line_number, row in enumerate(rows, start=2):
+        work_id = row["work_id"].strip()
+        member = row["member_master_uuid"].strip()
+        status = row["review_status"].strip()
+        reviewed_on = row["reviewed_on"].strip()
+        if not work_id or not member:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} needs non-empty work_id and member_master_uuid"
+            )
+        if status not in WORK_FAMILY_STATUSES:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} has invalid review_status {status!r}; "
+                f"allowed values are {', '.join(sorted(WORK_FAMILY_STATUSES))}"
+            )
+        if member not in master_by_uuid:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} references an unknown master ID: {member!r}"
+            )
+        if member in work_id_by_member:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} lists master ID {member} twice; "
+                "one row per family member"
+            )
+        if status == "approved":
+            if not ISO_DATE.fullmatch(reviewed_on):
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows need an ISO reviewed_on date"
+                )
+            if not row["evidence_note"].strip():
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows must explain the evidence"
+                )
+            if not row["canonical_work_title"].strip():
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows need a canonical work title"
+                )
+            work_id_by_member[member] = work_id
+
+    applied = 0
+    for item in items:
+        work_id = work_id_by_member.get(item["uuid"], "")
+        if work_id:
+            item["work_id"] = work_id
+            applied += 1
+    if applied:
+        print(f"[work-families] Applied {applied} approved work-family memberships")
+    return applied
+
+
 def apply_series_approvals(items: list[dict[str, str]]) -> int:
     """Apply approved taxonomy-to-series mappings after item assembly.
 
@@ -556,6 +636,7 @@ def build_master() -> MasterBuild:
         canonical_title = title_for(row)
         items.append({
             "uuid": compact_ids[row["raw_row_number"]],
+            "work_id": "",
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
@@ -594,7 +675,7 @@ def build_master() -> MasterBuild:
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
         items.append({
-            "uuid": candidate["uuid"], "catalog_code": code, "legacy_tempid": "",
+            "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
             "title_source": "", "item_type": item_type, "series": candidate["series"],
             "year": year, "month": "", "format": candidate["proposed_format"],
@@ -626,6 +707,7 @@ def build_master() -> MasterBuild:
             print(f"[format] Inferred {inferred} formats from official Veritas inventory")
 
     series_approvals_applied = apply_series_approvals(items)
+    work_families_applied = apply_work_families(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}

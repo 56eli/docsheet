@@ -132,6 +132,7 @@
   const COLUMN_LABELS = {
     record_type: "Record Type",
     uuid: "Master ID",
+    work_id: "Work",
     master_uuid: "Master ID",
     year_month: "Year-Month",
     raw_row_number: "Raw Row",
@@ -191,7 +192,7 @@
     "evidence_url", "review_notes", "notes",
   ];
   const LOW_PRIORITY_FIELDS = [
-    "uuid", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
+    "uuid", "work_id", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
     "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
     "normalized_title_match_count", "location_physical", "location_digital",
     "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",

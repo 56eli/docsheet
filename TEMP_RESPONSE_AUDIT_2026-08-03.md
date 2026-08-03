@@ -194,7 +194,7 @@ success. The handoff's P0 "add CI steps via web editor" is therefore closed.
 | New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
 | New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
 | Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
-| Suite | 54 → **65 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+| Suite | 54 → **72 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
 
 Check battery green at push time: `py_compile`, all five `--check` generators
 (+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
@@ -214,7 +214,7 @@ coverage gate (exit 0), `node --check` ×3, `git diff --check`.
   still 363); docs updated (README/handoff 312, schema invariant restored,
   audit §12.6, handoff P1 entry removed).
 
-Battery green: `py_compile`, all five `--check` (no warning now), **65 tests**,
+Battery green: `py_compile`, all five `--check` (no warning now), **72 tests**,
 coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.
 
 ### 11c. Root-cause: why 17 of 29 books have no `format=book` (owner question)
@@ -267,7 +267,7 @@ signal (`Books Published by Dr. Hawkins` → `format=book`, guarded by
 path: **exactly the 12 predicted records** changed (291, 292, 295, 296, 297,
 300, 303–308), `format` `''` → `book`, nothing else. Books labeled: 12/29 →
 **24/29**; total format coverage 231 → **243** of 317 (74 blank). Pages
-outputs regenerated; all five `--check` green; 65 tests; coverage 92%.
+outputs regenerated; all five `--check` green; 65 tests at that point (72 after §12.8); coverage 92%.
 
 ### 11e. Why the remaining 5 books have no Veritas URL (owner question)
 
@@ -317,3 +317,22 @@ non-primary products as edition evidence) and wrote
 `EDITION_MODEL_PROPOSAL.md` (target model: `work_id` + reviewed
 `work_families.csv` + `edition_candidates.csv` promotion path; 5 open design
 decisions D1–D5; 4-phase plan). No data changed; awaiting owner rulings.
+
+### 11g. Edition model — Phase 1 plumbing implemented (owner rulings D1–D5)
+
+Per owner direction (one row per work × carrier; keep one row per DVD part;
+reviewed edition-candidate layer; move audible URLs into edition rows;
+plumbing first), Phase 1 is implemented:
+
+- Master schema + `data/research_master_draft.{csv,json}` + Everything view +
+  UI gained the **`work_id`** column (25 fields).
+- New reviewed input **`data/work_families.csv`**
+  (`work_id, member_master_uuid, canonical_work_title, evidence_note,
+  review_status, reviewed_on`): `approved` rows are applied,
+  `proposed`/`rejected` validated but never applied; unknown members,
+  duplicates, missing dates/evidence/titles fail the build; tamper detection
+  covered by tests (`WorkFamilyTests`, 7 tests).
+- No families approved yet → all `work_id` values empty; deterministic
+  builds unchanged. Suite: 72 tests; coverage 92%; all five `--check` green.
+- Next: owner approves the first `work_families.csv` batch, then Phase 2
+  (`edition_candidates.csv` + audiobook/CD&DVD-set rows).

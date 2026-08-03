@@ -591,7 +591,7 @@ Hawkins` → `book`, guarded by `item_type=book`, never overwrites). The master
 rebuild changed exactly the 12 predicted records (`''` → `book`): 291, 292,
 295, 296, 297, 300, 303–308. Book format coverage 12/29 → **24/29**; total
 format coverage 231 → **243** of 317 (74 blank). All checks green; suite now
-**65 tests**; coverage 92%.
+**65 tests** at that point (72 after §12.8); coverage 92%.
 
 **Remaining 5 books (no Veritas URL) — five distinct causes, all
 review-boundary items:** 286 (PvF book product 50411 is title-matched to

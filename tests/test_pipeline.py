@@ -858,6 +858,132 @@ class RelationshipCoverageValidationTests(unittest.TestCase):
             tempdir.cleanup()
 
 
+class WorkFamilyTests(unittest.TestCase):
+    """Reviewed work-family input: validation and work_id assignment."""
+
+    FAMILY_HEADER = "work_id,member_master_uuid,canonical_work_title,evidence_note,review_status,reviewed_on"
+
+    def write_families(self, sandbox: Path, rows: list[str]) -> None:
+        (sandbox / "data" / "work_families.csv").write_text(
+            self.FAMILY_HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
+        )
+
+    def approved_row(self, member: str = "289", work_id: str = "w-tvf") -> str:
+        return (f"{work_id},{member},Truth vs Falsehood,"
+                "Veritas book 50398 + Audible audiobook + CD&DVD set 1728 evidence,approved,2026-08-03")
+
+    def test_committed_empty_families_build_clean(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            self.assertTrue(all(row["work_id"] == "" for row in rows))
+            self.assertIn("work_id", rows[0])
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_family_assigns_work_id_and_check_passes(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row()])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("Applied 1 approved work-family memberships", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertEqual(rows["289"]["work_id"], "w-tvf")
+            self.assertEqual(rows["290"]["work_id"], "")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_proposed_rows_are_validated_but_not_applied(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [
+                "w-tvf,289,Truth vs Falsehood,title-only grouping proposal,proposed,"
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertEqual(rows["289"]["work_id"], "")
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_member_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row(member="9999")])
+            with self.assertRaisesRegex(ValueError, "unknown master ID"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_row_needs_date_evidence_and_canonical_title(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,,approved,"])
+            with self.assertRaisesRegex(ValueError, "ISO reviewed_on"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,,approved,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "explain the evidence"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,,evidence,approved,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "canonical work title"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,evidence,pending,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "invalid review_status"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_duplicate_member_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [
+                self.approved_row(), "w-tvf2,289,Truth vs Falsehood,other evidence,approved,2026-08-03",
+            ])
+            with self.assertRaisesRegex(ValueError, "twice"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_tamper_detection_when_work_id_drifts(self) -> None:
+        # Approved family applied, then the committed master loses the id:
+        # --check must fail.
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row()])
+            invoke_script("build_research_master.py", sandbox)
+            path = sandbox / "data" / "research_master_draft.csv"
+            lines = path.read_text(encoding="utf-8").splitlines()
+            header = lines[0].split(",")
+            work_idx = header.index("work_id")
+            kept = [lines[0]]
+            for line in lines[1:]:
+                cells = line.split(",")
+                if cells[0] == "289" and len(cells) > work_idx:
+                    cells[work_idx] = ""
+                kept.append(",".join(cells))
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("stale relative to the current ledger", result.stdout)
+        finally:
+            tempdir.cleanup()
+
+
 class DocumentationCurrencyTests(unittest.TestCase):
     """Hand-maintained status documents must not drift from the generated data."""
 
