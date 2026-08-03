@@ -18,3 +18,19 @@ pip install -r requirements.txt
 python process_data.py
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
+
+## Catalogue-data safeguard
+
+The raw spreadsheet pipeline above is independent from the curated research
+catalogue. Before rebuilding curated master or catalogue Pages files, inspect
+and acknowledge any ledger/draft divergence first:
+
+```bash
+python reconcile_research_master.py --check
+python build_research_master.py --check
+python build_catalogue_pages.py --check
+```
+
+`RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
+failure indicates a ledger/draft mismatch; do not run the writing build commands
+until that review is resolved.

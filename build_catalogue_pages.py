@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Build GitHub Pages datasets for the three catalogue tabs.
+"""Build or verify GitHub Pages datasets for the catalogue views.
 
-Page 1 combines the clean migrated draft with discovered-but-unreviewed official
-candidates. Page 2 lists approved publishers. Page 3 continues to load the
-original pipeline-generated docs/data.json without modification.
+The Everything view combines the clean migrated draft with discovered official
+candidates. Product inventories and the immutable original spreadsheet remain
+separate views. Use ``--check`` to compare generated content with committed
+Pages files without writing any files.
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
+import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 MASTER = Path("data/research_master_draft.csv")
@@ -26,11 +30,39 @@ OUT_PUBLISHERS = Path("docs/publishers.json")
 OUT_META = Path("docs/catalogue-meta.json")
 
 PUBLISHERS = [
-    {"publisher": "Veritas Publishing", "official_catalogue_url": "https://veritaspub.com/hawkins-products/", "status": "approved", "role": "Primary creator-affiliated publisher / catalogue"},
-    {"publisher": "Hay House", "official_catalogue_url": "https://www.hayhouse.com/authorbio/david-r-hawkins-m-d-ph-d", "status": "approved", "role": "Book publisher catalogue"},
-    {"publisher": "Nightingale-Conant", "official_catalogue_url": "https://www.nightingale.com/pages/david-hawkins", "status": "approved", "role": "Audio-program publisher catalogue"},
-    {"publisher": "Audible", "official_catalogue_url": "https://www.audible.com/author/David-R-Hawkins/B001H6MLOO", "status": "approved", "role": "Official platform catalogue; not a publisher"},
+    {
+        "publisher": "Veritas Publishing",
+        "official_catalogue_url": "https://veritaspub.com/hawkins-products/",
+        "status": "approved",
+        "role": "Primary creator-affiliated publisher / catalogue",
+    },
+    {
+        "publisher": "Hay House",
+        "official_catalogue_url": "https://www.hayhouse.com/authorbio/david-r-hawkins-m-d-ph-d",
+        "status": "approved",
+        "role": "Book publisher catalogue",
+    },
+    {
+        "publisher": "Nightingale-Conant",
+        "official_catalogue_url": "https://www.nightingale.com/pages/david-hawkins",
+        "status": "approved",
+        "role": "Audio-program publisher catalogue",
+    },
+    {
+        "publisher": "Audible",
+        "official_catalogue_url": "https://www.audible.com/author/David-R-Hawkins/B001H6MLOO",
+        "status": "approved",
+        "role": "Official platform catalogue; not a publisher",
+    },
 ]
+
+
+@dataclass
+class CatalogueBuild:
+    """In-memory Pages artifacts shared by normal builds and reconciliation."""
+
+    items: list[dict[str, str]]
+    outputs: dict[Path, str]
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -38,17 +70,26 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def main() -> None:
-    items = read_csv(MASTER)
+def json_text(data: object) -> str:
+    return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+
+
+def build_catalogue(master_items: list[dict[str, str]] | None = None) -> CatalogueBuild:
+    """Prepare catalogue Pages files in memory.
+
+    ``master_items`` exists for read-only reconciliation: it lets callers
+    project the Pages site from a ledger-derived master without overwriting the
+    committed master draft first. Normal builds read ``MASTER`` unchanged.
+    """
+    items = list(master_items) if master_items is not None else read_csv(MASTER)
+    migrated_items = len(items)
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)
     intl_queue = read_csv(INTL_QUEUE)
-    
-    # We will build a separate list for the international tab
-    intl_items = []
-    
+    intl_items: list[dict[str, str]] = []
+
     for candidate in queue:
         items.append({
             "uuid": "",
@@ -75,46 +116,78 @@ def main() -> None:
             "notes": candidate["match_notes"],
             "raw_row_number": "",
         })
+
     # Products with a matched master title are represented by the existing
-    # master item. Only unmatched official products become Page 1 candidates.
+    # master item. Only unmatched official products become Everything candidates.
     for product in veritas_products:
-        if product["mapping_status"] not in ("unreviewed_official_product", "unique_item", "compilation_or_new_edition"):
+        if product["mapping_status"] not in (
+            "unreviewed_official_product",
+            "unique_item",
+            "compilation_or_new_edition",
+        ):
             continue
         notes = "Official Veritas product; unreviewed for deduplication."
         if product["mapping_status"] == "unique_item":
             notes = "Official Veritas product; identified as a unique original item."
         elif product["mapping_status"] == "compilation_or_new_edition":
             notes = "Official Veritas product; identified as a compilation or later edition."
-            
         items.append({
-            "uuid": "", "catalog_code": "", "legacy_tempid": "",
-            "title": product["official_title"], "title_source": "",
-            "item_type": "", "series": "", "year": product["published_date"][:4],
-            "month": "", "format": "", "format_detail": "", "owned": "",
-            "location_physical": "", "location_digital": "", "location_streaming": "",
+            "uuid": "",
+            "catalog_code": "",
+            "legacy_tempid": "",
+            "title": product["official_title"],
+            "title_source": "",
+            "item_type": "",
+            "series": "",
+            "year": product["published_date"][:4],
+            "month": "",
+            "format": "",
+            "format_detail": "",
+            "owned": "",
+            "location_physical": "",
+            "location_digital": "",
+            "location_streaming": "",
             "source_url_veritas": product["official_product_url"],
-            "source_url_hay_house": "", "source_url_nightingale_conant": "", "source_url_audible": "",
-            "reference_url_1": "", "reference_url_2": "",
+            "source_url_hay_house": "",
+            "source_url_nightingale_conant": "",
+            "source_url_audible": "",
+            "reference_url_1": "",
+            "reference_url_2": "",
             "notes": notes,
             "raw_row_number": "",
         })
+
     for product in hayhouse_products:
         if product["mapping_status"] != "unreviewed_official_product":
             continue
         items.append({
-            "uuid": "", "catalog_code": "", "legacy_tempid": "",
-            "title": product["official_title"], "title_source": "",
-            "item_type": "", "series": "", "year": "",
-            "month": "", "format": product.get("format", ""), "format_detail": "", "owned": "",
-            "location_physical": "", "location_digital": "", "location_streaming": "",
-            "source_url_veritas": "", "source_url_hay_house": product["official_product_url"],
-            "source_url_nightingale_conant": "", "source_url_audible": "",
-            "reference_url_1": "", "reference_url_2": "",
+            "uuid": "",
+            "catalog_code": "",
+            "legacy_tempid": "",
+            "title": product["official_title"],
+            "title_source": "",
+            "item_type": "",
+            "series": "",
+            "year": "",
+            "month": "",
+            "format": product.get("format", ""),
+            "format_detail": "",
+            "owned": "",
+            "location_physical": "",
+            "location_digital": "",
+            "location_streaming": "",
+            "source_url_veritas": "",
+            "source_url_hay_house": product["official_product_url"],
+            "source_url_nightingale_conant": "",
+            "source_url_audible": "",
+            "reference_url_1": "",
+            "reference_url_2": "",
             "notes": "Official Hay House product; unreviewed for deduplication and metadata.",
             "raw_row_number": "",
         })
+
     for product in audible_products:
-        # Move Spanish/Non-English to international tab
+        # Spanish-language Audible listings are displayed with international leads.
         if product["official_title"] in ("Disolver el ego", "El nivel más alto de iluminación"):
             intl_items.append({
                 "publisher": "Audible",
@@ -126,46 +199,121 @@ def main() -> None:
                 "source_url": product["audible_url"],
                 "match_status": product["mapping_status"],
                 "match_notes": product["review_notes"],
-                "review_notes": ""
+                "review_notes": "",
             })
             continue
 
         if product["mapping_status"] != "unreviewed_official_product":
             continue
         items.append({
-            "uuid": "", "catalog_code": "", "legacy_tempid": "",
-            "title": product["official_title"], "title_source": "",
-            "item_type": "", "series": "", "year": "",
-            "month": "", "format": "audio", "format_detail": "", "owned": "",
-            "location_physical": "", "location_digital": "", "location_streaming": "",
-            "source_url_veritas": "", "source_url_hay_house": "",
-            "source_url_nightingale_conant": "", "source_url_audible": product["audible_url"],
-            "reference_url_1": "", "reference_url_2": "",
+            "uuid": "",
+            "catalog_code": "",
+            "legacy_tempid": "",
+            "title": product["official_title"],
+            "title_source": "",
+            "item_type": "",
+            "series": "",
+            "year": "",
+            "month": "",
+            "format": "audio",
+            "format_detail": "",
+            "owned": "",
+            "location_physical": "",
+            "location_digital": "",
+            "location_streaming": "",
+            "source_url_veritas": "",
+            "source_url_hay_house": "",
+            "source_url_nightingale_conant": "",
+            "source_url_audible": product["audible_url"],
+            "reference_url_1": "",
+            "reference_url_2": "",
             "notes": "Official Audible product; unreviewed for deduplication and metadata.",
             "raw_row_number": "",
         })
-    for row in intl_queue:
-        # Include all rows from the international queue
-        intl_items.append(row)
 
-    OUT_MASTER.write_text(json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_VERITAS_PRODUCTS.write_text(json.dumps(veritas_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_HAYHOUSE_PRODUCTS.write_text(json.dumps(hayhouse_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_AUDIBLE_PRODUCTS.write_text(json.dumps(audible_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_INTERNATIONAL.write_text(json.dumps(intl_items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_PUBLISHERS.write_text(json.dumps(PUBLISHERS, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_META.write_text(json.dumps({
-        "master_items": len(items),
-        "migrated_items": len(read_csv(MASTER)),
-        "implemented_unreviewed": len(queue) + sum(p["mapping_status"] in ("unreviewed_official_product", "unique_item", "compilation_or_new_edition") for p in veritas_products) + sum(p["mapping_status"] == "unreviewed_official_product" for p in audible_products) + sum(p["mapping_status"] == "unreviewed_official_product" for p in hayhouse_products),
-        "veritas_official_products": len(veritas_products),
-        "hayhouse_official_products": len(hayhouse_products),
-        "audible_official_products": len(audible_products),
-        "approved_publishers": len(PUBLISHERS),
-        "original_source_rows": 374,
-    }, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {OUT_MASTER} ({len(items)} rows), {OUT_PUBLISHERS}, and {OUT_META}")
+    intl_items.extend(intl_queue)
+    outputs = {
+        OUT_MASTER: json_text(items),
+        OUT_VERITAS_PRODUCTS: json_text(veritas_products),
+        OUT_HAYHOUSE_PRODUCTS: json_text(hayhouse_products),
+        OUT_AUDIBLE_PRODUCTS: json_text(audible_products),
+        OUT_INTERNATIONAL: json_text(intl_items),
+        OUT_PUBLISHERS: json_text(PUBLISHERS),
+        OUT_META: json_text({
+            "master_items": len(items),
+            "migrated_items": migrated_items,
+            "implemented_unreviewed": (
+                len(queue)
+                + sum(
+                    product["mapping_status"] in (
+                        "unreviewed_official_product",
+                        "unique_item",
+                        "compilation_or_new_edition",
+                    )
+                    for product in veritas_products
+                )
+                + sum(
+                    product["mapping_status"] == "unreviewed_official_product"
+                    for product in audible_products
+                )
+                + sum(
+                    product["mapping_status"] == "unreviewed_official_product"
+                    for product in hayhouse_products
+                )
+            ),
+            "veritas_official_products": len(veritas_products),
+            "hayhouse_official_products": len(hayhouse_products),
+            "audible_official_products": len(audible_products),
+            "approved_publishers": len(PUBLISHERS),
+            "original_source_rows": 374,
+        }),
+    }
+    return CatalogueBuild(items=items, outputs=outputs)
+
+
+def write_outputs(outputs: dict[Path, str]) -> None:
+    for path, content in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+
+def stale_outputs(outputs: dict[Path, str]) -> list[Path]:
+    """Return missing or different outputs without writing them."""
+    return [
+        path for path, expected in outputs.items()
+        if not path.exists() or path.read_text(encoding="utf-8") != expected
+    ]
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify committed Pages catalogue files match their declared inputs; do not write files",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    build = build_catalogue()
+
+    if args.check:
+        stale = stale_outputs(build.outputs)
+        if stale:
+            print("Pages catalogue outputs are stale relative to their declared inputs:")
+            for path in stale:
+                print(f"  - {path}")
+            print("Run python build_catalogue_pages.py after reviewing the input change.")
+            return 1
+        print(f"Pages catalogue outputs match their inputs ({len(build.items)} Everything rows).")
+        return 0
+
+    write_outputs(build.outputs)
+    print(f"Wrote {OUT_MASTER} ({len(build.items)} rows), {OUT_PUBLISHERS}, and {OUT_META}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

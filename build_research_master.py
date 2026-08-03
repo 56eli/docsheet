@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-"""Build the clean research-master draft from the approved migration ledger.
+"""Build or verify the clean research-master draft from the review ledger.
 
-This program never modifies the raw source CSV or docs/data.json. It produces
-reviewable draft outputs in data/ and preserves excluded raw rows separately.
-UUIDv7 values are retained across reruns by raw source row number.
+The raw source CSV and ``docs/data.json`` are never modified.  This generator
+writes reviewable draft outputs in ``data/`` and retains UUIDv7 values across
+reruns by raw source row number.  Use ``--check`` to compare generated content
+with the committed outputs without writing any files.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
+import io
 import json
 import random
+import sys
 import time
 import uuid
+from dataclasses import dataclass
 from pathlib import Path
 
 LEDGER = Path("migration_review_ledger.csv")
@@ -28,6 +33,19 @@ FIELDS = [
     "source_url_audible", "reference_url_1", "reference_url_2", "notes",
     "raw_row_number",
 ]
+EXCLUSION_FIELDS = [
+    "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
+    "raw_we_have", "raw_original_source", "raw_product_link",
+]
+
+
+@dataclass
+class MasterBuild:
+    """In-memory result shared by normal builds, checks, and reconciliation."""
+
+    items: list[dict[str, str]]
+    exclusions: list[dict[str, str]]
+    outputs: dict[Path, str]
 
 
 def uuid7() -> str:
@@ -42,6 +60,7 @@ def uuid7() -> str:
 
 
 def existing_uuids() -> dict[str, str]:
+    """Read retained IDs from the committed draft, if it exists."""
     if not OUTPUT_CSV.exists():
         return {}
     with OUTPUT_CSV.open(encoding="utf-8", newline="") as handle:
@@ -70,21 +89,35 @@ def notes_for(row: dict[str, str]) -> str:
 
 
 def reference_urls(row: dict[str, str]) -> tuple[str, str]:
-    urls = [value for value in (row["raw_format"], row["raw_unnamed_11"], row["raw_other_links"]) if value]
+    urls = [
+        value
+        for value in (row["raw_format"], row["raw_unnamed_11"], row["raw_other_links"])
+        if value
+    ]
     return (urls + ["", ""])[:2]
 
 
-def main() -> None:
+def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
+    """Render stable UTF-8 CSV text with LF line endings."""
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue()
+
+
+def build_master() -> MasterBuild:
+    """Prepare all draft outputs in memory without changing the working tree."""
     with LEDGER.open(encoding="utf-8", newline="") as handle:
         ledger = list(csv.DictReader(handle))
 
     retained_uuids = existing_uuids()
-    items = [row for row in ledger if row["disposition"] == "item"]
-    excluded = [row for row in ledger if row["disposition"] != "item"]
+    item_rows = [row for row in ledger if row["disposition"] == "item"]
+    excluded_rows = [row for row in ledger if row["disposition"] != "item"]
 
     sequences: dict[tuple[str, str], int] = {}
-    output_rows = []
-    for row in items:
+    items: list[dict[str, str]] = []
+    for row in item_rows:
         item_type = row["proposed_item_type"]
         year = row["proposed_year"]
         code = ""
@@ -95,12 +128,14 @@ def main() -> None:
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
         ref_1, ref_2 = reference_urls(row)
-        output_rows.append({
-            "uuid": retained_uuids.get(row["raw_row_number"], uuid7()),
+        canonical_title = title_for(row)
+        retained_uuid = retained_uuids.get(row["raw_row_number"])
+        items.append({
+            "uuid": retained_uuid if retained_uuid else uuid7(),
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
-            "title": title_for(row),
-            "title_source": row["raw_title"] if title_for(row) != row["raw_title"] else "",
+            "title": canonical_title,
+            "title_source": row["raw_title"] if canonical_title != row["raw_title"] else "",
             "item_type": item_type,
             "series": row["proposed_series"],
             "year": year,
@@ -121,25 +156,65 @@ def main() -> None:
             "raw_row_number": row["raw_row_number"],
         })
 
-    OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
-    with OUTPUT_CSV.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(output_rows)
-    OUTPUT_JSON.write_text(json.dumps(output_rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-    exclusion_fields = [
-        "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
-        "raw_we_have", "raw_original_source", "raw_product_link",
+    exclusions = [
+        {field: row[field] for field in EXCLUSION_FIELDS}
+        for row in excluded_rows
     ]
-    with EXCLUSIONS.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=exclusion_fields, lineterminator="\n")
-        writer.writeheader()
-        writer.writerows({field: row[field] for field in exclusion_fields} for row in excluded)
+    outputs = {
+        OUTPUT_CSV: csv_text(FIELDS, items),
+        OUTPUT_JSON: json.dumps(items, ensure_ascii=False, indent=2) + "\n",
+        EXCLUSIONS: csv_text(EXCLUSION_FIELDS, exclusions),
+    }
+    return MasterBuild(items=items, exclusions=exclusions, outputs=outputs)
 
-    print(f"Wrote {OUTPUT_CSV} and {OUTPUT_JSON} ({len(output_rows)} items)")
-    print(f"Wrote {EXCLUSIONS} ({len(excluded)} excluded source rows)")
+
+def write_outputs(outputs: dict[Path, str]) -> None:
+    for path, content in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+
+def stale_outputs(outputs: dict[Path, str]) -> list[Path]:
+    """Return missing or different outputs without writing them."""
+    return [
+        path for path, expected in outputs.items()
+        if not path.exists() or path.read_text(encoding="utf-8") != expected
+    ]
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify committed draft outputs match the current ledger; do not write files",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    build = build_master()
+
+    if args.check:
+        stale = stale_outputs(build.outputs)
+        if stale:
+            print("Research-master outputs are stale relative to the current ledger:")
+            for path in stale:
+                print(f"  - {path}")
+            print("Run the reconciliation report before rebuilding so reviewed additions are not lost.")
+            return 1
+        print(
+            "Research-master outputs match the current ledger "
+            f"({len(build.items)} items; {len(build.exclusions)} excluded rows)."
+        )
+        return 0
+
+    write_outputs(build.outputs)
+    print(f"Wrote {OUTPUT_CSV} and {OUTPUT_JSON} ({len(build.items)} items)")
+    print(f"Wrote {EXCLUSIONS} ({len(build.exclusions)} excluded source rows)")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
