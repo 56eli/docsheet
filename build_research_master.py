@@ -25,6 +25,7 @@ EXCLUSIONS = Path("data") / "research_master_exclusions.csv"
 SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
 MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
+PROMOTIONS = Path("data") / "manual_candidate_promotions.csv"
 
 FIELDS = [
     "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
@@ -367,6 +368,29 @@ def validate_manual_candidates() -> int:
     return len(candidates)
 
 
+def load_promotions() -> list[dict[str, str]]:
+    """Load explicit, owner-approved promotions for official candidates."""
+    if not PROMOTIONS.exists():
+        return []
+    with MANUAL_CANDIDATES.open(encoding="utf-8", newline="") as handle:
+        candidates = {row["candidate_key"]: row for row in csv.DictReader(handle)}
+    with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    promoted = []
+    seen_ids: set[str] = set()
+    for line, row in enumerate(rows, 2):
+        key, uuid = row["candidate_key"].strip(), row["master_uuid"].strip()
+        candidate = candidates.get(key)
+        if not candidate or not uuid.isdigit() or uuid in seen_ids:
+            raise ValueError(f"{PROMOTIONS}:{line} needs a unique numeric master_uuid and known candidate_key")
+        item_type = row["item_type"].strip() or candidate["proposed_item_type"].strip()
+        if item_type not in CONTENT_ITEM_TYPES:
+            raise ValueError(f"{PROMOTIONS}:{line} needs a non-deprecated content item_type")
+        promoted.append({**candidate, "uuid": uuid, "item_type": item_type, "series": row["series"].strip()})
+        seen_ids.add(uuid)
+    return promoted
+
+
 def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
     with LEDGER.open(encoding="utf-8", newline="") as handle:
@@ -428,6 +452,31 @@ def build_master() -> MasterBuild:
         })
 
     source_overrides_applied = apply_source_overrides(items)
+    existing_ids = {item["uuid"] for item in items}
+    for candidate in load_promotions():
+        if candidate["uuid"] in existing_ids:
+            raise ValueError(f"{PROMOTIONS} reuses existing master UUID {candidate['uuid']}")
+        year = candidate["proposed_year"]
+        item_type = candidate["item_type"]
+        code = ""
+        if year:
+            key = (item_type.upper(), year)
+            sequences[key] = sequences.get(key, 0) + 1
+            code = f"{key[0]}-{year}-{sequences[key]:03d}"
+        items.append({
+            "uuid": candidate["uuid"], "catalog_code": code, "legacy_tempid": "",
+            "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
+            "title_source": "", "item_type": item_type, "series": candidate["series"],
+            "year": year, "month": "", "format": candidate["proposed_format"],
+            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
+            "location_physical": "", "location_digital": "", "location_streaming": "",
+            "source_url_veritas": candidate["official_product_url"], "source_url_hay_house": "",
+            "source_url_nightingale_conant": "", "source_url_audible": "",
+            "reference_url_1": "", "reference_url_2": "",
+            "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
+            "raw_row_number": f"candidate:{candidate['candidate_key']}",
+        })
+        existing_ids.add(candidate["uuid"])
     backfill_months_from_official_source(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [

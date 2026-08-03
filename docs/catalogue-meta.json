@@ -1,8 +1,8 @@
 {
-  "master_items": 342,
-  "migrated_items": 306,
+  "master_items": 347,
+  "migrated_items": 311,
   "everything_record_types": {
-    "master": 306,
+    "master": 311,
     "candidate_discovery": 4,
     "candidate_veritas": 24,
     "candidate_hayhouse": 4,
