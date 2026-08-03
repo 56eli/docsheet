@@ -16,6 +16,7 @@ GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 ```bash
 pip install -r requirements.txt
 python process_data.py
+python process_data.py --check  # verify committed raw-Pages outputs are current
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
 
@@ -67,7 +68,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (308) |
+| `master` | A curated master catalogue record (306) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 
@@ -87,10 +88,12 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **308** records (274 `lecture`, 23 `book`,
-8 `discussion`, 3 untyped), **221** catalogue codes, **66** retained exclusions,
-**80** approved source overrides, **17** reviewed/unpromoted manual candidates,
-**301** item-to-product relationships, and **7** series-compilation relationships.
+The current curated master has **317** records (277 `lecture`, 29 `book`,
+10 `discussion`, 1 untyped), **223** catalogue codes, **68** retained exclusions,
+**79** approved source overrides, **11** promoted and **6** unpromoted official
+candidates, **301** item-to-product relationships, and **7** series-compilation
+relationships. The master exposes `legacy_title` alongside the cleaned public title
+so the verbatim raw spreadsheet text is always exportable.
 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture

@@ -196,7 +196,7 @@ official catalogue, which contains exactly the two reconstructed titles
 | `git diff --check` | ✅ |
 | Playwright test discovery | ✅ 3 tests |
 | Playwright browser execution | ❌ sandbox cannot download Chromium |
-| Workflow-file push | ❌ App lacks `workflows` permission (re-probed) |
+| GitHub CI workflow | ✅ successful on `main` at 2026-08-03 12:22 UTC |
 
 ---
 
@@ -244,5 +244,167 @@ generated but unread by the UI; `loadMeta()`/`metaLoaded` are dead code;
 
 All non-critical findings are carried there with evidence and recommendations:
 4 series/type judgement calls, the title-hygiene pass (54 records),
-CI enablement, SRI/CSP hardening, read-only sheets, candidate promotion,
+SRI/CSP hardening, read-only sheets, candidate promotion,
 `format` population, dead-code removal, and documentation consolidation.
+
+
+---
+
+## 9. Post-merge engineering audit — 2026-08-03
+
+This follow-up audit was run against commit `e1f32d4` on 2026-08-03 after the
+CI workflow landed. It supplements the field-level catalogue audit above; it
+does **not** alter approved catalogue data.
+
+### Scope and observed state
+
+- **Repository / deployment:** 92 tracked files (about 3.1 MB working tree).
+  GitHub Pages is configured from `main:/docs` and reports `built` at
+  <https://56eli.github.io/docsheet/>.
+- **Automated CI:** the latest `CI` run on `main` completed successfully at
+  12:22 UTC. It executes Python compilation, the three deterministic catalogue
+  checks, JavaScript syntax checks, and the Chromium Playwright suite.
+- **Supply-chain scan:** `npm ci` completed from the lockfile and `npm audit
+  --omit=dev --audit-level=high` reported **0 vulnerabilities**. No secrets or
+  credentials were found in tracked source (excluding dependency lock metadata).
+- **Data shape:** the checked master contains 308 records (274 lecture, 23 book,
+  8 discussion, 3 untyped); it has 301 reviewed item/product relationships and
+  7 reviewed compilation relationships. All 17 manual candidates remain
+  deliberately unpromoted.
+
+### Local validation results
+
+| Check | Result |
+|---|---|
+| `python -m py_compile *.py` | ✅ passed |
+| `python build_research_master.py --check` | ✅ 308 items, 66 exclusions, 80 overrides |
+| `python build_catalogue_pages.py --check` | ✅ 344 Everything rows |
+| `python reconcile_research_master.py --check` | ✅ report current |
+| JavaScript syntax checks (`app.js`, Playwright config/tests) | ✅ passed |
+| `npm ci` and production dependency audit | ✅ passed; 0 vulnerabilities |
+| Local Playwright execution | ⚠️ blocked: Chromium executable is absent in this sandbox |
+| `python fetch_veritas_catalogue.py --check` | ⚠️ blocked: local TLS EOF to Veritas API after retries |
+| GitHub-hosted CI browser suite | ✅ passed (authoritative browser execution) |
+
+The two local blocked checks are environmental transport/browser-install limits,
+not a demonstrated application failure. The existing manual **Map Veritas
+Catalogue** run is failing intentionally when its review candidate differs from
+the committed inventory; that workflow retains its candidate/diff artifact for
+review rather than silently overwriting catalogue data.
+
+### Findings and recommended order
+
+1. **Medium — client-side supply-chain protections are incomplete.** Tabulator
+   is version-pinned but loaded from jsDelivr without SRI; the page also has no
+   Content Security Policy. Add an appropriate CSP and integrity/crossorigin
+   attributes after verifying the exact CDN asset hashes. Consider a local
+   vendored fallback if availability is important.
+2. **Medium — review data appears editable although it is not persistent.**
+   `buildColumns()` applies the Tabulator input editor to every view, including
+   generated review and catalogue derivatives. Disable editors on derived views
+   (or make the session-only behavior unmissable) to prevent review mistakes.
+3. **Medium — data freshness cannot be established locally today.** The local
+   Veritas client cannot negotiate TLS in this environment, and the latest
+   GitHub refresh reports a candidate difference. Download and review that
+   workflow artifact before accepting any inventory update; do not bypass the
+   review-only process.
+4. **Low — pipeline and documentation drift risks remain.** `process_data.py`
+   has no `--check` mode; its timestamp makes output comparison non-deterministic.
+   `loadMeta()`/`metaLoaded` are unused, the UI does not consume the committed
+   metadata files, `pandas>=2.0` has no upper bound, and several root-level
+   handoff/status documents duplicate current-state figures. Consolidate these
+   only after deciding the desired public UI behavior.
+5. **Low — product decisions are still intentionally open.** Resolve the
+   documented series/type, title hygiene, untyped-record, source-override, and
+   candidate-promotion decisions in `NEXT_AGENT_HANDOFF.md` before data changes.
+
+No critical code, security, referential-integrity, or generated-output defect
+was found by the checks available in this environment. The highest-value next
+implementation task is CSP/SRI plus read-only review sheets; the highest-value
+catalogue task is review of the Map Veritas artifact and the owner decisions
+listed in the handoff.
+
+---
+
+## 10. Follow-up remediation and source comparison — 2026-08-03
+
+The engineering findings in §9 were worked through against their authoritative
+inputs. This change set deliberately does not make catalogue-content decisions
+where the official source establishes facts but the required catalogue treatment
+is an owner decision.
+
+| Audit item | Authoritative comparison / evidence | Outcome |
+|---|---|---|
+| CDN integrity | The three SRI SHA-384 values were calculated from the official `tabulator-tables@6.5.2` npm package tarball, for the exact CSS/JS paths used by jsDelivr. | ✅ `integrity` and `crossorigin` added to both stylesheets and the script. |
+| Browser execution policy | The deployed document's own required origins were enumerated: local Pages assets, jsDelivr, Google Fonts, and Google font files. The inline dark-mode bootstrap was SHA-256 hashed from its exact document content. | ✅ restrictive CSP added: no objects, only self data connections, explicit script/style/font origins, and the one hashed inline bootstrap. |
+| Misleading editing | Tabulator's documented `editor: false` column setting was applied to every generated view; the browser test now double-clicks a cell and asserts no editor appears. | ✅ published sheets are read-only, and UI/help text were aligned. |
+| Raw-output drift | The raw CSV, `docs/data.json`, and `docs/meta.json` were regenerated in memory using the declared Pandas pipeline. | ⚠️ `process_data.py --check` now verifies the byte-stable data payload and all stable metadata. The matching CI step is prepared locally but cannot be pushed by this GitHub App because it lacks `workflows` permission. |
+| Dependency range | The pipeline was validated using current Pandas 3.0.5. | ✅ requirement bounded to `pandas>=2.0,<4`. |
+| Live Veritas freshness | GitHub Actions run `30813523859` successfully fetched the upstream candidate, then failed only at its intentional inventory-diff gate. Its artifact endpoint and failed-log download both reached an Azure/GitHub TLS EOF from this sandbox, so its contents could not be independently retrieved here. | ⚠️ The upstream difference is confirmed by the workflow step, but must be reviewed from the uploaded artifact in GitHub before any inventory change. |
+| Catalogue record facts | §2's 191-product/308-record comparison remains the authoritative entry-by-entry evidence: live Veritas API URLs, titles, taxonomy, product dates, SKU/format pages, raw ownership values, and relationship references were compared. Current deterministic checks still reproduce the resulting 308 master / 344 Everything records with no divergence. | ✅ no unapproved data mutation made. |
+
+### Deliberately unresolved decisions
+
+Official sources can establish that the relevant products/categories exist, but
+cannot decide collection policy. The following therefore remain explicitly
+unmodified pending owner direction: the 2011 Satsang placement, record 301's
+book-versus-audio treatment, title-hygiene conventions, exclusion of the two
+known-nonexistent Office Series placeholders, the proposed source override for
+record 264, and promotion of any of the 17 reviewed candidates. Their source
+evidence and decision boundaries are retained in `NEXT_AGENT_HANDOFF.md` and
+its linked decision documents.
+
+### Verification after remediation
+
+Using an isolated Python environment with Pandas 3.0.5, all of the following
+passed: Python compilation, `process_data.py --check`, research-master check,
+Pages-catalogue check, reconciliation check, JavaScript syntax checks, and
+`npm audit --omit=dev --audit-level=high` (0 vulnerabilities). The new raw-payload CI step is pending a workflow-permitted push. Local Playwright
+execution remains unavailable solely because this sandbox lacks the Chromium
+binary; the same browser suite is part of the successful GitHub-hosted CI.
+
+---
+
+## 11. Current-state full coherence audit — 2026-08-03
+
+**Scope:** every raw-spreadsheet row, migration-ledger row, generated raw Pages
+row, curated-master row, review candidate, promotion decision, relationship, and
+published Everything row at the current branch tip.
+
+### Results
+
+| Layer / invariant | Result |
+|---|---|
+| Raw spreadsheet → migration ledger | 374/374 rows, sequential raw-row provenance 3–376 |
+| Raw spreadsheet → `docs/data.json` | 374/374 rows; all cell values preserved (Pandas deterministically renames blank header cells to `Unnamed: 5`, `Unnamed: 8`…`Unnamed: 11`) |
+| Curated master schema | 317/317 rows share the declared 24-field schema; every row has a verbatim `legacy_title` |
+| Master IDs | 317 unique IDs; no duplicate master UUIDs |
+| Master ↔ exclusions | 68 excluded raw rows are disjoint from retained raw master rows |
+| Master → Everything view | 317 `master` rows plus 36 official candidate rows = 353 rows |
+| Candidate promotions | 11 promotion-registry keys exactly match the 11 candidate rows marked `promoted`; 6 remain explicitly `not_promoted` |
+| Product relationships | 301/301 reference a current master UUID |
+| Deterministic builds | `process_data --check`, master, Pages, and reconciliation checks all pass |
+| Syntax / supply chain | Python and JavaScript syntax checks pass; production npm audit reports 0 vulnerabilities |
+
+### Remediation during this audit
+
+The audit found an internal-status mismatch: 11 records had been promoted through
+the explicit promotion registry while their source candidate rows still said
+`not_promoted`. The generator now validates candidate status against
+`data/manual_candidate_promotions.csv`; the 11 promoted candidates are marked
+accordingly, with six remaining candidates clearly unpromoted. This keeps the
+review workspace, source input, and published master coherent.
+
+### Known boundaries
+
+- This is a complete **repository-data coherence** audit. It does not claim a
+  fresh live re-fetch of every publisher page: the reviewed 191-product snapshot
+  remains the declared primary-source baseline, while the local Veritas API client
+  is blocked by a TLS EOF in this environment.
+- Playwright is syntax-validated locally; Chromium is unavailable in this
+  sandbox. GitHub-hosted CI previously ran the browser suite successfully. The
+  pending raw-output CI step remains an unpushed workflow-file edit because the
+  GitHub App lacks workflow-write permission.
+- The owner-approved category dominance rules are documented in
+  `CATEGORY_DOMINANCE_POLICY.md`; implementation of the full taxonomy mapper and
+  review queue is the next data-engineering task.

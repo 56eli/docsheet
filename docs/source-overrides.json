@@ -648,24 +648,6 @@
     "evidence_source": "https://veritaspub.com/wp-json/wp/v2/product (official product_cat taxonomy)"
   },
   {
-    "raw_row_number": "342",
-    "target_field": "source_url_audible",
-    "override_value": "https://www.audible.com/pd/The-Highest-Level-of-Enlightenment-Audiobook/B00O3I950G",
-    "review_status": "approved",
-    "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/audible_official_products.csv"
-  },
-  {
-    "raw_row_number": "342",
-    "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/the-highest-level-of-enlightenment/",
-    "review_status": "approved",
-    "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
-  },
-  {
     "raw_row_number": "347",
     "target_field": "source_url_veritas",
     "override_value": "https://veritaspub.com/product/the-path-to-spiritual-advancement-how-to-transcend-the-ego-and-experience-the-presence-of-god/",
@@ -718,5 +700,14 @@
     "approval_date": "2026-08-03",
     "review_reason": "Approved book source relationship based on exact title and official product-page evidence.",
     "evidence_source": "data/veritas_official_products.csv (Veritas product 56141)"
+  },
+  {
+    "raw_row_number": "342",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-highest-level-of-enlightenment-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Owner confirmed the held edition is the Hay House paperback ISBN 1401964990; replaces mismatched audio-product associations.",
+    "evidence_source": "https://www.hayhouse.com/the-highest-level-of-enlightenment-paperback (official publisher page; ISBN 1401964990)"
   }
 ]

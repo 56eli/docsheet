@@ -49,6 +49,16 @@ test('CSV export uses the selected view filename', async ({ page }) => {
   expect(lowerCsv).toContain('title');
 });
 
+test('published catalogue views are read-only', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  const cell = page.locator('.tabulator-cell[tabulator-field="title"]').first();
+  await cell.dblclick();
+  await expect(cell.locator('input, textarea, select')).toHaveCount(0);
+  await expect(page.locator('#footer-note')).toContainText(/read-only/i);
+});
+
 test('Everything view separates curated master records from candidates', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);

@@ -247,10 +247,9 @@
   let table = null;
   let allData = [];
   let activeView = "master";
-  let metaLoaded = false;
   let activeSearchQuery = "";
   let activeReviewFilter = null;
-  const FOOTER_IDLE_NOTE = "Click a row for details; double-click a cell to edit (session only)";
+  const FOOTER_IDLE_NOTE = "Click a row for details; published views are read-only";
 
   /* ------------------------------------------------------------------ *
    *  Helpers
@@ -425,24 +424,8 @@
   }
 
   /* ------------------------------------------------------------------ *
-   *  Data loading (meta.json first for a snappy footer)
+   *  Data loading
    * ------------------------------------------------------------------ */
-  async function loadMeta() {
-    try {
-      const res = await fetch("meta.json", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const meta = await res.json();
-      metaLoaded = true;
-      footerStats.textContent = `Total Rows: ${meta.total_rows ?? "—"}`;
-      footerUpdated.innerHTML =
-        `Last Updated: <span class="updated">${formatTimestamp(meta.generated_at_utc)}</span>`;
-      return meta;
-    } catch (err) {
-      console.warn("[docsheet] meta.json unavailable:", err);
-      return null;
-    }
-  }
-
   async function loadData(viewName) {
     const view = VIEWS[viewName];
     const res = await fetch(view.file, { cache: "no-store" });
@@ -579,7 +562,9 @@
         headerSort: true,          // click header to sort asc/desc
         resizable: true,           // drag column edge to resize
         minWidth: 110,
-        editor: "input",           // double-click any cell to edit
+        // Pages publishes generated catalogue/review data. Edits must occur in
+        // the declared CSV review inputs, never as misleading session-only UI edits.
+        editor: false,
         tooltip: (e, cell) => String(cell.getValue() ?? ""),
       };
 

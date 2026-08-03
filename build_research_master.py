@@ -25,9 +25,10 @@ EXCLUSIONS = Path("data") / "research_master_exclusions.csv"
 SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
 MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
+PROMOTIONS = Path("data") / "manual_candidate_promotions.csv"
 
 FIELDS = [
-    "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
+    "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -38,7 +39,9 @@ EXCLUSION_FIELDS = [
     "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
     "raw_we_have", "raw_original_source", "raw_product_link",
 ]
-SOURCE_OVERRIDE_FIELDS = {"source_url_veritas", "source_url_audible"}
+SOURCE_OVERRIDE_FIELDS = {
+    "source_url_veritas", "source_url_hay_house", "source_url_audible",
+}
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
 }
@@ -138,11 +141,30 @@ def existing_uuids() -> dict[str, str]:
 
 
 def title_for(row: dict[str, str]) -> str:
-    # The lecture-review batch proposed this limited canonicalization only.
+    """Produce the public display title while retaining the raw legacy title.
+
+    Carrier and part designators (for example ``DVD01``, ``CD02``, and
+    ``PART2``) intentionally remain in the display title by owner direction.
+    Only filesystem/transcoding noise and a leading numeric file sequence are
+    removed. The raw source string is always emitted separately as
+    ``legacy_title``.
+    """
+    import re
+
+    title = row["proposed_title"].strip()
     if row["raw_tempid"].startswith("LS"):
-        import re
-        return re.sub(r"\s*\([^)]*\)\s*DVD\d+\s*$", "", row["proposed_title"]).strip()
-    return row["proposed_title"]
+        return re.sub(r"\s*\([^)]*\)\s*DVD\d+\s*$", "", title).strip()
+
+    title = re.sub(r"\.mp4\s*$", "", title, flags=re.IGNORECASE)
+    title = re.sub(r"\s*-\s*converted\s*$", "", title, flags=re.IGNORECASE)
+    title = re.sub(r"^\d{1,3}[.\s]+(?=\S)", "", title)
+    title = re.sub(r"\s+", " ", title).strip()
+
+    # Official product 50432 and its two-disc SKU establish that raw row 224
+    # is Volume I, disc 2; the raw "Volume II" text is a transcription error.
+    if row["raw_row_number"] == "224":
+        title = title.replace("Volume II-", "Volume I-", 1)
+    return title
 
 
 def notes_for(row: dict[str, str]) -> str:
@@ -151,6 +173,10 @@ def notes_for(row: dict[str, str]) -> str:
         notes.append(f"Raw source note: {row['raw_original_source']}")
     if row["raw_unnamed_5"]:
         notes.append(row["raw_unnamed_5"])
+    if row["raw_row_number"] == "224":
+        notes.append(
+            "Display title corrects raw 'Volume II' to Volume I: official product 50432 is a two-disc Volume I set."
+        )
     return " | ".join(notes)
 
 
@@ -286,6 +312,11 @@ def validate_manual_candidates() -> int:
             for row in csv.DictReader(handle)
         }
 
+    promoted_keys: set[str] = set()
+    if PROMOTIONS.exists():
+        with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+            promoted_keys = {row.get("candidate_key", "").strip() for row in csv.DictReader(handle)}
+
     seen_keys: set[str] = set()
     for line_number, candidate in enumerate(candidates, start=2):
         key = candidate["candidate_key"].strip()
@@ -319,9 +350,11 @@ def validate_manual_candidates() -> int:
             )
         if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
             raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
-        if candidate["promotion_status"].strip() != "not_promoted":
+        expected_promotion_status = "promoted" if key in promoted_keys else "not_promoted"
+        if candidate["promotion_status"].strip() != expected_promotion_status:
             raise ValueError(
-                f"{MANUAL_CANDIDATES}:{line_number} must remain not_promoted until a separate approval"
+                f"{MANUAL_CANDIDATES}:{line_number} must be {expected_promotion_status!r} "
+                "to match the explicit promotion registry"
             )
         if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
             raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs evidence and promotion notes")
@@ -340,6 +373,29 @@ def validate_manual_candidates() -> int:
             )
         seen_keys.add(key)
     return len(candidates)
+
+
+def load_promotions() -> list[dict[str, str]]:
+    """Load explicit, owner-approved promotions for official candidates."""
+    if not PROMOTIONS.exists():
+        return []
+    with MANUAL_CANDIDATES.open(encoding="utf-8", newline="") as handle:
+        candidates = {row["candidate_key"]: row for row in csv.DictReader(handle)}
+    with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    promoted = []
+    seen_ids: set[str] = set()
+    for line, row in enumerate(rows, 2):
+        key, uuid = row["candidate_key"].strip(), row["master_uuid"].strip()
+        candidate = candidates.get(key)
+        if not candidate or not uuid.isdigit() or uuid in seen_ids:
+            raise ValueError(f"{PROMOTIONS}:{line} needs a unique numeric master_uuid and known candidate_key")
+        item_type = row["item_type"].strip() or candidate["proposed_item_type"].strip()
+        if item_type not in CONTENT_ITEM_TYPES:
+            raise ValueError(f"{PROMOTIONS}:{line} needs a non-deprecated content item_type")
+        promoted.append({**candidate, "uuid": uuid, "item_type": item_type, "series": row["series"].strip()})
+        seen_ids.add(uuid)
+    return promoted
 
 
 def build_master() -> MasterBuild:
@@ -380,6 +436,7 @@ def build_master() -> MasterBuild:
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
+            "legacy_title": row["raw_title"],
             "title_source": row["raw_title"] if canonical_title != row["raw_title"] else "",
             "item_type": item_type,
             "series": row["proposed_series"],
@@ -402,6 +459,31 @@ def build_master() -> MasterBuild:
         })
 
     source_overrides_applied = apply_source_overrides(items)
+    existing_ids = {item["uuid"] for item in items}
+    for candidate in load_promotions():
+        if candidate["uuid"] in existing_ids:
+            raise ValueError(f"{PROMOTIONS} reuses existing master UUID {candidate['uuid']}")
+        year = candidate["proposed_year"]
+        item_type = candidate["item_type"]
+        code = ""
+        if year:
+            key = (item_type.upper(), year)
+            sequences[key] = sequences.get(key, 0) + 1
+            code = f"{key[0]}-{year}-{sequences[key]:03d}"
+        items.append({
+            "uuid": candidate["uuid"], "catalog_code": code, "legacy_tempid": "",
+            "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
+            "title_source": "", "item_type": item_type, "series": candidate["series"],
+            "year": year, "month": "", "format": candidate["proposed_format"],
+            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
+            "location_physical": "", "location_digital": "", "location_streaming": "",
+            "source_url_veritas": candidate["official_product_url"], "source_url_hay_house": "",
+            "source_url_nightingale_conant": "", "source_url_audible": "",
+            "reference_url_1": "", "reference_url_2": "",
+            "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
+            "raw_row_number": f"candidate:{candidate['candidate_key']}",
+        })
+        existing_ids.add(candidate["uuid"])
     backfill_months_from_official_source(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [

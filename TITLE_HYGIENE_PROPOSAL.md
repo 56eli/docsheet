@@ -1,9 +1,13 @@
 # Title Hygiene Proposal — 56 records with raw file artifacts
 
 **Prepared:** 2026-08-03
-**Status:** ⏳ **Awaiting approval — no data changed.**
-**Scope:** master display titles carrying filesystem artifacts, plus the 3 records
-still untyped after IT-1.
+**Status:** ✅ **Applied 2026-08-03.** The generated master now exposes a verbatim
+`legacy_title` column and applies the owner-approved cleanup, with DVD/CD/PART
+designators retained in the public title. The decision draft below is retained as
+research history; its earlier proposal to move PART/A-series identifiers into
+`format_detail` was **not** adopted.
+**Scope:** master display titles carrying filesystem artifacts. The two note-only
+placeholders discussed below were separately excluded, leaving one untyped record.
 
 ---
 

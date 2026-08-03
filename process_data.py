@@ -32,6 +32,7 @@ We read with header=1 so the live table shows the real column names.
 No cell values are modified — the data is passed through unchanged.
 """
 
+import argparse
 import json
 import sys
 from datetime import datetime, timezone
@@ -80,12 +81,37 @@ def find_source_csv(preferred: str) -> Path:
     )
 
 
+def verify_outputs(records_json: str, meta: dict) -> None:
+    """Ensure committed pipeline outputs still represent the current CSV.
+
+    ``generated_at_utc`` is intentionally excluded from byte comparison because
+    it records build time. All other metadata and the data payload must match.
+    """
+    if not DATA_OUTPUT.is_file() or not META_OUTPUT.is_file():
+        raise FileNotFoundError("Generated docs/data.json and docs/meta.json must both exist.")
+    if DATA_OUTPUT.read_text(encoding="utf-8") != records_json:
+        raise ValueError("docs/data.json is stale; run: python process_data.py")
+    try:
+        committed_meta = json.loads(META_OUTPUT.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"docs/meta.json is not valid JSON: {exc}") from exc
+    expected = {key: value for key, value in meta.items() if key != "generated_at_utc"}
+    actual = {key: committed_meta.get(key) for key in expected}
+    if actual != expected or not isinstance(committed_meta.get("generated_at_utc"), str):
+        raise ValueError("docs/meta.json is stale or malformed; run: python process_data.py")
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Build or verify the raw spreadsheet Pages payload.")
+    parser.add_argument("source_csv", nargs="?", default=DEFAULT_CSV, help="Source CSV path")
+    parser.add_argument("--check", action="store_true", help="Verify committed outputs without writing")
+    args = parser.parse_args()
+
     try:
         import pandas as pd
 
         # --- 1. Locate and read the source CSV -------------------------------
-        csv_path = find_source_csv(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CSV)
+        csv_path = find_source_csv(args.source_csv)
         print(f"[process_data] Reading {csv_path}")
 
         # header=1 skips the Google Sheets title row (line 1: "archive clbs").
@@ -100,12 +126,7 @@ def main() -> int:
         # --- 3. Serialize to JSON (array of objects) -------------------------
         records_json = df.to_json(orient="records", force_ascii=False, indent=JSON_INDENT)
 
-        # --- 4. Write outputs ------------------------------------------------
-        DATA_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-        DATA_OUTPUT.write_text(records_json, encoding="utf-8")
-        print(f"[process_data] Wrote {DATA_OUTPUT} ({len(records_json)} bytes, "
-              f"{len(df)} rows)")
-
+        # --- 4. Build or verify outputs -------------------------------------
         meta = {
             "source_file": csv_path.name,
             "total_rows": int(len(df)),
@@ -113,6 +134,15 @@ def main() -> int:
             "columns": [str(c) for c in df.columns],
             "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
+        if args.check:
+            verify_outputs(records_json, meta)
+            print("[process_data] docs/data.json and docs/meta.json match the current source.")
+            return 0
+
+        DATA_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+        DATA_OUTPUT.write_text(records_json, encoding="utf-8")
+        print(f"[process_data] Wrote {DATA_OUTPUT} ({len(records_json)} bytes, "
+              f"{len(df)} rows)")
         META_OUTPUT.write_text(
             json.dumps(meta, indent=JSON_INDENT, ensure_ascii=False), encoding="utf-8"
         )
