@@ -171,3 +171,41 @@ assigns a compact ID, catalogue code and provenance.
   ("Two DVD Set", running time, ISBN) — the strongest evidence available.
 - `product_cat` IDs map to slugs via the `product_cat` endpoint; the taxonomy is
   the authoritative grouping and it resolved several ambiguities outright.
+
+---
+
+## Post-audit merge handoff — 2026-08-03
+
+**Merged PRs:** [#11](https://github.com/56eli/docsheet/pull/11) (full coherence
+audit and promotion-status reconciliation) and
+[#12](https://github.com/56eli/docsheet/pull/12) (count-independent browser smoke
+test). PR #12 CI passed all deterministic pipeline checks and **4/4 Chromium
+browser tests**.
+
+### Safe starting point
+
+1. Read `AUDIT_2026-08-03_FULL.md` §11, `CATEGORY_DOMINANCE_POLICY.md`, and this
+   file before changing data.
+2. Do not hand-edit `data/research_master_draft.*`, `docs/*.json`, or the raw
+   spreadsheet. Update declared review inputs, rebuild, then run all checks.
+3. The master is 317 records; 11 official candidates are promoted through
+   `data/manual_candidate_promotions.csv`; six candidate records remain
+   intentionally unpromoted.
+4. The only local uncommitted file in this Arena session is the CI workflow
+   addition (`python process_data.py --check`). GitHub rejects workflow-file
+   updates from this app without `workflows` permission. Follow
+   `UNBLOCK_INSTRUCTIONS.md` in GitHub's web editor; do not discard that change
+   without applying its equivalent upstream.
+
+### Next implementation priority
+
+Implement the official taxonomy mapper from `CATEGORY_DOMINANCE_POLICY.md` as a
+reviewable input/output layer. First refresh or retrieve the official category
+snapshot, preserve every publisher category, calculate a dominant category by the
+approved hierarchy, and emit an explicit review queue for no-category and
+Satsang+Highlights conflicts. Categories may set `series`, but must not silently
+change `item_type`.
+
+After that, continue candidate review: rechecked audio candidates, remaining
+Unity Church talks, and deferred record 264. Use official product pages as source
+evidence and record owner decisions in committed inputs.
