@@ -231,15 +231,25 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
 
 
 def infer_format_from_official_source(
-    item: dict[str, str], veritas_by_id: dict[str, dict[str, str]]
+    item: dict[str, str],
+    veritas_by_id: dict[str, dict[str, str]],
+    veritas_by_url: dict[str, dict[str, str]] | None = None,
 ) -> str:
-    """Infer a missing format from Veritas product slug and official title.
+    """Infer a missing format from Veritas product slug, title, and category.
 
     Uses reliable signals present in the committed official inventory
     (video/volume slugs → DVD, cd-set/satsang-cd → CD, question-answer → streaming,
-    audio markers → audio, book markers → book). Only returns a value when
-    the current format field is blank. This is a deterministic, reviewable
-    backfill that never overwrites an existing value.
+    audio markers → audio, book markers → book, and — for ``item_type=book``
+    records — the publisher's own ``Books Published by Dr. Hawkins`` category).
+
+    The inventory product is resolved by **exact URL match first** (master
+    ``source_url_veritas`` is validated to exist in the inventory) and only
+    falls back to the legacy numeric-ID-prefix slug guess, which misses the
+    many word-slug URLs (``healing-and-recovery-copy`` → no ID prefix). This
+    closed the 17-blank-book gap for every URL-bearing book record.
+
+    Only returns a value when the current format field is blank. This is a
+    deterministic, reviewable backfill that never overwrites an existing value.
     """
     if item.get("format"):
         return ""
@@ -247,8 +257,13 @@ def infer_format_from_official_source(
     if not url:
         return ""
     slug = url.rstrip("/").split("/")[-1].lower()
-    pid = slug.split("-")[0] if "-" in slug else slug
-    prod = veritas_by_id.get(pid, {})
+
+    prod: dict[str, str] = {}
+    if veritas_by_url:
+        prod = veritas_by_url.get(url, {})
+    if not prod:
+        pid = slug.split("-")[0] if "-" in slug else slug
+        prod = veritas_by_id.get(pid, {})
     ot = (prod.get("official_title", "") or item.get("title", "")).lower()
 
     if any(k in slug for k in ("video", "muscle-testing-video")) or slug.startswith("volume-"):
@@ -260,6 +275,15 @@ def infer_format_from_official_source(
     if "audio" in slug or "– audio" in ot or " audio" in ot:
         return "audio"
     if "book" in slug or "(book)" in ot:
+        return "book"
+    # Publisher-category evidence: the product sits on the publisher's own
+    # books shelf. Guarded by item_type so a lecture/audio edition that merely
+    # shares the category cannot be mislabeled; the carrier of a book-class
+    # record is the book edition the master is linked to.
+    if (
+        item.get("item_type") == "book"
+        and "Books Published by Dr. Hawkins" in prod.get("official_categories", "")
+    ):
         return "book"
     return ""
 
@@ -588,10 +612,12 @@ def build_master() -> MasterBuild:
     # Format backfill from official Veritas inventory (only fills blanks)
     if VERITAS_PRODUCTS.exists():
         with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            veritas_by_id = {row["veritas_product_id"]: row for row in csv.DictReader(handle)}
+            inventory_rows = list(csv.DictReader(handle))
+        veritas_by_id = {row["veritas_product_id"]: row for row in inventory_rows}
+        veritas_by_url = {row["official_product_url"]: row for row in inventory_rows}
         inferred = 0
         for item in items:
-            fmt = infer_format_from_official_source(item, veritas_by_id)
+            fmt = infer_format_from_official_source(item, veritas_by_id, veritas_by_url)
             if fmt:
                 item["format"] = fmt
                 inferred += 1

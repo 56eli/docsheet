@@ -194,7 +194,7 @@ success. The handoff's P0 "add CI steps via web editor" is therefore closed.
 | New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
 | New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
 | Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
-| Suite | 54 → **62 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+| Suite | 54 → **65 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
 
 Check battery green at push time: `py_compile`, all five `--check` generators
 (+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
@@ -214,7 +214,7 @@ coverage gate (exit 0), `node --check` ×3, `git diff --check`.
   still 363); docs updated (README/handoff 312, schema invariant restored,
   audit §12.6, handoff P1 entry removed).
 
-Battery green: `py_compile`, all five `--check` (no warning now), **62 tests**,
+Battery green: `py_compile`, all five `--check` (no warning now), **65 tests**,
 coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.
 
 ### 11c. Root-cause: why 17 of 29 books have no `format=book` (owner question)
@@ -256,3 +256,51 @@ publisher-category signal (`Books Published by Dr. Hawkins` →
 need reviewed source links (298/299 HH URLs, 286 HH URL) or manual ruling
 (301 paperback via HH; 302 unverifiable), i.e. `NEXT_AGENT_HANDOFF.md` P1/P2
 territory.
+
+### 11d. Book-format backfill APPLIED (owner: "implement + apply")
+
+`infer_format_from_official_source()` in `build_research_master.py` now
+resolves the inventory product by **exact URL match first** (legacy
+numeric-ID slug guess kept as fallback) and adds the publisher-category
+signal (`Books Published by Dr. Hawkins` → `format=book`, guarded by
+`item_type=book`, never overwrites). Master rebuilt through the sanctioned
+path: **exactly the 12 predicted records** changed (291, 292, 295, 296, 297,
+300, 303–308), `format` `''` → `book`, nothing else. Books labeled: 12/29 →
+**24/29**; total format coverage 231 → **243** of 317 (74 blank). Pages
+outputs regenerated; all five `--check` green; 65 tests; coverage 92%.
+
+### 11e. Why the remaining 5 books have no Veritas URL (owner question)
+
+Chain of causes, verified row-by-row (raw rows 325, 339, 340, 342, 343):
+
+1. **The raw spreadsheet has no `product link` in those rows** (every
+   other book record does). The bootstrap's safe rule
+   (`generate_migration_ledger.py`) proposes `source_url_veritas` **only from
+   a valid raw Veritas product link** — no link ⇒ no proposal ⇒ the ledger
+   and master carry an empty Veritas URL.
+2. **The review layers never filled them afterwards:**
+   - 286 *Power vs Force*: the Veritas book product **50411** exists but is
+     matched (`matched_by_title`) to **lecture master 202** (Volume I-Power
+     vs Force Part 1) and kept as related material there; the book master
+     286 received only an Audible override. Title-matching deliberately does
+     not mint master URLs (C2 lesson: "a commercial listing is not master
+     identity").
+   - 298 *Along the Path to Enlightenment* / 299 *Dissolving the Ego*: no
+     Veritas products exist for them; Hay House carries eBook rows
+     (`matched_by_title`) but **no source override was ever approved** for
+     these masters (286/301 got overrides; 298/299 did not).
+   - 301 *The Highest Level of Enlightenment*: Veritas sells it **audio-only**
+     (product 1742, currently `unreviewed_official_product` after the C2
+     demotion); the *book* edition is Hay House-only — hence the approved HH
+     override and no possible Veritas URL.
+   - 302 *The Path to Spiritual Advancement*: no link, no tempid, no
+     inventory match, and no HH row; the same work appears as master **303**
+     with the Veritas transcription-book URL (product 54472) — **302/303
+     need a duplicate-resolution ruling** (likely Hay House edition vs
+     Veritas edition of the same book).
+
+So: empty raw links + conservative bootstrap + no approved overrides for
+298/299 + audio-only Veritas listings for 301 + a probable 302/303 duplicate
+are the five distinct causes. None of these should be fixed by silent
+title-matching — they are reviewed source-override / ruling decisions
+(`NEXT_AGENT_HANDOFF.md` P1).

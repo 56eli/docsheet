@@ -479,6 +479,56 @@ class FormatInferenceTests(unittest.TestCase):
         item = {"format": "", "title": "", "source_url_veritas": ""}
         self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
 
+    def test_exact_url_lookup_resolves_word_slug_books(self) -> None:
+        # Word-slug URLs carry no numeric ID prefix; the legacy pid guess
+        # (slug.split('-')[0]) silently misses them. Exact-URL resolution must
+        # find the product and its "(Book)" title marker.
+        product = {
+            "veritas_product_id": "50378",
+            "official_product_url": "https://veritaspub.com/product/healing-and-recovery-copy/",
+            "official_title": "Healing and Recovery (Book)",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {
+            "format": "",
+            "title": "",
+            "item_type": "book",
+            "source_url_veritas": product["official_product_url"],
+        }
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "book")
+
+    def test_category_signal_is_guarded_by_item_type_and_requires_lookup(self) -> None:
+        product = {
+            "veritas_product_id": "43728",
+            "official_product_url": "https://veritaspub.com/product/the-map-of-consciousness-explained/",
+            "official_title": "The Map of Consciousness Explained: A Proven Energy Scale to ...",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        url = product["official_product_url"]
+
+        # item_type=book + publisher books category -> book
+        item = {"format": "", "title": "", "item_type": "book", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "book")
+        # lecture-class record sharing the category must NOT be labeled book
+        item = {"format": "", "title": "", "item_type": "lecture", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+        # without the URL map (legacy pid guess) the word slug resolves nothing
+        item = {"format": "", "title": "", "item_type": "book", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
+
+    def test_category_signal_never_overrides_existing_format(self) -> None:
+        product = {
+            "veritas_product_id": "43728",
+            "official_product_url": "https://veritaspub.com/product/the-map-of-consciousness-explained/",
+            "official_title": "The Map of Consciousness Explained",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {"format": "audio", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+
     def test_compact_id_recognition(self) -> None:
         self.assertTrue(brm.is_compact_id("317"))
         self.assertFalse(brm.is_compact_id("019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091"))

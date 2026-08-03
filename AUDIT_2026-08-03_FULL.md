@@ -565,5 +565,39 @@ session's direction question). On 2026-08-03 the following landed on branch
   `RELATIONSHIP_EXPANSION_AUDIT.md` coverage history, handoff P1 entry
   removed (no longer open), audit §12.3 F1 superseded by this section.
 - **Re-verified**: Pages outputs regenerated and byte-checked (363 Everything
-  rows unchanged; `product-relationships.json` now 312 rows); 62 tests pass;
+  rows unchanged; `product-relationships.json` now 312 rows); 62 tests pass at that point (65 after §12.7);
   coverage still 92%; all five `--check` modes green; `git diff --check` clean.
+
+### 12.7 Book-format backfill (owner question → implement + apply)
+
+**Question:** why do not all books have `format=book`?
+
+**Root cause:** the only format backfill is
+`infer_format_from_official_source()`; it (1) resolved the inventory product
+by guessing the product ID as the slug's first `-`-token — every blank book's
+Veritas URL is a word slug without a numeric prefix, so the lookup silently
+missed; (2) recognized only literal `book`/`(Book)` markers in slug/title —
+only 3 of the 12 URL-bearing blanks carry one, while all 12 sit in the
+publisher's own "Books Published by Dr. Hawkins" category, which was never
+consulted; (3) is Veritas-only, so the 5 books without a Veritas URL
+(286/298/299/301/302) had no path at all. The raw sheet's `format` column is
+unusable evidence (provenance labels + one Discord URL) and the ledger's
+`proposed_format` is empty for all 17.
+
+**Fix applied (owner-directed):** the inference now resolves the product by
+**exact URL match** against the committed inventory (fallback to the legacy
+ID-prefix guess) and adds the category signal (`Books Published by Dr.
+Hawkins` → `book`, guarded by `item_type=book`, never overwrites). The master
+rebuild changed exactly the 12 predicted records (`''` → `book`): 291, 292,
+295, 296, 297, 300, 303–308. Book format coverage 12/29 → **24/29**; total
+format coverage 231 → **243** of 317 (74 blank). All checks green; suite now
+**65 tests**; coverage 92%.
+
+**Remaining 5 books (no Veritas URL) — five distinct causes, all
+review-boundary items:** 286 (PvF book product 50411 is title-matched to
+lecture 202, not to book 286 — C2 rule: no title-minted master URLs); 298/299
+(Hay House eBooks exist but no source override was ever approved); 301
+(Veritas is audio-only for this title — the book is Hay House-only, hence the
+HH override); 302 (no link/tempid/inventory match; same work as 303 → needs a
+duplicate-resolution ruling). Full evidence: `TEMP_RESPONSE_AUDIT_2026-08-03.md`
+§11e; tracked in `NEXT_AGENT_HANDOFF.md` P1.
