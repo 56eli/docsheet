@@ -399,6 +399,57 @@ body {
 #review-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .review-filter-hint { color: var(--text-muted); }
 
+/* ---- Active filter summary ---- */
+.active-filters {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  background: color-mix(in srgb, var(--accent) 3%, var(--surface));
+  border-bottom: 1px solid var(--border);
+}
+.active-filters[hidden] { display: none; }
+.active-filters-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.filter-chip {
+  max-width: min(420px, 70vw);
+  padding: 4px 8px;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+#clear-all-filters {
+  margin-left: auto;
+  padding: 5px 9px;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-radius: 999px;
+  cursor: pointer;
+}
+#clear-all-filters:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+#clear-all-filters:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* ==========================================================================
    Spreadsheet area (fills remaining height; table scrolls inside)
    ========================================================================== */
@@ -717,6 +768,8 @@ body {
   .review-toolbar { padding: 7px 10px; gap: 7px; flex-wrap: wrap; }
   #review-filter { min-width: min(220px, 100%); }
   .review-filter-hint { width: 100%; }
+  .active-filters { align-items: flex-start; padding: 7px 10px; flex-direction: column; }
+  #clear-all-filters { margin-left: 0; }
   .row-detail-field { grid-template-columns: 1fr; gap: 4px; }
   .footerbar { gap: 8px 16px; font-size: 12px; }
   .footer-note { display: none; }   /* hide the edit hint on small screens */

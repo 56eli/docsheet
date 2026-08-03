@@ -34,6 +34,9 @@
   const rowDetailsTitle = $("row-details-title");
   const rowDetailsBody = $("row-details-body");
   const closeRowDetailsBtn = $("close-row-details");
+  const activeFilters = $("active-filters");
+  const filterChips = $("filter-chips");
+  const clearAllFiltersBtn = $("clear-all-filters");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -255,6 +258,36 @@
     searchStatus.textContent = isFiltering
       ? `Showing: ${visibleRows} of ${allData.length}`
       : `Showing: ${visibleRows}`;
+    updateActiveFilterChips();
+  }
+
+  function updateActiveFilterChips() {
+    filterChips.replaceChildren();
+    const chips = [];
+    if (activeSearchQuery) {
+      chips.push(["Search", activeSearchQuery]);
+    }
+    if (activeReviewFilter) {
+      chips.push([humanizeField(activeReviewFilter.field), activeReviewFilter.value.replace(/_/g, " ")]);
+    }
+
+    activeFilters.hidden = chips.length === 0;
+    chips.forEach(([label, value]) => {
+      const chip = document.createElement("span");
+      chip.className = "filter-chip";
+      chip.textContent = `${label}: ${value}`;
+      filterChips.append(chip);
+    });
+  }
+
+  function clearAllFilters() {
+    activeSearchQuery = "";
+    activeReviewFilter = null;
+    searchInput.value = "";
+    clearSearchBtn.hidden = true;
+    reviewFilter.value = "";
+    if (table) table.clearFilter();
+    updateSearchStatus();
   }
 
   function updateViewSummary(viewName, rowCount = null) {
@@ -703,6 +736,7 @@
     searchInput.value = "";
     clearSearchBtn.hidden = true;
     reviewToolbar.hidden = true;
+    updateActiveFilterChips();
     closeRowDetails();
     updateViewSummary(viewName);
     spreadsheet.setAttribute("aria-busy", "true");
@@ -742,6 +776,7 @@
       applySearch("");
       searchInput.focus();
     });
+    clearAllFiltersBtn.addEventListener("click", clearAllFilters);
     exportBtn.addEventListener("click", exportCsv);
     reviewFilter.addEventListener("change", () => {
       const field = reviewFilter.dataset.field;

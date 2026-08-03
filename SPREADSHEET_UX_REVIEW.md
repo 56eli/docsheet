@@ -141,7 +141,7 @@ Wide Tabulator grids are desktop-friendly but mobile-hostile. Add one of:
 | 5 | Add per-view column presets/frozen key fields | Implemented: key columns are reordered, width-tuned, and frozen per view; low-priority technical fields move right instead of being hidden so exports remain complete. |
 | 6 | Add column chooser | Implemented: users can hide/show visible columns per active view and restore all columns. |
 | 7 | Add row details drawer | Implemented: click any table row to inspect all fields in a readable side drawer. |
-| 8 | Upgrade filters/search highlighting | Improves reviewer speed. |
+| 8 | Upgrade filters/search feedback | Implemented active filter chips and clear-all behavior; matched-text highlighting remains future work. |
 | 9 | Add explicit export modes | Removes ambiguity around filtered/all exports. |
 
 ## Minimal next UX task
