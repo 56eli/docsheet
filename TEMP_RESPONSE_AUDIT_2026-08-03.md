@@ -415,3 +415,18 @@ accepted) and applied through the sanctioned pipeline:
   regenerated; all five `--check` green; **86 tests**, coverage 92%.
 - `docs/catalogue-meta.json`: migrated_items 341, approved_source_overrides
   98, reviewed_product_relationships 318 (the meta fix from §11j held).
+
+### 11l. Edition model — Phase 4: UI/docs labels (owner: "Phase 4")
+
+- Everything view gained the **Work** column (work_id, placed after Master
+  ID) and a display-only **Edition** column that merges format +
+  format_detail ("audio · Audiobook", "DVD · CD & DVD set"); raw format
+  columns are hidden on curated views only (the Original Spreadsheet view
+  keeps its verbatim format column), and the row drawer + CSV export follow
+  the merged column.
+- View description for the Everything tab documents the edition model;
+  INSTRUCTIONS gained the work-family/edition-input section.
+- New Playwright spec (5th): Work/Edition columns render, a known work id
+  (w-truth-vs-falsehood) appears on the book + audiobook rows, and the raw
+  format columns are hidden.
+- 86 unit tests, 92% coverage, all five `--check` green, node checks pass.

@@ -55,7 +55,7 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  tests (4 specs); don't burn time installing locally.
+  tests (5 specs); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / Node 20 — keep code compatible.
 
 ## 3. Current verified state (committed, checked)

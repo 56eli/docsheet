@@ -97,6 +97,21 @@ npm run test:e2e:install
 npm run test:e2e
 ```
 
+### Edition model inputs (work × carrier)
+
+Since 2026-08-03 the curated master holds **one row per edition** of a work
+(book / audio / video). The Work column shows the `work_id` that groups a
+work's edition rows; the Edition column merges `format` + `format_detail`
+(e.g. "audio · Audiobook"). Two reviewed inputs drive this:
+
+- `data/work_families.csv` — `work_id` per master row (approved rows only;
+  never title-inferred).
+- `data/edition_candidates.csv` + `data/edition_promotions.csv` — reviewed
+  edition rows (audiobooks, CD/DVD sets, audio programs) minted into the
+  master after owner approval.
+
+See `EDITION_MODEL_PROPOSAL.md` for the model, rulings, and status.
+
 ### Curated catalogue and review workspace
 
 The raw spreadsheet pipeline is separate from the reviewed research catalogue.

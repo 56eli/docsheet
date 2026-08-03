@@ -61,7 +61,7 @@
   const VIEW_DETAILS = {
     master: {
       type: "Catalogue + candidates",
-      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items.",
+      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items. Since 2026-08-03 the master holds one row per edition of a work (book / audio / video); the Work column groups a work's editions together.",
     },
     reviewOverview: {
       type: "Review index",
@@ -133,6 +133,7 @@
     record_type: "Record Type",
     uuid: "Master ID",
     work_id: "Work",
+    edition: "Edition",
     master_uuid: "Master ID",
     year_month: "Year-Month",
     raw_row_number: "Raw Row",
@@ -209,6 +210,8 @@
     item_type: 104,
     series: 300,
     format: 68,
+    format_detail: 160,
+    edition: 160,
     owned: 68,
     source_url_veritas: 140,
     year_month: 80,
@@ -235,7 +238,7 @@
   };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "series", "title", "item_type", "year_month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "work_id", "series", "title", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
       frozen: ["record_type", "title"],
     },
     original: {
@@ -423,6 +426,8 @@
     Object.entries(data).forEach(([field, value]) => {
       // Year/Month are shown merged as "Year-Month" (see loadData).
       if ("year_month" in data && (field === "year" || field === "month")) return;
+      // Format/Format Detail are shown merged as "Edition" (see loadData).
+      if ("edition" in data && (field === "format" || field === "format_detail")) return;
       const item = document.createElement("div");
       item.className = "row-detail-field";
       const term = document.createElement("dt");
@@ -456,6 +461,17 @@
     allData.forEach((row) => {
       if ("year" in row && "month" in row) {
         row.year_month = row.year ? (row.month ? `${row.year}-${row.month}` : row.year) : "";
+      }
+      // Merge Format + Format Detail into one "Edition" display column
+      // (e.g. "audio · Audiobook", "DVD · CD & DVD set"). Only curated rows
+      // carry format_detail, so the raw Original Spreadsheet view keeps its
+      // verbatim format column. The raw keys stay on each row object for the
+      // global search, but buildColumns, the row drawer, and CSV exports
+      // show only the merged column.
+      if ("format" in row && "format_detail" in row) {
+        const fmt = row.format || "";
+        const detail = row.format_detail || "";
+        row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
 
@@ -588,6 +604,10 @@
     // present (see loadData).
     if (keys.includes("year_month")) {
       keys = keys.filter((key) => key !== "year" && key !== "month");
+    }
+    // Hide the raw Format columns when the merged "Edition" column is present.
+    if (keys.includes("edition")) {
+      keys = keys.filter((key) => key !== "format" && key !== "format_detail");
     }
     const sample = data.slice(0, 120);
     const preset = columnPresetFor(activeView);
