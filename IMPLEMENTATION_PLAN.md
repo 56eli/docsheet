@@ -3,6 +3,7 @@
 **Updated:** 2026-08-03
 **Scope:** Preserve raw evidence while operating a reproducible, reviewable Hawkins research catalogue.
 **Current audit:** [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md)
+**Transition guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 
 ## Objective
 

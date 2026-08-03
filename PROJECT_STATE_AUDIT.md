@@ -4,6 +4,7 @@
 **Branch:** `arena/019fc6af-docsheet`
 **Main synchronization:** includes `cf2f3c4` (`Update Spreadsheet` now commits `docs/` outputs)
 **Scope:** Repository state, reproducibility, review data, Pages artifacts, workflows, and documentation.
+**Transition guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 
 ## Executive summary
 

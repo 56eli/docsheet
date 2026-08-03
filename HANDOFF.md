@@ -3,6 +3,7 @@
 **Updated:** 2026-08-03
 **Branch:** `arena/019fc6af-docsheet`
 **State audit:** [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md)
+**Next-agent guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 
 ## Delivered state
 
