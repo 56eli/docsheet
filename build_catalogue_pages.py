@@ -108,6 +108,7 @@ RECORD_TYPE_CANDIDATE_DISCOVERY = "candidate_discovery"
 RECORD_TYPE_CANDIDATE_VERITAS = "candidate_veritas"
 RECORD_TYPE_CANDIDATE_HAYHOUSE = "candidate_hayhouse"
 RECORD_TYPE_CANDIDATE_AUDIBLE = "candidate_audible"
+RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 
 # Master identity fields carried into the Everything view. ``record_type`` is a
 # view-level provenance label and is intentionally not part of the master CSV
@@ -387,7 +388,7 @@ def json_text(data: object) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
-def build_catalogue(master_items: list[dict[str, str]] | None = None) -> CatalogueBuild:
+def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = False) -> CatalogueBuild:
     """Prepare catalogue Pages files in memory.
 
     ``master_items`` exists for read-only reconciliation: it lets callers
@@ -414,6 +415,24 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     intl_queue = read_csv(INTL_QUEUE)
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
+
+    # Optional pending-promotion candidates (owner decision via --include-pending)
+    if include_pending:
+        promoted_keys: set[str] = set()
+        prom_path = Path("data/manual_candidate_promotions.csv")
+        if prom_path.exists():
+            with prom_path.open(encoding="utf-8", newline="") as h:
+                promoted_keys = {row.get("candidate_key", "").strip() for row in csv.DictReader(h)}
+        for cand in manual_candidates:
+            if cand["candidate_key"] not in promoted_keys:
+                items.append(everything_record(
+                    RECORD_TYPE_CANDIDATE_PENDING,
+                    title=cand["candidate_title"],
+                    item_type=cand["proposed_item_type"],
+                    year=cand["proposed_year"],
+                    format=cand["proposed_format"],
+                    notes=f"Reviewed candidate (not yet promoted): {cand['evidence_note']}",
+                ))
     master_exclusions = read_csv(MASTER_EXCLUSIONS)
     source_overrides = read_csv(SOURCE_OVERRIDES)
     migration_review = read_csv(MIGRATION_LEDGER)
@@ -664,12 +683,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="verify committed Pages catalogue files match their declared inputs; do not write files",
     )
+    parser.add_argument(
+        "--include-pending",
+        action="store_true",
+        help="also include the 6 unpromoted reviewed manual candidates as candidate_pending_promotion rows in Everything",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    build = build_catalogue()
+    build = build_catalogue(include_pending=args.include_pending)
 
     if args.check:
         stale = stale_outputs(build.outputs)

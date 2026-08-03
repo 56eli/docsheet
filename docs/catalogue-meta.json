@@ -1,5 +1,5 @@
 {
-  "master_items": 353,
+  "master_items": 359,
   "migrated_items": 317,
   "everything_record_types": {
     "master": 317,
@@ -12,7 +12,7 @@
   "manual_research_leads": 1,
   "master_exclusion_rows": 68,
   "migration_review_rows": 374,
-  "approved_source_overrides": 79,
+  "approved_source_overrides": 80,
   "official_discovery_candidates": 4,
   "approved_veritas_mapping_decisions": 35,
   "implemented_unreviewed": 38,

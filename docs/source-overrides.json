@@ -709,5 +709,14 @@
     "approval_date": "2026-08-03",
     "review_reason": "Owner confirmed the held edition is the Hay House paperback ISBN 1401964990; replaces mismatched audio-product associations.",
     "evidence_source": "https://www.hayhouse.com/the-highest-level-of-enlightenment-paperback (official publisher page; ISBN 1401964990)"
+  },
+  {
+    "raw_row_number": "341",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/in-the-world-but-not-of-it",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Publisher explicitly listed on Veritas product 1661 page; matches official Nightingale-Conant product for the same work.",
+    "evidence_source": "web search + Veritas product 1661 metadata"
   }
 ]
