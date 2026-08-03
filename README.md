@@ -54,7 +54,10 @@ site tab; evidence-backed annual compilation relationships live in
 Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
-`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`.
+`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`. The
+inventory's `normalized_title_match_count` is derived and must always equal the
+number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
+build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
 
 ## Curated records vs. official candidates
 

@@ -245,10 +245,37 @@ Escape-key handling; reduced-motion and 720px media queries.
   the timestamp is treated as dynamic. Add `--check` that compares `data.json` exactly
   and `meta.json` structurally (ignoring the timestamp).
 
-- **F-8 (Medium): the Veritas review artifact from run `30803991007` is unexpired and
-  still downloadable** (verified via GitHub API — 16,922 bytes, created 2026-08-03T10:03:40Z).
-  The blocker is purely this sandbox's egress to Azure blob storage. Anyone on a normal
-  network can download it now. It should be reviewed before it expires (default 90 days).
+- **F-8 (Medium) — ✅ RESOLVED 2026-08-03 in `b7c22fb`.** The run `30803991007` artifact
+  was supplied by the owner and reviewed. **No upstream catalogue change:** all 191
+  products unchanged. The diff was six rows differing in one *derived* field,
+  `normalized_title_match_count`, which claimed `0` while naming one matched master ID —
+  a defect in our committed data, caused by the approved decision overlay recording
+  `matched_master_uuids` without carrying through the recomputed count. Re-applying the
+  35 approved decisions offline reproduced the artifact's values exactly and touched no
+  other field. Corrected the inventory and added `validate_veritas_inventory()` so the
+  contradiction cannot recur silently. See `VERITAS_ARTIFACT_REVIEW.md`.
+
+- **F-9 (New, Low–Medium): derived fields rely on generator discipline, not invariants.**
+  F-8 was only detectable by a live network refresh because nothing validated that
+  `normalized_title_match_count` equals `len(matched_master_uuids)`. I swept the other
+  derived/denormalized columns for the same class of drift and **found no further
+  defects**:
+
+  | Derived field | Checked against | Result |
+  |---|---|---|
+  | `veritas_official_products.matched_master_titles` | titles of referenced master IDs | ✅ 0 mismatches / 191 |
+  | `veritas_mapping_decisions.matched_master_titles` | titles of referenced master IDs | ✅ 0 mismatches / 35 |
+  | `series_compilation_relationships.included_lecture_count` | distinct lectures in the series/year/month scope | ✅ 7 / 7 correct |
+
+  *Note on the last row:* each lecture spans ~3 DVD parts, so the count is distinct
+  lectures, not master rows (e.g. product 39238 = 10 lectures across 30 DVD-part
+  records). My first pass mis-modelled this and produced a false alarm; the corrected
+  check confirms all seven are right.
+
+  Only `normalized_title_match_count` is guarded in code today. The remaining two
+  invariants above hold but are unenforced, so a future hand-edit could still
+  desynchronize them. Cheap follow-up: extend `validate_veritas_inventory()` to assert
+  the title projections too.
 
 ---
 
@@ -304,7 +331,7 @@ single highest security-value change available.
 ### P1 — Correctness & governance visible to users
 2. ~~**F-1: add `record_type` to the Everything view.**~~ ✅ **Done** (`23437a5`).
 3. **F-2: make review sheets read-only by default.**
-4. **F-8: review the Veritas artifact** (`8851979247`) from a normal network before it expires.
+4. ~~**F-8: review the Veritas artifact**~~ ✅ **Done** (`b7c22fb`) — no upstream change; internal derived-field defect found, fixed, and guarded. Re-running the workflow should now pass cleanly.
 5. **Classify the 87 untyped master items** — six complete, well-bounded series.
 6. **Implement candidate promotion** for the 17 frozen candidates (promotion-decision CSV keyed by `candidate_key` → generator assigns compact ID + code + provenance).
 
@@ -332,7 +359,8 @@ single highest security-value change available.
 | `build_catalogue_pages.py` duplication | ✅ Resolved (`23437a5`) |
 | Hard-coded `original_source_rows` | ✅ Resolved (`23437a5`) |
 | CI workflow | ⏳ Owner action — see `UNBLOCK_INSTRUCTIONS.md` Task A |
-| Veritas artifact review | ⏳ Owner action — see `UNBLOCK_INSTRUCTIONS.md` Task B |
+| F-8 — Veritas artifact review | ✅ Resolved (`b7c22fb`) — no upstream change; derived-field defect fixed + guarded |
+| F-9 — other derived-field invariants | ✅ Swept, no further defects (2 remain unenforced in code) |
 
 ## 11. Recommended next step
 
@@ -343,7 +371,8 @@ Unblocked and ready to pick up now:
 - **The 87-item classification** — pure data work, well-bounded, but needs your
   decisions on item types for six series.
 
-**Blocked on the owner:** CI needs `.github/workflows/ci.yml` created via the web
-editor (the App cannot push workflow files — re-confirmed by probe); the Veritas
-artifact needs a download from a normal network. Both are documented step-by-step in
-[UNBLOCK_INSTRUCTIONS.md](UNBLOCK_INSTRUCTIONS.md).
+**Blocked on the owner:** only CI now — `.github/workflows/ci.yml` must be created via
+the web editor, since the App cannot push workflow files (re-confirmed by probe).
+Step-by-step in [UNBLOCK_INSTRUCTIONS.md](UNBLOCK_INSTRUCTIONS.md) Task A.
+Task B (Veritas) is complete; the only optional follow-up is re-running the workflow
+once to confirm it now passes.

@@ -2,8 +2,8 @@
 
 **Written:** 2026-08-03
 **For:** repository owner (`56eli`), working in the GitHub web interface
-**Two independent tasks.** Task A takes ~3 minutes. Task B takes ~5 minutes.
-You do not need a terminal, git, or any local tooling for either.
+**One task remaining (Task A, ~3 minutes).** Task B is complete — see below.
+You do not need a terminal, git, or any local tooling.
 
 ---
 
@@ -183,85 +183,24 @@ If you'd rather I own the workflow file, expand the Arena GitHub App's scope:
 
 ---
 
-# TASK B — Review the Veritas inventory artifact
+# TASK B — Review the Veritas inventory artifact ✅ COMPLETE
 
-## Why
+**You already did this** — you supplied the diff on 2026-08-03 and it is now resolved.
+No further action needed. Full write-up: [VERITAS_ARTIFACT_REVIEW.md](VERITAS_ARTIFACT_REVIEW.md).
 
-The **Map Veritas Catalogue** workflow ran on `main` and **failed on purpose**.
-That is the safeguard working correctly, not a bug: it fetched the live Veritas
-product catalogue, compared it to the reviewed inventory committed in this
-repository, found a difference, and refused to auto-update anything. It uploaded
-the difference as an artifact for a human to inspect.
+**Result in one line:** the live Veritas catalogue had **not** changed — the diff
+exposed a small defect in our own committed data, which is now fixed and guarded.
 
-Nobody has inspected it yet. I can't — the artifact download redirects to Azure
-blob storage, which my sandbox cannot reach (I verified the artifact itself is
-intact and unexpired: **16,922 bytes**, created 2026-08-03 10:03 UTC).
+All 191 products were identical upstream. The six differing lines were all one
+derived field (`normalized_title_match_count`) that claimed `0` while naming one
+matched master record — an internal contradiction introduced when the approved
+decision overlay recorded the matched IDs without carrying through the recomputed
+count. I reproduced the correction offline from committed inputs, applied it, and
+added a build guard so it cannot recur silently.
 
-**This is time-sensitive.** GitHub deletes artifacts after 90 days by default,
-which means it disappears around **1 November 2026**. After that the only way to
-see the difference is to re-run the workflow.
-
-## Step 1 — download the artifact
-
-Go directly to:
-
-**https://github.com/56eli/docsheet/actions/runs/30803991007**
-
-Scroll to the bottom of that page to the **Artifacts** section. You'll see:
-
-```
-veritas-inventory-review-30803991007     16.5 KB
-```
-
-Click it. Your browser downloads `veritas-inventory-review-30803991007.zip`.
-
-> Ignore the big red "This run failed" banner — as explained above, that failure
-> is the intended review signal.
-
-## Step 2 — unzip it
-
-Double-click the downloaded `.zip`. Inside are exactly two files:
-
-| File | What it is |
-|---|---|
-| `veritas_official_products_candidate.csv` | What the live Veritas site says **right now** |
-| `veritas_inventory_diff.patch` | The differences vs. our reviewed copy |
-
-## Step 3 — look at the diff
-
-Open **`veritas_inventory_diff.patch`** in any text editor (TextEdit, Notepad,
-VS Code — anything).
-
-You're reading a standard diff. Only two line types matter:
-
-- Lines starting with **`-`** → a product in our reviewed inventory that the
-  live site **no longer has** (delisted, renamed, or re-IDed).
-- Lines starting with **`+`** → a product the live site has that our reviewed
-  inventory **does not** (new release, or a changed title/date/category).
-
-Lines starting with `@@`, `---`, or `+++` are just position markers — skip them.
-
-## Step 4 — send it to me
-
-**Easiest option:** attach both files to your next message here, or paste the
-contents of `veritas_inventory_diff.patch` directly into the chat.
-
-If the patch is very long, paste just the `-` and `+` lines.
-
-## Step 5 — what I'll do with it
-
-I will **not** blindly overwrite the reviewed inventory. For each change I'll
-classify it and bring you a decision list:
-
-| Change type | My proposal |
-|---|---|
-| Genuinely new official product | Add to inventory; propose as a candidate — **not** auto-promoted to a master record |
-| Product removed from the live site | Keep in inventory with a "delisted" note; never silently drop reviewed evidence |
-| Title/date/category edited upstream | Update the inventory field; re-apply our mapping decision overlay so the 35 reviewed dispositions survive |
-| Changed product ID | Flag for your explicit decision — this can break relationship references |
-
-You approve the classification, then I apply it as a normal reviewed change with
-the `--check` modes verifying nothing else moved.
+**Optional follow-up:** re-run **Map Veritas Catalogue** once from the Actions tab.
+It should now **pass** instead of failing, which confirms the fix and means any
+future failure is a genuine upstream change worth your attention.
 
 ---
 
@@ -270,9 +209,8 @@ the `--check` modes verifying nothing else moved.
 | Task | Who | Where | Time |
 |---|---|---|---|
 | **A** — Create `.github/workflows/ci.yml` | You | GitHub web editor, `main` branch | ~3 min |
-| **B** — Download & send the Veritas diff | You | Actions run 30803991007 | ~5 min |
+| ~~**B** — Download & send the Veritas diff~~ | ✅ Done | Resolved 2026-08-03 | — |
 | Everything after that | Me | — | — |
 
-Neither task blocks the other, and neither blocks the data work I can already
-continue on (title normalization, classifying the 87 untyped items, SRI/CSP
-hardening).
+Only Task A remains. It doesn't block the data work I can continue on in the
+meantime (title normalization, classifying the 87 untyped items, SRI/CSP hardening).
