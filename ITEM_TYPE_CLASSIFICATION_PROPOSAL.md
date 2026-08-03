@@ -20,10 +20,12 @@ previously-ambiguous decisions are now **resolved by primary evidence**:
   earlier "month-dated therefore lecture" reasoning was inference; this is evidence.
 - **D7 Media Miscellaneous → `audio`** (was: unsure). All 14 are audio products.
 
-That research also surfaced **one new issue you should know about**: 12 of the 14
-"Media Miscellaneous" records appear to be **mis-grouped** — in the raw sheet they
-sit under a *"Missing OTR"* (On The Road) note. See D7. I recommend fixing the
-*type* now and handling the *grouping* as a separate decision.
+That research also surfaced **one new issue**, which I then **confirmed against the
+live publisher taxonomy**: 12 of the 14 "Media Miscellaneous" records are listed by
+Veritas itself under the official *On the Road – Talk Series* product category. The
+raw spreadsheet's *"Missing OTR"* note was right; the migration mis-read it. See D7.
+I recommend applying the *type* now and handling the *series reassignment* as its
+own reviewed change.
 
 ---
 
@@ -47,6 +49,11 @@ The gap is therefore a genuine open decision, exactly as intended.
 
 **Coverage:** 74 of 87 records link to a confirmed official Veritas product; 13
 have no source URL (listed in §4).
+
+**Live publisher verification (added after your "dig further" request):** I fetched
+`veritaspub.com` category and product pages directly. Product pages expose an
+explicit `Category:` and `SKU:` for each item, which is the strongest evidence
+available short of the publisher's own database — and it resolved D7 outright.
 
 **Important limit:** the raw spreadsheet's `format` column is **empty for all 87**
 records, and slug hints are inconsistent (7 of 13 Volume slugs say `video`, 7 of 13
@@ -122,39 +129,44 @@ already captured by the `series` field, which is the right place for it.
 Family"). Five of eight map to official `(2012)`/`(2014)` products. Same
 studio-production character as D2/D4.
 
-### D7 — Media Miscellaneous (14 records: 264–277) → `audio`, **but see the grouping problem**
-**Confidence: High for the type. ⚠️ But I found a probable mis-grouping.**
+### D7 — Media Miscellaneous (14 records: 264–277) → `audio`, **and 12 are mis-grouped**
+**Confidence: High for both — confirmed against the live publisher taxonomy.**
 
-Raw-row inspection shows this "series" is actually **two different groups** that
-the migration merged, separated in the source by a blank row and a note:
+I fetched the official Veritas pages directly (the site is reachable via the web
+tool even though the raw API isn't). The publisher's own product taxonomy settles
+this definitively.
 
-```
-row 294  >> heading: "Media Miscellaneous: https://veritaspub.com/media-miscellaneous-2/"
-row 295  >> note:    "❌❌ MOST ARE MISSING ❌❌ NOT YET IN THE SPREADSHEET ❌❌"
-row 296     item:    26. "In the World But Not of It" –        ← genuinely Media Misc
-row 297     item:    Audio 27. Golden Word Book Signing – Audio ← genuinely Media Misc
-row 298  >> blank separator
-row 299  >> note:    "Missing OTR"                              ← NEW SECTION STARTS
-rows 300-311  items: All is Divinity … You Are the Light of Consciousness
-```
+**Finding 1 — the grouping is wrong.** `veritaspub.com/product-category/on-the-road-talk-series/`
+returns *"Showing all 21 results"*, and **12 of our 14 "Media Miscellaneous"
+records are in that official category**:
 
-**Rows 300–311 (master IDs 266–277) sit under a "Missing OTR" note**, i.e. *On The
-Road* — not Media Miscellaneous. They were absorbed into the preceding series
-because the note was classified as `research_note` rather than `series_context`.
+| Our record | Official category (from the product page) |
+|---|---|
+| 266 All is Divinity | `On the Road - Talk Series`, SKU `cd_aid` |
+| 271 The Ever-Present Joy | `On the Road - Talk Series`, SKU `cd_otr_ej` |
+| 267, 268, 269, 270, 272, 273, 274, 275, 276, 277 | all listed on the same official OTR category page |
 
-Supporting evidence: all 12 are a tight, contemporaneous product family (published
-2014-01-01 → 2014-01-27, bar one 2022 reissue), all `owned=false`, matching the
-"missing" annotation — and stylistically they're talk titles like the known OTR
-products, not the two genuine Media-Misc oddities above them.
+The official OTR category spans **both** of our groupings — 14 records we already
+file as On The Road, plus these 12. That's 26 of the 21 official products (some
+products cover multiple DVD parts), so the two groups are one series upstream.
 
-**Type recommendation (unaffected by grouping):** `audio` for all 14. Three are
-explicit `-3-cd-set` products; 265 is titled "– Audio"; the rest are the same 2014
-audio product family.
+**Finding 2 — the two survivors are genuinely Media Miscellaneous.** Record 265
+("Golden Word Book Signing") states `Category: Media Miscellaneous`, SKU `am_gwbs`.
+Record 264 has no product link. So exactly 2 of 14 stay put — matching the raw
+sheet's structure precisely.
 
-**Grouping recommendation:** ⚠️ **Do not fix the series in this pass.** Reassigning
-12 records from `Media Miscellaneous` to `On The Road Talk Series` is a separate,
-larger decision that changes series counts and belongs in its own reviewed change.
-I've logged it rather than bundling it in silently.
+**Finding 3 — the type is `audio`.** SKUs are prefixed `cd_`, the product pages say
+*"Streaming Video is **not** available for this topic"*, product details read
+*"Three Compact Disc Set"*, and each links to an Audible/Amazon audiobook edition.
+
+**This vindicates the raw spreadsheet.** Its `"Missing OTR"` note at row 299 was
+accurate all along; the migration mis-classified that note as a `research_note`
+instead of a `series_context` heading, so the 12 records were absorbed into the
+preceding section.
+
+**Recommendation:** apply `audio` to all 14 now. Handle the 12-record series
+reassignment as its own reviewed change (see §6) — it is now evidence-backed
+rather than speculative, but it changes series counts and deserves its own diff.
 
 ## 4. Records I recommend excluding from this pass
 
@@ -220,7 +232,8 @@ Types belong in the **migration ledger** (`proposed_item_type`), the declared in
 | D4 | Office Series | 16 (excl. 246, 249) | `video` | High |
 | D5 | Satsang Series | 13 | `audio` | High *(resolved)* |
 | D6 | Discussion Series | 8 | `video` | Med-High |
-| D7 | Media Miscellaneous | 14 | `audio` | High *(resolved)* |
+| D7 | Media Miscellaneous | 14 | `audio` | High *(confirmed vs. publisher)* |
+| — | *(separate)* 12 records mis-grouped → On The Road | 12 | series change | Evidence-backed |
 | — | Deferred placeholders | 3 | none | — |
 
 **Default if you just say "approved":** I apply D1–D7 as written — typing **84 of
