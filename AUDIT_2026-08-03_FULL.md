@@ -656,3 +656,47 @@ pipeline (owner-approved inputs → regenerate → `--check`):
   Illness, Don't Set Sail, Peace is the Natural State, Spanish editions),
   and series-level work regrouping (per-part works vs series works) —
   `NEXT_AGENT_HANDOFF.md` P1.
+
+### 12.10 Session close-out audit — 2026-08-03 (branch `arena/019fc893-docsheet`, 18 commits)
+
+Final audit of the whole session's state at branch tip (`061c401`). Every
+number below was recomputed from the committed data; nothing is carried over
+from memory.
+
+**Data state (committed, checked):**
+
+| Layer | Value |
+|---|---:|
+| Master rows | **350** (301 lecture / 38 book / 10 discussion / 1 untyped) |
+| Edition rows (minted) | 24 (IDs 320–343, pinned in `edition_promotions.csv`) |
+| Satsang monthlies (promoted) | 9 (IDs 344–352) |
+| Work families | 193 works / 326 members; work_id coverage **350/350** |
+| Everything view | 396 (350 master + 28 veritas + 6 pending + 4 discovery + 4 hayhouse + 4 audible) |
+| Catalogue codes | 234 |
+| Source overrides | 100 approved (incl. candidate-provenance support) |
+| Product relationships | 327 reviewed (319 primary + 8 related) |
+| Series compilations | 7 |
+| New Work Review queue | 5 rows (Unity Church CDs ×2, Don't Set Sail, Peace is the Natural State, Giving Up Illness) |
+| Raw rows / ledger | 374 / 374; exclusions 68 |
+
+**Validation (all reproduced this session):** `py_compile` ×8 scripts; all
+five `--check` modes; **90 deterministic tests** (tamper detection,
+doc-currency pins, edition/work-family/override/new-work-queue layers,
+offline Veritas replay); coverage **92% total** (every module ≥ 90%, gate
+80%); `node --check` ×3; `git diff --check`; CI green on `main`
+(run `30834666253`); live site serves `main` (363 rows; the branch state
+deploys after merge).
+
+**Fail-safes delivered this session:** hard primary-coverage guard (F1,
+incl. edition-provenance self-coverage), byte-stable `--check` for every
+generator, pinned edition UUIDs (no renumbering when rows precede them),
+candidate-provenance overrides, proposed-status layers (work families,
+edition candidates, source overrides) that validate but never apply,
+inventory cross-validation of the new-work queue, documentation-currency
+tests, and the audit trail in `TEMP_RESPONSE_AUDIT_2026-08-03.md` §11a–11v.
+
+**Known boundaries (unchanged):** live Veritas TLS unreachable from this
+sandbox (offline replay covers the client); Playwright runs in GitHub CI
+(5 specs); Map Veritas re-run on `main` still pending the owner's click;
+the 5 new-work queue rows and the six always-empty master columns remain
+owner rulings (`NEXT_AGENT_HANDOFF.md` P1).
