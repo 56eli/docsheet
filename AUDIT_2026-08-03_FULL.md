@@ -134,8 +134,8 @@ Ledger dispositions: `item` 308, `blank_separator` 31, `series_context` 21, `res
 
 | Field | Filled | Empty | Comment |
 |---|---:|---:|---|
-| `item_type` | 221 | **87** | Entire series unclassified — see below |
-| `catalog_code` | 198 | **110** | Only lecture-series items are coded |
+| `item_type` | **305** ✅ | **3** | Was 221/87; resolved by IT-1 (`32c153c`). 3 placeholders deferred. |
+| `catalog_code` | **221** | 87 | Was 198/110; IT-1 added 23 codes for newly typed records with a year |
 | `year` | 221 | 87 | Same 87 rows |
 | `month` / `format` / `format_detail` | 198 | 110 | Only lecture items |
 | `title_source` | 199 | 109 | |
@@ -144,11 +144,20 @@ Ledger dispositions: `item` 308, `blank_separator` 31, `series_context` 21, `res
 | `reference_url_2` | 0 | 308 | Unused |
 | `notes` | 14 | 294 | |
 
-**The 87 unclassified rows are not random** — they are six complete series:
-Volume Series (13), On The Road Talk Series (18), Office Series (18),
-Satsang Series (13), Media Miscellaneous (14), Discussion Series (8), plus
-3 Love & Spiritual Seeker Q&A rows. Every lecture and book series is fully
-typed. This is a **single well-bounded classification task**, not scattered rot.
+~~**The 87 unclassified rows are not random**~~ — ✅ **Resolved 2026-08-03.** They were
+six complete series, confirmed as a single well-bounded task. Now typed by content
+class (`32c153c`): 76 `lecture` + 8 `discussion`, with 3 placeholder records
+deferred. Two related defects surfaced during the work and were also fixed:
+
+- **SR-1** (`973519d`) — 12 records were filed under `Media Miscellaneous` but are
+  in the publisher's official *On the Road – Talk Series* category. Caused by the
+  migration reading the raw sheet's `Missing OTR` marker as a `research_note`
+  instead of a `series_context` heading.
+- **F-10** — the `item_type` vocabulary mixed content classes (`lecture`, `book`)
+  with media (`audio`, `video`), which produced two successive wrong proposals
+  before the precedent (198 DVDs typed `lecture`, not `video`) settled it. The
+  vocabulary is now split into `CONTENT_ITEM_TYPES` and
+  `DEPRECATED_MEDIUM_ITEM_TYPES`, and ledger types are validated for the first time.
 
 Six schema columns are 100% empty across all 308 rows. Either populate them or
 drop them from `FIELDS` — currently they add width to every export and every
@@ -332,7 +341,7 @@ single highest security-value change available.
 2. ~~**F-1: add `record_type` to the Everything view.**~~ ✅ **Done** (`23437a5`).
 3. **F-2: make review sheets read-only by default.**
 4. ~~**F-8: review the Veritas artifact**~~ ✅ **Done** (`b7c22fb`) — no upstream change; internal derived-field defect found, fixed, and guarded. Re-running the workflow should now pass cleanly.
-5. **Classify the 87 untyped master items** — six complete, well-bounded series.
+5. ~~**Classify the 87 untyped master items**~~ ✅ **Done** (`32c153c`) — 84 typed by content class (coverage 305/308); 3 placeholders deferred. Also corrected a series mis-grouping (`973519d`) and added `discussion` to the vocabulary.
 6. **Implement candidate promotion** for the 17 frozen candidates (promotion-decision CSV keyed by `candidate_key` → generator assigns compact ID + code + provenance).
 
 ### P2 — Hardening & hygiene
@@ -361,6 +370,9 @@ single highest security-value change available.
 | CI workflow | ⏳ Owner action — see `UNBLOCK_INSTRUCTIONS.md` Task A |
 | F-8 — Veritas artifact review | ✅ Resolved (`b7c22fb`) — no upstream change; derived-field defect fixed + guarded |
 | F-9 — other derived-field invariants | ✅ Swept, no further defects (2 remain unenforced in code) |
+| SR-1 — 12 records mis-grouped as Media Miscellaneous | ✅ Resolved (`973519d`) — confirmed against publisher taxonomy |
+| IT-1 — 87 untyped master records | ✅ Resolved (`32c153c`) — 84 typed, coverage 221→305 of 308 |
+| F-10 — `item_type` vocabulary mixed content classes with media | ✅ Documented + guarded (`32c153c`) |
 
 ## 11. Recommended next step
 
