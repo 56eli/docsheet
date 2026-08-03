@@ -49,4 +49,5 @@ The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
 Review**, **Source Overrides**, and **Official Discovery** are separate sheets
 alongside the catalogue and official-product views. Reviewers can search, sort,
-and export any sheet without opening repository folders.
+export, and filter sheets with multiple review-status values without opening
+repository folders.

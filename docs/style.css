@@ -247,6 +247,37 @@ body {
 .dataset-tab:hover { color: var(--text); background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .dataset-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .dataset-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+/* Review sheets are grouped after the catalogue's Everything tab so they are
+   easy to find without obscuring the source/product views. */
+.dataset-tab.review-tab { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.dataset-tab.review-tab:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.dataset-tab.review-tab-start { margin-left: 8px; border-left: 1px solid var(--border); }
+
+/* ---- Review toolbar ---- */
+.review-toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 7px 16px;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.review-toolbar label { font-weight: 500; color: var(--text); }
+#review-filter {
+  min-width: 176px;
+  padding: 5px 28px 5px 8px;
+  color: var(--text);
+  font: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+#review-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.review-filter-hint { color: var(--text-muted); }
 
 /* ==========================================================================
    Spreadsheet area (fills remaining height; table scrolls inside)
@@ -346,6 +377,45 @@ body {
 /* URL cells: keep links clearly styled */
 #spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
 
+/* Review statuses and dispositions stay scannable in wide review sheets. */
+.status-badge {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 7px;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.status-badge.status-approved,
+.status-badge.status-reviewed,
+.status-badge.status-item,
+.status-badge.status-matched { color: #0b6b2c; background: #e6f4ea; border-color: #b7dfc1; }
+.status-badge.status-pending,
+.status-badge.status-needs,
+.status-badge.status-unmatched,
+.status-badge.status-not { color: #8a5200; background: #fff3cd; border-color: #f0d28a; }
+.status-badge.status-excluded,
+.status-badge.status-rejected,
+.status-badge.status-false { color: #9c1c1c; background: #fce8e6; border-color: #eeb9b5; }
+:root.dark .status-badge.status-approved,
+:root.dark .status-badge.status-reviewed,
+:root.dark .status-badge.status-item,
+:root.dark .status-badge.status-matched { color: #a7e7ba; background: #1d4730; border-color: #3d7953; }
+:root.dark .status-badge.status-pending,
+:root.dark .status-badge.status-needs,
+:root.dark .status-badge.status-unmatched,
+:root.dark .status-badge.status-not { color: #f7d58a; background: #5b431d; border-color: #8b6b30; }
+:root.dark .status-badge.status-excluded,
+:root.dark .status-badge.status-rejected,
+:root.dark .status-badge.status-false { color: #f3b9b4; background: #5d2929; border-color: #8c4b4b; }
+
 /* Edit-ready cursor hint */
 #spreadsheet .tabulator .tabulator-cell.tabulator-editing {
   box-shadow: inset 0 0 0 2px var(--accent);
@@ -415,6 +485,9 @@ body {
   #export-btn { margin-left: auto; }
   #table-container { padding: 0 6px; }
   #spreadsheet { top: 8px; left: 6px; right: 6px; bottom: 8px; }
+  .review-toolbar { padding: 7px 10px; gap: 7px; flex-wrap: wrap; }
+  #review-filter { min-width: min(220px, 100%); }
+  .review-filter-hint { width: 100%; }
   .footerbar { gap: 8px 16px; font-size: 12px; }
   .footer-note { display: none; }   /* hide the edit hint on small screens */
 }
