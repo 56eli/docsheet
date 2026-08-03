@@ -602,6 +602,32 @@
     return null;
   }
 
+  function calculateWidthForContent(values) {
+    if (!values || values.length === 0) return null;
+    // Calculate width based on longest content (character count * average char width)
+    // Average character width is approximately 7-8 pixels for typical fonts
+    const charWidth = 7.5;
+    const padding = 20; // Padding for cell borders and spacing
+    const minWidth = 110;
+    const maxWidth = 400; // Prevent columns from becoming too wide
+    
+    let maxLen = 0;
+    for (const val of values) {
+      if (val !== null && val !== undefined && val !== "") {
+        const len = String(val).length;
+        if (len > maxLen) maxLen = len;
+      }
+    }
+    
+    if (maxLen === 0) return minWidth;
+    
+    // Calculate width: characters * char width + padding
+    const calculatedWidth = Math.ceil(maxLen * charWidth + padding);
+    
+    // Clamp between minWidth and maxWidth
+    return Math.max(minWidth, Math.min(maxWidth, calculatedWidth));
+  }
+
   function buildColumns(data) {
     if (!Array.isArray(data) || data.length === 0) return [];
 
@@ -636,10 +662,17 @@
         tooltip: (e, cell) => String(cell.getValue() ?? ""),
       };
 
+      // Calculate width based on actual content, fallback to predefined width
+      const contentWidth = calculateWidthForContent(nonEmpty);
       const preferredWidth = widthForColumn(key, urlRatio);
-      if (preferredWidth) {
+      
+      // Use content-based width if available, otherwise use predefined width
+      if (contentWidth) {
+        col.width = contentWidth;
+      } else if (preferredWidth) {
         col.width = preferredWidth;
       }
+      
       if ((preset.frozen || []).includes(key)) {
         col.frozen = true;
       }

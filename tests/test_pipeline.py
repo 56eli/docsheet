@@ -1095,7 +1095,7 @@ class EditionCandidateTests(unittest.TestCase):
             self.assertEqual(row["item_type"], "book")
             self.assertEqual(row["format"], "audio")
             self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
-            self.assertEqual(row["raw_row_number"], "candidate:edition-audible-tvf")
+            self.assertEqual(row["candidate_key"], "candidate:edition-audible-tvf")
             # D3: the audiobook URL moved off the book row into its edition row
             self.assertEqual(rows["289"]["source_url_audible"], "")
             check = invoke_script("build_research_master.py", sandbox, "--check")
@@ -1420,3 +1420,83 @@ class DocumentationCurrencyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DefensiveDepthTests(unittest.TestCase):
+    """Additional fail-safe tests for defensive-in-depth coverage."""
+
+    def test_edition_promotions_uuid_stability(self) -> None:
+        """Edition promotion UUIDs must be stable across rebuilds."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            # Build twice from identical inputs
+            result1 = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(result1.returncode, 0, result1.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as f:
+                rows1 = {r["uuid"]: r for r in csv.DictReader(f)}
+            
+            result2 = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(result2.returncode, 0, result2.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as f:
+                rows2 = {r["uuid"]: r for r in csv.DictReader(f)}
+            
+            # Edition rows (candidate:*) must have identical UUIDs
+            edition_uuids1 = {uuid for uuid in rows1 if uuid.startswith("candidate:")}
+            edition_uuids2 = {uuid for uuid in rows2 if uuid.startswith("candidate:")}
+            self.assertEqual(edition_uuids1, edition_uuids2, "Edition UUIDs drifted across rebuilds")
+            
+            # Verify the actual edition rows are identical
+            for uuid in edition_uuids1:
+                self.assertEqual(rows1[uuid], rows2[uuid], f"Edition row {uuid} changed across rebuilds")
+        finally:
+            tempdir.cleanup()
+
+    def test_source_override_idempotency(self) -> None:
+        """Applying the same approved override twice must produce identical output."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            # Write an approved override
+            header = "raw_row_number,target_field,override_value,review_status,approval_date,review_reason,evidence_source"
+            row = "328,source_url_hay_house,https://www.hayhouse.com/truth-vs-falsehood-parperback/,approved,2026-08-03,same-carrier paperback link,data/hayhouse_official_products.csv"
+            (sandbox / "data" / "research_master_source_overrides.csv").write_text(
+                f"{header}\n{row}\n", encoding="utf-8"
+            )
+            
+            # Build twice
+            result1 = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(result1.returncode, 0, result1.stderr)
+            output1 = (sandbox / "data" / "research_master_draft.csv").read_text(encoding="utf-8")
+            
+            result2 = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(result2.returncode, 0, result2.stderr)
+            output2 = (sandbox / "data" / "research_master_draft.csv").read_text(encoding="utf-8")
+            
+            self.assertEqual(output1, output2, "Source override application is not idempotent")
+        finally:
+            tempdir.cleanup()
+
+    def test_missing_required_column_gives_clear_error(self) -> None:
+        """Missing required columns must fail with a clear error message."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            # Remove a required column from work_families.csv
+            work_families = (sandbox / "data" / "work_families.csv").read_text(encoding="utf-8")
+            lines = work_families.split("\n")
+            # Remove the 'review_status' column from header and first data row
+            header_cols = lines[0].split(",")
+            if "review_status" in header_cols:
+                idx = header_cols.index("review_status")
+                lines[0] = ",".join(header_cols[:idx] + header_cols[idx+1:])
+                if len(lines) > 1 and lines[1]:
+                    data_cols = lines[1].split(",")
+                    lines[1] = ",".join(data_cols[:idx] + data_cols[idx+1:])
+            (sandbox / "data" / "work_families.csv").write_text("\n".join(lines), encoding="utf-8")
+            
+            # The build raises ValueError with a clear message about the missing column
+            with self.assertRaisesRegex(ValueError, "missing required columns"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()

@@ -289,7 +289,9 @@ def validate_product_relationships(
 
         master = master_by_uuid[master_uuid]
         product = veritas_by_id[product_id]
-        if relation["raw_row_number"] != master["raw_row_number"]:
+        # Check raw_row_number or candidate_key match
+        master_provenance = master["raw_row_number"] or master.get("candidate_key", "")
+        if relation["raw_row_number"] != master_provenance:
             raise ValueError(
                 f"{PRODUCT_RELATIONSHIPS}:{line_number} raw_row_number does not match {master_uuid}"
             )
