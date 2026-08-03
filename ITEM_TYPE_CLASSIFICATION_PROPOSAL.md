@@ -12,9 +12,18 @@ Approve or amend the **seven series-level decisions** in §3. One reply covers a
 87 records — they fall into seven complete, homogeneous series, so this is seven
 decisions, not eighty-seven.
 
-Two of them (D5 Satsang, D7 Media Miscellaneous) have genuine ambiguity that I
-can't resolve from the evidence available. Those are flagged **⚠️ needs your
-call**. The other five I consider well-evidenced.
+**Update (after you asked to discuss):** I dug into the raw spreadsheet and both
+previously-ambiguous decisions are now **resolved by primary evidence**:
+
+- **D5 Satsang → `audio`** (was: unsure). The source heading literally reads
+  *"Missing satsang **audios**"* and every row's `tempid` is `2cds each?`. My
+  earlier "month-dated therefore lecture" reasoning was inference; this is evidence.
+- **D7 Media Miscellaneous → `audio`** (was: unsure). All 14 are audio products.
+
+That research also surfaced **one new issue you should know about**: 12 of the 14
+"Media Miscellaneous" records appear to be **mis-grouped** — in the raw sheet they
+sit under a *"Missing OTR"* (On The Road) note. See D7. I recommend fixing the
+*type* now and handling the *grouping* as a separate decision.
 
 ---
 
@@ -81,23 +90,31 @@ productions.
 > Includes the two placeholder rows 246 and 249 — see §4, I recommend handling
 > those separately.
 
-### D5 — ⚠️ Satsang Series (13 records: 251–263) → `lecture` **or** `audio`
-**Confidence: Medium — needs your call.**
+### D5 — Satsang Series (13 records: 251–263) → `audio`
+**Confidence: High — resolved by new evidence, no longer ambiguous.**
 
-Conflicting evidence:
-- **For `audio`:** 7 of 13 official slugs end in `-cd`; the raw spreadsheet's
-  source column says **"veritas/only sold via audible"**; all 13 are marked *not
-  owned* (`❌`).
-- **For `lecture`:** they are month-dated recorded teaching sessions, structurally
-  identical to the dated lecture series.
+I went back to the raw spreadsheet and found the decisive evidence I'd missed:
 
-**My recommendation: `lecture`**, because `item_type` should describe *what the
-content is*, not the distribution medium — and `format` (which I'm leaving blank)
-is the field that exists to record CD/audio. But if you use `item_type` to mean
-"how we consume it", choose `audio`.
+| Raw evidence | Value |
+|---|---|
+| Section heading (raw row 279) | **"Missing satsang _audios_"** |
+| `tempid` column, all 13 rows | **`2cds each?`** |
+| `original source` | `veritas/only sold via audible` |
+| `WE HAVE?` | `❌` (all 13) |
+| Official slugs | 7 of 13 end in `-cd` |
 
-> There is no `satsang` value in the controlled vocabulary. If you want one, that's
-> a vocabulary change I'd make explicitly rather than silently.
+The compiler of the spreadsheet explicitly called these **audios** and recorded
+them as **2 CDs each**. Every independent signal agrees. This overrides my earlier
+"month-dated therefore lecture" reasoning, which was inference from structure
+rather than evidence.
+
+**Revised recommendation: `audio`.** No vocabulary change needed — `satsang` is
+already captured by the `series` field, which is the right place for it.
+
+> Corollary: `format` for these 13 is genuinely evidenced as CD (`2cds each?`).
+> I still propose leaving `format` blank in this pass, because the trailing `?`
+> signals the compiler's own uncertainty about the disc count. Worth a separate
+> decision if you want it populated.
 
 ### D6 — Discussion Series (8 records: 278–285) → `video`
 **Confidence: Medium-High.** 2012–2014 single-topic discussion products
@@ -105,25 +122,39 @@ is the field that exists to record CD/audio. But if you use `item_type` to mean
 Family"). Five of eight map to official `(2012)`/`(2014)` products. Same
 studio-production character as D2/D4.
 
-### D7 — ⚠️ Media Miscellaneous (14 records: 264–277) → `audio` (with exceptions)
-**Confidence: Low–Medium — needs your call.**
+### D7 — Media Miscellaneous (14 records: 264–277) → `audio`, **but see the grouping problem**
+**Confidence: High for the type. ⚠️ But I found a probable mis-grouping.**
 
-This is the only genuinely heterogeneous group — it's a catch-all:
-- **3 are explicitly CD sets** (270 "Spiritual Reality", 273 "The Prevailing
-  Silence", 275 "Truth Shines Forth" — all `-3-cd-set` slugs) → `audio` is safe.
-- **1 is a book signing** (265 "Golden Word Book Signing – Audio") → arguably
-  `audio`, but it's an *event recording*, not a teaching.
-- **1 is a broken placeholder** (264, see §4).
-- **The other 9** (All is Divinity, Compassion, The Ever-Present Joy, …) have no
-  format signal at all.
+Raw-row inspection shows this "series" is actually **two different groups** that
+the migration merged, separated in the source by a blank row and a note:
 
-**My recommendation:** type the 3 confirmed CD sets as `audio`, and leave the
-other 11 blank pending individual review — rather than blanket-typing a group
-whose members I can't distinguish. Blanket-typing here would manufacture
-confidence the evidence doesn't support.
+```
+row 294  >> heading: "Media Miscellaneous: https://veritaspub.com/media-miscellaneous-2/"
+row 295  >> note:    "❌❌ MOST ARE MISSING ❌❌ NOT YET IN THE SPREADSHEET ❌❌"
+row 296     item:    26. "In the World But Not of It" –        ← genuinely Media Misc
+row 297     item:    Audio 27. Golden Word Book Signing – Audio ← genuinely Media Misc
+row 298  >> blank separator
+row 299  >> note:    "Missing OTR"                              ← NEW SECTION STARTS
+rows 300-311  items: All is Divinity … You Are the Light of Consciousness
+```
 
-**Alternative if you want the column complete:** type all 14 as `audio`, accepting
-that ~9 are inferred from series membership alone.
+**Rows 300–311 (master IDs 266–277) sit under a "Missing OTR" note**, i.e. *On The
+Road* — not Media Miscellaneous. They were absorbed into the preceding series
+because the note was classified as `research_note` rather than `series_context`.
+
+Supporting evidence: all 12 are a tight, contemporaneous product family (published
+2014-01-01 → 2014-01-27, bar one 2022 reissue), all `owned=false`, matching the
+"missing" annotation — and stylistically they're talk titles like the known OTR
+products, not the two genuine Media-Misc oddities above them.
+
+**Type recommendation (unaffected by grouping):** `audio` for all 14. Three are
+explicit `-3-cd-set` products; 265 is titled "– Audio"; the rest are the same 2014
+audio product family.
+
+**Grouping recommendation:** ⚠️ **Do not fix the series in this pass.** Reassigning
+12 records from `Media Miscellaneous` to `On The Road Talk Series` is a separate,
+larger decision that changes series counts and belongs in its own reviewed change.
+I've logged it rather than bundling it in silently.
 
 ## 4. Records I recommend excluding from this pass
 
@@ -146,6 +177,18 @@ explicitly in doubt.
 | D1 + D5 as `lecture` | **0** | 16 |
 | D1 `lecture`, D5 `satsang` | **0** | 16 |
 | All seven series typed | **0** | 23 |
+| **Final proposal (D1–D7 as revised)** | **0** | **23** |
+
+Under the final proposal, `item_type` coverage goes from **221/308 → 305/308**,
+leaving only the 3 deferred placeholders. The 23 new codes are:
+
+- `LECTURE-2011-007…009` — the three 2011 Q&A sessions (D1)
+- `LECTURE-2003-019`, `LECTURE-2004-019…024` — seven dated On The Road talks (D3)
+- `AUDIO-2007-001…005`, `AUDIO-2008-001…002`, `AUDIO-2009-001…004`,
+  `AUDIO-2010-001…002` — the thirteen Satsang records (D5)
+
+The Satsang records open a clean new `AUDIO-` sequence rather than interleaving
+with the `LECTURE-` numbering — a further argument for D5 being `audio`.
 
 ✅ **No existing catalogue code changes under any scenario.** New codes only append
 to the end of each year's sequence, because the code counter follows ledger row
@@ -175,11 +218,11 @@ Types belong in the **migration ledger** (`proposed_item_type`), the declared in
 | D2 | Volume Series | 13 | `video` | High |
 | D3 | On The Road Talk Series | 18 | `lecture` | High |
 | D4 | Office Series | 16 (excl. 246, 249) | `video` | High |
-| D5 | ⚠️ Satsang Series | 13 | `lecture` *(or `audio`)* | **Your call** |
+| D5 | Satsang Series | 13 | `audio` | High *(resolved)* |
 | D6 | Discussion Series | 8 | `video` | Med-High |
-| D7 | ⚠️ Media Miscellaneous | 3 of 14 | `audio`, rest deferred | **Your call** |
+| D7 | Media Miscellaneous | 14 | `audio` | High *(resolved)* |
 | — | Deferred placeholders | 3 | none | — |
 
-**Default if you just say "approved":** I apply D1–D4 and D6 as written, D5 as
-`lecture`, and D7 as the conservative 3-record option — typing **74 of 87** records
-and leaving 13 explicitly pending.
+**Default if you just say "approved":** I apply D1–D7 as written — typing **84 of
+87** records, leaving only the 3 placeholder rows in §4 untyped, and logging the
+D7 grouping question for a separate decision.
