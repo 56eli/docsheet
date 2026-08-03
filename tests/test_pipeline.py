@@ -891,7 +891,7 @@ class WorkFamilyTests(unittest.TestCase):
             "official_product_title,evidence_note,review_status,reviewed_on,"
             "promotion_status,promotion_notes\n", encoding="utf-8")
         (sandbox / "data" / "edition_promotions.csv").write_text(
-            "candidate_key,work_id,edition_role,item_type,format,series,"
+            "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
             "approval_status,approved_on,approval_reason\n", encoding="utf-8")
 
     def approved_row(self, member: str = "289", work_id: str = "w-tvf") -> str:
@@ -972,7 +972,7 @@ class WorkFamilyTests(unittest.TestCase):
                 "official_product_title,evidence_note,review_status,reviewed_on,"
                 "promotion_status,promotion_notes\n", encoding="utf-8")
             (sandbox / "data" / "edition_promotions.csv").write_text(
-                "candidate_key,work_id,edition_role,item_type,format,series,"
+                "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
                 "approval_status,approved_on,approval_reason\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "missing required columns"):
                 invoke_script("build_research_master.py", sandbox)
@@ -1044,7 +1044,7 @@ class EditionCandidateTests(unittest.TestCase):
                    "proposed_owned,source_name,source_product_id,official_product_url,"
                    "official_product_title,evidence_note,review_status,reviewed_on,"
                    "promotion_status,promotion_notes")
-    PROMO_HEADER = ("candidate_key,work_id,edition_role,item_type,format,series,"
+    PROMO_HEADER = ("candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
                     "approval_status,approved_on,approval_reason")
 
     def family_rows(self) -> list[str]:
@@ -1083,7 +1083,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
             ])
             write = invoke_script("build_research_master.py", sandbox)
             self.assertEqual(write.returncode, 0, write.stderr)
@@ -1108,7 +1108,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("not_promoted"), [
-                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
             ])
             with self.assertRaisesRegex(ValueError, "must be 'promoted'"):
                 invoke_script("build_research_master.py", sandbox)
@@ -1195,7 +1195,7 @@ class EditionCandidateTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            promo = "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
+            promo = "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
             # rejected promotion: no row minted, candidate stays not_promoted
             self.write_files(sandbox, self.candidate_rows(), [promo.replace("approved,2026-08-03", "rejected,2026-08-03")])
             write = invoke_script("build_research_master.py", sandbox)
@@ -1224,7 +1224,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
             ])
             invoke_script("build_research_master.py", sandbox)
             path = sandbox / "data" / "research_master_draft.csv"

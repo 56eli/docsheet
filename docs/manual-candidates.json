@@ -320,7 +320,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -338,7 +338,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -356,7 +356,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -374,7 +374,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -392,7 +392,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -410,7 +410,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -428,7 +428,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -446,7 +446,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   },
   {
@@ -464,7 +464,7 @@
     "evidence_note": "New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
-    "promotion_status": "not_promoted",
+    "promotion_status": "promoted",
     "promotion_notes": "Awaiting promotion ruling; proposed master_uuid assigned at promotion."
   }
 ]

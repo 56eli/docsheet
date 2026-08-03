@@ -522,3 +522,15 @@ promotion rows (master_uuid 344–352) await the owner's approval in
 `data/manual_candidate_promotions.csv`. Everything view 387 → **396**
 (15 pending candidates); candidates 17 → 26; README/handoff updated.
 90 tests, coverage 92%, all checks green.
+
+### 11u. Satsang promotions applied + edition-UUID stability fix (owner)
+
+- 9 Satsang promotions approved (master_uuid 344–352) → master **341 → 350**
+  rows; 9 primary relationship rows added (327 total); Everything stays 396
+  (pending 15 → 6); catalogue codes 225 → 234; README/handoff updated.
+- **Stability fix:** the edition-promotion minting used max+1 UUIDs, so the
+  Satsang promotions (which precede editions in the build) shifted the 24
+  edition rows from 320–343 to 353–376. `edition_promotions.csv` now pins
+  explicit `master_uuid` values (320–343) like the manual promotions path;
+  `load_edition_promotions` validates uniqueness/availability. Build is
+  byte-stable again. 90 tests, coverage 92%.

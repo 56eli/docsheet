@@ -78,7 +78,7 @@ EDITION_CANDIDATE_REQUIRED_COLUMNS = {
     "promotion_notes",
 }
 EDITION_PROMOTION_REQUIRED_COLUMNS = {
-    "candidate_key", "work_id", "edition_role", "item_type", "format",
+    "candidate_key", "master_uuid", "work_id", "edition_role", "item_type", "format",
     "series", "approval_status", "approved_on", "approval_reason",
 }
 EDITION_ROLES = {"book", "audio", "video", "streaming"}
@@ -708,12 +708,12 @@ def validate_edition_candidates(items: list[dict[str, str]]) -> int:
     return len(candidates)
 
 
-def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
+def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str], str]]:
     """Load owner-approved edition promotions and mint master rows.
 
-    Unlike manual promotions (which carry a pre-assigned UUID), edition rows
-    get the next free compact ID above the current maximum, so issued IDs are
-    never reused and the numbering stays monotonic.
+    Edition rows carry an explicitly assigned compact UUID in the promotion
+    registry (like the manual promotions path), so their IDs stay stable no
+    matter which other rows are added before them.
     """
     if not EDITION_PROMOTIONS.exists():
         return []
@@ -729,9 +729,9 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
             )
         rows = list(reader)
 
-    minted: list[dict[str, str]] = []
+    minted: list[tuple[dict[str, str], str]] = []
     seen_keys: set[str] = set()
-    next_id = max((int(uuid) for uuid in existing_ids), default=0) + 1
+    seen_ids: set[str] = set()
     for line, row in enumerate(rows, 2):
         key = row["candidate_key"].strip()
         candidate = candidates.get(key)
@@ -760,6 +760,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
         role = row["edition_role"].strip()
         item_type = row["item_type"].strip()
         media_format = row["format"].strip()
+        uuid = row["master_uuid"].strip()
         if (
             not work_id or work_id != candidate["work_id"].strip()
             or role != candidate["edition_role"].strip()
@@ -771,8 +772,10 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
             raise ValueError(f"{EDITION_PROMOTIONS}:{line} needs a non-deprecated content item_type")
         if media_format not in EDITION_FORMATS:
             raise ValueError(f"{EDITION_PROMOTIONS}:{line} format is outside the edition vocabulary")
-        uuid = str(next_id)
-        next_id += 1
+        if not uuid.isdigit() or uuid in seen_ids or uuid in existing_ids:
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} needs a unique, unused numeric master_uuid"
+            )
         source_column = EDITION_SOURCE_URL_COLUMNS[candidate["source_name"].strip()]
         row_dict = {
             "uuid": uuid, "work_id": work_id, "catalog_code": "", "legacy_tempid": "",
@@ -792,7 +795,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
         row_dict[source_column] = candidate["official_product_url"]
         minted.append((row_dict, candidate["matched_master_uuid"].strip()))
         seen_keys.add(key)
-        existing_ids.add(uuid)
+        seen_ids.add(uuid)
     return minted
 
 
