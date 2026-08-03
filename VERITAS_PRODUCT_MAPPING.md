@@ -43,4 +43,6 @@ This approach preserves broad discovery coverage while retaining the approved hu
 
 ## Reproducibility
 
-`fetch_veritas_catalogue.py` paginates the official API and writes the inventory. It handles the API’s final-page HTTP 400 response as end-of-pagination and preserves Month/Year when a normalized title spans multiple dated master groups, preventing cross-date normalization collisions. The GitHub Actions workflow `Map Veritas Catalogue` refreshes the inventory on demand; it does not auto-import products into the approved master.
+`fetch_veritas_catalogue.py` paginates the official API and writes the inventory. It handles the API’s final-page HTTP 400 response as end-of-pagination, gives exact primary source URLs precedence, and preserves Month/Year when a normalized title spans multiple dated master groups.
+
+> **Refresh safeguard pending:** the manual Map Veritas workflow can still overwrite curated non-primary inventory dispositions because product-ID mapping decisions are not yet a separate persistent overlay. Review `PROJECT_STATE_AUDIT.md` and implement P0 in `IMPLEMENTATION_PLAN.md` before using a live refresh as a routine operation.

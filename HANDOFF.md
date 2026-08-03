@@ -1,45 +1,50 @@
 # Handoff — Hawkins Research Catalogue
 
 **Updated:** 2026-08-03
-**Branch:** `arena/019fc66d-docsheet`
+**Branch:** `arena/019fc6af-docsheet`
+**State audit:** [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md)
 
-## Delivered
+## Delivered state
 
-- A multi-view static catalogue interface was implemented in `docs/`:
-  - **Everything**: 308 reconciled master records, four Nightingale-Conant candidates, 24 reviewed unique/compilation Veritas products, four Hay House candidates, and four non-Spanish Audible candidates.
-  - **Veritas Products**: 191 official product records fetched through the public Veritas WordPress API, with normalized-title match results.
-  - **Hay House Products**: 24 initial official product/format records.
-  - **Audible Products**: Official Audible product entries fetched and mapped, fully populating the Audible integration.
-  - **Approved Publishers** and **Original Spreadsheet** remain available as additional tabs.
-- The original spreadsheet remains preserved and viewable as the raw table; no source rows were deleted.
-- A reconciled research-master dataset is in `data/research_master_draft.csv` and JSON, with 308 candidate material records and stable UUIDv7 identifiers.
-- A row-level migration review ledger, exclusions file, source registry, spreadsheet audit, and mapping reports are committed.
-- The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 80 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv` and 17 reviewed official candidates remain unpromoted in `data/manual_master_candidates.csv`.
-- A validated `data/product_relationships.csv` layer and Product Relationships site tab now distinguish official products from master items; it records 294 exact primary Veritas item/product associations plus seven reviewed related-material products, with no remaining title-only candidate pairs. A separate validated series-compilation layer records all seven annual Highlights scopes without asserting unsupported per-DVD-part inclusions. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_COMPILATION_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, `FINAL_TITLE_MATCH_DECISIONS.md`, and `HIGHLIGHTS_COMPILATION_DECISIONS.md`.
-- The Pages spreadsheet now exposes separate review sheets for overview, master candidates, manual leads, master exclusions, migration review, source overrides, official discovery, and series compilations, so review data is accessible without repository-folder navigation; review tabs are grouped visually, headers are humanized, statuses are badged, and multi-value review fields have a sheet filter.
-- Veritas mapping is reproducible through `fetch_veritas_catalogue.py`; the `Map Veritas Catalogue` workflow writes `data/veritas_official_products.csv` after manual dispatch.
-- **Global Discovery Queue**: A dedicated queue (`data/international_discovery_queue.csv`) was created for the known-but-not-approved international publishers, seeded with early title extractions. These are exposed in a new **International Editions** UI tab.
+- The raw 374-row spreadsheet remains preserved; generators never modify it.
+- The reconciled research master has **308** records and **66** excluded raw rows.
+- Review/provenance inputs are explicit and validated:
+  - **80** approved official source overrides;
+  - **17** reviewed but unpromoted manual candidates;
+  - **1** manual research/edition lead;
+  - **301** item-to-product relationships;
+  - **7** annual series-compilation relationships.
+- The official Veritas inventory has **191** products; primary source matching, date-aware mapping, relationship evidence, and broad-candidate dispositions are documented in `VERITAS_PRODUCT_MAPPING.md`.
+- The Pages catalogue has **344** Everything records, separate product/source views, and a review workspace with sheets for overview, candidates, leads, exclusions, migration review, source overrides, official discovery, product relationships, and series compilations.
+- Review tabs are grouped visually, use human-readable headers and status badges, and provide a status/disposition filter when multiple values exist.
+- `Update Spreadsheet` is synchronized from `main` and writes/commits `docs/data.json` plus `docs/meta.json`; Pages is configured for `main` → `/docs`.
 
 ## Validation completed
 
-- `node --check docs/app.js`
-- `git diff --check`
-- Python scripts were syntax checked where applicable.
-- Veritas workflow successfully ran after pagination handling was fixed and produced the 191-row inventory.
+- Python syntax compilation for all repository scripts.
+- `node --check docs/app.js`.
+- `python build_research_master.py --check`.
+- `python build_catalogue_pages.py --check`.
+- `python reconcile_research_master.py --check`.
+- Isolated clean-directory master/pages rebuild.
+- Local HTTP smoke tests for review workspace assets.
+- `git diff --check`.
 
-## Important known limitations
+## Current limitations and risks
 
-1. **The product catalogues are research inventories, not final deduplicated works.** Commercial products can be compilations, formats, or editions of existing material.
-2. **Veritas listings are now fully mapped** (see `VERITAS_PRODUCT_MAPPING.md` and `data/veritas_official_products.csv`).
-3. **Hay House and Audible mappings are initial passes**, not complete cross-source deduplication. `HAY_HOUSE_MAPPING.md` and `AUDIBLE_MAPPING.md` contain the current boundaries.
-4. **The pre-existing Update Spreadsheet workflow has a path mismatch** (`public/` versus `docs/`) identified in `SPREADSHEET_AUDIT.md`; **this has been fixed** on the main workflow branch.
-5. This is a static GitHub Pages project. The committed `docs/` content is viewable after merge only when repository Pages is configured to deploy `main` → `/docs`.
+1. **Veritas refresh can erase curation.** `fetch_veritas_catalogue.py` rebuilds inventory matches but does not yet reapply persistent product-ID mapping decisions; the Map Veritas workflow can overwrite reviewed statuses on a live refresh.
+2. **No remote CI.** Reproducibility and UI checks are local/documented, not enforced on pull requests.
+3. **Manual candidates are intentionally not master records.** Their promotion needs a dedicated reviewed workflow; do not edit generated master files.
+4. **Nine official Satsang products remain inventory-only** pending a separate candidate decision.
+5. **The public deployment remains `main`.** This branch’s Pages review workspace is visible publicly only after merge/deployment.
+6. **Static UI caveats:** Tabulator/Google Fonts are CDN dependencies and inline edits are session-only.
 
 ## Recommended next steps
 
-1. Merge this PR only after reviewing the broad research-data implications.
-2. Open the deployed Pages site and verify all tabs load: Everything, Veritas Products, Product Relationships, Hay House Products, Audible Products, International Editions, Approved Publishers, and Original Spreadsheet.
-3. Complete Audible extraction into a dedicated inventory tab and link confirmed Audible products to master records. (Completed)
-4. Build global-discovery queues for the known-but-not-approved international publishers: El Grano de Mostaza, Pandora, Guy Trédaniel, Sheema, Gruppo Editoriale Macro, Les Éditions Ariane, and Yes Publishing. (Completed)
-5. Review the 81 unmatched Veritas products and decide whether each is a unique item, edition/source relation, compilation, or excluded related material. (Completed)
-6. Keep raw source, migration ledger, and reviewed master data separate; do not overwrite the original CSV.
+1. Implement a persistent Veritas mapping-decision overlay and make the refresh workflow review-safe.
+2. Add PR CI for syntax, deterministic build checks, and static/browser smoke checks.
+3. Define/implement selective manual-candidate promotion into the master.
+4. Review the nine unmatched Satsang products and remaining inventory-only dispositions.
+5. Open/merge a PR only after reviewing the broad data-model and public-data implications.
+
+For full counts, architecture, inconsistencies, and priority rationale, see [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md) and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).

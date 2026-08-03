@@ -1,150 +1,120 @@
-# DocSheet Implementation Plan
+# DocSheet Implementation Roadmap
 
-**Status:** Proposed roadmap — no raw source or catalogue-record decision is made by this document.  
-**Prepared:** 2026-08-03  
-**Scope:** Make the public static catalogue reproducible, reviewable, and safe to evolve without overwriting raw evidence.
+**Updated:** 2026-08-03
+**Scope:** Preserve raw evidence while operating a reproducible, reviewable Hawkins research catalogue.
+**Current audit:** [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md)
 
 ## Objective
 
-Move from the current useful research/discovery interface to a dependable catalogue workflow in which raw evidence, reviewed master records, official-product inventories, and generated GitHub Pages files have clear ownership and can be rebuilt and verified safely.
+Maintain clear boundaries between raw spreadsheet evidence, curated master records, official product inventories, review decisions, and generated Pages data. A live-source refresh or UI change must not silently overwrite reviewed research decisions.
 
-## Initial baseline recorded for planning (before reconciliation)
+## Current baseline
 
-| Area | Current state | Planning implication |
-|---|---|---|
-| Raw evidence | The source CSV has 374 data rows and remains preserved. | Never edit it as part of normal catalogue generation. |
-| Review surface | `migration_review_ledger.csv` has 374 rows: 308 `item`, 31 blank separators, 21 series contexts, 8 research notes, 5 source contexts, and 1 needs-review row. | Ledger approval must be explicit before it becomes the sole master-data source. |
-| Curated draft | The committed CSV has 314 rows, but its paired JSON has 308; a clean isolated rebuild from the present ledger produces 308 master rows and 66 exclusions (the committed exclusions CSV has 59). | Reconcile the six draft-only CSV records and 36 shared-record metadata differences before accepting a regenerated draft. Do **not** overwrite the committed output merely to make it match. |
-| Public catalogue | `docs/master.json` has 354 records; an isolated rebuild using the current ledger-derived draft produces 348. | Generated website data and `docs/catalogue-meta.json` need the same reconciliation before a deployment refresh. |
-| Official inventory | Veritas has 191 product records; Hay House has 24; Audible has 26; the international queue has 36. | Commercial products and intellectual-material records must remain separate until an approved relationship is recorded. |
-| Deployment | GitHub Pages is publicly built from `main` → `/docs`. | Generated website files must always be written and committed under `docs/`. |
-| Workflow | `update_spreadsheet.yml` runs `process_data.py`, which writes to `docs/`, but its comments and auto-commit paths still point to `public/`. | A raw-CSV update can succeed without committing the files the site uses; correct this first. |
+| Area | Current state |
+|---|---:|
+| Raw spreadsheet rows | 374 |
+| Curated master records | 308 |
+| Excluded raw rows | 66 |
+| Approved source overrides | 80 |
+| Reviewed/unpromoted manual candidates | 17 |
+| Manual research leads | 1 |
+| Veritas official products | 191 |
+| Item-to-product relationships | 301 |
+| Series-compilation relationships | 7 |
+| Everything Pages records | 344 |
 
-The rebuild comparison above was performed in a temporary isolated directory; it made no repository changes.
+### Completed milestones
 
-**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 80 approved source associations are preserved in `data/research_master_source_overrides.csv`, the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`, and 17 reviewed official candidates are held in `data/manual_master_candidates.csv` pending separate promotion. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
-
-**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 294 exact primary Veritas item/product associations and seven separately reviewed related-material products. `data/series_compilation_relationships.csv` adds seven evidence-backed annual Highlights scopes without claiming unsupported per-DVD-part inclusion. All former title-only pairs have an explicit disposition. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_COMPILATION_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, `FINAL_TITLE_MATCH_DECISIONS.md`, and `HIGHLIGHTS_COMPILATION_DECISIONS.md`.
+- Raw evidence, migration ledger, source overrides, manual leads, and unpromoted candidates are separate review inputs.
+- Master and Pages builders have read-only `--check` modes and reproduce committed derivative data.
+- Exact source URL, date-aware Satsang/repeated-title, primary-source, related-material, and annual Highlights series-compilation relationships are validated and published.
+- Pages exposes a review workspace with dedicated searchable/exportable sheets and review-status filters.
+- The main Update Spreadsheet workflow writes `docs/` outputs and the branch is synchronized with that correction.
 
 ## Guiding rules
 
-1. **Preserve provenance.** `hawkins archive clone - Sheet1.csv` is immutable raw evidence. Keep raw rows, their row numbers, and any non-item context available through the ledger.
-2. **Do not infer approval from a match.** A title match or official listing can propose a relationship, but cannot independently create an approved master identity, ownership claim, year, or item type.
-3. **Keep data layers separate.** Raw CSV, migration ledger, curated research master, official-source inventories, and Pages JSON have different purposes and must not overwrite one another.
-4. **Generate deterministically.** A clean checkout must either recreate committed generated files exactly or fail a documented validation check explaining why not.
-5. **Make review decisions explicit.** Store approvals, corrections, rationale, and supporting URLs in reviewable source files—not as manual edits to generated JSON.
+1. **Never alter the raw spreadsheet through a generator.**
+2. **Do not equate a commercial listing or title match with master identity.**
+3. **Store reviewed decisions in explicit inputs, not generated JSON/CSV edits.**
+4. **Require a durable provenance key for every manual candidate or promotion.**
+5. **Keep product relationships at the evidence level actually supported:** item-level when a specific item is proven, series-level when only the lecture scope is proven.
+6. **Generated Pages files are derivatives, not review sources.**
 
 ## Priority roadmap
 
-### P0 — Establish a safe, reproducible build boundary
+### P0 — Make Veritas refresh review-safe
 
-**Why first:** At present the raw-data workflow targets obsolete `public/` paths and catalogue generators do not recreate all committed output from their current declared inputs. Refreshing data before reconciliation risks silently dropping curated additions or publishing stale files.
+**Problem:** The Map Veritas workflow can regenerate `data/veritas_official_products.csv` from live matching and overwrite manually reviewed statuses or relationship decisions.
 
-1. Correct `.github/workflows/update_spreadsheet.yml` to describe, commit, and validate `docs/data.json` and `docs/meta.json`.
-2. Identify every draft-only record and metadata difference between `migration_review_ledger.csv` and `data/research_master_draft.csv`.
-   - The present draft-only raw rows are 368, 371, 375, and 376, plus an explicit manually added *Power vs Force* old-edition record with no raw row number; two draft records share an empty raw-row key.
-   - Decide, per record, whether it belongs in the ledger as an approved item, a documented manual candidate with its own durable provenance key, or outside the master draft.
-3. Reconcile the 36 differing shared master-record values through the ledger or an explicit reviewed-overrides input; never rely on hand-edits to `data/research_master_draft.csv`.
-4. Define a documented build order and implement a non-writing verification command (for example, `python build_research_master.py --check` and `python build_catalogue_pages.py --check`) that reports stale outputs with a non-zero exit code.
-5. Add a CI workflow that runs syntax checks and both verification commands on pull requests and on the protected/default branch.
-6. Regenerate committed derivative files only after steps 2–5 are approved and the check passes.
+**Deliverables**
 
-**Acceptance criteria**
+1. Add `data/veritas_mapping_decisions.csv` keyed by official product ID, with reviewed status, rationale, relationship/promotion references, and review date.
+2. Update `fetch_veritas_catalogue.py` to fetch a raw inventory, then apply these decisions deterministically.
+3. Change the workflow to produce a diff/review artifact or fail on unreviewed mapping changes; do not auto-commit destructive status replacement.
+4. Add a `--check` mode for the fetch/mapping pipeline.
 
-- The spreadsheet workflow commits only `docs/` outputs and has no `public/` references.
-- An intentional one-file input change makes the verification command fail; a rebuild then makes it pass.
-- A clean checkout reproduces the reviewed master and Pages derivatives byte-for-byte, except for an intentionally documented timestamp field.
-- No raw CSV value is changed by the build or workflow.
+**Done when:** a live refresh cannot remove a reviewed product disposition without an explicit reviewed decision change.
 
-### P1 — Complete the migration-ledger approval pass
+### P1 — Enforce checks in CI
 
-**Why now:** Stable generation needs an authoritative review input, not a mixture of generated rows and later manual edits.
+**Deliverables**
 
-1. Review the 198 lecture-part proposals as a bounded first batch.
-   - Confirm ten series labels, date extraction, title cleanup, item type, DVD detail, and per-part ownership.
-   - Resolve the three quarantined August 2002 *Advaita* URLs (raw rows 28–30).
-   - Source or deliberately leave blank the three February 2007 *Relativism vs Reality* URLs (raw rows 144–146).
-2. Review the remaining candidate items by collection (Volume, Office, Satsang, media, books, transcripts, highlights, dissertation, and miscellaneous), preserving a review note for every correction.
-3. Resolve the ledger’s one `needs_review` row and determine whether each research note is context only, a confirmed missing item, or an excluded lead.
-4. Add an explicit review/approval convention to the ledger or a companion overrides file: reviewer, decision date, decision status, evidence URL, and rationale.
-5. Give manually introduced candidates a durable source/provenance key rather than an empty `raw_row_number`; do not generate identity from title text.
+1. Add a pull-request workflow for Python compilation, `node --check`, master/pages/reconciliation checks, and review-input validation.
+2. Add static HTTP smoke checks for every declared Pages sheet/tab and generated JSON file.
+3. Keep live source fetch manual; CI must not call remote inventories.
 
-**Acceptance criteria**
+**Done when:** a stale derivative, missing review sheet, malformed input, or syntax error blocks merge.
 
-- Every public curated record has a review status and a traceable raw-row or documented manual-candidate provenance key.
-- Every true item has a unique UUID; a readable catalogue code is assigned only after the approved type/year rule is satisfied.
-- Raw row 28–30 link handling and raw rows 144–146 missing-link handling have recorded decisions.
+### P1 — Implement selective candidate promotion
 
-### P2 — Model official-source relationships without duplication
+**Current state:** 17 candidates are reviewed and intentionally `not_promoted`.
 
-**Why now:** The official inventory is valuable evidence but a commercial product can be a format, edition, compilation, or unrelated product rather than a new material record.
+**Deliverables**
 
-1. Preserve the full 191-row Veritas inventory and its current statuses: 110 normalized-title matches, 49 title matches, 10 unique items, 18 compilations/new editions, and 4 excluded related-material products.
-2. Convert approved match decisions into explicit master-to-product relationships rather than duplicate master records. Record relationship type such as `same_material_format`, `compilation`, `new_edition`, `related_material`, or `unresolved`.
-3. Review the four Hay House unreviewed products: *How to Surrender to God*, *Live Life As A Prayer*, *The Letting Go Guided Journal*, and *The Letting Go Deck*.
-4. Review Audible/Nightingale-Conant candidates and possible relationships, including *The Ultimate David Hawkins Library*, *The Discovery*, *Healing*, *Naked*, *OM*, and the three flagged possible relationships.
-5. Keep the 36-entry international queue separate until a source is approved and the product’s language, market, and relationship are verified.
-6. Keep source inventories immutable per fetch date or add a retrieval timestamp/source snapshot so changes at publishers can be audited.
+1. Define a promotion-decision input keyed by `candidate_key`.
+2. Require approved final item type, year, format, ownership, source product, and promotion rationale.
+3. Extend the master builder to generate stable UUIDs/codes for promoted candidates while retaining manual provenance.
+4. Keep non-promoted candidates visible in the review workspace.
 
-**Acceptance criteria**
+**Done when:** a selected candidate can enter the master reproducibly without direct generated-file edits.
 
-- Each approved source association has a stable master identifier, official product URL, source/platform, relationship type, review status, and evidence note.
-- “Everything” has a documented inclusion rule that distinguishes approved master items from review candidates and compilations.
-- A source refresh cannot erase a prior reviewed mapping without an explicit diff and review.
+### P1 — Resolve inventory-only decisions
 
-### P3 — Formalize the curated data contract
+1. Review the nine unmatched Satsang products individually for candidate, exclusion, or inventory-only disposition.
+2. Revisit the seven annual Highlights only if evidence later identifies individual DVD-part inclusion.
+3. Review excluded spin-off/promotional products only if catalogue scope changes.
 
-**Why now:** The draft schema is sound as a proposal, but the software needs a machine-enforced contract to prevent regressions.
+### P2 — Formalize schemas and build provenance
 
-1. Publish a versioned schema (JSON Schema, CSV contract, or equivalent) for research-master records and validate all generated records against it.
-2. Enforce controlled fields for `item_type`, `format`, `owned`, year/month shape, URLs, UUIDv7, catalogue-code uniqueness, and provenance keys.
-3. Clarify the policy for unknown year/type: no catalogue code until approved, but a UUID/provenance key may still be assigned after identity approval.
-4. Define the relationship/inventory schema in P2 rather than overloading the flat master record with repeated source columns beyond the currently approved core sources.
-5. Emit a compact, machine-readable build manifest with source file hashes, row counts, schema version, build time, and generator version/commit.
+**Deliverables**
 
-**Acceptance criteria**
+1. Publish versioned machine-readable contracts for master, candidates, source overrides, inventory decisions, item relationships, and series compilations.
+2. Validate controlled vocabularies, URL/source consistency, unique keys, UUIDs, years/months, and promotion state.
+3. Emit a compact build manifest with input hashes, row counts, schema version, generator commit, and build time.
+4. Add a raw `process_data.py --check` mode that handles the dynamic metadata timestamp safely.
 
-- Invalid controlled values, duplicate identifiers, malformed URLs, or an untraceable record fail validation before Pages JSON is written.
-- Schema changes are versioned and include a migration note.
-- Build metadata identifies exactly which reviewed inputs produced a deployed data set.
+### P3 — Harden review and public UX
 
-### P4 — Improve the public catalogue experience after data stabilization
+1. Add browser tests for tab loading, global search + status filter composition, export, keyboard navigation, and dark mode.
+2. Consider self-hosting or a documented fallback for CDN dependencies.
+3. Keep session-only edit behavior explicit; consider disabling editing in review sheets if reviewers mistake it for persistence.
+4. Add view-level explanatory copy/counts distinguishing master records, broad candidates, inventory-only products, and relationships.
 
-**Why fourth:** UI filters and statistics should reflect approved structured metadata, not the raw spreadsheet’s mixed headings, notes, and separators.
+## Execution order
 
-1. Make the default landing view clearly distinguish approved master items, review candidates, official products, and the immutable original spreadsheet.
-2. Add structured filters for item type, series, year, format, ownership, source/platform, language, and review state only where the values are approved and complete enough to be useful.
-3. Show source relationships and product/edition context rather than making title matches look like duplicate catalogue works.
-4. Label all session-only editing unambiguously and consider disabling it in data views if it misleads users into expecting persistence.
-5. Add accessible empty, loading, error, and no-results states; test keyboard navigation, focus behavior, responsive layout, and link safety.
-6. Add lightweight browser smoke tests for tab loading, search, CSV export, and source-link rendering.
+| Order | Milestone | Why it comes next |
+|---:|---|---|
+| 1 | P0 Veritas mapping decisions | Protects the reviewed work before the next live refresh. |
+| 2 | P1 CI | Makes the protected state enforceable for collaborators. |
+| 3 | P1 candidate promotion | Converts approved research into master data safely. |
+| 4 | P1 inventory-only decisions | Extends content coverage after promotion mechanics exist. |
+| 5 | P2 schemas/manifest | Makes governance and release provenance machine-verifiable. |
+| 6 | P3 UX/browser hardening | Builds on stable data and review workflows. |
 
-**Acceptance criteria**
+## Definition of healthy project state
 
-- The default public count is an explained count of approved master items, not raw rows or mixed commercial candidates.
-- Every catalogue tab loads from an available generated file; tabs have understandable labels and accessible keyboard behavior.
-- Search/export operates on the selected view and never mutates source data.
-
-### P5 — Operate and document the pipeline
-
-1. Document the exact local commands for validate, rebuild, preview, and source refresh.
-2. Update `README.md`, `INSTRUCTIONS.md`, and `HANDOFF.md` when the workflow/data contract changes; remove stale claims such as the current assertion that the `public/` path issue is already fixed.
-3. Add a release/checklist for a data refresh: fetch inventory, inspect source diff, run validation, review relationship changes, rebuild derivatives, preview Pages, and verify deployment.
-4. Configure workflow permissions narrowly and retain manual dispatch for remote-source retrieval unless a reviewed schedule is deliberately introduced.
-5. Record known source limitations and last-reviewed dates so users can distinguish a current official inventory from research leads.
-
-## Recommended execution order
-
-| Milestone | Deliverable | Depends on |
-|---|---|---|
-| 1 | Corrected raw-spreadsheet workflow and automated check foundation | None |
-| 2 | Reconciliation report and reviewed ledger/overrides design | Milestone 1 |
-| 3 | Reproducible research-master and Pages rebuild | Milestone 2 |
-| 4 | Lecture-series approval batch and remaining ledger review | Milestone 2 |
-| 5 | Official product relationship model plus reviewed mappings | Milestones 3–4 |
-| 6 | Schema validation and build manifest | Milestone 5 |
-| 7 | Structured UI filters, public-count clarity, and browser tests | Milestone 6 |
-
-## Next implementation recommendation
-
-The current P2 title-candidate batch is complete. The next data decision is whether any inventory-only `unique_item`, `compilation_or_new_edition`, or `unmatched_official_product` record should become a reviewed master candidate; otherwise proceed to relationship-focused UI improvements and CI/schema validation.
+- All generated artifacts pass their `--check` command in a clean checkout.
+- A source refresh preserves reviewed decisions or explicitly reports a decision diff.
+- Every promoted master record has traceable raw or manual provenance.
+- Every public review sheet has a generated source, declared tab, and successful static smoke check.
+- Pages deployment reflects reviewed `docs/` data only after merge to `main`.

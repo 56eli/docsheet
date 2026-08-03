@@ -54,3 +54,11 @@ Review**, **Source Overrides**, **Official Discovery**, and **Series
 Compilations** are separate sheets alongside the catalogue and official-product
 views. Reviewers can search, sort, export, and filter sheets with multiple
 review-status values without opening repository folders.
+
+## Current reviewed catalogue state
+
+The current curated master has **308** records, **66** retained exclusions,
+**80** approved source overrides, **17** reviewed/unpromoted manual candidates,
+**301** item-to-product relationships, and **7** series-compilation
+relationships. See [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md) for the
+current deployment status, known risks, and prioritized backlog.
