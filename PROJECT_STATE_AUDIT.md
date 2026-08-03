@@ -118,7 +118,7 @@ Raw Google Sheets CSV
 | GitHub Pages | Public, built from `main` → `/docs` | Healthy; API reports `built`, live site loads. |
 | Update Spreadsheet workflow | Manual and CSV-change trigger on `main`; installs requirements; regenerates `docs/data.json` and `docs/meta.json`; auto-commits those two files | Functional pattern, but lacks a `process_data.py --check` mode and writes dynamic timestamps. |
 | Map Veritas Catalogue workflow | Manual only; review-only candidate/diff artifact; latest `main` run fetched candidate and failed at compare | Correctly surfaced a live inventory diff for review. Download/inspect artifact before accepting any changes. |
-| Pull-request validation | No CI workflow | Gap; stale artifacts or syntax errors are only caught by local discipline. |
+| Pull-request validation | No CI workflow could be pushed from this sandbox | Branch adds Playwright CSV-export smoke tests and npm scripts; adding `.github/workflows/ci.yml` was blocked because the configured GitHub App lacks `workflows` permission. |
 | Branch state | `arena/019fc714-docsheet` is based on current `main` merge commit | No open PRs at audit time. |
 
 ## Security, privacy, and supply-chain assessment
@@ -142,11 +142,11 @@ The latest `Map Veritas Catalogue` run on `main` (`30803991007`) reached the can
 
 **Required remedy:** Download the `veritas-inventory-review-30803991007` artifact from GitHub Actions, inspect `data/veritas_inventory_diff.patch` and `data/veritas_official_products_candidate.csv`, then decide whether to update the reviewed inventory and/or `data/veritas_mapping_decisions.csv`. Do not replace the committed inventory blindly.
 
-### P1 — Add automated CI and static smoke checks
+### P1 — Add CI workflow once workflow-file permissions are available
 
-**Issue:** Local validation is strong, but there is no pull-request workflow enforcing syntax checks, reproducibility checks, JSON validity, or static Pages availability.
+**Issue:** This branch adds `package.json`, `playwright.config.js`, and `tests/csv-export.spec.js` for CSV-export browser smoke coverage, but the actual `.github/workflows/ci.yml` file could not be pushed because the configured GitHub App refused workflow-file updates without `workflows` permission. The browser test also could not be executed in this sandbox because Playwright Chromium download failed with TLS/network resets.
 
-**Required remedy:** Add a read-only CI workflow for Python compilation, `node --check`, master/pages/reconciliation `--check`, JSON parsing, and HTTP/static smoke coverage for every declared Pages view. Keep live Veritas fetching manual.
+**Required remedy:** After reconnecting/updating GitHub permissions for workflow edits, add a read-only CI workflow that runs the existing Python/data checks, `node --check`, `npm ci`, and `npm run test:e2e`; keep live Veritas fetching manual/outside CI.
 
 ### P1 — Define the candidate-promotion workflow
 

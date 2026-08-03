@@ -12,7 +12,7 @@
    - It failed intentionally at the candidate-vs-reviewed comparison step.
    - The artifact should contain `data/veritas_official_products_candidate.csv` and `data/veritas_inventory_diff.patch`.
    - Accept no live inventory change until the diff is reviewed and any required mapping-decision updates are explicit.
-2. Add read-only pull-request CI for local validation commands and static Pages smoke checks.
+2. Add the CI workflow after GitHub workflow-file permissions are available; this branch already includes the Playwright CSV export test files and npm scripts.
 3. Only then proceed to candidate-promotion mechanics or inventory-only product decisions.
 
 Local direct `python fetch_veritas_catalogue.py --check` from this sandbox failed with TLS EOF against `veritaspub.com`; use the GitHub Actions artifact as the operational review path unless direct network access is healthy.
@@ -69,7 +69,7 @@ The candidate CSV and diff patch paths are ignored by Git. Never use a live fetc
 ## Current priorities
 
 1. Review the Veritas candidate/diff artifact from `main` run `30803991007`.
-2. Add pull-request CI for syntax, master/pages/reconciliation checks, review-input validation, JSON parsing, and static/HTTP tab checks.
+2. Add and verify CI after workflow-file permissions are available; current branch coverage includes CSV export browser smoke test files, but no pushed workflow.
 3. Design selective promotion of the 17 manual candidates into the master without direct generated-file edits.
 4. Review the nine inventory-only Satsang products.
 5. Add formal schemas/build manifests and browser interaction tests.

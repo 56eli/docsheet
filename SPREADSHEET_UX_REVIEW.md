@@ -7,7 +7,7 @@
 
 The CSV export code path is still present and wired correctly: `docs/index.html` has the `#export-btn` button, `docs/app.js` binds it to `exportCsv()`, and `exportCsv()` calls Tabulator's built-in `table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true })` for the currently active/filtered view.
 
-I verified syntax and local static serving, but I did **not** perform a real browser click/download test because this sandbox has no browser runtime installed. So the accurate status is: **expected to work from static/code audit; needs a Playwright/browser test to certify automatically.**
+I added Playwright browser smoke tests for CSV export in `tests/csv-export.spec.js`, wired by `playwright.config.js` and the new `npm run test:e2e` script. In this sandbox, the test definitions list successfully, but Chromium download failed with TLS/network resets, so the actual browser click/download test should be certified in GitHub Actions or another environment with working Playwright browser downloads. A CI workflow file was drafted but could not be pushed because the configured GitHub App lacks `workflows` permission for workflow-file updates.
 
 ## Best steps to make the spreadsheet more user friendly
 

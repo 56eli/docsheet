@@ -5,6 +5,11 @@ __pycache__/
 venv/
 *.egg-info/
 
+# Node / browser tests
+node_modules/
+playwright-report/
+test-results/
+
 # Generated live-source review candidates (workflow artifacts; never commit)
 data/veritas_official_products_candidate.csv
 data/veritas_inventory_diff.patch

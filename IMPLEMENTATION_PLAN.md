@@ -55,15 +55,17 @@ Delivered and verified:
 
 **Remaining verification:** download and inspect the `veritas-inventory-review-30803991007` artifact before accepting any live inventory or mapping-decision changes.
 
-### P1 — Enforce checks in CI
+### P1 — Enforce checks in CI (browser test added; workflow permission pending)
 
-**Deliverables**
+**Delivered on this branch**
 
-1. Add a pull-request workflow for Python compilation, `node --check`, master/pages/reconciliation checks, and review-input validation.
-2. Add static HTTP smoke checks for every declared Pages sheet/tab and generated JSON file.
-3. Keep live source fetch manual; CI must not call remote inventories.
+1. `package.json`, `package-lock.json`, `playwright.config.js`, and `tests/csv-export.spec.js` add Playwright browser smoke tests for active-view CSV export and selected-view export filenames.
+2. README and instructions document how to install and run the browser tests.
+3. Live source fetch remains manual; the proposed CI should not call remote inventories.
 
-**Done when:** a stale derivative, missing review sheet, malformed input, or syntax error blocks merge.
+**Blocked:** pushing `.github/workflows/ci.yml` failed because the configured GitHub App lacks `workflows` permission for workflow-file updates.
+
+**Remaining verification:** reconnect/update GitHub permissions for workflow edits, add the read-only CI workflow, confirm GitHub Actions can install Chromium and run the Playwright CSV export tests, then expand smoke coverage to every declared Pages sheet/tab and generated JSON file.
 
 ### P1 — Implement selective candidate promotion
 
