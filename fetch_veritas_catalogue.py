@@ -23,6 +23,31 @@ def norm(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", value)
 
 
+MONTHS = {
+    "jan": "01", "january": "01", "feb": "02", "february": "02",
+    "mar": "03", "march": "03", "apr": "04", "april": "04",
+    "may": "05", "jun": "06", "june": "06", "jul": "07", "july": "07",
+    "aug": "08", "august": "08", "sep": "09", "sept": "09", "september": "09",
+    "oct": "10", "october": "10", "nov": "11", "november": "11",
+    "dec": "12", "december": "12",
+}
+
+
+def is_satsang(value: str) -> bool:
+    return "satsang series" in html.unescape(value).lower()
+
+
+def satsang_date_key(value: str) -> str | None:
+    """Return YYYY-MM for a dated Satsang title, preserving date identity."""
+    match = re.search(
+        r"\b(" + "|".join(MONTHS) + r")\.?\s+(20\d{2})\b",
+        html.unescape(value).lower(),
+    )
+    if not match:
+        return None
+    return f"{match.group(2)}-{MONTHS[match.group(1)]}"
+
+
 def get_page(page: int) -> list[dict]:
     query = urlencode({"per_page": 100, "page": page, "_fields": "id,date,link,title,class_list"})
     request = Request(f"{API}?{query}", headers={"User-Agent": "docsheet-catalogue-research/1.0"})
@@ -45,8 +70,13 @@ def main() -> None:
     with MASTER.open(encoding="utf-8", newline="") as handle:
         master = list(csv.DictReader(handle))
     index: dict[str, list[dict[str, str]]] = {}
+    satsang_index: dict[str, list[dict[str, str]]] = {}
     for row in master:
         index.setdefault(norm(row["title"]), []).append(row)
+        if is_satsang(row["title"]):
+            date_key = satsang_date_key(row["title"])
+            if date_key:
+                satsang_index.setdefault(date_key, []).append(row)
 
     products, page = [], 1
     while True:
@@ -59,7 +89,19 @@ def main() -> None:
     rows = []
     for product in products:
         title = html.unescape(product["title"]["rendered"])
-        matches = index.get(norm(title), [])
+        if is_satsang(title):
+            date_key = satsang_date_key(title)
+            matches = satsang_index.get(date_key, []) if date_key else []
+            mapping_status = "matched_by_date" if matches else "unmatched_official_product"
+            review_notes = (
+                "Date-specific Satsang mapping; Month/Year must match exactly."
+                if matches
+                else "No date-specific Satsang master item; retained as official inventory only."
+            )
+        else:
+            matches = index.get(norm(title), [])
+            mapping_status = "matched_by_normalized_title" if matches else "unreviewed_official_product"
+            review_notes = ""
         rows.append({
             "veritas_product_id": str(product["id"]),
             "official_title": title,
@@ -69,8 +111,8 @@ def main() -> None:
             "normalized_title_match_count": str(len(matches)),
             "matched_master_uuids": "; ".join(item["uuid"] for item in matches),
             "matched_master_titles": " | ".join(item["title"] for item in matches),
-            "mapping_status": "matched_by_normalized_title" if matches else "unreviewed_official_product",
-            "review_notes": "",
+            "mapping_status": mapping_status,
+            "review_notes": review_notes,
         })
     OUT.parent.mkdir(exist_ok=True)
     with OUT.open("w", encoding="utf-8", newline="") as handle:

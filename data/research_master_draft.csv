@@ -249,19 +249,19 @@ uuid,catalog_code,legacy_tempid,title,title_source,item_type,series,year,month,f
 019fc4e7-d1e6-74df-ae52-ac762548709e,,OFF16,B-04 Office Series-Cancer.mp4,,,Office Series,,,,,true,,,,https://veritaspub.com/product/cancer/,,,,,,,275
 019fc4e7-d1e6-76f5-a9e2-2ffa57d2450f,,OFF17,where is B-05? might not exist.,,,Office Series,,,,,false,,,,,,,,,,,276
 019fc4e7-d1e6-7e61-96a9-6e92ec2d0f2a,,OFF18,B-06 Office Series-Death and Dying.mp4,,,Office Series,,,,,true,,,,https://veritaspub.com/product/death-and-dying/,,,,,,,277
-019fc4e7-d1e6-7686-a4a9-b4e026c80915,,2cds each?,Satsang Series (Jan 2007),,,Satsang Series,2007,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,280
-019fc4e7-d1e6-76b4-b22b-e32a12d66f6b,,2cds each?,Satsang Series (Mar 2007),,,Satsang Series,2007,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,281
-019fc4e7-d1e6-77e8-885e-095f649b5c4f,,2cds each?,Satsang Series (May 2007),,,Satsang Series,2007,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,282
-019fc4e7-d1e6-7cb9-9731-0938ea01fabc,,2cds each?,Satsang Series (Jul 2007),,,Satsang Series,2007,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,283
-019fc4e7-d1e6-7ddd-a10f-41b88085b3f1,,2cds each?,Satsang Series (Sep 2007),,,Satsang Series,2007,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,284
-019fc4e7-d1e6-7168-93d1-cbdf21fbb59e,,2cds each?,Satsang Series (May 2008),,,Satsang Series,2008,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,285
-019fc4e7-d1e6-7b97-b0f3-540d61684ebd,,2cds each?,Satsang Series (Sep 2008),,,Satsang Series,2008,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,286
-019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7,,2cds each?,Satsang Series (Jan 2009),,,Satsang Series,2009,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,287
-019fc4e7-d1e6-75ec-9dfe-0612af78c34d,,2cds each?,Satsang Series (May 2009),,,Satsang Series,2009,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,288
-019fc4e7-d1e6-7365-bec0-24f93ad939c4,,2cds each?,Satsang Series (Sep 2009),,,Satsang Series,2009,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,289
-019fc4e7-d1e7-7a8e-90aa-e010906ecb59,,2cds each?,Satsang Series (Nov 2009),,,Satsang Series,2009,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,290
-019fc4e7-d1e7-739f-a7ad-530b14fc6493,,2cds each?,Satsang Series (Feb 2010),,,Satsang Series,2010,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,291
-019fc4e7-d1e7-7011-b7ec-297ea46ba9e7,,2cds each?,Satsang Series (Nov 2010),,,Satsang Series,2010,,,,false,,,,,,,,,,Raw source note: veritas/only sold via audible,292
+019fc4e7-d1e6-7686-a4a9-b4e026c80915,,2cds each?,Satsang Series (Jan 2007),,,Satsang Series,2007,,,,false,,,,https://veritaspub.com/product/satsang-series-january-2007-cd/,,,,,,Raw source note: veritas/only sold via audible,280
+019fc4e7-d1e6-76b4-b22b-e32a12d66f6b,,2cds each?,Satsang Series (Mar 2007),,,Satsang Series,2007,,,,false,,,,https://veritaspub.com/product/satsang-series-march-2007-cd/,,,,,,Raw source note: veritas/only sold via audible,281
+019fc4e7-d1e6-77e8-885e-095f649b5c4f,,2cds each?,Satsang Series (May 2007),,,Satsang Series,2007,,,,false,,,,https://veritaspub.com/product/satsang-series-may-2007-cd/,,,,,,Raw source note: veritas/only sold via audible,282
+019fc4e7-d1e6-7cb9-9731-0938ea01fabc,,2cds each?,Satsang Series (Jul 2007),,,Satsang Series,2007,,,,false,,,,https://veritaspub.com/product/satsang-series-4-july-11-2007/,,,,,,Raw source note: veritas/only sold via audible,283
+019fc4e7-d1e6-7ddd-a10f-41b88085b3f1,,2cds each?,Satsang Series (Sep 2007),,,Satsang Series,2007,,,,false,,,,https://veritaspub.com/product/satsang-series-sept-2007-cd/,,,,,,Raw source note: veritas/only sold via audible,284
+019fc4e7-d1e6-7168-93d1-cbdf21fbb59e,,2cds each?,Satsang Series (May 2008),,,Satsang Series,2008,,,,false,,,,https://veritaspub.com/product/satsang-series-may-2008-cd/,,,,,,Raw source note: veritas/only sold via audible,285
+019fc4e7-d1e6-7b97-b0f3-540d61684ebd,,2cds each?,Satsang Series (Sep 2008),,,Satsang Series,2008,,,,false,,,,https://veritaspub.com/product/satsang-series-3-september-10-2008/,,,,,,Raw source note: veritas/only sold via audible,286
+019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7,,2cds each?,Satsang Series (Jan 2009),,,Satsang Series,2009,,,,false,,,,https://veritaspub.com/product/satsang-series-1-january-7-2009/,,,,,,Raw source note: veritas/only sold via audible,287
+019fc4e7-d1e6-75ec-9dfe-0612af78c34d,,2cds each?,Satsang Series (May 2009),,,Satsang Series,2009,,,,false,,,,https://veritaspub.com/product/satsang-series-2-may-13-2009/,,,,,,Raw source note: veritas/only sold via audible,288
+019fc4e7-d1e6-7365-bec0-24f93ad939c4,,2cds each?,Satsang Series (Sep 2009),,,Satsang Series,2009,,,,false,,,,https://veritaspub.com/product/satsang-series-september-2009-cd/,,,,,,Raw source note: veritas/only sold via audible,289
+019fc4e7-d1e7-7a8e-90aa-e010906ecb59,,2cds each?,Satsang Series (Nov 2009),,,Satsang Series,2009,,,,false,,,,https://veritaspub.com/product/satsang-november-2009-cd/,,,,,,Raw source note: veritas/only sold via audible,290
+019fc4e7-d1e7-739f-a7ad-530b14fc6493,,2cds each?,Satsang Series (Feb 2010),,,Satsang Series,2010,,,,false,,,,https://veritaspub.com/product/satsang-series-february-2010/,,,,,,Raw source note: veritas/only sold via audible,291
+019fc4e7-d1e7-7011-b7ec-297ea46ba9e7,,2cds each?,Satsang Series (Nov 2010),,,Satsang Series,2010,,,,false,,,,https://veritaspub.com/product/2010-11-satsang-series-nov-2010/,,,,,,Raw source note: veritas/only sold via audible,292
 019fc4e7-d1e7-7472-9e25-78174b1f887d,,,"26. ""In the World But Not of It"" –","26. ""In the World But Not of It"" – ",,Media Miscellaneous,,,,,true,,,,,,,,,,,296
 019fc4e7-d1e7-74b3-bda4-3409216dc1f7,,,Audio 27. Golden Word Book Signing – Audio,,,Media Miscellaneous,,,,,true,,,,https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/,,,,,,,297
 019fc4e7-d1e7-74fb-ac04-ace36d1a485c,,,All is Divinity,,,Media Miscellaneous,,,,,false,,,,,,,,,,,300

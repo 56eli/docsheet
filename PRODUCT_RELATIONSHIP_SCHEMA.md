@@ -39,9 +39,9 @@ The table is intentionally separate from the flat research-master schema. It can
 
 ## Current reviewed coverage
 
-Every non-empty master `source_url_veritas` is represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. This currently yields 263 item-to-product relationships across 120 distinct primary products; a single product can therefore be related to multiple top-level DVD/CD parts without duplicating an item.
+Every non-empty master `source_url_veritas` is represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. This currently yields 276 item-to-product relationships across 133 distinct primary products; a single product can therefore be related to multiple top-level DVD/CD parts without duplicating an item.
 
-The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. The distinct 2012 one-DVD 60-minute interview is a reviewed `related_material` relationship to DVD01 rather than a replacement source URL or a duplicate master item. Three reviewed book-to-audio/CD/DVD related-material relationships are documented in `BOOK_RELATIONSHIP_DECISIONS.md`.
+The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. The distinct 2012 one-DVD 60-minute interview is a reviewed `related_material` relationship to DVD01 rather than a replacement source URL or a duplicate master item. Three reviewed book-to-audio/CD/DVD related-material relationships are documented in `BOOK_RELATIONSHIP_DECISIONS.md`; date-specific Satsang mapping is documented in `SATSANG_MAPPING_DECISIONS.md`.
 
 See `RELATIONSHIP_EXPANSION_AUDIT.md` for the coverage counts and the title-only product matches deliberately left unpromoted for individual review.
 

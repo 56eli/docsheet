@@ -989,11 +989,11 @@
     "official_product_url": "https://veritaspub.com/product/2010-11-satsang-series-nov-2010/",
     "published_date": "2010-11-08",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
+    "matched_master_titles": "Satsang Series (Nov 2010)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50766",
@@ -1013,11 +1013,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-3-september-1-2010/",
     "published_date": "2010-09-15",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "1695",
@@ -1037,11 +1037,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-june-2010-cd/",
     "published_date": "2010-06-20",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50769",
@@ -1061,11 +1061,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-february-2010/",
     "published_date": "2010-03-15",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e7-739f-a7ad-530b14fc6493",
+    "matched_master_titles": "Satsang Series (Feb 2010)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "1683",
@@ -1073,11 +1073,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-november-2009-cd/",
     "published_date": "2009-11-13",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e7-7a8e-90aa-e010906ecb59",
+    "matched_master_titles": "Satsang Series (Nov 2009)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50752",
@@ -1097,11 +1097,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-september-2009-cd/",
     "published_date": "2009-09-21",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7365-bec0-24f93ad939c4",
+    "matched_master_titles": "Satsang Series (Sep 2009)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50755",
@@ -1121,11 +1121,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-2-may-13-2009/",
     "published_date": "2009-06-24",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-75ec-9dfe-0612af78c34d",
+    "matched_master_titles": "Satsang Series (May 2009)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50758",
@@ -1169,11 +1169,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-1-january-7-2009/",
     "published_date": "2009-01-16",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7",
+    "matched_master_titles": "Satsang Series (Jan 2009)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50707",
@@ -1217,11 +1217,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-3-september-10-2008/",
     "published_date": "2008-09-25",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7b97-b0f3-540d61684ebd",
+    "matched_master_titles": "Satsang Series (Sep 2008)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50716",
@@ -1241,11 +1241,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-2-july-9-2008/",
     "published_date": "2008-07-23",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50713",
@@ -1265,11 +1265,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-may-2008-cd/",
     "published_date": "2008-06-06",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7168-93d1-cbdf21fbb59e",
+    "matched_master_titles": "Satsang Series (May 2008)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50722",
@@ -1337,11 +1337,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-sept-2007-cd/",
     "published_date": "2007-09-09",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7ddd-a10f-41b88085b3f1",
+    "matched_master_titles": "Satsang Series (Sep 2007)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50521",
@@ -1385,11 +1385,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-4-july-11-2007/",
     "published_date": "2007-07-07",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7cb9-9731-0938ea01fabc",
+    "matched_master_titles": "Satsang Series (Jul 2007)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50743",
@@ -1409,11 +1409,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-may-2007-cd/",
     "published_date": "2007-05-05",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-77e8-885e-095f649b5c4f",
+    "matched_master_titles": "Satsang Series (May 2007)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50746",
@@ -1565,11 +1565,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-march-2007-cd/",
     "published_date": "2007-03-03",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-76b4-b22b-e32a12d66f6b",
+    "matched_master_titles": "Satsang Series (Mar 2007)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50810",
@@ -1625,11 +1625,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-january-2007-cd/",
     "published_date": "2007-01-01",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915",
+    "matched_master_titles": "Satsang Series (Jan 2007)",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-specific Satsang mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50687",
@@ -1649,11 +1649,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-nov-2006-cd/",
     "published_date": "2006-11-11",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50675",
@@ -1685,11 +1685,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-sept-2006-cd/",
     "published_date": "2006-09-09",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50678",
@@ -1721,11 +1721,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-jul-2006-cd/",
     "published_date": "2006-07-07",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50690",
@@ -1745,11 +1745,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-3-may-10-2006-held-at-the-sedona-creative-life-center-in-sedona-arizona/",
     "published_date": "2006-05-05",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50693",
@@ -1769,11 +1769,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-mar-2006-cd/",
     "published_date": "2006-03-03",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50684",
@@ -1793,11 +1793,11 @@
     "official_product_url": "https://veritaspub.com/product/satsang-series-1-january-11-2006-held-at-st-andrews-episcopal-church-in-sedona-arizona/",
     "published_date": "2006-01-01",
     "official_categories": "",
-    "normalized_title_match_count": "13",
-    "matched_master_uuids": "019fc4e7-d1e6-7686-a4a9-b4e026c80915; 019fc4e7-d1e6-76b4-b22b-e32a12d66f6b; 019fc4e7-d1e6-77e8-885e-095f649b5c4f; 019fc4e7-d1e6-7cb9-9731-0938ea01fabc; 019fc4e7-d1e6-7ddd-a10f-41b88085b3f1; 019fc4e7-d1e6-7168-93d1-cbdf21fbb59e; 019fc4e7-d1e6-7b97-b0f3-540d61684ebd; 019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7; 019fc4e7-d1e6-75ec-9dfe-0612af78c34d; 019fc4e7-d1e6-7365-bec0-24f93ad939c4; 019fc4e7-d1e7-7a8e-90aa-e010906ecb59; 019fc4e7-d1e7-739f-a7ad-530b14fc6493; 019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
-    "matched_master_titles": "Satsang Series (Jan 2007) | Satsang Series (Mar 2007) | Satsang Series (May 2007) | Satsang Series (Jul 2007) | Satsang Series (Sep 2007) | Satsang Series (May 2008) | Satsang Series (Sep 2008) | Satsang Series (Jan 2009) | Satsang Series (May 2009) | Satsang Series (Sep 2009) | Satsang Series (Nov 2009) | Satsang Series (Feb 2010) | Satsang Series (Nov 2010)",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "0",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "mapping_status": "unmatched_official_product",
+    "review_notes": "No date-specific Satsang master item; retained as official inventory only."
   },
   {
     "veritas_product_id": "50650",

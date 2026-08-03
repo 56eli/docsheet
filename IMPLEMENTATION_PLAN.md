@@ -22,9 +22,9 @@ Move from the current useful research/discovery interface to a dependable catalo
 
 The rebuild comparison above was performed in a temporary isolated directory; it made no repository changes.
 
-**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 49 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
+**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 62 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
-**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 263 exact primary Veritas item/product associations and four separately reviewed related-material products. Title-only matches remain unpromoted pending evidence. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, and `BOOK_RELATIONSHIP_DECISIONS.md`.
+**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 276 exact primary Veritas item/product associations and four separately reviewed related-material products. Title-only matches remain unpromoted pending evidence. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, `BOOK_RELATIONSHIP_DECISIONS.md`, and `SATSANG_MAPPING_DECISIONS.md`.
 
 ## Guiding rules
 
@@ -147,4 +147,4 @@ The rebuild comparison above was performed in a temporary isolated directory; it
 
 ## Next implementation recommendation
 
-Start the next P2 batch with the title-only candidates documented in `RELATIONSHIP_EXPANSION_AUDIT.md`. Review a bounded group by evidence rather than promoting normalized-title matches wholesale; Satsang date variants, books/audiobooks that share a lecture title, compilations, and related interviews require distinct relationship decisions.
+Start the next P2 batch with the 27 remaining non-Satsang title-only candidates documented in `RELATIONSHIP_EXPANSION_AUDIT.md`. Review a bounded group by evidence rather than promoting normalized-title matches wholesale; books/audiobooks that share a lecture title, compilations, and related interviews require distinct relationship decisions.
