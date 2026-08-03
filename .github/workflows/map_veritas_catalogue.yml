@@ -1,11 +1,18 @@
 name: Map Veritas Catalogue
+
 on:
   workflow_dispatch:
+
+# A refresh is intentionally review-only. The workflow writes a candidate
+# inventory and diff artifact; a reviewer applies approved mapping decisions
+# and commits the reviewed inventory through a normal branch change.
 permissions:
-  contents: write
+  contents: read
+
 concurrency:
   group: map-veritas-catalogue-${{ github.ref }}
   cancel-in-progress: false
+
 jobs:
   map-catalogue:
     runs-on: ubuntu-latest
@@ -18,12 +25,34 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Fetch and map official Veritas products
-        run: python fetch_veritas_catalogue.py
-      - name: Commit review inventory
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Fetch reviewed inventory candidate
+        run: >
+          python fetch_veritas_catalogue.py
+          --output data/veritas_official_products_candidate.csv
+      - name: Compare candidate with reviewed inventory
+        id: inventory-diff
+        shell: bash
+        run: |
+          set +e
+          git diff --no-index -- \
+            data/veritas_official_products.csv \
+            data/veritas_official_products_candidate.csv \
+            > data/veritas_inventory_diff.patch
+          status=$?
+          if [ "$status" -gt 1 ]; then
+            exit "$status"
+          fi
+          if [ "$status" -eq 1 ]; then
+            echo "A reviewed inventory update is required; inspect the artifact diff." >&2
+            exit 1
+          fi
+          echo "Candidate matches the reviewed inventory."
+      - name: Upload candidate and diff for review
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          commit_message: "Update official Veritas product inventory"
-          file_pattern: data/veritas_official_products.csv
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
+          name: veritas-inventory-review-${{ github.run_id }}
+          path: |
+            data/veritas_official_products_candidate.csv
+            data/veritas_inventory_diff.patch
+          if-no-files-found: warn
