@@ -71,7 +71,7 @@ Sandbox traps learned the hard way (all still true):
 | Everything relationships | 333 product relationships, 7 series compilations | |
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
-| Series taxonomy | 179 matched products → 146 approved / 30 proposed / 3 rejected; approved mappings applied as a proven no-op | 30 new proposals from the 2026-08-04 refresh await owner review |
+| Series taxonomy | 179 matched products → 166 approved / 10 proposed / 3 rejected; approved mappings applied as a proven no-op | the 10 conflicting 2026-08-04 proposals await owner review |
 | Test suite | **96 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
@@ -280,10 +280,11 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
 - **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
-- **30 new series-taxonomy proposals** (2026-08-04 refresh fallout) in
-  `data/series_category_mapping.csv` with `review_status=proposed`: 20 equal
-  the curated series baseline (safe bulk-approve candidates); **10 differ**
-  and need a ruling either way: Veritas products 1546/1548 (→ Media
+- **10 conflicting series-taxonomy proposals** (from the 2026-08-04
+  refresh; the 20 baseline-matching proposals were bulk-approved 2026-08-04
+  as a proven no-op — 0 series changes) in
+  `data/series_category_mapping.csv` with `review_status=proposed`, awaiting
+  a ruling either way: Veritas products 1546/1548 (→ Media
   Miscellaneous vs master On The Road Talk Series), 1661/1695/1728/1742
   (→ Media Miscellaneous vs master Books), 1814 (→ On The Road Talk Series
   vs master Media Miscellaneous), 50485/50488 (→ Discussion Series vs master

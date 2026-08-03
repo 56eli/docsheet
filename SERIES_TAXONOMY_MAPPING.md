@@ -81,10 +81,11 @@ rows for one master ID fail the generator outright.
 
 ## Baseline (2026-08-04, post-refresh)
 
-179 matched products: **146 approved** (143 bulk approvals at 286/286
-uuid-level agreement with the curated series, plus 3 individually ruled),
-**30 proposed** (from the 2026-08-04 inventory link-up — 20 equal the
-curated series baseline; the 10 that differ are listed for owner ruling in
+179 matched products: **166 approved** (143 bulk approvals at 286/286
+uuid-level agreement with the curated series, plus 3 individually ruled, plus
+20 bulk approvals 2026-08-04 at 313/313 uuid-level agreement — again a proven
+no-op),
+**10 proposed** (the conflicting 2026-08-04 rows, listed for owner ruling in
 `NEXT_AGENT_HANDOFF.md` §6), and
 **3 rejected** wrong-edition signals (book/audio products title-matched to the
 Volume I DVD record and the 2006 discussion title-matched to the 2006 lecture
