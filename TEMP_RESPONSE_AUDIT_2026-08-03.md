@@ -466,3 +466,15 @@ lanes (Books, On The Road, Satsang, Office, Volume, Discussion, Media,
 Transcription — each many distinct works). Options D6a part-as-work
 (recommended), D6b series-as-work, D6c hybrid; impact: ~55 proposed
 per-part works under D6a. Awaiting owner ruling.
+
+### 11p. D6a + C1 rulings applied (owner)
+
+- **C1** applied: rows 46/47/48 moved from w-highest-level-of-enlightenment
+  to the new approved work **w-enlightenment** (Devotional Nonduality
+  lecture); 301 keeps its work. Master regenerated (work_id coverage stays
+  67/341 — proposed rows do not apply).
+- **D6a** executed: **163 proposed per-title works (274 member rows)**
+  generated in `data/work_families.csv` by EXACT normalized-title grouping
+  (no substring fuzz), covering every uncovered part row incl. collection
+  lanes; nothing applied until owner approval. Proposal impact figures
+  corrected (§5/§5b). Suite: 90 tests, coverage 92%.

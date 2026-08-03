@@ -107,17 +107,24 @@ own per-volume works).
 
 ## 5. Impact of D6a
 
-- `work_families.csv` gains ~55 proposed works (~160 member rows) generated
-  deterministically by exact title group; owner approves in bulk or per row
-  (same flow as the previous batch).
-- `work_id` coverage: 67 → ~227 of 341 rows. Collection-lane rows (On The
-  Road, Satsang, Office, Books, Discussion, Media, Transcription) get their
-  own works in a later pass (each single-title lane row is trivially its own
-  work; nothing blocks it).
+- `work_families.csv` gains **163 proposed per-title works (274 member
+  rows)** — generated deterministically by **exact** title group (no
+  substring fuzz; this replaces the earlier draft's undercount). Owner
+  approves in bulk or per row (same flow as the previous batch).
+- `work_id` coverage: 67 → **341 of 341 rows** once approved (all part rows,
+  book rows, and edition rows covered).
 - Edition rows keep their work_ids (unchanged). Counts, checks, and tests are
   unaffected (work_id values do not feed any count).
-- C1 changes w-highest-level-of-enlightenment from 4 to 1 member and adds
-  `w-enlightenment` (46/47/48).
+- **C1** (owner-approved 2026-08-03): w-highest-level-of-enlightenment is
+  back to 1 member (301); rows 46/47/48 moved to the new approved work
+  `w-enlightenment`.
+
+## 5b. Ruling received (2026-08-03)
+
+**D6a + C1 approved.** The 163 proposed per-title works are generated and
+committed as `proposed` rows in `data/work_families.csv` (never applied until
+approved); the C1 split is already applied (approved). No other data
+changed.
 
 ## 6. Decisions requested
 

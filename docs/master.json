@@ -1217,7 +1217,7 @@
   {
     "record_type": "master",
     "uuid": "46",
-    "work_id": "w-highest-level-of-enlightenment",
+    "work_id": "w-enlightenment",
     "catalog_code": "LECTURE-2003-010",
     "legacy_tempid": "LS200304_1",
     "title": "Enlightenment",
@@ -1244,7 +1244,7 @@
   {
     "record_type": "master",
     "uuid": "47",
-    "work_id": "w-highest-level-of-enlightenment",
+    "work_id": "w-enlightenment",
     "catalog_code": "LECTURE-2003-011",
     "legacy_tempid": "LS200304_2",
     "title": "Enlightenment",
@@ -1271,7 +1271,7 @@
   {
     "record_type": "master",
     "uuid": "48",
-    "work_id": "w-highest-level-of-enlightenment",
+    "work_id": "w-enlightenment",
     "catalog_code": "LECTURE-2003-012",
     "legacy_tempid": "LS200304_3",
     "title": "Enlightenment",
