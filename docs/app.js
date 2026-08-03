@@ -26,6 +26,10 @@
   const viewTitle = $("view-title");
   const viewDescription = $("view-description");
   const viewMeta = $("view-meta");
+  const columnMenuBtn = $("column-menu-btn");
+  const columnMenu = $("column-menu");
+  const columnList = $("column-list");
+  const showAllColumnsBtn = $("show-all-columns");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -271,6 +275,45 @@
     });
   }
 
+  function closeColumnMenu() {
+    columnMenu.hidden = true;
+    columnMenuBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function configureColumnChooser() {
+    columnList.replaceChildren();
+    closeColumnMenu();
+    if (!table) return;
+
+    table.getColumns().forEach((column) => {
+      const field = column.getField();
+      if (!field) return;
+      const label = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = column.isVisible();
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          column.show();
+        } else {
+          column.hide();
+        }
+        fitTableToContainer();
+      });
+      label.append(checkbox, document.createTextNode(humanizeField(field)));
+      columnList.append(label);
+    });
+  }
+
+  function showAllColumns() {
+    if (!table) return;
+    table.getColumns().forEach((column) => column.show());
+    columnList.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = true;
+    });
+    fitTableToContainer();
+  }
+
   /* ------------------------------------------------------------------ *
    *  Data loading (meta.json first for a snappy footer)
    * ------------------------------------------------------------------ */
@@ -511,6 +554,7 @@
     });
 
     configureReviewFilter(data);
+    configureColumnChooser();
     table.on("dataFiltered", updateSearchStatus);
     table.on("cellEdited", (cell) => {
       const row = cell.getRow().getData();
@@ -649,8 +693,18 @@
         : null;
       applyActiveFilters();
     });
+    columnMenuBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const willOpen = columnMenu.hidden;
+      columnMenu.hidden = !willOpen;
+      columnMenuBtn.setAttribute("aria-expanded", String(willOpen));
+    });
+    columnMenu.addEventListener("click", (event) => event.stopPropagation());
+    showAllColumnsBtn.addEventListener("click", showAllColumns);
+    document.addEventListener("click", closeColumnMenu);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeColumnMenu(); });
     searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { searchInput.value = ""; applySearch(""); }
+      if (e.key === "Escape") { searchInput.value = ""; applySearch(""); closeColumnMenu(); }
     });
     document.querySelectorAll(".dataset-tab").forEach((tab) => {
       tab.addEventListener("click", () => activateView(tab.dataset.view));

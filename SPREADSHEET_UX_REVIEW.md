@@ -139,16 +139,11 @@ Wide Tabulator grids are desktop-friendly but mobile-hostile. Add one of:
 | 3 | Disable or clarify session-only editing | Prevents accidental trust in unsaved edits. |
 | 4 | Add link labels + copy tooltips | Link labels implemented for URL-heavy columns; copy buttons remain future work. |
 | 5 | Add per-view column presets/frozen key fields | Implemented: key columns are reordered, width-tuned, and frozen per view; low-priority technical fields move right instead of being hidden so exports remain complete. |
-| 6 | Add row details drawer | Best long-form evidence UX. |
-| 7 | Upgrade filters/search highlighting | Improves reviewer speed. |
-| 8 | Add explicit export modes | Removes ambiguity around filtered/all exports. |
+| 6 | Add column chooser | Implemented: users can hide/show visible columns per active view and restore all columns. |
+| 7 | Add row details drawer | Best long-form evidence UX. |
+| 8 | Upgrade filters/search highlighting | Improves reviewer speed. |
+| 9 | Add explicit export modes | Removes ambiguity around filtered/all exports. |
 
 ## Minimal next UX task
 
-A good first implementation slice is:
-
-1. add a view metadata map in `docs/app.js`,
-2. render a short view description/count bar above the table,
-3. add a Playwright or equivalent browser test that confirms CSV export still triggers a download.
-
-That gives users immediate orientation and gives developers an automated answer to “does export still work?”
+The first UX slice is now implemented: view metadata, CSV-export smoke tests, readable URL labels, column ordering/frozen key fields, and a column chooser. The next smallest high-value slice is to either disable/clarify session-only editing or add explicit export modes (`filtered`, `all visible`, and later `selected`).

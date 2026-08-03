@@ -94,10 +94,21 @@
       <h2 id="view-title">Everything</h2>
       <p id="view-description">Loading catalogue view details…</p>
     </div>
-    <dl id="view-meta" class="view-meta" aria-label="Current view details">
-      <div><dt>Rows</dt><dd>—</dd></div>
-      <div><dt>Type</dt><dd>—</dd></div>
-    </dl>
+    <div class="view-summary-side">
+      <dl id="view-meta" class="view-meta" aria-label="Current view details">
+        <div><dt>Rows</dt><dd>—</dd></div>
+        <div><dt>Type</dt><dd>—</dd></div>
+      </dl>
+      <div class="column-tools">
+        <button id="column-menu-btn" type="button" aria-expanded="false" aria-controls="column-menu">Columns</button>
+        <div id="column-menu" class="column-menu" hidden>
+          <div class="column-menu-header">Visible columns</div>
+          <div id="column-list" class="column-list"></div>
+          <button id="show-all-columns" type="button">Show all columns</button>
+          <p>Exports follow the visible columns in the current view.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="review-toolbar" class="review-toolbar" aria-label="Review filters" hidden>

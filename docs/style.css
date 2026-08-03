@@ -277,6 +277,13 @@ body {
   color: var(--text-muted);
   line-height: 1.4;
 }
+.view-summary-side {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  gap: 10px;
+}
 .view-meta {
   display: flex;
   flex: 0 0 auto;
@@ -307,6 +314,63 @@ body {
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.column-tools { position: relative; }
+#column-menu-btn,
+#show-all-columns {
+  min-height: 34px;
+  padding: 7px 10px;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border-radius: 8px;
+  cursor: pointer;
+}
+#column-menu-btn:hover,
+#show-all-columns:hover { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); }
+#column-menu-btn:focus-visible,
+#show-all-columns:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.column-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 160;
+  width: min(320px, 86vw);
+  max-height: min(460px, 70vh);
+  padding: 12px;
+  overflow: auto;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+.column-menu-header {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.column-list {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.column-list label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.3;
+}
+.column-list input { margin-top: 2px; accent-color: var(--accent); }
+.column-menu p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 /* ---- Review toolbar ---- */
@@ -561,8 +625,12 @@ body {
   #table-container { padding: 0 6px; }
   #spreadsheet { top: 8px; left: 6px; right: 6px; bottom: 8px; }
   .view-summary { align-items: flex-start; padding: 10px; flex-direction: column; gap: 10px; }
+  .view-summary-side { width: 100%; flex-direction: column; }
   .view-meta { width: 100%; flex-wrap: wrap; }
   .view-meta div { flex: 1 1 120px; }
+  .column-tools { width: 100%; }
+  #column-menu-btn { width: 100%; }
+  .column-menu { left: 0; right: auto; width: 100%; }
   .review-toolbar { padding: 7px 10px; gap: 7px; flex-wrap: wrap; }
   #review-filter { min-width: min(220px, 100%); }
   .review-filter-hint { width: 100%; }
