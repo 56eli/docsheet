@@ -155,6 +155,13 @@ Documented "306" masters (actual 317) and omitted the pending class; updated.
 — **all PASS.** `--no-include-pending --check` correctly reports the reduced
 353-row view as differing from committed outputs (by design, local only).
 
+## 8b. Follow-up work completed after this audit (same branch)
+
+| Commit | Work |
+|---|---|
+| `2f05c0f` | Documentation consolidation: 41 → 20 root MDs; 12 decision records → `decisions/` (indexed), 10 non-normative docs → `archive/`, 3 absorbed TEMP files deleted; zero broken links; handoff refreshed. |
+| `1b1a38b` | Category Dominance taxonomy mapper implemented per the approved policy: fetcher fixed (`product_cat` + taxonomy endpoint), `official_categories` populated on 191/191 products (live ID/link set = reviewed inventory), `map_series_taxonomy.py` + mapping CSV (141 clean proposals, 282/283 already agreeing with the curated series; 294/317 records covered) + 13-row review queue (dual-edition Books/Media-Misc, multi-annual, Map of Consciousness®). Proposals **not** wired to the master — owner approval via the ledger comes first; see `SERIES_TAXONOMY_MAPPING.md`. CI step snippets recorded in `archive/UNBLOCK_INSTRUCTIONS.md` (App still lacks `workflows` permission; push verified to reject). |
+
 ## 9. Bottom line
 
 The project's engineering is genuinely strong (deterministic checkable
