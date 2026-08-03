@@ -95,6 +95,40 @@ def classify(row: list[str], current_series: str) -> tuple[str, str, str]:
     return "needs_review", "Non-empty row without item ID or ownership status.", current_series
 
 
+VERITAS_DATED_SLUG = re.compile(r"/product/(20\d{2})-(0[1-9]|1[0-2])-")
+MONTH_NAMES = {
+    "jan": "01", "feb": "02", "mar": "03", "apr": "04", "may": "05", "jun": "06",
+    "jul": "07", "aug": "08", "sep": "09", "sept": "09", "oct": "10", "nov": "11",
+    "dec": "12",
+}
+VERITAS_SLUG_MONTH_NAME = re.compile(
+    r"-(" + "|".join(sorted(MONTH_NAMES, key=len, reverse=True)) + r")-(20\d{2})/?$"
+)
+
+
+def proposed_month(tempid: str, veritas_url: str) -> str:
+    """Return the calendar month of a lecture, from the official product URL.
+
+    The ``LSyyyynn_p`` legacy identifier's ``nn`` segment is the lecture's
+    ORDINAL POSITION in its annual series, not a calendar month. That only
+    coincided with the month in 2002, when lectures ran monthly; from 2003 the
+    cadence was roughly bi-monthly, so ordinal 02 is April, not February.
+
+    The authoritative month is published by Veritas in the product slug, in
+    either a numeric form (``/product/2003-02-integration-...``) or a
+    month-name form (``/product/vision-feb-2005``). Return empty rather than
+    guessing when no dated official product is linked.
+    """
+    if not re.fullmatch(r"LS\d{6}_\d+", tempid):
+        return ""
+    url = veritas_url or ""
+    numeric = VERITAS_DATED_SLUG.search(url)
+    if numeric:
+        return numeric.group(2)
+    named = VERITAS_SLUG_MONTH_NAME.search(url)
+    return MONTH_NAMES[named.group(1)] if named else ""
+
+
 def proposed_item_type(tempid: str, series: str, title: str) -> str:
     if tempid.startswith("LS"):
         return "lecture"
@@ -133,7 +167,7 @@ def main() -> None:
             "proposed_title": title_clean if disposition == "item" else "",
             "proposed_item_type": proposed_item_type(clean(tempid), current_series, title_clean) if disposition == "item" else "",
             "proposed_year": first_year(clean(tempid), title_clean) if disposition == "item" else "",
-            "proposed_month": clean(tempid)[6:8] if disposition == "item" and re.fullmatch(r"LS\d{6}_\d+", clean(tempid)) else "",
+            "proposed_month": proposed_month(clean(tempid), valid_veritas_product) if disposition == "item" else "",
             "proposed_format": "DVD" if disposition == "item" and detail_match else "",
             "proposed_format_detail": detail_match.group(1).upper() if disposition == "item" and detail_match else "",
             "proposed_owned": {"✅": "true", "❌": "false"}.get(raw_owned, "") if disposition == "item" else "",

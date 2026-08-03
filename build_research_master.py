@@ -172,6 +172,30 @@ def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
     return buffer.getvalue()
 
 
+def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
+    """Derive a missing lecture month from an approved official product URL.
+
+    ``proposed_month`` in the ledger is derived from the official Veritas
+    product slug, which is the publisher's authoritative statement of when a
+    lecture was given. Some official links only arrive later through the
+    approved source-override input, so the month must be resolved again once
+    those overrides have been applied. Existing months are never overwritten.
+    """
+    import generate_migration_ledger as ledger_tools
+
+    filled = 0
+    for item in items:
+        if item["month"] or not item["legacy_tempid"]:
+            continue
+        month = ledger_tools.proposed_month(
+            item["legacy_tempid"].strip(), item["source_url_veritas"]
+        )
+        if month:
+            item["month"] = month
+            filled += 1
+    return filled
+
+
 def apply_source_overrides(items: list[dict[str, str]]) -> int:
     """Apply explicit, approved official-source links after ledger migration.
 
@@ -378,6 +402,7 @@ def build_master() -> MasterBuild:
         })
 
     source_overrides_applied = apply_source_overrides(items)
+    backfill_months_from_official_source(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}
