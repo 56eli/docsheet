@@ -1215,6 +1215,61 @@ class EditionCandidateTests(unittest.TestCase):
             tempdir.cleanup()
 
 
+class SourceOverrideStatusTests(unittest.TestCase):
+    """Proposed source overrides are validated but never applied."""
+
+    HEADER = "raw_row_number,target_field,override_value,review_status,approval_date,review_reason,evidence_source"
+
+    def write_overrides(self, sandbox: Path, rows: list[str]) -> None:
+        (sandbox / "data" / "research_master_source_overrides.csv").write_text(
+            self.HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
+        )
+
+    def row(self, status: str = "proposed") -> str:
+        return (f"328,source_url_hay_house,https://www.hayhouse.com/truth-vs-falsehood-parperback/,"
+                f"{status},,same-carrier paperback link,data/hayhouse_official_products.csv")
+
+    def test_proposed_rows_validate_but_do_not_apply(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("proposed")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("Applied 0 approved source overrides", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["289"]
+            self.assertEqual(row["source_url_hay_house"], "")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_rows_apply(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("approved")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("1 approved source overrides", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["289"]
+            self.assertEqual(row["source_url_hay_house"], "https://www.hayhouse.com/truth-vs-falsehood-parperback/")
+        finally:
+            tempdir.cleanup()
+
+    def test_invalid_status_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("pending")])
+            with self.assertRaisesRegex(ValueError, "review_status must be"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+
 class DocumentationCurrencyTests(unittest.TestCase):
     """Hand-maintained status documents must not drift from the generated data."""
 

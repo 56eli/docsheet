@@ -718,5 +718,167 @@
     "approval_date": "2026-08-03",
     "review_reason": "Publisher explicitly listed on Veritas product 1661 page; matches official Nightingale-Conant product for the same work.",
     "evidence_source": "web search + Veritas product 1661 metadata"
+  },
+  {
+    "raw_row_number": "325",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/power-vs-force-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Power vs Force)"
+  },
+  {
+    "raw_row_number": "326",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/eye-of-the-i-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Eye of the I)"
+  },
+  {
+    "raw_row_number": "327",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/i-reality-and-subjectivity-1",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (I Reality and Subjectivity)"
+  },
+  {
+    "raw_row_number": "328",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/catalog/product/view/id/23364/s/truth-vs-falsehood-parperback/",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Truth vs Falsehood)"
+  },
+  {
+    "raw_row_number": "329",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/letting-go-2",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Letting Go)"
+  },
+  {
+    "raw_row_number": "330",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/healing-and-recovery-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Healing and Recovery)"
+  },
+  {
+    "raw_row_number": "331",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/discovery-of-the-presence-of-god-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Discovery of the Presence of God)"
+  },
+  {
+    "raw_row_number": "332",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/reality-spirituality-and-modern-man-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Reality Spirituality and Modern Man)"
+  },
+  {
+    "raw_row_number": "333",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/traqnscending-the-levels-of-consciousness-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Transcending the Levels of Consciousness)"
+  },
+  {
+    "raw_row_number": "334",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-map-of-consciousness-explained-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (The Map of Consciousness Explained)"
+  },
+  {
+    "raw_row_number": "335",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/success-is-for-you-ebook",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier eBook edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Success Is for You)"
+  },
+  {
+    "raw_row_number": "337",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/daily-reflections-from-dr-david-r-hawkins-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Daily Reflections from Dr David R Hawkins)"
+  },
+  {
+    "raw_row_number": "339",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/along-the-path-to-enlightenment-1",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier eBook edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Along the Path to Enlightenment)"
+  },
+  {
+    "raw_row_number": "340",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/dissolving-the-ego-realizing-the-self-1",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier eBook edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Dissolving the Ego Realizing the Self)"
+  },
+  {
+    "raw_row_number": "341",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/in-the-world-but-not-of-it-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (In the World But Not of It)"
+  },
+  {
+    "raw_row_number": "348",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-evolution-of-consciousness-ebook",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier eBook edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (The Evolution of Consciousness)"
+  },
+  {
+    "raw_row_number": "350",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/spiritual-power-and-integrity-paperback",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/hayhouse_official_products.csv (Spiritual Power and Integrity)"
+  },
+  {
+    "raw_row_number": "325",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/power-vs-force-the-hidden-determinants-of-human-behavior-book/",
+    "review_status": "proposed",
+    "approval_date": "",
+    "review_reason": "Veritas book-edition link for the Power vs Force book master (Hay House inventory, matched_by_title).",
+    "evidence_source": "data/veritas_official_products.csv (Veritas product 50411)"
   }
 ]

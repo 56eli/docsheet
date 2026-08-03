@@ -689,7 +689,9 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             "manual_research_leads": len(manual_leads),
             "master_exclusion_rows": len(master_exclusions),
             "migration_review_rows": len(migration_review),
-            "approved_source_overrides": len(source_overrides),
+            "approved_source_overrides": sum(
+                row["review_status"] == "approved" for row in source_overrides
+            ),
             "official_discovery_candidates": len(queue),
             "approved_veritas_mapping_decisions": len(veritas_mapping_decisions),
             "implemented_unreviewed": (

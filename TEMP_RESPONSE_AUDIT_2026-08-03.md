@@ -380,3 +380,15 @@ applied; all values taken verbatim from inventory/master files):
   paperback/eBook rows for existing book masters → same-carrier, so they are
   **source-override candidates** (incl. 50411 PvF book for 286) rather than
   edition rows — a separate reviewed batch for the owner.
+
+### 11j. Hay House source-override batch drafted (owner: "draft the HH override batch")
+
+`data/research_master_source_overrides.csv` gained **18 `proposed` override
+rows** (never applied until approved): 17 Hay House same-carrier links
+(paperback/eBook for masters 286–300, 304, 306 — exact URLs from the Hay
+House inventory, incl. upstream typos kept verbatim) + the Veritas book link
+(50411) for master 286. Overrides now support a `proposed` review status
+(shape-validated, not applied; `approved_source_overrides` meta counts only
+approved). Excluded: masters 316/318 (promoted-candidate provenance cannot
+take raw-row overrides — needs a mechanism extension), 301 (already has an
+approved HH override). Suite: **85 tests**, coverage 92%.

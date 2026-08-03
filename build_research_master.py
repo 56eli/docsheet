@@ -359,9 +359,9 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
                 f"{SOURCE_OVERRIDES}:{line_number} cannot override {target_field!r}; "
                 f"allowed fields: {', '.join(sorted(SOURCE_OVERRIDE_FIELDS))}"
             )
-        if status != "approved":
+        if status not in {"approved", "proposed"}:
             raise ValueError(
-                f"{SOURCE_OVERRIDES}:{line_number} must have review_status 'approved'"
+                f"{SOURCE_OVERRIDES}:{line_number} review_status must be 'approved' or 'proposed'"
             )
         if not value.startswith("https://"):
             raise ValueError(
@@ -376,9 +376,10 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
                 f"{SOURCE_OVERRIDES}:{line_number} conflicts with the raw-ledger value for "
                 f"{raw_row}/{target_field}; model a separate relationship instead"
             )
-        items_by_raw[raw_row][target_field] = value
+        if status == "approved":
+            items_by_raw[raw_row][target_field] = value
         seen.add(key)
-    return len(overrides)
+    return sum(1 for override in overrides if override["review_status"].strip() == "approved")
 
 
 def validate_manual_candidates() -> int:
