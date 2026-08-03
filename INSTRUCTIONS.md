@@ -128,10 +128,10 @@ python fetch_veritas_catalogue.py --output data/veritas_official_products_candid
 ```
 
 Review any candidate diff, update decisions deliberately, rebuild the catalogue,
-and run the curated checks. A prepared Map Veritas workflow revision follows this
-review-only pattern and uploads its candidate/diff artifact instead of
-auto-committing; commit that workflow YAML manually in GitHub before relying on
-it operationally.
+and run the curated checks. The Map Veritas workflow follows this review-only
+pattern and uploads its candidate/diff artifact instead of auto-committing. Run
+it manually in GitHub Actions after merge and inspect the artifact before
+accepting any live-source update.
 
 ---
 

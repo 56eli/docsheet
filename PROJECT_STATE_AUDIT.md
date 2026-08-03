@@ -7,7 +7,7 @@
 
 ## Executive summary
 
-The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected in code by a 35-row product-ID decision overlay and a prepared review-only candidate/diff workflow; the workflow YAML still needs a manual GitHub commit because this session cannot push workflow-file changes.
+The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected in code by a 35-row product-ID decision overlay and a review-only candidate/diff workflow synchronized into `main`; one manual Actions run is still needed because this session's GitHub integration cannot dispatch it.
 
 ## Validation completed
 
@@ -73,16 +73,16 @@ Review tabs have humanized headers, status badges, visual grouping, and a status
 |---|---|---|
 | GitHub Pages | Public, built from `main` → `/docs` | Healthy configuration; branch changes are not deployed yet. |
 | Update Spreadsheet workflow | `process_data.py` writes and auto-commits `docs/data.json` + `docs/meta.json` on `main` | Path mismatch is resolved in `main` and synchronized into this branch. |
-| Map Veritas Catalogue workflow | Prepared local revision fetches a live decision-applied candidate and uploads a CSV/diff artifact; does not auto-commit | Requires a manual GitHub YAML commit, then one live artifact verification run. |
+| Map Veritas Catalogue workflow | Review-only revision fetches a live decision-applied candidate and uploads a CSV/diff artifact; does not auto-commit | Synchronized into `main`; requires one manual live artifact verification run. |
 | Pull-request validation | No workflow | Gap. Local checks are documented but not enforced remotely. |
 
 ## Findings and prioritized backlog
 
-### P0 — Preserve curated Veritas mapping decisions on refresh (code/data complete; workflow commit pending)
+### P0 — Preserve curated Veritas mapping decisions on refresh (code/data complete; manual run pending)
 
-`data/veritas_mapping_decisions.csv` now stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. A prepared Map Veritas workflow revision writes a candidate CSV and diff artifact, then fails on a diff instead of auto-committing.
+`data/veritas_mapping_decisions.csv` now stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. The review-only Map Veritas workflow is synchronized into `main`; it writes a candidate CSV and diff artifact, then fails on a diff instead of auto-committing.
 
-**Remaining action:** commit the workflow YAML manually in GitHub, then perform one manual run to verify its artifact behavior against the live API.
+**Remaining action:** perform one manual Actions run to verify its artifact behavior against the live API.
 
 ### P1 — Add automated CI and release checks
 
@@ -130,4 +130,4 @@ Review tabs have humanized headers, status badges, visual grouping, and a status
 
 ## Recommended next action
 
-Merge and manually run the review-only **Map Veritas Catalogue** workflow once, then implement the read-only CI workflow. This turns the new refresh safeguard into an operationally verified control before any additional candidate promotion or live-source refresh.
+Manually run the review-only **Map Veritas Catalogue** workflow once, then implement the read-only CI workflow. This turns the new refresh safeguard into an operationally verified control before any additional candidate promotion or live-source refresh.

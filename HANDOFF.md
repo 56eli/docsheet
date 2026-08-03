@@ -37,7 +37,7 @@
 3. **Nine official Satsang products remain inventory-only** pending a separate candidate decision.
 4. **The public deployment remains `main`.** This branch’s Pages review workspace is visible publicly only after merge/deployment.
 5. **Static UI caveats:** Tabulator/Google Fonts are CDN dependencies and inline edits are session-only.
-6. **Veritas workflow deployment is pending a manual GitHub YAML commit.** The branch contains the prepared review-only revision locally, but GitHub workflow-file permission restrictions prevent this session from pushing it; commit the replacement in GitHub, then run it once to confirm its candidate/diff artifact behavior against the live API.
+6. **Veritas workflow operational verification is pending a manual GitHub Actions run.** The review-only YAML is synchronized into `main`, but this session's GitHub integration cannot dispatch it; run it once manually and inspect the candidate/diff artifact against the live API.
 
 ## Recommended next steps
 
