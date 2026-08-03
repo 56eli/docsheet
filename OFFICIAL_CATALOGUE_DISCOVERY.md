@@ -1,6 +1,12 @@
 # Official Catalogue Discovery — Initial Comparison
 
-**Status:** Research-import queue only. No discovered candidate has been added to the 308-record research-master draft.
+**Status:** Discovery comparison recorded 2026-08-03; the draft it refers to
+has since grown to the current 317-record research master. The four
+Nightingale-Conant candidates listed below entered the review queue; separate
+official candidates were subsequently promoted through the reviewed
+`data/manual_master_candidates.csv` + `data/manual_candidate_promotions.csv`
+path (11 promoted, 6 pending). This document is retained as the initial
+source-comparison record.
 **Discovery date:** 2026-08-03
 **Approved sources examined:** Veritas Publishing, Hay House, Nightingale-Conant, Audible.
 
@@ -48,7 +54,7 @@ The queue deliberately contains **no ID, no catalogue code, and no ownership cla
 
 ## Important comparison rule
 
-The 308 migrated draft records are chiefly **individual material parts**, whereas official catalogues expose **commercial products/editions**. Therefore:
+The 317 migrated master records are chiefly **individual material parts**, whereas official catalogues expose **commercial products/editions**. Therefore:
 
 - an official listing that matches an existing title may add a source URL, not a new item;
 - a compilation or new edition must be examined for changed content before it becomes a separate record;

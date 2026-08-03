@@ -163,6 +163,10 @@ official catalogue, which contains exactly the two reconstructed titles
 
 ### Data state
 
+> Mid-session snapshot as of the commits listed above. The final committed
+> state after all 2026-08-03 work (including promotions and the coherence
+> audit in §11) is 317 master / 363 Everything; see §12.
+
 | Layer | Count |
 |---|---:|
 | Raw rows / ledger rows | 374 / 374 |
@@ -408,3 +412,134 @@ review workspace, source input, and published master coherent.
 - The owner-approved category dominance rules are documented in
   `CATEGORY_DOMINANCE_POLICY.md`; implementation of the full taxonomy mapper and
   review queue is the next data-engineering task.
+
+---
+
+## 12. Independent re-audit — 2026-08-03 (next-agent session, branch `arena/019fc893-docsheet`)
+
+This section is an independent full-stack/data-engineering re-audit of the
+committed state at `6b28e66` ("Add verification and testing steps to CI
+workflow") plus this session's remediation. Every claim below was reproduced
+locally or against the GitHub API; nothing is assumed from the prior
+documentation.
+
+### 12.1 Claims reproduced independently
+
+| Check | Result |
+|---|---|
+| `python -m py_compile *.py` (8 scripts) | ✅ |
+| `process_data.py --check` / master / Pages / reconcile / taxonomy `--check` | ✅ all five |
+| `python -m unittest discover tests` | ✅ 54 tests at `6b28e66`; **60 after this session** |
+| Coverage gate (`fail_under = 80` in `.coveragerc`) | ✅ **92% total** (1346 stmts, 109 missed); every module ≥ 88% |
+| `node --check` (app.js, playwright config, spec) | ✅ |
+| `git diff --check` | ✅ |
+| CI on `main` (run `30834666253`, commit `6b28e66`) | ✅ success via GitHub API; Pages build `30834665039` success |
+| `fetch_veritas_catalogue.py --check` | ⚠️ TLS EOF in sandbox (documented environmental limit; offline replay tests cover the client) |
+| Playwright browser suite | ⚠️ no Chromium in sandbox; ran green in GitHub-hosted CI |
+
+### 12.2 Verdict on the prior agent's prompt
+
+**"Audit the whole project."** ✅ Met. `AUDIT_2026-08-03_FULL.md` is a genuine
+multi-layer audit (architecture, data model, entry-by-entry verification
+against the live Veritas API, frontend, CI/CD, security, supply chain) and it
+found/fixed four real data defects (C1–C4) that structural checks could not
+see. §9–§11 show the audit was kept honest after the fact.
+
+**"Update all documentation to reflect the status quo."** ⚠️ Partially met.
+The living docs (README, INSTRUCTIONS, RECONCILIATION_REPORT,
+SERIES_TAXONOMY_MAPPING, VERITAS_ARTIFACT_REVIEW) were current, but a
+second pass still found status-quo drift (details in §12.3). All fixed in this
+session, and pinned by tests so it cannot silently recur.
+
+**"Get code coverage for tests to 80%."** ✅ Met and exceeded: 92% total,
+every pipeline module ≥ 88%, enforced by `.coveragerc` **and** a CI step
+(`coverage report` exits non-zero below the floor).
+
+**"Improve fail-safes if you can."** ✅ Met: `--check` modes for every
+generator (incl. the previously missing `process_data.py --check`), byte-stable
+raw-output comparison, tamper-detection tests, derived-field validation of the
+Veritas inventory (`normalized_title_match_count` +
+`matched_master_titles`), record-type coverage guard, promotion-registry
+validation, series-approval no-op guard, fetcher retry ladder with
+fail-loud/preserve-inventory behavior, offline API replay tests. This session
+adds a relationship-coverage warning and documentation-currency tests (below).
+
+### 12.3 Findings from this re-audit
+
+**F1 — Relationship layer incomplete for the 11 promoted masters (Medium).**
+The promotion path (master IDs 309–319) copies each candidate's official
+Veritas URL into `source_url_veritas` but does not mint
+`primary_product_for_item_part` rows in `data/product_relationships.csv`. The
+schema invariant stated in `PRODUCT_RELATIONSHIP_SCHEMA.md` ("every non-empty
+master `source_url_veritas` is represented as a reviewed primary
+relationship") is therefore **false** for exactly those 11 records, and no
+validator noticed: 304 URL-bearing masters vs. 293 primary relationship rows.
+The Product Relationships tab is incomplete for those records.
+*Remediation:* `build_catalogue_pages.py` now prints a non-fatal WARNING
+listing the uncovered masters on every build/check; the gap is filed as P1 in
+`NEXT_AGENT_HANDOFF.md` for an owner decision (add 11 reviewed rows — the URL
+equality is already validated — or hold the promotion URLs).
+
+**F2 — Status-quo documentation drift (Low).** Counts that had silently
+diverged from the committed data:
+
+| Document | Stale value | Actual |
+|---|---|---|
+| `README.md` | 223 catalogue codes | **225** |
+| `NEXT_AGENT_HANDOFF.md` | P0: CI steps "cannot be pushed by App" | **CI live on `main` (`6b28e66`), run green** |
+| `MIGRATION_REVIEW_LEDGER.md` | `item` 308, `research_note` 8 | **306 / 10** |
+| `OFFICIAL_CATALOGUE_DISCOVERY.md` | "308-record draft, no candidate added" | **317; 11 promoted via review path** |
+| `VERITAS_PRODUCT_MAPPING.md` | 308 masters, 344 Everything, 7 title matches | **317 / 363 / 6** (+4 `unreviewed_official_product` row) |
+| `RELATIONSHIP_EXPANSION_AUDIT.md` | 308 masters, 294/147/7 | **317; 304 URL-bearing, 157 distinct URLs, 293 primary, 8 related** |
+| `PRODUCT_RELATIONSHIP_SCHEMA.md` | "294 relationships, coverage invariant holds" | **293 primary + 8 related; 11-record gap (F1)** |
+| `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` | "⏳ Awaiting approval — no data changed" | **implemented; master 316/317 typed** |
+| `archive/README.md` | "Task A snippet still outstanding" | **resolved in `6b28e66`** |
+
+All fixed in this session. `tests/test_pipeline.py` now contains
+`DocumentationCurrencyTests` that fail if the README current-state paragraph,
+the handoff §3 table, or the ledger-doc disposition table drift from the
+generated data again.
+
+**F3 — Minor items (unchanged or newly noted, no action taken).**
+`docs/catalogue-meta.json` key `master_items` actually holds the Everything
+row count (363) — a misnomer, but deliberately documented in
+`RECONCILIATION_REPORT.md`; renaming would churn generated artifacts and the
+report test. Master IDs are 1–319 with stable gaps at 246/249 (excluded rows
+are never reissued — consistent with the stable-ID rule). Eight master columns
+remain (near-)always empty (`location_*`, Hay House / Nightingale-Conant /
+Audible URLs, `reference_url_1/2`) — owner decision (populate or drop). No
+`LICENSE` on a public repo (known). `pandas>=2.0,<4` is now bounded. CI still
+installs runtime deps twice (`requirements.txt` then `requirements-dev.txt` —
+harmless redundancy). The Map Veritas Catalogue workflow has not been re-run
+since the derived-field fix; its next run should pass the diff gate (if not,
+the diff is a genuine upstream change and must be reviewed before accepting).
+
+### 12.4 Independent data checks (from committed files, not from docs)
+
+- Master: 317 rows, 24 fields, IDs 1–319 (gaps 246/249), **225 unique
+  catalogue codes**, 198 months set, 306 `owned`, 277/29/10/1
+  lecture/book/discussion/untyped.
+- Everything: **363** rows = 317 master + 28 candidate_veritas + 6
+  candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible; record
+  types sum to 363 (guarded by the build).
+- Ledger: 374 rows = 306 item + 31 blank_separator + 21 series_context + 10
+  research_note + 5 source_context + 1 needs_review.
+- Relationships: 301 reviewed rows (293 primary + 8 related); 0 dangling
+  master UUIDs; every referenced product exists in the 191-product inventory;
+  every primary URL equals the master's `source_url_veritas` (validated).
+- Exclusions: 68 rows, zero overlap with master raw rows.
+- Promotions: 11 approved keys match 11 master rows (309–319); 6 candidates
+  remain unpromoted.
+- Supply chain: Tabulator 6.5.2 pinned with SRI + `crossorigin`; CSP present
+  with a hashed inline bootstrap; production `npm audit` 0 vulnerabilities
+  (reported previously, unchanged).
+
+### 12.5 Bottom line
+
+The previous agent fulfilled the prompt to a high standard: the audit was
+real and found real defects, coverage exceeded the target with a working gate,
+and the fail-safes are substantive rather than decorative. The residual gap
+was documentation status drift plus one relationship-layer coverage gap that
+the docs had declared closed; both are now fixed, guarded, and recorded, and
+the only remaining item needing a human decision is F1 (add the 11 reviewed
+relationship rows or hold the promotion URLs).

@@ -1,8 +1,13 @@
 # Item Type Classification Proposal — the 87 Untyped Master Items
 
 **Prepared:** 2026-08-03
-**Status:** ⏳ **Awaiting approval — REVISED v3, no data changed.**
-**Scope:** the 87 master records (of 308) with an empty `item_type`.
+**Status:** ✅ **Implemented 2026-08-03** — the v3 classification was applied to
+the review ledger (`item_type` + ledger type validation, `discussion` added;
+see `TEMP_RESPONSE_AUDIT_2026-08-03.md`). The current master is 316/317 typed
+(277 lecture / 29 book / 10 discussion / 1 untyped — record **264**, deferred).
+The proposal below is retained as the decision record; scope figures refer to
+the 308-record draft as it stood when it was written.
+**Scope (historical):** the 87 master records (of 308) with an empty `item_type`.
 
 ---
 

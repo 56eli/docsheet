@@ -181,3 +181,21 @@ branch**, with no change to the deployed site's behavior.
 Full check battery green at push time: `py_compile`, all five `--check`
 generators, 54/54 unit tests, coverage report gate (exit 0), `node --check`
 app.js + spec, `git diff --check`.
+
+## 11. Independent re-audit + doc-status pass (2026-08-03, branch `arena/019fc893-docsheet`)
+
+**CI confirmed live on `main`:** commit `6b28e66` ("Add verification and
+testing steps to CI workflow") — run `30834666253` success, Pages build
+success. The handoff's P0 "add CI steps via web editor" is therefore closed.
+
+| Work | Detail |
+|---|---|
+| Verdict on prior prompt | **Audit ✅** (real audit, C1–C4 fixed). **Docs ⚠️→✅** (drift below found and fixed; now pinned by tests). **Coverage ✅** (92% > 80% gate, verified locally). **Fail-safes ✅** (all claimed ones reproduced; warning + doc tests added). |
+| New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
+| New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
+| Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
+| Suite | 54 → **60 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+
+Check battery green at push time: `py_compile`, all five `--check` generators
+(+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
+coverage gate (exit 0), `node --check` ×3, `git diff --check`.

@@ -15,6 +15,7 @@ Coverage run (see requirements-dev.txt):
 """
 from __future__ import annotations
 
+import collections
 import contextlib
 import csv
 import importlib
@@ -744,6 +745,119 @@ class ReconcileDriftTests(unittest.TestCase):
         check = invoke_script("reconcile_research_master.py", self.sandbox, "--check")
         self.assertEqual(check.returncode, 1)
         self.assertIn("is stale", check.stdout)
+
+
+class RelationshipCoverageWarningTests(unittest.TestCase):
+    """URL-bearing masters without a primary relationship row must warn."""
+
+    def master(self) -> list[dict[str, str]]:
+        return [
+            {"uuid": "10", "source_url_veritas": "https://veritaspub.com/product/a/"},
+            {"uuid": "12", "source_url_veritas": "https://veritaspub.com/product/b/"},
+            {"uuid": "13", "source_url_veritas": ""},
+        ]
+
+    def relationships(self) -> list[dict[str, str]]:
+        return [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "related_material"},
+        ]
+
+    def test_covered_masters_stay_silent(self) -> None:
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            bcp.warn_uncovered_primary_relationships(self.master(), [
+                {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+                {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
+            ])
+        self.assertNotIn("WARNING", err.getvalue())
+
+    def test_uncovered_master_warns_but_does_not_raise(self) -> None:
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            bcp.warn_uncovered_primary_relationships(self.master(), self.relationships())
+        self.assertIn("WARNING", err.getvalue())
+        self.assertIn("12", err.getvalue())  # related_material does not cover a primary gap
+        self.assertNotIn("13", err.getvalue())  # no URL -> no gap
+
+    def test_full_build_warns_on_promoted_candidates(self) -> None:
+        # The committed state has 11 promoted masters (309-319) with URLs but no
+        # primary relationship rows; the build must stay green and say so.
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("WARNING", result.stderr)
+            self.assertIn("309", result.stderr)
+        finally:
+            tempdir.cleanup()
+
+
+class DocumentationCurrencyTests(unittest.TestCase):
+    """Hand-maintained status documents must not drift from the generated data."""
+
+    def catalogue_meta(self) -> dict:
+        return json.loads((REPO / "docs/catalogue-meta.json").read_text(encoding="utf-8"))
+
+    def master_rows(self) -> list[dict[str, str]]:
+        with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+
+    def current_state_numbers(self) -> dict[str, int]:
+        meta = self.catalogue_meta()
+        master = self.master_rows()
+        codes = len({row["catalog_code"].strip() for row in master if row["catalog_code"].strip()})
+        with (REPO / "data/manual_candidate_promotions.csv").open(newline="", encoding="utf-8") as handle:
+            promotions = list(csv.DictReader(handle))
+        promoted = sum(1 for row in promotions if row["approval_status"].strip() == "approved")
+        return {
+            "master": meta["migrated_items"],
+            "catalogue codes": codes,
+            "exclusions": meta["master_exclusion_rows"],
+            "overrides": meta["approved_source_overrides"],
+            "promoted candidates": promoted,
+            "unpromoted candidates": meta["reviewed_manual_candidates"] - promoted,
+            "relationships": meta["reviewed_product_relationships"],
+            "compilations": meta["reviewed_series_compilations"],
+            "everything rows": sum(meta["everything_record_types"].values()),
+        }
+
+    def test_readme_current_state_matches_generated_data(self) -> None:
+        readme = (REPO / "README.md").read_text(encoding="utf-8")
+        section = readme.split("## Current reviewed catalogue state", 1)[1].split("## ", 1)[0]
+        numbers = self.current_state_numbers()
+        numbers.pop("everything rows")  # README states it in the record-type table, not this section
+        for label, value in numbers.items():
+            self.assertIn(
+                f"**{value}**", section,
+                f"README 'Current reviewed catalogue state' must document {label} as **{value}**",
+            )
+
+    def test_handoff_current_state_matches_generated_data(self) -> None:
+        handoff = (REPO / "NEXT_AGENT_HANDOFF.md").read_text(encoding="utf-8")
+        section = handoff.split("## 3. Current verified state", 1)[1].split("## 4.", 1)[0]
+        numbers = self.current_state_numbers()
+        self.assertIn(f"| Curated master | {numbers['master']} |", section)
+        self.assertIn(f"| Everything view | **{numbers['everything rows']}** |", section)
+        self.assertIn(
+            f"| Exclusions / source overrides | {numbers['exclusions']} / {numbers['overrides']} |",
+            section,
+        )
+        self.assertIn(
+            f"| Everything relationships | {numbers['relationships']} product relationships, "
+            f"{numbers['compilations']} series compilations |",
+            section,
+        )
+
+    def test_migration_ledger_summary_matches_ledger(self) -> None:
+        with (REPO / "migration_review_ledger.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        counts = collections.Counter(row["disposition"] for row in rows)
+        doc = (REPO / "MIGRATION_REVIEW_LEDGER.md").read_text(encoding="utf-8")
+        table = doc.split("## Current classification summary", 1)[1].split("## ", 1)[0]
+        for disposition, expected in counts.items():
+            self.assertIn(f"| `{disposition}` | {expected} |", table)
+        self.assertIn(f"| **Total** | **{len(rows)}** |", table)
 
 
 if __name__ == "__main__":

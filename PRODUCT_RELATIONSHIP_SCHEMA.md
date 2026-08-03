@@ -39,9 +39,11 @@ The table is intentionally separate from the flat research-master schema. It can
 
 ## Current reviewed coverage
 
-Every non-empty master `source_url_veritas` is represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. This currently yields 294 item-to-product relationships across 147 distinct primary products; a single product can therefore be related to multiple top-level DVD/CD parts without duplicating an item.
+**Invariant:** every non-empty master `source_url_veritas` should be represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory.
 
-The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Seven reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
+As of 2026-08-03 the relationship layer covers **293** of the **304** URL-bearing master records (293 primary + 8 related = 301 reviewed rows across 154 distinct products). The **11 promoted candidates (master IDs 309–319)** carry their official Veritas URL in the master but do **not** yet have primary relationship rows — the promotion path does not mint relationship rows. `build_catalogue_pages.py` prints a warning listing those masters while the gap exists; the gap is tracked in `NEXT_AGENT_HANDOFF.md` (P1) pending an owner decision.
+
+The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Eight reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
 
 See `RELATIONSHIP_EXPANSION_AUDIT.md` for the complete validated coverage and inventory-only disposition boundary.
 
