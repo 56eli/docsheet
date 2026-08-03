@@ -1,0 +1,71 @@
+# ============================================================================
+# CI — read-only validation for pull requests and main.
+#
+# Runs the deterministic checks that already exist in the repository:
+#   - Python syntax compilation
+#   - the three generator --check modes (master, Pages, reconciliation)
+#   - JavaScript syntax checks
+#   - Playwright browser smoke tests
+#
+# This workflow never writes to the repository and never contacts a live
+# product API. Live Veritas refreshes stay manual in map_veritas_catalogue.yml.
+# ============================================================================
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    name: Validate data pipeline and site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+      - name: Compile all Python scripts
+        run: python -m py_compile *.py
+      - name: Verify research master matches the review ledger
+        run: python build_research_master.py --check
+      - name: Verify Pages catalogue matches its inputs
+        run: python build_catalogue_pages.py --check
+      - name: Verify reconciliation report is current
+        run: python reconcile_research_master.py --check
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - name: Check JavaScript syntax
+        run: |
+          node --check docs/app.js
+          node --check playwright.config.js
+          node --check tests/csv-export.spec.js
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+      - name: Run browser smoke tests
+        run: npm run test:e2e
+        env:
+          CI: "true"
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
