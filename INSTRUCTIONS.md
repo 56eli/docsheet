@@ -125,6 +125,28 @@ compilations. See
 `archive/PROJECT_STATE_AUDIT.md` and `archive/IMPLEMENTATION_PLAN.md` for current risk and
 roadmap status.
 
+### Pipeline test suite and coverage gate
+
+`tests/test_pipeline.py` exercises the whole pipeline without a browser or
+network: every generator runs end-to-end in sandboxed copies of the inputs
+(write, `--check`, tamper detection, CLI entrypoint smoke), the CSV generators
+are held to run-twice determinism, the Veritas fetcher is replayed offline
+against a synthetic API rebuilt from the committed inventory (including its
+retry ladder), and the rule matrices (taxonomy dominance, matching, format
+inference, validators) are unit-tested directly.
+
+```bash
+pip install -r requirements-dev.txt    # runtime deps + coverage
+python -m unittest discover tests      # 54 deterministic tests
+coverage run -m unittest discover tests
+coverage report                        # exits non-zero below the 80% floor (.coveragerc)
+```
+
+Current coverage: **92% total, every pipeline module ≥ 88%** (2026-08-03).
+The remaining misses are `if __name__ == "__main__"` guards and rare
+dependency-error branches. Browser behavior stays with Playwright
+(`npm run test:e2e`), which needs Chromium and runs in CI.
+
 ### Veritas refresh review
 
 Do not overwrite the reviewed Veritas inventory directly from the live API.

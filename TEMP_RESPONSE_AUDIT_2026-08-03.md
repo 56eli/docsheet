@@ -170,3 +170,14 @@ generators, review-only live sync, guarded derived invariants); the found P0 was
 a flag/default desync that made `main` red, made the safeguard report cry wolf,
 and desynced the published counts — **all three are fixed and verified in this
 branch**, with no change to the deployed site's behavior.
+
+## 10. UX follow-up + test-suite/coverage session (2026-08-03, later turns)
+
+| Commit | Work |
+|---|---|
+| `b747233` | Spreadsheet UX pass: compact default widths (Record Type 135, Master ID 64, Item Type 104, Series 300, Format 68, Owned 68, Source Url Veritas 140, Year-Month 80); Year+Month merged into a display-only `year_month` (YYYY-MM) with all consumers audited; Series moved between Master ID and Title; CSV export switched to `rowRange "all"` (whole sheet, not just the filtered view); `candidate_pending_promotion` label; browser spec updated. |
+| this turn | **Test suite + fail-safes + docs.** New `tests/test_pipeline.py` (54 deterministic tests, ~2s, no browser/network): all generators run end-to-end in per-test sandboxes (write → `--check` → tamper-detect → CLI entrypoint smoke), bootstrap CSV generators held to run-twice determinism (committed copies are hand-maintained, so byte-equality vs. committed would be a false expectation), the Veritas fetcher is replayed **offline** against a synthetic API rebuilt from the committed inventory (write/check/tamper, 400-pagination, retry ladder, non-JSON/non-list/URL-error taxonomy), plus direct unit tests of the rule matrices. New fail-safes in `build_catalogue_pages.py`: `validate_veritas_inventory()` enforces unknown-uuid and `matched_master_titles` invariants; catalogue meta raises when `everything_record_types` does not cover every row. `.coveragerc` + `requirements-dev.txt`; **coverage gate 80% → actual 92% total (every pipeline module ≥ 88%)**. Docs refreshed: README, INSTRUCTIONS (test/coverage section), handoff rewrite, `archive/UNBLOCK_INSTRUCTIONS.md` gained the CI snippet for the suite + gate. One authoring trap fixed along the way: determinism tests must not regenerate the ledger into a shared class sandbox — each test now gets a fresh sandbox. |
+
+Full check battery green at push time: `py_compile`, all five `--check`
+generators, 54/54 unit tests, coverage report gate (exit 0), `node --check`
+app.js + spec, `git diff --check`.

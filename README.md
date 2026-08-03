@@ -43,7 +43,19 @@ python map_series_taxonomy.py --check
 
 `RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
 failure indicates a ledger/draft mismatch; do not run the writing build commands
-until that review is resolved. Approved official links added after the ledger
+until that review is resolved.
+
+`tests/test_pipeline.py` runs all of the above generators plus tamper
+detection and the rule matrices in one command:
+
+```bash
+pip install -r requirements-dev.txt
+python -m unittest discover tests          # 54 tests, no browser/network needed
+coverage run -m unittest discover tests && coverage report
+```
+
+The coverage gate (`fail_under = 80` in `.coveragerc`) passes at **92%** as of
+2026-08-03; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in

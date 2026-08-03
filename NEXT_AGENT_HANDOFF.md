@@ -1,238 +1,166 @@
-# Next-Agent Transition Handoff
+# Next-Agent Handoff
 
-**Prepared:** 2026-08-03; **updated:** 2026-08-03 (CI landed; docs consolidated)
-**Branch:** `arena/019fc7fe-docsheet`
-**Full audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md) (plus the second-pass independent audit in [TEMP_RESPONSE_AUDIT_2026-08-03.md](TEMP_RESPONSE_AUDIT_2026-08-03.md))
+**Prepared:** 2026-08-03 — refreshed after the audit/tests/fail-safes session.
+**Branch:** `arena/019fc7fe-docsheet` (Arena sessions are pinned to their
+branch; session history and today's merges sit on `main`).
 
-## Read this first
+If you are the next agent: **read this file top to bottom before touching
+anything.** It is written to give you full context in five minutes.
 
-This session verified **every catalogue entry against the live Veritas
-Publishing API** (191 products, full `product_cat` taxonomy, per-product SKU and
-format metadata) and fixed four critical data-correctness defects. All are
-committed and verified. What remains below is **open work, not known breakage.**
+---
 
-The single most important lesson: **the four critical bugs were all internally
-self-consistent and passed every existing check.** They were only detectable by
-comparing against the publisher's own data. Structural validation is necessary
-but not sufficient for this project.
+## 1. What this project is
 
-## Current validated state
+DocSheet is a static GitHub Pages catalogue of David R. Hawkins material:
+`_hawkins archive clone - Sheet1.csv_` (374 raw rows) flows through a
+hand-maintained `migration_review_ledger.csv` into generators that emit 20
+`docs/*.json` sheets rendered by Tabulator (`docs/index.html`, `docs/app.js`).
 
-| Layer | Count | Canonical location |
-|---|---:|---|
-| Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 317 | `data/research_master_draft.{csv,json}` |
-| — `lecture` / `book` / `discussion` / untyped | 277 / 29 / 10 / 1 | |
-| Catalogue codes (unique) | 223 | derived from `item_type` + `year` |
-| Months (all verified vs official) | 198 | derived from official product slug |
-| Exclusions / overrides | 68 / 79 | `data/research_master_*.csv` |
-| Candidates / leads | 11 promoted / 6 unpromoted / 1 lead | `data/manual_candidate_promotions.csv`, `data/manual_master_candidates.csv`, `research_manual_leads.csv` |
-| Relationships / series compilations | 301 / 7 | `data/product_relationships.csv`, `series_compilation_relationships.csv` |
-| Veritas / Hay House / Audible / International | 191 / 24 / 26 / 36 | `data/*_products.csv`, `international_discovery_queue.csv` |
-| Everything Pages view | 353 | `docs/master.json` (317 `master` + 36 `candidate_*`) |
+| Generator | Input → Output (committed artifacts; never hand-edit) |
+|---|---|
+| `process_data.py` | raw CSV → `docs/data.json`, `docs/meta.json` |
+| `build_research_master.py` | raw CSV + ledger + review overlays → `data/research_master_draft.{csv,json}`, `data/research_master_exclusions.csv` |
+| `build_catalogue_pages.py` | master + all review CSVs → the 20 `docs/*.json` sheets + `docs/catalogue-meta.json` |
+| `map_series_taxonomy.py` | Veritas inventory + mapping review input → `data/series_category_mapping.csv`, `data/series_taxonomy_review_queue.csv` |
+| `fetch_veritas_catalogue.py` | live Veritas API (review-only; never auto-commit) → candidate inventory |
+| `reconcile_research_master.py` | everything → `RECONCILIATION_REPORT.md` |
+| `generate_migration_ledger.py` / `generate_lecture_review.py` | one-off **bootstrap** tools; their outputs are afterwards **hand-maintained** |
 
-Required before delivering any data change:
+## 2. Verify your environment first (60 seconds)
 
 ```bash
 python -m py_compile *.py
 python build_research_master.py --check
 python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
+python map_series_taxonomy.py --check
+python process_data.py --check        # if wired into your tooling
+python -m unittest discover tests     # 54 tests, offline, ~2s
+coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
-git diff --check
 ```
 
----
+Sandbox traps learned the hard way (all still true):
 
-## P0 — Blocked on the repository owner
+- **pip refuses to install system-wide (PEP 668).** Use a venv:
+  `python3 -m venv /tmp/venv && /tmp/venv/bin/pip install -r requirements-dev.txt`
+- **veritaspub.com is unreachable from the sandbox** via curl/urllib (TLS EOF)
+  but **works via the agent page-fetch tool** with compact `_fields`
+  (`/wp-json/wp/v2/product?per_page=100&page=N&_fields=id,date,link,title,product_cat`).
+- **The Arena GitHub App cannot push workflow-file changes.** Any
+  `.github/workflows/*` edit gets rejected; prepared snippets live in
+  `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web editor.
+- **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
+  tests (4 specs); don't burn time installing locally.
+- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / Node 20 — keep code compatible.
 
-### 1. CI workflow — ✅ landed 2026-08-03
-`.github/workflows/ci.yml` is on `main` and runs every check plus the Playwright
-suite. One prepared step is still outstanding: `python process_data.py --check`
-is implemented locally but not yet in `ci.yml`; the App could not push workflow
-changes, so the snippet is in
-[archive/UNBLOCK_INSTRUCTIONS.md](archive/UNBLOCK_INSTRUCTIONS.md) Task A for
-application via the GitHub web editor.
+## 3. Current verified state (committed, checked)
 
-### 2. Playwright browser execution — ✅ runs in CI
-Chromium still cannot be downloaded in the sandbox; CI covers it (4/4 passing
-on PR #12).
+| Layer | Count | Notes |
+|---|---:|---|
+| Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
+| Curated master | 317 | 277 lecture / 29 book / 10 discussion / 1 untyped (record **264**, deferred) |
+| Everything view | **363** | 317 master + 28 candidate_veritas + 6 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Exclusions / source overrides | 68 / 80 | |
+| Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
+| Everything relationships | 301 product relationships, 7 series compilations | |
+| Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead | |
+| Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
+| Test suite | **54 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
----
+All catalogue data was verified against the live Veritas API on 2026-08-03
+(see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
 
-## P1 — Open decisions (evidence gathered, needs a ruling)
+## 4. What happened in the 2026-08-03 sessions (in order)
 
-### 3. Four series/type judgement calls
-Verified against the official taxonomy; each needs a human decision, not more research.
+1. **Full coherence audit** → 4 critical data defects fixed (earlier PRs, merged).
+2. **CI red-on-main fix (`52502d4`):** committed Pages outputs were built with
+   `--include-pending` while the script defaulted to off → plain `--check`
+   differed. Default flipped via `BooleanOptionalAction`; meta record-types
+   guard added.
+3. **Docs consolidation (`2f05c0f`):** root Markdown 41 → 20; rulings under
+   `decisions/`, superseded material under `archive/` (both indexed).
+4. **Taxonomy mapper (`1b1a38b`):** `map_series_taxonomy.py` implements the
+   Category Dominance Policy; fetcher now persists `product_cat` names.
+5. **Inventory refresh (`d37bdc6`):** 4 stale primary matches (1728/1742/1695/1560)
+   demoted to `unreviewed_official_product`; 1661 relinked to record 264; queue
+   ruled (147 approved / 3 rejected); `apply_series_approvals()` wired into the
+   master build (first application provably 0 series changes).
+6. **Spreadsheet UX (`b747233`):** compact column defaults, Year+Month merged
+   into display-only `year_month` (YYYY-MM), Series moved between Master ID and
+   Title, CSV export now exports the **whole sheet** (`rowRange "all"`).
+7. **Tests + fail-safes (this turn):**
+   - `tests/test_pipeline.py` — 54 tests: end-to-end write/check/tamper runs of
+     all generators in sandboxed input copies, run-twice determinism for the two
+     bootstrap generators, offline replay of the live fetcher (synthetic API
+     rebuilt from the committed inventory + retry-ladder unit tests), CLI
+     entrypoint smoke, drift rendering, and the full rule matrices.
+   - `.coveragerc` + `requirements-dev.txt`; coverage gate 80% → **92% actual**.
+   - New fail-safes in `build_catalogue_pages.py`:
+     `validate_veritas_inventory()` now enforces count-consistency **and**
+     `matched_master_titles` correctness (hand-edit drift fails the build);
+     the catalogue meta now raises if `everything_record_types` doesn't cover
+     every row.
+   - Test-authoring trap that cost an hour: a shared class sandbox is polluted
+     when a determinism test regenerates the ledger before sibling tests use
+     it — tests now build a **fresh sandbox per test**.
 
-### Decisions applied 2026-08-03
+## 5. Binding data rules (violating these has caused real defects)
 
-- Records **199–201** moved to `Satsang Series`, following the official Veritas
-  taxonomy for their Q&A products.
-- Record **301** remains `item_type=book`. The owner confirmed ISBN 1401964990;
-  the primary source is now the official Hay House paperback listing. The
-  mismatched Veritas/Audible audio associations were removed as primary sources;
-  the Veritas audio relationship remains explicitly `related_material`.
-- Note-only placeholders **246** (B-02) and **249** (B-05) were moved to
-  exclusions. The master is now 306 records with one remaining untyped record.
-- Display-title hygiene is applied reproducibly by `build_research_master.py`.
-  Every master row has verbatim `legacy_title`; `.mp4`, `-converted`, and leading
-  numeric file sequences are removed from public titles, while DVD/CD/PART
-  designators remain. Record **203** is corrected to Volume I with its raw title
-  and official-evidence note retained.
-
-The only remaining source/type decision from this group is **record 264**:
-`“In the World But Not of It” – Audio` is deferred pending physical-edition
-confirmation. Its likely product 1661 (`in-the-world-but-not-of-it-cd`, SKU
-`am_itwbnoi`) must not be added as a source override until that check is complete.
-
-Also outstanding from earlier: whether `interview` vs `discussion` was the right
-call is now settled (`discussion` was added), but **`audio`/`video` remain in the
-vocabulary as `DEPRECATED_MEDIUM_ITEM_TYPES`** — consider removing them entirely
-once no data uses them.
-
-### 6. Candidate promotion
-17 candidates remain `reviewed_candidate` / `not_promoted`. No generator path
-promotes them. Needs a promotion-decision input keyed by `candidate_key` that
-assigns a compact ID, catalogue code and provenance.
-
----
-
-## P2 — Hardening and hygiene
-
-7. **SRI + CSP** — ✅ completed 2026-08-03. Tabulator 6.5.2 is version-pinned
-   with SHA-384 integrity from the official npm package; the document uses an
-   explicit CSP with a SHA-256 hash for the dark-mode bootstrap.
-8. **Read-only review sheets** — ✅ completed 2026-08-03. Generated views set
-   `editor: false`; the footer and browser test state that published data is
-   read-only.
-9. **`process_data.py --check`** — ✅ implemented with timestamp-aware metadata
-   validation. The extra CI step is prepared locally but cannot be pushed until
-   the GitHub App receives `workflows` permission; see `archive/UNBLOCK_INSTRUCTIONS.md`.
-10. **Pin Python deps** — ✅ `pandas>=2,<4` in `requirements.txt`. Still open:
-    add a `LICENSE` — the repo is public with none.
-11. **Dead code** — ✅ app-side `loadMeta()` removed. `docs/meta.json` and
-    `docs/catalogue-meta.json` are still generated and read by nothing in the
-    browser; they form the machine-readable published contract (README
-    references `everything_record_types`), so keep them, or document that
-    decision explicitly.
-12. **Six always-empty master columns** — `location_physical`, `location_digital`,
-    `location_streaming`, `source_url_hay_house`, `source_url_nightingale_conant`,
-    `reference_url_2` are 0–1/317 populated. Populate or drop.
-13. **`format` is blank on 86 records** (down from 113 after the first
-    inference pass). Strong evidence for a second deliberate pass: SKU
-    prefixes (`cd_`, `_dvd`, `vs_v1pvf_dvd`), product-detail strings
-    ("Two DVD Set", "Three Compact Disc Set", "6 CD Set"), and "Streaming
-    Video is not available for this topic" markers; see
-    `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
-14. **Nightingale-Conant provenance gap** — the first override is applied
-    (schema now supports `source_url_nightingale_conant`), but the remaining
-    known NC products lack URLs. Worth a provenance pass; evidence and the
-    official NC page are in `archive/TEMP_NIGHTINGALE_PROVENANCE.md`.
-
----
-
-## P3 — Enhancements
-
-15. **Enforce the two remaining derived-field invariants.** F-9 swept them and
-    they currently hold, but only `normalized_title_match_count` is guarded in
-    code. `matched_master_titles` in both the inventory and the decision overlay
-    could still desynchronize under a hand-edit.
-16. **Documentation consolidation** — ✅ completed 2026-08-03. Root Markdown
-    went 41 → 20 files: 12 decision records moved to `decisions/`, 10
-    superseded status/draft/evidence docs moved to `archive/`, 3 absorbed
-    `TEMP_*` status files deleted, all cross-links updated. Counts continue to
-    live in `catalogue-meta.json` programmatically.
-17. **Broader browser tests** — all 17 tabs, search+filter composition, column
-    chooser, row drawer, dark mode, console-error assertions.
-18. **Re-run Map Veritas Catalogue once.** With the inventory corrected it should
-    now **pass** rather than fail, which makes any future failure a genuine
-    upstream signal.
-19. **UX backlog** (absorbed from the deleted readability suggestions):
-    compact-view column preset; dense/comfortable density toggle;
-    relationship drawer in the row-details view; empty-state messaging for
-    0-row review sheets; mobile column-hiding preset; search-scope hint.
-
----
-
-## Data and review boundaries (unchanged, still binding)
-
-- **Never edit the raw CSV through a generator.**
-- **Never hand-edit generated files** (`data/research_master_draft.*`, `docs/*.json`).
-  Change the declared input and regenerate.
-- **A commercial listing is not master identity.** Do not infer work or edition
-  identity from a title alone — this session proved why (C2: four records linked
-  to the wrong edition, one to a wall chart).
-- **`item_type` = what a record IS; `format` = the carrier.** Set by the 198
-  DVD lectures typed `lecture`, not `video`.
+- **Never hand-edit generated files** — `data/research_master_draft.*`,
+  `docs/*.json`, `data/series_category_mapping.csv`/`…review_queue.csv` beyond
+  their declared review columns (`review_status`/`reviewed_on`/`review_notes`
+  + dominance overrides). Fix the input, regenerate, re-run every `--check`.
+- **`migration_review_ledger.csv` and `lecture_series_review.csv` are
+  hand-maintained after bootstrap generation.** Regenerating them over the
+  committed copies intentionally produces diffs (title fixes, month "08" vs
+  ""; that is normal, not damage.
+- **`item_type` = what a record IS; `format` = its carrier.** DVD lectures are
+  `lecture`+`DVD`. `audio`/`video` item types are deprecated residue.
+- **No title-based inference for `series`, and a commercial listing is not
+  master identity.** Four records once linked to the wrong edition because of
+  title matching.
 - **Compact master IDs are stable once issued.**
-- **Relationships stay at the evidence level actually supported** — item-level
-  when proven, series-level for annual Highlights.
+- **Relationships stay at the evidence level actually supported** (item-level
+  when proven; series-level for annual Highlights).
+- **Merchandise (card decks, wall charts) are products, not master records.**
 
-## Verification tips learned this session
+## 6. Open work, prioritized
 
-- The Veritas WP API is unreachable via `curl`/`urllib` from the sandbox (TLS EOF)
-  but **works through the agent's page-fetch tool**. Use
-  `/wp-json/wp/v2/product?per_page=100&page=N&_fields=id,link` and
-  `/wp-json/wp/v2/product_cat` — compact `_fields` avoids response chunking.
-- Individual product pages expose `Category:` and `SKU:` plus product details
-  ("Two DVD Set", running time, ISBN) — the strongest evidence available.
-- `product_cat` IDs map to slugs via the `product_cat` endpoint; the taxonomy is
-  the authoritative grouping and it resolved several ambiguities outright.
+**P0 — Owner-blocked (snippets ready in `archive/UNBLOCK_INSTRUCTIONS.md`):**
 
----
+- Add `python process_data.py --check`, `python map_series_taxonomy.py --check`,
+  the unittest suite, and the coverage gate to `ci.yml` via the GitHub web
+  editor (App lacks `workflows` permission). All verified passing locally.
+- Review the Map Veritas Catalogue artifact before accepting live refresh diffs.
 
-## Post-audit merge handoff — 2026-08-03
+**P1 — Data decisions needing a ruling:**
 
-**Merged PRs:** [#11](https://github.com/56eli/docsheet/pull/11) (full coherence
-audit and promotion-status reconciliation) and
-[#12](https://github.com/56eli/docsheet/pull/12) (count-independent browser smoke
-test). PR #12 CI passed all deterministic pipeline checks and **4/4 Chromium
-browser tests**.
+- **Record 264** (`"In the World But Not of It" – Audio`, the 1 untyped record):
+  deferred pending physical-edition confirmation; product 1661 is mapping-row
+  only — do **not** add a source override yet.
+- **Candidate promotion path:** 6 pending candidates need a promotion-decision
+  input keyed by `candidate_key` (compact ID + catalogue code + provenance).
+- **`format` blank on 86 records:** second inference pass evidence in
+  `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md` (SKU prefixes, product-detail
+  strings, streaming markers).
+- **Six always-empty master columns** (`location_*`, Hay House/Nightingale-Conant
+  URLs, `reference_url_2`): populate or drop.
+- **Nightingale-Conant provenance:** override schema exists; remaining NC
+  product URLs missing (`archive/TEMP_NIGHTINGALE_PROVENANCE.md`).
 
-### Safe starting point
+**P2 — Hygiene:**
 
-1. Read `AUDIT_2026-08-03_FULL.md` §11, `CATEGORY_DOMINANCE_POLICY.md`, and this
-   file before changing data.
-2. Do not hand-edit `data/research_master_draft.*`, `docs/*.json`, or the raw
-   spreadsheet. Update declared review inputs, rebuild, then run all checks.
-3. The master is 317 records; 11 official candidates are promoted through
-   `data/manual_candidate_promotions.csv`; six candidate records remain
-   intentionally unpromoted.
-4. The only local uncommitted file in this Arena session is the CI workflow
-   addition (`python process_data.py --check`). GitHub rejects workflow-file
-   updates from this app without `workflows` permission. Follow
-   `archive/UNBLOCK_INSTRUCTIONS.md` in GitHub's web editor; do not discard that change
-   without applying its equivalent upstream.
+- Remove deprecated `audio`/`video` item types once unused.
+- Add a `LICENSE` (repo is public with none).
+- Widen browser tests: all 17 tabs, column chooser, drawer, dark mode.
 
-### Next implementation priority
+## 7. House-keeping for every turn
 
-~~Implement the official taxonomy mapper~~ — **done 2026-08-03.**
-`map_series_taxonomy.py` plus `data/series_category_mapping.csv` and
-`data/series_taxonomy_review_queue.csv` implement
-[CATEGORY_DOMINANCE_POLICY.md](CATEGORY_DOMINANCE_POLICY.md) per
-[SERIES_TAXONOMY_MAPPING.md](SERIES_TAXONOMY_MAPPING.md); the inventory now
-persists all publisher categories (fetcher fixed to use `product_cat`), and
-282/283 clean proposals already agree with the curated series.
-
-Next steps for this layer, in order:
-
-1. **Owner rulings** — ✅ done 2026-08-03 (delegated): the queue was resolved
-   (dual-edition signals rejected in favour of each record's own primary
-   product; 50521's multi-annual dominance resolved to the 2007 series) and
-   the clean proposals bulk-approved at 286/286 uuid-level agreement.
-2. **Wire approvals** — ✅ done 2026-08-03:
-   `build_research_master.py:apply_series_approvals()` now applies approved
-   mappings after item assembly; first application provably changed **0**
-   series values (no-op verification). Future series changes flow through
-   approved rows in `data/series_category_mapping.csv` only.
-
-Inventory refresh (same session): see
-[VERITAS_ARTIFACT_REVIEW.md](VERITAS_ARTIFACT_REVIEW.md) Addendum 2 — four
-stale primary matches demoted to candidates (Everything 363 rows), product
-1661 relinked to record 264 (mapping row only; the deferred source decision
-still stands), upstream rename of 50810 handled.
-
-After that, continue candidate review: rechecked audio candidates, remaining
-Unity Church talks, and deferred record 264. Use official product pages as source
-evidence and record owner decisions in committed inputs.
+- Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
+  cite those numbers — do not hand-count).
+- Present long results via a committed `TEMP_RESPONSE_*.md` file
+  (`TEMP_RESPONSE_AUDIT_2026-08-03.md` is today's log); the chat should stay a
+  one-sentence summary plus the `ask_user` question for what is next.
+- Update this handoff at the end of each session so the next agent inherits
+  your context verbatim.

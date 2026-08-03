@@ -51,6 +51,27 @@ of `python … --check` steps, add:
 
 Verified locally on the Arena branch before push.
 
+## Add the pipeline test suite + coverage gate (2026-08-03 addition)
+
+`tests/test_pipeline.py` and the 80% coverage floor landed with the same
+`workflows` permission limitation. In the same web-editor commit (or a
+follow-up), immediately after the `map_series_taxonomy.py --check` step, add:
+
+```yaml
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+      - name: Enforce the coverage floor (80%)
+        run: |
+          pip install -r requirements-dev.txt
+          coverage run -m unittest discover tests
+          coverage report
+```
+
+The suite needs no browser and no network; `requirements.txt` (pandas) is
+already installed by the existing CI step, `requirements-dev.txt` adds
+`coverage`. Passing locally on the Arena branch at 92% total, every pipeline
+module ≥ 88%.
+
 ## Veritas refresh artifact
 
 The latest **Map Veritas Catalogue** run fetched the live API successfully and

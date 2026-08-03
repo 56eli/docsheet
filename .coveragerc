@@ -1,0 +1,16 @@
+# Coverage configuration for the pipeline test suite.
+# Usage:
+#   coverage run -m unittest discover tests
+#   coverage report            # exits non-zero when total < 80%
+#
+# The suite itself is excluded from the denominator; all eight pipeline
+# modules are measured. One subprocess CLI smoke test (map_series_taxonomy
+# --check) intentionally cannot be traced by coverage.
+[run]
+omit =
+    tests/*
+
+[report]
+show_missing = True
+skip_covered = False
+fail_under = 80

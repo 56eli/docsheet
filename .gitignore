@@ -5,6 +5,11 @@ __pycache__/
 venv/
 *.egg-info/
 
+# Coverage data (local measurement artifacts)
+.coverage
+.coverage.*
+htmlcov/
+
 # Node / browser tests
 node_modules/
 playwright-report/
