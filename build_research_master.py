@@ -222,6 +222,40 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
     return filled
 
 
+def infer_format_from_official_source(
+    item: dict[str, str], veritas_by_id: dict[str, dict[str, str]]
+) -> str:
+    """Infer a missing format from Veritas product slug and official title.
+
+    Uses reliable signals present in the committed official inventory
+    (video/volume slugs → DVD, cd-set/satsang-cd → CD, question-answer → streaming,
+    audio markers → audio, book markers → book). Only returns a value when
+    the current format field is blank. This is a deterministic, reviewable
+    backfill that never overwrites an existing value.
+    """
+    if item.get("format"):
+        return ""
+    url = item.get("source_url_veritas", "").strip()
+    if not url:
+        return ""
+    slug = url.rstrip("/").split("/")[-1].lower()
+    pid = slug.split("-")[0] if "-" in slug else slug
+    prod = veritas_by_id.get(pid, {})
+    ot = (prod.get("official_title", "") or item.get("title", "")).lower()
+
+    if any(k in slug for k in ("video", "muscle-testing-video")) or slug.startswith("volume-"):
+        return "DVD"
+    if "cd-set" in slug or ("satsang" in slug and "cd" in slug):
+        return "CD"
+    if any(k in slug for k in ("question-answer", "q&a")):
+        return "streaming"
+    if "audio" in slug or "– audio" in ot or " audio" in ot:
+        return "audio"
+    if "book" in slug or "(book)" in ot:
+        return "book"
+    return ""
+
+
 def apply_source_overrides(items: list[dict[str, str]]) -> int:
     """Apply explicit, approved official-source links after ledger migration.
 
@@ -485,6 +519,21 @@ def build_master() -> MasterBuild:
         })
         existing_ids.add(candidate["uuid"])
     backfill_months_from_official_source(items)
+
+    # Format backfill from official Veritas inventory (only fills blanks)
+    if VERITAS_PRODUCTS.exists():
+        with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+            veritas_by_id = {row["veritas_product_id"]: row for row in csv.DictReader(handle)}
+        inferred = 0
+        for item in items:
+            fmt = infer_format_from_official_source(item, veritas_by_id)
+            if fmt:
+                item["format"] = fmt
+                inferred += 1
+        if inferred:
+            # Note for the build log (visible on manual run)
+            print(f"[format] Inferred {inferred} formats from official Veritas inventory")
+
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}
