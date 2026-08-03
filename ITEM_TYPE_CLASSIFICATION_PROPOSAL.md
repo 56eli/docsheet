@@ -244,7 +244,7 @@ studio-production character as D2/D4.
 ### D7 — Media Miscellaneous → `audio` ✅ **regrouping APPLIED (SR-1)**
 
 > **Status update:** the 12-record regrouping described below was approved and
-> applied on 2026-08-03 (commit `973519d`, see `SERIES_REGROUPING_DECISIONS.md`).
+> applied on 2026-08-03 (commit `973519d`, see `decisions/SERIES_REGROUPING_DECISIONS.md`).
 > Those 12 records now live in `On The Road Talk Series` and are typed under **D3**
 > as `audio`. Media Miscellaneous now holds **2** records: 264 (deferred, §4) and
 > 265 Golden Word Book Signing → **`audio`** (page states *"Three Compact Disc

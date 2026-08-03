@@ -2,8 +2,8 @@
 
 **Updated:** 2026-08-03 (post entry-by-entry official-source audit)
 **Scope:** Preserve raw evidence while operating a reproducible, reviewable Hawkins research catalogue with a user-friendly spreadsheet interface.
-**Current audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md)
-**Transition guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
+**Current audit:** [AUDIT_2026-08-03_FULL.md](../AUDIT_2026-08-03_FULL.md)
+**Transition guide:** [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md)
 
 ## Objective
 

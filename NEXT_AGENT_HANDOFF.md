@@ -1,8 +1,8 @@
 # Next-Agent Transition Handoff
 
-**Prepared:** 2026-08-03
-**Branch:** `arena/019fc740-docsheet`
-**Full audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md)
+**Prepared:** 2026-08-03; **updated:** 2026-08-03 (CI landed; docs consolidated)
+**Branch:** `arena/019fc7fe-docsheet`
+**Full audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md) (plus the second-pass independent audit in [TEMP_RESPONSE_AUDIT_2026-08-03.md](TEMP_RESPONSE_AUDIT_2026-08-03.md))
 
 ## Read this first
 
@@ -46,17 +46,17 @@ git diff --check
 
 ## P0 — Blocked on the repository owner
 
-### 1. CI workflow
-`.github/workflows/ci.yml` cannot be pushed: the GitHub App lacks `workflows`
-permission (re-probed and re-confirmed this session). **Complete drop-in YAML and
-step-by-step web-editor instructions are in
-[UNBLOCK_INSTRUCTIONS.md](UNBLOCK_INSTRUCTIONS.md) Task A.** Every step except the
-Chromium install has been verified locally. Until this lands, all guarantees rest
-on someone remembering to run the checks by hand.
+### 1. CI workflow — ✅ landed 2026-08-03
+`.github/workflows/ci.yml` is on `main` and runs every check plus the Playwright
+suite. One prepared step is still outstanding: `python process_data.py --check`
+is implemented locally but not yet in `ci.yml`; the App could not push workflow
+changes, so the snippet is in
+[archive/UNBLOCK_INSTRUCTIONS.md](archive/UNBLOCK_INSTRUCTIONS.md) Task A for
+application via the GitHub web editor.
 
-### 2. Playwright browser execution
-Three tests exist and are discoverable; Chromium cannot be downloaded in the
-sandbox. CI (item 1) resolves this.
+### 2. Playwright browser execution — ✅ runs in CI
+Chromium still cannot be downloaded in the sandbox; CI covers it (4/4 passing
+on PR #12).
 
 ---
 
@@ -108,22 +108,27 @@ assigns a compact ID, catalogue code and provenance.
    read-only.
 9. **`process_data.py --check`** — ✅ implemented with timestamp-aware metadata
    validation. The extra CI step is prepared locally but cannot be pushed until
-   the GitHub App receives `workflows` permission; see `UNBLOCK_INSTRUCTIONS.md`.
-10. **Pin Python deps** (`pandas>=2,<4` or constraints file) and add a `LICENSE`
-    — the repo is public with none.
-11. **Dead code** — `loadMeta()` and `metaLoaded` in `docs/app.js` are never
-    called; `docs/meta.json` and `docs/catalogue-meta.json` are generated,
-    committed and read by nothing.
+   the GitHub App receives `workflows` permission; see `archive/UNBLOCK_INSTRUCTIONS.md`.
+10. **Pin Python deps** — ✅ `pandas>=2,<4` in `requirements.txt`. Still open:
+    add a `LICENSE` — the repo is public with none.
+11. **Dead code** — ✅ app-side `loadMeta()` removed. `docs/meta.json` and
+    `docs/catalogue-meta.json` are still generated and read by nothing in the
+    browser; they form the machine-readable published contract (README
+    references `everything_record_types`), so keep them, or document that
+    decision explicitly.
 12. **Six always-empty master columns** — `location_physical`, `location_digital`,
     `location_streaming`, `source_url_hay_house`, `source_url_nightingale_conant`,
-    `reference_url_2` are 0/308 populated. Populate or drop.
-13. **`format` is blank on 110 records.** Strong evidence was gathered this
-    session for a deliberate pass: SKU prefixes (`cd_`, `_dvd`, `vs_v1pvf_dvd`),
-    product-detail strings ("Two DVD Set", "Three Compact Disc Set", "6 CD Set"),
-    and "Streaming Video is not available for this topic" markers.
-14. **Nightingale-Conant provenance gap** — `source_url_nightingale_conant` is
-    empty on all 308 records, yet the official page for product 1661 states
-    "Publisher: Nightingale-Conant". Worth a provenance pass.
+    `reference_url_2` are 0–1/317 populated. Populate or drop.
+13. **`format` is blank on 86 records** (down from 113 after the first
+    inference pass). Strong evidence for a second deliberate pass: SKU
+    prefixes (`cd_`, `_dvd`, `vs_v1pvf_dvd`), product-detail strings
+    ("Two DVD Set", "Three Compact Disc Set", "6 CD Set"), and "Streaming
+    Video is not available for this topic" markers; see
+    `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
+14. **Nightingale-Conant provenance gap** — the first override is applied
+    (schema now supports `source_url_nightingale_conant`), but the remaining
+    known NC products lack URLs. Worth a provenance pass; evidence and the
+    official NC page are in `archive/TEMP_NIGHTINGALE_PROVENANCE.md`.
 
 ---
 
@@ -133,17 +138,20 @@ assigns a compact ID, catalogue code and provenance.
     they currently hold, but only `normalized_title_match_count` is guarded in
     code. `matched_master_titles` in both the inventory and the decision overlay
     could still desynchronize under a hand-edit.
-16. **Documentation consolidation.** 38 Markdown files at repo root. Four
-    overlapping status docs (`PROJECT_STATE_AUDIT`, `HANDOFF`, this file,
-    `IMPLEMENTATION_PLAN`) restate the same counts and will drift —
-    `catalogue-meta.json` already holds them programmatically. Eight decision
-    records belong in `decisions/`. Two `*_DRAFT.md` files sit beside their
-    finalized versions.
+16. **Documentation consolidation** — ✅ completed 2026-08-03. Root Markdown
+    went 41 → 20 files: 12 decision records moved to `decisions/`, 10
+    superseded status/draft/evidence docs moved to `archive/`, 3 absorbed
+    `TEMP_*` status files deleted, all cross-links updated. Counts continue to
+    live in `catalogue-meta.json` programmatically.
 17. **Broader browser tests** — all 17 tabs, search+filter composition, column
     chooser, row drawer, dark mode, console-error assertions.
 18. **Re-run Map Veritas Catalogue once.** With the inventory corrected it should
     now **pass** rather than fail, which makes any future failure a genuine
     upstream signal.
+19. **UX backlog** (absorbed from the deleted readability suggestions):
+    compact-view column preset; dense/comfortable density toggle;
+    relationship drawer in the row-details view; empty-state messaging for
+    0-row review sheets; mobile column-hiding preset; search-scope hint.
 
 ---
 
@@ -194,7 +202,7 @@ browser tests**.
 4. The only local uncommitted file in this Arena session is the CI workflow
    addition (`python process_data.py --check`). GitHub rejects workflow-file
    updates from this app without `workflows` permission. Follow
-   `UNBLOCK_INSTRUCTIONS.md` in GitHub's web editor; do not discard that change
+   `archive/UNBLOCK_INSTRUCTIONS.md` in GitHub's web editor; do not discard that change
    without applying its equivalent upstream.
 
 ### Next implementation priority

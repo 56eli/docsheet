@@ -17,7 +17,7 @@
 
 Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship is therefore recorded for each of the 294 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
 
-Seven reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview; the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*; the *Power vs. Force* book and audiobook; and *A Map of Consciousness*. See `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, and `FINAL_TITLE_MATCH_DECISIONS.md` for the review batches.
+Seven reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview; the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*; the *Power vs. Force* book and audiobook; and *A Map of Consciousness*. See `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md` for the review batches.
 
 ## Candidate review completion
 

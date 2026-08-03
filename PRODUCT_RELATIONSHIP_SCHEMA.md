@@ -41,7 +41,7 @@ The table is intentionally separate from the flat research-master schema. It can
 
 Every non-empty master `source_url_veritas` is represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. This currently yields 294 item-to-product relationships across 147 distinct primary products; a single product can therefore be related to multiple top-level DVD/CD parts without duplicating an item.
 
-The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Seven reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, and `FINAL_TITLE_MATCH_DECISIONS.md`.
+The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Seven reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
 
 See `RELATIONSHIP_EXPANSION_AUDIT.md` for the complete validated coverage and inventory-only disposition boundary.
 

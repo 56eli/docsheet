@@ -55,10 +55,19 @@ site tab; evidence-backed annual compilation relationships live in
 Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
-`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`. The
+`data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The
 inventory's `normalized_title_match_count` is derived and must always equal the
 number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
 build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
+
+## Documentation layout
+
+Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
+`NEXT_AGENT_HANDOFF`, policies, schemas, proposals, and the generated
+`RECONCILIATION_REPORT.md`). Approved ruling records live in
+[`decisions/`](decisions/README.md); superseded status docs, research drafts,
+and evidence notes live in [`archive/`](archive/README.md) and are not
+normative.
 
 ## Curated records vs. official candidates
 

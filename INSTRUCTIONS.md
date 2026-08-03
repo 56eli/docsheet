@@ -121,7 +121,7 @@ The generated Pages workspace includes the catalogue plus dedicated review
 sheets for candidates, leads, exclusions, migration review, source overrides,
 official discovery, Veritas decisions, item-product relationships, and series
 compilations. See
-`PROJECT_STATE_AUDIT.md` and `IMPLEMENTATION_PLAN.md` for current risk and
+`archive/PROJECT_STATE_AUDIT.md` and `archive/IMPLEMENTATION_PLAN.md` for current risk and
 roadmap status.
 
 ### Veritas refresh review
