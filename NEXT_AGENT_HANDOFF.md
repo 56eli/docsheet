@@ -69,7 +69,7 @@ Sandbox traps learned the hard way (all still true):
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
 | Everything relationships | 318 product relationships, 7 series compilations | |
 | Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 183 works / 317 members approved | `data/work_families.csv`; caveat: w-a-review-of-the-work merges the 2006+2007 programs |
+| Work families | 184 works / 317 members approved | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
 | Test suite | **90 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 

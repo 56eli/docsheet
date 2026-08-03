@@ -489,3 +489,12 @@ duplicates, every work_id valid). One grouping caveat surfaced:
 different series — the audit §2.2 documented them as distinct works); a
 split into year-scoped works is a future one-row-per-member change if
 desired. Suite: 90 tests, coverage 92%, all five `--check` green.
+
+### 11r. w-a-review-of-the-work split applied (owner)
+
+`w-a-review-of-the-work` split into **w-a-review-of-the-work-2006**
+(rows 115–117, Transcending Levels of Consciousness) and
+**w-a-review-of-the-work-2007** (rows 142–144, Spiritual Reality & Modern
+Man) — the two programs the audit §2.2 documented as distinct. Families now
+**184 works / 317 members**; work_id coverage stays 341/341. All checks
+green; 90 tests, coverage 92%.

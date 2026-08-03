@@ -3080,7 +3080,7 @@
   {
     "record_type": "master",
     "uuid": "115",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2006",
     "catalog_code": "LECTURE-2006-013",
     "legacy_tempid": "LS200605_1",
     "title": "A Review of the Work",
@@ -3107,7 +3107,7 @@
   {
     "record_type": "master",
     "uuid": "116",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2006",
     "catalog_code": "LECTURE-2006-014",
     "legacy_tempid": "LS200605_2",
     "title": "A Review of the Work",
@@ -3134,7 +3134,7 @@
   {
     "record_type": "master",
     "uuid": "117",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2006",
     "catalog_code": "LECTURE-2006-015",
     "legacy_tempid": "LS200605_3",
     "title": "A Review of the Work",
@@ -3809,7 +3809,7 @@
   {
     "record_type": "master",
     "uuid": "142",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2007",
     "catalog_code": "LECTURE-2007-016",
     "legacy_tempid": "LS200706_1",
     "title": "A Review of the Work",
@@ -3836,7 +3836,7 @@
   {
     "record_type": "master",
     "uuid": "143",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2007",
     "catalog_code": "LECTURE-2007-017",
     "legacy_tempid": "LS200706_2",
     "title": "A Review of the Work",
@@ -3863,7 +3863,7 @@
   {
     "record_type": "master",
     "uuid": "144",
-    "work_id": "w-a-review-of-the-work",
+    "work_id": "w-a-review-of-the-work-2007",
     "catalog_code": "LECTURE-2007-018",
     "legacy_tempid": "LS200706_3",
     "title": "A Review of the Work",
