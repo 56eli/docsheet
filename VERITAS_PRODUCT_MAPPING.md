@@ -28,7 +28,7 @@
 
 ## Reviewed candidate products
 
-The 24 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. Seventeen have reviewed, unpromoted evidence rows in `data/manual_master_candidates.csv` (nine unique products and eight selected compilation/derivative products); they intentionally have no master UUID, catalogue code, ownership value, or master-source relationship until a separate promotion decision is approved. The remaining annual Highlights compilations stay broad candidates pending inclusion evidence.
+The 24 products classified as `unique_item` or `compilation_or_new_edition` are included in Everything with their official Veritas URL and a documentation note. Seventeen have reviewed, unpromoted evidence rows in `data/manual_master_candidates.csv` (nine unique products and eight selected compilation/derivative products); they intentionally have no master UUID, catalogue code, ownership value, or master-source relationship until a separate promotion decision is approved. The seven annual Highlights remain broad candidates, with their evidence-backed annual scope recorded in `data/series_compilation_relationships.csv` rather than unsupported per-DVD-part links.
 
 This approach preserves broad discovery coverage while retaining the approved human-review boundary for durable research-master identity data.
 

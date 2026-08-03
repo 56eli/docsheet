@@ -47,5 +47,12 @@
     "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
     "source_file": "data/product_relationships.csv",
     "current_state": "reviewed relationship"
+  },
+  {
+    "review_sheet": "Series Compilations",
+    "record_count": 7,
+    "purpose": "Evidence-backed compilation links to annual lecture series without inventing per-DVD-part inclusion.",
+    "source_file": "data/series_compilation_relationships.csv",
+    "current_state": "reviewed series compilation"
   }
 ]

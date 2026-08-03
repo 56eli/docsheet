@@ -23,6 +23,7 @@ VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
 HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
 AUDIBLE_PRODUCTS = Path("data/audible_official_products.csv")
 PRODUCT_RELATIONSHIPS = Path("data/product_relationships.csv")
+SERIES_COMPILATIONS = Path("data/series_compilation_relationships.csv")
 MANUAL_CANDIDATES = Path("data/manual_master_candidates.csv")
 MANUAL_LEADS = Path("data/research_manual_leads.csv")
 MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
@@ -38,6 +39,7 @@ OUT_SOURCE_OVERRIDES = Path("docs/source-overrides.json")
 OUT_OFFICIAL_DISCOVERY = Path("docs/official-discovery.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
 OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
+OUT_SERIES_COMPILATIONS = Path("docs/series-compilations.json")
 OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
 OUT_AUDIBLE_PRODUCTS = Path("docs/audible-products.json")
 OUT_INTERNATIONAL = Path("docs/international-products.json")
@@ -86,6 +88,13 @@ RELATIONSHIP_TYPES = {
     "unresolved",
 }
 RELATIONSHIP_STATUSES = {"reviewed", "pending", "rejected"}
+SERIES_COMPILATION_REQUIRED_COLUMNS = {
+    "relationship_id", "source_name", "source_product_id", "official_product_url",
+    "official_product_title", "relationship_type", "target_series", "target_year",
+    "target_month_start", "target_month_end", "included_lecture_count", "review_status",
+    "reviewed_on", "evidence_url", "evidence_note",
+}
+SERIES_COMPILATION_TYPE = "compilation_draws_from_series"
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
@@ -95,6 +104,7 @@ class CatalogueBuild:
 
     items: list[dict[str, str]]
     product_relationships: list[dict[str, str]]
+    series_compilations: list[dict[str, str]]
     outputs: dict[Path, str]
 
 
@@ -216,6 +226,93 @@ def validate_product_relationships(
     return enriched
 
 
+def validate_series_compilations(
+    master_items: list[dict[str, str]],
+    veritas_products: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    """Validate compilations at the evidenced series/lecture level.
+
+    Highlights pages identify all lectures in a year or month range, but not the
+    individual DVD part that supplied each clip. This layer records that exact
+    evidence without manufacturing per-part inclusion relationships.
+    """
+    with SERIES_COMPILATIONS.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = SERIES_COMPILATION_REQUIRED_COLUMNS - columns
+        if missing:
+            raise ValueError(
+                f"{SERIES_COMPILATIONS} is missing required columns: "
+                f"{', '.join(sorted(missing))}"
+            )
+        compilations = list(reader)
+
+    veritas_by_id = {product["veritas_product_id"]: product for product in veritas_products}
+    seen_ids: set[str] = set()
+    enriched: list[dict[str, str]] = []
+    for line_number, compilation in enumerate(compilations, start=2):
+        relationship_id = compilation["relationship_id"].strip()
+        source_product_id = compilation["source_product_id"].strip()
+        year = compilation["target_year"].strip()
+        start = compilation["target_month_start"].strip()
+        end = compilation["target_month_end"].strip()
+
+        if not relationship_id.startswith("series-compilation-") or relationship_id in seen_ids:
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} needs a unique series-compilation relationship_id"
+            )
+        if compilation["source_name"].strip() != "veritas" or source_product_id not in veritas_by_id:
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} needs a known Veritas source product"
+            )
+        if compilation["relationship_type"].strip() != SERIES_COMPILATION_TYPE:
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} must use {SERIES_COMPILATION_TYPE}"
+            )
+        if compilation["review_status"].strip() != "reviewed" or not ISO_DATE.fullmatch(compilation["reviewed_on"].strip()):
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} needs reviewed status and an ISO reviewed_on date"
+            )
+        if not year.isdigit() or len(year) != 4:
+            raise ValueError(f"{SERIES_COMPILATIONS}:{line_number} target_year must be YYYY")
+        if bool(start) != bool(end) or (start and (start not in {f"{n:02d}" for n in range(1, 13)} or end not in {f"{n:02d}" for n in range(1, 13)} or start > end)):
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} needs a valid paired month range or blank months"
+            )
+        if not compilation["evidence_url"].startswith("https://") or not compilation["evidence_note"].strip():
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} needs HTTPS evidence_url and evidence_note"
+            )
+
+        product = veritas_by_id[source_product_id]
+        if compilation["official_product_url"] != product["official_product_url"] or compilation["official_product_title"] != product["official_title"]:
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} product URL/title differs from the Veritas inventory"
+            )
+        target_parts = [
+            item for item in master_items
+            if item["item_type"] == "lecture"
+            and item["series"] == compilation["target_series"]
+            and item["year"] == year
+            and (not start or start <= item["month"] <= end)
+        ]
+        lecture_titles = sorted({item["title"] for item in target_parts})
+        if len(lecture_titles) != int(compilation["included_lecture_count"]):
+            raise ValueError(
+                f"{SERIES_COMPILATIONS}:{line_number} expected {compilation['included_lecture_count']} lectures, "
+                f"found {len(lecture_titles)} in the master scope"
+            )
+        enriched.append({
+            **compilation,
+            "target_item_part_count": len(target_parts),
+            "target_lecture_titles": " | ".join(lecture_titles),
+            "source_product_published_date": product["published_date"],
+            "source_product_mapping_status": product["mapping_status"],
+        })
+        seen_ids.add(relationship_id)
+    return enriched
+
+
 def json_text(data: object) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
@@ -233,6 +330,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
+    series_compilations = validate_series_compilations(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)
     intl_queue = read_csv(INTL_QUEUE)
@@ -435,6 +533,13 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
             "source_file": str(PRODUCT_RELATIONSHIPS),
             "current_state": "reviewed relationship",
         },
+        {
+            "review_sheet": "Series Compilations",
+            "record_count": len(series_compilations),
+            "purpose": "Evidence-backed compilation links to annual lecture series without inventing per-DVD-part inclusion.",
+            "source_file": str(SERIES_COMPILATIONS),
+            "current_state": "reviewed series compilation",
+        },
     ]
     outputs = {
         OUT_MASTER: json_text(items),
@@ -447,6 +552,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
         OUT_OFFICIAL_DISCOVERY: json_text(queue),
         OUT_VERITAS_PRODUCTS: json_text(veritas_products),
         OUT_PRODUCT_RELATIONSHIPS: json_text(product_relationships),
+        OUT_SERIES_COMPILATIONS: json_text(series_compilations),
         OUT_HAYHOUSE_PRODUCTS: json_text(hayhouse_products),
         OUT_AUDIBLE_PRODUCTS: json_text(audible_products),
         OUT_INTERNATIONAL: json_text(intl_items),
@@ -488,6 +594,10 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
                 relationship["review_status"] == "pending"
                 for relationship in product_relationships
             ),
+            "reviewed_series_compilations": sum(
+                compilation["review_status"] == "reviewed"
+                for compilation in series_compilations
+            ),
             "hayhouse_official_products": len(hayhouse_products),
             "audible_official_products": len(audible_products),
             "approved_publishers": len(PUBLISHERS),
@@ -497,6 +607,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     return CatalogueBuild(
         items=items,
         product_relationships=product_relationships,
+        series_compilations=series_compilations,
         outputs=outputs,
     )
 

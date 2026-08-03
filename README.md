@@ -41,13 +41,16 @@ reviewed but unpromoted official candidates live in
 
 Approved master-to-product assertions are stored separately in
 `data/product_relationships.csv` and rendered in the **Product Relationships**
-site tab; see `PRODUCT_RELATIONSHIP_SCHEMA.md` before adding a relationship.
+site tab; evidence-backed annual compilation relationships live in
+`data/series_compilation_relationships.csv` and render in **Series
+Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
+`SERIES_COMPILATION_SCHEMA.md` before adding either relationship type.
 
 ## Review workspace
 
 The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
-Review**, **Source Overrides**, and **Official Discovery** are separate sheets
-alongside the catalogue and official-product views. Reviewers can search, sort,
-export, and filter sheets with multiple review-status values without opening
-repository folders.
+Review**, **Source Overrides**, **Official Discovery**, and **Series
+Compilations** are separate sheets alongside the catalogue and official-product
+views. Reviewers can search, sort, export, and filter sheets with multiple
+review-status values without opening repository folders.
