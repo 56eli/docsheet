@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv, html, json, re
 from pathlib import Path
 from urllib.parse import urlencode
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 API = "https://veritaspub.com/wp-json/wp/v2/product"
@@ -25,8 +26,14 @@ def norm(value: str) -> str:
 def get_page(page: int) -> list[dict]:
     query = urlencode({"per_page": 100, "page": page, "_fields": "id,date,link,title,class_list"})
     request = Request(f"{API}?{query}", headers={"User-Agent": "docsheet-catalogue-research/1.0"})
-    with urlopen(request, timeout=60) as response:  # nosec B310: fixed HTTPS API endpoint
-        return json.load(response)
+    try:
+        with urlopen(request, timeout=60) as response:  # nosec B310: fixed HTTPS API endpoint
+            return json.load(response)
+    except HTTPError as error:
+        # WordPress returns 400 rather than an empty array beyond the final page.
+        if error.code == 400 and page > 1:
+            return []
+        raise
 
 
 def category(classes: list[str]) -> str:
