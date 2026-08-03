@@ -1,8 +1,8 @@
 # DocSheet Implementation Roadmap
 
-**Updated:** 2026-08-03
+**Updated:** 2026-08-03 (post entry-by-entry official-source audit)
 **Scope:** Preserve raw evidence while operating a reproducible, reviewable Hawkins research catalogue with a user-friendly spreadsheet interface.
-**Current audit:** [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md)
+**Current audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md)
 **Transition guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 
 ## Objective
@@ -14,7 +14,7 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 | Area | Current state |
 |---|---:|
 | Raw spreadsheet rows | 374 |
-| Curated master records | 308 |
+| Curated master records | 308 (274 lecture, 23 book, 8 discussion, 3 untyped) |
 | Compact master ID range | 1–308, capped at 10000 |
 | Excluded raw rows | 66 |
 | Approved source overrides | 80 |
@@ -23,7 +23,9 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 | Veritas official products | 191 |
 | Item-to-product relationships | 301 |
 | Series-compilation relationships | 7 |
-| Everything Pages records | 344 |
+| Everything Pages records | 344 (308 master + 36 candidates, tagged by `record_type`) |
+| Catalogue codes | 221 |
+| Months verified against official product dates | 195 / 195 |
 
 ## Completed milestones
 
