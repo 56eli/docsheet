@@ -36,7 +36,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 93 tests, offline, ~2s
+python -m unittest discover tests     # 96 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -63,15 +63,15 @@ Sandbox traps learned the hard way (all still true):
 | Layer | Count | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 350 | 301 lecture / 38 book / 10 discussion / 1 untyped (record **264**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) |
-| Everything view | **396** | 350 master + 28 candidate_veritas + 6 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Curated master | 356 | 307 lecture / 38 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) |
+| Everything view | **396** | 356 master + 28 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
 | Exclusions / source overrides | 68 / 106 | |
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
-| Everything relationships | 327 product relationships, 7 series compilations | |
-| Candidate pool | 26 reviewed manual candidates (20 promoted incl. 9 Satsang monthlies, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 193 works / 326 members approved; work_id coverage 350/350 | `data/work_families.csv` |
-| Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
-| Test suite | **93 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
+| Everything relationships | 333 product relationships, 7 series compilations | |
+| Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
+| Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
+| Series taxonomy | 149 matched products → 146 approved / 3 rejected; approved mappings applied as a proven no-op | |
+| Test suite | **96 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
@@ -142,6 +142,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     lane (14 → 5 rows after the Satsang rulings), D6a per-part works + C1
     split, doc-currency/coverage/tamper tests (93 tests, 92%). Live site
     checked: serves `main` (363 rows) until this branch merges.
+11. **Deduplication, URL fills, format/year backfills, and schema cleanup (`b23e082`, PR #17):**
+    Resolved duplicate audio record territory for "In the World But Not of It" (legacy untyped row 296 rebuilt as compact UUID **246**, deferred). Backfilled 65 blank formats from official inventory (fill rate 89%, blanks 73 → **8**), backfilled 86 years (blanks 116 → **30**) and 95 months (blanks 152 → **57**). Cleaned 14 redundant notes from master and separated `raw_row_number` into numeric `raw_row_number` and `candidate_key`. Fixed Nightingale-Conant URL placement and added 7 Hay House URLs (overrides 100 → **106**).
+12. **Full project audit, documentation status-quo refresh, and fail-safe enhancements (this turn, branch `arena/019fc974-docsheet`):**
+    Conducted a full project audit and updated all core documentation (`NEXT_AGENT_HANDOFF.md`, `SERIES_TAXONOMY_MAPPING.md`, `SESSION_SUMMARY_2026-08-03.md`, `README.md`, `INSTRUCTIONS.md`) to resolve stale references to record 264 (now **246**), 73 blank formats (now **8**), 100 overrides (now **106**), and series taxonomy counts (149 matched / 146 approved). Archived 4 temporary analysis scripts (`dedup_analysis.py`, `dedup_analysis2.py`, `find_nc_url.py`, `dedup_plan.md`) to `archive/` so default `--source=.` test coverage measures only the 8 pipeline modules and reports a clean **92%** (all modules ≥ 89%). Added structural invariant fail-safes in `build_research_master.py` (`validate_master_items_integrity`) and `build_catalogue_pages.py` (`validate_work_family_coverage`) with 3 new defensive tests (**96 tests**, all passing). Added `docs/.nojekyll` and created `GITHUB_PAGES_DEPLOYMENT_ANALYSIS.md` to troubleshoot and prevent GitHub Pages deployment failures on large JSON files. Consolidated web UI (`docs/index.html`) by removing redundant raw publisher inventory tabs ("Veritas Products", "Hay House Products", "Audible Products"), making the Everything tab authoritative while preserving JSON endpoints for pipeline validation.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -188,22 +192,18 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
   UUIDs in `edition_promotions.csv` — never renumber) and 9 promoted
   Satsang monthlies (344–352); **193 works / 326 family members approved,
-  work_id coverage 350/350** (D6a per-part ruling + C1 split applied);
+  work_id coverage 356/356** (D6a per-part ruling + C1 split applied);
   overrides 106 (candidate-provenance supported, incl. 316/318 Hay House);
-  relationships 327; Everything 396 (6 pending candidates). Remaining model
-  work: rulings for the 5 New Work Review queue rows
-  (`data/new_work_review_queue.csv`: Unity Church CDs ×2, Don't Set Sail,
-  Peace is the Natural State, Giving Up Illness).
-- **Record 264** (`"In the World But Not of It" – Audio`, the 1 untyped record):
+  relationships 333; Everything 396 (0 pending candidates). Remaining model
+  work: all 5 New Work Review queue rows and 6 pending manual candidates were
+  promoted 2026-08-03 as master UUIDs 353–358.
+- **Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
-- **Candidate promotion path:** 6 pending manual candidates remain (the 9
-  Satsang monthlies were promoted 2026-08-03); the 5 New Work Review queue
-  rows await new-work rulings.
-- **`format` blank on 73 records** (was 86): the 2026-08-03 book backfill
-  filled all 12 URL-bearing book records (exact-URL inventory lookup +
-  publisher books-category signal); the remaining 5 books have no Veritas URL
-  at all — root cause and evidence in `TEMP_RESPONSE_AUDIT_2026-08-03.md`
+- **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
+- **`format` blank on 8 records** (was 73): the 2026-08-03 format backfill
+  inferred 65 formats (89% fill rate). The remaining 8 blank-format records
+  have no automated inference match — root cause and evidence in `TEMP_RESPONSE_AUDIT_2026-08-03.md`
   §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
   strings, streaming markers) stays in
   `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.

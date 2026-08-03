@@ -50,12 +50,12 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 93 tests, no browser/network needed
+python -m unittest discover tests          # 96 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 80` in `.coveragerc`) passes at **92%** as of
-2026-08-03; every pipeline module is ≥ 88%. Approved official links added after the ledger
+2026-08-03; every pipeline module is ≥ 89%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
@@ -115,10 +115,10 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **350** records (301 `lecture`, 38 `book`,
-10 `discussion`, 1 untyped), **234** catalogue codes, **68** retained exclusions,
-**106** approved source overrides (including Nightingale-Conant), **20** promoted
-and **6** unpromoted official candidates, **327** item-to-product relationships,
+The current curated master has **356** records (307 `lecture`, 38 `book`,
+10 `discussion`, 1 untyped), **236** catalogue codes, **68** retained exclusions,
+**106** approved source overrides (including Nightingale-Conant), **26** promoted
+and **0** unpromoted official candidates, **333** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable.
 

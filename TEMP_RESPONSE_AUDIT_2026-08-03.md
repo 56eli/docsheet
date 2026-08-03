@@ -545,3 +545,27 @@ promotion rows (master_uuid 344–352) await the owner's approval in
 - Handoff refreshed (§3 table, §4 item 10, §6 P1). Final battery green:
   py_compile, five `--check`, **90 tests**, coverage **92%**, node checks,
   `git diff --check`.
+
+### 11w. Deduplication, URL fills, format/year backfills, and schema cleanup (`b23e082`, PR #17)
+
+- **Deduplication:** Resolved duplicate audio territory for *"In the World But Not of It"* (legacy untyped row 296 rebuilt as compact UUID **246**, deferred pending physical confirmation).
+- **Format/Year Backfills:** Inferred 65 blank formats from official Veritas inventory (fill rate 89%, blanks 73 → **8**), backfilled 86 years (blanks 116 → **30**) and 95 months (blanks 152 → **57**).
+- **Schema Cleanup:** Removed 14 redundant notes from master and separated `raw_row_number` into numeric `raw_row_number` and `candidate_key`. Fixed Nightingale-Conant URL placement and added 7 Hay House URLs (overrides 100 → **106**).
+
+### 11x. Full project audit, documentation status-quo refresh, coverage cleanup to 92%, and structural invariant fail-safes (this turn, branch `arena/019fc974-docsheet`)
+
+- **Comprehensive Audit & Status Quo Documentation Sweep:** Audited all 12+ data CSV files, 20 generated JSON sheets, and all markdown documentation. Identified and resolved historical drift across documentation files (`README.md`, `INSTRUCTIONS.md`, `NEXT_AGENT_HANDOFF.md`, `SESSION_SUMMARY_2026-08-03.md`, `SERIES_TAXONOMY_MAPPING.md`, `COMPREHENSIVE_AUDIT_2026-08-03.md`, `EVERYTHING_VERIFICATION_REPORT_2026-08-03.md`), synchronizing all metrics to the exact generated numbers (106 source overrides, 8 blank formats, Record 246 untyped, 149 matched / 146 approved series taxonomy).
+- **Code Coverage Cleanup to 92%:** Moved four temporary scratch/analysis scripts (`dedup_analysis.py`, `dedup_analysis2.py`, `find_nc_url.py`, `dedup_plan.md`) from the root directory to `archive/`. Verified that running `coverage run --source=. -m unittest discover tests` now measures only the 8 pipeline modules and reports **92% total code coverage** (well above the 80% gate), with every module achieving ≥ 89% coverage.
+- **Fail-Safe Defensive-in-Depth Enhancements:** Added two structural invariant fail-safes to the pipeline:
+  - `validate_master_items_integrity` in `build_research_master.py`: enforces that every master record has a valid numeric UUID, an empty `item_type` is restricted strictly to the deferred UUID 246 allowlist, and any `work_id` adheres to the `'w-*'` canonical format.
+  - `validate_work_family_coverage` in `build_catalogue_pages.py`: guarantees that every curated master record has a populated `work_id` before building web catalogue sheets.
+  - Restored missing work family membership for UUID 246 (`w-in-the-world-but-not-of-it-audio`), restoring `work_id` coverage to **350/350 (100%)** across 193 unique works and 326 approved members.
+  - Expanded `tests/test_pipeline.py` with three new unit tests (**96 tests total**, 100% passing), covering untyped record allowlists, malformed `work_id` rejection, and missing `work_id` catalogue build failures.
+- **Deliverable:** Created `STATUS_QUO_AUDIT_2026-08-03.md` as the complete standalone audit report and presented it to the user. All checks green (`py_compile`, five `--check`, 96 tests, 92% coverage).
+
+### 11y. Promotion of all 6 remaining manual candidates and 5 New Work Review queue rows (this turn, branch `arena/019fc974-docsheet`)
+
+- **Candidate Promotion:** Promoted all 6 remaining unpromoted manual candidates (`manual-veritas-1544`, `1546`, `1548`, `1792`, `1814`, and `55576`) to curated master records **353–358**.
+- **Work Families & Relationships:** Added 6 approved work family rows (`work_id` coverage **356/356 (100%)**, 199 works / 332 members) and 6 reviewed primary relationship rows (**333 primary relationships** total).
+- **Queue Resolution:** Cleared all 5 items from the New Work Review queue (`data/new_work_review_queue.csv` → 0 items remaining) and completed the promotion of all 26 manual candidates (26/26 promoted, 0 pending).
+- **Verification:** All core documentation (`README.md`, `NEXT_AGENT_HANDOFF.md`, `INSTRUCTIONS.md`, `SESSION_SUMMARY_2026-08-03.md`, `STATUS_QUO_AUDIT_2026-08-03.md`, `EVERYTHING_VERIFICATION_REPORT_2026-08-03.md`) updated to reflect 356 master rows, 199 works / 332 members, 236 catalogue codes, and 333 relationships. All 96 deterministic tests pass cleanly with 92% coverage.

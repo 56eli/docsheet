@@ -626,6 +626,37 @@ def apply_work_families(items: list[dict[str, str]]) -> int:
     return applied
 
 
+def validate_master_items_integrity(items: list[dict[str, str]]) -> None:
+    """Enforce structural invariants across all assembled master records."""
+    seen_uuids: set[str] = set()
+    for item in items:
+        uuid = item.get("uuid", "").strip()
+        title = item.get("title", "").strip()
+        item_type = item.get("item_type", "").strip()
+        work_id = item.get("work_id", "").strip()
+
+        if not uuid or not uuid.isdigit():
+            raise ValueError(f"Master record has invalid or missing uuid: {uuid!r} (title: {title!r})")
+        if uuid in seen_uuids:
+            raise ValueError(f"Master record reuses uuid {uuid!r} (title: {title!r})")
+        seen_uuids.add(uuid)
+
+        if not title:
+            raise ValueError(f"Master record {uuid} has an empty title")
+
+        if work_id and not work_id.startswith("w-"):
+            raise ValueError(
+                f"Master record {uuid} ({title!r}) has malformed work_id {work_id!r}; "
+                "work_ids must start with 'w-'"
+            )
+
+        if not item_type and uuid != "246":
+            raise ValueError(
+                f"Master record {uuid} ({title!r}) has an empty item_type; "
+                "only UUID 246 is permitted as a deferred untyped record"
+            )
+
+
 def validate_edition_candidates(items: list[dict[str, str]]) -> int:
     """Validate reviewed edition candidates without promoting them.
 
@@ -1040,6 +1071,7 @@ def build_master() -> MasterBuild:
 
     series_approvals_applied = apply_series_approvals(items)
     work_families_applied = apply_work_families(items)
+    validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [

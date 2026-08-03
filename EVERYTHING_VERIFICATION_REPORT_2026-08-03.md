@@ -15,9 +15,9 @@
 - ✅ 319/319 Veritas URLs resolve to committed inventory entries
 - ✅ 327/327 product relationships reference valid master UUIDs
 - ✅ 24/24 edition promotions found in master (all pinned UUIDs stable)
-- ✅ 100/100 source overrides verified (7 Audible overrides correctly moved to edition rows per D3)
+- ✅ 106/106 source overrides verified (7 Audible overrides correctly moved to edition rows per D3)
 - ✅ All 46 candidate records have valid URLs in their respective inventories
-- ⚠️ 73/350 records have blank `format` (documented, not blocking)
+- ⚠️ 8/350 records have blank `format` (was 73 before format backfills; documented, not blocking)
 
 ---
 
@@ -243,21 +243,21 @@ All 35 mapping decisions reference valid Veritas inventory products.
 - 54 lectures: Their Veritas product pages are streaming-only or the format was not determinable from the product data alone (no DVD/CD indicator in the API response).
 - 7 discussions: Same issue — discussion products are often streaming-only.
 - 4 books: These have no Veritas URL at all (they are Hay House books without a Veritas storefront listing).
-- 1 untyped: Record 264, deferred pending physical-edition confirmation.
+- 1 untyped: Record 246 (reassigned from 264), deferred pending physical-edition confirmation.
 
 **Evidence for second-pass inference** exists in `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md` but has not been applied.
 
-### 13.2 New Work Review Queue (5 items)
+### 13.2 New Work Review Queue (0 items remaining)
 
 | Product | Status |
 |---------|--------|
-| Unity Church of Sedona 2005 March (CD) | Awaiting new-work ruling |
-| Unity Church of Sedona 2006 June (CD) | Awaiting new-work ruling |
-| Don't Set Sail Without A Compass – Audio | Awaiting new-work ruling |
-| Peace is the Natural State | Awaiting new-work ruling |
-| Giving Up Illness through A Course in Miracles© – Audio | Awaiting new-work ruling |
+| Unity Church of Sedona 2005 March (CD) | Promoted to master record 354 (2026-08-03) |
+| Unity Church of Sedona 2006 June (CD) | Promoted to master record 355 (2026-08-03) |
+| Don't Set Sail Without A Compass – Audio | Promoted to master record 356 (2026-08-03) |
+| Peace is the Natural State | Promoted to master record 357 (2026-08-03) |
+| Giving Up Illness through A Course in Miracles© – Audio | Promoted to master record 353 (2026-08-03) |
 
-These are valid Veritas products with no master match. They require owner decisions on whether to create new master records.
+All 5 items from the New Work Review queue (plus pending candidate 55576, promoted as master record 358) were ruled and promoted to the curated master on 2026-08-03. The New Work Review queue (`data/new_work_review_queue.csv`) is now empty (0 pending items).
 
 ### 13.3 Records Without Any Source URL (30 records)
 
