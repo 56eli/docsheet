@@ -33,4 +33,6 @@ python build_catalogue_pages.py --check
 
 `RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
 failure indicates a ledger/draft mismatch; do not run the writing build commands
-until that review is resolved.
+until that review is resolved. Approved official links added after the ledger
+pass live in `data/research_master_source_overrides.csv`; unresolved manual
+edition/copy leads live in `data/research_manual_leads.csv` outside the master.

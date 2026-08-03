@@ -8,7 +8,7 @@
 
 Move from the current useful research/discovery interface to a dependable catalogue workflow in which raw evidence, reviewed master records, official-product inventories, and generated GitHub Pages files have clear ownership and can be rebuilt and verified safely.
 
-## Baseline recorded for planning
+## Initial baseline recorded for planning (before reconciliation)
 
 | Area | Current state | Planning implication |
 |---|---|---|
@@ -21,6 +21,8 @@ Move from the current useful research/discovery interface to a dependable catalo
 | Workflow | `update_spreadsheet.yml` runs `process_data.py`, which writes to `docs/`, but its comments and auto-commit paths still point to `public/`. | A raw-CSV update can succeed without committing the files the site uses; correct this first. |
 
 The rebuild comparison above was performed in a temporary isolated directory; it made no repository changes.
+
+**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 40 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
 ## Guiding rules
 

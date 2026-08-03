@@ -14,6 +14,7 @@
 - The original spreadsheet remains preserved and viewable as the raw table; no source rows were deleted.
 - A clean draft research-master dataset is in `data/research_master_draft.csv` and JSON, with 314 candidate material records and UUIDv4/UUIDv7 identifiers.
 - A row-level migration review ledger, exclusions file, source registry, spreadsheet audit, and mapping reports are committed.
+- The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 40 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv`.
 - Veritas mapping is reproducible through `fetch_veritas_catalogue.py`; the `Map Veritas Catalogue` workflow writes `data/veritas_official_products.csv` after manual dispatch.
 - **Global Discovery Queue**: A dedicated queue (`data/international_discovery_queue.csv`) was created for the known-but-not-approved international publishers, seeded with early title extractions. These are exposed in a new **International Editions** UI tab.
 

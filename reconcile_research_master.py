@@ -111,6 +111,47 @@ def render_report() -> str:
     committed_meta = json.loads(CURRENT_META.read_text(encoding="utf-8"))
     projected_meta = json.loads(projected_catalogue.outputs[build_catalogue_pages.OUT_META])
     projected_json = json.loads(master_build.outputs[build_research_master.OUTPUT_JSON])
+    projected_catalogue_rows = json.loads(
+        projected_catalogue.outputs[build_catalogue_pages.OUT_MASTER]
+    )
+    is_reconciled = (
+        not comparison.extras
+        and not comparison.missing
+        and not comparison.changed
+        and committed_master_json == projected_json
+        and committed_exclusions == master_build.exclusions
+        and committed_catalogue == projected_catalogue_rows
+        and committed_meta == projected_meta
+    )
+    summary_note = (
+        [
+            "All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.",
+            "",
+            f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides; unresolved research leads remain outside the master in their review inputs.",
+        ]
+        if is_reconciled
+        else [
+            "The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.",
+            "",
+            "The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. This report identifies the upstream master/ledger divergence that must be resolved first.",
+        ]
+    )
+    resolution_section = (
+        [
+            "## Current verification result",
+            "",
+            "The reconciliation is complete. For future approved changes, update the ledger, reviewed source overrides, or manual-lead input as appropriate; rebuild the master and Pages outputs; then run all three checks below.",
+        ]
+        if is_reconciled
+        else [
+            "## Required resolution before rebuilding",
+            "",
+            "1. Decide whether every draft-only record is an approved item, a documented manual candidate, or should remain outside the curated master.",
+            "2. Record approved changes to matching rows in the ledger or a versioned reviewed-overrides input; do not preserve them solely by editing generated draft CSV/JSON files.",
+            "3. Re-run this report until the reconciliation is understood and accepted.",
+            "4. Only then run `python build_research_master.py`, then `python build_catalogue_pages.py`, and verify both `--check` commands.",
+        ]
+    )
 
     lines = [
         "# Research Master Reconciliation Report",
@@ -133,9 +174,7 @@ def render_report() -> str:
         f"| Matched CSV records with one or more field differences | {len(comparison.changed)} | 0 |",
         f"| `docs/master.json` / ledger-projected Everything records | {len(committed_catalogue)} | {len(projected_catalogue.items)} |",
         "",
-        "The committed master **JSON already matches the current 308-record ledger projection**, while the committed master CSV has 314 rows and the exclusions CSV has 59 rows instead of the current 66-row projection. The CSV and JSON are therefore internally inconsistent before any new build is run.",
-        "",
-        "The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. That is expected: this report is specifically identifying the upstream master/ledger divergence that must be resolved first.",
+        *summary_note,
         "",
         "## Draft-only CSV records requiring a provenance decision",
         "",
@@ -204,12 +243,7 @@ def render_report() -> str:
 
     lines.extend([
         "",
-        "## Required resolution before rebuilding",
-        "",
-        "1. Decide whether every draft-only record is an approved item, a documented manual candidate, or should remain outside the curated master.",
-        "2. Record approved changes to matching rows in the ledger or a versioned reviewed-overrides input; do not preserve them solely by editing generated draft CSV/JSON files.",
-        "3. Re-run this report until the reconciliation is understood and accepted.",
-        "4. Only then run `python build_research_master.py`, then `python build_catalogue_pages.py`, and verify both `--check` commands.",
+        *resolution_section,
         "",
         "## Reproduce",
         "",

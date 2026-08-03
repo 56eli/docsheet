@@ -24,6 +24,7 @@ LEDGER = Path("migration_review_ledger.csv")
 OUTPUT_CSV = Path("data") / "research_master_draft.csv"
 OUTPUT_JSON = Path("data") / "research_master_draft.json"
 EXCLUSIONS = Path("data") / "research_master_exclusions.csv"
+SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
 
 FIELDS = [
     "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
@@ -37,6 +38,10 @@ EXCLUSION_FIELDS = [
     "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
     "raw_we_have", "raw_original_source", "raw_product_link",
 ]
+SOURCE_OVERRIDE_FIELDS = {"source_url_veritas", "source_url_audible"}
+SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
+    "raw_row_number", "target_field", "override_value", "review_status",
+}
 
 
 @dataclass
@@ -45,6 +50,7 @@ class MasterBuild:
 
     items: list[dict[str, str]]
     exclusions: list[dict[str, str]]
+    source_overrides_applied: int
     outputs: dict[Path, str]
 
 
@@ -106,6 +112,68 @@ def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
     return buffer.getvalue()
 
 
+def apply_source_overrides(items: list[dict[str, str]]) -> int:
+    """Apply explicit, approved official-source links after ledger migration.
+
+    The migration ledger preserves raw evidence. This narrowly scoped input
+    preserves reviewed official source associations added after the original
+    ledger pass, without hand-editing generated master files. It may only add
+    an empty Veritas or Audible source field to an existing ledger item.
+    """
+    if not SOURCE_OVERRIDES.exists():
+        return 0
+
+    with SOURCE_OVERRIDES.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing_columns = SOURCE_OVERRIDE_REQUIRED_COLUMNS - columns
+        if missing_columns:
+            raise ValueError(
+                f"{SOURCE_OVERRIDES} is missing required columns: "
+                f"{', '.join(sorted(missing_columns))}"
+            )
+        overrides = list(reader)
+
+    items_by_raw = {row["raw_row_number"]: row for row in items}
+    seen: set[tuple[str, str]] = set()
+    for line_number, override in enumerate(overrides, start=2):
+        raw_row = override["raw_row_number"].strip()
+        target_field = override["target_field"].strip()
+        value = override["override_value"].strip()
+        status = override["review_status"].strip()
+        key = (raw_row, target_field)
+
+        if not raw_row or raw_row not in items_by_raw:
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} references a non-item raw row: {raw_row!r}"
+            )
+        if target_field not in SOURCE_OVERRIDE_FIELDS:
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} cannot override {target_field!r}; "
+                f"allowed fields: {', '.join(sorted(SOURCE_OVERRIDE_FIELDS))}"
+            )
+        if status != "approved":
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} must have review_status 'approved'"
+            )
+        if not value.startswith("https://"):
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} must contain an HTTPS URL"
+            )
+        if key in seen:
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} duplicates an override for {raw_row}/{target_field}"
+            )
+        if items_by_raw[raw_row][target_field] and items_by_raw[raw_row][target_field] != value:
+            raise ValueError(
+                f"{SOURCE_OVERRIDES}:{line_number} conflicts with the raw-ledger value for "
+                f"{raw_row}/{target_field}; model a separate relationship instead"
+            )
+        items_by_raw[raw_row][target_field] = value
+        seen.add(key)
+    return len(overrides)
+
+
 def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
     with LEDGER.open(encoding="utf-8", newline="") as handle:
@@ -156,6 +224,7 @@ def build_master() -> MasterBuild:
             "raw_row_number": row["raw_row_number"],
         })
 
+    source_overrides_applied = apply_source_overrides(items)
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}
         for row in excluded_rows
@@ -165,7 +234,12 @@ def build_master() -> MasterBuild:
         OUTPUT_JSON: json.dumps(items, ensure_ascii=False, indent=2) + "\n",
         EXCLUSIONS: csv_text(EXCLUSION_FIELDS, exclusions),
     }
-    return MasterBuild(items=items, exclusions=exclusions, outputs=outputs)
+    return MasterBuild(
+        items=items,
+        exclusions=exclusions,
+        source_overrides_applied=source_overrides_applied,
+        outputs=outputs,
+    )
 
 
 def write_outputs(outputs: dict[Path, str]) -> None:
@@ -205,14 +279,16 @@ def main(argv: list[str] | None = None) -> int:
             print("Run the reconciliation report before rebuilding so reviewed additions are not lost.")
             return 1
         print(
-            "Research-master outputs match the current ledger "
-            f"({len(build.items)} items; {len(build.exclusions)} excluded rows)."
+            "Research-master outputs match the current ledger and approved source overrides "
+            f"({len(build.items)} items; {len(build.exclusions)} excluded rows; "
+            f"{build.source_overrides_applied} source overrides)."
         )
         return 0
 
     write_outputs(build.outputs)
     print(f"Wrote {OUTPUT_CSV} and {OUTPUT_JSON} ({len(build.items)} items)")
     print(f"Wrote {EXCLUSIONS} ({len(build.exclusions)} excluded source rows)")
+    print(f"Applied {build.source_overrides_applied} approved source overrides")
     return 0
 
 

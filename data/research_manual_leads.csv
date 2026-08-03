@@ -1,0 +1,2 @@
+manual_lead_id,title,proposed_item_type,proposed_year,proposed_owned,lead_status,review_reason,provenance_note
+manual-power-vs-force-old-edition,"Power vs Force (Original old edition, non B&W cover)",book,,,manual_edition_lead,"No verified content difference supports a separate master item; retain as a lead until an edition/content review is complete.","Extracted from an explicit research request; the former CSV-only draft record had no raw-row provenance."
