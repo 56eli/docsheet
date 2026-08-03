@@ -37,8 +37,8 @@ def is_satsang(value: str) -> bool:
     return "satsang series" in html.unescape(value).lower()
 
 
-def satsang_date_key(value: str) -> str | None:
-    """Return YYYY-MM for a dated Satsang title, preserving date identity."""
+def title_date_key(value: str) -> str | None:
+    """Return YYYY-MM when a title carries an explicit Month/Year."""
     match = re.search(
         r"\b(" + "|".join(MONTHS) + r")\.?\s+(20\d{2})\b",
         html.unescape(value).lower(),
@@ -46,6 +46,11 @@ def satsang_date_key(value: str) -> str | None:
     if not match:
         return None
     return f"{match.group(2)}-{MONTHS[match.group(1)]}"
+
+
+def satsang_date_key(value: str) -> str | None:
+    """Backward-compatible name for Satsang-specific date matching."""
+    return title_date_key(value)
 
 
 def get_page(page: int) -> list[dict]:
@@ -70,13 +75,19 @@ def main() -> None:
     with MASTER.open(encoding="utf-8", newline="") as handle:
         master = list(csv.DictReader(handle))
     index: dict[str, list[dict[str, str]]] = {}
+    dated_index: dict[str, dict[str, list[dict[str, str]]]] = {}
     satsang_index: dict[str, list[dict[str, str]]] = {}
     for row in master:
-        index.setdefault(norm(row["title"]), []).append(row)
+        normalized_title = norm(row["title"])
+        index.setdefault(normalized_title, []).append(row)
+        dated_title = row.get("title_source") or row["title"]
+        date_key = title_date_key(dated_title)
+        if date_key:
+            dated_index.setdefault(normalized_title, {}).setdefault(date_key, []).append(row)
         if is_satsang(row["title"]):
-            date_key = satsang_date_key(row["title"])
-            if date_key:
-                satsang_index.setdefault(date_key, []).append(row)
+            satsang_key = satsang_date_key(row["title"])
+            if satsang_key:
+                satsang_index.setdefault(satsang_key, []).append(row)
 
     products, page = [], 1
     while True:
@@ -99,9 +110,23 @@ def main() -> None:
                 else "No date-specific Satsang master item; retained as official inventory only."
             )
         else:
-            matches = index.get(norm(title), [])
-            mapping_status = "matched_by_normalized_title" if matches else "unreviewed_official_product"
-            review_notes = ""
+            normalized_title = norm(title)
+            matches = index.get(normalized_title, [])
+            product_date = title_date_key(title)
+            candidate_dates = dated_index.get(normalized_title, {})
+            # Preserve dates only when one normalized title has multiple dated
+            # master groups (for example, A Review of the Work in 2006/2007).
+            if product_date and len(candidate_dates) > 1:
+                matches = candidate_dates.get(product_date, [])
+                mapping_status = "matched_by_date" if matches else "unmatched_official_product"
+                review_notes = (
+                    "Date-aware mapping; Month/Year must match exactly."
+                    if matches
+                    else "No date-specific master item; retained as official inventory only."
+                )
+            else:
+                mapping_status = "matched_by_normalized_title" if matches else "unreviewed_official_product"
+                review_notes = ""
         rows.append({
             "veritas_product_id": str(product["id"]),
             "official_title": title,

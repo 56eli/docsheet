@@ -10,8 +10,8 @@
 | Measure | Count |
 |---|---:|
 | Published official Veritas product records retrieved | 191 |
-| Normalized-title matches to the migrated research master | 88 |
-| Date-specific Satsang matches | 13 |
+| Normalized-title matches to the migrated research master | 86 |
+| Date-aware matches (Satsang and repeated dated titles) | 15 |
 | Products matched manually | 49 |
 | Official products with no date-specific/master match | 9 |
 | Products marked as unique or compilations | 28 |
@@ -36,7 +36,7 @@ This approach preserves broad discovery coverage while retaining the approved hu
 ## Review workflow
 
 1. Review the existing `unique_item`, `compilation_or_new_edition`, `excluded_related_material`, and `unmatched_official_product` decisions in `data/veritas_official_products.csv` when new evidence appears.
-2. For Satsang products, use the exact Month/Year mapping; never use a title-only match across dates.
+2. For any title that has multiple dated master groups, use the exact Month/Year mapping; never use a title-only match across dates.
 3. Add a relationship in `data/product_relationships.csv` only when product-page evidence supports a controlled relationship type; title matching alone is not enough.
 4. For a distinct material item, approve type/year/format/title and then assign a UUID and code in a later master build.
 5. For an existing material item, attach the official URL/source relationship without creating a duplicate master record.
@@ -44,4 +44,4 @@ This approach preserves broad discovery coverage while retaining the approved hu
 
 ## Reproducibility
 
-`fetch_veritas_catalogue.py` paginates the official API and writes the inventory. It handles the API’s final-page HTTP 400 response as end-of-pagination and preserves Month/Year when matching Satsang titles, preventing cross-date normalization collisions. The GitHub Actions workflow `Map Veritas Catalogue` refreshes the inventory on demand; it does not auto-import products into the approved master.
+`fetch_veritas_catalogue.py` paginates the official API and writes the inventory. It handles the API’s final-page HTTP 400 response as end-of-pagination and preserves Month/Year when a normalized title spans multiple dated master groups, preventing cross-date normalization collisions. The GitHub Actions workflow `Map Veritas Catalogue` refreshes the inventory on demand; it does not auto-import products into the approved master.

@@ -8,28 +8,22 @@
 | Measure | Count |
 |---|---:|
 | Master records | 308 |
-| Master records with a Veritas source URL | 276 |
-| Distinct primary Veritas product URLs | 133 |
-| Primary product relationships recorded | 276 |
-| Reviewed related-material relationships | 4 |
-| Total reviewed relationships | 280 |
-| Distinct official Veritas products represented | 137 |
+| Master records with a Veritas source URL | 294 |
+| Distinct primary Veritas product URLs | 147 |
+| Primary product relationships recorded | 294 |
+| Reviewed related-material relationships | 7 |
+| Total reviewed relationships | 301 |
+| Distinct official Veritas products represented | 154 |
 
-Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship is therefore recorded for each of the 276 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
+Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship is therefore recorded for each of the 294 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
 
-Four reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview and the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*. See `BOOK_RELATIONSHIP_DECISIONS.md` for the bounded book review. The date-specific Satsang source batch is documented in `SATSANG_MAPPING_DECISIONS.md`.
+Seven reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview; the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*; the *Power vs. Force* book and audiobook; and *A Map of Consciousness*. See `BOOK_RELATIONSHIP_DECISIONS.md`, `SATSANG_MAPPING_DECISIONS.md`, and `FINAL_TITLE_MATCH_DECISIONS.md` for the review batches.
 
-## Deliberately not promoted
+## Candidate review completion
 
-The Veritas inventory currently contains **27** unmodeled master/product pairings across **19** distinct products where the inventory’s existing title-based match does not equal the master record’s primary Veritas URL. These are not automatically relationships: title normalization can conflate editions, interviews, books, compilations, and other related products. Satsang Month/Year matching is now date-aware and no longer contributes a false cross-date candidate set.
+There are now **zero** unmodeled product/master candidate pairs. Every previously title-only pair has an explicit disposition: an exact primary source, a reviewed `related_material` assertion, or a date-corrected mapping. Date-sensitive Satsang and *A Review of the Work* titles no longer generate cross-date pairings.
 
-Examples requiring individual evidence review include:
-
-- book or audiobook products sharing a title with a lecture/video item;
-- compilation and later-edition products;
-- products with a related but not identical title.
-
-They remain visible in `data/veritas_official_products.csv` and the **Veritas Products** tab. Add one to `data/product_relationships.csv` only after recording its relationship type, review status, and product-page evidence.
+Official products that remain outside the master are still retained in `data/veritas_official_products.csv` and the **Veritas Products** tab with their own inventory disposition, such as `unique_item`, `compilation_or_new_edition`, `excluded_related_material`, or `unmatched_official_product`. Any future source refresh must be reviewed before adding a new relationship.
 
 ## Validation
 

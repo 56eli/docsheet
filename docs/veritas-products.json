@@ -1349,11 +1349,11 @@
     "official_product_url": "https://veritaspub.com/product/2007-09-a-review-of-the-work/",
     "published_date": "2007-09-09",
     "official_categories": "",
-    "normalized_title_match_count": "6",
-    "matched_master_uuids": "019fc4e7-d1e6-7a04-87fe-84457a4350f1; 019fc4e7-d1e6-72f4-a7c5-585ca78dabdd; 019fc4e7-d1e6-7182-a963-1a278c002bee; 019fc4e7-d1e6-7f3f-8dbf-fae508d37134; 019fc4e7-d1e6-7efb-a96c-54813440e124; 019fc4e7-d1e6-74aa-bfa1-ce0135952e1b",
-    "matched_master_titles": "A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "3",
+    "matched_master_uuids": "019fc4e7-d1e6-7f3f-8dbf-fae508d37134; 019fc4e7-d1e6-7efb-a96c-54813440e124; 019fc4e7-d1e6-74aa-bfa1-ce0135952e1b",
+    "matched_master_titles": "A Review of the Work | A Review of the Work | A Review of the Work",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-aware mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50737",
@@ -1697,11 +1697,11 @@
     "official_product_url": "https://veritaspub.com/product/2006-09-a-review-of-the-work-sept-2006/",
     "published_date": "2006-09-09",
     "official_categories": "",
-    "normalized_title_match_count": "6",
-    "matched_master_uuids": "019fc4e7-d1e6-7a04-87fe-84457a4350f1; 019fc4e7-d1e6-72f4-a7c5-585ca78dabdd; 019fc4e7-d1e6-7182-a963-1a278c002bee; 019fc4e7-d1e6-7f3f-8dbf-fae508d37134; 019fc4e7-d1e6-7efb-a96c-54813440e124; 019fc4e7-d1e6-74aa-bfa1-ce0135952e1b",
-    "matched_master_titles": "A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work | A Review of the Work",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "normalized_title_match_count": "3",
+    "matched_master_uuids": "019fc4e7-d1e6-7a04-87fe-84457a4350f1; 019fc4e7-d1e6-72f4-a7c5-585ca78dabdd; 019fc4e7-d1e6-7182-a963-1a278c002bee",
+    "matched_master_titles": "A Review of the Work | A Review of the Work | A Review of the Work",
+    "mapping_status": "matched_by_date",
+    "review_notes": "Date-aware mapping; Month/Year matches exactly."
   },
   {
     "veritas_product_id": "50699",
