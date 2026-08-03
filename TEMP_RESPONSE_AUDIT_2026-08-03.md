@@ -510,3 +510,15 @@ overlap with the 13 approved Satsang records, no raw-sheet provenance
 Addendum to the decisions doc + the queue rows' review_notes; proposed
 candidate shape documented (title/type/series/year/format CD/owned blank).
 Awaiting the owner's promotion ruling.
+
+### 11t. Nine Satsang monthlies promoted to the manual-candidate lane (owner)
+
+9 reviewed manual candidates added (`manual-veritas-satsang-1304 … 1699`):
+Satsang Series (MM YYYY), lecture / Satsang Series / CD, owned blank
+(unknown), evidence = the decisions-doc Addendum. Removed from the New Work
+Review queue (5 rows left: Unity CDs ×2, Don't Set Sail, Peace is the
+Natural State, Giving Up Illness). promotion_status = not_promoted —
+promotion rows (master_uuid 344–352) await the owner's approval in
+`data/manual_candidate_promotions.csv`. Everything view 387 → **396**
+(15 pending candidates); candidates 17 → 26; README/handoff updated.
+90 tests, coverage 92%, all checks green.

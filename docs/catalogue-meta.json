@@ -1,5 +1,5 @@
 {
-  "master_items": 387,
+  "master_items": 396,
   "migrated_items": 341,
   "everything_record_types": {
     "master": 341,
@@ -7,9 +7,9 @@
     "candidate_veritas": 28,
     "candidate_hayhouse": 4,
     "candidate_audible": 4,
-    "candidate_pending_promotion": 6
+    "candidate_pending_promotion": 15
   },
-  "reviewed_manual_candidates": 17,
+  "reviewed_manual_candidates": 26,
   "manual_research_leads": 1,
   "master_exclusion_rows": 68,
   "migration_review_rows": 374,

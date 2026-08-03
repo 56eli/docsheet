@@ -118,7 +118,7 @@ folders.
 The current curated master has **341** records (292 `lecture`, 38 `book`,
 10 `discussion`, 1 untyped), **225** catalogue codes, **68** retained exclusions,
 **100** approved source overrides (including Nightingale-Conant), **11** promoted
-and **6** unpromoted official candidates, **318** item-to-product relationships,
+and **15** unpromoted official candidates, **318** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable.
 

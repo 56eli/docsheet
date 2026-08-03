@@ -1,7 +1,7 @@
 [
   {
     "review_sheet": "Master Candidates",
-    "record_count": 17,
+    "record_count": 26,
     "purpose": "Evidence-backed official candidates awaiting an explicit master-promotion decision.",
     "source_file": "data/manual_master_candidates.csv",
     "current_state": "reviewed_candidate / not_promoted"
@@ -43,7 +43,7 @@
   },
   {
     "review_sheet": "New Work Review",
-    "record_count": 14,
+    "record_count": 5,
     "purpose": "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
     "source_file": "data/new_work_review_queue.csv",
     "current_state": "new-work review queue"

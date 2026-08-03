@@ -64,11 +64,11 @@ Sandbox traps learned the hard way (all still true):
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 341 | 292 lecture / 38 book / 10 discussion / 1 untyped (record **264**, deferred); incl. 24 minted edition rows (320–343) |
-| Everything view | **387** | 341 master + 28 candidate_veritas + 6 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Everything view | **396** | 341 master + 28 candidate_veritas + 15 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
 | Exclusions / source overrides | 68 / 100 | |
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
 | Everything relationships | 318 product relationships, 7 series compilations | |
-| Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
+| Candidate pool | 26 reviewed manual candidates (11 promoted, 15 pending incl. 9 Satsang monthlies), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 184 works / 317 members approved | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
 | Test suite | **90 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
