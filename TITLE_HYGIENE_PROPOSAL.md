@@ -9,9 +9,14 @@ still untyped after IT-1.
 
 ## What I need from you
 
-1. Approve the **normalization rule** in §2 (one rule, applied to 56 records).
-2. Decide the **3 deferred records** in §5.
-3. Rule on **one source discrepancy** in §4 that I will not auto-correct.
+1. Approve the **normalization rule** in §2 — you asked to discuss this first, so
+   the specific questions are in §2a.
+2. Confirm the **264/265 split-text fix** in §5 (you chose "handle 264 only").
+3. Confirm the **record 203 correction** in §4 — investigated as you asked, and
+   now conclusively resolved as a source typo.
+
+**Investigation results since v1:** both flagged items turned out to be real,
+provable source defects rather than judgement calls. Details in §4 and §5.
 
 ---
 
@@ -31,6 +36,26 @@ still untyped after IT-1.
 These are the *public* titles on a published catalogue. They also leak the
 redundant string `Office Series-` into 16 titles that already have
 `series = Office Series`.
+
+## 2a. Open questions on the rule (you asked to discuss)
+
+Before I apply anything, the three judgement calls embedded in the rule:
+
+**Q1 — Should `A-01`…`B-06` leave the title?**
+`A-01 Office Series-Stress.mp4` → title `Stress`, `format_detail` `A-01`.
+Cleaner, and mirrors how `DVD01` was handled for lectures. But if you use those
+codes to identify Office Series items at a glance, keeping them in the title is
+defensible. *(16 records)*
+
+**Q2 — Should the `Volume N-` prefix stay in Volume Series titles?**
+I propose keeping it: `Volume I-Power vs Force`. It is part of the work's name,
+not a filename artifact — the publisher titles them `Volume I: Power vs. Force…`
+too. I only strip the numeric `101`/`102` disc prefix. *(13 records)*
+
+**Q3 — Should `format_detail` hold `PART1` or `DVD01`-style values?**
+Existing lecture records use `DVD01`. These records have no confirmed medium, so
+I propose the neutral `PART1`, matching their own raw strings. Switching to
+`DVD01` would assert a medium we have not evidenced. *(27 records)*
 
 ## 2. Proposed rule — follow the existing precedent exactly
 
@@ -88,26 +113,59 @@ filesystem noise.
 **Not populating `format`.** Still no format evidence in the raw sheet. `format_detail`
 here records a *part designator*, which is present in the raw string itself.
 
-## 4. ⚠️ One source discrepancy — needs your ruling
+## 4. ✅ RESOLVED — record 203 is a confirmed source typo
 
-Records **202** and **203** both point at the same official product,
-`Volume I: Power vs. Force Muscle Testing`:
+You asked me to investigate rather than guess. I did, and the publisher's product
+data settles it conclusively.
 
-| ID | Raw title | Prefix says | Title text says |
-|---:|---|---|---|
-| 202 | `101 Volume I-Power vs Force (Part 1).mp4` | Vol **I**, part 01 | Volume **I** ✅ |
-| 203 | `102 Volume II-David Hawkins -Applied Kinesiology-Power vs Force - Part 2.mp4` | Vol **I**, part 02 | Volume **II** ❌ |
+**Evidence from `volume-i-power-vs-force-muscle-testing-video`:**
 
-The `102` prefix and the official product both say **Volume I**; only the title
-text says Volume II. This looks like a source typo — but correcting a factual
-claim is not title hygiene.
+| Field | Value | Significance |
+|---|---|---|
+| Title | Volume I: Power vs. Force Muscle Testing | |
+| SKU | `vs_v1pvf_dvd` | **`v1`** = Volume 1 |
+| Product details | **"Two DVD Set"**, 3h 4m | Exactly two discs — matches our two records |
+| Description | "extensively demonstrates the technique of **kinesiology**" | Matches 203's "Applied Kinesiology" text |
 
-**My recommendation:** normalize 203's formatting only (leaving `Volume II` in the
-text) and record the discrepancy as a note for a separate content decision.
+**Evidence from the Volume Series index:** the real Volume II is
+*"Consciousness and Addiction"* — an entirely different subject, which we already
+hold separately as records **204** and **205**.
+
+### Conclusion
+
+| Record | Raw title | Actually is |
+|---:|---|---|
+| 202 | `101 Volume I-Power vs Force (Part 1)` | Volume I, disc 1 |
+| 203 | `102 Volume II-David Hawkins -Applied Kinesiology-Power vs Force - Part 2` | **Volume I, disc 2** |
+
+Three independent signals agree that 203 is Volume I disc 2: the `102` prefix
+(Vol 1, disc 2), the official two-disc product it links to, and its own
+"Applied Kinesiology-Power vs Force" subject matter. Only the string
+"Volume II" disagrees — and Volume II is demonstrably a different work we hold
+elsewhere.
+
+**"Volume II" in record 203 is a confirmed transcription error for Volume I.**
+
+### Recommendation
+
+Correct the display title to `Volume I-David Hawkins -Applied
+Kinesiology-Power vs Force`, with:
+
+- the verbatim original preserved in `title_source` (nothing is lost),
+- `format_detail` = `PART2`,
+- a `notes` entry recording the correction and its evidence.
+
+This is a **content correction**, distinct from the formatting rule in §2, so it
+is recorded as its own decision even though both land in the same pass.
 
 ## 5. The 3 deferred records
 
 Now the only untyped records in the master.
+
+### 246 and 249 — deferred at your instruction
+
+You chose "handle 264 only", so these two stay exactly as they are for now. The
+analysis below is retained for when you want to revisit them.
 
 ### 246 — `where is B-02? might not exist.` and 249 — `where is B-05? might not exist.`
 
@@ -123,16 +181,40 @@ genuinely absent from the publisher's catalogue.
 - **(b) Keep and retitle** as `Office Series B-02 (existence unverified)` with a note.
 - **(c) Leave as-is.**
 
-### 264 — `26. "In the World But Not of It" –`
+### 264 — ✅ SOLVED: a split-text defect spanning two raw rows
 
-Truncated, trailing dash, no source URL. The official Media Miscellaneous page
-lists **`"In the World But Not of It" – Audio`** (`in-the-world-but-not-of-it-cd`),
-which is very likely this record.
+The truncation is not random. The raw rows read:
 
-**My recommendation:** normalize the title to `"In the World But Not of It"`, and
-propose the official product URL as a **source override** (the existing reviewed
-mechanism) rather than silently attaching it. Then it can be typed `lecture` with
-the rest of Media Miscellaneous.
+```
+row 296:  '26. "In the World But Not of It" – '     ← ends with a dangling dash
+row 297:  'Audio 27. Golden Word Book Signing – Audio'  ← STARTS with "Audio"
+```
+
+That leading `Audio` on row 297 is **the tail of item 26**, not part of item 27.
+The official Media Miscellaneous catalogue contains exactly two matching products,
+which confirms the reconstruction:
+
+| Item | Correct title | Official product | SKU |
+|---|---|---|---|
+| 26 | `"In the World But Not of It" – Audio` | `in-the-world-but-not-of-it-cd` | `am_itwbnoi` |
+| 27 | `Golden Word Book Signing – Audio` | `https-veritaspub-com-…-january-13-2007` | `am_gwbs` |
+
+So a value split across two spreadsheet cells was migrated as two separate
+fragments. Record **264** lost its `Audio` suffix; record **265** gained a spurious
+`Audio ` prefix.
+
+**Recommendation:**
+
+- **264** → title `"In the World But Not of It" – Audio`; propose
+  `in-the-world-but-not-of-it-cd` as a reviewed **source override** (not a silent
+  attachment); then it types as `lecture` with the rest of Media Miscellaneous.
+- **265** → strip the leading `Audio ` fragment → `Golden Word Book Signing – Audio`.
+
+Both raw strings stay verbatim in `title_source`, so the defect remains visible.
+
+> Note: the official page shows this is a **Nightingale-Conant** 6-CD set sold
+> through Veritas. `source_url_nightingale_conant` is currently empty on all 308
+> records — worth revisiting in a later provenance pass.
 
 ## 6. Verified side effects
 
