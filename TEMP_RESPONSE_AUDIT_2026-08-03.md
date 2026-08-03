@@ -304,3 +304,16 @@ So: empty raw links + conservative bootstrap + no approved overrides for
 are the five distinct causes. None of these should be fixed by silent
 title-matching — they are reviewed source-override / ruling decisions
 (`NEXT_AGENT_HANDOFF.md` P1).
+
+### 11f. Edition model direction (owner oversight → proposal)
+
+Owner identified a model oversight: works available in several carriers
+(book/audio/video) are collapsed into one master row (e.g. 289 Truth vs
+Falsehood = book row + audible audiobook URL + related CD&DVD set product
+1728). Direction: **one row per work × carrier**, reflected through the whole
+project. Quantified the gap from committed data (7 books with audible URLs,
+6 related-material same-work editions, 26 Audible + 24 Hay House + 28 Veritas
+non-primary products as edition evidence) and wrote
+`EDITION_MODEL_PROPOSAL.md` (target model: `work_id` + reviewed
+`work_families.csv` + `edition_candidates.csv` promotion path; 5 open design
+decisions D1–D5; 4-phase plan). No data changed; awaiting owner rulings.
