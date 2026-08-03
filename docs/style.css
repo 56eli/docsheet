@@ -606,6 +606,23 @@ body {
 :root.dark .status-badge.status-rejected,
 :root.dark .status-badge.status-false { color: #f3b9b4; background: #5d2929; border-color: #8c4b4b; }
 
+/* Everything-view provenance: curated master records must never be mistaken
+   for official candidates that are only shown for review. */
+.status-badge.status-master { color: #123a6b; background: #e3edfb; border-color: #a9c6ea; }
+.status-badge.status-candidate {
+  color: #6b3a00;
+  background: #fdeedd;
+  border-color: #e8bf90;
+  border-style: dashed;
+}
+:root.dark .status-badge.status-master { color: #b4d0f5; background: #1b3455; border-color: #3c5d8c; }
+:root.dark .status-badge.status-candidate {
+  color: #f0c79a;
+  background: #4d3418;
+  border-color: #86603a;
+  border-style: dashed;
+}
+
 /* Edit-ready cursor hint */
 #spreadsheet .tabulator .tabulator-cell.tabulator-editing {
   box-shadow: inset 0 0 0 2px var(--accent);

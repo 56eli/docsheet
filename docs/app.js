@@ -61,7 +61,7 @@
   const VIEW_DETAILS = {
     master: {
       type: "Catalogue + candidates",
-      description: "The primary working view: curated master records plus selected official candidates that are visible for review but not necessarily promoted master items.",
+      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items.",
     },
     reviewOverview: {
       type: "Review index",
@@ -130,6 +130,7 @@
   };
 
   const COLUMN_LABELS = {
+    record_type: "Record Type",
     uuid: "Master ID",
     master_uuid: "Master ID",
     raw_row_number: "Raw Row",
@@ -162,14 +163,24 @@
     target_field: "Target Field",
   };
   const STATUS_FIELDS = new Set([
-    "review_status", "promotion_status", "mapping_status", "match_status",
+    "record_type", "review_status", "promotion_status", "mapping_status", "match_status",
     "disposition", "approval", "owned", "proposed_owned", "relationship_type",
   ]);
   const REVIEW_FILTER_FIELDS = [
-    "promotion_status", "review_status", "disposition", "approval", "mapping_status",
-    "match_status", "relationship_type",
+    "record_type", "promotion_status", "review_status", "disposition", "approval",
+    "mapping_status", "match_status", "relationship_type",
   ];
+  // Human-readable Everything-view provenance labels. Curated master records and
+  // official candidates share the sheet, so the difference must be explicit.
+  const RECORD_TYPE_LABELS = {
+    master: "Curated master",
+    candidate_discovery: "Candidate · discovery",
+    candidate_veritas: "Candidate · Veritas",
+    candidate_hayhouse: "Candidate · Hay House",
+    candidate_audible: "Candidate · Audible",
+  };
   const DEFAULT_PRIORITY_FIELDS = [
+    "record_type",
     "title", "candidate_title", "official_title", "review_sheet", "publisher",
     "relationship_id", "raw_row_number", "disposition", "review_status",
     "mapping_status", "promotion_status", "match_status", "item_type", "series",
@@ -184,6 +195,7 @@
     "raw_unnamed_10", "raw_unnamed_11",
   ];
   const COLUMN_WIDTHS = {
+    record_type: 170,
     uuid: 90,
     master_uuid: 90,
     matched_master_uuids: 130,
@@ -209,8 +221,8 @@
   };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["uuid", "title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
-      frozen: ["uuid", "title"],
+      priority: ["record_type", "uuid", "title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      frozen: ["record_type", "title"],
     },
     original: {
       priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
@@ -277,7 +289,10 @@
       chips.push(["Search", activeSearchQuery]);
     }
     if (activeReviewFilter) {
-      chips.push([humanizeField(activeReviewFilter.field), activeReviewFilter.value.replace(/_/g, " ")]);
+      chips.push([
+        humanizeField(activeReviewFilter.field),
+        statusLabel(activeReviewFilter.field, activeReviewFilter.value),
+      ]);
     }
 
     activeFilters.hidden = chips.length === 0;
@@ -382,7 +397,8 @@
     if (STATUS_FIELDS.has(field)) {
       const badge = document.createElement("span");
       badge.className = `status-badge ${statusClass(text)}`;
-      badge.textContent = text.replace(/_/g, " ");
+      badge.textContent = statusLabel(field, text);
+      badge.title = text;
       return badge;
     }
     return document.createTextNode(text);
@@ -493,10 +509,20 @@
 
   function statusClass(value) {
     const normalized = String(value ?? "").toLowerCase();
+    // Everything-view provenance: curated master vs. unpromoted candidate.
+    if (normalized === "master") return "status-master";
+    if (normalized.startsWith("candidate_")) return "status-candidate";
     if (/(excluded|rejected)/.test(normalized)) return "status-excluded";
     if (/(pending|needs|unmatched|not.promoted|unique_item|compilation_or_new_edition|^false$)/.test(normalized)) return "status-pending";
     if (/(approved|reviewed|matched|^item$|^true$)/.test(normalized)) return "status-approved";
     return "status-neutral";
+  }
+
+  function statusLabel(field, value) {
+    if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
+      return RECORD_TYPE_LABELS[value];
+    }
+    return value.replace(/_/g, " ");
   }
 
   function statusFormatter(cell) {
@@ -504,7 +530,7 @@
     if (!value) return "";
     const badge = document.createElement("span");
     badge.className = `status-badge ${statusClass(value)}`;
-    badge.textContent = value.replace(/_/g, " ");
+    badge.textContent = statusLabel(cell.getColumn().getField(), value);
     badge.title = value;
     return badge;
   }
@@ -596,7 +622,7 @@
     )].sort((a, b) => a.localeCompare(b));
     const allOption = new Option(`All ${humanizeField(field)} values`, "");
     reviewFilter.add(allOption);
-    values.forEach((value) => reviewFilter.add(new Option(value.replace(/_/g, " "), value)));
+    values.forEach((value) => reviewFilter.add(new Option(statusLabel(field, value), value)));
     reviewToolbar.hidden = false;
     reviewFilterHint.textContent = `${values.length} ${humanizeField(field).toLowerCase()} values`;
     reviewFilter.dataset.field = field;

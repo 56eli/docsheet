@@ -1,6 +1,13 @@
 {
   "master_items": 344,
   "migrated_items": 308,
+  "everything_record_types": {
+    "master": 308,
+    "candidate_discovery": 4,
+    "candidate_veritas": 24,
+    "candidate_hayhouse": 4,
+    "candidate_audible": 4
+  },
   "reviewed_manual_candidates": 17,
   "manual_research_leads": 1,
   "master_exclusion_rows": 66,

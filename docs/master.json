@@ -1,5 +1,6 @@
 [
   {
+    "record_type": "master",
     "uuid": "1",
     "catalog_code": "LECTURE-2002-001",
     "legacy_tempid": "LS200201_1",
@@ -25,6 +26,7 @@
     "raw_row_number": "7"
   },
   {
+    "record_type": "master",
     "uuid": "2",
     "catalog_code": "LECTURE-2002-002",
     "legacy_tempid": "LS200201_2",
@@ -50,6 +52,7 @@
     "raw_row_number": "8"
   },
   {
+    "record_type": "master",
     "uuid": "3",
     "catalog_code": "LECTURE-2002-003",
     "legacy_tempid": "LS200201_3",
@@ -75,6 +78,7 @@
     "raw_row_number": "9"
   },
   {
+    "record_type": "master",
     "uuid": "4",
     "catalog_code": "LECTURE-2002-004",
     "legacy_tempid": "LS200202_1",
@@ -100,6 +104,7 @@
     "raw_row_number": "10"
   },
   {
+    "record_type": "master",
     "uuid": "5",
     "catalog_code": "LECTURE-2002-005",
     "legacy_tempid": "LS200202_2",
@@ -125,6 +130,7 @@
     "raw_row_number": "11"
   },
   {
+    "record_type": "master",
     "uuid": "6",
     "catalog_code": "LECTURE-2002-006",
     "legacy_tempid": "LS200202_3",
@@ -150,6 +156,7 @@
     "raw_row_number": "12"
   },
   {
+    "record_type": "master",
     "uuid": "7",
     "catalog_code": "LECTURE-2002-007",
     "legacy_tempid": "LS200203_1",
@@ -175,6 +182,7 @@
     "raw_row_number": "13"
   },
   {
+    "record_type": "master",
     "uuid": "8",
     "catalog_code": "LECTURE-2002-008",
     "legacy_tempid": "LS200203_2",
@@ -200,6 +208,7 @@
     "raw_row_number": "14"
   },
   {
+    "record_type": "master",
     "uuid": "9",
     "catalog_code": "LECTURE-2002-009",
     "legacy_tempid": "LS200203_3",
@@ -225,6 +234,7 @@
     "raw_row_number": "15"
   },
   {
+    "record_type": "master",
     "uuid": "10",
     "catalog_code": "LECTURE-2002-010",
     "legacy_tempid": "LS200204_1",
@@ -250,6 +260,7 @@
     "raw_row_number": "16"
   },
   {
+    "record_type": "master",
     "uuid": "11",
     "catalog_code": "LECTURE-2002-011",
     "legacy_tempid": "LS200204_2",
@@ -275,6 +286,7 @@
     "raw_row_number": "17"
   },
   {
+    "record_type": "master",
     "uuid": "12",
     "catalog_code": "LECTURE-2002-012",
     "legacy_tempid": "LS200204_3",
@@ -300,6 +312,7 @@
     "raw_row_number": "18"
   },
   {
+    "record_type": "master",
     "uuid": "13",
     "catalog_code": "LECTURE-2002-013",
     "legacy_tempid": "LS200205_1",
@@ -325,6 +338,7 @@
     "raw_row_number": "19"
   },
   {
+    "record_type": "master",
     "uuid": "14",
     "catalog_code": "LECTURE-2002-014",
     "legacy_tempid": "LS200205_2",
@@ -350,6 +364,7 @@
     "raw_row_number": "20"
   },
   {
+    "record_type": "master",
     "uuid": "15",
     "catalog_code": "LECTURE-2002-015",
     "legacy_tempid": "LS200205_3",
@@ -375,6 +390,7 @@
     "raw_row_number": "21"
   },
   {
+    "record_type": "master",
     "uuid": "16",
     "catalog_code": "LECTURE-2002-016",
     "legacy_tempid": "LS200206_1",
@@ -400,6 +416,7 @@
     "raw_row_number": "22"
   },
   {
+    "record_type": "master",
     "uuid": "17",
     "catalog_code": "LECTURE-2002-017",
     "legacy_tempid": "LS200206_2",
@@ -425,6 +442,7 @@
     "raw_row_number": "23"
   },
   {
+    "record_type": "master",
     "uuid": "18",
     "catalog_code": "LECTURE-2002-018",
     "legacy_tempid": "LS200206_3",
@@ -450,6 +468,7 @@
     "raw_row_number": "24"
   },
   {
+    "record_type": "master",
     "uuid": "19",
     "catalog_code": "LECTURE-2002-019",
     "legacy_tempid": "LS200207_1",
@@ -475,6 +494,7 @@
     "raw_row_number": "25"
   },
   {
+    "record_type": "master",
     "uuid": "20",
     "catalog_code": "LECTURE-2002-020",
     "legacy_tempid": "LS200207_2",
@@ -500,6 +520,7 @@
     "raw_row_number": "26"
   },
   {
+    "record_type": "master",
     "uuid": "21",
     "catalog_code": "LECTURE-2002-021",
     "legacy_tempid": "LS200207_3",
@@ -525,6 +546,7 @@
     "raw_row_number": "27"
   },
   {
+    "record_type": "master",
     "uuid": "22",
     "catalog_code": "LECTURE-2002-022",
     "legacy_tempid": "LS200208_1",
@@ -550,6 +572,7 @@
     "raw_row_number": "28"
   },
   {
+    "record_type": "master",
     "uuid": "23",
     "catalog_code": "LECTURE-2002-023",
     "legacy_tempid": "LS200208_2",
@@ -575,6 +598,7 @@
     "raw_row_number": "29"
   },
   {
+    "record_type": "master",
     "uuid": "24",
     "catalog_code": "LECTURE-2002-024",
     "legacy_tempid": "LS200208_3",
@@ -600,6 +624,7 @@
     "raw_row_number": "30"
   },
   {
+    "record_type": "master",
     "uuid": "25",
     "catalog_code": "LECTURE-2002-025",
     "legacy_tempid": "LS200209_1",
@@ -625,6 +650,7 @@
     "raw_row_number": "31"
   },
   {
+    "record_type": "master",
     "uuid": "26",
     "catalog_code": "LECTURE-2002-026",
     "legacy_tempid": "LS200209_2",
@@ -650,6 +676,7 @@
     "raw_row_number": "32"
   },
   {
+    "record_type": "master",
     "uuid": "27",
     "catalog_code": "LECTURE-2002-027",
     "legacy_tempid": "LS200209_3",
@@ -675,6 +702,7 @@
     "raw_row_number": "33"
   },
   {
+    "record_type": "master",
     "uuid": "28",
     "catalog_code": "LECTURE-2002-028",
     "legacy_tempid": "LS200210_1",
@@ -700,6 +728,7 @@
     "raw_row_number": "34"
   },
   {
+    "record_type": "master",
     "uuid": "29",
     "catalog_code": "LECTURE-2002-029",
     "legacy_tempid": "LS200210_2",
@@ -725,6 +754,7 @@
     "raw_row_number": "35"
   },
   {
+    "record_type": "master",
     "uuid": "30",
     "catalog_code": "LECTURE-2002-030",
     "legacy_tempid": "LS200210_3",
@@ -750,6 +780,7 @@
     "raw_row_number": "36"
   },
   {
+    "record_type": "master",
     "uuid": "31",
     "catalog_code": "LECTURE-2002-031",
     "legacy_tempid": "LS200211_1",
@@ -775,6 +806,7 @@
     "raw_row_number": "37"
   },
   {
+    "record_type": "master",
     "uuid": "32",
     "catalog_code": "LECTURE-2002-032",
     "legacy_tempid": "LS200211_2",
@@ -800,6 +832,7 @@
     "raw_row_number": "38"
   },
   {
+    "record_type": "master",
     "uuid": "33",
     "catalog_code": "LECTURE-2002-033",
     "legacy_tempid": "LS200211_3",
@@ -825,6 +858,7 @@
     "raw_row_number": "39"
   },
   {
+    "record_type": "master",
     "uuid": "34",
     "catalog_code": "LECTURE-2002-034",
     "legacy_tempid": "LS200212_1",
@@ -850,6 +884,7 @@
     "raw_row_number": "40"
   },
   {
+    "record_type": "master",
     "uuid": "35",
     "catalog_code": "LECTURE-2002-035",
     "legacy_tempid": "LS200212_2",
@@ -875,6 +910,7 @@
     "raw_row_number": "41"
   },
   {
+    "record_type": "master",
     "uuid": "36",
     "catalog_code": "LECTURE-2002-036",
     "legacy_tempid": "LS200212_3",
@@ -900,6 +936,7 @@
     "raw_row_number": "42"
   },
   {
+    "record_type": "master",
     "uuid": "37",
     "catalog_code": "LECTURE-2003-001",
     "legacy_tempid": "LS200301_1",
@@ -925,6 +962,7 @@
     "raw_row_number": "46"
   },
   {
+    "record_type": "master",
     "uuid": "38",
     "catalog_code": "LECTURE-2003-002",
     "legacy_tempid": "LS200301_2",
@@ -950,6 +988,7 @@
     "raw_row_number": "47"
   },
   {
+    "record_type": "master",
     "uuid": "39",
     "catalog_code": "LECTURE-2003-003",
     "legacy_tempid": "LS200301_3",
@@ -975,6 +1014,7 @@
     "raw_row_number": "48"
   },
   {
+    "record_type": "master",
     "uuid": "40",
     "catalog_code": "LECTURE-2003-004",
     "legacy_tempid": "LS200302_1",
@@ -1000,6 +1040,7 @@
     "raw_row_number": "49"
   },
   {
+    "record_type": "master",
     "uuid": "41",
     "catalog_code": "LECTURE-2003-005",
     "legacy_tempid": "LS200302_2",
@@ -1025,6 +1066,7 @@
     "raw_row_number": "50"
   },
   {
+    "record_type": "master",
     "uuid": "42",
     "catalog_code": "LECTURE-2003-006",
     "legacy_tempid": "LS200302_3",
@@ -1050,6 +1092,7 @@
     "raw_row_number": "51"
   },
   {
+    "record_type": "master",
     "uuid": "43",
     "catalog_code": "LECTURE-2003-007",
     "legacy_tempid": "LS200303_1",
@@ -1075,6 +1118,7 @@
     "raw_row_number": "52"
   },
   {
+    "record_type": "master",
     "uuid": "44",
     "catalog_code": "LECTURE-2003-008",
     "legacy_tempid": "LS200303_2",
@@ -1100,6 +1144,7 @@
     "raw_row_number": "53"
   },
   {
+    "record_type": "master",
     "uuid": "45",
     "catalog_code": "LECTURE-2003-009",
     "legacy_tempid": "LS200303_3",
@@ -1125,6 +1170,7 @@
     "raw_row_number": "54"
   },
   {
+    "record_type": "master",
     "uuid": "46",
     "catalog_code": "LECTURE-2003-010",
     "legacy_tempid": "LS200304_1",
@@ -1150,6 +1196,7 @@
     "raw_row_number": "55"
   },
   {
+    "record_type": "master",
     "uuid": "47",
     "catalog_code": "LECTURE-2003-011",
     "legacy_tempid": "LS200304_2",
@@ -1175,6 +1222,7 @@
     "raw_row_number": "56"
   },
   {
+    "record_type": "master",
     "uuid": "48",
     "catalog_code": "LECTURE-2003-012",
     "legacy_tempid": "LS200304_3",
@@ -1200,6 +1248,7 @@
     "raw_row_number": "57"
   },
   {
+    "record_type": "master",
     "uuid": "49",
     "catalog_code": "LECTURE-2003-013",
     "legacy_tempid": "LS200305_1",
@@ -1225,6 +1274,7 @@
     "raw_row_number": "58"
   },
   {
+    "record_type": "master",
     "uuid": "50",
     "catalog_code": "LECTURE-2003-014",
     "legacy_tempid": "LS200305_2",
@@ -1250,6 +1300,7 @@
     "raw_row_number": "59"
   },
   {
+    "record_type": "master",
     "uuid": "51",
     "catalog_code": "LECTURE-2003-015",
     "legacy_tempid": "LS200305_3",
@@ -1275,6 +1326,7 @@
     "raw_row_number": "60"
   },
   {
+    "record_type": "master",
     "uuid": "52",
     "catalog_code": "LECTURE-2003-016",
     "legacy_tempid": "LS200306_1",
@@ -1300,6 +1352,7 @@
     "raw_row_number": "61"
   },
   {
+    "record_type": "master",
     "uuid": "53",
     "catalog_code": "LECTURE-2003-017",
     "legacy_tempid": "LS200306_2",
@@ -1325,6 +1378,7 @@
     "raw_row_number": "62"
   },
   {
+    "record_type": "master",
     "uuid": "54",
     "catalog_code": "LECTURE-2003-018",
     "legacy_tempid": "LS200306_3",
@@ -1350,6 +1404,7 @@
     "raw_row_number": "63"
   },
   {
+    "record_type": "master",
     "uuid": "55",
     "catalog_code": "LECTURE-2004-001",
     "legacy_tempid": "LS200401_1",
@@ -1375,6 +1430,7 @@
     "raw_row_number": "66"
   },
   {
+    "record_type": "master",
     "uuid": "56",
     "catalog_code": "LECTURE-2004-002",
     "legacy_tempid": "LS200401_2",
@@ -1400,6 +1456,7 @@
     "raw_row_number": "67"
   },
   {
+    "record_type": "master",
     "uuid": "57",
     "catalog_code": "LECTURE-2004-003",
     "legacy_tempid": "LS200401_3",
@@ -1425,6 +1482,7 @@
     "raw_row_number": "68"
   },
   {
+    "record_type": "master",
     "uuid": "58",
     "catalog_code": "LECTURE-2004-004",
     "legacy_tempid": "LS200402_1",
@@ -1450,6 +1508,7 @@
     "raw_row_number": "69"
   },
   {
+    "record_type": "master",
     "uuid": "59",
     "catalog_code": "LECTURE-2004-005",
     "legacy_tempid": "LS200402_2",
@@ -1475,6 +1534,7 @@
     "raw_row_number": "70"
   },
   {
+    "record_type": "master",
     "uuid": "60",
     "catalog_code": "LECTURE-2004-006",
     "legacy_tempid": "LS200402_3",
@@ -1500,6 +1560,7 @@
     "raw_row_number": "71"
   },
   {
+    "record_type": "master",
     "uuid": "61",
     "catalog_code": "LECTURE-2004-007",
     "legacy_tempid": "LS200403_1",
@@ -1525,6 +1586,7 @@
     "raw_row_number": "72"
   },
   {
+    "record_type": "master",
     "uuid": "62",
     "catalog_code": "LECTURE-2004-008",
     "legacy_tempid": "LS200403_2",
@@ -1550,6 +1612,7 @@
     "raw_row_number": "73"
   },
   {
+    "record_type": "master",
     "uuid": "63",
     "catalog_code": "LECTURE-2004-009",
     "legacy_tempid": "LS200403_3",
@@ -1575,6 +1638,7 @@
     "raw_row_number": "74"
   },
   {
+    "record_type": "master",
     "uuid": "64",
     "catalog_code": "LECTURE-2004-010",
     "legacy_tempid": "LS200404_1",
@@ -1600,6 +1664,7 @@
     "raw_row_number": "75"
   },
   {
+    "record_type": "master",
     "uuid": "65",
     "catalog_code": "LECTURE-2004-011",
     "legacy_tempid": "LS200404_2",
@@ -1625,6 +1690,7 @@
     "raw_row_number": "76"
   },
   {
+    "record_type": "master",
     "uuid": "66",
     "catalog_code": "LECTURE-2004-012",
     "legacy_tempid": "LS200404_3",
@@ -1650,6 +1716,7 @@
     "raw_row_number": "77"
   },
   {
+    "record_type": "master",
     "uuid": "67",
     "catalog_code": "LECTURE-2004-013",
     "legacy_tempid": "LS200405_1",
@@ -1675,6 +1742,7 @@
     "raw_row_number": "78"
   },
   {
+    "record_type": "master",
     "uuid": "68",
     "catalog_code": "LECTURE-2004-014",
     "legacy_tempid": "LS200405_2",
@@ -1700,6 +1768,7 @@
     "raw_row_number": "79"
   },
   {
+    "record_type": "master",
     "uuid": "69",
     "catalog_code": "LECTURE-2004-015",
     "legacy_tempid": "LS200405_3",
@@ -1725,6 +1794,7 @@
     "raw_row_number": "80"
   },
   {
+    "record_type": "master",
     "uuid": "70",
     "catalog_code": "LECTURE-2004-016",
     "legacy_tempid": "LS200406_1",
@@ -1750,6 +1820,7 @@
     "raw_row_number": "81"
   },
   {
+    "record_type": "master",
     "uuid": "71",
     "catalog_code": "LECTURE-2004-017",
     "legacy_tempid": "LS200406_2",
@@ -1775,6 +1846,7 @@
     "raw_row_number": "82"
   },
   {
+    "record_type": "master",
     "uuid": "72",
     "catalog_code": "LECTURE-2004-018",
     "legacy_tempid": "LS200406_3",
@@ -1800,6 +1872,7 @@
     "raw_row_number": "83"
   },
   {
+    "record_type": "master",
     "uuid": "73",
     "catalog_code": "LECTURE-2005-001",
     "legacy_tempid": "LS200501_1",
@@ -1825,6 +1898,7 @@
     "raw_row_number": "85"
   },
   {
+    "record_type": "master",
     "uuid": "74",
     "catalog_code": "LECTURE-2005-002",
     "legacy_tempid": "LS200501_2",
@@ -1850,6 +1924,7 @@
     "raw_row_number": "86"
   },
   {
+    "record_type": "master",
     "uuid": "75",
     "catalog_code": "LECTURE-2005-003",
     "legacy_tempid": "LS200501_3",
@@ -1875,6 +1950,7 @@
     "raw_row_number": "87"
   },
   {
+    "record_type": "master",
     "uuid": "76",
     "catalog_code": "LECTURE-2005-004",
     "legacy_tempid": "LS200502_1",
@@ -1900,6 +1976,7 @@
     "raw_row_number": "88"
   },
   {
+    "record_type": "master",
     "uuid": "77",
     "catalog_code": "LECTURE-2005-005",
     "legacy_tempid": "LS200502_2",
@@ -1925,6 +2002,7 @@
     "raw_row_number": "89"
   },
   {
+    "record_type": "master",
     "uuid": "78",
     "catalog_code": "LECTURE-2005-006",
     "legacy_tempid": "LS200502_3",
@@ -1950,6 +2028,7 @@
     "raw_row_number": "90"
   },
   {
+    "record_type": "master",
     "uuid": "79",
     "catalog_code": "LECTURE-2005-007",
     "legacy_tempid": "LS200503_1",
@@ -1975,6 +2054,7 @@
     "raw_row_number": "91"
   },
   {
+    "record_type": "master",
     "uuid": "80",
     "catalog_code": "LECTURE-2005-008",
     "legacy_tempid": "LS200503_2",
@@ -2000,6 +2080,7 @@
     "raw_row_number": "92"
   },
   {
+    "record_type": "master",
     "uuid": "81",
     "catalog_code": "LECTURE-2005-009",
     "legacy_tempid": "LS200503_3",
@@ -2025,6 +2106,7 @@
     "raw_row_number": "93"
   },
   {
+    "record_type": "master",
     "uuid": "82",
     "catalog_code": "LECTURE-2005-010",
     "legacy_tempid": "LS200504_1",
@@ -2050,6 +2132,7 @@
     "raw_row_number": "94"
   },
   {
+    "record_type": "master",
     "uuid": "83",
     "catalog_code": "LECTURE-2005-011",
     "legacy_tempid": "LS200504_2",
@@ -2075,6 +2158,7 @@
     "raw_row_number": "95"
   },
   {
+    "record_type": "master",
     "uuid": "84",
     "catalog_code": "LECTURE-2005-012",
     "legacy_tempid": "LS200504_3",
@@ -2100,6 +2184,7 @@
     "raw_row_number": "96"
   },
   {
+    "record_type": "master",
     "uuid": "85",
     "catalog_code": "LECTURE-2005-013",
     "legacy_tempid": "LS200505_1",
@@ -2125,6 +2210,7 @@
     "raw_row_number": "97"
   },
   {
+    "record_type": "master",
     "uuid": "86",
     "catalog_code": "LECTURE-2005-014",
     "legacy_tempid": "LS200505_2",
@@ -2150,6 +2236,7 @@
     "raw_row_number": "98"
   },
   {
+    "record_type": "master",
     "uuid": "87",
     "catalog_code": "LECTURE-2005-015",
     "legacy_tempid": "LS200505_3",
@@ -2175,6 +2262,7 @@
     "raw_row_number": "99"
   },
   {
+    "record_type": "master",
     "uuid": "88",
     "catalog_code": "LECTURE-2005-016",
     "legacy_tempid": "LS200506_1",
@@ -2200,6 +2288,7 @@
     "raw_row_number": "100"
   },
   {
+    "record_type": "master",
     "uuid": "89",
     "catalog_code": "LECTURE-2005-017",
     "legacy_tempid": "LS200506_2",
@@ -2225,6 +2314,7 @@
     "raw_row_number": "101"
   },
   {
+    "record_type": "master",
     "uuid": "90",
     "catalog_code": "LECTURE-2005-018",
     "legacy_tempid": "LS200506_3",
@@ -2250,6 +2340,7 @@
     "raw_row_number": "102"
   },
   {
+    "record_type": "master",
     "uuid": "91",
     "catalog_code": "LECTURE-2005-019",
     "legacy_tempid": "LS200507_1",
@@ -2275,6 +2366,7 @@
     "raw_row_number": "103"
   },
   {
+    "record_type": "master",
     "uuid": "92",
     "catalog_code": "LECTURE-2005-020",
     "legacy_tempid": "LS200507_2",
@@ -2300,6 +2392,7 @@
     "raw_row_number": "104"
   },
   {
+    "record_type": "master",
     "uuid": "93",
     "catalog_code": "LECTURE-2005-021",
     "legacy_tempid": "LS200507_3",
@@ -2325,6 +2418,7 @@
     "raw_row_number": "105"
   },
   {
+    "record_type": "master",
     "uuid": "94",
     "catalog_code": "LECTURE-2005-022",
     "legacy_tempid": "LS200508_1",
@@ -2350,6 +2444,7 @@
     "raw_row_number": "106"
   },
   {
+    "record_type": "master",
     "uuid": "95",
     "catalog_code": "LECTURE-2005-023",
     "legacy_tempid": "LS200508_2",
@@ -2375,6 +2470,7 @@
     "raw_row_number": "107"
   },
   {
+    "record_type": "master",
     "uuid": "96",
     "catalog_code": "LECTURE-2005-024",
     "legacy_tempid": "LS200508_3",
@@ -2400,6 +2496,7 @@
     "raw_row_number": "108"
   },
   {
+    "record_type": "master",
     "uuid": "97",
     "catalog_code": "LECTURE-2005-025",
     "legacy_tempid": "LS200509_1",
@@ -2425,6 +2522,7 @@
     "raw_row_number": "109"
   },
   {
+    "record_type": "master",
     "uuid": "98",
     "catalog_code": "LECTURE-2005-026",
     "legacy_tempid": "LS200509_2",
@@ -2450,6 +2548,7 @@
     "raw_row_number": "110"
   },
   {
+    "record_type": "master",
     "uuid": "99",
     "catalog_code": "LECTURE-2005-027",
     "legacy_tempid": "LS200509_3",
@@ -2475,6 +2574,7 @@
     "raw_row_number": "111"
   },
   {
+    "record_type": "master",
     "uuid": "100",
     "catalog_code": "LECTURE-2005-028",
     "legacy_tempid": "LS200510_1",
@@ -2500,6 +2600,7 @@
     "raw_row_number": "112"
   },
   {
+    "record_type": "master",
     "uuid": "101",
     "catalog_code": "LECTURE-2005-029",
     "legacy_tempid": "LS200510_2",
@@ -2525,6 +2626,7 @@
     "raw_row_number": "113"
   },
   {
+    "record_type": "master",
     "uuid": "102",
     "catalog_code": "LECTURE-2005-030",
     "legacy_tempid": "LS200510_3",
@@ -2550,6 +2652,7 @@
     "raw_row_number": "114"
   },
   {
+    "record_type": "master",
     "uuid": "103",
     "catalog_code": "LECTURE-2006-001",
     "legacy_tempid": "LS200601_1",
@@ -2575,6 +2678,7 @@
     "raw_row_number": "116"
   },
   {
+    "record_type": "master",
     "uuid": "104",
     "catalog_code": "LECTURE-2006-002",
     "legacy_tempid": "LS200601_2",
@@ -2600,6 +2704,7 @@
     "raw_row_number": "117"
   },
   {
+    "record_type": "master",
     "uuid": "105",
     "catalog_code": "LECTURE-2006-003",
     "legacy_tempid": "LS200601_3",
@@ -2625,6 +2730,7 @@
     "raw_row_number": "118"
   },
   {
+    "record_type": "master",
     "uuid": "106",
     "catalog_code": "LECTURE-2006-004",
     "legacy_tempid": "LS200602_1",
@@ -2650,6 +2756,7 @@
     "raw_row_number": "119"
   },
   {
+    "record_type": "master",
     "uuid": "107",
     "catalog_code": "LECTURE-2006-005",
     "legacy_tempid": "LS200602_2",
@@ -2675,6 +2782,7 @@
     "raw_row_number": "120"
   },
   {
+    "record_type": "master",
     "uuid": "108",
     "catalog_code": "LECTURE-2006-006",
     "legacy_tempid": "LS200602_3",
@@ -2700,6 +2808,7 @@
     "raw_row_number": "121"
   },
   {
+    "record_type": "master",
     "uuid": "109",
     "catalog_code": "LECTURE-2006-007",
     "legacy_tempid": "LS200603_1",
@@ -2725,6 +2834,7 @@
     "raw_row_number": "122"
   },
   {
+    "record_type": "master",
     "uuid": "110",
     "catalog_code": "LECTURE-2006-008",
     "legacy_tempid": "LS200603_2",
@@ -2750,6 +2860,7 @@
     "raw_row_number": "123"
   },
   {
+    "record_type": "master",
     "uuid": "111",
     "catalog_code": "LECTURE-2006-009",
     "legacy_tempid": "LS200603_3",
@@ -2775,6 +2886,7 @@
     "raw_row_number": "124"
   },
   {
+    "record_type": "master",
     "uuid": "112",
     "catalog_code": "LECTURE-2006-010",
     "legacy_tempid": "LS200604_1",
@@ -2800,6 +2912,7 @@
     "raw_row_number": "125"
   },
   {
+    "record_type": "master",
     "uuid": "113",
     "catalog_code": "LECTURE-2006-011",
     "legacy_tempid": "LS200604_2",
@@ -2825,6 +2938,7 @@
     "raw_row_number": "126"
   },
   {
+    "record_type": "master",
     "uuid": "114",
     "catalog_code": "LECTURE-2006-012",
     "legacy_tempid": "LS200604_3",
@@ -2850,6 +2964,7 @@
     "raw_row_number": "127"
   },
   {
+    "record_type": "master",
     "uuid": "115",
     "catalog_code": "LECTURE-2006-013",
     "legacy_tempid": "LS200605_1",
@@ -2875,6 +2990,7 @@
     "raw_row_number": "128"
   },
   {
+    "record_type": "master",
     "uuid": "116",
     "catalog_code": "LECTURE-2006-014",
     "legacy_tempid": "LS200605_2",
@@ -2900,6 +3016,7 @@
     "raw_row_number": "129"
   },
   {
+    "record_type": "master",
     "uuid": "117",
     "catalog_code": "LECTURE-2006-015",
     "legacy_tempid": "LS200605_3",
@@ -2925,6 +3042,7 @@
     "raw_row_number": "130"
   },
   {
+    "record_type": "master",
     "uuid": "118",
     "catalog_code": "LECTURE-2006-016",
     "legacy_tempid": "LS200606_1",
@@ -2950,6 +3068,7 @@
     "raw_row_number": "131"
   },
   {
+    "record_type": "master",
     "uuid": "119",
     "catalog_code": "LECTURE-2006-017",
     "legacy_tempid": "LS200606_2",
@@ -2975,6 +3094,7 @@
     "raw_row_number": "132"
   },
   {
+    "record_type": "master",
     "uuid": "120",
     "catalog_code": "LECTURE-2006-018",
     "legacy_tempid": "LS200606_3",
@@ -3000,6 +3120,7 @@
     "raw_row_number": "133"
   },
   {
+    "record_type": "master",
     "uuid": "121",
     "catalog_code": "LECTURE-2006-019",
     "legacy_tempid": "LS200607_1",
@@ -3025,6 +3146,7 @@
     "raw_row_number": "134"
   },
   {
+    "record_type": "master",
     "uuid": "122",
     "catalog_code": "LECTURE-2006-020",
     "legacy_tempid": "LS200607_2",
@@ -3050,6 +3172,7 @@
     "raw_row_number": "135"
   },
   {
+    "record_type": "master",
     "uuid": "123",
     "catalog_code": "LECTURE-2006-021",
     "legacy_tempid": "LS200607_3",
@@ -3075,6 +3198,7 @@
     "raw_row_number": "136"
   },
   {
+    "record_type": "master",
     "uuid": "124",
     "catalog_code": "LECTURE-2006-022",
     "legacy_tempid": "LS200608_1",
@@ -3100,6 +3224,7 @@
     "raw_row_number": "137"
   },
   {
+    "record_type": "master",
     "uuid": "125",
     "catalog_code": "LECTURE-2006-023",
     "legacy_tempid": "LS200608_2",
@@ -3125,6 +3250,7 @@
     "raw_row_number": "138"
   },
   {
+    "record_type": "master",
     "uuid": "126",
     "catalog_code": "LECTURE-2006-024",
     "legacy_tempid": "LS200608_3",
@@ -3150,6 +3276,7 @@
     "raw_row_number": "139"
   },
   {
+    "record_type": "master",
     "uuid": "127",
     "catalog_code": "LECTURE-2007-001",
     "legacy_tempid": "LS200701_1",
@@ -3175,6 +3302,7 @@
     "raw_row_number": "141"
   },
   {
+    "record_type": "master",
     "uuid": "128",
     "catalog_code": "LECTURE-2007-002",
     "legacy_tempid": "LS200701_2",
@@ -3200,6 +3328,7 @@
     "raw_row_number": "142"
   },
   {
+    "record_type": "master",
     "uuid": "129",
     "catalog_code": "LECTURE-2007-003",
     "legacy_tempid": "LS200701_3",
@@ -3225,6 +3354,7 @@
     "raw_row_number": "143"
   },
   {
+    "record_type": "master",
     "uuid": "130",
     "catalog_code": "LECTURE-2007-004",
     "legacy_tempid": "LS200702_1",
@@ -3250,6 +3380,7 @@
     "raw_row_number": "144"
   },
   {
+    "record_type": "master",
     "uuid": "131",
     "catalog_code": "LECTURE-2007-005",
     "legacy_tempid": "LS200702_2",
@@ -3275,6 +3406,7 @@
     "raw_row_number": "145"
   },
   {
+    "record_type": "master",
     "uuid": "132",
     "catalog_code": "LECTURE-2007-006",
     "legacy_tempid": "LS200702_3",
@@ -3300,6 +3432,7 @@
     "raw_row_number": "146"
   },
   {
+    "record_type": "master",
     "uuid": "133",
     "catalog_code": "LECTURE-2007-007",
     "legacy_tempid": "LS200703_1",
@@ -3325,6 +3458,7 @@
     "raw_row_number": "147"
   },
   {
+    "record_type": "master",
     "uuid": "134",
     "catalog_code": "LECTURE-2007-008",
     "legacy_tempid": "LS200703_2",
@@ -3350,6 +3484,7 @@
     "raw_row_number": "148"
   },
   {
+    "record_type": "master",
     "uuid": "135",
     "catalog_code": "LECTURE-2007-009",
     "legacy_tempid": "LS200703_3",
@@ -3375,6 +3510,7 @@
     "raw_row_number": "149"
   },
   {
+    "record_type": "master",
     "uuid": "136",
     "catalog_code": "LECTURE-2007-010",
     "legacy_tempid": "LS200704_1",
@@ -3400,6 +3536,7 @@
     "raw_row_number": "150"
   },
   {
+    "record_type": "master",
     "uuid": "137",
     "catalog_code": "LECTURE-2007-011",
     "legacy_tempid": "LS200704_2",
@@ -3425,6 +3562,7 @@
     "raw_row_number": "151"
   },
   {
+    "record_type": "master",
     "uuid": "138",
     "catalog_code": "LECTURE-2007-012",
     "legacy_tempid": "LS200704_3",
@@ -3450,6 +3588,7 @@
     "raw_row_number": "152"
   },
   {
+    "record_type": "master",
     "uuid": "139",
     "catalog_code": "LECTURE-2007-013",
     "legacy_tempid": "LS200705_1",
@@ -3475,6 +3614,7 @@
     "raw_row_number": "153"
   },
   {
+    "record_type": "master",
     "uuid": "140",
     "catalog_code": "LECTURE-2007-014",
     "legacy_tempid": "LS200705_2",
@@ -3500,6 +3640,7 @@
     "raw_row_number": "154"
   },
   {
+    "record_type": "master",
     "uuid": "141",
     "catalog_code": "LECTURE-2007-015",
     "legacy_tempid": "LS200705_3",
@@ -3525,6 +3666,7 @@
     "raw_row_number": "155"
   },
   {
+    "record_type": "master",
     "uuid": "142",
     "catalog_code": "LECTURE-2007-016",
     "legacy_tempid": "LS200706_1",
@@ -3550,6 +3692,7 @@
     "raw_row_number": "156"
   },
   {
+    "record_type": "master",
     "uuid": "143",
     "catalog_code": "LECTURE-2007-017",
     "legacy_tempid": "LS200706_2",
@@ -3575,6 +3718,7 @@
     "raw_row_number": "157"
   },
   {
+    "record_type": "master",
     "uuid": "144",
     "catalog_code": "LECTURE-2007-018",
     "legacy_tempid": "LS200706_3",
@@ -3600,6 +3744,7 @@
     "raw_row_number": "158"
   },
   {
+    "record_type": "master",
     "uuid": "145",
     "catalog_code": "LECTURE-2007-019",
     "legacy_tempid": "LS200707_1",
@@ -3625,6 +3770,7 @@
     "raw_row_number": "159"
   },
   {
+    "record_type": "master",
     "uuid": "146",
     "catalog_code": "LECTURE-2007-020",
     "legacy_tempid": "LS200707_2",
@@ -3650,6 +3796,7 @@
     "raw_row_number": "160"
   },
   {
+    "record_type": "master",
     "uuid": "147",
     "catalog_code": "LECTURE-2007-021",
     "legacy_tempid": "LS200707_3",
@@ -3675,6 +3822,7 @@
     "raw_row_number": "161"
   },
   {
+    "record_type": "master",
     "uuid": "148",
     "catalog_code": "LECTURE-2007-022",
     "legacy_tempid": "LS200708_1",
@@ -3700,6 +3848,7 @@
     "raw_row_number": "162"
   },
   {
+    "record_type": "master",
     "uuid": "149",
     "catalog_code": "LECTURE-2007-023",
     "legacy_tempid": "LS200708_2",
@@ -3725,6 +3874,7 @@
     "raw_row_number": "163"
   },
   {
+    "record_type": "master",
     "uuid": "150",
     "catalog_code": "LECTURE-2007-024",
     "legacy_tempid": "LS200708_3",
@@ -3750,6 +3900,7 @@
     "raw_row_number": "164"
   },
   {
+    "record_type": "master",
     "uuid": "151",
     "catalog_code": "LECTURE-2007-025",
     "legacy_tempid": "LS200709_1",
@@ -3775,6 +3926,7 @@
     "raw_row_number": "165"
   },
   {
+    "record_type": "master",
     "uuid": "152",
     "catalog_code": "LECTURE-2007-026",
     "legacy_tempid": "LS200709_2",
@@ -3800,6 +3952,7 @@
     "raw_row_number": "166"
   },
   {
+    "record_type": "master",
     "uuid": "153",
     "catalog_code": "LECTURE-2007-027",
     "legacy_tempid": "LS200709_3",
@@ -3825,6 +3978,7 @@
     "raw_row_number": "167"
   },
   {
+    "record_type": "master",
     "uuid": "154",
     "catalog_code": "LECTURE-2008-001",
     "legacy_tempid": "LS200801_1",
@@ -3850,6 +4004,7 @@
     "raw_row_number": "169"
   },
   {
+    "record_type": "master",
     "uuid": "155",
     "catalog_code": "LECTURE-2008-002",
     "legacy_tempid": "LS200801_2",
@@ -3875,6 +4030,7 @@
     "raw_row_number": "170"
   },
   {
+    "record_type": "master",
     "uuid": "156",
     "catalog_code": "LECTURE-2008-003",
     "legacy_tempid": "LS200801_3",
@@ -3900,6 +4056,7 @@
     "raw_row_number": "171"
   },
   {
+    "record_type": "master",
     "uuid": "157",
     "catalog_code": "LECTURE-2008-004",
     "legacy_tempid": "LS200802_1",
@@ -3925,6 +4082,7 @@
     "raw_row_number": "172"
   },
   {
+    "record_type": "master",
     "uuid": "158",
     "catalog_code": "LECTURE-2008-005",
     "legacy_tempid": "LS200802_2",
@@ -3950,6 +4108,7 @@
     "raw_row_number": "173"
   },
   {
+    "record_type": "master",
     "uuid": "159",
     "catalog_code": "LECTURE-2008-006",
     "legacy_tempid": "LS200802_3",
@@ -3975,6 +4134,7 @@
     "raw_row_number": "174"
   },
   {
+    "record_type": "master",
     "uuid": "160",
     "catalog_code": "LECTURE-2008-007",
     "legacy_tempid": "LS200803_1",
@@ -4000,6 +4160,7 @@
     "raw_row_number": "175"
   },
   {
+    "record_type": "master",
     "uuid": "161",
     "catalog_code": "LECTURE-2008-008",
     "legacy_tempid": "LS200803_2",
@@ -4025,6 +4186,7 @@
     "raw_row_number": "176"
   },
   {
+    "record_type": "master",
     "uuid": "162",
     "catalog_code": "LECTURE-2008-009",
     "legacy_tempid": "LS200803_3",
@@ -4050,6 +4212,7 @@
     "raw_row_number": "177"
   },
   {
+    "record_type": "master",
     "uuid": "163",
     "catalog_code": "LECTURE-2008-010",
     "legacy_tempid": "LS200804_1",
@@ -4075,6 +4238,7 @@
     "raw_row_number": "178"
   },
   {
+    "record_type": "master",
     "uuid": "164",
     "catalog_code": "LECTURE-2008-011",
     "legacy_tempid": "LS200804_2",
@@ -4100,6 +4264,7 @@
     "raw_row_number": "179"
   },
   {
+    "record_type": "master",
     "uuid": "165",
     "catalog_code": "LECTURE-2008-012",
     "legacy_tempid": "LS200804_3",
@@ -4125,6 +4290,7 @@
     "raw_row_number": "180"
   },
   {
+    "record_type": "master",
     "uuid": "166",
     "catalog_code": "LECTURE-2008-013",
     "legacy_tempid": "LS200805_1",
@@ -4150,6 +4316,7 @@
     "raw_row_number": "181"
   },
   {
+    "record_type": "master",
     "uuid": "167",
     "catalog_code": "LECTURE-2008-014",
     "legacy_tempid": "LS200805_2",
@@ -4175,6 +4342,7 @@
     "raw_row_number": "182"
   },
   {
+    "record_type": "master",
     "uuid": "168",
     "catalog_code": "LECTURE-2008-015",
     "legacy_tempid": "LS200805_3",
@@ -4200,6 +4368,7 @@
     "raw_row_number": "183"
   },
   {
+    "record_type": "master",
     "uuid": "169",
     "catalog_code": "LECTURE-2008-016",
     "legacy_tempid": "LS200806_1",
@@ -4225,6 +4394,7 @@
     "raw_row_number": "184"
   },
   {
+    "record_type": "master",
     "uuid": "170",
     "catalog_code": "LECTURE-2008-017",
     "legacy_tempid": "LS200806_2",
@@ -4250,6 +4420,7 @@
     "raw_row_number": "185"
   },
   {
+    "record_type": "master",
     "uuid": "171",
     "catalog_code": "LECTURE-2008-018",
     "legacy_tempid": "LS200806_3",
@@ -4275,6 +4446,7 @@
     "raw_row_number": "186"
   },
   {
+    "record_type": "master",
     "uuid": "172",
     "catalog_code": "LECTURE-2008-019",
     "legacy_tempid": "LS200807_1",
@@ -4300,6 +4472,7 @@
     "raw_row_number": "187"
   },
   {
+    "record_type": "master",
     "uuid": "173",
     "catalog_code": "LECTURE-2008-020",
     "legacy_tempid": "LS200807_2",
@@ -4325,6 +4498,7 @@
     "raw_row_number": "188"
   },
   {
+    "record_type": "master",
     "uuid": "174",
     "catalog_code": "LECTURE-2008-021",
     "legacy_tempid": "LS200807_3",
@@ -4350,6 +4524,7 @@
     "raw_row_number": "189"
   },
   {
+    "record_type": "master",
     "uuid": "175",
     "catalog_code": "LECTURE-2009-001",
     "legacy_tempid": "LS200901_1",
@@ -4375,6 +4550,7 @@
     "raw_row_number": "191"
   },
   {
+    "record_type": "master",
     "uuid": "176",
     "catalog_code": "LECTURE-2009-002",
     "legacy_tempid": "LS200901_2",
@@ -4400,6 +4576,7 @@
     "raw_row_number": "192"
   },
   {
+    "record_type": "master",
     "uuid": "177",
     "catalog_code": "LECTURE-2009-003",
     "legacy_tempid": "LS200901_3",
@@ -4425,6 +4602,7 @@
     "raw_row_number": "193"
   },
   {
+    "record_type": "master",
     "uuid": "178",
     "catalog_code": "LECTURE-2009-004",
     "legacy_tempid": "LS200902_1",
@@ -4450,6 +4628,7 @@
     "raw_row_number": "194"
   },
   {
+    "record_type": "master",
     "uuid": "179",
     "catalog_code": "LECTURE-2009-005",
     "legacy_tempid": "LS200902_2",
@@ -4475,6 +4654,7 @@
     "raw_row_number": "195"
   },
   {
+    "record_type": "master",
     "uuid": "180",
     "catalog_code": "LECTURE-2009-006",
     "legacy_tempid": "LS200902_3",
@@ -4500,6 +4680,7 @@
     "raw_row_number": "196"
   },
   {
+    "record_type": "master",
     "uuid": "181",
     "catalog_code": "LECTURE-2009-007",
     "legacy_tempid": "LS200903_1",
@@ -4525,6 +4706,7 @@
     "raw_row_number": "197"
   },
   {
+    "record_type": "master",
     "uuid": "182",
     "catalog_code": "LECTURE-2009-008",
     "legacy_tempid": "LS200903_2",
@@ -4550,6 +4732,7 @@
     "raw_row_number": "198"
   },
   {
+    "record_type": "master",
     "uuid": "183",
     "catalog_code": "LECTURE-2009-009",
     "legacy_tempid": "LS200903_3",
@@ -4575,6 +4758,7 @@
     "raw_row_number": "199"
   },
   {
+    "record_type": "master",
     "uuid": "184",
     "catalog_code": "LECTURE-2009-010",
     "legacy_tempid": "LS200904_1",
@@ -4600,6 +4784,7 @@
     "raw_row_number": "200"
   },
   {
+    "record_type": "master",
     "uuid": "185",
     "catalog_code": "LECTURE-2009-011",
     "legacy_tempid": "LS200904_2",
@@ -4625,6 +4810,7 @@
     "raw_row_number": "201"
   },
   {
+    "record_type": "master",
     "uuid": "186",
     "catalog_code": "LECTURE-2009-012",
     "legacy_tempid": "LS200904_3",
@@ -4650,6 +4836,7 @@
     "raw_row_number": "202"
   },
   {
+    "record_type": "master",
     "uuid": "187",
     "catalog_code": "LECTURE-2010-001",
     "legacy_tempid": "LS201001_1",
@@ -4675,6 +4862,7 @@
     "raw_row_number": "204"
   },
   {
+    "record_type": "master",
     "uuid": "188",
     "catalog_code": "LECTURE-2010-002",
     "legacy_tempid": "LS201001_2",
@@ -4700,6 +4888,7 @@
     "raw_row_number": "205"
   },
   {
+    "record_type": "master",
     "uuid": "189",
     "catalog_code": "LECTURE-2010-003",
     "legacy_tempid": "LS201001_3",
@@ -4725,6 +4914,7 @@
     "raw_row_number": "206"
   },
   {
+    "record_type": "master",
     "uuid": "190",
     "catalog_code": "LECTURE-2010-004",
     "legacy_tempid": "LS201002_1",
@@ -4750,6 +4940,7 @@
     "raw_row_number": "207"
   },
   {
+    "record_type": "master",
     "uuid": "191",
     "catalog_code": "LECTURE-2010-005",
     "legacy_tempid": "LS201002_2",
@@ -4775,6 +4966,7 @@
     "raw_row_number": "208"
   },
   {
+    "record_type": "master",
     "uuid": "192",
     "catalog_code": "LECTURE-2010-006",
     "legacy_tempid": "LS201002_3",
@@ -4800,6 +4992,7 @@
     "raw_row_number": "209"
   },
   {
+    "record_type": "master",
     "uuid": "193",
     "catalog_code": "LECTURE-2011-001",
     "legacy_tempid": "LS201101_1",
@@ -4825,6 +5018,7 @@
     "raw_row_number": "211"
   },
   {
+    "record_type": "master",
     "uuid": "194",
     "catalog_code": "LECTURE-2011-002",
     "legacy_tempid": "LS201101_2",
@@ -4850,6 +5044,7 @@
     "raw_row_number": "212"
   },
   {
+    "record_type": "master",
     "uuid": "195",
     "catalog_code": "LECTURE-2011-003",
     "legacy_tempid": "LS201101_3",
@@ -4875,6 +5070,7 @@
     "raw_row_number": "213"
   },
   {
+    "record_type": "master",
     "uuid": "196",
     "catalog_code": "LECTURE-2011-004",
     "legacy_tempid": "LS201102_1",
@@ -4900,6 +5096,7 @@
     "raw_row_number": "214"
   },
   {
+    "record_type": "master",
     "uuid": "197",
     "catalog_code": "LECTURE-2011-005",
     "legacy_tempid": "LS201102_2",
@@ -4925,6 +5122,7 @@
     "raw_row_number": "215"
   },
   {
+    "record_type": "master",
     "uuid": "198",
     "catalog_code": "LECTURE-2011-006",
     "legacy_tempid": "LS201102_3",
@@ -4950,6 +5148,7 @@
     "raw_row_number": "216"
   },
   {
+    "record_type": "master",
     "uuid": "199",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q01",
@@ -4975,6 +5174,7 @@
     "raw_row_number": "218"
   },
   {
+    "record_type": "master",
     "uuid": "200",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q02",
@@ -5000,6 +5200,7 @@
     "raw_row_number": "219"
   },
   {
+    "record_type": "master",
     "uuid": "201",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q03",
@@ -5025,6 +5226,7 @@
     "raw_row_number": "220"
   },
   {
+    "record_type": "master",
     "uuid": "202",
     "catalog_code": "",
     "legacy_tempid": "VOL101",
@@ -5050,6 +5252,7 @@
     "raw_row_number": "223"
   },
   {
+    "record_type": "master",
     "uuid": "203",
     "catalog_code": "",
     "legacy_tempid": "VOL102",
@@ -5075,6 +5278,7 @@
     "raw_row_number": "224"
   },
   {
+    "record_type": "master",
     "uuid": "204",
     "catalog_code": "",
     "legacy_tempid": "VOL201",
@@ -5100,6 +5304,7 @@
     "raw_row_number": "225"
   },
   {
+    "record_type": "master",
     "uuid": "205",
     "catalog_code": "",
     "legacy_tempid": "VOL202",
@@ -5125,6 +5330,7 @@
     "raw_row_number": "226"
   },
   {
+    "record_type": "master",
     "uuid": "206",
     "catalog_code": "",
     "legacy_tempid": "VOL301",
@@ -5150,6 +5356,7 @@
     "raw_row_number": "227"
   },
   {
+    "record_type": "master",
     "uuid": "207",
     "catalog_code": "",
     "legacy_tempid": "VOL302",
@@ -5175,6 +5382,7 @@
     "raw_row_number": "228"
   },
   {
+    "record_type": "master",
     "uuid": "208",
     "catalog_code": "",
     "legacy_tempid": "VOL401",
@@ -5200,6 +5408,7 @@
     "raw_row_number": "229"
   },
   {
+    "record_type": "master",
     "uuid": "209",
     "catalog_code": "",
     "legacy_tempid": "VOL402",
@@ -5225,6 +5434,7 @@
     "raw_row_number": "230"
   },
   {
+    "record_type": "master",
     "uuid": "210",
     "catalog_code": "",
     "legacy_tempid": "VOL501",
@@ -5250,6 +5460,7 @@
     "raw_row_number": "231"
   },
   {
+    "record_type": "master",
     "uuid": "211",
     "catalog_code": "",
     "legacy_tempid": "VOL502",
@@ -5275,6 +5486,7 @@
     "raw_row_number": "232"
   },
   {
+    "record_type": "master",
     "uuid": "212",
     "catalog_code": "",
     "legacy_tempid": "VOL503",
@@ -5300,6 +5512,7 @@
     "raw_row_number": "233"
   },
   {
+    "record_type": "master",
     "uuid": "213",
     "catalog_code": "",
     "legacy_tempid": "VOL601",
@@ -5325,6 +5538,7 @@
     "raw_row_number": "234"
   },
   {
+    "record_type": "master",
     "uuid": "214",
     "catalog_code": "",
     "legacy_tempid": "VOL701",
@@ -5350,6 +5564,7 @@
     "raw_row_number": "235"
   },
   {
+    "record_type": "master",
     "uuid": "215",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5375,6 +5590,7 @@
     "raw_row_number": "239"
   },
   {
+    "record_type": "master",
     "uuid": "216",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5400,6 +5616,7 @@
     "raw_row_number": "240"
   },
   {
+    "record_type": "master",
     "uuid": "217",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5425,6 +5642,7 @@
     "raw_row_number": "241"
   },
   {
+    "record_type": "master",
     "uuid": "218",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5450,6 +5668,7 @@
     "raw_row_number": "242"
   },
   {
+    "record_type": "master",
     "uuid": "219",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5475,6 +5694,7 @@
     "raw_row_number": "243"
   },
   {
+    "record_type": "master",
     "uuid": "220",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5500,6 +5720,7 @@
     "raw_row_number": "244"
   },
   {
+    "record_type": "master",
     "uuid": "221",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5525,6 +5746,7 @@
     "raw_row_number": "245"
   },
   {
+    "record_type": "master",
     "uuid": "222",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5550,6 +5772,7 @@
     "raw_row_number": "246"
   },
   {
+    "record_type": "master",
     "uuid": "223",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5575,6 +5798,7 @@
     "raw_row_number": "247"
   },
   {
+    "record_type": "master",
     "uuid": "224",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5600,6 +5824,7 @@
     "raw_row_number": "248"
   },
   {
+    "record_type": "master",
     "uuid": "225",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5625,6 +5850,7 @@
     "raw_row_number": "249"
   },
   {
+    "record_type": "master",
     "uuid": "226",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5650,6 +5876,7 @@
     "raw_row_number": "250"
   },
   {
+    "record_type": "master",
     "uuid": "227",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5675,6 +5902,7 @@
     "raw_row_number": "251"
   },
   {
+    "record_type": "master",
     "uuid": "228",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5700,6 +5928,7 @@
     "raw_row_number": "252"
   },
   {
+    "record_type": "master",
     "uuid": "229",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5725,6 +5954,7 @@
     "raw_row_number": "253"
   },
   {
+    "record_type": "master",
     "uuid": "230",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5750,6 +5980,7 @@
     "raw_row_number": "254"
   },
   {
+    "record_type": "master",
     "uuid": "231",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5775,6 +6006,7 @@
     "raw_row_number": "255"
   },
   {
+    "record_type": "master",
     "uuid": "232",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -5800,6 +6032,7 @@
     "raw_row_number": "256"
   },
   {
+    "record_type": "master",
     "uuid": "233",
     "catalog_code": "",
     "legacy_tempid": "OFF01",
@@ -5825,6 +6058,7 @@
     "raw_row_number": "260"
   },
   {
+    "record_type": "master",
     "uuid": "234",
     "catalog_code": "",
     "legacy_tempid": "OFF02",
@@ -5850,6 +6084,7 @@
     "raw_row_number": "261"
   },
   {
+    "record_type": "master",
     "uuid": "235",
     "catalog_code": "",
     "legacy_tempid": "OFF03",
@@ -5875,6 +6110,7 @@
     "raw_row_number": "262"
   },
   {
+    "record_type": "master",
     "uuid": "236",
     "catalog_code": "",
     "legacy_tempid": "OFF04",
@@ -5900,6 +6136,7 @@
     "raw_row_number": "263"
   },
   {
+    "record_type": "master",
     "uuid": "237",
     "catalog_code": "",
     "legacy_tempid": "OFF05",
@@ -5925,6 +6162,7 @@
     "raw_row_number": "264"
   },
   {
+    "record_type": "master",
     "uuid": "238",
     "catalog_code": "",
     "legacy_tempid": "OFF06",
@@ -5950,6 +6188,7 @@
     "raw_row_number": "265"
   },
   {
+    "record_type": "master",
     "uuid": "239",
     "catalog_code": "",
     "legacy_tempid": "OFF07",
@@ -5975,6 +6214,7 @@
     "raw_row_number": "266"
   },
   {
+    "record_type": "master",
     "uuid": "240",
     "catalog_code": "",
     "legacy_tempid": "OFF08",
@@ -6000,6 +6240,7 @@
     "raw_row_number": "267"
   },
   {
+    "record_type": "master",
     "uuid": "241",
     "catalog_code": "",
     "legacy_tempid": "OFF09",
@@ -6025,6 +6266,7 @@
     "raw_row_number": "268"
   },
   {
+    "record_type": "master",
     "uuid": "242",
     "catalog_code": "",
     "legacy_tempid": "OFF10",
@@ -6050,6 +6292,7 @@
     "raw_row_number": "269"
   },
   {
+    "record_type": "master",
     "uuid": "243",
     "catalog_code": "",
     "legacy_tempid": "OFF11",
@@ -6075,6 +6318,7 @@
     "raw_row_number": "270"
   },
   {
+    "record_type": "master",
     "uuid": "244",
     "catalog_code": "",
     "legacy_tempid": "OFF12",
@@ -6100,6 +6344,7 @@
     "raw_row_number": "271"
   },
   {
+    "record_type": "master",
     "uuid": "245",
     "catalog_code": "",
     "legacy_tempid": "OFF13",
@@ -6125,6 +6370,7 @@
     "raw_row_number": "272"
   },
   {
+    "record_type": "master",
     "uuid": "246",
     "catalog_code": "",
     "legacy_tempid": "OFF14",
@@ -6150,6 +6396,7 @@
     "raw_row_number": "273"
   },
   {
+    "record_type": "master",
     "uuid": "247",
     "catalog_code": "",
     "legacy_tempid": "OFF15",
@@ -6175,6 +6422,7 @@
     "raw_row_number": "274"
   },
   {
+    "record_type": "master",
     "uuid": "248",
     "catalog_code": "",
     "legacy_tempid": "OFF16",
@@ -6200,6 +6448,7 @@
     "raw_row_number": "275"
   },
   {
+    "record_type": "master",
     "uuid": "249",
     "catalog_code": "",
     "legacy_tempid": "OFF17",
@@ -6225,6 +6474,7 @@
     "raw_row_number": "276"
   },
   {
+    "record_type": "master",
     "uuid": "250",
     "catalog_code": "",
     "legacy_tempid": "OFF18",
@@ -6250,6 +6500,7 @@
     "raw_row_number": "277"
   },
   {
+    "record_type": "master",
     "uuid": "251",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6275,6 +6526,7 @@
     "raw_row_number": "280"
   },
   {
+    "record_type": "master",
     "uuid": "252",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6300,6 +6552,7 @@
     "raw_row_number": "281"
   },
   {
+    "record_type": "master",
     "uuid": "253",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6325,6 +6578,7 @@
     "raw_row_number": "282"
   },
   {
+    "record_type": "master",
     "uuid": "254",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6350,6 +6604,7 @@
     "raw_row_number": "283"
   },
   {
+    "record_type": "master",
     "uuid": "255",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6375,6 +6630,7 @@
     "raw_row_number": "284"
   },
   {
+    "record_type": "master",
     "uuid": "256",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6400,6 +6656,7 @@
     "raw_row_number": "285"
   },
   {
+    "record_type": "master",
     "uuid": "257",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6425,6 +6682,7 @@
     "raw_row_number": "286"
   },
   {
+    "record_type": "master",
     "uuid": "258",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6450,6 +6708,7 @@
     "raw_row_number": "287"
   },
   {
+    "record_type": "master",
     "uuid": "259",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6475,6 +6734,7 @@
     "raw_row_number": "288"
   },
   {
+    "record_type": "master",
     "uuid": "260",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6500,6 +6760,7 @@
     "raw_row_number": "289"
   },
   {
+    "record_type": "master",
     "uuid": "261",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6525,6 +6786,7 @@
     "raw_row_number": "290"
   },
   {
+    "record_type": "master",
     "uuid": "262",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6550,6 +6812,7 @@
     "raw_row_number": "291"
   },
   {
+    "record_type": "master",
     "uuid": "263",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
@@ -6575,6 +6838,7 @@
     "raw_row_number": "292"
   },
   {
+    "record_type": "master",
     "uuid": "264",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6600,6 +6864,7 @@
     "raw_row_number": "296"
   },
   {
+    "record_type": "master",
     "uuid": "265",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6625,6 +6890,7 @@
     "raw_row_number": "297"
   },
   {
+    "record_type": "master",
     "uuid": "266",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6650,6 +6916,7 @@
     "raw_row_number": "300"
   },
   {
+    "record_type": "master",
     "uuid": "267",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6675,6 +6942,7 @@
     "raw_row_number": "301"
   },
   {
+    "record_type": "master",
     "uuid": "268",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6700,6 +6968,7 @@
     "raw_row_number": "302"
   },
   {
+    "record_type": "master",
     "uuid": "269",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6725,6 +6994,7 @@
     "raw_row_number": "303"
   },
   {
+    "record_type": "master",
     "uuid": "270",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6750,6 +7020,7 @@
     "raw_row_number": "304"
   },
   {
+    "record_type": "master",
     "uuid": "271",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6775,6 +7046,7 @@
     "raw_row_number": "305"
   },
   {
+    "record_type": "master",
     "uuid": "272",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6800,6 +7072,7 @@
     "raw_row_number": "306"
   },
   {
+    "record_type": "master",
     "uuid": "273",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6825,6 +7098,7 @@
     "raw_row_number": "307"
   },
   {
+    "record_type": "master",
     "uuid": "274",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6850,6 +7124,7 @@
     "raw_row_number": "308"
   },
   {
+    "record_type": "master",
     "uuid": "275",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6875,6 +7150,7 @@
     "raw_row_number": "309"
   },
   {
+    "record_type": "master",
     "uuid": "276",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6900,6 +7176,7 @@
     "raw_row_number": "310"
   },
   {
+    "record_type": "master",
     "uuid": "277",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6925,6 +7202,7 @@
     "raw_row_number": "311"
   },
   {
+    "record_type": "master",
     "uuid": "278",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6950,6 +7228,7 @@
     "raw_row_number": "315"
   },
   {
+    "record_type": "master",
     "uuid": "279",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -6975,6 +7254,7 @@
     "raw_row_number": "316"
   },
   {
+    "record_type": "master",
     "uuid": "280",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7000,6 +7280,7 @@
     "raw_row_number": "317"
   },
   {
+    "record_type": "master",
     "uuid": "281",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7025,6 +7306,7 @@
     "raw_row_number": "318"
   },
   {
+    "record_type": "master",
     "uuid": "282",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7050,6 +7332,7 @@
     "raw_row_number": "319"
   },
   {
+    "record_type": "master",
     "uuid": "283",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7075,6 +7358,7 @@
     "raw_row_number": "320"
   },
   {
+    "record_type": "master",
     "uuid": "284",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7100,6 +7384,7 @@
     "raw_row_number": "321"
   },
   {
+    "record_type": "master",
     "uuid": "285",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7125,6 +7410,7 @@
     "raw_row_number": "322"
   },
   {
+    "record_type": "master",
     "uuid": "286",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7150,6 +7436,7 @@
     "raw_row_number": "325"
   },
   {
+    "record_type": "master",
     "uuid": "287",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7175,6 +7462,7 @@
     "raw_row_number": "326"
   },
   {
+    "record_type": "master",
     "uuid": "288",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7200,6 +7488,7 @@
     "raw_row_number": "327"
   },
   {
+    "record_type": "master",
     "uuid": "289",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7225,6 +7514,7 @@
     "raw_row_number": "328"
   },
   {
+    "record_type": "master",
     "uuid": "290",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7250,6 +7540,7 @@
     "raw_row_number": "329"
   },
   {
+    "record_type": "master",
     "uuid": "291",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7275,6 +7566,7 @@
     "raw_row_number": "330"
   },
   {
+    "record_type": "master",
     "uuid": "292",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7300,6 +7592,7 @@
     "raw_row_number": "331"
   },
   {
+    "record_type": "master",
     "uuid": "293",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7325,6 +7618,7 @@
     "raw_row_number": "332"
   },
   {
+    "record_type": "master",
     "uuid": "294",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7350,6 +7644,7 @@
     "raw_row_number": "333"
   },
   {
+    "record_type": "master",
     "uuid": "295",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7375,6 +7670,7 @@
     "raw_row_number": "334"
   },
   {
+    "record_type": "master",
     "uuid": "296",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7400,6 +7696,7 @@
     "raw_row_number": "335"
   },
   {
+    "record_type": "master",
     "uuid": "297",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7425,6 +7722,7 @@
     "raw_row_number": "337"
   },
   {
+    "record_type": "master",
     "uuid": "298",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7450,6 +7748,7 @@
     "raw_row_number": "339"
   },
   {
+    "record_type": "master",
     "uuid": "299",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7475,6 +7774,7 @@
     "raw_row_number": "340"
   },
   {
+    "record_type": "master",
     "uuid": "300",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7500,6 +7800,7 @@
     "raw_row_number": "341"
   },
   {
+    "record_type": "master",
     "uuid": "301",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7525,6 +7826,7 @@
     "raw_row_number": "342"
   },
   {
+    "record_type": "master",
     "uuid": "302",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7550,6 +7852,7 @@
     "raw_row_number": "343"
   },
   {
+    "record_type": "master",
     "uuid": "303",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7575,6 +7878,7 @@
     "raw_row_number": "347"
   },
   {
+    "record_type": "master",
     "uuid": "304",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7600,6 +7904,7 @@
     "raw_row_number": "348"
   },
   {
+    "record_type": "master",
     "uuid": "305",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7625,6 +7930,7 @@
     "raw_row_number": "349"
   },
   {
+    "record_type": "master",
     "uuid": "306",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7650,6 +7956,7 @@
     "raw_row_number": "350"
   },
   {
+    "record_type": "master",
     "uuid": "307",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7675,6 +7982,7 @@
     "raw_row_number": "351"
   },
   {
+    "record_type": "master",
     "uuid": "308",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7700,6 +8008,7 @@
     "raw_row_number": "352"
   },
   {
+    "record_type": "candidate_discovery",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7725,6 +8034,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_discovery",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7750,6 +8060,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_discovery",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7775,6 +8086,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_discovery",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7800,6 +8112,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7825,6 +8138,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7850,6 +8164,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7875,6 +8190,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7900,6 +8216,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7925,6 +8242,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7950,6 +8268,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -7975,6 +8294,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8000,6 +8320,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8025,6 +8346,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8050,6 +8372,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8075,6 +8398,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8100,6 +8424,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8125,6 +8450,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8150,6 +8476,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8175,6 +8502,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8200,6 +8528,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8225,6 +8554,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8250,6 +8580,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8275,6 +8606,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8300,6 +8632,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8325,6 +8658,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8350,6 +8684,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8375,6 +8710,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_veritas",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8400,6 +8736,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_hayhouse",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8425,6 +8762,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_hayhouse",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8450,6 +8788,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_hayhouse",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8475,6 +8814,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_hayhouse",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8500,6 +8840,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_audible",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8525,6 +8866,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_audible",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8550,6 +8892,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_audible",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",
@@ -8575,6 +8918,7 @@
     "raw_row_number": ""
   },
   {
+    "record_type": "candidate_audible",
     "uuid": "",
     "catalog_code": "",
     "legacy_tempid": "",

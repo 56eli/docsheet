@@ -56,6 +56,22 @@ Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 Veritas inventory refreshes use the approved product-ID overlay in
 `data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`.
 
+## Curated records vs. official candidates
+
+The **Everything** sheet intentionally shows curated master records next to
+official product candidates so they can be compared. Every row therefore carries
+an explicit `record_type`:
+
+| `record_type` | Meaning |
+|---|---|
+| `master` | A curated master catalogue record (308) |
+| `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
+| `candidate_discovery` | An entry from the official discovery queue |
+
+Only `master` rows are catalogue records. Use the Record Type filter on that tab
+to isolate curated data before exporting. Counts per class are published in
+`docs/catalogue-meta.json` under `everything_record_types`.
+
 ## Review workspace
 
 The Pages spreadsheet exposes review inputs directly: **Review Overview**,
