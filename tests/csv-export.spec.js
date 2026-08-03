@@ -6,7 +6,7 @@ async function waitForTable(page) {
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
 }
 
-test('CSV export downloads the active filtered spreadsheet view', async ({ page }) => {
+test('CSV export downloads the whole active view even when filtered', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
@@ -25,6 +25,9 @@ test('CSV export downloads the active filtered spreadsheet view', async ({ page 
   const csv = await fs.readFile(downloadPath, 'utf8');
   expect(csv).toContain('Causality');
   expect(csv).toContain('Master ID');
+  // Whole-sheet export: rows the search filter hides must still be exported.
+  expect(csv).toContain('Satsang');
+  expect(csv).toContain('Year-Month');
 });
 
 test('CSV export uses the selected view filename', async ({ page }) => {

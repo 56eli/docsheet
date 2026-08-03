@@ -133,6 +133,7 @@
     record_type: "Record Type",
     uuid: "Master ID",
     master_uuid: "Master ID",
+    year_month: "Year-Month",
     raw_row_number: "Raw Row",
     catalog_code: "Catalogue Code",
     legacy_tempid: "Legacy ID",
@@ -179,6 +180,7 @@
     candidate_veritas: "Candidate · Veritas",
     candidate_hayhouse: "Candidate · Hay House",
     candidate_audible: "Candidate · Audible",
+    candidate_pending_promotion: "Candidate · pending promotion",
   };
   const DEFAULT_PRIORITY_FIELDS = [
     "record_type",
@@ -196,9 +198,19 @@
     "raw_unnamed_10", "raw_unnamed_11",
   ];
   const COLUMN_WIDTHS = {
-    record_type: 170,
-    uuid: 90,
-    master_uuid: 90,
+    // Compact defaults sized to content (owner-directed 2026-08-03):
+    // Record Type badge ("Curated master"), 4-digit Master IDs, "discussion",
+    // "audio", "false", the "Veritas product" link label, "YYYY-MM" periods,
+    // and the longest series name ("Transcending Levels of Consciousness").
+    record_type: 135,
+    uuid: 64,
+    master_uuid: 64,
+    item_type: 104,
+    series: 300,
+    format: 68,
+    owned: 68,
+    source_url_veritas: 140,
+    year_month: 80,
     matched_master_uuids: 130,
     raw_row_number: 90,
     catalog_code: 160,
@@ -222,7 +234,7 @@
   };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "series", "title", "item_type", "year_month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
       frozen: ["record_type", "title"],
     },
     original: {
@@ -408,6 +420,8 @@
     rowDetailsTitle.textContent = rowTitle(data);
     rowDetailsBody.replaceChildren();
     Object.entries(data).forEach(([field, value]) => {
+      // Year/Month are shown merged as "Year-Month" (see loadData).
+      if ("year_month" in data && (field === "year" || field === "month")) return;
       const item = document.createElement("div");
       item.className = "row-detail-field";
       const term = document.createElement("dt");
@@ -432,6 +446,17 @@
     const res = await fetch(view.file, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     allData = await res.json();
+
+    // Merge separate Year/Month fields into one "Year-Month" display column
+    // ("YYYY-MM"). Applies to any view whose rows carry both fields (today:
+    // Everything). The raw year/month keys stay on each row object for the
+    // global search, but buildColumns, the row drawer, and CSV exports show
+    // only the merged column.
+    allData.forEach((row) => {
+      if ("year" in row && "month" in row) {
+        row.year_month = row.year ? (row.month ? `${row.year}-${row.month}` : row.year) : "";
+      }
+    });
 
     const lastModified = res.headers.get("Last-Modified");
     footerUpdated.innerHTML = lastModified
@@ -557,7 +582,12 @@
   function buildColumns(data) {
     if (!Array.isArray(data) || data.length === 0) return [];
 
-    const keys = orderKeysForView(Object.keys(data[0]), activeView);
+    let keys = orderKeysForView(Object.keys(data[0]), activeView);
+    // Hide the raw Year/Month columns when the merged "Year-Month" column is
+    // present (see loadData).
+    if (keys.includes("year_month")) {
+      keys = keys.filter((key) => key !== "year" && key !== "month");
+    }
     const sample = data.slice(0, 120);
     const preset = columnPresetFor(activeView);
 
@@ -731,11 +761,14 @@
   }
 
   /* ------------------------------------------------------------------ *
-   *  Export CSV (current filtered view)
+   *  Export CSV (whole active view — filters never shrink downloads)
    * ------------------------------------------------------------------ */
   function exportCsv() {
     if (!table) return;
-    table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true });
+    // Export the whole active sheet ("all" rows) even when a search filter
+    // narrows the on-screen rows; the on-screen subset stays visible via the
+    // search box, while downloads are always the complete view.
+    table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true }, "all");
   }
 
   /* ------------------------------------------------------------------ *
