@@ -75,8 +75,17 @@ test('Everything view separates curated master records from candidates', async (
   await expect(reviewFilter.locator('option[value="candidate_veritas"]')).toHaveCount(1);
 
   // Filtering to curated master must exclude every candidate row.
+  const expectedMasterCount = await page.evaluate(async () => {
+    const rows = await fetch('/docs/master.json').then((response) => response.json());
+    return rows.filter((row) => row.record_type === 'master').length;
+  });
+  const expectedTotalCount = await page.evaluate(async () => {
+    const rows = await fetch('/docs/master.json').then((response) => response.json());
+    return rows.length;
+  });
   await reviewFilter.selectOption('master');
-  await expect(page.locator('#search-status')).toContainText('Showing: 308 of 344');
+  await expect(page.locator('#search-status'))
+    .toContainText(`Showing: ${expectedMasterCount} of ${expectedTotalCount}`);
   await expect(page.locator('#filter-chips')).toContainText('Curated master');
 
   const badges = page.locator('.tabulator-cell[tabulator-field="record_type"] .status-badge');
