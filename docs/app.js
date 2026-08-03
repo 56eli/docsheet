@@ -256,6 +256,42 @@
     return typeof value === "string" && /^https?:\/\//i.test(value.trim());
   }
 
+  function urlLabelFor(field, value) {
+    const normalizedField = field.toLowerCase();
+    const sourceLabels = [
+      ["veritas", "Veritas product"],
+      ["hay_house", "Hay House product"],
+      ["nightingale_conant", "Nightingale-Conant listing"],
+      ["audible", "Audible listing"],
+      ["evidence", "Evidence"],
+      ["reference", "Reference"],
+      ["catalogue", "Catalogue"],
+      ["official", "Official product"],
+      ["source", "Source"],
+    ];
+    const matched = sourceLabels.find(([needle]) => normalizedField.includes(needle));
+    if (matched) return matched[1];
+
+    try {
+      return new URL(value).hostname.replace(/^www\./, "");
+    } catch (err) {
+      return "Open link";
+    }
+  }
+
+  function urlFormatter(cell) {
+    const value = String(cell.getValue() ?? "").trim();
+    if (!looksLikeUrl(value)) return value;
+    const anchor = document.createElement("a");
+    anchor.className = "url-link";
+    anchor.href = value;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    anchor.title = value;
+    anchor.textContent = urlLabelFor(cell.getColumn().getField(), value);
+    return anchor;
+  }
+
   function humanizeField(key) {
     if (COLUMN_LABELS[key]) return COLUMN_LABELS[key];
     return key
@@ -309,8 +345,7 @@
       // Presentation-only nicety: render URL-heavy columns as clickable links.
       // This does NOT modify the underlying data.
       if (urlRatio >= 0.6 && !STATUS_FIELDS.has(key)) {
-        col.formatter = "link";
-        col.formatterParams = { target: "_blank", urlPrefix: "" };
+        col.formatter = urlFormatter;
       }
       return col;
     });

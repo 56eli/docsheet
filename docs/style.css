@@ -430,8 +430,27 @@ body {
   padding: 7px 8px;
   color: var(--text);
 }
-/* URL cells: keep links clearly styled */
+/* URL cells: keep links readable without filling rows with long raw URLs. */
 #spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
+#spreadsheet .tabulator .tabulator-cell a.url-link {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  font-weight: 500;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#spreadsheet .tabulator .tabulator-cell a.url-link::after {
+  content: "↗";
+  flex: 0 0 auto;
+  font-size: 11px;
+  opacity: 0.78;
+}
+#spreadsheet .tabulator .tabulator-cell a.url-link:hover,
+#spreadsheet .tabulator .tabulator-cell a.url-link:focus { text-decoration: underline; }
 
 /* Review statuses and dispositions stay scannable in wide review sheets. */
 .status-badge {
