@@ -7,6 +7,8 @@
 **Artifact:** `veritas-inventory-review-30803991007`
 **Artifact ID:** `8851979247`
 **Artifact size reported by GitHub:** 16,922 bytes
+**Artifact ZIP SHA256 digest reported by workflow:** `3f06b4499dd21840abf995725621f1f7724261f2546e1ae7d6da8c2427f15c3d`
+**Artifact download URL:** `https://github.com/56eli/docsheet/actions/runs/30803991007/artifacts/8851979247`
 
 ## Status
 
@@ -19,6 +21,15 @@ The workflow completed its intended review-only flow up to the comparison guard:
 5. `Upload candidate and diff for review` succeeded.
 
 That means the live Veritas API candidate was generated successfully in GitHub Actions and differs from the committed reviewed inventory. The workflow failure is therefore an intentional review signal, not an auto-refresh failure.
+
+The user-provided workflow log confirms the guard message:
+
+```text
+A reviewed inventory update is required; inspect the artifact diff.
+Error: Process completed with exit code 1.
+```
+
+The log also reports GitHub Actions runtime deprecation warnings from `actions/upload-artifact@v4` (`punycode` and `url.parse()` deprecation warnings under the Node 24 runtime). These warnings do not invalidate the artifact, but they should be monitored when upgrading Actions dependencies.
 
 ## Sandbox retrieval attempts
 
