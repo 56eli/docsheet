@@ -14,8 +14,10 @@ from pathlib import Path
 MASTER = Path("data/research_master_draft.csv")
 QUEUE = Path("data/official_discovery_queue.csv")
 VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
+HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
 OUT_MASTER = Path("docs/master.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
+OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
 OUT_PUBLISHERS = Path("docs/publishers.json")
 OUT_META = Path("docs/catalogue-meta.json")
 
@@ -36,6 +38,7 @@ def main() -> None:
     items = read_csv(MASTER)
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     for candidate in queue:
         items.append({
             "uuid": "",
@@ -81,6 +84,7 @@ def main() -> None:
         })
     OUT_MASTER.write_text(json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_VERITAS_PRODUCTS.write_text(json.dumps(veritas_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT_HAYHOUSE_PRODUCTS.write_text(json.dumps(hayhouse_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_PUBLISHERS.write_text(json.dumps(PUBLISHERS, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_META.write_text(json.dumps({
         "master_items": len(items),
