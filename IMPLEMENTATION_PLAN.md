@@ -43,16 +43,17 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 
 ## Priority roadmap
 
-### P0 — Make Veritas refresh review-safe (branch implementation complete; merge/run pending)
+### P0 — Review the current Veritas refresh artifact
 
-Delivered on this branch:
+Delivered and verified:
 
 1. `data/veritas_mapping_decisions.csv` stores 35 approved non-primary product-ID decisions.
 2. `fetch_veritas_catalogue.py` reapplies those decisions after deterministic primary-source and date/title matching, retries transient empty/non-JSON API responses, and supports `--check` / candidate output.
-3. The review-only Map Veritas workflow YAML is already in `main`; it writes a candidate/diff artifact and fails on a diff rather than auto-committing.
+3. The review-only Map Veritas workflow writes a candidate/diff artifact and fails on a diff rather than auto-committing.
 4. The Pages review workspace exposes the Veritas Decisions sheet.
+5. A manual `main` workflow run (`30803991007`) reached candidate generation and failed intentionally during comparison, proving the artifact review path is active.
 
-**Remaining verification:** merge this branch’s code/data, then manually run the workflow once in GitHub Actions to confirm the candidate/diff artifact path against the live API.
+**Remaining verification:** download and inspect the `veritas-inventory-review-30803991007` artifact before accepting any live inventory or mapping-decision changes.
 
 ### P1 — Enforce checks in CI
 
@@ -103,7 +104,7 @@ Delivered on this branch:
 
 | Order | Milestone | Why it comes next |
 |---:|---|---|
-| 1 | Verify the review-only Veritas workflow on GitHub | Confirms the deployed candidate/diff artifact control works against the live API. |
+| 1 | Review the current Veritas workflow artifact | The deployed candidate/diff control is active and has surfaced a live inventory divergence. |
 | 2 | P1 CI | Makes the protected state enforceable for collaborators. |
 | 3 | P1 candidate promotion | Converts approved research into master data safely. |
 | 4 | P1 inventory-only decisions | Extends content coverage after promotion mechanics exist. |
