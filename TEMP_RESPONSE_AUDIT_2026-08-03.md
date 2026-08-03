@@ -443,3 +443,14 @@ Wired into the Pages build (`docs/new-work-review.json`, Review Overview,
 (`validate_new_work_queue`: product ID + exact URL, no duplicates) and 3
 tests. The 2 Spanish Audible editions were already handled in the
 International sheet (no new rows needed). Suite: **89 tests**, coverage 92%.
+
+### 11n. Source overrides extended to candidate-provenance rows (owner)
+
+`apply_source_overrides` now runs **after** the promotion loops, so override
+rows may target promoted masters by their `candidate:<key>` raw-row key. The
+D3 audiobook-URL clearing runs after overrides so an approved audible
+override cannot re-set a book row. Two new approved overrides give masters
+**316** (The Ego is Not the Real You) and **318** (The Wisdom of Dr. David R.
+Hawkins) their Hay House paperback links → approved overrides **98 → 100**.
+Test: candidate-keyed override applies to a promoted row and --check stays
+green. Suite: **90 tests**, coverage 92%.

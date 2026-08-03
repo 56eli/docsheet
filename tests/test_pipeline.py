@@ -1282,6 +1282,27 @@ class SourceOverrideStatusTests(unittest.TestCase):
         finally:
             tempdir.cleanup()
 
+    def test_candidate_keyed_override_applies_to_promoted_row(self) -> None:
+        # Promoted masters (raw_row_number = candidate:<key>) can take source
+        # overrides too: the overrides layer runs after promotions.
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [
+                "candidate:manual-veritas-47979,source_url_hay_house,"
+                "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us,"
+                "approved,2026-08-03,paperback link for promoted master,data/hayhouse_official_products.csv",
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["316"]
+            self.assertEqual(row["source_url_hay_house"], "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
     def test_invalid_status_fails(self) -> None:
         tempdir = make_sandbox()
         try:

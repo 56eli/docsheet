@@ -880,5 +880,23 @@
     "approval_date": "2026-08-03",
     "review_reason": "Veritas book-edition link for the Power vs Force book master (Hay House inventory, matched_by_title).",
     "evidence_source": "data/veritas_official_products.csv (Veritas product 50411)"
+  },
+  {
+    "raw_row_number": "candidate:manual-veritas-47979",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Same-carrier paperback edition link for the promoted book master.",
+    "evidence_source": "data/hayhouse_official_products.csv (The Ego Is Not the Real You)"
+  },
+  {
+    "raw_row_number": "candidate:manual-veritas-53058",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/wisdom-of-dr-david-r-hawkins-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Same-carrier paperback edition link for the promoted book master.",
+    "evidence_source": "data/hayhouse_official_products.csv (The Wisdom of Dr David R Hawkins)"
   }
 ]

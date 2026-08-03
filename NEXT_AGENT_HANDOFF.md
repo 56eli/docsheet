@@ -36,7 +36,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 89 tests, offline, ~2s
+python -m unittest discover tests     # 90 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -65,13 +65,13 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 341 | 292 lecture / 38 book / 10 discussion / 1 untyped (record **264**, deferred); incl. 24 minted edition rows (320–343) |
 | Everything view | **387** | 341 master + 28 candidate_veritas + 6 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 68 / 98 | |
+| Exclusions / source overrides | 68 / 100 | |
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
 | Everything relationships | 318 product relationships, 7 series compilations | |
 | Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 21 works / 43 members approved | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
-| Test suite | **89 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **90 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
@@ -95,7 +95,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    into display-only `year_month` (YYYY-MM), Series moved between Master ID and
    Title, CSV export now exports the **whole sheet** (`rowRange "all"`).
 7. **Tests + fail-safes (this turn):**
-   - `tests/test_pipeline.py` — 89 tests: end-to-end write/check/tamper runs of
+   - `tests/test_pipeline.py` — 90 tests: end-to-end write/check/tamper runs of
      all generators in sandboxed input copies, run-twice determinism for the two
      bootstrap generators, offline replay of the live fetcher (synthetic API
      rebuilt from the committed inventory + retry-ladder unit tests), CLI
@@ -113,7 +113,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    changes; run `30834666253` green (includes the full deterministic suite +
    coverage gate + Playwright).
 9. **Independent re-audit + doc-status pass (this turn, branch
-   `arena/019fc893-docsheet`):** verified every previous claim (89 tests,
+   `arena/019fc893-docsheet`):** verified every previous claim (90 tests,
    92% coverage, all `--check` modes, CI green on `main` at `6b28e66`), then
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
@@ -173,18 +173,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 **P1 — Data decisions needing a ruling:**
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  Phases 1–3 are implemented/drafted — `work_id` plumbing live; 24 edition
-  candidates (12 reviewed + 12 proposed) in `data/edition_candidates.csv`;
-  21 work families (43 proposed members) in `data/work_families.csv`;
-  18 proposed Hay House/Veritas source overrides in
-  `data/research_master_source_overrides.csv`. Nothing applied yet. Review
-  and approve rows: flip `work_families.csv`/`source_overrides.csv` rows to
-  `approved` (+ dates), flip edition candidates to `reviewed_candidate` and
-  add `edition_promotions.csv` rows. Two flagged rows need rulings first:
-  **w-power-vs-force** (is lecture 202 the same work as book 286?) and
-  **w-tlc-perception** (VERIFY the Transcending-series part mapping).
-  Known gap: overrides cannot target promoted-candidate rows (316/318
-  Hay House links need a mechanism extension).
+  **fully applied.** Master 341 rows incl. 24 minted edition rows (320–343);
+  21 work families (43 members) approved; overrides now support
+  candidate-provenance rows (100 approved, incl. 316/318 Hay House links);
+  D3 audible-URL move done; everything 387; relationships 318. Remaining
+  model work: series-level regrouping of the per-part works (owner
+  decision), the new-work review lane rulings
+  (`data/new_work_review_queue.csv`, 14 unmatched Veritas products), and
+  Phase-3 exclusions (Spanish editions already in the International sheet).
 - **Record 264** (`"In the World But Not of It" – Audio`, the 1 untyped record):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
