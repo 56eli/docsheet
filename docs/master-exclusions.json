@@ -1,0 +1,662 @@
+[
+  {
+    "raw_row_number": "3",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "4",
+    "disposition": "source_context",
+    "review_reason": "Landing page or source URL stored in title.",
+    "raw_tempid": "",
+    "raw_title": "https://veritaspub.com/lecture-series-2002-2011/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "5",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2002: The Way to God",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "6",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "43",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "44",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2003: Devotional Nonduality",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "45",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "64",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "65",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2004: Transcending the Mind",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "84",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2005: Nonduality Intensive",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "115",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2006: Transcending Levels of Consciousness",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "140",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2007: Spiritual Reality & Modern Man",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "168",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2008: Advanced Spiritual Awareness",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "190",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2009: In the World but Not of It",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "203",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2010: Practical Spirituality",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "210",
+    "disposition": "series_context",
+    "review_reason": "Annual lecture-series heading.",
+    "raw_tempid": "",
+    "raw_title": "Series 2011: Love & Spiritual Seeker Qualities",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "217",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "221",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "222",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "VOLUME SERIES https://veritaspub.com/volume-series/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "236",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "237",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "On The Road - Talk Series https://veritaspub.com/on-the-road-talk-series/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "238",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": " ❌❌ MOST ARE MISSING ❌❌ NOT YET IN THE SPREADSHEET ❌❌",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "257",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "258",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Office series https://veritaspub.com/archival-office-visit-series/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "259",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "278",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "279",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Missing satsang audios https://veritaspub.com/satsang-series-and-question-answer-sessions/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "293",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "294",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Media Miscellaneous: https://veritaspub.com/media-miscellaneous-2/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "295",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": " ❌❌ MOST ARE MISSING ❌❌ NOT YET IN THE SPREADSHEET ❌❌",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "298",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "299",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "Missing OTR",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "312",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "313",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Discussion Series with Dr. David Hawkins & Wife Susan https://veritaspub.com/discussion-series-2/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "314",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "323",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "324",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Books https://veritaspub.com/books-2/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "336",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Books of Slides",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "338",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "344",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "345",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "TRANSCRIPTION SERIES BOOKS https://veritaspub.com/the-six-book-transcription-series-transcribed-from-the-lectures-presented-in-2002-the-core-lectures-of-dr-hawkins-work/",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "346",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "353",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "354",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Scott Jeffrey edited books",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "355",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "356",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "357",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "358",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "Missing books? ❌❌ ",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "359",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "360",
+    "disposition": "series_context",
+    "review_reason": "Collection/category heading.",
+    "raw_tempid": "",
+    "raw_title": "Lecture Highlights https://veritaspub.com/highlights/",
+    "raw_we_have": "❌",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "361",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "362",
+    "disposition": "source_context",
+    "review_reason": "Landing page or source URL stored in title.",
+    "raw_tempid": "",
+    "raw_title": "https://veritaspub.com/map-of-consciousness/",
+    "raw_we_have": "❌",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "363",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "364",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "365",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "more stuff missing, non-veritas stuff. check: https://github.com/56eli/bookbot/blob/temp/hawkins.md",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "366",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "367",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "368",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "DISSERTATION ❌❌❌",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "369",
+    "disposition": "source_context",
+    "review_reason": "Landing page or source URL stored in title.",
+    "raw_tempid": "",
+    "raw_title": "https://www.goodreads.com/book/show/6645749-qualitative-and-quantitative-analysis-and-calibration-of-the-level-of-hu",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "370",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "371",
+    "disposition": "needs_review",
+    "review_reason": "Non-empty row without item ID or ownership status.",
+    "raw_tempid": "",
+    "raw_title": "Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "372",
+    "disposition": "source_context",
+    "review_reason": "Landing page or source URL stored in title.",
+    "raw_tempid": "",
+    "raw_title": "https://www.goodreads.com/book/show/23323.Dialogues_on_Consciousness_and_Spirituality",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "373",
+    "disposition": "source_context",
+    "review_reason": "Landing page or source URL stored in title.",
+    "raw_tempid": "",
+    "raw_title": "SETH HAS IT https://discord.com/channels/1194598173742731284/1194598173742731287/1529890680824926259",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "374",
+    "disposition": "blank_separator",
+    "review_reason": "Empty visual separator row.",
+    "raw_tempid": "",
+    "raw_title": "",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "375",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "scorpion book",
+    "raw_we_have": "",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "376",
+    "disposition": "research_note",
+    "review_reason": "Editorial gap/research note; item identity needs confirmation.",
+    "raw_tempid": "",
+    "raw_title": "orthomolecular book",
+    "raw_we_have": "✅",
+    "raw_original_source": "",
+    "raw_product_link": ""
+  }
+]

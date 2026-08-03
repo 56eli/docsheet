@@ -1,6 +1,12 @@
 {
   "master_items": 348,
   "migrated_items": 308,
+  "reviewed_manual_candidates": 10,
+  "manual_research_leads": 1,
+  "master_exclusion_rows": 66,
+  "migration_review_rows": 374,
+  "approved_source_overrides": 80,
+  "official_discovery_candidates": 4,
   "implemented_unreviewed": 42,
   "veritas_official_products": 191,
   "reviewed_product_relationships": 301,

@@ -23,7 +23,19 @@ VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
 HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
 AUDIBLE_PRODUCTS = Path("data/audible_official_products.csv")
 PRODUCT_RELATIONSHIPS = Path("data/product_relationships.csv")
+MANUAL_CANDIDATES = Path("data/manual_master_candidates.csv")
+MANUAL_LEADS = Path("data/research_manual_leads.csv")
+MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
+SOURCE_OVERRIDES = Path("data/research_master_source_overrides.csv")
+MIGRATION_LEDGER = Path("migration_review_ledger.csv")
 OUT_MASTER = Path("docs/master.json")
+OUT_REVIEW_OVERVIEW = Path("docs/review-overview.json")
+OUT_MANUAL_CANDIDATES = Path("docs/manual-candidates.json")
+OUT_MANUAL_LEADS = Path("docs/manual-leads.json")
+OUT_MASTER_EXCLUSIONS = Path("docs/master-exclusions.json")
+OUT_MIGRATION_REVIEW = Path("docs/migration-review.json")
+OUT_SOURCE_OVERRIDES = Path("docs/source-overrides.json")
+OUT_OFFICIAL_DISCOVERY = Path("docs/official-discovery.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
 OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
 OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
@@ -224,6 +236,11 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)
     intl_queue = read_csv(INTL_QUEUE)
+    manual_candidates = read_csv(MANUAL_CANDIDATES)
+    manual_leads = read_csv(MANUAL_LEADS)
+    master_exclusions = read_csv(MASTER_EXCLUSIONS)
+    source_overrides = read_csv(SOURCE_OVERRIDES)
+    migration_review = read_csv(MIGRATION_LEDGER)
     intl_items: list[dict[str, str]] = []
 
     for candidate in queue:
@@ -368,8 +385,66 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
         })
 
     intl_items.extend(intl_queue)
+    review_overview = [
+        {
+            "review_sheet": "Master Candidates",
+            "record_count": len(manual_candidates),
+            "purpose": "Evidence-backed official candidates awaiting an explicit master-promotion decision.",
+            "source_file": str(MANUAL_CANDIDATES),
+            "current_state": "reviewed_candidate / not_promoted",
+        },
+        {
+            "review_sheet": "Manual Leads",
+            "record_count": len(manual_leads),
+            "purpose": "Manual edition/copy or research leads outside the master.",
+            "source_file": str(MANUAL_LEADS),
+            "current_state": "research lead",
+        },
+        {
+            "review_sheet": "Master Exclusions",
+            "record_count": len(master_exclusions),
+            "purpose": "Raw rows intentionally excluded from the curated master, with their disposition and review reason.",
+            "source_file": str(MASTER_EXCLUSIONS),
+            "current_state": "excluded from master / retained as provenance",
+        },
+        {
+            "review_sheet": "Migration Review",
+            "record_count": len(migration_review),
+            "purpose": "Raw-row disposition and proposed migration metadata.",
+            "source_file": str(MIGRATION_LEDGER),
+            "current_state": "review and provenance ledger",
+        },
+        {
+            "review_sheet": "Source Overrides",
+            "record_count": len(source_overrides),
+            "purpose": "Approved official source associations retained after the original ledger pass.",
+            "source_file": str(SOURCE_OVERRIDES),
+            "current_state": "approved source override",
+        },
+        {
+            "review_sheet": "Official Discovery",
+            "record_count": len(queue),
+            "purpose": "Nightingale-Conant and platform candidates awaiting source/relationship review.",
+            "source_file": str(QUEUE),
+            "current_state": "official discovery queue",
+        },
+        {
+            "review_sheet": "Product Relationships",
+            "record_count": len(product_relationships),
+            "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
+            "source_file": str(PRODUCT_RELATIONSHIPS),
+            "current_state": "reviewed relationship",
+        },
+    ]
     outputs = {
         OUT_MASTER: json_text(items),
+        OUT_REVIEW_OVERVIEW: json_text(review_overview),
+        OUT_MANUAL_CANDIDATES: json_text(manual_candidates),
+        OUT_MANUAL_LEADS: json_text(manual_leads),
+        OUT_MASTER_EXCLUSIONS: json_text(master_exclusions),
+        OUT_MIGRATION_REVIEW: json_text(migration_review),
+        OUT_SOURCE_OVERRIDES: json_text(source_overrides),
+        OUT_OFFICIAL_DISCOVERY: json_text(queue),
         OUT_VERITAS_PRODUCTS: json_text(veritas_products),
         OUT_PRODUCT_RELATIONSHIPS: json_text(product_relationships),
         OUT_HAYHOUSE_PRODUCTS: json_text(hayhouse_products),
@@ -379,6 +454,12 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
         OUT_META: json_text({
             "master_items": len(items),
             "migrated_items": migrated_items,
+            "reviewed_manual_candidates": len(manual_candidates),
+            "manual_research_leads": len(manual_leads),
+            "master_exclusion_rows": len(master_exclusions),
+            "migration_review_rows": len(migration_review),
+            "approved_source_overrides": len(source_overrides),
+            "official_discovery_candidates": len(queue),
             "implemented_unreviewed": (
                 len(queue)
                 + sum(
