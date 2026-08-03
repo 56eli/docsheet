@@ -98,7 +98,7 @@ python -m http.server 8000
 | `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects) + `docs/meta.json` (row count, timestamp). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Python dependencies (pandas only, for now). |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
-| `docs/app.js` | Boots Tabulator with sorting, pagination (25/page), inline editing, CSV export, column resizing, responsive collapse, and the footer stats. |
+| `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable view, inline editing, CSV export, column resizing, horizontal access to every column, and footer stats. |
 | `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
 | `.github/workflows/update_spreadsheet.yml` | Rebuilds `docs/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
 

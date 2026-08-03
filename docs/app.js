@@ -2,25 +2,36 @@
    Live Spreadsheet — app.js
    Loads docs/data.json (+ docs/meta.json) and renders it as an
    interactive Tabulator table: sortable headers, global live search,
-   pagination (25/page), inline editing, CSV export, column resizing,
-   responsive collapsing, dark mode with localStorage persistence.
+   all rows in a scrollable view, inline editing, CSV export, column resizing,
+   horizontal overflow for every column, dark mode with localStorage persistence.
    ========================================================================== */
 (function () {
   "use strict";
 
-  const PAGE_SIZE = 25;
   const STORAGE_KEY = "docsheet-dark-mode";
 
   const $ = (id) => document.getElementById(id);
   const searchInput = $("global-search");
+  const clearSearchBtn = $("clear-search-btn");
   const exportBtn = $("export-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
+  const searchStatus = $("search-status");
   const footerUpdated = $("footer-updated");
   const footerNote = $("footer-note");
+  const spreadsheet = $("spreadsheet");
+
+  const VIEWS = {
+    master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
+    veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
+    hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
+    publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
+    original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
+  };
 
   let table = null;
   let allData = [];
+  let activeView = "master";
   let metaLoaded = false;
 
   /* ------------------------------------------------------------------ *
@@ -43,6 +54,15 @@
     });
   }
 
+  function updateSearchStatus() {
+    if (!table) return;
+    const visibleRows = table.getData("active").length;
+    const isSearching = Boolean(searchInput.value.trim());
+    searchStatus.textContent = isSearching
+      ? `Showing: ${visibleRows} of ${allData.length}`
+      : `Showing: ${visibleRows}`;
+  }
+
   /* ------------------------------------------------------------------ *
    *  Data loading (meta.json first for a snappy footer)
    * ------------------------------------------------------------------ */
@@ -62,23 +82,17 @@
     }
   }
 
-  async function loadData() {
-    const res = await fetch("data.json", { cache: "no-store" });
+  async function loadData(viewName) {
+    const view = VIEWS[viewName];
+    const res = await fetch(view.file, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     allData = await res.json();
 
-    // Fallback timestamp: the file's Last-Modified header, when meta.json
-    // could not be read (e.g. served from a static host without meta.json).
-    if (!metaLoaded) {
-      const lastModified = res.headers.get("Last-Modified");
-      if (lastModified) {
-        footerUpdated.innerHTML =
-          `Last Updated: <span class="updated">${formatTimestamp(lastModified)}</span>`;
-      } else {
-        footerUpdated.textContent = "Last Updated: Unknown";
-      }
-    }
-    footerStats.textContent = `Total Rows: ${allData.length}`;
+    const lastModified = res.headers.get("Last-Modified");
+    footerUpdated.innerHTML = lastModified
+      ? `Last Updated: <span class="updated">${formatTimestamp(lastModified)}</span>`
+      : "Last Updated: Unknown";
+    footerStats.textContent = `${view.label}: ${allData.length} rows`;
     return allData;
   }
 
@@ -125,7 +139,8 @@
    *  Tabulator init
    * ------------------------------------------------------------------ */
   function initTable(data) {
-    table = new Tabulator($("spreadsheet"), {
+    spreadsheet.innerHTML = "";
+    table = new Tabulator(spreadsheet, {
       data,
       columns: buildColumns(data),
       layout: "fitColumns",
@@ -135,26 +150,26 @@
       renderComplete: () => fitTableToContainer(),
       /* sorting */
       headerSort: true,
-      /* pagination — 25 rows per page by default */
-      pagination: true,
-      paginationSize: PAGE_SIZE,
-      paginationSizeSelector: [10, 25, 50, 100],
-      paginationCounter: "rows",
+      /* All records stay in one scrollable view — no pagination. */
+      pagination: false,
       /* columns */
       resizableColumns: true,
       movableColumns: true,        // drag headers to reorder (bonus)
-      responsiveLayout: "collapse",// stacks columns on narrow screens
+      responsiveLayout: false,     // keep every column visible; scroll horizontally when needed
       /* editing */
       editTriggerEvent: "dblclick", // double-click any cell to edit
       selectableRows: false,
     });
 
+    table.on("dataFiltered", updateSearchStatus);
     table.on("cellEdited", (cell) => {
       const row = cell.getRow().getData();
       const label = `${cell.getColumn().getField()}`;
       const id = row.tempid || row.uuid || `row ${cell.getRow().getPosition(true)}`;
       flashNote(`✎ Edited “${label}” (${id}) — local only, not saved back to the CSV`);
     });
+    spreadsheet.setAttribute("aria-busy", "false");
+    updateSearchStatus();
   }
 
   /* Keep the table filling its container (frozen header + internal scroll).
@@ -187,9 +202,10 @@
   function applySearch(query) {
     if (!table) return;
     const q = query.trim().toLowerCase();
+    clearSearchBtn.hidden = !q;
     if (!q) {
       table.clearFilter();
-      table.setPage(1);
+      updateSearchStatus();
       return;
     }
     table.setFilter((data) =>
@@ -197,7 +213,7 @@
         (v) => v !== null && v !== undefined && String(v).toLowerCase().includes(q)
       )
     );
-    table.setPage(1);
+    updateSearchStatus();
   }
 
   /* ------------------------------------------------------------------ *
@@ -205,7 +221,7 @@
    * ------------------------------------------------------------------ */
   function exportCsv() {
     if (!table) return;
-    table.download("csv", "hawkins-archive.csv", { delimiter: ",", bom: true });
+    table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true });
   }
 
   /* ------------------------------------------------------------------ *
@@ -240,33 +256,55 @@
   /* ------------------------------------------------------------------ *
    *  Boot
    * ------------------------------------------------------------------ */
+  async function activateView(viewName) {
+    activeView = viewName;
+    const view = VIEWS[viewName];
+    searchInput.value = "";
+    clearSearchBtn.hidden = true;
+    spreadsheet.setAttribute("aria-busy", "true");
+    if (table) {
+      table.destroy();
+      table = null;
+    }
+    spreadsheet.innerHTML = `<div class="table-loading">Loading ${view.label.toLowerCase()}…</div>`;
+    document.querySelectorAll(".dataset-tab").forEach((tab) => {
+      const selected = tab.dataset.view === viewName;
+      tab.classList.toggle("active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+    });
+
+    try {
+      const data = await loadData(viewName);
+      initTable(data);
+      console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
+    } catch (err) {
+      console.error(`[docsheet] Failed to load ${view.file}:`, err);
+      spreadsheet.innerHTML =
+        `<div class="load-error">Could not load ${view.file} — make sure the site is served over HTTP ` +
+        '(e.g. GitHub Pages or `python -m http.server`), not opened directly from disk.</div>';
+      spreadsheet.setAttribute("aria-busy", "false");
+      footerStats.textContent = "Total Rows: —";
+      searchStatus.textContent = "Showing: —";
+      footerUpdated.textContent = "Last Updated: —";
+    }
+  }
+
   async function boot() {
     initDarkMode();
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      applySearch("");
+      searchInput.focus();
+    });
     exportBtn.addEventListener("click", exportCsv);
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); }
     });
-
-    try {
-      await loadMeta();          // fire and await footer info (fast, optional)
-    } catch (err) {
-      footerStats.textContent = "Total Rows: —";
-      footerUpdated.textContent = "Last Updated: —";
-    }
-
-    try {
-      const data = await loadData();
-      initTable(data);
-      console.info(`[docsheet] Loaded ${data.length} rows`);
-    } catch (err) {
-      console.error("[docsheet] Failed to load data.json:", err);
-      $("spreadsheet").innerHTML =
-        '<div class="load-error">Could not load data.json — make sure the site is served over HTTP ' +
-        '(e.g. GitHub Pages or `python -m http.server`), not opened directly from disk.</div>';
-      footerStats.textContent = "Total Rows: —";
-      footerUpdated.textContent = "Last Updated: —";
-    }
+    document.querySelectorAll(".dataset-tab").forEach((tab) => {
+      tab.addEventListener("click", () => activateView(tab.dataset.view));
+    });
+    await activateView(activeView);
   }
 
   if (document.readyState === "loading") {

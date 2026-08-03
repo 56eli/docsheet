@@ -1,0 +1,26 @@
+[
+  {
+    "publisher": "Veritas Publishing",
+    "official_catalogue_url": "https://veritaspub.com/hawkins-products/",
+    "status": "approved",
+    "role": "Primary creator-affiliated publisher / catalogue"
+  },
+  {
+    "publisher": "Hay House",
+    "official_catalogue_url": "https://www.hayhouse.com/authorbio/david-r-hawkins-m-d-ph-d",
+    "status": "approved",
+    "role": "Book publisher catalogue"
+  },
+  {
+    "publisher": "Nightingale-Conant",
+    "official_catalogue_url": "https://www.nightingale.com/pages/david-hawkins",
+    "status": "approved",
+    "role": "Audio-program publisher catalogue"
+  },
+  {
+    "publisher": "Audible",
+    "official_catalogue_url": "https://www.audible.com/author/David-R-Hawkins/B001H6MLOO",
+    "status": "approved",
+    "role": "Official platform catalogue; not a publisher"
+  }
+]
