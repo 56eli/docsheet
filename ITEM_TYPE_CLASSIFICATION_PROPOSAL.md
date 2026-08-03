@@ -1,8 +1,106 @@
 # Item Type Classification Proposal — the 87 Untyped Master Items
 
 **Prepared:** 2026-08-03
-**Status:** ⏳ **Awaiting your approval — no data has been changed.**
+**Status:** ⏳ **Awaiting approval — REVISED v3, no data changed.**
 **Scope:** the 87 master records (of 308) with an empty `item_type`.
+
+---
+
+## ⚠️ v3 — I was wrong, and you were right to challenge it
+
+You asked whether `video` means *medium* or *content class*. Checking the existing
+precedent shows **my v1/v2 proposal was internally inconsistent and would have
+corrupted the field's meaning.**
+
+**The precedent is unambiguous:**
+
+| Existing records | `item_type` | `format` |
+|---:|---|---|
+| 198 | `lecture` | `DVD` |
+| 23 | `book` | *(blank)* |
+
+Those 198 records are **DVDs — a video medium — typed as `lecture`**. So the
+established contract is:
+
+> **`item_type` = what the thing *is* (content class). `format` = what it's *on* (medium).**
+
+My earlier proposal typed Volume/Office/Discussion as `video` and
+Satsang/On-The-Road-12 as `audio` — i.e. **by medium**. That would have created two
+mutually contradictory conventions in one column: a DVD lecture typed `lecture`,
+but a CD talk typed `audio`. Sorting or filtering by `item_type` would then return
+incoherent results, and the field would silently stop meaning one thing.
+
+The root cause is that the controlled vocabulary itself **mixes two axes**:
+
+- **content class:** `lecture, book, interview, transcript, dissertation, article, highlight`
+- **medium:** `audio, video` ← the trap
+- **escape hatch:** `other`
+
+The presence of `audio`/`video` in that list invited exactly the mistake I made.
+
+### What this also means
+
+The elaborate D3a/D3b split I derived in v2 — 18 `lecture` vs 12 `audio`, justified
+by SKU prefixes and streaming availability — **was solving the wrong problem.** All
+30 are recorded public talks. The DVD/CD difference is real, but it is a `format`
+fact, not an `item_type` fact. Under a content-class reading the split disappears.
+
+---
+
+## Revised proposal (v3) — classify by content class
+
+| # | Series | Records | `item_type` | `format` | Rationale |
+|---|---|---:|---|---|---|
+| D1 | Love & Spiritual Seeker Qualities | 3 | `lecture` | *(blank)* | Q&A sessions within a lecture series; siblings already `lecture` |
+| D2 | Volume Series | 13 | `lecture` | *(blank)* | Numbered studio teaching presentations (Volume I–VII) |
+| D3 | On The Road Talk Series | 30 | `lecture` | *(blank)* | Recorded public talks — one official series; DVD/CD is a `format` distinction |
+| D4 | Office Series | 16 | `lecture` | *(blank)* | Single-topic clinical talks A-01…B-06 |
+| D5 | Satsang Series | 13 | `lecture` | *(blank)* | Dated satsang teaching sessions |
+| D6 | Discussion Series | 8 | **`interview`** | *(blank)* | **Two-party dialogues** — see below |
+| D7 | Media Miscellaneous (265) | 1 | `lecture` | *(blank)* | Golden Word book-signing Q&A event |
+| — | Deferred placeholders (246, 249, 264) | 3 | *(none)* | — | Identity in doubt — see §4 |
+
+**Total typed: 84 of 87.** Final distribution across all 308 master records:
+**274 `lecture`, 23 `book`, 8 `interview`, 3 untyped.**
+
+### Why D6 is `interview` and not `lecture`
+
+This is the one genuine content-class difference in the set, and it's confirmed by
+the publisher. The official product page for *What is Meant by Spiritual (2012)*
+states:
+
+> "Dr. Hawkins **and his wife Susan** explore the different facets of spirituality."
+
+The series is titled *"Discussion Series with Dr. David Hawkins & Wife Susan"* in
+the raw sheet, and Veritas files it under its own `Discussion Series` category
+(SKU `ds2014_01_dvd`). A two-party dialogue is structurally different from a
+solo talk, and `interview` is the vocabulary's closest content-class value.
+
+> If you consider `interview` misleading (Susan is a co-participant, not an
+> interviewer), the alternatives are `lecture` for consistency, or adding a
+> `discussion` value to the vocabulary. Say which you prefer.
+
+### Why `format` stays blank
+
+The raw spreadsheet has **no format data for any of these 87 records**. Slug and
+SKU hints exist but are inconsistent and partial. Populating `format` from them
+would be inference presented as evidence. The medium facts I gathered (SKU
+prefixes, disc-set descriptions, streaming availability) are recorded in the
+decision document so a later, deliberate `format` pass can use them.
+
+## Side effects — re-verified for v3
+
+| Measure | Result |
+|---|---:|
+| Existing catalogue codes broken | **0** |
+| New catalogue codes created | 23 |
+| `item_type` coverage | 221/308 → **305/308** |
+| Master IDs affected | none |
+
+All 23 new codes are `LECTURE-YYYY-NNN`, appending cleanly to existing year
+sequences (e.g. `LECTURE-2007-028…032` for the 2007 Satsang records). Because
+everything resolves to `lecture`, no new code prefix is introduced — a further
+sign this reading is the consistent one.
 
 ---
 
@@ -249,26 +347,13 @@ Types belong in the **migration ledger** (`proposed_item_type`), the declared in
 
 ## 7. Summary — what I need approved
 
-| # | Series | Records | Proposed | Confidence |
-|---|---|---:|---|---|
-| D1 | Love & Spiritual Seeker Qualities | 3 | `lecture` | High |
-| D2 | Volume Series | 13 | `video` | High |
-| D3a | On The Road — original (owned video) | 18 | `lecture` | High |
-| D3b | On The Road — moved by SR-1 (unowned CD audio) | 12 | `audio` | High |
-| D4 | Office Series | 16 (excl. 246, 249) | `video` | High |
-| D5 | Satsang Series | 13 | `audio` | High *(resolved)* |
-| D6 | Discussion Series | 8 | `video` | Med-High |
-| D7 | Media Miscellaneous (now 2 records) | 1 | `audio` for 265; 264 deferred | High |
-| ~~SR-1~~ | ~~12 records mis-grouped → On The Road~~ | 12 | ✅ **applied** `973519d` | — |
-| — | Deferred placeholders | 3 | none | — |
+**See the v3 table at the top of this document.** In one line:
 
-**Default if you just say "approved":** I apply D1–D7 as written — typing **84 of
-87** records and leaving only the 3 placeholder rows in §4 untyped.
+> Type all 84 by **content class**: 83 `lecture` + 8 `interview` (Discussion
+> Series), `format` left blank, 3 placeholders deferred.
 
-Final type distribution across the 84:
+The sections below (§1–§6) are the original evidence gathering and remain valid;
+only the *interpretation* of `item_type` changed in v3.
 
-| Type | Records |
-|---|---:|
-| `lecture` | 3 (D1) + 18 (D3a) = **21** |
-| `video` | 13 (D2) + 16 (D4) + 8 (D6) = **37** |
-| `audio` | 12 (D3b) + 13 (D5) + 1 (D7) = **26** |
+**Open question:** whether D6 should be `interview`, `lecture`, or a new
+`discussion` vocabulary value.
