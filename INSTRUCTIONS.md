@@ -88,6 +88,14 @@ python -m http.server 8000
 # open http://localhost:8000/docs/
 ```
 
+To verify browser behavior, including CSV export from the active spreadsheet view:
+
+```bash
+npm ci
+npm run test:e2e:install
+npm run test:e2e
+```
+
 ### Curated catalogue and review workspace
 
 The raw spreadsheet pipeline is separate from the reviewed research catalogue.

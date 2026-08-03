@@ -15,7 +15,7 @@
 | Raw spreadsheet data rows preserved in the ledger | 374 |
 | Clean migrated item records | 308 |
 | Excluded provenance/context rows | 66 |
-| UUIDs | 308 unique UUIDv7 values |
+| IDs | 308 unique compact numeric ID values |
 | Readable catalogue codes assigned | 198 |
 | Lecture records with `LECTURE-YEAR-SEQUENCE` codes | 198 |
 | Records with blank catalogue code pending verified type/year | 110 |
@@ -27,7 +27,7 @@
 
 ## What was migrated cleanly
 
-- Each of the 308 candidate material rows now has a stable UUIDv7.
+- Each of the 308 candidate material rows now has a stable compact numeric ID.
 - The 198 `LS` lecture-part rows have a distinct readable catalogue code, canonical title without only the trailing date/DVD label, series, year/month, DVD detail, ownership status, and valid Veritas URL where present.
 - Existing `tempid` values are retained as `legacy_tempid`; they are not treated as primary keys.
 - The approved source URL columns and public location fields exist in the draft schema, even where current values are blank.
@@ -50,7 +50,7 @@ No raw data is deleted. The raw CSV, full migration ledger, and exclusions CSV r
 
 ## Important unresolved work
 
-1. **87 records have no approved item type** and **110 have no readable catalogue code** because type and/or year are not verified. This follows the approved UUID-only fallback rule.
+1. **87 records have no approved item type** and **110 have no readable catalogue code** because type and/or year are not verified. This follows the approved ID-only fallback rule.
 2. The three malformed August 2002 *Advaita* URLs remain excluded from the Veritas URL field pending correction; the three February 2007 *Relativism vs Reality* parts still have no product URL.
 3. The draft has not replaced `docs/data.json`, so the current public site remains unchanged until the clean dataset and UI transition are explicitly approved.
 4. Internet-discovered material must enter through a separate research-import queue; it should not be mixed into the raw spreadsheet or silently added to the draft.
@@ -66,4 +66,4 @@ The requested next phase is to discover Hawkins-related material beyond this spr
 - proposed ownership/location fields left blank unless known
 - confidence/review notes
 
-Only after review should an external candidate receive a UUID and be added to the research-master draft.
+Only after review should an external candidate receive a ID and be added to the research-master draft.

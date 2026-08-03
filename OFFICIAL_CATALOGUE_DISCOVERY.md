@@ -44,7 +44,7 @@ This confirms that the current spreadsheet is not yet a complete representation 
 3. *Healing*
 4. *Naked* (a multi-contributor item)
 
-The queue deliberately contains **no UUID, no catalogue code, and no ownership claim**. Each row needs approval and relationship research before import, consistent with the approved AI-drafts/human-approval workflow.
+The queue deliberately contains **no ID, no catalogue code, and no ownership claim**. Each row needs approval and relationship research before import, consistent with the approved AI-drafts/human-approval workflow.
 
 ## Important comparison rule
 

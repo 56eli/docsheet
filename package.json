@@ -1,0 +1,13 @@
+{
+  "name": "docsheet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser smoke tests for the DocSheet GitHub Pages spreadsheet.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

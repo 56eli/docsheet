@@ -161,7 +161,7 @@ def validate_product_relationships(
             )
         if master_uuid not in master_by_uuid:
             raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} references an unknown master UUID: {master_uuid!r}"
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} references an unknown master ID: {master_uuid!r}"
             )
         if source_name != "veritas":
             raise ValueError(

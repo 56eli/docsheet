@@ -16,7 +16,7 @@ This prevents a live refresh from resetting reviewed non-primary dispositions su
 |---|---|
 | `veritas_product_id` | Must identify one current official product and appear only once. |
 | `mapping_status` | One reviewed non-primary status: `unique_item`, `compilation_or_new_edition`, `excluded_related_material`, `matched_by_title`, or `matched_by_normalized_title`. |
-| `matched_master_uuids` / `matched_master_titles` | Required only for match statuses; titles must exactly match the current referenced master UUIDs. |
+| `matched_master_uuids` / `matched_master_titles` | Required only for match statuses; titles must exactly match the current referenced compact master IDs. The column name is retained for compatibility. |
 | `review_notes` | Preserved inventory note. |
 | `review_status` / `reviewed_on` | Must be `approved` and an ISO date. |
 | `decision_reason` | Non-empty human rationale for retaining the decision. |

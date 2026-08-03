@@ -1,27 +1,32 @@
 # Project State Audit — DocSheet / Hawkins Research Catalogue
 
 **Audited:** 2026-08-03
-**Branch:** `arena/019fc6af-docsheet`
-**Main synchronization:** includes `cf2f3c4` (`Update Spreadsheet` now commits `docs/` outputs)
-**Scope:** Repository state, reproducibility, review data, Pages artifacts, workflows, and documentation.
-**Transition guide:** [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
+**Branch audited:** `arena/019fc714-docsheet`
+**Repository:** `56eli/docsheet`
+**Live Pages:** `https://56eli.github.io/docsheet/`
+**Scope:** Repository architecture, data model, reproducibility, generated Pages artifacts, workflows, live-source controls, UX state, documentation, and prioritized engineering backlog.
 
 ## Executive summary
 
-The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected on this branch by a 35-row product-ID decision overlay, retrying API client, and review-only candidate/diff workflow. The workflow YAML is already in `main`, but the matching code/data changes still require branch merge before another manual Actions run.
+DocSheet is a static GitHub Pages catalogue/review workspace backed by a preserved raw CSV, reviewed CSV decision layers, Python generators, committed JSON artifacts under `docs/`, and a Tabulator-based browser UI. The project now uses compact numeric master IDs (`1` through `308`) instead of long UUID values, and all master references in relationships, Veritas mapping decisions, inventories, generated Pages JSON, documentation, and UI labels have been migrated. The spreadsheet UX has been substantially improved with per-view descriptions, readable URL labels, view-specific column ordering/widths, a column chooser, row details drawer, active filter chips, and CSV export browser smoke-test files. Local deterministic checks pass; the only blocked verification remains true browser execution because this sandbox cannot download Chromium, and workflow-file creation because the configured GitHub App lacks `workflows` permission.
 
-## Validation completed
+## Validation completed in this audit
 
-| Check | Result |
-|---|---|
-| Python syntax compilation for all repository scripts | Pass |
-| `node --check docs/app.js` | Pass |
-| `python build_research_master.py --check` | Pass |
-| `python build_catalogue_pages.py --check` | Pass |
-| `python reconcile_research_master.py --check` | Pass |
-| Isolated clean-directory master/pages rebuild | Pass |
-| Local HTTP smoke test for review workspace | Pass |
-| `git diff --check` | Pass |
+| Check | Result | Notes |
+|---|---|---|
+| `python -m py_compile *.py` | Pass | All repository Python scripts compile under Python 3.11.2. |
+| `node --check docs/app.js` | Pass | Spreadsheet JavaScript syntax passes. |
+| `node --check playwright.config.js` / `node --check tests/csv-export.spec.js` | Pass | Browser smoke-test files parse. |
+| `python build_research_master.py --check` | Pass | 308 master items, 66 exclusions, 80 source overrides, 17 manual candidates validated. |
+| `python build_catalogue_pages.py --check` | Pass | 344 Everything rows; generated Pages outputs match inputs. |
+| `python reconcile_research_master.py --check` | Pass | Reconciliation report matches current compact-ID ledger/master projection. |
+| `npx playwright test --list` | Pass | Two CSV export browser tests are discoverable. |
+| Playwright browser execution | Blocked locally | `npx playwright install chromium` fails in this sandbox with TLS/network resets. Run in GitHub Actions or another browser-capable environment. |
+| Local HTTP smoke check | Pass | `/docs/`, `app.js`, `master.json`, `product-relationships.json`, and `veritas-products.json` returned HTTP 200. |
+| Old UUID scan | Pass | No RFC-style UUID values remain in repository text files after migration. |
+| Compact master ID integrity | Pass | 308 unique numeric IDs, min `1`, max `308`, no duplicates. |
+| `git diff --check` | Pass | No whitespace errors. |
+| `python fetch_veritas_catalogue.py --check` from this sandbox | Blocked by external TLS/network | Local direct API call previously failed after retries with TLS EOF; use the review-only workflow artifact path. |
 
 ## Current data state
 
@@ -30,105 +35,141 @@ The repository is a working static GitHub Pages research catalogue with a preser
 | Raw spreadsheet | 374 data rows | `hawkins archive clone - Sheet1.csv` |
 | Migration review | 374 classified rows | `migration_review_ledger.csv` |
 | Curated master | 308 CSV + JSON records | `data/research_master_draft.*` |
+| Compact master IDs | `1`–`308`, unique | `uuid` field retained for compatibility, displayed as **Master ID** |
 | Excluded raw rows | 66 | `data/research_master_exclusions.csv` |
 | Approved source overrides | 80 | `data/research_master_source_overrides.csv` |
 | Manual research leads | 1 | `data/research_manual_leads.csv` |
 | Reviewed, unpromoted manual candidates | 17 | `data/manual_master_candidates.csv` |
 | Veritas official inventory | 191 products | `data/veritas_official_products.csv` |
 | Approved Veritas mapping decisions | 35 | `data/veritas_mapping_decisions.csv` |
-| Item-to-product relationships | 301 | `data/product_relationships.csv` |
-| Series-compilation relationships | 7 | `data/series_compilation_relationships.csv` |
+| Hay House official products | 24 products | `data/hayhouse_official_products.csv` |
+| Audible official products | 26 products | `data/audible_official_products.csv` |
+| Official discovery candidates | 4 records | `data/official_discovery_queue.csv` |
+| International edition leads | 38 Pages rows | `data/international_discovery_queue.csv` plus Spanish Audible listings |
+| Item-to-product relationships | 301 reviewed relationships | `data/product_relationships.csv` |
+| Series-compilation relationships | 7 reviewed relationships | `data/series_compilation_relationships.csv` |
 | Everything Pages view | 344 records | `docs/master.json` |
+| Original Spreadsheet Pages view | 374 records | `docs/data.json` |
+
+### Master integrity snapshot
+
+| Check | Result |
+|---|---:|
+| Master IDs | 308 non-empty, 0 duplicates, range `1`–`308` |
+| Catalogue codes | 198 non-empty, 0 duplicates |
+| Raw row provenance keys | 308 non-empty, 0 duplicates |
+| Item types | 198 `lecture`, 23 `book`, 87 blank/unclassified |
+| Ownership | 281 `true`, 27 `false` |
+| Master Veritas source URLs | 294 non-empty |
+| Master Audible source URLs | 8 non-empty |
 
 ### Veritas inventory disposition
 
 | Status | Products | Interpretation |
 |---|---:|---|
 | `matched_by_primary_source` | 147 | Exact URL already used by one or more master records. |
-| `matched_by_title` / `matched_by_normalized_title` | 7 | Non-primary title matches; their reviewed relationship/disposition is retained separately. |
+| `matched_by_title` / `matched_by_normalized_title` | 7 | Reviewed non-primary title matches retained by decision overlay. |
 | `unique_item` | 9 | Official products not represented by a current master record. |
 | `compilation_or_new_edition` | 15 | Broad official candidates; seven annual Highlights have series-level evidence. |
 | `unmatched_official_product` | 9 | Date-specific Satsang products with no current master record. |
 | `excluded_related_material` | 4 | Explicitly excluded spin-off/promotional material. |
 
-## Public review workspace
+## Architecture and data-flow assessment
 
-The Pages application exposes all core review inputs as dedicated searchable/exportable sheets:
+```text
+Raw Google Sheets CSV
+  ├─ process_data.py ───────────────▶ docs/data.json + docs/meta.json
+  └─ migration_review_ledger.csv
+       ├─ build_research_master.py ─▶ compact master IDs + data/research_master_draft.* + exclusions
+       │    ├─ source overrides
+       │    └─ manual candidates validated but not promoted
+       └─ build_catalogue_pages.py ─▶ docs/master.json and review/product JSON sheets
+```
 
-- Review Overview
-- Master Candidates (17)
-- Manual Leads (1)
-- Master Exclusions (66)
-- Migration Review (374)
-- Source Overrides (80)
-- Official Discovery (4)
-- Veritas Decisions (35)
-- Series Compilations (7)
-- Product Relationships (301)
+### Strengths
 
-Review tabs have humanized headers, status badges, visual grouping, and a status/disposition filter where multiple values exist. The current public Pages deployment still serves `main` → `/docs`; the branch artifacts become public only after merge/deployment.
+- Raw evidence is preserved and generators do not mutate the source spreadsheet.
+- Compact numeric master IDs are stable across rebuilds by raw row number and capped at the approved 1–10000 range.
+- All current relationship and inventory references were migrated to compact master IDs.
+- Generated master and Pages artifacts have read-only `--check` modes.
+- Reconciliation compares committed generated files against the current ledger projection before rebuilding.
+- Reviewed source overrides, Veritas mapping decisions, product relationships, and series-compilation relationships are explicit CSV inputs instead of hidden edits in generated JSON.
+- Pages review UX now has view descriptions, row counts/type/export metadata, readable source links, column presets, a column chooser, row details, active filter chips, and CSV export smoke-test files.
+- The Veritas refresh workflow remains review-only and writes ignored candidate/diff artifacts rather than auto-committing live data.
+
+## UX state
+
+Implemented during this session:
+
+1. **CSV export smoke tests:** `package.json`, `package-lock.json`, `playwright.config.js`, and `tests/csv-export.spec.js` add tests for filtered export and selected-view export filenames.
+2. **View descriptions/counts:** each tab shows purpose, row count, type, and export filename.
+3. **Readable URL cells:** long URLs render as labels such as “Veritas product” or “Evidence” while preserving raw values in data/export.
+4. **Column presets:** important columns are reordered, width-tuned, and frozen per view; compact Master ID columns are slimmer.
+5. **Column chooser:** users can hide/show columns per active view and restore all columns.
+6. **Row details drawer:** clicking a row opens all fields in a readable side drawer.
+7. **Active filter feedback:** search/review filters appear as chips with a clear-all control.
+
+Known UX backlog:
+
+- Disable or clarify session-only editing.
+- Add explicit export modes (`filtered`, `all visible`, later `selected`).
+- Add copy-to-clipboard affordances for IDs and source URLs.
+- Add real browser CI once workflow permissions are available.
 
 ## Workflow and deployment state
 
 | Area | State | Audit result |
 |---|---|---|
-| GitHub Pages | Public, built from `main` → `/docs` | Healthy configuration; branch changes are not deployed yet. |
-| Update Spreadsheet workflow | `process_data.py` writes and auto-commits `docs/data.json` + `docs/meta.json` on `main` | Path mismatch is resolved in `main` and synchronized into this branch. |
-| Map Veritas Catalogue workflow | `main` has the review-only YAML, but not yet this branch’s matching fetch code/decisions | Merge branch code/data first, then perform one manual live artifact verification run. |
-| Pull-request validation | No workflow | Gap. Local checks are documented but not enforced remotely. |
+| GitHub Pages | Public, built from `main` → `/docs` | Healthy before branch merge; branch changes deploy after merge. |
+| Update Spreadsheet workflow | Manual and CSV-change trigger on `main`; regenerates raw `docs/data.json` and `docs/meta.json` | Functional pattern, but lacks a `process_data.py --check` mode and writes dynamic timestamps. |
+| Map Veritas Catalogue workflow | Manual only; review-only candidate/diff artifact | Latest known `main` run `30803991007` fetched a candidate and intentionally failed at compare, requiring artifact review. |
+| Pull-request validation | Browser tests exist, but no CI workflow was pushed | Adding `.github/workflows/ci.yml` was blocked by GitHub App `workflows` permission. |
+| Branch state | Work pushed to `arena/019fc714-docsheet` | Ready for PR/merge per user request after final documentation update. |
+
+## Security, privacy, and supply-chain assessment
+
+| Area | Assessment | Risk |
+|---|---|---|
+| Secrets | No application secrets or credentials are required by code; GitHub auth is external to repo. | Low |
+| Workflow permissions | Existing workflow permissions are narrow; workflow-file updates are blocked by current GitHub App permissions. | Operational gap |
+| External JavaScript/CSS | Tabulator is pinned to `6.5.2` via jsDelivr, but no Subresource Integrity or self-hosted fallback exists. | Medium |
+| External fonts | Google Fonts are loaded from the public site. | Low/Medium privacy dependency |
+| Python dependencies | `requirements.txt` only specifies `pandas>=2.0`; no upper bound or lock/constraints file. | Medium reproducibility risk |
+| Node dependencies | Playwright is locked in `package-lock.json`; browser binaries still download at test runtime. | Medium network/runtime dependency |
+| Content Security Policy | Static site has no CSP header/meta policy; inline dark-mode bootstrap currently requires inline script allowance. | Medium hardening gap |
+| User editing | Tabulator inline edits are session-only and not persisted; footer warns users. | Medium UX/data-governance risk if reviewers misunderstand |
+| Live remote fetch | Veritas API availability/TLS behavior varies by environment; workflow artifact path is the authoritative review route. | Medium operational risk |
 
 ## Findings and prioritized backlog
 
-### P0 — Preserve curated Veritas mapping decisions on refresh (branch implementation complete; merge/run pending)
+### P0 — PR and merge the current branch
 
-`data/veritas_mapping_decisions.csv` stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. The retrying fetch client handles transient empty/non-JSON API responses with clear diagnostics. The review-only Map Veritas workflow YAML is already in `main`; this branch supplies its required code and decision data.
+The branch contains a coordinated data migration, generated artifact rebuild, frontend UX improvements, tests, and documentation updates. Merge as a unit so `main` and Pages are internally consistent.
 
-**Remaining action:** merge this branch’s code/data, then perform one manual Actions run to verify the candidate/diff artifact behavior against the live API.
+### P1 — Add CI workflow once workflow permissions are available
 
-### P1 — Add automated CI and release checks
+The test files are committed, but `.github/workflows/ci.yml` could not be pushed because the configured GitHub App lacks workflow-file permission. Add CI when permissions are available: Python compilation, master/pages/reconciliation checks, `node --check`, `npm ci`, `npm run test:e2e`, and static JSON/page smoke tests. Keep live Veritas fetching manual.
 
-**Issue:** checks pass locally but there is no PR workflow enforcing syntax, reproducibility checks, JSON generation, or review-input validation.
+### P1 — Review the current live Veritas candidate artifact
 
-**Required remedy:** Add a read-only CI workflow for `py_compile`, `node --check`, master/pages/reconciliation `--check`, and an HTTP/static-tab smoke test. Keep remote source fetch manual.
+Run `30803991007` uploaded artifact `veritas-inventory-review-30803991007` (`artifact_id=8851979247`, digest `3f06b4499dd21840abf995725621f1f7724261f2546e1ae7d6da8c2427f15c3d`). Download outside this sandbox, inspect candidate/diff, and only then update reviewed inventory or mapping decisions.
 
-### P1 — Define the candidate-promotion workflow
+### P1 — Disable or clarify session-only editing
 
-**Issue:** 17 evidence-backed candidates have durable keys and validation, but no approved mechanism promotes selected rows into the master with a UUID, catalogue code, ownership, and source relationship.
+Inline edits are convenient but can mislead reviewers. Disable editing by default for review sheets or add a stronger unsaved-edits state.
 
-**Required remedy:** Add an explicit promotion-decision input and a reviewed generator path. Do not edit generated master CSV/JSON directly.
+### P1 — Define candidate-promotion workflow
 
-### P1 — Decide the nine unmatched Satsang products
+17 evidence-backed manual candidates are durable and validated, but no approved generator path promotes selected candidates into the master with compact ID, catalogue code, ownership, source provenance, and rationale.
 
-**Issue:** the date matcher correctly retains nine official Satsang products as inventory-only, but their potential master-candidate status is unresolved.
+### P2 — Formalize schemas and build provenance
 
-**Required remedy:** Review identity, type, year, ownership, and scope one record at a time before promotion or exclusion.
+Publish machine-readable CSV/JSON contracts and emit source hashes, row counts, schema version, generator commit, and build time.
 
-### P2 — Formalize schemas and provenance manifest
+### P2 — Make the raw spreadsheet pipeline checkable
 
-**Issue:** custom validation exists for several CSVs, but the master, inventory, relationship, candidate, and review files have no versioned machine-readable schema or build manifest.
-
-**Required remedy:** Publish JSON Schemas/CSV contracts and emit source hashes, row counts, schema version, generator commit, and build time.
-
-### P2 — Make raw-spreadsheet freshness verifiable
-
-**Issue:** `process_data.py` deliberately writes a dynamic timestamp to `docs/meta.json`; it has no equivalent `--check` mode, and the currently committed raw metadata timestamp is older than the research-catalogue artifacts.
-
-**Required remedy:** Add a raw-pipeline validation mode that compares deterministic data and structural metadata while treating the timestamp as expected dynamic output.
-
-### P3 — Browser/accessibility and dependency hardening
-
-**Issue:** the site uses CDN-hosted Tabulator and Google Fonts, inline edits are session-only, and browser interaction tests are only local smoke checks.
-
-**Required remedy:** Add automated browser tests for tabs/search/status filter/export; consider self-hosted dependencies or documented CDN fallback; keep the session-only edit warning prominent or disable editing on review sheets.
-
-## Deliberate, accepted boundaries
-
-- The raw spreadsheet is never modified by generators.
-- The research master is not an exhaustive work/edition/copy hierarchy.
-- Broad Everything candidates are intentionally distinct from promoted master records.
-- Commercial inventory entries may be compilations, formats, editions, derivatives, or related material.
-- The project is static; Pages exposes committed `docs/` artifacts publicly under the existing policy.
+Add a deterministic `process_data.py --check` mode that compares `docs/data.json` and structural metadata while treating the timestamp as dynamic/expected.
 
 ## Recommended next action
 
-Manually run the review-only **Map Veritas Catalogue** workflow once, then implement the read-only CI workflow. This turns the new refresh safeguard into an operationally verified control before any additional candidate promotion or live-source refresh.
+Open a PR from `arena/019fc714-docsheet`, review the compact-ID migration and UX changes as one unit, merge it to `main`, then verify the Pages deployment.

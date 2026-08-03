@@ -212,7 +212,7 @@ def render_report() -> str:
         "",
         "## Field differences for matching provenance rows",
         "",
-        "Each entry is an exact current-draft value followed by the current ledger-derived value. UUIDs are included if they differ, because an identity change requires review.",
+        "Each entry is an exact current-draft value followed by the current ledger-derived value. Master IDs are included if they differ, because an identity change requires review.",
         "",
     ])
     if comparison.changed:

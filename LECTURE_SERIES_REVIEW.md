@@ -1,6 +1,6 @@
 # Lecture Series — Migration Review Batch
 
-**Status:** Review-only proposal; no item records, UUIDs, catalogue codes, or source data have been changed.
+**Status:** Review-only proposal; no item records, IDs, catalogue codes, or source data have been changed.
 **Review CSV:** `lecture_series_review.csv`
 **Generator:** `generate_lecture_review.py`
 
@@ -51,4 +51,4 @@ The part remains represented separately by `format = DVD` and `format_detail = D
 
 ## Approval boundaries
 
-Approving this batch would approve only the migration metadata proposals for the 198 `LS` rows. It would **not** change the raw CSV, alter the published site, create UUIDs, generate catalogue codes, or approve non-lecture records.
+Approving this batch would approve only the migration metadata proposals for the 198 `LS` rows. It would **not** change the raw CSV, alter the published site, create IDs, generate catalogue codes, or approve non-lecture records.

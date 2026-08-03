@@ -19,6 +19,14 @@ python process_data.py
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
 
+Browser smoke tests, including CSV export, are available with Playwright:
+
+```bash
+npm ci
+npm run test:e2e:install
+npm run test:e2e
+```
+
 ## Catalogue-data safeguard
 
 The raw spreadsheet pipeline above is independent from the curated research

@@ -25,7 +25,7 @@ The following distinct official products are added to `data/manual_master_candid
 7. *The Power of Love: A Transformed Heart Changes the World*
 8. *The Ego is Not the Real You*
 
-They remain visible as official broad candidates but do not gain a master UUID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is approved.
+They remain visible as official broad candidates but do not gain a master ID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is approved.
 
 ## Annual Highlights
 

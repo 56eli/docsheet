@@ -2,8 +2,8 @@
 """Build or verify the clean research-master draft from the review ledger.
 
 The raw source CSV and ``docs/data.json`` are never modified.  This generator
-writes reviewable draft outputs in ``data/`` and retains UUIDv7 values across
-reruns by raw source row number.  Use ``--check`` to compare generated content
+writes reviewable draft outputs in ``data/`` and retains compact numeric master
+IDs across reruns by raw source row number.  Use ``--check`` to compare generated content
 with the committed outputs without writing any files.
 """
 
@@ -13,11 +13,8 @@ import argparse
 import csv
 import io
 import json
-import random
 import re
 import sys
-import time
-import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -70,15 +67,48 @@ class MasterBuild:
     outputs: dict[Path, str]
 
 
-def uuid7() -> str:
-    """Create an RFC 9562 UUIDv7 using the current Unix millisecond timestamp."""
-    timestamp_ms = int(time.time() * 1000)
-    value = (timestamp_ms & ((1 << 48) - 1)) << 80
-    value |= 0x7 << 76
-    value |= random.getrandbits(12) << 64
-    value |= 0b10 << 62  # RFC 4122 variant
-    value |= random.getrandbits(62)
-    return str(uuid.UUID(int=value))
+COMPACT_ID_MAX = 10_000
+
+
+def is_compact_id(value: str) -> bool:
+    """Return whether a retained master identifier is in the approved compact range."""
+    return value.isdigit() and 1 <= int(value) <= COMPACT_ID_MAX
+
+
+def assign_compact_ids(
+    item_rows: list[dict[str, str]],
+    retained_ids: dict[str, str],
+) -> dict[str, str]:
+    """Assign stable human-scale master IDs in the range 1..10000.
+
+    Existing compact IDs are retained by raw source row number. New or migrated
+    rows receive the lowest available integer ID, which keeps identifiers short
+    for the public spreadsheet while preserving references across rebuilds.
+    """
+    ids_by_raw: dict[str, str] = {}
+    used: set[str] = set()
+
+    for row in item_rows:
+        raw_row = row["raw_row_number"]
+        retained = retained_ids.get(raw_row, "").strip()
+        if is_compact_id(retained) and retained not in used:
+            ids_by_raw[raw_row] = retained
+            used.add(retained)
+
+    next_id = 1
+    for row in item_rows:
+        raw_row = row["raw_row_number"]
+        if raw_row in ids_by_raw:
+            continue
+        while str(next_id) in used:
+            next_id += 1
+        if next_id > COMPACT_ID_MAX:
+            raise ValueError(f"Master item count exceeds compact ID range 1..{COMPACT_ID_MAX}")
+        assigned = str(next_id)
+        ids_by_raw[raw_row] = assigned
+        used.add(assigned)
+        next_id += 1
+    return ids_by_raw
 
 
 def existing_uuids() -> dict[str, str]:
@@ -282,6 +312,7 @@ def build_master() -> MasterBuild:
     retained_uuids = existing_uuids()
     item_rows = [row for row in ledger if row["disposition"] == "item"]
     excluded_rows = [row for row in ledger if row["disposition"] != "item"]
+    compact_ids = assign_compact_ids(item_rows, retained_uuids)
 
     sequences: dict[tuple[str, str], int] = {}
     items: list[dict[str, str]] = []
@@ -289,7 +320,7 @@ def build_master() -> MasterBuild:
         item_type = row["proposed_item_type"]
         year = row["proposed_year"]
         code = ""
-        # The approved rule is UUID-only until type and year are verified.
+        # The approved rule is ID-only until type and year are verified.
         # This conservative draft assigns readable codes only where both are proposed.
         if item_type and year:
             key = (item_type.upper(), year)
@@ -297,9 +328,8 @@ def build_master() -> MasterBuild:
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
         ref_1, ref_2 = reference_urls(row)
         canonical_title = title_for(row)
-        retained_uuid = retained_uuids.get(row["raw_row_number"])
         items.append({
-            "uuid": retained_uuid if retained_uuid else uuid7(),
+            "uuid": compact_ids[row["raw_row_number"]],
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
