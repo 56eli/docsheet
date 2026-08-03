@@ -216,3 +216,43 @@ coverage gate (exit 0), `node --check` ×3, `git diff --check`.
 
 Battery green: `py_compile`, all five `--check` (no warning now), **62 tests**,
 coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.
+
+### 11c. Root-cause: why 17 of 29 books have no `format=book` (owner question)
+
+**Mechanism.** The only format backfill is `infer_format_from_official_source()`
+in `build_research_master.py`. It never overwrites a value, but it has three
+compounding blind spots:
+
+1. **Slug-shape dependency.** It guesses the Veritas product ID as the slug's
+   first `-`-token and looks it up in the inventory. All 12 blank-format books
+   that *do* have a Veritas URL use **word slugs without a numeric ID prefix**
+   (`healing-and-recovery-copy`, `the-map-of-consciousness-explained`, …), so
+   the lookup silently misses and no signal is ever evaluated. The 12 books
+   that got `format=book` (e.g. 287–290, 314–319) were labeled only because
+   their URLs happen to use ID-prefixed slugs with `-book`/`(Book)` markers —
+   the current labels are an accident of URL form, not a principled rule.
+2. **Narrow marker vocabulary.** Even a successful lookup only recognizes
+   `book` in the slug or `(book)` in the official title; only 3 of the 12
+   URL-bearing blanks (291, 295, 296) carry such a marker. All 12 resolve to
+   products whose publisher category is **"Books Published by Dr. Hawkins"**
+   (populated 191/191 in the inventory), but the inference never consults
+   `official_categories`.
+3. **Veritas-only scope.** 5 books have no Veritas URL at all: 286 (Audible
+   only; HH *Power vs Force* paperback exists but no master HH URL), 298/299
+   (*Along the Path to Enlightenment*, *Dissolving the Ego* — HH eBook rows
+   exist but the master has no HH URL, so a source override would be needed
+   first), 301 (HH paperback URL present), 302 (no official URL anywhere).
+
+**Non-causes.** The raw sheet's `format` column is unusable evidence (10×
+`veritas` provenance labels + one Discord URL), and the ledger's
+`proposed_format` is empty for all 17 — nothing else could have labeled them.
+
+**Candidate deterministic fix (owner decision pending):** resolve the
+inventory product by exact URL instead of slug-prefix guessing, and add a
+publisher-category signal (`Books Published by Dr. Hawkins` →
+`format=book`, guarded by `item_type=book`, never overwrite). That fills
+**12/17** from committed inventory data alone (291, 292, 295, 296, 297, 300,
+303–308), regenerated through the sanctioned master build. The remaining 5
+need reviewed source links (298/299 HH URLs, 286 HH URL) or manual ruling
+(301 paperback via HH; 302 unverifiable), i.e. `NEXT_AGENT_HANDOFF.md` P1/P2
+territory.
