@@ -5,7 +5,7 @@
 
 ## Delivered
 
-- A three-tab/static catalogue interface was implemented in `docs/`:
+- A multi-view static catalogue interface was implemented in `docs/`:
   - **Everything**: 314 clean migrated records, four initial Nightingale-Conant candidates, and 28 unmatched unique/compilation official Veritas products.
   - **Veritas Products**: 191 official product records fetched through the public Veritas WordPress API, with normalized-title match results.
   - **Hay House Products**: 24 initial official product/format records.
@@ -15,6 +15,7 @@
 - A clean draft research-master dataset is in `data/research_master_draft.csv` and JSON, with 314 candidate material records and UUIDv4/UUIDv7 identifiers.
 - A row-level migration review ledger, exclusions file, source registry, spreadsheet audit, and mapping reports are committed.
 - The P0 reconciliation now produces a consistent 308-record research master and 66-row exclusions output; 40 approved Veritas/Audible source associations are preserved through `data/research_master_source_overrides.csv`, while unresolved manual edition/copy leads remain outside the master in `data/research_manual_leads.csv`.
+- A validated `data/product_relationships.csv` layer and Product Relationships site tab now distinguish official products from master items; its initial four relationships cover the 2006 lecture set and the distinct 2012 interview associated with *Live Your Life Like a Prayer*. See `PRODUCT_RELATIONSHIP_SCHEMA.md`.
 - Veritas mapping is reproducible through `fetch_veritas_catalogue.py`; the `Map Veritas Catalogue` workflow writes `data/veritas_official_products.csv` after manual dispatch.
 - **Global Discovery Queue**: A dedicated queue (`data/international_discovery_queue.csv`) was created for the known-but-not-approved international publishers, seeded with early title extractions. These are exposed in a new **International Editions** UI tab.
 
@@ -36,7 +37,7 @@
 ## Recommended next steps
 
 1. Merge this PR only after reviewing the broad research-data implications.
-2. Open the deployed Pages site and verify all tabs load: Everything, Veritas Products, Hay House Products, Approved Publishers, and Original Spreadsheet.
+2. Open the deployed Pages site and verify all tabs load: Everything, Veritas Products, Product Relationships, Hay House Products, Audible Products, International Editions, Approved Publishers, and Original Spreadsheet.
 3. Complete Audible extraction into a dedicated inventory tab and link confirmed Audible products to master records. (Completed)
 4. Build global-discovery queues for the known-but-not-approved international publishers: El Grano de Mostaza, Pandora, Guy Trédaniel, Sheema, Gruppo Editoriale Macro, Les Éditions Ariane, and Yes Publishing. (Completed)
 5. Review the 81 unmatched Veritas products and decide whether each is a unique item, edition/source relation, compilation, or excluded related material. (Completed)

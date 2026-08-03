@@ -9,9 +9,9 @@
   - **32 Veritas** URLs and **8 Audible** URLs are approved for existing ledger item rows.
   - Every URL is present in the committed official source inventory and has the recorded `matched_by_title` mapping status.
   - The generator only permits approved HTTPS additions to an empty Veritas or Audible source field on an existing ledger item; it cannot overwrite a raw-ledger value.
-- Raw row **134** (*Live Your Life Like a Prayer*) has two official Veritas product pages:
-  - Keep the raw-ledger **November 2006** product URL as the primary master source URL.
-  - Defer the separate later **2012** product relationship until the catalogue has a reviewed repeatable product/relationship model.
+- *Live Your Life Like a Prayer* has two official Veritas products, now modeled in `data/product_relationships.csv`:
+  - Keep the raw-ledger **November 2006** three-disc lecture-set URL as the primary master source URL for DVD01–DVD03.
+  - Record the distinct **2012** one-DVD 60-minute interview as reviewed `related_material` for DVD01; it is not a replacement URL or a duplicate master item.
 
 ## CSV-only master records
 

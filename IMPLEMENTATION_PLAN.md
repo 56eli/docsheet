@@ -24,6 +24,8 @@ The rebuild comparison above was performed in a temporary isolated directory; it
 
 **P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 40 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
+**P2 seed outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer and records the 2006 lecture set and distinct 2012 interview associated with *Live Your Life Like a Prayer* without duplicating master items. See `PRODUCT_RELATIONSHIP_SCHEMA.md`.
+
 ## Guiding rules
 
 1. **Preserve provenance.** `hawkins archive clone - Sheet1.csv` is immutable raw evidence. Keep raw rows, their row numbers, and any non-item context available through the ledger.

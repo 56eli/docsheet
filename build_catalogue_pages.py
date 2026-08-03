@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,8 +22,10 @@ INTL_QUEUE = Path("data/international_discovery_queue.csv")
 VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
 HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
 AUDIBLE_PRODUCTS = Path("data/audible_official_products.csv")
+PRODUCT_RELATIONSHIPS = Path("data/product_relationships.csv")
 OUT_MASTER = Path("docs/master.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
+OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
 OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
 OUT_AUDIBLE_PRODUCTS = Path("docs/audible-products.json")
 OUT_INTERNATIONAL = Path("docs/international-products.json")
@@ -57,17 +60,148 @@ PUBLISHERS = [
 ]
 
 
+RELATIONSHIP_REQUIRED_COLUMNS = {
+    "relationship_id", "master_uuid", "raw_row_number", "source_name",
+    "source_product_id", "official_product_url", "official_product_title",
+    "relationship_type", "review_status", "reviewed_on", "evidence_url",
+    "evidence_note",
+}
+RELATIONSHIP_TYPES = {
+    "primary_product_for_item_part",
+    "same_material_edition",
+    "compilation_includes_item",
+    "related_material",
+    "unresolved",
+}
+RELATIONSHIP_STATUSES = {"reviewed", "pending", "rejected"}
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
 @dataclass
 class CatalogueBuild:
     """In-memory Pages artifacts shared by normal builds and reconciliation."""
 
     items: list[dict[str, str]]
+    product_relationships: list[dict[str, str]]
     outputs: dict[Path, str]
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def validate_product_relationships(
+    master_items: list[dict[str, str]],
+    veritas_products: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    """Validate and enrich reviewed master-to-product relationships.
+
+    Source relationships are a separate, explicit layer: a commercial product
+    can represent one item part, an edition, a compilation, or merely related
+    material. The seed uses Veritas product IDs from the committed inventory;
+    support for another source requires its own stable product inventory.
+    """
+    with PRODUCT_RELATIONSHIPS.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = RELATIONSHIP_REQUIRED_COLUMNS - columns
+        if missing:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS} is missing required columns: "
+                f"{', '.join(sorted(missing))}"
+            )
+        relationships = list(reader)
+
+    master_by_uuid = {item["uuid"]: item for item in master_items}
+    veritas_by_id = {product["veritas_product_id"]: product for product in veritas_products}
+    seen_ids: set[str] = set()
+    enriched: list[dict[str, str]] = []
+
+    for line_number, relation in enumerate(relationships, start=2):
+        relation_id = relation["relationship_id"].strip()
+        master_uuid = relation["master_uuid"].strip()
+        source_name = relation["source_name"].strip()
+        product_id = relation["source_product_id"].strip()
+        relation_type = relation["relationship_type"].strip()
+        review_status = relation["review_status"].strip()
+        reviewed_on = relation["reviewed_on"].strip()
+
+        if not relation_id or relation_id in seen_ids:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} has a missing or duplicate relationship_id"
+            )
+        if not relation_id.startswith("rel-"):
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} relationship_id must start with 'rel-'"
+            )
+        if master_uuid not in master_by_uuid:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} references an unknown master UUID: {master_uuid!r}"
+            )
+        if source_name != "veritas":
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} has unsupported source_name {source_name!r}; "
+                "add a stable source inventory before using another source"
+            )
+        if product_id not in veritas_by_id:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} references unknown Veritas product {product_id!r}"
+            )
+        if relation_type not in RELATIONSHIP_TYPES:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} has invalid relationship_type {relation_type!r}"
+            )
+        if review_status not in RELATIONSHIP_STATUSES:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} has invalid review_status {review_status!r}"
+            )
+        if review_status == "reviewed" and not ISO_DATE.fullmatch(reviewed_on):
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} reviewed relationships need an ISO reviewed_on date"
+            )
+        if not relation["evidence_url"].startswith("https://"):
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} must have an HTTPS evidence_url"
+            )
+        if not relation["evidence_note"].strip():
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} must explain the relationship"
+            )
+
+        master = master_by_uuid[master_uuid]
+        product = veritas_by_id[product_id]
+        if relation["raw_row_number"] != master["raw_row_number"]:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} raw_row_number does not match {master_uuid}"
+            )
+        if relation["official_product_url"] != product["official_product_url"]:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} product URL differs from the Veritas inventory"
+            )
+        if relation["official_product_title"] != product["official_title"]:
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} product title differs from the Veritas inventory"
+            )
+        if (
+            relation_type == "primary_product_for_item_part"
+            and master["source_url_veritas"] != relation["official_product_url"]
+        ):
+            raise ValueError(
+                f"{PRODUCT_RELATIONSHIPS}:{line_number} primary product must match the master Veritas URL"
+            )
+
+        enriched.append({
+            **relation,
+            "master_catalog_code": master["catalog_code"],
+            "master_title": master["title"],
+            "master_item_type": master["item_type"],
+            "master_year": master["year"],
+            "source_product_published_date": product["published_date"],
+            "source_product_mapping_status": product["mapping_status"],
+        })
+        seen_ids.add(relation_id)
+    return enriched
 
 
 def json_text(data: object) -> str:
@@ -83,8 +217,10 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     """
     items = list(master_items) if master_items is not None else read_csv(MASTER)
     migrated_items = len(items)
+    master_records = list(items)
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    product_relationships = validate_product_relationships(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)
     intl_queue = read_csv(INTL_QUEUE)
@@ -235,6 +371,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     outputs = {
         OUT_MASTER: json_text(items),
         OUT_VERITAS_PRODUCTS: json_text(veritas_products),
+        OUT_PRODUCT_RELATIONSHIPS: json_text(product_relationships),
         OUT_HAYHOUSE_PRODUCTS: json_text(hayhouse_products),
         OUT_AUDIBLE_PRODUCTS: json_text(audible_products),
         OUT_INTERNATIONAL: json_text(intl_items),
@@ -262,13 +399,25 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
                 )
             ),
             "veritas_official_products": len(veritas_products),
+            "reviewed_product_relationships": sum(
+                relationship["review_status"] == "reviewed"
+                for relationship in product_relationships
+            ),
+            "pending_product_relationships": sum(
+                relationship["review_status"] == "pending"
+                for relationship in product_relationships
+            ),
             "hayhouse_official_products": len(hayhouse_products),
             "audible_official_products": len(audible_products),
             "approved_publishers": len(PUBLISHERS),
             "original_source_rows": 374,
         }),
     }
-    return CatalogueBuild(items=items, outputs=outputs)
+    return CatalogueBuild(
+        items=items,
+        product_relationships=product_relationships,
+        outputs=outputs,
+    )
 
 
 def write_outputs(outputs: dict[Path, str]) -> None:

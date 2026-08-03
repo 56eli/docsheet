@@ -36,3 +36,7 @@ failure indicates a ledger/draft mismatch; do not run the writing build commands
 until that review is resolved. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master.
+
+Approved master-to-product assertions are stored separately in
+`data/product_relationships.csv` and rendered in the **Product Relationships**
+site tab; see `PRODUCT_RELATIONSHIP_SCHEMA.md` before adding a relationship.
