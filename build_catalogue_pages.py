@@ -13,7 +13,9 @@ from pathlib import Path
 
 MASTER = Path("data/research_master_draft.csv")
 QUEUE = Path("data/official_discovery_queue.csv")
+VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
 OUT_MASTER = Path("docs/master.json")
+OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
 OUT_PUBLISHERS = Path("docs/publishers.json")
 OUT_META = Path("docs/catalogue-meta.json")
 
@@ -33,6 +35,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def main() -> None:
     items = read_csv(MASTER)
     queue = read_csv(QUEUE)
+    veritas_products = read_csv(VERITAS_PRODUCTS)
     for candidate in queue:
         items.append({
             "uuid": "",
@@ -59,12 +62,31 @@ def main() -> None:
             "notes": candidate["match_notes"],
             "raw_row_number": "",
         })
+    # Products with a matched master title are represented by the existing
+    # master item. Only unmatched official products become Page 1 candidates.
+    for product in veritas_products:
+        if product["mapping_status"] != "unreviewed_official_product":
+            continue
+        items.append({
+            "uuid": "", "catalog_code": "", "legacy_tempid": "",
+            "title": product["official_title"], "title_source": "",
+            "item_type": "", "series": "", "year": product["published_date"][:4],
+            "month": "", "format": "", "format_detail": "", "owned": "",
+            "location_physical": "", "location_digital": "", "location_streaming": "",
+            "source_url_veritas": product["official_product_url"],
+            "source_url_hay_house": "", "source_url_nightingale_conant": "", "source_url_audible": "",
+            "reference_url_1": "", "reference_url_2": "",
+            "notes": "Official Veritas product discovered by automated mapping; unreviewed for deduplication and metadata.",
+            "raw_row_number": "",
+        })
     OUT_MASTER.write_text(json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT_VERITAS_PRODUCTS.write_text(json.dumps(veritas_products, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_PUBLISHERS.write_text(json.dumps(PUBLISHERS, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     OUT_META.write_text(json.dumps({
         "master_items": len(items),
         "migrated_items": len(read_csv(MASTER)),
-        "implemented_unreviewed": len(queue),
+        "implemented_unreviewed": len(queue) + sum(p["mapping_status"] == "unreviewed_official_product" for p in veritas_products),
+        "veritas_official_products": len(veritas_products),
         "approved_publishers": len(PUBLISHERS),
         "original_source_rows": 374,
     }, indent=2) + "\n", encoding="utf-8")
