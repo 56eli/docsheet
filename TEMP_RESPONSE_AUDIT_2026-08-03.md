@@ -454,3 +454,15 @@ override cannot re-set a book row. Two new approved overrides give masters
 Hawkins) their Hay House paperback links → approved overrides **98 → 100**.
 Test: candidate-keyed override applies to a promoted row and --check stays
 green. Suite: **90 tests**, coverage 92%.
+
+### 11o. Series-level work regrouping — evidence drafted (owner)
+
+`SERIES_WORK_REGROUPING_PROPOSAL.md`: membership audit of the 21 approved
+works found **one contamination** — rows 46/47/48 (Devotional Nonduality
+"Enlightenment" lecture) were pulled into w-highest-level-of-enlightenment by
+the fuzzy group matcher's substring rule (correction C1 proposed). Series
+labels classified: 10 program-series (66 titles / 222 rows) vs 8 collection
+lanes (Books, On The Road, Satsang, Office, Volume, Discussion, Media,
+Transcription — each many distinct works). Options D6a part-as-work
+(recommended), D6b series-as-work, D6c hybrid; impact: ~55 proposed
+per-part works under D6a. Awaiting owner ruling.
