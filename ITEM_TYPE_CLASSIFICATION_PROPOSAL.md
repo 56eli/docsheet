@@ -79,14 +79,28 @@ recorded-lecture series, so `video` fits better than `lecture`.
 > Note: records 202 and 203 both point at the *same* official product
 > (Volume I). That's correct — they are Part 1 and Part 2 of one product.
 
-### D3 — On The Road Talk Series (18 records: 215–232) → `lecture`
-**Confidence: High.** These are recorded public talks given at venues (Oxford,
-etc.) — the same content class as the main lecture series, just off-site. Official
-titles confirm standalone talk products ("Become That Which You Are", "Love is a
-Way of Being", "The Presence of Spiritual Awareness").
+### D3 — On The Road Talk Series (30 records) → **split by product medium**
+**Confidence: High. ⚠️ Revised after the SR-1 regrouping.**
 
-> One caveat: 228–229 map to "Spiritual Will **Inspiring Q & A**". If you'd
-> prefer Q&A material typed as `interview`, say so and I'll split those two out.
+The regrouping merged two groups into one 30-record series, and that exposed a
+problem with my original series-wide rule: **the merged series spans two distinct
+product media**, so one `item_type` for all 30 would be wrong for half of them.
+
+| Sub-group | Records | Owned | Raw titles | Publisher evidence | Proposed |
+|---|---:|---|---|---|---|
+| Original OTR | 18 (215–232) | all `true` | all `.mp4` | *Become That Which You Are*: streaming video; *Verification of Spiritual Realities*: **SKU `vsr_dvd`**, Vimeo trailer | `lecture` |
+| Moved by SR-1 | 12 (266–277) | all `false` | none `.mp4` | *All is Divinity*: **SKU `cd_aid`**; *Ever-Present Joy*: **SKU `cd_otr_ej`**; both state *"Streaming Video is **not** available for this topic"* | `audio` |
+
+The split is clean and independently corroborated three ways: SKU prefix
+(`_dvd` vs `cd_`), streaming-video availability, and our own ownership/filename
+evidence (we hold `.mp4` video copies of the first 18 and nothing of the latter 12).
+
+**This is a good argument for keeping `series` and `item_type` as independent
+fields** — the publisher groups by *topic and occasion*, not by medium.
+
+> The two `Spiritual Will` records (228–229) map to "Spiritual Will Inspiring
+> Q & A". They stay `lecture` with the other owned video items; flag it if you'd
+> prefer `interview` for Q&A material.
 
 ### D4 — Office Series (18 records: 233–250) → `video`
 **Confidence: High.** A structured A-01…A-12 / B-01…B-06 series of single-topic
@@ -129,7 +143,18 @@ already captured by the `series` field, which is the right place for it.
 Family"). Five of eight map to official `(2012)`/`(2014)` products. Same
 studio-production character as D2/D4.
 
-### D7 — Media Miscellaneous (14 records: 264–277) → `audio`, **and 12 are mis-grouped**
+### D7 — Media Miscellaneous → `audio` ✅ **regrouping APPLIED (SR-1)**
+
+> **Status update:** the 12-record regrouping described below was approved and
+> applied on 2026-08-03 (commit `973519d`, see `SERIES_REGROUPING_DECISIONS.md`).
+> Those 12 records now live in `On The Road Talk Series` and are typed under **D3**
+> as `audio`. Media Miscellaneous now holds **2** records: 264 (deferred, §4) and
+> 265 Golden Word Book Signing → **`audio`** (page states *"Three Compact Disc
+> Set"*, SKU `am_gwbs`).
+>
+> The original analysis is retained below as the decision record.
+
+### D7 (original analysis) — Media Miscellaneous (14 records: 264–277) → `audio`, **and 12 are mis-grouped**
 **Confidence: High for both — confirmed against the live publisher taxonomy.**
 
 I fetched the official Veritas pages directly (the site is reachable via the web
@@ -228,14 +253,22 @@ Types belong in the **migration ledger** (`proposed_item_type`), the declared in
 |---|---|---:|---|---|
 | D1 | Love & Spiritual Seeker Qualities | 3 | `lecture` | High |
 | D2 | Volume Series | 13 | `video` | High |
-| D3 | On The Road Talk Series | 18 | `lecture` | High |
+| D3a | On The Road — original (owned video) | 18 | `lecture` | High |
+| D3b | On The Road — moved by SR-1 (unowned CD audio) | 12 | `audio` | High |
 | D4 | Office Series | 16 (excl. 246, 249) | `video` | High |
 | D5 | Satsang Series | 13 | `audio` | High *(resolved)* |
 | D6 | Discussion Series | 8 | `video` | Med-High |
-| D7 | Media Miscellaneous | 14 | `audio` | High *(confirmed vs. publisher)* |
-| — | *(separate)* 12 records mis-grouped → On The Road | 12 | series change | Evidence-backed |
+| D7 | Media Miscellaneous (now 2 records) | 1 | `audio` for 265; 264 deferred | High |
+| ~~SR-1~~ | ~~12 records mis-grouped → On The Road~~ | 12 | ✅ **applied** `973519d` | — |
 | — | Deferred placeholders | 3 | none | — |
 
 **Default if you just say "approved":** I apply D1–D7 as written — typing **84 of
-87** records, leaving only the 3 placeholder rows in §4 untyped, and logging the
-D7 grouping question for a separate decision.
+87** records and leaving only the 3 placeholder rows in §4 untyped.
+
+Final type distribution across the 84:
+
+| Type | Records |
+|---|---:|
+| `lecture` | 3 (D1) + 18 (D3a) = **21** |
+| `video` | 13 (D2) + 16 (D4) + 8 (D6) = **37** |
+| `audio` | 12 (D3b) + 13 (D5) + 1 (D7) = **26** |
