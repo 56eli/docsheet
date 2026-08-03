@@ -44,16 +44,19 @@ Approved master-to-product assertions are stored separately in
 site tab; evidence-backed annual compilation relationships live in
 `data/series_compilation_relationships.csv` and render in **Series
 Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
-`SERIES_COMPILATION_SCHEMA.md` before adding either relationship type.
+`SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
+Veritas inventory refreshes use the approved product-ID overlay in
+`data/veritas_mapping_decisions.csv`; see `VERITAS_MAPPING_DECISIONS.md`.
 
 ## Review workspace
 
 The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
-Review**, **Source Overrides**, **Official Discovery**, and **Series
-Compilations** are separate sheets alongside the catalogue and official-product
-views. Reviewers can search, sort, export, and filter sheets with multiple
-review-status values without opening repository folders.
+Review**, **Source Overrides**, **Official Discovery**, **Series
+Compilations**, and **Veritas Decisions** are separate sheets alongside the
+catalogue and official-product views. Reviewers can search, sort, export, and
+filter sheets with multiple review-status values without opening repository
+folders.
 
 ## Current reviewed catalogue state
 

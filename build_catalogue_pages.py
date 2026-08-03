@@ -20,6 +20,7 @@ MASTER = Path("data/research_master_draft.csv")
 QUEUE = Path("data/official_discovery_queue.csv")
 INTL_QUEUE = Path("data/international_discovery_queue.csv")
 VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
+VERITAS_MAPPING_DECISIONS = Path("data/veritas_mapping_decisions.csv")
 HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
 AUDIBLE_PRODUCTS = Path("data/audible_official_products.csv")
 PRODUCT_RELATIONSHIPS = Path("data/product_relationships.csv")
@@ -37,6 +38,7 @@ OUT_MASTER_EXCLUSIONS = Path("docs/master-exclusions.json")
 OUT_MIGRATION_REVIEW = Path("docs/migration-review.json")
 OUT_SOURCE_OVERRIDES = Path("docs/source-overrides.json")
 OUT_OFFICIAL_DISCOVERY = Path("docs/official-discovery.json")
+OUT_VERITAS_MAPPING_DECISIONS = Path("docs/veritas-mapping-decisions.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
 OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
 OUT_SERIES_COMPILATIONS = Path("docs/series-compilations.json")
@@ -329,6 +331,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     master_records = list(items)
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
@@ -527,6 +530,13 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
             "current_state": "official discovery queue",
         },
         {
+            "review_sheet": "Veritas Decisions",
+            "record_count": len(veritas_mapping_decisions),
+            "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
+            "source_file": str(VERITAS_MAPPING_DECISIONS),
+            "current_state": "approved mapping decision",
+        },
+        {
             "review_sheet": "Product Relationships",
             "record_count": len(product_relationships),
             "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
@@ -550,6 +560,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
         OUT_MIGRATION_REVIEW: json_text(migration_review),
         OUT_SOURCE_OVERRIDES: json_text(source_overrides),
         OUT_OFFICIAL_DISCOVERY: json_text(queue),
+        OUT_VERITAS_MAPPING_DECISIONS: json_text(veritas_mapping_decisions),
         OUT_VERITAS_PRODUCTS: json_text(veritas_products),
         OUT_PRODUCT_RELATIONSHIPS: json_text(product_relationships),
         OUT_SERIES_COMPILATIONS: json_text(series_compilations),
@@ -566,6 +577,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
             "migration_review_rows": len(migration_review),
             "approved_source_overrides": len(source_overrides),
             "official_discovery_candidates": len(queue),
+            "approved_veritas_mapping_decisions": len(veritas_mapping_decisions),
             "implemented_unreviewed": (
                 len(queue)
                 + sum(

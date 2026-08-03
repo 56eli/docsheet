@@ -1,20 +1,45 @@
 #!/usr/bin/env python3
-"""Fetch and map every published Veritas product through its public WP API.
+"""Fetch and map the public Veritas catalogue without overwriting review decisions.
 
-Creates a complete official-product inventory and a conservative normalized-title
-match against the local research-master draft. It never imports a product into
-the master automatically.
+The public WordPress API supplies the raw commercial inventory. Deterministic
+matching derives exact primary-source and date-aware matches; reviewed
+non-primary dispositions are then reapplied from a product-ID keyed decision
+file. The script never imports a commercial product into the research master.
 """
 from __future__ import annotations
-import csv, html, json, re
+
+import argparse
+import csv
+import html
+import io
+import json
+import re
+import sys
 from pathlib import Path
-from urllib.parse import urlencode
 from urllib.error import HTTPError
+from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 API = "https://veritaspub.com/wp-json/wp/v2/product"
 MASTER = Path("data/research_master_draft.csv")
 OUT = Path("data/veritas_official_products.csv")
+DECISIONS = Path("data/veritas_mapping_decisions.csv")
+
+OUTPUT_FIELDS = [
+    "veritas_product_id", "official_title", "official_product_url", "published_date",
+    "official_categories", "normalized_title_match_count", "matched_master_uuids",
+    "matched_master_titles", "mapping_status", "review_notes",
+]
+DECISION_REQUIRED_COLUMNS = {
+    "veritas_product_id", "mapping_status", "matched_master_uuids",
+    "matched_master_titles", "review_notes", "review_status", "reviewed_on",
+    "decision_reason",
+}
+DECISION_STATUSES = {
+    "unique_item", "compilation_or_new_edition", "excluded_related_material",
+    "matched_by_title", "matched_by_normalized_title",
+}
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def norm(value: str) -> str:
@@ -71,9 +96,24 @@ def category(classes: list[str]) -> str:
     return "; ".join(categories)
 
 
-def main() -> None:
-    with MASTER.open(encoding="utf-8", newline="") as handle:
-        master = list(csv.DictReader(handle))
+def read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def fetch_products() -> list[dict]:
+    products: list[dict] = []
+    page = 1
+    while True:
+        batch = get_page(page)
+        if not batch:
+            return products
+        products.extend(batch)
+        page += 1
+
+
+def build_inventory_rows(products: list[dict], master: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Build deterministic source/title/date matches from live products."""
     index: dict[str, list[dict[str, str]]] = {}
     source_url_index: dict[str, list[dict[str, str]]] = {}
     dated_index: dict[str, dict[str, list[dict[str, str]]]] = {}
@@ -92,15 +132,7 @@ def main() -> None:
             if satsang_key:
                 satsang_index.setdefault(satsang_key, []).append(row)
 
-    products, page = [], 1
-    while True:
-        batch = get_page(page)
-        if not batch:
-            break
-        products.extend(batch)
-        page += 1
-
-    rows = []
+    rows: list[dict[str, str]] = []
     for product in products:
         title = html.unescape(product["title"]["rendered"])
         source_matches = source_url_index.get(product["link"], [])
@@ -147,13 +179,126 @@ def main() -> None:
             "mapping_status": mapping_status,
             "review_notes": review_notes,
         })
-    OUT.parent.mkdir(exist_ok=True)
-    with OUT.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
-    print(f"Wrote {OUT} ({len(rows)} official Veritas products)")
+    return rows
+
+
+def split_uuids(value: str) -> list[str]:
+    return [part.strip() for part in value.split(";") if part.strip()]
+
+
+def apply_mapping_decisions(
+    inventory: list[dict[str, str]],
+    master: list[dict[str, str]],
+) -> int:
+    """Reapply reviewed product-ID decisions after live deterministic matching."""
+    with DECISIONS.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        missing = DECISION_REQUIRED_COLUMNS - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(
+                f"{DECISIONS} is missing required columns: {', '.join(sorted(missing))}"
+            )
+        decisions = list(reader)
+
+    inventory_by_id = {row["veritas_product_id"]: row for row in inventory}
+    master_by_uuid = {row["uuid"]: row for row in master}
+    seen_ids: set[str] = set()
+    for line_number, decision in enumerate(decisions, start=2):
+        product_id = decision["veritas_product_id"].strip()
+        status = decision["mapping_status"].strip()
+        uuids = split_uuids(decision["matched_master_uuids"])
+
+        if not product_id or product_id in seen_ids or product_id not in inventory_by_id:
+            raise ValueError(
+                f"{DECISIONS}:{line_number} must reference one unique current official product ID"
+            )
+        if status not in DECISION_STATUSES:
+            raise ValueError(
+                f"{DECISIONS}:{line_number} uses unsupported reviewed mapping_status {status!r}"
+            )
+        if decision["review_status"].strip() != "approved" or not ISO_DATE.fullmatch(decision["reviewed_on"].strip()):
+            raise ValueError(
+                f"{DECISIONS}:{line_number} needs approved review_status and an ISO reviewed_on date"
+            )
+        if not decision["decision_reason"].strip():
+            raise ValueError(f"{DECISIONS}:{line_number} needs a decision_reason")
+        if any(item_uuid not in master_by_uuid for item_uuid in uuids):
+            raise ValueError(f"{DECISIONS}:{line_number} references an unknown master UUID")
+
+        expected_titles = " | ".join(master_by_uuid[item_uuid]["title"] for item_uuid in uuids)
+        if decision["matched_master_titles"] != expected_titles:
+            raise ValueError(
+                f"{DECISIONS}:{line_number} matched_master_titles must match the referenced master UUIDs"
+            )
+        if status in {"matched_by_title", "matched_by_normalized_title"} and not uuids:
+            raise ValueError(f"{DECISIONS}:{line_number} match statuses require master UUIDs")
+        if status not in {"matched_by_title", "matched_by_normalized_title"} and uuids:
+            raise ValueError(f"{DECISIONS}:{line_number} non-match statuses cannot contain master UUIDs")
+
+        target = inventory_by_id[product_id]
+        target["mapping_status"] = status
+        target["matched_master_uuids"] = "; ".join(uuids)
+        target["matched_master_titles"] = expected_titles
+        target["normalized_title_match_count"] = str(len(uuids))
+        target["review_notes"] = decision["review_notes"]
+        seen_ids.add(product_id)
+    return len(decisions)
+
+
+def csv_text(rows: list[dict[str, str]]) -> str:
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=OUTPUT_FIELDS, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue()
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=OUT,
+        help=f"write the reviewed inventory to this path (default: {OUT})",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="fetch, map, and verify the committed inventory matches; do not write files",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    if args.check and args.output != OUT:
+        print("--check cannot be combined with a custom --output", file=sys.stderr)
+        return 2
+    try:
+        master = read_csv(MASTER)
+        inventory = build_inventory_rows(fetch_products(), master)
+        decisions_applied = apply_mapping_decisions(inventory, master)
+        output = csv_text(inventory)
+
+        if args.check:
+            if OUT.exists() and OUT.read_text(encoding="utf-8") == output:
+                print(f"{OUT} matches the live inventory with {decisions_applied} reviewed decisions applied.")
+                return 0
+            print(
+                f"{OUT} differs from the live reviewed inventory; write a candidate file and review its diff.",
+                file=sys.stderr,
+            )
+            return 1
+
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(output, encoding="utf-8")
+        print(f"Wrote {args.output} ({len(inventory)} official Veritas products)")
+        print(f"Applied {decisions_applied} reviewed mapping decisions from {DECISIONS}")
+        return 0
+    except Exception as exc:  # noqa: BLE001 — workflow must fail loud and preserve current inventory
+        print(f"[fetch_veritas_catalogue] ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

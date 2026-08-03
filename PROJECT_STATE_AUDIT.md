@@ -7,7 +7,7 @@
 
 ## Executive summary
 
-The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The highest remaining engineering risk is that the manual **Map Veritas Catalogue** refresh rewrites the product inventory from live API/title matching without a persistent mapping-decision overlay, so a refresh can erase curated inventory dispositions.
+The repository is a working static GitHub Pages research catalogue with a preserved raw spreadsheet, a reproducible 308-record curated master, reviewable source/relationship layers, and a public review workspace. All local generator, check, syntax, and HTTP smoke checks pass. The former high-risk Veritas refresh path is protected in code by a 35-row product-ID decision overlay and a prepared review-only candidate/diff workflow; the workflow YAML still needs a manual GitHub commit because this session cannot push workflow-file changes.
 
 ## Validation completed
 
@@ -34,6 +34,7 @@ The repository is a working static GitHub Pages research catalogue with a preser
 | Manual research leads | 1 | `data/research_manual_leads.csv` |
 | Reviewed, unpromoted manual candidates | 17 | `data/manual_master_candidates.csv` |
 | Veritas official inventory | 191 products | `data/veritas_official_products.csv` |
+| Approved Veritas mapping decisions | 35 | `data/veritas_mapping_decisions.csv` |
 | Item-to-product relationships | 301 | `data/product_relationships.csv` |
 | Series-compilation relationships | 7 | `data/series_compilation_relationships.csv` |
 | Everything Pages view | 344 records | `docs/master.json` |
@@ -60,6 +61,7 @@ The Pages application exposes all core review inputs as dedicated searchable/exp
 - Migration Review (374)
 - Source Overrides (80)
 - Official Discovery (4)
+- Veritas Decisions (35)
 - Series Compilations (7)
 - Product Relationships (301)
 
@@ -71,16 +73,16 @@ Review tabs have humanized headers, status badges, visual grouping, and a status
 |---|---|---|
 | GitHub Pages | Public, built from `main` → `/docs` | Healthy configuration; branch changes are not deployed yet. |
 | Update Spreadsheet workflow | `process_data.py` writes and auto-commits `docs/data.json` + `docs/meta.json` on `main` | Path mismatch is resolved in `main` and synchronized into this branch. |
-| Map Veritas Catalogue workflow | Fetches live WordPress products and commits `data/veritas_official_products.csv` | Functional fetch, but unsafe for curated dispositions without a mapping-decision overlay. |
+| Map Veritas Catalogue workflow | Prepared local revision fetches a live decision-applied candidate and uploads a CSV/diff artifact; does not auto-commit | Requires a manual GitHub YAML commit, then one live artifact verification run. |
 | Pull-request validation | No workflow | Gap. Local checks are documented but not enforced remotely. |
 
 ## Findings and prioritized backlog
 
-### P0 — Preserve curated Veritas mapping decisions on refresh
+### P0 — Preserve curated Veritas mapping decisions on refresh (code/data complete; workflow commit pending)
 
-**Issue:** `fetch_veritas_catalogue.py` regenerates inventory statuses from live source URLs, dates, and title matching. It does not reapply the reviewed `unique_item`, `compilation_or_new_edition`, `excluded_related_material`, candidate, or relationship decisions held elsewhere. The manual Map Veritas workflow writes that regenerated file directly, so an operator can silently lose curation.
+`data/veritas_mapping_decisions.csv` now stores 35 approved non-primary product-ID decisions and is reapplied after deterministic source/title/date matching. `fetch_veritas_catalogue.py --check` compares the live, decision-applied inventory to the committed inventory. A prepared Map Veritas workflow revision writes a candidate CSV and diff artifact, then fails on a diff instead of auto-committing.
 
-**Required remedy:** Add a versioned Veritas mapping-decisions/overrides input keyed by official product ID; apply it after live fetch; make the workflow fail on an unreviewed diff rather than auto-committing destructive status changes.
+**Remaining action:** commit the workflow YAML manually in GitHub, then perform one manual run to verify its artifact behavior against the live API.
 
 ### P1 — Add automated CI and release checks
 
@@ -128,4 +130,4 @@ Review tabs have humanized headers, status badges, visual grouping, and a status
 
 ## Recommended next action
 
-Implement **P0: persistent Veritas mapping decisions on refresh**, then add the read-only CI workflow. This protects the reviewed data already present before any additional candidate promotion or live-source refresh.
+Merge and manually run the review-only **Map Veritas Catalogue** workflow once, then implement the read-only CI workflow. This turns the new refresh safeguard into an operationally verified control before any additional candidate promotion or live-source refresh.

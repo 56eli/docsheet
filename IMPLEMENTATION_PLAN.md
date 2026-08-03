@@ -42,18 +42,16 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 
 ## Priority roadmap
 
-### P0 — Make Veritas refresh review-safe
+### P0 — Make Veritas refresh review-safe (code/data complete; workflow commit pending)
 
-**Problem:** The Map Veritas workflow can regenerate `data/veritas_official_products.csv` from live matching and overwrite manually reviewed statuses or relationship decisions.
+Delivered:
 
-**Deliverables**
+1. `data/veritas_mapping_decisions.csv` stores 35 approved non-primary product-ID decisions.
+2. `fetch_veritas_catalogue.py` reapplies those decisions after deterministic primary-source and date/title matching; `--check` compares the live reviewed result with the committed inventory.
+3. A prepared Map Veritas workflow revision writes a candidate/diff artifact and fails on a diff rather than auto-committing.
+4. The Pages review workspace exposes the Veritas Decisions sheet.
 
-1. Add `data/veritas_mapping_decisions.csv` keyed by official product ID, with reviewed status, rationale, relationship/promotion references, and review date.
-2. Update `fetch_veritas_catalogue.py` to fetch a raw inventory, then apply these decisions deterministically.
-3. Change the workflow to produce a diff/review artifact or fail on unreviewed mapping changes; do not auto-commit destructive status replacement.
-4. Add a `--check` mode for the fetch/mapping pipeline.
-
-**Done when:** a live refresh cannot remove a reviewed product disposition without an explicit reviewed decision change.
+**Remaining verification:** manually commit the workflow YAML in GitHub, then run it once to confirm the candidate/diff artifact path against the live API.
 
 ### P1 — Enforce checks in CI
 
@@ -104,7 +102,7 @@ Maintain clear boundaries between raw spreadsheet evidence, curated master recor
 
 | Order | Milestone | Why it comes next |
 |---:|---|---|
-| 1 | P0 Veritas mapping decisions | Protects the reviewed work before the next live refresh. |
+| 1 | Verify the review-only Veritas workflow on GitHub | Confirms the deployed candidate/diff artifact control works against the live API. |
 | 2 | P1 CI | Makes the protected state enforceable for collaborators. |
 | 3 | P1 candidate promotion | Converts approved research into master data safely. |
 | 4 | P1 inventory-only decisions | Extends content coverage after promotion mechanics exist. |

@@ -43,6 +43,6 @@ This approach preserves broad discovery coverage while retaining the approved hu
 
 ## Reproducibility
 
-`fetch_veritas_catalogue.py` paginates the official API and writes the inventory. It handles the API’s final-page HTTP 400 response as end-of-pagination, gives exact primary source URLs precedence, and preserves Month/Year when a normalized title spans multiple dated master groups.
+`fetch_veritas_catalogue.py` paginates the official API, gives exact primary source URLs precedence, preserves Month/Year when a normalized title spans multiple dated master groups, and then reapplies the product-ID keyed approvals in `data/veritas_mapping_decisions.csv`. Use `python fetch_veritas_catalogue.py --check` to compare live, decision-applied output with the committed inventory.
 
-> **Refresh safeguard pending:** the manual Map Veritas workflow can still overwrite curated non-primary inventory dispositions because product-ID mapping decisions are not yet a separate persistent overlay. Review `PROJECT_STATE_AUDIT.md` and implement P0 in `IMPLEMENTATION_PLAN.md` before using a live refresh as a routine operation.
+A prepared revision of the manual **Map Veritas Catalogue** workflow writes a candidate CSV and diff artifact for review rather than auto-committing live inventory changes. The workflow YAML needs a manual GitHub commit before this operational safeguard is active; see [VERITAS_MAPPING_DECISIONS.md](VERITAS_MAPPING_DECISIONS.md) for the decision contract and refresh procedure.

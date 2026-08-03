@@ -14,8 +14,8 @@
   - **1** manual research/edition lead;
   - **301** item-to-product relationships;
   - **7** annual series-compilation relationships.
-- The official Veritas inventory has **191** products; primary source matching, date-aware mapping, relationship evidence, and broad-candidate dispositions are documented in `VERITAS_PRODUCT_MAPPING.md`.
-- The Pages catalogue has **344** Everything records, separate product/source views, and a review workspace with sheets for overview, candidates, leads, exclusions, migration review, source overrides, official discovery, product relationships, and series compilations.
+- The official Veritas inventory has **191** products; primary source matching, date-aware mapping, relationship evidence, and broad-candidate dispositions are documented in `VERITAS_PRODUCT_MAPPING.md`. A product-ID decision overlay now preserves **35** reviewed non-primary dispositions across live refreshes; its review sheet and contract are documented in `VERITAS_MAPPING_DECISIONS.md`.
+- The Pages catalogue has **344** Everything records, separate product/source views, and a review workspace with sheets for overview, candidates, leads, exclusions, migration review, source overrides, official discovery, Veritas decisions, product relationships, and series compilations.
 - Review tabs are grouped visually, use human-readable headers and status badges, and provide a status/disposition filter when multiple values exist.
 - `Update Spreadsheet` is synchronized from `main` and writes/commits `docs/data.json` plus `docs/meta.json`; Pages is configured for `main` → `/docs`.
 
@@ -32,16 +32,16 @@
 
 ## Current limitations and risks
 
-1. **Veritas refresh can erase curation.** `fetch_veritas_catalogue.py` rebuilds inventory matches but does not yet reapply persistent product-ID mapping decisions; the Map Veritas workflow can overwrite reviewed statuses on a live refresh.
-2. **No remote CI.** Reproducibility and UI checks are local/documented, not enforced on pull requests.
-3. **Manual candidates are intentionally not master records.** Their promotion needs a dedicated reviewed workflow; do not edit generated master files.
-4. **Nine official Satsang products remain inventory-only** pending a separate candidate decision.
-5. **The public deployment remains `main`.** This branch’s Pages review workspace is visible publicly only after merge/deployment.
-6. **Static UI caveats:** Tabulator/Google Fonts are CDN dependencies and inline edits are session-only.
+1. **No remote CI.** Reproducibility and UI checks are local/documented, not enforced on pull requests.
+2. **Manual candidates are intentionally not master records.** Their promotion needs a dedicated reviewed workflow; do not edit generated master files.
+3. **Nine official Satsang products remain inventory-only** pending a separate candidate decision.
+4. **The public deployment remains `main`.** This branch’s Pages review workspace is visible publicly only after merge/deployment.
+5. **Static UI caveats:** Tabulator/Google Fonts are CDN dependencies and inline edits are session-only.
+6. **Veritas workflow deployment is pending a manual GitHub YAML commit.** The branch contains the prepared review-only revision locally, but GitHub workflow-file permission restrictions prevent this session from pushing it; commit the replacement in GitHub, then run it once to confirm its candidate/diff artifact behavior against the live API.
 
 ## Recommended next steps
 
-1. Implement a persistent Veritas mapping-decision overlay and make the refresh workflow review-safe.
+1. Merge and manually run the review-only Map Veritas workflow; inspect its candidate/diff artifact against the live API.
 2. Add PR CI for syntax, deterministic build checks, and static/browser smoke checks.
 3. Define/implement selective manual-candidate promotion into the master.
 4. Review the nine unmatched Satsang products and remaining inventory-only dispositions.

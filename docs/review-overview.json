@@ -42,6 +42,13 @@
     "current_state": "official discovery queue"
   },
   {
+    "review_sheet": "Veritas Decisions",
+    "record_count": 35,
+    "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
+    "source_file": "data/veritas_mapping_decisions.csv",
+    "current_state": "approved mapping decision"
+  },
+  {
     "review_sheet": "Product Relationships",
     "record_count": 301,
     "purpose": "Reviewed item-to-product assertions kept separate from master identity.",

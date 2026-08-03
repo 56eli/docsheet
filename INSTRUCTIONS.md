@@ -110,9 +110,28 @@ python reconcile_research_master.py
 
 The generated Pages workspace includes the catalogue plus dedicated review
 sheets for candidates, leads, exclusions, migration review, source overrides,
-official discovery, item-product relationships, and series compilations. See
+official discovery, Veritas decisions, item-product relationships, and series
+compilations. See
 `PROJECT_STATE_AUDIT.md` and `IMPLEMENTATION_PLAN.md` for current risk and
 roadmap status.
+
+### Veritas refresh review
+
+Do not overwrite the reviewed Veritas inventory directly from the live API.
+The product-ID decisions in `data/veritas_mapping_decisions.csv` are reapplied
+after deterministic matching:
+
+```bash
+python fetch_veritas_catalogue.py --check
+# or write a review candidate without replacing the committed inventory:
+python fetch_veritas_catalogue.py --output data/veritas_official_products_candidate.csv
+```
+
+Review any candidate diff, update decisions deliberately, rebuild the catalogue,
+and run the curated checks. A prepared Map Veritas workflow revision follows this
+review-only pattern and uploads its candidate/diff artifact instead of
+auto-committing; commit that workflow YAML manually in GitHub before relying on
+it operationally.
 
 ---
 
