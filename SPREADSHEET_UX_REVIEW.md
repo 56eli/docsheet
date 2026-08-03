@@ -134,8 +134,8 @@ Wide Tabulator grids are desktop-friendly but mobile-hostile. Add one of:
 
 | Priority | Improvement | Why first |
 |---:|---|---|
-| 1 | Add per-view descriptions/counts | Fast, high clarity, low risk. |
-| 2 | Add browser test for CSV export and tab loading | Confirms current behavior before UI changes. |
+| 1 | Add per-view descriptions/counts | Implemented in `docs/index.html`, `docs/app.js`, and `docs/style.css`; each tab now shows purpose, row count, type, and export filename. |
+| 2 | Add browser test for CSV export and tab loading | CSV export smoke tests are added; full browser execution is pending an environment that can download Chromium. |
 | 3 | Disable or clarify session-only editing | Prevents accidental trust in unsaved edits. |
 | 4 | Add link labels + copy tooltips | Major readability improvement. |
 | 5 | Add per-view column presets/frozen key fields | Makes each sheet purpose-built instead of generic. |
