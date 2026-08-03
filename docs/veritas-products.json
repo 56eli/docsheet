@@ -32,8 +32,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "55473",
@@ -44,8 +44,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "55425",
@@ -56,8 +56,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "55424",
@@ -78,9 +78,9 @@
     "published_date": "2025-04-08",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-75fc-8855-a613498e74fd",
+    "matched_master_titles": "Beyond Illusion: Exploring Perception, Ego, and Meditation on the Path to Truth",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -92,8 +92,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Spin-off physical product, not an original teaching record."
   },
   {
     "veritas_product_id": "54489",
@@ -128,8 +128,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "53942",
@@ -140,8 +140,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Spin-off physical product, not an original teaching record."
   },
   {
     "veritas_product_id": "53277",
@@ -152,8 +152,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "53062",
@@ -162,9 +162,9 @@
     "published_date": "2023-05-28",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091",
+    "matched_master_titles": "In the World, But Not of It",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -176,8 +176,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "52945",
@@ -188,8 +188,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "53036",
@@ -200,8 +200,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "54226",
@@ -212,8 +212,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Spin-off physical product, not an original teaching record."
   },
   {
     "veritas_product_id": "53060",
@@ -222,9 +222,9 @@
     "published_date": "2022-08-30",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-72d3-833a-d03202d81997",
+    "matched_master_titles": "Daily Reflections",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -246,9 +246,9 @@
     "published_date": "2020-09-08",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-79d8-b768-723ff09b362d",
+    "matched_master_titles": "The Map of Consciousness Explained",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -260,8 +260,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "38608",
@@ -272,8 +272,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique compilation: Book of Slides"
   },
   {
     "veritas_product_id": "36833",
@@ -284,8 +284,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Promotional/bonus compilation."
   },
   {
     "veritas_product_id": "1820",
@@ -294,9 +294,9 @@
     "published_date": "2016-03-10",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7681-b805-9876f313b8a3",
+    "matched_master_titles": "Success Is for You",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -308,8 +308,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation, biography, or posthumous edition."
   },
   {
     "veritas_product_id": "1792",
@@ -320,8 +320,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "50516",
@@ -330,9 +330,9 @@
     "published_date": "2014-04-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7250-b9ac-0eb1cc2324e9",
+    "matched_master_titles": "What is Meant by Spiritual.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -342,9 +342,9 @@
     "published_date": "2014-04-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7016-b535-958e7e027304",
+    "matched_master_titles": "The Importance of Family.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -354,9 +354,9 @@
     "published_date": "2014-04-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7142-9121-bbac774cb552",
+    "matched_master_titles": "How to See the Reality of Life.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -366,9 +366,9 @@
     "published_date": "2014-04-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7198-a769-d90f01ab8b8d",
+    "matched_master_titles": "Improving Your Relationships.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -378,9 +378,9 @@
     "published_date": "2014-03-31",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7658-9971-9d3eb7526e6f",
+    "matched_master_titles": "What You are Changes the World.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -390,9 +390,9 @@
     "published_date": "2014-03-31",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7e67-a61c-48cb2d07e273",
+    "matched_master_titles": "Live Your Life Like a Prayer",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -404,8 +404,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "50485",
@@ -416,8 +416,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "50411",
@@ -426,9 +426,9 @@
     "published_date": "2014-03-30",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-774e-ad0f-2982f20bb90a",
+    "matched_master_titles": "101 Volume I-Power vs Force (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -450,9 +450,9 @@
     "published_date": "2014-03-30",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-79cb-bc12-718d34b89a0b",
+    "matched_master_titles": "Truth vs Falsehood",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -510,9 +510,9 @@
     "published_date": "2014-03-30",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-79b4-99a0-1bf383745b9a",
+    "matched_master_titles": "Letting Go",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -522,9 +522,9 @@
     "published_date": "2014-03-26",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7e61-96a9-6e92ec2d0f2a",
+    "matched_master_titles": "B-06 Office Series-Death and Dying.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -534,9 +534,9 @@
     "published_date": "2014-03-24",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-74df-ae52-ac762548709e",
+    "matched_master_titles": "B-04 Office Series-Cancer.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -546,9 +546,9 @@
     "published_date": "2014-03-23",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-75a1-b219-f1c4e848506c",
+    "matched_master_titles": "B-03 Office Series-A Map Of Consciousness.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -558,9 +558,9 @@
     "published_date": "2014-03-21",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-721e-91eb-a79fdb069251",
+    "matched_master_titles": "B-01 Office Series-Drug Addiction and Alcoholism....mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -570,9 +570,9 @@
     "published_date": "2014-03-12",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7ede-9e05-58d17372a66e",
+    "matched_master_titles": "A-12 Office Series-Alcoholism.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -582,9 +582,9 @@
     "published_date": "2014-03-11",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-756f-b6a9-fc34c5e00cca",
+    "matched_master_titles": "A-11 Office Series-Illness and Self-Healing.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -594,9 +594,9 @@
     "published_date": "2014-03-10",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7a2a-abac-efdf591c74c8",
+    "matched_master_titles": "A-10 Office Series-Depression.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -606,9 +606,9 @@
     "published_date": "2014-03-09",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7cb5-971b-2d2fa4f27dfa",
+    "matched_master_titles": "A-09 Office Series-Losing Weight.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -618,9 +618,9 @@
     "published_date": "2014-03-08",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-796a-9c7e-8254469c6d33",
+    "matched_master_titles": "A-08 Office Series-Pain and Suffering.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -630,9 +630,9 @@
     "published_date": "2014-03-07",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7157-88bb-486d1ff9942f",
+    "matched_master_titles": "A-07 Office Series-Worry Fear and Anxiety.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -642,9 +642,9 @@
     "published_date": "2014-03-06",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7572-a316-c12e02e49df9",
+    "matched_master_titles": "A-06 Office Series-Handling Major Crises.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -654,9 +654,9 @@
     "published_date": "2014-03-05",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7ebc-aa8d-86e2f6be1005",
+    "matched_master_titles": "A-05 Office Series-The Aging Process.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -666,9 +666,9 @@
     "published_date": "2014-03-04",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7224-8a66-6df2b0d0dac1",
+    "matched_master_titles": "A-04 Office Series-Sexuality.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -678,9 +678,9 @@
     "published_date": "2014-03-03",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-709e-8a74-77b3d4f55c44",
+    "matched_master_titles": "A-03 Office Series-Spiritual First Aid.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -690,9 +690,9 @@
     "published_date": "2014-03-02",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7ea7-bb11-5ad8ec811e36",
+    "matched_master_titles": "A-02 Office Series-Health.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -702,9 +702,9 @@
     "published_date": "2014-03-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7a52-9c83-955e9e92619b",
+    "matched_master_titles": "A-01 Office Series-Stress.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -762,9 +762,9 @@
     "published_date": "2014-01-21",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-78df-bf3a-5a3c28111eb8",
+    "matched_master_titles": "Verification of Spiritual Realities PART1.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -786,9 +786,9 @@
     "published_date": "2014-01-13",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-76d8-bdf4-d05a26da8442",
+    "matched_master_titles": "The Presence of Spiritual Awareness PART1.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -824,8 +824,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "1822",
@@ -834,9 +834,9 @@
     "published_date": "2014-01-08",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7c00-b134-cdc3f4e192da",
+    "matched_master_titles": "Love is a Way of Being (January 2004) PART1.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -882,9 +882,9 @@
     "published_date": "2014-01-02",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7519-a374-f3326bd0c2e6",
+    "matched_master_titles": "Become That Which You Are (June 2004) PART1.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -906,9 +906,9 @@
     "published_date": "2012-06-15",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-74d5-bfca-7e2d86784c95",
+    "matched_master_titles": "The Highest Level of Enlightenment",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -918,9 +918,9 @@
     "published_date": "2011-11-03",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-79cb-bc12-718d34b89a0b",
+    "matched_master_titles": "Truth vs Falsehood",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -944,8 +944,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "50775",
@@ -968,8 +968,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "50796",
@@ -980,8 +980,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "1704",
@@ -1026,9 +1026,9 @@
     "published_date": "2010-07-12",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7192-9b48-f1b46f7a3a6c",
+    "matched_master_titles": "Healing and Recovery",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1158,9 +1158,9 @@
     "published_date": "2009-01-28",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091",
+    "matched_master_titles": "In the World, But Not of It",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1434,9 +1434,9 @@
     "published_date": "2007-03-16",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-75a1-b219-f1c4e848506c",
+    "matched_master_titles": "B-03 Office Series-A Map Of Consciousness.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1446,9 +1446,9 @@
     "published_date": "2007-03-16",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-74b3-bda4-3409216dc1f7",
+    "matched_master_titles": "Audio 27. Golden Word Book Signing – Audio",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1460,8 +1460,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "1546",
@@ -1472,8 +1472,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "1544",
@@ -1484,8 +1484,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "unique_item",
+    "review_notes": "Unique item not found in legacy spreadsheet."
   },
   {
     "veritas_product_id": "1542",
@@ -1494,9 +1494,9 @@
     "published_date": "2007-03-16",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-774e-ad0f-2982f20bb90a",
+    "matched_master_titles": "101 Volume I-Power vs Force (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1506,9 +1506,9 @@
     "published_date": "2007-03-07",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7b74-9f0a-5dea7e1e918a",
+    "matched_master_titles": "701 Volume VII A-Conversation with Knowingness-converted.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1518,9 +1518,9 @@
     "published_date": "2007-03-06",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7f08-9a95-19eaad4bce2a",
+    "matched_master_titles": "601 Volume VI-How to Raise Your Level of Consciousness-converted.mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1530,9 +1530,9 @@
     "published_date": "2007-03-05",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7fdd-a977-f0c0a7319d6e",
+    "matched_master_titles": "501 Volume V-Undoing the Barriers to Spiritual Progress (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1542,9 +1542,9 @@
     "published_date": "2007-03-04",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7087-9a74-df50041d63d7",
+    "matched_master_titles": "401 Volume IV-How to Tell the Truth about Anything (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1554,9 +1554,9 @@
     "published_date": "2007-03-03",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-778e-805b-506adb22a0c5",
+    "matched_master_titles": "301 Volume III-Advanced States of Consciousness (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1578,9 +1578,9 @@
     "published_date": "2007-03-02",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-7a43-ba0d-6bd5e5219641",
+    "matched_master_titles": "201 Volume II-Consciousness and Addiction (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1590,9 +1590,9 @@
     "published_date": "2007-03-01",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e6-774e-ad0f-2982f20bb90a",
+    "matched_master_titles": "101 Volume I-Power vs Force (Part 1).mp4",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -1614,9 +1614,9 @@
     "published_date": "2007-01-30",
     "official_categories": "",
     "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
+    "matched_master_uuids": "019fc4e7-d1e7-7aee-b21a-4eef38685e59",
+    "matched_master_titles": "Discovery of the Presence of God",
+    "mapping_status": "matched_by_title",
     "review_notes": ""
   },
   {
@@ -2216,8 +2216,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "40747",
@@ -2228,8 +2228,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "39238",
@@ -2240,8 +2240,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "36857",
@@ -2252,8 +2252,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "1824",
@@ -2264,8 +2264,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "1808",
@@ -2276,8 +2276,8 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   },
   {
     "veritas_product_id": "1800",
@@ -2288,7 +2288,7 @@
     "normalized_title_match_count": "0",
     "matched_master_uuids": "",
     "matched_master_titles": "",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "compilation_or_new_edition",
+    "review_notes": "Identified as a compilation of highlights or Q&A."
   }
 ]

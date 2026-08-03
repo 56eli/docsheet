@@ -1,8 +1,10 @@
 {
-  "master_items": 393,
-  "migrated_items": 308,
-  "implemented_unreviewed": 85,
+  "master_items": 354,
+  "migrated_items": 314,
+  "implemented_unreviewed": 42,
   "veritas_official_products": 191,
+  "hayhouse_official_products": 24,
+  "audible_official_products": 26,
   "approved_publishers": 4,
   "original_source_rows": 374
 }
