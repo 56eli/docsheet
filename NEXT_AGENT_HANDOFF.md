@@ -1,114 +1,187 @@
 # Next-Agent Transition Handoff
 
 **Prepared:** 2026-08-03
-**Current branch:** `arena/019fc714-docsheet`
-**Purpose:** Resume work safely without rediscovering the compact-ID migration, data model, review boundaries, UX changes, or refresh safeguards.
+**Branch:** `arena/019fc740-docsheet`
+**Full audit:** [AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md)
 
-## Immediate next actions
+## Read this first
 
-1. Open and merge the PR from `arena/019fc714-docsheet` when review is complete.
-2. Confirm GitHub Pages redeploys from `main` → `/docs` and serves the compact-ID spreadsheet UI.
-3. Add the CI workflow after GitHub workflow-file permissions are available; this branch already includes the Playwright CSV export test files and npm scripts.
-4. Review the latest **Map Veritas Catalogue** artifact from `main` run `30803991007` outside this sandbox.
+This session verified **every catalogue entry against the live Veritas
+Publishing API** (191 products, full `product_cat` taxonomy, per-product SKU and
+format metadata) and fixed four critical data-correctness defects. All are
+committed and verified. What remains below is **open work, not known breakage.**
 
-Local direct `python fetch_veritas_catalogue.py --check` from this sandbox failed with TLS EOF against `veritaspub.com`; use the GitHub Actions artifact as the operational review path unless direct network access is healthy.
+The single most important lesson: **the four critical bugs were all internally
+self-consistent and passed every existing check.** They were only detectable by
+comparing against the publisher's own data. Structural validation is necessary
+but not sufficient for this project.
 
 ## Current validated state
 
 | Layer | Count | Canonical location |
 |---|---:|---|
-| Raw spreadsheet data rows | 374 | `hawkins archive clone - Sheet1.csv` |
-| Curated master records | 308 | `data/research_master_draft.csv` / `.json` |
-| Compact master IDs | 1–308 | `uuid` field retained for compatibility; displayed as Master ID |
-| Excluded raw rows | 66 | `data/research_master_exclusions.csv` |
-| Approved source overrides | 80 | `data/research_master_source_overrides.csv` |
-| Manual research leads | 1 | `data/research_manual_leads.csv` |
-| Reviewed, unpromoted candidates | 17 | `data/manual_master_candidates.csv` |
-| Veritas inventory products | 191 | `data/veritas_official_products.csv` |
-| Veritas mapping decisions | 35 | `data/veritas_mapping_decisions.csv` |
-| Item-to-product relationships | 301 | `data/product_relationships.csv` |
-| Series-compilation relationships | 7 | `data/series_compilation_relationships.csv` |
-| Everything Pages records | 344 | `docs/master.json` |
-| Original Spreadsheet Pages records | 374 | `docs/data.json` |
+| Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
+| Curated master | 308 | `data/research_master_draft.{csv,json}` |
+| — `lecture` / `book` / `discussion` / untyped | 274 / 23 / 8 / 3 | |
+| Catalogue codes (unique) | 221 | derived from `item_type` + `year` |
+| Months (all verified vs official) | 198 | derived from official product slug |
+| Exclusions / overrides | 66 / 80 | `data/research_master_*.csv` |
+| Candidates / leads | 17 / 1 | `data/manual_master_candidates.csv`, `research_manual_leads.csv` |
+| Relationships / series compilations | 301 / 7 | `data/product_relationships.csv`, `series_compilation_relationships.csv` |
+| Veritas / Hay House / Audible / International | 191 / 24 / 26 / 36 | `data/*_products.csv`, `international_discovery_queue.csv` |
+| Everything Pages view | 344 | `docs/master.json` (308 `master` + 36 `candidate_*`) |
 
-## Current UX additions on this branch
-
-- View description/count/type/export summary for every tab.
-- Readable labels for URL-heavy cells.
-- Per-view column ordering, width tuning, and frozen key columns.
-- Column chooser with show-all reset.
-- Row details drawer for all fields.
-- Active search/review filter chips with clear-all control.
-- Playwright CSV export smoke tests in `tests/csv-export.spec.js`.
-
-## Required local validation
-
-Run these from repository root before changing or delivering data:
+Required before delivering any data change:
 
 ```bash
 python -m py_compile *.py
-node --check docs/app.js
-node --check playwright.config.js
-node --check tests/csv-export.spec.js
 python build_research_master.py --check
 python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
-npx playwright test --list
+node --check docs/app.js && node --check tests/csv-export.spec.js
 git diff --check
 ```
 
-Full browser execution needs Chromium:
+---
 
-```bash
-npm ci
-npm run test:e2e:install
-npm run test:e2e
-```
+## P0 — Blocked on the repository owner
 
-This sandbox could list Playwright tests, but Chromium download failed with TLS/network resets.
+### 1. CI workflow
+`.github/workflows/ci.yml` cannot be pushed: the GitHub App lacks `workflows`
+permission (re-probed and re-confirmed this session). **Complete drop-in YAML and
+step-by-step web-editor instructions are in
+[UNBLOCK_INSTRUCTIONS.md](UNBLOCK_INSTRUCTIONS.md) Task A.** Every step except the
+Chromium install has been verified locally. Until this lands, all guarantees rest
+on someone remembering to run the checks by hand.
 
-## Live Veritas review
+### 2. Playwright browser execution
+Three tests exist and are discoverable; Chromium cannot be downloaded in the
+sandbox. CI (item 1) resolves this.
 
-Artifact from `main` run `30803991007`:
+---
 
-- Artifact name: `veritas-inventory-review-30803991007`
-- Artifact ID: `8851979247`
-- Reported ZIP digest: `3f06b4499dd21840abf995725621f1f7724261f2546e1ae7d6da8c2427f15c3d`
-- Expected files:
-  - `data/veritas_official_products_candidate.csv`
-  - `data/veritas_inventory_diff.patch`
+## P1 — Open decisions (evidence gathered, needs a ruling)
 
-Do not replace the reviewed Veritas inventory without inspecting the diff and updating mapping decisions deliberately.
+### 3. Four series/type judgement calls
+Verified against the official taxonomy; each needs a human decision, not more research.
 
-## Data and review boundaries
+| ID(s) | Our value | Official says | Question |
+|---|---|---|---|
+| 199, 200, 201 | series `Love & Spiritual Seeker Qualities` | `satsang`, `satsang2011`, `satsang-series-and-question-and-answer-sessions` | These 2011 Q&A sessions are filed by Veritas under Satsang, not the 2011 lecture series. Move them to `Satsang Series`, or keep them with their year-mates? |
+| 301 | `item_type=book`, series `Books` | only `media-miscellaneous`; **no book edition exists** in the catalogue | "The Highest Level of Enlightenment" exists officially **only as audio**. Either it is not a book, or it is a book we hold with no Veritas book product. |
 
-- **Raw evidence:** never edit `hawkins archive clone - Sheet1.csv` through a generator.
-- **Master:** generated from the migration ledger plus reviewed source overrides; do not hand-edit generated CSV/JSON outputs except through approved migration/rebuild steps.
-- **Master IDs:** compact numeric IDs are retained by raw source row number and capped at 10000.
-- **Manual candidates:** intentionally `not_promoted`; promotion needs a dedicated reviewed source input and compact ID/code assignment path.
-- **Veritas decisions:** `data/veritas_mapping_decisions.csv` persists non-primary mapping dispositions. The fetch script derives exact primary-source/date-aware results, then reapplies this overlay.
-- **Relationships:** `data/product_relationships.csv` is specific item-to-product evidence; `data/series_compilation_relationships.csv` records annual Highlights at series level because official pages do not identify individual DVD parts.
-- **Pages:** `docs/` is generated/static. The review workspace exposes overview, candidates, leads, exclusions, migration review, source overrides, official discovery, Veritas decisions, product relationships, and series compilations.
+Also outstanding from earlier: whether `interview` vs `discussion` was the right
+call is now settled (`discussion` was added), but **`audio`/`video` remain in the
+vocabulary as `DEPRECATED_MEDIUM_ITEM_TYPES`** — consider removing them entirely
+once no data uses them.
 
-## Current priorities
+### 4. Title hygiene pass — analysis complete, not applied
+[TITLE_HYGIENE_PROPOSAL.md](TITLE_HYGIENE_PROPOSAL.md) is fully researched and
+simulated: **54 records** still carry `.mp4`, `-converted`, `PART n`, `A-01`-style
+prefixes and leading sequence numbers. (Records 264/265 were fixed this session as
+C4 because they were a provable data defect, not cosmetics.)
 
-1. PR/merge this branch and verify Pages deployment.
-2. Add and verify CI after workflow-file permissions are available.
-3. Review the Veritas candidate/diff artifact from `main` run `30803991007`.
-4. Disable or clarify session-only editing.
-5. Design selective promotion of the 17 manual candidates into the master without direct generated-file edits.
-6. Add formal schemas/build manifests and broader browser interaction tests.
+The proposal follows the existing LS-lecture precedent (clean `title`, verbatim
+`title_source`, part designator in `format_detail`) and simulated cleanly:
+56 titles → 0 empty, 0 information lost.
 
-## Reference documents
+**Three open questions in §2a of that document:** whether `A-01`…`B-06` prefixes
+leave the title (16 records), whether `Volume N-` prefixes stay (recommend yes),
+and whether part designators use `PART1` or `DVD01` (recommend `PART1`, since
+`DVD01` asserts an unevidenced medium).
 
-- `PROJECT_STATE_AUDIT.md` — architecture, risks, validation, and full audit.
-- `IMPLEMENTATION_PLAN.md` — prioritized roadmap.
-- `SPREADSHEET_UX_REVIEW.md` — UX recommendations and implementation status.
-- `VERITAS_ARTIFACT_REVIEW.md` — artifact retrieval/access report.
-- `VERITAS_MAPPING_DECISIONS.md` — refresh overlay contract.
-- `RECONCILIATION_REPORT.md` — current master consistency check.
-- `PRODUCT_RELATIONSHIP_SCHEMA.md` / `SERIES_COMPILATION_SCHEMA.md` — relationship contracts.
+**One resolved finding to apply with it:** record **203** is a confirmed source
+typo — its title says "Volume II" but its `102` prefix, its linked two-disc
+product (`vs_v1pvf_dvd`, "Two DVD Set") and its own "Applied Kinesiology" subject
+all say **Volume I**. The real Volume II ("Consciousness and Addiction") is held
+separately as records 204/205.
 
-## Collaboration note
+### 5. The 3 remaining untyped records
+- **246** `where is B-02? might not exist.` and **249** `where is B-05? might not exist.`
+  Not titles — unresolved research questions. The Office Series officially runs
+  A-01…A-12, B-01, B-03, B-04, B-06; **B-02 and B-05 genuinely do not exist**
+  upstream. Recommend moving both to `research_master_exclusions.csv`, which would
+  make the master 306 records / 100% typed.
+- **264** now has a clean title but still no source URL. Its official product is
+  almost certainly `1661` (`in-the-world-but-not-of-it-cd`, SKU `am_itwbnoi`) —
+  propose it as a reviewed **source override**, then it types as `lecture`.
 
-All review decisions that affect data should remain visible in dedicated CSV/Markdown inputs and in the Pages review sheets. Ask the user for a decision before promoting candidates, changing scope, or inferring work/edition identity from a title alone.
+### 6. Candidate promotion
+17 candidates remain `reviewed_candidate` / `not_promoted`. No generator path
+promotes them. Needs a promotion-decision input keyed by `candidate_key` that
+assigns a compact ID, catalogue code and provenance.
+
+---
+
+## P2 — Hardening and hygiene
+
+7. **SRI + CSP** — `docs/index.html` loads Tabulator 6.5.2 from jsDelivr with no
+   Subresource Integrity hash and no CSP. Three lines; highest security value available.
+8. **Read-only review sheets** — `buildColumns()` sets `editor: "input"`
+   unconditionally, including on generated derivative sheets. Edits are
+   session-only and warned about only in a footer string.
+9. **`process_data.py --check`** — no check mode; `meta.json` rewrites
+   `generated_at_utc` every run, so any "generated files current" CI step needs
+   timestamp-aware comparison. `data.json` itself is byte-stable.
+10. **Pin Python deps** (`pandas>=2,<4` or constraints file) and add a `LICENSE`
+    — the repo is public with none.
+11. **Dead code** — `loadMeta()` and `metaLoaded` in `docs/app.js` are never
+    called; `docs/meta.json` and `docs/catalogue-meta.json` are generated,
+    committed and read by nothing.
+12. **Six always-empty master columns** — `location_physical`, `location_digital`,
+    `location_streaming`, `source_url_hay_house`, `source_url_nightingale_conant`,
+    `reference_url_2` are 0/308 populated. Populate or drop.
+13. **`format` is blank on 110 records.** Strong evidence was gathered this
+    session for a deliberate pass: SKU prefixes (`cd_`, `_dvd`, `vs_v1pvf_dvd`),
+    product-detail strings ("Two DVD Set", "Three Compact Disc Set", "6 CD Set"),
+    and "Streaming Video is not available for this topic" markers.
+14. **Nightingale-Conant provenance gap** — `source_url_nightingale_conant` is
+    empty on all 308 records, yet the official page for product 1661 states
+    "Publisher: Nightingale-Conant". Worth a provenance pass.
+
+---
+
+## P3 — Enhancements
+
+15. **Enforce the two remaining derived-field invariants.** F-9 swept them and
+    they currently hold, but only `normalized_title_match_count` is guarded in
+    code. `matched_master_titles` in both the inventory and the decision overlay
+    could still desynchronize under a hand-edit.
+16. **Documentation consolidation.** 38 Markdown files at repo root. Four
+    overlapping status docs (`PROJECT_STATE_AUDIT`, `HANDOFF`, this file,
+    `IMPLEMENTATION_PLAN`) restate the same counts and will drift —
+    `catalogue-meta.json` already holds them programmatically. Eight decision
+    records belong in `decisions/`. Two `*_DRAFT.md` files sit beside their
+    finalized versions.
+17. **Broader browser tests** — all 17 tabs, search+filter composition, column
+    chooser, row drawer, dark mode, console-error assertions.
+18. **Re-run Map Veritas Catalogue once.** With the inventory corrected it should
+    now **pass** rather than fail, which makes any future failure a genuine
+    upstream signal.
+
+---
+
+## Data and review boundaries (unchanged, still binding)
+
+- **Never edit the raw CSV through a generator.**
+- **Never hand-edit generated files** (`data/research_master_draft.*`, `docs/*.json`).
+  Change the declared input and regenerate.
+- **A commercial listing is not master identity.** Do not infer work or edition
+  identity from a title alone — this session proved why (C2: four records linked
+  to the wrong edition, one to a wall chart).
+- **`item_type` = what a record IS; `format` = the carrier.** Set by the 198
+  DVD lectures typed `lecture`, not `video`.
+- **Compact master IDs are stable once issued.**
+- **Relationships stay at the evidence level actually supported** — item-level
+  when proven, series-level for annual Highlights.
+
+## Verification tips learned this session
+
+- The Veritas WP API is unreachable via `curl`/`urllib` from the sandbox (TLS EOF)
+  but **works through the agent's page-fetch tool**. Use
+  `/wp-json/wp/v2/product?per_page=100&page=N&_fields=id,link` and
+  `/wp-json/wp/v2/product_cat` — compact `_fields` avoids response chunking.
+- Individual product pages expose `Category:` and `SKU:` plus product details
+  ("Two DVD Set", running time, ISBN) — the strongest evidence available.
+- `product_cat` IDs map to slugs via the `product_cat` endpoint; the taxonomy is
+  the authoritative grouping and it resolved several ambiguities outright.
