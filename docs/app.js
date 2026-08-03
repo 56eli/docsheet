@@ -47,6 +47,7 @@
     migrationReview: { file: "migration-review.json", label: "Migration Review", exportName: "hawkins-migration-review.csv" },
     sourceOverrides: { file: "source-overrides.json", label: "Source Overrides", exportName: "hawkins-source-overrides.csv" },
     officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
+    newWorkReview: { file: "new-work-review.json", label: "New Work Review", exportName: "hawkins-new-work-review.csv" },
     veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Veritas Decisions", exportName: "hawkins-veritas-decisions.csv" },
     veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
     productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
@@ -90,6 +91,10 @@
     officialDiscovery: {
       type: "Discovery queue",
       description: "Nightingale-Conant and platform candidates awaiting source, duplicate, or relationship review.",
+    },
+    newWorkReview: {
+      type: "Review queue",
+      description: "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
     },
     veritasMappingDecisions: {
       type: "Refresh decisions",
@@ -251,6 +256,7 @@
     masterExclusions: { priority: ["raw_title", "disposition", "review_reason", "raw_row_number", "raw_tempid", "raw_we_have", "raw_product_link"], frozen: ["raw_title"] },
     migrationReview: { priority: ["proposed_title", "disposition", "review_reason", "proposed_item_type", "proposed_series", "proposed_year", "proposed_owned", "raw_row_number", "raw_title"], frozen: ["proposed_title"] },
     officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
+    newWorkReview: { priority: ["candidate_title", "item_type", "series", "year", "format", "source_product_id", "match_status", "approval", "source_url_veritas", "match_notes", "review_notes"], frozen: ["candidate_title"] },
     veritasMappingDecisions: { priority: ["veritas_product_id", "mapping_status", "matched_master_uuids", "matched_master_titles", "review_status", "decision_reason"], frozen: ["veritas_product_id"] },
     veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_uuids", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
     productRelationships: { priority: ["master_uuid", "master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_uuid", "master_title"] },

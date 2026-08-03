@@ -1293,6 +1293,43 @@ class SourceOverrideStatusTests(unittest.TestCase):
             tempdir.cleanup()
 
 
+class NewWorkQueueTests(unittest.TestCase):
+    """The new-work review lane must stay aligned with the Veritas inventory."""
+
+    def row(self, **overrides) -> dict[str, str]:
+        base = {
+            "candidate_title": "Satsang Series (Jan 2006)", "item_type": "lecture",
+            "series": "Satsang", "year": "2006", "format": "CD",
+            "source_product_id": "1304", "source_url_veritas": "https://veritaspub.com/product/satsang-series-1-january-11-2006-held-at-st-andrews-episcopal-church/",
+            "match_status": "not_found_in_current_draft", "match_notes": "candidate new work",
+            "approval": "", "review_notes": "",
+        }
+        base.update(overrides)
+        return base
+
+    def test_committed_queue_builds_clean(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_product_and_url_mismatch_fail(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unknown Veritas product"):
+            bcp.validate_new_work_queue([self.row(source_product_id="9999")], [])
+        inventory = [{"veritas_product_id": "1304", "official_product_url": "https://veritaspub.com/product/real/" }]
+        with self.assertRaisesRegex(ValueError, "differs from the inventory"):
+            bcp.validate_new_work_queue([self.row()], inventory)
+
+    def test_duplicate_and_empty_title_fail(self) -> None:
+        inventory = [{"veritas_product_id": "1304", "official_product_url": "https://veritaspub.com/product/satsang-series-1-january-11-2006-held-at-st-andrews-episcopal-church/"}]
+        with self.assertRaisesRegex(ValueError, "duplicates product"):
+            bcp.validate_new_work_queue([self.row(), self.row()], inventory)
+        with self.assertRaisesRegex(ValueError, "candidate_title"):
+            bcp.validate_new_work_queue([self.row(candidate_title="")], inventory)
+
+
 class DocumentationCurrencyTests(unittest.TestCase):
     """Hand-maintained status documents must not drift from the generated data."""
 

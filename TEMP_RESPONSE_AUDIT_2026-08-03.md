@@ -430,3 +430,16 @@ accepted) and applied through the sanctioned pipeline:
   (w-truth-vs-falsehood) appears on the book + audiobook rows, and the raw
   format columns are hidden.
 - 86 unit tests, 92% coverage, all five `--check` green, node checks pass.
+
+### 11m. New-work review lane drafted (owner: "draft the new-work lane")
+
+`data/new_work_review_queue.csv` (14 rows): the Veritas products with no
+master match — 9 Satsang monthlies (2006 Jan–Nov, 2008 Jul, 2010 Jun/Sep;
+master Satsang coverage starts 2007), 2 Unity Church of Sedona CDs
+(2005/2006), and 3 unique audio programs (Don't Set Sail Without A Compass,
+Peace is the Natural State, Giving Up Illness through A Course in Miracles).
+Wired into the Pages build (`docs/new-work-review.json`, Review Overview,
+**New Work Review** tab) with inventory cross-validation
+(`validate_new_work_queue`: product ID + exact URL, no duplicates) and 3
+tests. The 2 Spanish Audible editions were already handled in the
+International sheet (no new rows needed). Suite: **89 tests**, coverage 92%.

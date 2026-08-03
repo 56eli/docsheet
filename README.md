@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 86 tests, no browser/network needed
+python -m unittest discover tests          # 89 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -106,7 +106,8 @@ to isolate curated data before exporting. Counts per class are published in
 
 The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
-Review**, **Source Overrides**, **Official Discovery**, **Series
+Review**, **Source Overrides**, **Official Discovery**, **New Work Review**
+(unmatched Veritas products awaiting a new-work ruling), **Series
 Compilations**, and **Veritas Decisions** are separate sheets alongside the
 catalogue and official-product views. Reviewers can search, sort, export, and
 filter sheets with multiple review-status values without opening repository

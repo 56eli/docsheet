@@ -36,7 +36,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 86 tests, offline, ~2s
+python -m unittest discover tests     # 89 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -71,7 +71,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 17 reviewed manual candidates (11 promoted, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 21 works / 43 members approved | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
-| Test suite | **86 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **89 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
@@ -95,7 +95,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    into display-only `year_month` (YYYY-MM), Series moved between Master ID and
    Title, CSV export now exports the **whole sheet** (`rowRange "all"`).
 7. **Tests + fail-safes (this turn):**
-   - `tests/test_pipeline.py` — 86 tests: end-to-end write/check/tamper runs of
+   - `tests/test_pipeline.py` — 89 tests: end-to-end write/check/tamper runs of
      all generators in sandboxed input copies, run-twice determinism for the two
      bootstrap generators, offline replay of the live fetcher (synthetic API
      rebuilt from the committed inventory + retry-ladder unit tests), CLI
@@ -113,7 +113,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    changes; run `30834666253` green (includes the full deterministic suite +
    coverage gate + Playwright).
 9. **Independent re-audit + doc-status pass (this turn, branch
-   `arena/019fc893-docsheet`):** verified every previous claim (86 tests,
+   `arena/019fc893-docsheet`):** verified every previous claim (89 tests,
    92% coverage, all `--check` modes, CI green on `main` at `6b28e66`), then
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
