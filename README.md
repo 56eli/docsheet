@@ -16,6 +16,7 @@ GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 ```bash
 pip install -r requirements.txt
 python process_data.py
+python process_data.py --check  # verify committed raw-Pages outputs are current
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
 

@@ -323,3 +323,42 @@ was found by the checks available in this environment. The highest-value next
 implementation task is CSP/SRI plus read-only review sheets; the highest-value
 catalogue task is review of the Map Veritas artifact and the owner decisions
 listed in the handoff.
+
+---
+
+## 10. Follow-up remediation and source comparison — 2026-08-03
+
+The engineering findings in §9 were worked through against their authoritative
+inputs. This change set deliberately does not make catalogue-content decisions
+where the official source establishes facts but the required catalogue treatment
+is an owner decision.
+
+| Audit item | Authoritative comparison / evidence | Outcome |
+|---|---|---|
+| CDN integrity | The three SRI SHA-384 values were calculated from the official `tabulator-tables@6.5.2` npm package tarball, for the exact CSS/JS paths used by jsDelivr. | ✅ `integrity` and `crossorigin` added to both stylesheets and the script. |
+| Browser execution policy | The deployed document's own required origins were enumerated: local Pages assets, jsDelivr, Google Fonts, and Google font files. The inline dark-mode bootstrap was SHA-256 hashed from its exact document content. | ✅ restrictive CSP added: no objects, only self data connections, explicit script/style/font origins, and the one hashed inline bootstrap. |
+| Misleading editing | Tabulator's documented `editor: false` column setting was applied to every generated view; the browser test now double-clicks a cell and asserts no editor appears. | ✅ published sheets are read-only, and UI/help text were aligned. |
+| Raw-output drift | The raw CSV, `docs/data.json`, and `docs/meta.json` were regenerated in memory using the declared Pandas pipeline. | ⚠️ `process_data.py --check` now verifies the byte-stable data payload and all stable metadata. The matching CI step is prepared locally but cannot be pushed by this GitHub App because it lacks `workflows` permission. |
+| Dependency range | The pipeline was validated using current Pandas 3.0.5. | ✅ requirement bounded to `pandas>=2.0,<4`. |
+| Live Veritas freshness | GitHub Actions run `30813523859` successfully fetched the upstream candidate, then failed only at its intentional inventory-diff gate. Its artifact endpoint and failed-log download both reached an Azure/GitHub TLS EOF from this sandbox, so its contents could not be independently retrieved here. | ⚠️ The upstream difference is confirmed by the workflow step, but must be reviewed from the uploaded artifact in GitHub before any inventory change. |
+| Catalogue record facts | §2's 191-product/308-record comparison remains the authoritative entry-by-entry evidence: live Veritas API URLs, titles, taxonomy, product dates, SKU/format pages, raw ownership values, and relationship references were compared. Current deterministic checks still reproduce the resulting 308 master / 344 Everything records with no divergence. | ✅ no unapproved data mutation made. |
+
+### Deliberately unresolved decisions
+
+Official sources can establish that the relevant products/categories exist, but
+cannot decide collection policy. The following therefore remain explicitly
+unmodified pending owner direction: the 2011 Satsang placement, record 301's
+book-versus-audio treatment, title-hygiene conventions, exclusion of the two
+known-nonexistent Office Series placeholders, the proposed source override for
+record 264, and promotion of any of the 17 reviewed candidates. Their source
+evidence and decision boundaries are retained in `NEXT_AGENT_HANDOFF.md` and
+its linked decision documents.
+
+### Verification after remediation
+
+Using an isolated Python environment with Pandas 3.0.5, all of the following
+passed: Python compilation, `process_data.py --check`, research-master check,
+Pages-catalogue check, reconciliation check, JavaScript syntax checks, and
+`npm audit --omit=dev --audit-level=high` (0 vulnerabilities). The new raw-payload CI step is pending a workflow-permitted push. Local Playwright
+execution remains unavailable solely because this sandbox lacks the Chromium
+binary; the same browser suite is part of the successful GitHub-hosted CI.

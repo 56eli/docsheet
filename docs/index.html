@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hawkins Archive — Live Spreadsheet</title>
-  <meta name="description" content="Live, searchable spreadsheet rendered from the Hawkins Archive CSV. Sort, filter, edit, and export — no data has been modified.">
+  <meta name="description" content="Live, searchable spreadsheet rendered from the Hawkins Archive CSV. Search, filter, and export — no data has been modified.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-sqzN4QqqAp/KIvVxXmTT0kOfMQa8s8qdw+mQZEWD+ao='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:;">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Tabulator (pinned) — light theme by default, midnight theme for dark mode -->
-  <link id="tabulator-light-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator.min.css">
-  <link id="tabulator-dark-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator_midnight.min.css" disabled>
+  <link id="tabulator-light-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator.min.css" integrity="sha384-7L13yWDATAJeK/mNTrYjb3Z8l08N1iGKbO9mSeSdlqR91llnpd0c4Y8wPznKlHCh" crossorigin="anonymous">
+  <link id="tabulator-dark-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator_midnight.min.css" integrity="sha384-IjPQxP4KslfqCUeR2++fWi5zeLwAG8boDCsM0yhyn08PoINK8bdzXatWy+KPm9UQ" crossorigin="anonymous" disabled>
 
   <link rel="stylesheet" href="style.css">
 
@@ -148,11 +149,11 @@
     <span id="footer-stats">Total Rows: —</span>
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
-    <span class="footer-note" id="footer-note">Click a row for details; double-click a cell to edit (session only)</span>
+    <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
   </footer>
 
   <!-- Tabulator (pinned) -->
-  <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
   <script src="app.js"></script>
 </body>
 </html>

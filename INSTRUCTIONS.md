@@ -78,6 +78,7 @@ When you're ready to transform the data:
 ```bash
 pip install -r requirements.txt   # installs pandas
 python process_data.py            # regenerates docs/data.json + meta.json
+python process_data.py --check    # verifies generated outputs match the source
 ```
 
 Then serve the site over HTTP (the page uses `fetch()`, which doesn't work
@@ -161,11 +162,13 @@ inspect the artifact before accepting any live-source update.
   (`archive clbs`); the real header (`uuid, tempid, title, ...`) is line 2, so
   `process_data.py` reads with `header=1`. Cell values are passed through
   **unchanged**.
-- **Footer:** shows *Total Rows* and *Last Updated* from `docs/meta.json`
-  (falls back to the file's `Last-Modified` header if metadata is missing).
-- **Inline editing:** double-click any cell to edit. Edits are **session-only**
-  — they are not written back to the CSV. (If you want edits to persist, that
-  can be wired up later, e.g. via a backend or your transformation rules.)
+- **Footer:** shows the active view's row count and its HTTP `Last-Modified`
+  value. `docs/meta.json` remains a machine-readable build artifact for the raw
+  spreadsheet pipeline and its `--check` validation.
+- **Read-only published views:** catalogue and review sheets are generated from
+  committed CSV inputs and cannot be edited in the browser. Make reviewed changes
+  in their declared input file, regenerate the derived outputs, and run the
+  checks before publishing.
 - **Search:** the search box filters **all** columns live as you type.
 - **Export CSV:** downloads the currently filtered/sorted view.
 - **Dark mode:** toggle in the top-right; your choice is remembered
