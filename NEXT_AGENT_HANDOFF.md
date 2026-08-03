@@ -207,12 +207,24 @@ browser tests**.
 
 ### Next implementation priority
 
-Implement the official taxonomy mapper from `CATEGORY_DOMINANCE_POLICY.md` as a
-reviewable input/output layer. First refresh or retrieve the official category
-snapshot, preserve every publisher category, calculate a dominant category by the
-approved hierarchy, and emit an explicit review queue for no-category and
-Satsang+Highlights conflicts. Categories may set `series`, but must not silently
-change `item_type`.
+~~Implement the official taxonomy mapper~~ — **done 2026-08-03.**
+`map_series_taxonomy.py` plus `data/series_category_mapping.csv` and
+`data/series_taxonomy_review_queue.csv` implement
+[CATEGORY_DOMINANCE_POLICY.md](CATEGORY_DOMINANCE_POLICY.md) per
+[SERIES_TAXONOMY_MAPPING.md](SERIES_TAXONOMY_MAPPING.md); the inventory now
+persists all publisher categories (fetcher fixed to use `product_cat`), and
+282/283 clean proposals already agree with the curated series.
+
+Next steps for this layer, in order:
+
+1. **Owner rulings.** Rule on the 13-row review queue (dual-edition series —
+   Books vs Media Miscellaneous incl. record 264's product 1661; the
+   multi-annual 50521; the Map of Consciousness® category) and bulk-approve or
+   adjust the 141 clean proposals.
+2. **Wire approvals to the ledger.** Apply `approved` rows to the ledger
+   `series` column and rebuild (`python build_research_master.py`,
+   `python build_catalogue_pages.py`, then all checks). Categories may set
+   `series` but must not change `item_type`.
 
 After that, continue candidate review: rechecked audio candidates, remaining
 Unity Church talks, and deferred record 264. Use official product pages as source

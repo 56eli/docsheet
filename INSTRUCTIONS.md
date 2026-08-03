@@ -106,6 +106,7 @@ Before writing curated derivatives, validate the current inputs:
 python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
 ```
 
 After an approved review-input change, rebuild in this order and then repeat the

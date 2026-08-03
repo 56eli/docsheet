@@ -101,3 +101,20 @@ retires the standing "unreviewed live divergence" risk.
 
 ✅ **Closed.** No upstream catalogue change; internal derived-field defect found,
 corrected, and guarded against recurrence.
+
+## Addendum — taxonomy snapshot refresh (2026-08-03)
+
+A live retrieval of `/wp-json/wp/v2/product?_fields=id,link,product_cat` (191
+products) plus `/wp-json/wp/v2/product_cat` (35 terms) confirms:
+
+- **ID/link inventory identical** to the reviewed committed inventory (no
+  upstream additions or removals), consistent with the "closed" status above —
+  title/date fields were not re-compared in this retrieval.
+- The empty `official_categories` column was a **fetcher defect**, not upstream
+  absence: the previous fetcher read categories from `class_list`, which the
+  API no longer populates. `fetch_veritas_catalogue.py` now requests the
+  `product_cat` field and resolves term IDs through the taxonomy endpoint.
+- `official_categories` is now populated on all 191 products (missing values
+  would have rendered as `unresolved-category-<id>`; none did), enabling the
+  Category Dominance Policy mapper (`map_series_taxonomy.py`,
+  [SERIES_TAXONOMY_MAPPING.md](SERIES_TAXONOMY_MAPPING.md)).

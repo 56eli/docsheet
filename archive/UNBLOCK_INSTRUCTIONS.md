@@ -38,6 +38,19 @@ It compares the authoritative raw CSV to `docs/data.json` and validates stable
 After committing, run **CI** from the Actions tab (or let the push trigger it)
 and confirm the new step passes.
 
+## Also add the series-taxonomy check (2026-08-03 addition)
+
+`map_series_taxonomy.py` landed with the same `workflows` permission
+limitation. In the same web-editor commit (or a follow-up), after the series
+of `python … --check` steps, add:
+
+```yaml
+      - name: Verify series-taxonomy mapping matches its inputs
+        run: python map_series_taxonomy.py --check
+```
+
+Verified locally on the Arena branch before push.
+
 ## Veritas refresh artifact
 
 The latest **Map Veritas Catalogue** run fetched the live API successfully and

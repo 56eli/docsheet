@@ -38,6 +38,7 @@ and acknowledge any ledger/draft divergence first:
 python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
 ```
 
 `RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
@@ -46,7 +47,10 @@ until that review is resolved. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
-`data/manual_master_candidates.csv`.
+`data/manual_master_candidates.csv`. Publisher-taxonomy-to-`series` proposals
+live in `data/series_category_mapping.csv`, reviewed through
+`data/series_taxonomy_review_queue.csv`, and become master data only after
+owner approval — see `SERIES_TAXONOMY_MAPPING.md`.
 
 Approved master-to-product assertions are stored separately in
 `data/product_relationships.csv` and rendered in the **Product Relationships**
