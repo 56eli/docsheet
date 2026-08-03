@@ -1,8 +1,9 @@
 # Next-Agent Handoff
 
 **Prepared:** 2026-08-03 — refreshed after the audit/tests/fail-safes session.
-**Branch:** `arena/019fc7fe-docsheet` (Arena sessions are pinned to their
-branch; session history and today's merges sit on `main`).
+**Branch:** `arena/019fc7fe-docsheet`, closed out via
+[PR #15](https://github.com/56eli/docsheet/pull/15) (merged to `main`);
+earlier same-day work landed via PRs #11–#14.
 
 If you are the next agent: **read this file top to bottom before touching
 anything.** It is written to give you full context in five minutes.
