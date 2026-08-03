@@ -8,20 +8,20 @@
 | Measure | Count |
 |---|---:|
 | Master records | 308 |
-| Master records with a Veritas source URL | 254 |
-| Distinct primary Veritas product URLs | 111 |
-| Primary product relationships recorded | 254 |
-| Additional reviewed related-material relationship | 1 |
-| Total reviewed relationships | 255 |
-| Distinct official Veritas products represented | 112 |
+| Master records with a Veritas source URL | 263 |
+| Distinct primary Veritas product URLs | 120 |
+| Primary product relationships recorded | 263 |
+| Reviewed related-material relationships | 4 |
+| Total reviewed relationships | 267 |
+| Distinct official Veritas products represented | 124 |
 
-Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship was therefore recorded for each of the 254 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
+Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship is therefore recorded for each of the 263 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
 
-The additional relationship is the separately reviewed 2012 *How to Live Your Life Like A Prayer* interview, which is `related_material` to the 2006 three-disc lecture set rather than an edition/source replacement.
+Four reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview and the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*. See `BOOK_RELATIONSHIP_DECISIONS.md` for the bounded book review.
 
 ## Deliberately not promoted
 
-The Veritas inventory currently contains **326** master/product pairings across **54** distinct products where the inventory’s existing title-based match does not equal the master record’s primary Veritas URL. These are not automatically relationships: title normalization can conflate editions, interviews, books, compilation products, and date-specific Satsang records.
+The Veritas inventory currently contains **313** unmodeled master/product pairings across **41** distinct products where the inventory’s existing title-based match does not equal the master record’s primary Veritas URL. These are not automatically relationships: title normalization can conflate editions, interviews, books, compilation products, and date-specific Satsang records.
 
 Examples requiring individual evidence review include:
 

@@ -22,9 +22,9 @@ Move from the current useful research/discovery interface to a dependable catalo
 
 The rebuild comparison above was performed in a temporary isolated directory; it made no repository changes.
 
-**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 40 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
+**P0 reconciliation outcome (2026-08-03):** the reviewed rebuild now has 308 master records and 66 exclusions in both CSV/JSON derivatives, 49 approved source associations are preserved in `data/research_master_source_overrides.csv`, and the unresolved manual *Power vs Force* edition lead is retained outside the master in `data/research_manual_leads.csv`. `RECONCILIATION_REPORT.md` verifies the resulting build is consistent.
 
-**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 254 exact primary Veritas item/product associations plus the separately reviewed 2012 *Live Your Life Like a Prayer* interview. Title-only matches remain unpromoted pending evidence. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and `RELATIONSHIP_EXPANSION_AUDIT.md`.
+**P2 relationship outcome (2026-08-03):** `data/product_relationships.csv` now provides a validated, repeatable relationship layer with 263 exact primary Veritas item/product associations and four separately reviewed related-material products. Title-only matches remain unpromoted pending evidence. See `PRODUCT_RELATIONSHIP_SCHEMA.md`, `RELATIONSHIP_EXPANSION_AUDIT.md`, and `BOOK_RELATIONSHIP_DECISIONS.md`.
 
 ## Guiding rules
 

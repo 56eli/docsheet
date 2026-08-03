@@ -6,8 +6,8 @@
 ## Source associations
 
 - Preserve the current inventory-verified official source associations through `data/research_master_source_overrides.csv`.
-  - **32 Veritas** URLs and **8 Audible** URLs are approved for existing ledger item rows.
-  - Every URL is present in the committed official source inventory and has the recorded `matched_by_title` mapping status.
+  - The initial reconciliation approved **32 Veritas** and **8 Audible** URLs; the later book review adds **9 Veritas** URLs, for 49 approved source overrides.
+  - Every URL is present in the committed official source inventory and has the recorded mapping evidence.
   - The generator only permits approved HTTPS additions to an empty Veritas or Audible source field on an existing ledger item; it cannot overwrite a raw-ledger value.
 - *Live Your Life Like a Prayer* has two official Veritas products, now modeled in `data/product_relationships.csv`:
   - Keep the raw-ledger **November 2006** three-disc lecture-set URL as the primary master source URL for DVD01–DVD03.
