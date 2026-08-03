@@ -156,6 +156,61 @@
     "promotion_status", "review_status", "disposition", "approval", "mapping_status",
     "match_status", "relationship_type",
   ];
+  const DEFAULT_PRIORITY_FIELDS = [
+    "title", "candidate_title", "official_title", "review_sheet", "publisher",
+    "relationship_id", "raw_row_number", "disposition", "review_status",
+    "mapping_status", "promotion_status", "match_status", "item_type", "series",
+    "year", "format", "owned", "source_name", "official_product_url",
+    "evidence_url", "review_notes", "notes",
+  ];
+  const LOW_PRIORITY_FIELDS = [
+    "uuid", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
+    "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
+    "normalized_title_match_count", "location_physical", "location_digital",
+    "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
+    "raw_unnamed_10", "raw_unnamed_11",
+  ];
+  const COLUMN_WIDTHS = {
+    title: 300,
+    raw_title: 300,
+    proposed_title: 300,
+    candidate_title: 300,
+    official_title: 320,
+    official_product_title: 320,
+    matched_master_titles: 320,
+    target_lecture_titles: 340,
+    notes: 320,
+    review_notes: 320,
+    review_reason: 320,
+    evidence_note: 340,
+    promotion_notes: 320,
+    match_notes: 320,
+    purpose: 360,
+    role: 300,
+  };
+  const COLUMN_PRESETS = {
+    master: {
+      priority: ["title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      frozen: ["title"],
+    },
+    original: {
+      priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
+      frozen: ["title"],
+    },
+    reviewOverview: { priority: ["review_sheet", "record_count", "purpose", "current_state", "source_file"], frozen: ["review_sheet"] },
+    manualCandidates: { priority: ["candidate_title", "proposed_item_type", "proposed_year", "proposed_format", "proposed_owned", "review_status", "promotion_status", "official_product_title", "evidence_note"], frozen: ["candidate_title"] },
+    manualLeads: { priority: ["title", "proposed_item_type", "proposed_year", "proposed_owned", "lead_status", "review_reason", "provenance_note"], frozen: ["title"] },
+    masterExclusions: { priority: ["raw_title", "disposition", "review_reason", "raw_row_number", "raw_tempid", "raw_we_have", "raw_product_link"], frozen: ["raw_title"] },
+    migrationReview: { priority: ["proposed_title", "disposition", "review_reason", "proposed_item_type", "proposed_series", "proposed_year", "proposed_owned", "raw_row_number", "raw_title"], frozen: ["proposed_title"] },
+    officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
+    veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
+    productRelationships: { priority: ["master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_title"] },
+    seriesCompilations: { priority: ["official_product_title", "target_series", "target_year", "relationship_type", "included_lecture_count", "review_status", "target_lecture_titles"], frozen: ["official_product_title"] },
+    hayhouseProducts: { priority: ["official_title", "format", "mapping_status", "official_product_url", "review_notes"], frozen: ["official_title"] },
+    audibleProducts: { priority: ["official_title", "mapping_status", "audible_url", "review_notes"], frozen: ["official_title"] },
+    internationalProducts: { priority: ["candidate_title", "publisher", "market", "language", "item_type", "match_status", "source_url", "review_notes"], frozen: ["candidate_title"] },
+    publishers: { priority: ["publisher", "status", "role", "official_catalogue_url"], frozen: ["publisher"] },
+  };
 
   let table = null;
   let allData = [];
@@ -317,11 +372,37 @@
     return badge;
   }
 
+  function columnPresetFor(viewName) {
+    return COLUMN_PRESETS[viewName] || { priority: DEFAULT_PRIORITY_FIELDS, frozen: [] };
+  }
+
+  function orderKeysForView(keys, viewName) {
+    const preset = columnPresetFor(viewName);
+    const priority = [...new Set([...(preset.priority || []), ...DEFAULT_PRIORITY_FIELDS])]
+      .filter((key) => keys.includes(key));
+    const lowPriority = LOW_PRIORITY_FIELDS.filter((key) => keys.includes(key));
+    const ordered = [
+      ...priority,
+      ...keys.filter((key) => !priority.includes(key) && !lowPriority.includes(key)),
+      ...lowPriority,
+    ];
+    return [...new Set(ordered)];
+  }
+
+  function widthForColumn(key, urlRatio) {
+    if (COLUMN_WIDTHS[key]) return COLUMN_WIDTHS[key];
+    if (/title|note|reason|purpose|role/i.test(key)) return 280;
+    if (urlRatio >= 0.6 || /url|link/i.test(key)) return 175;
+    if (/status|disposition|approval|owned|year|month|format|count/i.test(key)) return 135;
+    return null;
+  }
+
   function buildColumns(data) {
     if (!Array.isArray(data) || data.length === 0) return [];
 
-    const keys = Object.keys(data[0]);
+    const keys = orderKeysForView(Object.keys(data[0]), activeView);
     const sample = data.slice(0, 120);
+    const preset = columnPresetFor(activeView);
 
     return keys.map((key) => {
       const nonEmpty = sample.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
@@ -339,6 +420,13 @@
         tooltip: (e, cell) => String(cell.getValue() ?? ""),
       };
 
+      const preferredWidth = widthForColumn(key, urlRatio);
+      if (preferredWidth) {
+        col.width = preferredWidth;
+      }
+      if ((preset.frozen || []).includes(key)) {
+        col.frozen = true;
+      }
       if (STATUS_FIELDS.has(key)) {
         col.formatter = statusFormatter;
       }
