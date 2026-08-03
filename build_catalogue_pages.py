@@ -153,6 +153,36 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def validate_veritas_inventory(veritas_products: list[dict[str, str]]) -> None:
+    """Fail if an inventory row's match count contradicts its matched master IDs.
+
+    ``normalized_title_match_count`` is a derived field: it must always equal the
+    number of IDs in ``matched_master_uuids``. A mismatch means the committed
+    inventory was written without the approved decision overlay applied, which
+    is exactly the drift a live refresh would otherwise report as an upstream
+    catalogue change. Catching it here keeps the refresh diff meaningful.
+    """
+    inconsistent = []
+    for product in veritas_products:
+        uuids = [
+            item.strip()
+            for item in product["matched_master_uuids"].split(";")
+            if item.strip()
+        ]
+        declared = product["normalized_title_match_count"].strip()
+        if declared != str(len(uuids)):
+            inconsistent.append(
+                f"  - product {product['veritas_product_id']}: "
+                f"normalized_title_match_count={declared!r} but "
+                f"{len(uuids)} matched master ID(s)"
+            )
+    if inconsistent:
+        raise ValueError(
+            f"{VERITAS_PRODUCTS} has derived match counts that contradict their "
+            "matched master IDs:\n" + "\n".join(inconsistent)
+        )
+
+
 def validate_product_relationships(
     master_items: list[dict[str, str]],
     veritas_products: list[dict[str, str]],
@@ -375,6 +405,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None) -> Catalog
     ]
     queue = read_csv(QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
+    validate_veritas_inventory(veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
