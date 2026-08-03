@@ -79,8 +79,9 @@ build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, policies, schemas, proposals, and the generated
-`RECONCILIATION_REPORT.md`). Approved ruling records live in
+`NEXT_AGENT_HANDOFF`, `FULL_STACK_AUDIT_2026-08-03.md`, policies, schemas,
+proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
+records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
 and evidence notes live in [`archive/`](archive/README.md) and are not
 normative.
@@ -93,7 +94,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (350) |
+| `master` | A curated master catalogue record (356) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -125,16 +126,17 @@ so the verbatim raw spreadsheet text is always exportable.
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
 months match the publisher's own dates. See
-[AUDIT_2026-08-03_FULL.md](AUDIT_2026-08-03_FULL.md) for the full audit and
-[NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
+[FULL_STACK_AUDIT_2026-08-03.md](FULL_STACK_AUDIT_2026-08-03.md) for the full
+audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
 
 ### Field semantics
 
 `item_type` records **what a record is** (its content class: `lecture`, `book`,
 `discussion`, …). `format` records **the carrier it arrives on** (`DVD`, `CD`, …).
 DVD lecture recordings are therefore `item_type=lecture` with `format=DVD`, never
-`item_type=video`. The `audio`/`video` values remain in the vocabulary only for
-backward compatibility and must not be used for new classifications.
+`item_type=video`. The deprecated medium values `audio`/`video` were **retired
+from the controlled vocabulary on 2026-08-03**: every pipeline validator now
+rejects them — use the content class and record the carrier in `format`.
 
 `month` is derived from the official Veritas product slug, which is the
 publisher's authoritative date. It is **not** taken from the legacy `LSyyyynn_p`
@@ -152,3 +154,7 @@ edition rows are minted from approved rows of `data/edition_promotions.csv`
 (reviewed candidates in `data/edition_candidates.csv`); the audiobook URLs
 moved off the book rows into their audiobook rows (D3). See
 [EDITION_MODEL_PROPOSAL.md](EDITION_MODEL_PROPOSAL.md).
+
+## License
+
+This project is released under the [MIT License](LICENSE).

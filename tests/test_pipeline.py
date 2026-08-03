@@ -1534,3 +1534,82 @@ class DefensiveDepthTests(unittest.TestCase):
         item = {"uuid": "100", "title": "Title", "item_type": "lecture", "work_id": ""}
         with self.assertRaisesRegex(ValueError, "has a missing work_id"):
             bcp.validate_work_family_coverage([item])
+
+
+class RetiredVocabularyTests(unittest.TestCase):
+    """The deprecated medium item types (audio/video) were retired 2026-08-03.
+
+    Retirement means the validators now actively reject them: a review-input
+    row reintroducing a medium value as ``item_type`` must fail the build
+    loudly (the carrier belongs in ``format`` instead).
+    """
+
+    def test_vocabulary_excludes_medium_values(self) -> None:
+        self.assertNotIn("audio", brm.CONTENT_ITEM_TYPES)
+        self.assertNotIn("video", brm.CONTENT_ITEM_TYPES)
+
+    def test_committed_review_inputs_are_vocabulary_clean(self) -> None:
+        """No item_type field in any committed review input may use a medium value.
+
+        Exception: ``official_discovery_queue.csv`` is an unreviewed triage
+        lane whose free-text ``item_type`` describes what a listing appears
+        to be (four Nightingale-Conant `audio` rows pending an owner
+        content-class ruling); the controlled vocabulary governs master,
+        candidate, promotion, and ledger lanes only.
+        """
+        exempt = {"official_discovery_queue.csv"}
+        for path in (REPO / "data").glob("*.csv"):
+            if path.name in exempt:
+                continue
+            with path.open(newline="", encoding="utf-8") as handle:
+                for row in csv.DictReader(handle):
+                    for field, value in row.items():
+                        if field and "item_type" in field:
+                            self.assertNotIn(
+                                (value or "").strip(),
+                                {"audio", "video"},
+                                f"{path}:{field} reintroduced a retired medium item_type",
+                            )
+        with (REPO / "migration_review_ledger.csv").open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                self.assertNotIn(
+                    (row.get("proposed_item_type") or "").strip(),
+                    {"audio", "video"},
+                    "migration_review_ledger.csv reintroduced a retired medium item_type",
+                )
+
+    def test_manual_candidate_medium_item_type_fails_build(self) -> None:
+        """A manual candidate proposing item_type=audio must fail validation."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            row = ("manual-veritas-99998,Retired Type Probe,audio,,CD,,,veritas,99998,"
+                   "https://veritaspub.com/test,Probe,evidence,reviewed_candidate,"
+                   "2026-08-03,not_promoted,probe")
+            with (sandbox / "data" / "manual_master_candidates.csv").open("a", encoding="utf-8") as handle:
+                handle.write(f"{row}\n")
+            with self.assertRaisesRegex(ValueError, "valid proposed_item_type"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_ledger_medium_item_type_fails_build(self) -> None:
+        """A ledger row proposing item_type=video must fail validation."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            ledger_path = sandbox / "migration_review_ledger.csv"
+            with ledger_path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+                columns = rows[0].keys()
+            # Only disposition="item" rows are validated by build_master().
+            item_row = next(row for row in rows if row["disposition"] == "item")
+            item_row["proposed_item_type"] = "video"
+            with ledger_path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=columns)
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "unsupported proposed_item_type"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()

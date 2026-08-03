@@ -1,10 +1,10 @@
 {
-  "master_items": 396,
+  "master_items": 376,
   "migrated_items": 356,
   "everything_record_types": {
     "master": 356,
     "candidate_discovery": 4,
-    "candidate_veritas": 28,
+    "candidate_veritas": 8,
     "candidate_hayhouse": 4,
     "candidate_audible": 4,
     "candidate_pending_promotion": 0
@@ -15,8 +15,8 @@
   "migration_review_rows": 374,
   "approved_source_overrides": 106,
   "official_discovery_candidates": 4,
-  "approved_veritas_mapping_decisions": 35,
-  "implemented_unreviewed": 42,
+  "approved_veritas_mapping_decisions": 18,
+  "implemented_unreviewed": 22,
   "veritas_official_products": 191,
   "reviewed_product_relationships": 333,
   "pending_product_relationships": 0,

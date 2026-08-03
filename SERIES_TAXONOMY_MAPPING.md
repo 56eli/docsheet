@@ -79,10 +79,13 @@ rows for one master ID fail the generator outright.
    the build fails if approvals reference unknown IDs, lack a series, or give
    one master ID conflicting series.
 
-## Baseline (2026-08-03, post-refresh)
+## Baseline (2026-08-04, post-refresh)
 
-149 matched products: **146 approved** (143 bulk approvals at 286/286
-uuid-level agreement with the curated series, plus 3 individually ruled) and
+179 matched products: **146 approved** (143 bulk approvals at 286/286
+uuid-level agreement with the curated series, plus 3 individually ruled),
+**30 proposed** (from the 2026-08-04 inventory link-up — 20 equal the
+curated series baseline; the 10 that differ are listed for owner ruling in
+`NEXT_AGENT_HANDOFF.md` §6), and
 **3 rejected** wrong-edition signals (book/audio products title-matched to the
 Volume I DVD record and the 2006 discussion title-matched to the 2006 lecture
 record). The queue's 6 rows are all ruled — 2 dual-signal conflicts resolved in
@@ -90,6 +93,8 @@ favour of each record's own primary product, 1 multi-annual assignment resolved
 to the 2007 series by title evidence and sibling-product categorization.
 
 The first 2026-08-03 inventory refresh (pre-mapping) dropped four stale
-primary-source matches from scope (they are now `unreviewed_official_product`
-candidates and no longer propose series), and relinked product 1661 from
-record 300 to deferred record 264 (rebuilt as 246; product 1661 is unmatched mapping-row only).
+primary-source matches from scope (three were relinked 2026-08-04 to their
+minted edition masters; the Map of Consciousness poster remains an unreviewed
+merchandise candidate), and relinked product 1661 from
+record 300 to deferred record 264 (rebuilt as 246); on 2026-08-04 product 1661
+matched its minted edition master 329 by primary URL.

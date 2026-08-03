@@ -12,7 +12,7 @@ The raw-spreadsheet view exposes all **374 CSV data rows**, including blank rows
 
 ## Post-audit resolution note
 
-This audit records the state observed on 2026-08-03 before the reconciliation work. The `public/` workflow-path defect identified below is resolved on `main`; the current research-master, review, relationship, and deployment state is maintained in [PROJECT_STATE_AUDIT.md](archive/PROJECT_STATE_AUDIT.md).
+This audit records the state observed on 2026-08-03 before the reconciliation work. The `public/` workflow-path defect identified below is resolved on `main`; the current research-master, review, relationship, and deployment state is maintained in [PROJECT_STATE_AUDIT.md](PROJECT_STATE_AUDIT.md).
 
 ## 1. File structure and inventory
 

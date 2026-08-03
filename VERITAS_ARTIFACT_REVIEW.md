@@ -149,3 +149,32 @@ taxonomy work exposed. Change classes, all verified:
    (`.mp4`/numeric-prefix removal) — deterministic mirror, no semantic change.
 
 No upstream additions/removals: the 191-product ID set is unchanged.
+
+## Addendum 3 — refresh accepted and candidate/overlay link-up 2026-08-04
+
+The Map Veritas Catalogue workflow's fail-gate fired on a real drift and the
+artifact diff was reviewed row by row. Findings and actions:
+
+1. **Diff accepted (13 rows).** The live fetch correctly re-matched products
+   whose masters were minted on 2026-08-03: 9 Satsang monthlies (1304/1306/
+   1308/1310/1312/1314 → masters 344–349; 1639 → 350; 1697 → 351; 1699 → 352),
+   edition rows 1728 → 327, 1695 → 328, 1742 → 330, and 1661 → 329
+   (`in-the-world-but-not-of-it-cd` — the edition row, not deferred record
+   246). Every accepted row was asserted against its master's primary Veritas
+   URL before committing; validator invariants (`count == len(uuids)`,
+   `matched_master_titles` equal current master titles) pass.
+2. **Overlay trimmed 35 → 18.** The 17 decisions preserving pre-promotion
+   `unique_item`/`compilation_or_new_edition` dispositions for products whose
+   works are now curated masters (309–319, 353–358) were removed; the
+   deterministic primary-source matcher now links them (Everything
+   `candidate_veritas` 28 → 8). What remains: the 7 annual Highlights
+   compilations (Series Compilations lane by ruling) and the Map of
+   Consciousness® poster (merchandise — not a master record).
+3. **Line-ending normalization.** The diff rendered as a whole-file rewrite
+   because the committed inventory had CRLF endings while the fetcher writes
+   `lineterminator="\n"`. The reviewed inventory is now LF, so future
+   artifact diffs show content changes only.
+4. **Fallout tracked.** Series-taxonomy mapper regenerated: 30 new `proposed`
+   rows (20 equal the curated baseline; 10 differ — owner ruling listed in
+   `NEXT_AGENT_HANDOFF.md` §6). Everything is 396 → 376 rows. The next
+   workflow run should pass clean.

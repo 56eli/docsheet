@@ -5557,7 +5557,7 @@
     "master_item_type": "book",
     "master_year": "2014",
     "source_product_published_date": "2011-11-03",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-50370-290",
@@ -5597,7 +5597,7 @@
     "master_item_type": "book",
     "master_year": "2014",
     "source_product_published_date": "2010-07-12",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1302-292",
@@ -5737,7 +5737,7 @@
     "master_item_type": "book",
     "master_year": "2023",
     "source_product_published_date": "2009-01-28",
-    "source_product_mapping_status": "matched_by_normalized_title"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1742-301",
@@ -5757,7 +5757,7 @@
     "master_item_type": "book",
     "master_year": "",
     "source_product_published_date": "2012-06-15",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-54472-303",
@@ -6037,7 +6037,7 @@
     "master_item_type": "lecture",
     "master_year": "2023",
     "source_product_published_date": "2023-09-17",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-54219-310",
@@ -6057,7 +6057,7 @@
     "master_item_type": "lecture",
     "master_year": "2003",
     "source_product_published_date": "2024-06-14",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-55473-311",
@@ -6077,7 +6077,7 @@
     "master_item_type": "lecture",
     "master_year": "2003",
     "source_product_published_date": "2025-07-15",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-50485-312",
@@ -6097,7 +6097,7 @@
     "master_item_type": "discussion",
     "master_year": "2012",
     "source_product_published_date": "2014-03-31",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-50488-313",
@@ -6117,7 +6117,7 @@
     "master_item_type": "discussion",
     "master_year": "2012",
     "source_product_published_date": "2014-03-31",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-38608-314",
@@ -6137,7 +6137,7 @@
     "master_item_type": "book",
     "master_year": "2018",
     "source_product_published_date": "2018-06-05",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-43146-315",
@@ -6157,7 +6157,7 @@
     "master_item_type": "book",
     "master_year": "2020",
     "source_product_published_date": "2020-06-02",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-47979-316",
@@ -6177,7 +6177,7 @@
     "master_item_type": "book",
     "master_year": "2014",
     "source_product_published_date": "2014-08-16",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-53036-317",
@@ -6197,7 +6197,7 @@
     "master_item_type": "book",
     "master_year": "2022",
     "source_product_published_date": "2022-10-23",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-53058-318",
@@ -6217,7 +6217,7 @@
     "master_item_type": "book",
     "master_year": "2023",
     "source_product_published_date": "2023-03-23",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-55425-319",
@@ -6237,7 +6237,7 @@
     "master_item_type": "book",
     "master_year": "2025",
     "source_product_published_date": "2025-07-02",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1728-327",
@@ -6257,7 +6257,7 @@
     "master_item_type": "lecture",
     "master_year": "2011",
     "source_product_published_date": "2011-11-03",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1695-328",
@@ -6277,7 +6277,7 @@
     "master_item_type": "lecture",
     "master_year": "2010",
     "source_product_published_date": "2010-07-12",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1661-329",
@@ -6297,7 +6297,7 @@
     "master_item_type": "lecture",
     "master_year": "2009",
     "source_product_published_date": "2009-01-28",
-    "source_product_mapping_status": "matched_by_normalized_title"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1742-330",
@@ -6317,7 +6317,7 @@
     "master_item_type": "lecture",
     "master_year": "2012",
     "source_product_published_date": "2012-06-15",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1542-331",
@@ -6377,7 +6377,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-01-01",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1306-345",
@@ -6397,7 +6397,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-03-03",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1308-346",
@@ -6417,7 +6417,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-05-05",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1310-347",
@@ -6437,7 +6437,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-07-07",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1312-348",
@@ -6457,7 +6457,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-09-09",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1314-349",
@@ -6477,7 +6477,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2006-11-11",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1639-350",
@@ -6497,7 +6497,7 @@
     "master_item_type": "lecture",
     "master_year": "2008",
     "source_product_published_date": "2008-07-23",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1697-351",
@@ -6517,7 +6517,7 @@
     "master_item_type": "lecture",
     "master_year": "2010",
     "source_product_published_date": "2010-06-20",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1699-352",
@@ -6537,7 +6537,7 @@
     "master_item_type": "lecture",
     "master_year": "2010",
     "source_product_published_date": "2010-09-15",
-    "source_product_mapping_status": "unmatched_official_product"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1544-353",
@@ -6557,7 +6557,7 @@
     "master_item_type": "lecture",
     "master_year": "2007",
     "source_product_published_date": "2007-03-16",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1546-354",
@@ -6577,7 +6577,7 @@
     "master_item_type": "lecture",
     "master_year": "2005",
     "source_product_published_date": "2007-03-16",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1548-355",
@@ -6597,7 +6597,7 @@
     "master_item_type": "lecture",
     "master_year": "2006",
     "source_product_published_date": "2007-03-16",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1792-356",
@@ -6617,7 +6617,7 @@
     "master_item_type": "lecture",
     "master_year": "2014",
     "source_product_published_date": "2014-05-29",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-1814-357",
@@ -6637,7 +6637,7 @@
     "master_item_type": "lecture",
     "master_year": "2014",
     "source_product_published_date": "2014-01-09",
-    "source_product_mapping_status": "unique_item"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "rel-veritas-55576-358",
@@ -6657,6 +6657,6 @@
     "master_item_type": "lecture",
     "master_year": "2025",
     "source_product_published_date": "2025-09-30",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   }
 ]

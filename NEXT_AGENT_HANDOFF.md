@@ -1,9 +1,10 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-03 — refreshed after the audit/tests/fail-safes session.
-**Branch:** `arena/019fc7fe-docsheet`, closed out via
+**Prepared:** 2026-08-03 — latest refresh: full-stack audit + documentation
+consolidation round 2 (branch `arena/019fc9b5-docsheet`, see §4 item 13).
+**Earlier branches:** `arena/019fc7fe-docsheet`, closed out via
 [PR #15](https://github.com/56eli/docsheet/pull/15) (merged to `main`);
-earlier same-day work landed via PRs #11–#14.
+earlier same-day work landed via PRs #11–#14, #17, #19.
 
 If you are the next agent: **read this file top to bottom before touching
 anything.** It is written to give you full context in five minutes.
@@ -64,17 +65,18 @@ Sandbox traps learned the hard way (all still true):
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 356 | 307 lecture / 38 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) |
-| Everything view | **396** | 356 master + 28 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Everything view | **376** | 356 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
 | Exclusions / source overrides | 68 / 106 | |
-| Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
+| Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
 | Everything relationships | 333 product relationships, 7 series compilations | |
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
-| Series taxonomy | 149 matched products → 146 approved / 3 rejected; approved mappings applied as a proven no-op | |
+| Series taxonomy | 179 matched products → 146 approved / 30 proposed / 3 rejected; approved mappings applied as a proven no-op | 30 new proposals from the 2026-08-04 refresh await owner review |
 | Test suite | **96 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
-(see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
+(see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
+`VERITAS_ARTIFACT_REVIEW.md`).
 
 ## 4. What happened in the 2026-08-03 sessions (in order)
 
@@ -112,14 +114,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 8. **CI landed on `main` (`6b28e66`)** — owner applied the workflow-file
    changes; run `30834666253` green (includes the full deterministic suite +
    coverage gate + Playwright).
-9. **Independent re-audit + doc-status pass (this turn, branch
+9. **Independent re-audit + doc-status pass (branch
    `arena/019fc893-docsheet`):** verified every previous claim (93 tests,
    92% coverage, all `--check` modes, CI green on `main` at `6b28e66`), then
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
    disposition table (item 308 → **306**, research_note 8 → **10**);
    `OFFICIAL_CATALOGUE_DISCOVERY.md` and `VERITAS_PRODUCT_MAPPING.md`
-   308-master/344-Everything → 317/363; `RELATIONSHIP_EXPANSION_AUDIT.md`
+   308-master/344-Everything → 317/363; `archive/RELATIONSHIP_EXPANSION_AUDIT.md`
    (304 URL-bearing masters, 157 distinct URLs, 293 primary / 8 related);
    `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` marked implemented;
    `archive/README.md` UNBLOCK note resolved. Found and closed **F1**: the 11
@@ -130,8 +132,8 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    failure**, and the relationship count is now **312**. Added
    **documentation-currency tests** so README/handoff/ledger-doc counts can
    never silently drift from the generated data again. Details in
-   `AUDIT_2026-08-03_FULL.md` §12.
-10. **Edition model + session close-out (this turn, branch
+   `archive/AUDIT_2026-08-03_FULL.md` §12.
+10. **Edition model + session close-out (branch
     `arena/019fc893-docsheet`):** owner directed one row per work × carrier.
     Phases 1–4 implemented (work_id plumbing, edition-candidate layer with
     pinned UUIDs, inventory-wide batches, Work/Edition UI columns) and the
@@ -144,8 +146,80 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     checked: serves `main` (363 rows) until this branch merges.
 11. **Deduplication, URL fills, format/year backfills, and schema cleanup (`b23e082`, PR #17):**
     Resolved duplicate audio record territory for "In the World But Not of It" (legacy untyped row 296 rebuilt as compact UUID **246**, deferred). Backfilled 65 blank formats from official inventory (fill rate 89%, blanks 73 → **8**), backfilled 86 years (blanks 116 → **30**) and 95 months (blanks 152 → **57**). Cleaned 14 redundant notes from master and separated `raw_row_number` into numeric `raw_row_number` and `candidate_key`. Fixed Nightingale-Conant URL placement and added 7 Hay House URLs (overrides 100 → **106**).
-12. **Full project audit, documentation status-quo refresh, and fail-safe enhancements (this turn, branch `arena/019fc974-docsheet`):**
+12. **Full project audit, documentation status-quo refresh, and fail-safe enhancements (branch `arena/019fc974-docsheet`):**
     Conducted a full project audit and updated all core documentation (`NEXT_AGENT_HANDOFF.md`, `SERIES_TAXONOMY_MAPPING.md`, `SESSION_SUMMARY_2026-08-03.md`, `README.md`, `INSTRUCTIONS.md`) to resolve stale references to record 264 (now **246**), 73 blank formats (now **8**), 100 overrides (now **106**), and series taxonomy counts (149 matched / 146 approved). Archived 4 temporary analysis scripts (`dedup_analysis.py`, `dedup_analysis2.py`, `find_nc_url.py`, `dedup_plan.md`) to `archive/` so default `--source=.` test coverage measures only the 8 pipeline modules and reports a clean **92%** (all modules ≥ 89%). Added structural invariant fail-safes in `build_research_master.py` (`validate_master_items_integrity`) and `build_catalogue_pages.py` (`validate_work_family_coverage`) with 3 new defensive tests (**96 tests**, all passing). Added `docs/.nojekyll` and created `GITHUB_PAGES_DEPLOYMENT_ANALYSIS.md` to troubleshoot and prevent GitHub Pages deployment failures on large JSON files. Consolidated web UI (`docs/index.html`) by removing redundant raw publisher inventory tabs ("Veritas Products", "Hay House Products", "Audible Products"), making the Everything tab authoritative while preserving JSON endpoints for pipeline validation.
+13. **Full-stack audit + documentation consolidation round 2 (this turn, branch `arena/019fc9b5-docsheet`):**
+    Independently re-verified the entire stack from a clean venv (all 5 `--check`
+    modes, 96 tests, 92% coverage, JS syntax, and every published catalogue
+    count against `docs/catalogue-meta.json`) and published the findings as
+    `FULL_STACK_AUDIT_2026-08-03.md`. Consolidated the root Markdown from
+    **34 → 20 files**: archived the five overlapping 2026-08-03 audits
+    (`AUDIT_2026-08-03_FULL`, `COMPREHENSIVE_AUDIT`, `STATUS_QUO_AUDIT`,
+    `TEMP_RESPONSE_AUDIT`, `EVERYTHING_VERIFICATION_REPORT`), the five dated
+    backfill reports, `SESSION_SUMMARY_2026-08-03.md`, and four closed
+    point-in-time reviews (`SPREADSHEET_AUDIT`, `SPREADSHEET_UX_REVIEW`,
+    `UUID_264_REVIEW`, `RELATIONSHIP_EXPANSION_AUDIT`) to `archive/` (indexed
+    in `archive/README.md`); all moved files are preserved in git history and
+    remain reachable at their `archive/` paths. Fixed prose drift the
+    currency tests don't cover: README record-type table `(350)` → `(356)`,
+    README audit link now targets the current full-stack audit, and the §6
+    "six always-empty master columns" claim corrected to **five** (Hay House
+    URLs were populated by the 2026-08-03 backfill — 28 values). Verified
+    post-move: all 5 `--check` modes pass, 96 tests green, no broken
+    root↔archive links.
+14. **Retired the deprecated `audio`/`video` `item_type` vocabulary (this turn, same branch):**
+    `DEPRECATED_MEDIUM_ITEM_TYPES` deleted from `build_research_master.py`;
+    candidates, promotions, master, and ledger validators now all enforce
+    `CONTENT_ITEM_TYPES` directly (4 enforcement points). The last 8
+    `manual_master_candidates.csv` rows still using the values were migrated
+    to their owner-approved promoted types (cross-checked against
+    `data/manual_candidate_promotions.csv`: 6 × `audio`→`lecture`,
+    2 × `video`→`discussion`), and the 2 Spanish-Audible literals in
+    `build_catalogue_pages.py` were fixed `audio`→`book` (matching the
+    queue's own typing; regenerated `docs/international-products.json`).
+    Master output provably unchanged (`--check` green). Test suite **96 →
+    100**: vocabulary assertion, committed-input sweep (with the documented
+    `official_discovery_queue.csv` triage exemption), and two
+    build-failure guard tests (candidate `audio`, ledger `video` — the
+    latter caught that only `disposition="item"` ledger rows reach the
+    validator). Coverage 92%.
+15. **Map-Veritas refresh accepted + Veritas candidates linked to their masters (2026-08-04, same branch):**
+    The workflow's diff artifact was reviewed: the live fetch correctly
+    re-matched 13 products to masters minted on 2026-08-03 (9 Satsang
+    monthlies 344–352, edition rows 327/328/330, and 1661 → 329) — the gate
+    failed by design. Accepted the diff after asserting **every changed row
+    against its master's primary Veritas URL**. Then lifted the overlay's 17
+    stale suppression rows (`veritas_mapping_decisions.csv` 35 → 18): the
+    products for already-promoted masters 309–319 and 353–358 no longer need
+    their pre-promotion dispositions preserved, so the deterministic
+    primary-source matcher now links them (owner-directed "promote all
+    Veritas candidates" request). Reviewed inventory rewritten with LF
+    endings (it was committed CRLF while the fetcher writes LF — the reason
+    every artifact diff displays as a whole-file rewrite). Everything 396 →
+    **376** (`candidate_veritas` 28 → **8**: the 7 annual Highlights
+    compilations, which live in the Series Compilations lane by ruling, and
+    the Map of Consciousness poster, merchandise). Series taxonomy absorbed
+    the 30 newly matched products as **30 new `proposed` rows** (146
+    approved unchanged; 20/30 proposals equal the curated series baseline,
+    10 differ and await owner review — listed in §6). `RECONCILIATION_REPORT.md`
+    regenerated; all 5 `--check` modes green; 100 tests pass after currency
+    updates. The next Map Veritas workflow run should pass with "Candidate
+    matches the reviewed inventory."
+16. **Frontend layout engine + hygiene batch (2026-08-04, same branch):**
+    Column widths are now measured in **real pixels with an offscreen
+    canvas** across **all rows** and the **rendered** text (URL columns
+    measure their link label, badges measure the humanized label, headers
+    include the sort indicator) — replacing the char-count heuristics +
+    120-row sampling that had repeatedly failed to fit widest entries;
+    long-text guardrails at 560/720px. Dead `COLUMN_WIDTHS` table removed.
+    Work column parked between **Legacy ID** and **Location Physical** in the
+    Everything view via per-view `moveAfter` (owner-directed, display-only).
+    Hygiene: MIT `LICENSE` added (README links it), stale "inline editing"
+    header comment corrected, dead `cellEdited`/`flashNote`/`FOOTER_IDLE_NOTE`
+    code removed, `footerUpdated` now uses `textContent` (no interpolated
+    `innerHTML`). New CI e2e spec `tests/column-layout.spec.js` guards the
+    Work-column placement and width application (runs in CI; Chromium is not
+    installable in the sandbox).
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -158,7 +232,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   committed copies intentionally produces diffs (title fixes, month "08" vs
   ""; that is normal, not damage.
 - **`item_type` = what a record IS; `format` = its carrier.** DVD lectures are
-  `lecture`+`DVD`. `audio`/`video` item types are deprecated residue.
+  `lecture`+`DVD`. The `audio`/`video` medium values were **retired from the
+  `item_type` vocabulary 2026-08-03** — validators reject them; only the
+  unreviewed discovery-triage lane (`data/official_discovery_queue.csv`, 4 NC
+  rows) still carries free-text `audio` pending an owner ruling.
 - **No title-based inference for `series`, and a commercial listing is not
   master identity.** Four records once linked to the wrong edition because of
   title matching.
@@ -179,11 +256,11 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   `map_series_taxonomy.py --check`, all three generator checks, the unittest
   suite, the 80% coverage gate, JS syntax, and the Playwright browser suite.
   Latest run passed 2026-08-03 (run `30834666253`). Nothing outstanding here.
-- ⚠️ **Re-run the Map Veritas Catalogue workflow on `main`** to confirm a clean
-  pass now that the derived-field fix (Addendum 2 in `VERITAS_ARTIFACT_REVIEW.md`)
-  landed; the last run (`30813523859`) failed only at its intentional
-  inventory-diff gate before the fix. Review the candidate/diff artifact before
-  accepting any live refresh diff.
+- ⚠️ **Re-run the Map Veritas Catalogue workflow on `main` after this branch
+  merges** — the 2026-08-04 refresh diff was reviewed and accepted (see §4
+  item 15 and `VERITAS_ARTIFACT_REVIEW.md` Addendum 3), and the reviewed
+  inventory is now LF-normalized like the fetcher output, so the next run
+  should print "Candidate matches the reviewed inventory" and pass.
 
 **P1 — Data decisions needing a ruling:**
 
@@ -194,36 +271,58 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   Satsang monthlies (344–352); **193 works / 326 family members approved,
   work_id coverage 356/356** (D6a per-part ruling + C1 split applied);
   overrides 106 (candidate-provenance supported, incl. 316/318 Hay House);
-  relationships 333; Everything 396 (0 pending candidates). Remaining model
+  relationships 333; Everything 376 (0 pending candidates; Veritas
+  candidate rows 28 → 8 after the 2026-08-04 refresh linked all
+  already-promoted works). Remaining model
   work: all 5 New Work Review queue rows and 6 pending manual candidates were
   promoted 2026-08-03 as master UUIDs 353–358.
 - **Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
 - **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
+- **30 new series-taxonomy proposals** (2026-08-04 refresh fallout) in
+  `data/series_category_mapping.csv` with `review_status=proposed`: 20 equal
+  the curated series baseline (safe bulk-approve candidates); **10 differ**
+  and need a ruling either way: Veritas products 1546/1548 (→ Media
+  Miscellaneous vs master On The Road Talk Series), 1661/1695/1728/1742
+  (→ Media Miscellaneous vs master Books), 1814 (→ On The Road Talk Series
+  vs master Media Miscellaneous), 50485/50488 (→ Discussion Series vs master
+  Media Miscellaneous), 55576 (→ Transcription Series Books vs master Media
+  Miscellaneous). Approve/reject through the review columns; the master is
+  unaffected until approval.
 - **`format` blank on 8 records** (was 73): the 2026-08-03 format backfill
   inferred 65 formats (89% fill rate). The remaining 8 blank-format records
-  have no automated inference match — root cause and evidence in `TEMP_RESPONSE_AUDIT_2026-08-03.md`
+  have no automated inference match — root cause and evidence in `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md`
   §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
   strings, streaming markers) stays in
   `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
-- **Six always-empty master columns** (`location_*`, Hay House/Nightingale-Conant
-  URLs, `reference_url_2`): populate or drop.
+- **Five always-empty master columns** (`location_physical`,
+  `location_digital`, `location_streaming`, `source_url_nightingale_conant`,
+  `reference_url_2`): populate or drop. (`source_url_hay_house` is **not**
+  empty — 28 values after the 2026-08-03 Hay House backfill.)
 - **Nightingale-Conant provenance:** override schema exists; remaining NC
   product URLs missing (`archive/TEMP_NIGHTINGALE_PROVENANCE.md`).
 
 **P2 — Hygiene:**
 
-- Remove deprecated `audio`/`video` item types once unused.
-- Add a `LICENSE` (repo is public with none).
-- Widen browser tests: all 17 tabs, column chooser, drawer, dark mode.
+- ~~Add a `LICENSE`~~ — **done 2026-08-04** (MIT, `LICENSE`; README links it).
+- ~~Remove deprecated `audio`/`video` item types~~ — **done 2026-08-03**
+  (branch `arena/019fc9b5-docsheet`): `DEPRECATED_MEDIUM_ITEM_TYPES` removed;
+  the 8 last candidate rows migrated to owner-approved types; 100 tests incl.
+  4 retirement guards. Remaining: the 4 free-text `audio` values in the
+  unreviewed discovery triage lane (owner ruling).
+- Widen browser tests: all 17 tabs, column chooser, drawer, dark mode
+  (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
+  measured-width assertions).
 
 ## 7. House-keeping for every turn
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
   cite those numbers — do not hand-count).
-- Present long results via a committed `TEMP_RESPONSE_*.md` file
-  (`TEMP_RESPONSE_AUDIT_2026-08-03.md` is today's log); the chat should stay a
-  one-sentence summary plus the `ask_user` question for what is next.
+- Present long results via a committed Markdown report
+  (`archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` is the 2026-08-03 log;
+  `FULL_STACK_AUDIT_2026-08-03.md` is the current full-project audit); the
+  chat should stay a one-sentence summary plus the `ask_user` question for
+  what is next.
 - Update this handoff at the end of each session so the next agent inherits
   your context verbatim.

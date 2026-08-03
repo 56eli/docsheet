@@ -97,17 +97,16 @@ EDITION_SOURCE_URL_COLUMNS = {
 # explicit: DVD lecture recordings are ``item_type='lecture'`` with
 # ``format='DVD'`` -- they are not typed ``video``.
 #
-# ``audio`` and ``video`` are retained only for backward compatibility with
-# existing manual-candidate rows. They describe a medium rather than a content
-# class, so they must not be used for new classifications; use the content class
-# and record the carrier in ``format``.
+# The deprecated medium values ``audio``/``video`` were retired 2026-08-03
+# (they describe a carrier, not a content class): the last eight
+# manual-candidate rows still using them were migrated to their
+# owner-approved promoted types (six ``lecture``, two ``discussion``), and
+# the validators below now reject them everywhere. Use the content class and
+# record the carrier in ``format``.
 CONTENT_ITEM_TYPES = {
     "lecture", "book", "discussion", "interview", "transcript", "highlight",
     "dissertation", "article", "other",
 }
-DEPRECATED_MEDIUM_ITEM_TYPES = {"audio", "video"}
-ITEM_TYPES = CONTENT_ITEM_TYPES | DEPRECATED_MEDIUM_ITEM_TYPES
-MANUAL_CANDIDATE_ITEM_TYPES = ITEM_TYPES
 MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -484,7 +483,7 @@ def validate_manual_candidates() -> int:
             raise ValueError(
                 f"{MANUAL_CANDIDATES}:{line_number} needs a unique candidate_key beginning 'manual-'"
             )
-        if not candidate["candidate_title"].strip() or item_type not in MANUAL_CANDIDATE_ITEM_TYPES:
+        if not candidate["candidate_title"].strip() or item_type not in CONTENT_ITEM_TYPES:
             raise ValueError(
                 f"{MANUAL_CANDIDATES}:{line_number} needs a title and valid proposed_item_type"
             )
@@ -962,11 +961,11 @@ def build_master() -> MasterBuild:
         # The ledger is a hand-maintained review input, so an unknown or
         # misspelled type must fail loudly instead of silently producing a
         # stray catalogue-code prefix.
-        if item_type and item_type not in ITEM_TYPES:
+        if item_type and item_type not in CONTENT_ITEM_TYPES:
             raise ValueError(
                 f"{LEDGER} raw row {row['raw_row_number']} uses unsupported "
                 f"proposed_item_type {item_type!r}; allowed values are "
-                f"{', '.join(sorted(ITEM_TYPES))}"
+                f"{', '.join(sorted(CONTENT_ITEM_TYPES))}"
             )
         code = ""
         # The approved rule is ID-only until type and year are verified.
