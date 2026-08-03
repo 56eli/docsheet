@@ -166,6 +166,7 @@
     "record_type", "review_status", "promotion_status", "mapping_status", "match_status",
     "disposition", "approval", "owned", "proposed_owned", "relationship_type",
   ]);
+  const FORMAT_FIELDS = new Set(["format"]);
   const REVIEW_FILTER_FIELDS = [
     "record_type", "promotion_status", "review_status", "disposition", "approval",
     "mapping_status", "match_status", "relationship_type",
@@ -501,6 +502,16 @@
     return "status-neutral";
   }
 
+  function formatClass(value) {
+    const normalized = String(value ?? "").toLowerCase().trim();
+    if (normalized === "dvd") return "status-approved";
+    if (normalized === "cd") return "status-approved";
+    if (normalized === "streaming") return "status-pending";
+    if (normalized === "audio") return "status-neutral";
+    if (normalized === "book") return "status-master";
+    return "status-neutral";
+  }
+
   function statusLabel(field, value) {
     if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
       return RECORD_TYPE_LABELS[value];
@@ -577,6 +588,17 @@
       }
       if (STATUS_FIELDS.has(key)) {
         col.formatter = statusFormatter;
+      }
+      if (FORMAT_FIELDS.has(key)) {
+        col.formatter = (cell) => {
+          const value = String(cell.getValue() ?? "");
+          if (!value) return "";
+          const badge = document.createElement("span");
+          badge.className = `status-badge ${formatClass(value)}`;
+          badge.textContent = value;
+          badge.title = value;
+          return badge;
+        };
       }
       // Presentation-only nicety: render URL-heavy columns as clickable links.
       // This does NOT modify the underlying data.
