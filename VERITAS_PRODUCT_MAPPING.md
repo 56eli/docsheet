@@ -10,18 +10,19 @@
 | Measure | Count |
 |---|---:|
 | Published official Veritas product records retrieved | 191 |
-| Exact primary-source matches | 147 |
-| Remaining title-based matches | 7 |
+| Exact primary-source matches | 142 |
+| Remaining title-based matches | 6 |
 | Official products with no master match | 9 |
 | Products marked as unique or compilations | 24 |
 | Products excluded as non-teaching material | 4 |
-| Existing migrated master items | 308 |
+| Products demoted to `unreviewed_official_product` (C2 residuals) | 4 |
+| Existing migrated master items | 317 |
 | Existing Nightingale-Conant discovery candidates | 4 |
-| Current “Everything” records (including all approved-source candidates) | 344 |
+| Current “Everything” records (including all approved-source candidates) | 363 |
 
 ## Hybrid model implemented
 
-- **Everything** is the broad discovery/master view. It contains the 308 reconciled master items, four Nightingale-Conant candidates, 24 reviewed Veritas unique/compilation products, four Hay House candidates, and four non-Spanish Audible candidates.
+- **Everything** is the broad discovery/master view. It contains the 317 reconciled master items, four Nightingale-Conant candidates, 24 reviewed Veritas unique/compilation products, four Hay House candidates, and four non-Spanish Audible candidates.
 - **Veritas Products** is the complete 191-row official commercial-product inventory. It keeps product title, URL, published date, product-category classes, normalized-match count, matched master ID/title where available, and mapping status.
 - A normalized title match is an aid, not a final identity decision. Commercial listings may represent a compilation, edition, set, or related product rather than the same material record.
 - Matching products are not duplicated in the Everything view. Reviewed item-to-product assertions are available separately in the **Product Relationships** tab.

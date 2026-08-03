@@ -181,3 +181,367 @@ branch**, with no change to the deployed site's behavior.
 Full check battery green at push time: `py_compile`, all five `--check`
 generators, 54/54 unit tests, coverage report gate (exit 0), `node --check`
 app.js + spec, `git diff --check`.
+
+## 11. Independent re-audit + doc-status pass (2026-08-03, branch `arena/019fc893-docsheet`)
+
+**CI confirmed live on `main`:** commit `6b28e66` ("Add verification and
+testing steps to CI workflow") — run `30834666253` success, Pages build
+success. The handoff's P0 "add CI steps via web editor" is therefore closed.
+
+| Work | Detail |
+|---|---|
+| Verdict on prior prompt | **Audit ✅** (real audit, C1–C4 fixed). **Docs ⚠️→✅** (drift below found and fixed; now pinned by tests). **Coverage ✅** (92% > 80% gate, verified locally). **Fail-safes ✅** (all claimed ones reproduced; warning + doc tests added). |
+| New finding F1 (Medium) | Promoted masters **309–319** carry `source_url_veritas` but have **no primary relationship rows** (304 URL-bearing masters vs 293 primary rows). Schema doc's coverage invariant was silently false. → `build_catalogue_pages.py` now warns on every build/check; filed as handoff P1 (owner: add 11 reviewed rows or hold the promotion URLs). |
+| New finding F2 (Low) | Status-quo doc drift: README codes 223→**225**; ledger doc `item` 308→**306** / `research_note` 8→**10**; discovery/mapping docs 308/344→**317/363** (+4 unreviewed row); relationship audit 294/147/7→**304/157/293/8** + gap; ITEM_TYPE proposal → marked implemented; archive README UNBLOCK note → resolved. |
+| Fail-safes added | `warn_uncovered_primary_relationships()` (non-fatal warning); `RelationshipCoverageWarningTests`; `DocumentationCurrencyTests` (README current-state paragraph, handoff §3 table, ledger-doc disposition table must match generated data). |
+| Suite | 54 → **82 tests**, still deterministic/offline, ~1.1 s; coverage still **92% total** (every module ≥ 88%). |
+
+Check battery green at push time: `py_compile`, all five `--check` generators
+(+ relationship-coverage WARNING now emitted by design), 60/60 unit tests,
+coverage gate (exit 0), `node --check` ×3, `git diff --check`.
+
+### 11b. F1 resolution (owner-directed: "add the 11 reviewed relationship rows")
+
+- Added 11 reviewed `primary_product_for_item_part` rows for masters
+  **309–319** (`rel-veritas-<pid>-<uuid>`; evidence = official URL;
+  `reviewed_on=2026-08-03`; note cites the owner-approved promotion).
+- Relationships: 301 → **312** (304 primary + 8 related; 304/304 URL-bearing
+  masters covered; 165 distinct products).
+- `warn_uncovered_primary_relationships()` → **hard failure**
+  `validate_primary_relationship_coverage()`; tamper test deletes a promoted
+  row and expects `--check` to fail.
+- Regenerated Pages outputs (`product-relationships.json` 312 rows; Everything
+  still 363); docs updated (README/handoff 312, schema invariant restored,
+  audit §12.6, handoff P1 entry removed).
+
+Battery green: `py_compile`, all five `--check` (no warning now), **82 tests**,
+coverage 92% (gate exit 0), `node --check` ×3, `git diff --check`.
+
+### 11c. Root-cause: why 17 of 29 books have no `format=book` (owner question)
+
+**Mechanism.** The only format backfill is `infer_format_from_official_source()`
+in `build_research_master.py`. It never overwrites a value, but it has three
+compounding blind spots:
+
+1. **Slug-shape dependency.** It guesses the Veritas product ID as the slug's
+   first `-`-token and looks it up in the inventory. All 12 blank-format books
+   that *do* have a Veritas URL use **word slugs without a numeric ID prefix**
+   (`healing-and-recovery-copy`, `the-map-of-consciousness-explained`, …), so
+   the lookup silently misses and no signal is ever evaluated. The 12 books
+   that got `format=book` (e.g. 287–290, 314–319) were labeled only because
+   their URLs happen to use ID-prefixed slugs with `-book`/`(Book)` markers —
+   the current labels are an accident of URL form, not a principled rule.
+2. **Narrow marker vocabulary.** Even a successful lookup only recognizes
+   `book` in the slug or `(book)` in the official title; only 3 of the 12
+   URL-bearing blanks (291, 295, 296) carry such a marker. All 12 resolve to
+   products whose publisher category is **"Books Published by Dr. Hawkins"**
+   (populated 191/191 in the inventory), but the inference never consults
+   `official_categories`.
+3. **Veritas-only scope.** 5 books have no Veritas URL at all: 286 (Audible
+   only; HH *Power vs Force* paperback exists but no master HH URL), 298/299
+   (*Along the Path to Enlightenment*, *Dissolving the Ego* — HH eBook rows
+   exist but the master has no HH URL, so a source override would be needed
+   first), 301 (HH paperback URL present), 302 (no official URL anywhere).
+
+**Non-causes.** The raw sheet's `format` column is unusable evidence (10×
+`veritas` provenance labels + one Discord URL), and the ledger's
+`proposed_format` is empty for all 17 — nothing else could have labeled them.
+
+**Candidate deterministic fix (owner decision pending):** resolve the
+inventory product by exact URL instead of slug-prefix guessing, and add a
+publisher-category signal (`Books Published by Dr. Hawkins` →
+`format=book`, guarded by `item_type=book`, never overwrite). That fills
+**12/17** from committed inventory data alone (291, 292, 295, 296, 297, 300,
+303–308), regenerated through the sanctioned master build. The remaining 5
+need reviewed source links (298/299 HH URLs, 286 HH URL) or manual ruling
+(301 paperback via HH; 302 unverifiable), i.e. `NEXT_AGENT_HANDOFF.md` P1/P2
+territory.
+
+### 11d. Book-format backfill APPLIED (owner: "implement + apply")
+
+`infer_format_from_official_source()` in `build_research_master.py` now
+resolves the inventory product by **exact URL match first** (legacy
+numeric-ID slug guess kept as fallback) and adds the publisher-category
+signal (`Books Published by Dr. Hawkins` → `format=book`, guarded by
+`item_type=book`, never overwrites). Master rebuilt through the sanctioned
+path: **exactly the 12 predicted records** changed (291, 292, 295, 296, 297,
+300, 303–308), `format` `''` → `book`, nothing else. Books labeled: 12/29 →
+**24/29**; total format coverage 231 → **243** of 317 (74 blank). Pages
+outputs regenerated; all five `--check` green; 65 tests at that point (72 after §12.8); coverage 92%.
+
+### 11e. Why the remaining 5 books have no Veritas URL (owner question)
+
+Chain of causes, verified row-by-row (raw rows 325, 339, 340, 342, 343):
+
+1. **The raw spreadsheet has no `product link` in those rows** (every
+   other book record does). The bootstrap's safe rule
+   (`generate_migration_ledger.py`) proposes `source_url_veritas` **only from
+   a valid raw Veritas product link** — no link ⇒ no proposal ⇒ the ledger
+   and master carry an empty Veritas URL.
+2. **The review layers never filled them afterwards:**
+   - 286 *Power vs Force*: the Veritas book product **50411** exists but is
+     matched (`matched_by_title`) to **lecture master 202** (Volume I-Power
+     vs Force Part 1) and kept as related material there; the book master
+     286 received only an Audible override. Title-matching deliberately does
+     not mint master URLs (C2 lesson: "a commercial listing is not master
+     identity").
+   - 298 *Along the Path to Enlightenment* / 299 *Dissolving the Ego*: no
+     Veritas products exist for them; Hay House carries eBook rows
+     (`matched_by_title`) but **no source override was ever approved** for
+     these masters (286/301 got overrides; 298/299 did not).
+   - 301 *The Highest Level of Enlightenment*: Veritas sells it **audio-only**
+     (product 1742, currently `unreviewed_official_product` after the C2
+     demotion); the *book* edition is Hay House-only — hence the approved HH
+     override and no possible Veritas URL.
+   - 302 *The Path to Spiritual Advancement*: no link, no tempid, no
+     inventory match, and no HH row; the same work appears as master **303**
+     with the Veritas transcription-book URL (product 54472) — **302/303
+     need a duplicate-resolution ruling** (likely Hay House edition vs
+     Veritas edition of the same book).
+
+So: empty raw links + conservative bootstrap + no approved overrides for
+298/299 + audio-only Veritas listings for 301 + a probable 302/303 duplicate
+are the five distinct causes. None of these should be fixed by silent
+title-matching — they are reviewed source-override / ruling decisions
+(`NEXT_AGENT_HANDOFF.md` P1).
+
+### 11f. Edition model direction (owner oversight → proposal)
+
+Owner identified a model oversight: works available in several carriers
+(book/audio/video) are collapsed into one master row (e.g. 289 Truth vs
+Falsehood = book row + audible audiobook URL + related CD&DVD set product
+1728). Direction: **one row per work × carrier**, reflected through the whole
+project. Quantified the gap from committed data (7 books with audible URLs,
+6 related-material same-work editions, 26 Audible + 24 Hay House + 28 Veritas
+non-primary products as edition evidence) and wrote
+`EDITION_MODEL_PROPOSAL.md` (target model: `work_id` + reviewed
+`work_families.csv` + `edition_candidates.csv` promotion path; 5 open design
+decisions D1–D5; 4-phase plan). No data changed; awaiting owner rulings.
+
+### 11g. Edition model — Phase 1 plumbing implemented (owner rulings D1–D5)
+
+Per owner direction (one row per work × carrier; keep one row per DVD part;
+reviewed edition-candidate layer; move audible URLs into edition rows;
+plumbing first), Phase 1 is implemented:
+
+- Master schema + `data/research_master_draft.{csv,json}` + Everything view +
+  UI gained the **`work_id`** column (25 fields).
+- New reviewed input **`data/work_families.csv`**
+  (`work_id, member_master_uuid, canonical_work_title, evidence_note,
+  review_status, reviewed_on`): `approved` rows are applied,
+  `proposed`/`rejected` validated but never applied; unknown members,
+  duplicates, missing dates/evidence/titles fail the build; tamper detection
+  covered by tests (`WorkFamilyTests`, 7 tests).
+- No families approved yet → all `work_id` values empty; deterministic
+  builds unchanged. Suite: 72 tests; coverage 92%; all five `--check` green.
+- Next: owner approves the first `work_families.csv` batch, then Phase 2
+  (`edition_candidates.csv` + audiobook/CD&DVD-set rows).
+
+### 11h. Edition model — Phase 2 layer implemented (owner: "build Phase 2 next")
+
+`data/edition_candidates.csv` (12 reviewed candidates: 7 Audible audiobook
+rows + 5 Veritas audio/CD/DVD edition rows; all evidence cross-checked
+against the committed inventories) + `data/edition_promotions.csv`
+(owner-approval registry, empty). `build_research_master.py`:
+`validate_edition_candidates()` (work_id must exist in work_families;
+matched master must exist; product must exist in the veritas/audible/hayhouse
+inventory with matching URL+title; reviewed date/status/promotion-registry
+consistency) and `load_edition_promotions()` (approved rows mint master rows
+with the next compact ID above max, work_id + source_url per source, notes
+citing the candidate). Nothing promoted yet → master still 317 rows.
+`EditionCandidateTests` (10 tests) incl. promotion-minting, registry-flip
+guard, tamper detection. Suite: **82 tests**, coverage **92%**, module ≥ 90%.
+50411 (Power vs Force book product) is NOT an edition row — it is a source
+override candidate for master 286 (the book row already exists).
+
+### 11i. Edition model — Phase 3 batch drafted (owner: "inventory-wide coverage")
+
+Generated `proposed`-status drafts from the committed inventories (nothing
+applied; all values taken verbatim from inventory/master files):
+
+- **12 work families** (34 member rows): w-highest-level-of-enlightenment,
+  w-nature-of-divinity, w-advaita, w-realizing-root, w-intention,
+  w-alignment, w-identification-illusion, w-emotions-sensations,
+  w-god-vs-science, w-tlc-perception (VERIFY flag), w-compassion,
+  w-live-prayer — per-part works; series-level regrouping is an owner
+  decision.
+- **12 edition candidates** (proposed): Audible audiobook editions for
+  masters 301, 19, 22, 13, 79, 76, 64, 61, 127, 106 (VERIFY), 267, plus the
+  Hay House audio edition of w-live-prayer (121). Candidates total 24
+  (12 Phase-2 reviewed + 12 Phase-3 proposed).
+- **Deliberately excluded (documented here):** Spanish Audible editions
+  (El nivel mas alto / Disolver el ego), platform compilations (Ultimate
+  Library, Discovery, Naked, OM), Audible "Healing" + "Office Visit Set III"
+  (possible_related_match, ambiguous), Veritas Highlights (7, series-level
+  compilations already in series_compilation_relationships), merchandise
+  (Map wall chart 1560, Letting Go guided journal + card deck), Veritas
+  new-work products without master match (1792, 1814, 1546, 1548, 1544,
+  9 satsang monthlies) → new-work review lane, and the 18 Hay House
+  paperback/eBook rows for existing book masters → same-carrier, so they are
+  **source-override candidates** (incl. 50411 PvF book for 286) rather than
+  edition rows — a separate reviewed batch for the owner.
+
+### 11j. Hay House source-override batch drafted (owner: "draft the HH override batch")
+
+`data/research_master_source_overrides.csv` gained **18 `proposed` override
+rows** (never applied until approved): 17 Hay House same-carrier links
+(paperback/eBook for masters 286–300, 304, 306 — exact URLs from the Hay
+House inventory, incl. upstream typos kept verbatim) + the Veritas book link
+(50411) for master 286. Overrides now support a `proposed` review status
+(shape-validated, not applied; `approved_source_overrides` meta counts only
+approved). Excluded: masters 316/318 (promoted-candidate provenance cannot
+take raw-row overrides — needs a mechanism extension), 301 (already has an
+approved HH override). Suite: **85 tests**, coverage 92%.
+
+### 11k. Edition model — FULL APPLICATION (owner: "approve everything and apply")
+
+All three drafted batches were approved wholesale (incl. the two flagged
+rulings: lecture 202 joins w-power-vs-force; w-tlc-perception mapping
+accepted) and applied through the sanctioned pipeline:
+
+- **work_families.csv**: 43/43 rows → approved (21 works).
+- **edition_candidates.csv**: 24/24 → reviewed_candidate + promoted;
+  **edition_promotions.csv**: 24 approved rows.
+- **source_overrides.csv**: 18/18 → approved (98 total).
+- Master rebuilt: **317 → 341 rows** (292 lecture / 38 book / 10 discussion /
+  1 untyped; 24 minted edition rows with IDs 320–343, each with work_id and
+  its own source URL). D3 applied: the 7 audiobook URLs moved off the book
+  rows into their audiobook rows. work_id populated on 67 rows.
+- **6 new primary relationship rows** (5 for the Veritas edition rows + 50411
+  for master 286) → relationships **312 → 318**; the coverage guard treats
+  edition-provenance rows as self-covered (the promotion is the reviewed
+  assertion).
+- Everything view **363 → 387**; Pages outputs + reconciliation report
+  regenerated; all five `--check` green; **86 tests**, coverage 92%.
+- `docs/catalogue-meta.json`: migrated_items 341, approved_source_overrides
+  98, reviewed_product_relationships 318 (the meta fix from §11j held).
+
+### 11l. Edition model — Phase 4: UI/docs labels (owner: "Phase 4")
+
+- Everything view gained the **Work** column (work_id, placed after Master
+  ID) and a display-only **Edition** column that merges format +
+  format_detail ("audio · Audiobook", "DVD · CD & DVD set"); raw format
+  columns are hidden on curated views only (the Original Spreadsheet view
+  keeps its verbatim format column), and the row drawer + CSV export follow
+  the merged column.
+- View description for the Everything tab documents the edition model;
+  INSTRUCTIONS gained the work-family/edition-input section.
+- New Playwright spec (5th): Work/Edition columns render, a known work id
+  (w-truth-vs-falsehood) appears on the book + audiobook rows, and the raw
+  format columns are hidden.
+- 86 unit tests, 92% coverage, all five `--check` green, node checks pass.
+
+### 11m. New-work review lane drafted (owner: "draft the new-work lane")
+
+`data/new_work_review_queue.csv` (14 rows): the Veritas products with no
+master match — 9 Satsang monthlies (2006 Jan–Nov, 2008 Jul, 2010 Jun/Sep;
+master Satsang coverage starts 2007), 2 Unity Church of Sedona CDs
+(2005/2006), and 3 unique audio programs (Don't Set Sail Without A Compass,
+Peace is the Natural State, Giving Up Illness through A Course in Miracles).
+Wired into the Pages build (`docs/new-work-review.json`, Review Overview,
+**New Work Review** tab) with inventory cross-validation
+(`validate_new_work_queue`: product ID + exact URL, no duplicates) and 3
+tests. The 2 Spanish Audible editions were already handled in the
+International sheet (no new rows needed). Suite: **89 tests**, coverage 92%.
+
+### 11n. Source overrides extended to candidate-provenance rows (owner)
+
+`apply_source_overrides` now runs **after** the promotion loops, so override
+rows may target promoted masters by their `candidate:<key>` raw-row key. The
+D3 audiobook-URL clearing runs after overrides so an approved audible
+override cannot re-set a book row. Two new approved overrides give masters
+**316** (The Ego is Not the Real You) and **318** (The Wisdom of Dr. David R.
+Hawkins) their Hay House paperback links → approved overrides **98 → 100**.
+Test: candidate-keyed override applies to a promoted row and --check stays
+green. Suite: **90 tests**, coverage 92%.
+
+### 11o. Series-level work regrouping — evidence drafted (owner)
+
+`SERIES_WORK_REGROUPING_PROPOSAL.md`: membership audit of the 21 approved
+works found **one contamination** — rows 46/47/48 (Devotional Nonduality
+"Enlightenment" lecture) were pulled into w-highest-level-of-enlightenment by
+the fuzzy group matcher's substring rule (correction C1 proposed). Series
+labels classified: 10 program-series (66 titles / 222 rows) vs 8 collection
+lanes (Books, On The Road, Satsang, Office, Volume, Discussion, Media,
+Transcription — each many distinct works). Options D6a part-as-work
+(recommended), D6b series-as-work, D6c hybrid; impact: ~55 proposed
+per-part works under D6a. Awaiting owner ruling.
+
+### 11p. D6a + C1 rulings applied (owner)
+
+- **C1** applied: rows 46/47/48 moved from w-highest-level-of-enlightenment
+  to the new approved work **w-enlightenment** (Devotional Nonduality
+  lecture); 301 keeps its work. Master regenerated (work_id coverage stays
+  67/341 — proposed rows do not apply).
+- **D6a** executed: **163 proposed per-title works (274 member rows)**
+  generated in `data/work_families.csv` by EXACT normalized-title grouping
+  (no substring fuzz), covering every uncovered part row incl. collection
+  lanes; nothing applied until owner approval. Proposal impact figures
+  corrected (§5/§5b). Suite: 90 tests, coverage 92%.
+
+### 11q. D6a bulk approval applied (owner)
+
+All 163 proposed per-title works flipped to approved (2026-08-03). Final
+state: **183 works / 317 members** in `data/work_families.csv`; `work_id`
+coverage **341/341** master rows (integrity-checked: all members exist, no
+duplicates, every work_id valid). One grouping caveat surfaced:
+**w-a-review-of-the-work** merged the 2006 and 2007 programs (same title,
+different series — the audit §2.2 documented them as distinct works); a
+split into year-scoped works is a future one-row-per-member change if
+desired. Suite: 90 tests, coverage 92%, all five `--check` green.
+
+### 11r. w-a-review-of-the-work split applied (owner)
+
+`w-a-review-of-the-work` split into **w-a-review-of-the-work-2006**
+(rows 115–117, Transcending Levels of Consciousness) and
+**w-a-review-of-the-work-2007** (rows 142–144, Spiritual Reality & Modern
+Man) — the two programs the audit §2.2 documented as distinct. Families now
+**184 works / 317 members**; work_id coverage stays 341/341. All checks
+green; 90 tests, coverage 92%.
+
+### 11s. Satsang ruling evidence prepared (owner)
+
+Cross-checked the 9 Satsang monthlies in the New Work Review queue against
+the master's 16 Satsang/Q&A rows and `decisions/SATSANG_MAPPING_DECISIONS.md`:
+**all nine are new-work candidates** — empty `matched_master_uuids`, no URL
+overlap with the 13 approved Satsang records, no raw-sheet provenance
+(owned unknown), and they are exactly the collection's missing months
+(e.g. Jun/Sep 2010 vs the approved Feb/Nov 2010). Evidence added as an
+Addendum to the decisions doc + the queue rows' review_notes; proposed
+candidate shape documented (title/type/series/year/format CD/owned blank).
+Awaiting the owner's promotion ruling.
+
+### 11t. Nine Satsang monthlies promoted to the manual-candidate lane (owner)
+
+9 reviewed manual candidates added (`manual-veritas-satsang-1304 … 1699`):
+Satsang Series (MM YYYY), lecture / Satsang Series / CD, owned blank
+(unknown), evidence = the decisions-doc Addendum. Removed from the New Work
+Review queue (5 rows left: Unity CDs ×2, Don't Set Sail, Peace is the
+Natural State, Giving Up Illness). promotion_status = not_promoted —
+promotion rows (master_uuid 344–352) await the owner's approval in
+`data/manual_candidate_promotions.csv`. Everything view 387 → **396**
+(15 pending candidates); candidates 17 → 26; README/handoff updated.
+90 tests, coverage 92%, all checks green.
+
+### 11u. Satsang promotions applied + edition-UUID stability fix (owner)
+
+- 9 Satsang promotions approved (master_uuid 344–352) → master **341 → 350**
+  rows; 9 primary relationship rows added (327 total); Everything stays 396
+  (pending 15 → 6); catalogue codes 225 → 234; README/handoff updated.
+- **Stability fix:** the edition-promotion minting used max+1 UUIDs, so the
+  Satsang promotions (which precede editions in the build) shifted the 24
+  edition rows from 320–343 to 353–376. `edition_promotions.csv` now pins
+  explicit `master_uuid` values (320–343) like the manual promotions path;
+  `load_edition_promotions` validates uniqueness/availability. Build is
+  byte-stable again. 90 tests, coverage 92%.
+
+### 11v. Session close-out (final)
+
+- Satsang family rows added (9 per-title works) → **193 works / 326
+  members; work_id coverage 350/350**.
+- Live-site check: https://56eli.github.io/docsheet/ renders and serves
+  `main`'s deployed state (Everything 363 rows) — the branch's edition-model
+  state (350/396, Work + Edition columns) appears after merge to main.
+- Handoff refreshed (§3 table, §4 item 10, §6 P1). Final battery green:
+  py_compile, five `--check`, **90 tests**, coverage **92%**, node checks,
+  `git diff --check`.

@@ -7,17 +7,21 @@
 
 | Measure | Count |
 |---|---:|
-| Master records | 308 |
-| Master records with a Veritas source URL | 294 |
-| Distinct primary Veritas product URLs | 147 |
-| Primary product relationships recorded | 294 |
-| Reviewed related-material relationships | 7 |
-| Total reviewed relationships | 301 |
-| Distinct official Veritas products represented | 154 |
+| Master records | 317 |
+| Master records with a Veritas source URL | 304 |
+| Distinct primary Veritas product URLs (master `source_url_veritas`) | 157 |
+| Masters covered by a reviewed primary relationship | 304 |
+| Primary product relationships recorded | 304 |
+| Reviewed related-material relationships | 8 |
+| Total reviewed relationships | 312 |
+| Distinct official products referenced by relationship rows | 165 (157 primary + 8 related) |
+| URL-bearing masters **without** a primary relationship | 0 |
 
-Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`. A `primary_product_for_item_part` relationship is therefore recorded for each of the 294 item rows. This makes an existing approved source association queryable in the relationship view; it does not create or duplicate a master item.
+Every non-empty `source_url_veritas` in the reconciled master exactly matches a URL in `data/veritas_official_products.csv`, and every URL-bearing master is covered by a reviewed `primary_product_for_item_part` relationship (the invariant is enforced as a hard build failure by `validate_primary_relationship_coverage` in `build_catalogue_pages.py`).
 
-Seven reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: the 2012 *How to Live Your Life Like A Prayer* interview; the book products for *In the World, But Not of It*, *Truth vs Falsehood*, and *Healing and Recovery*; the *Power vs. Force* book and audiobook; and *A Map of Consciousness*. See `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md` for the review batches.
+**Coverage history (2026-08-03):** the 11 promoted candidates (master IDs 309–319) were initially added to the master with their official Veritas URL through the reviewed promotion path, but the relationship CSV was not extended — the promotion path does not mint relationship rows. The gap was closed the same day with 11 reviewed primary relationship rows (owner-approved, evidence = the promotion registry); the guard was then promoted from a warning to a hard failure so the gap cannot silently recur.
+
+The eight reviewed `related_material` relationships retain distinct official products without replacing an existing primary source: *A Map of Consciousness* wall chart (1560), the *Truth vs. Falsehood* CD & DVD set (1728), *Healing* audio (1695), *"In the World But Not of It" – Audio* (1661), *The Highest Level of Enlightenment – Audio* (1742), the 2012 *How to Live Your Life Like A Prayer* interview (50491), and the *Power vs. Force* book (50411) and audiobook (1542). See `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md` for the review batches.
 
 ## Candidate review completion
 

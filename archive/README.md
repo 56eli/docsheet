@@ -13,8 +13,9 @@ the repository root: [README.md](../README.md),
 - `IMPLEMENTATION_PLAN.md` — earlier roadmap, absorbed into
   `NEXT_AGENT_HANDOFF.md`.
 - `UNBLOCK_INSTRUCTIONS.md` — the CI-workflow web-editor instructions from
-  before the App had `workflows` permission; its Task A snippet (adding
-  `process_data.py --check` to CI) is still outstanding.
+  before the App had `workflows` permission. The owner applied them: the full
+  CI workflow (all `--check` modes, unittest suite, coverage gate, Playwright)
+  landed on `main` as commit `6b28e66` and passed (run `30834666253`).
 - `OFFICIAL_SOURCE_REGISTRY_DRAFT.md`, `RESEARCH_MASTER_DRAFT.md`,
   `RESEARCH_MASTER_SCHEMA_MIGRATION_DRAFT.md` — research drafts whose final
   versions are implemented.

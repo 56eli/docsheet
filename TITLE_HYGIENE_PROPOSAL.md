@@ -6,8 +6,11 @@
 designators retained in the public title. The decision draft below is retained as
 research history; its earlier proposal to move PART/A-series identifiers into
 `format_detail` was **not** adopted.
-**Scope:** master display titles carrying filesystem artifacts. The two note-only
-placeholders discussed below were separately excluded, leaving one untyped record.
+**Scope (historical, 308-record draft):** master display titles carrying
+filesystem artifacts. The two note-only placeholders discussed below were
+separately excluded, leaving one untyped record. The cleanup now applies to
+all **317** current master records; `legacy_title` preserves the verbatim raw
+strings.
 
 ---
 

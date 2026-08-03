@@ -1,0 +1,25 @@
+candidate_key,master_uuid,work_id,edition_role,item_type,format,series,approval_status,approved_on,approval_reason
+edition-audible-pvf,320,w-power-vs-force,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-power-vs-force.
+edition-audible-eye,321,w-eye-of-the-i,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-eye-of-the-i.
+edition-audible-tvf,322,w-truth-vs-falsehood,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-truth-vs-falsehood.
+edition-audible-lettinggo,323,w-letting-go,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-letting-go.
+edition-audible-healing,324,w-healing-and-recovery,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-healing-and-recovery.
+edition-audible-transcending,325,w-transcending-the-levels,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-transcending-the-levels.
+edition-audible-itwbnoi,326,w-in-the-world-but-not-of-it,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-in-the-world-but-not-of-it.
+edition-veritas-tvf-cddvd,327,w-truth-vs-falsehood,video,lecture,DVD,Books,approved,2026-08-03,Owner approved video edition row for work w-truth-vs-falsehood.
+edition-veritas-healing-audio,328,w-healing-and-recovery,audio,lecture,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-healing-and-recovery.
+edition-veritas-itwbnoi-audio,329,w-in-the-world-but-not-of-it,audio,lecture,CD,Books,approved,2026-08-03,Owner approved audio edition row for work w-in-the-world-but-not-of-it.
+edition-veritas-hle-audio,330,w-highest-level-of-enlightenment,audio,lecture,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-highest-level-of-enlightenment.
+edition-veritas-pvf-audiobook,331,w-power-vs-force,audio,book,audio,Volume Series,approved,2026-08-03,Owner approved audio edition row for work w-power-vs-force.
+edition-audible-hle,332,w-highest-level-of-enlightenment,audio,book,audio,Books,approved,2026-08-03,Owner approved audio edition row for work w-highest-level-of-enlightenment.
+edition-audible-wtg-nature,333,w-nature-of-divinity,audio,lecture,audio,The Way to God,approved,2026-08-03,Owner approved audio edition row for work w-nature-of-divinity.
+edition-audible-wtg-advaita,334,w-advaita,audio,lecture,audio,The Way to God,approved,2026-08-03,Owner approved audio edition row for work w-advaita.
+edition-audible-wtg-root,335,w-realizing-root,audio,lecture,audio,The Way to God,approved,2026-08-03,Owner approved audio edition row for work w-realizing-root.
+edition-audible-dni-intention,336,w-intention,audio,lecture,audio,Nonduality Intensive,approved,2026-08-03,Owner approved audio edition row for work w-intention.
+edition-audible-dni-alignment,337,w-alignment,audio,lecture,audio,Nonduality Intensive,approved,2026-08-03,Owner approved audio edition row for work w-alignment.
+edition-audible-tms-id,338,w-identification-illusion,audio,lecture,audio,Transcending the Mind,approved,2026-08-03,Owner approved audio edition row for work w-identification-illusion.
+edition-audible-tms-emotions,339,w-emotions-sensations,audio,lecture,audio,Transcending the Mind,approved,2026-08-03,Owner approved audio edition row for work w-emotions-sensations.
+edition-audible-srmm-godvs,340,w-god-vs-science,audio,lecture,audio,Spiritual Reality & Modern Man,approved,2026-08-03,Owner approved audio edition row for work w-god-vs-science.
+edition-audible-tlc-perception,341,w-tlc-perception,audio,lecture,audio,Transcending Levels of Consciousness,approved,2026-08-03,Owner approved audio edition row for work w-tlc-perception.
+edition-audible-compassion,342,w-compassion,audio,lecture,audio,On The Road Talk Series,approved,2026-08-03,Owner approved audio edition row for work w-compassion.
+edition-hh-liveprayer,343,w-live-prayer,audio,lecture,audio,Transcending Levels of Consciousness,approved,2026-08-03,Owner approved audio edition row for work w-live-prayer.

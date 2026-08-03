@@ -47,6 +47,7 @@
     migrationReview: { file: "migration-review.json", label: "Migration Review", exportName: "hawkins-migration-review.csv" },
     sourceOverrides: { file: "source-overrides.json", label: "Source Overrides", exportName: "hawkins-source-overrides.csv" },
     officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
+    newWorkReview: { file: "new-work-review.json", label: "New Work Review", exportName: "hawkins-new-work-review.csv" },
     veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Veritas Decisions", exportName: "hawkins-veritas-decisions.csv" },
     veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
     productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
@@ -61,7 +62,7 @@
   const VIEW_DETAILS = {
     master: {
       type: "Catalogue + candidates",
-      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items.",
+      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items. Since 2026-08-03 the master holds one row per edition of a work (book / audio / video); the Work column groups a work's editions together.",
     },
     reviewOverview: {
       type: "Review index",
@@ -90,6 +91,10 @@
     officialDiscovery: {
       type: "Discovery queue",
       description: "Nightingale-Conant and platform candidates awaiting source, duplicate, or relationship review.",
+    },
+    newWorkReview: {
+      type: "Review queue",
+      description: "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
     },
     veritasMappingDecisions: {
       type: "Refresh decisions",
@@ -132,6 +137,8 @@
   const COLUMN_LABELS = {
     record_type: "Record Type",
     uuid: "Master ID",
+    work_id: "Work",
+    edition: "Edition",
     master_uuid: "Master ID",
     year_month: "Year-Month",
     raw_row_number: "Raw Row",
@@ -191,7 +198,7 @@
     "evidence_url", "review_notes", "notes",
   ];
   const LOW_PRIORITY_FIELDS = [
-    "uuid", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
+    "uuid", "work_id", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
     "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
     "normalized_title_match_count", "location_physical", "location_digital",
     "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
@@ -208,6 +215,8 @@
     item_type: 104,
     series: 300,
     format: 68,
+    format_detail: 160,
+    edition: 160,
     owned: 68,
     source_url_veritas: 140,
     year_month: 80,
@@ -234,7 +243,7 @@
   };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "series", "title", "item_type", "year_month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "work_id", "series", "title", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
       frozen: ["record_type", "title"],
     },
     original: {
@@ -247,6 +256,7 @@
     masterExclusions: { priority: ["raw_title", "disposition", "review_reason", "raw_row_number", "raw_tempid", "raw_we_have", "raw_product_link"], frozen: ["raw_title"] },
     migrationReview: { priority: ["proposed_title", "disposition", "review_reason", "proposed_item_type", "proposed_series", "proposed_year", "proposed_owned", "raw_row_number", "raw_title"], frozen: ["proposed_title"] },
     officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
+    newWorkReview: { priority: ["candidate_title", "item_type", "series", "year", "format", "source_product_id", "match_status", "approval", "source_url_veritas", "match_notes", "review_notes"], frozen: ["candidate_title"] },
     veritasMappingDecisions: { priority: ["veritas_product_id", "mapping_status", "matched_master_uuids", "matched_master_titles", "review_status", "decision_reason"], frozen: ["veritas_product_id"] },
     veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_uuids", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
     productRelationships: { priority: ["master_uuid", "master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_uuid", "master_title"] },
@@ -422,6 +432,8 @@
     Object.entries(data).forEach(([field, value]) => {
       // Year/Month are shown merged as "Year-Month" (see loadData).
       if ("year_month" in data && (field === "year" || field === "month")) return;
+      // Format/Format Detail are shown merged as "Edition" (see loadData).
+      if ("edition" in data && (field === "format" || field === "format_detail")) return;
       const item = document.createElement("div");
       item.className = "row-detail-field";
       const term = document.createElement("dt");
@@ -455,6 +467,17 @@
     allData.forEach((row) => {
       if ("year" in row && "month" in row) {
         row.year_month = row.year ? (row.month ? `${row.year}-${row.month}` : row.year) : "";
+      }
+      // Merge Format + Format Detail into one "Edition" display column
+      // (e.g. "audio · Audiobook", "DVD · CD & DVD set"). Only curated rows
+      // carry format_detail, so the raw Original Spreadsheet view keeps its
+      // verbatim format column. The raw keys stay on each row object for the
+      // global search, but buildColumns, the row drawer, and CSV exports
+      // show only the merged column.
+      if ("format" in row && "format_detail" in row) {
+        const fmt = row.format || "";
+        const detail = row.format_detail || "";
+        row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
 
@@ -587,6 +610,10 @@
     // present (see loadData).
     if (keys.includes("year_month")) {
       keys = keys.filter((key) => key !== "year" && key !== "month");
+    }
+    // Hide the raw Format columns when the merged "Edition" column is present.
+    if (keys.includes("edition")) {
+      keys = keys.filter((key) => key !== "format" && key !== "format_detail");
     }
     const sample = data.slice(0, 120);
     const preset = columnPresetFor(activeView);

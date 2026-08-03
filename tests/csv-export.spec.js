@@ -97,3 +97,29 @@ test('Everything view separates curated master records from candidates', async (
     expect(text).toBe('Curated master');
   }
 });
+
+test('edition model columns render on the Everything tab', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  // Work + Edition columns exist (edition model, 2026-08-03).
+  await expect(page.locator('.tabulator-col[tabulator-field="work_id"]').first()).toBeVisible();
+  await expect(page.locator('.tabulator-col[tabulator-field="edition"]').first()).toBeVisible();
+
+  // The raw format columns are hidden in favour of the merged Edition column.
+  await expect(page.locator('.tabulator-col[tabulator-field="format"]')).toHaveCount(0);
+  await expect(page.locator('.tabulator-col[tabulator-field="format_detail"]')).toHaveCount(0);
+
+  // Narrow to one work family so the virtual-DOM window contains its rows:
+  // the book row and its minted audiobook edition row share the work id.
+  await page.getByRole('searchbox', { name: /search across all columns/i }).fill('w-truth-vs-falsehood');
+  const workCells = page.locator('.tabulator-cell[tabulator-field="work_id"]');
+  await expect(workCells.first()).toHaveText('w-truth-vs-falsehood');
+
+  // The audiobook edition row renders with its merged edition label.
+  const editionCells = page.locator('.tabulator-cell[tabulator-field="edition"]');
+  await expect(editionCells.filter({ hasText: 'audio · Audiobook' }).first()).toBeVisible();
+
+  // The book row shows its own edition label.
+  await expect(editionCells.filter({ hasText: 'book' }).first()).toBeVisible();
+});

@@ -15,6 +15,7 @@ Coverage run (see requirements-dev.txt):
 """
 from __future__ import annotations
 
+import collections
 import contextlib
 import csv
 import importlib
@@ -478,6 +479,56 @@ class FormatInferenceTests(unittest.TestCase):
         item = {"format": "", "title": "", "source_url_veritas": ""}
         self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
 
+    def test_exact_url_lookup_resolves_word_slug_books(self) -> None:
+        # Word-slug URLs carry no numeric ID prefix; the legacy pid guess
+        # (slug.split('-')[0]) silently misses them. Exact-URL resolution must
+        # find the product and its "(Book)" title marker.
+        product = {
+            "veritas_product_id": "50378",
+            "official_product_url": "https://veritaspub.com/product/healing-and-recovery-copy/",
+            "official_title": "Healing and Recovery (Book)",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {
+            "format": "",
+            "title": "",
+            "item_type": "book",
+            "source_url_veritas": product["official_product_url"],
+        }
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "book")
+
+    def test_category_signal_is_guarded_by_item_type_and_requires_lookup(self) -> None:
+        product = {
+            "veritas_product_id": "43728",
+            "official_product_url": "https://veritaspub.com/product/the-map-of-consciousness-explained/",
+            "official_title": "The Map of Consciousness Explained: A Proven Energy Scale to ...",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        url = product["official_product_url"]
+
+        # item_type=book + publisher books category -> book
+        item = {"format": "", "title": "", "item_type": "book", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "book")
+        # lecture-class record sharing the category must NOT be labeled book
+        item = {"format": "", "title": "", "item_type": "lecture", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+        # without the URL map (legacy pid guess) the word slug resolves nothing
+        item = {"format": "", "title": "", "item_type": "book", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
+
+    def test_category_signal_never_overrides_existing_format(self) -> None:
+        product = {
+            "veritas_product_id": "43728",
+            "official_product_url": "https://veritaspub.com/product/the-map-of-consciousness-explained/",
+            "official_title": "The Map of Consciousness Explained",
+            "official_categories": "Books Published by Dr. Hawkins",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {"format": "audio", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+
     def test_compact_id_recognition(self) -> None:
         self.assertTrue(brm.is_compact_id("317"))
         self.assertFalse(brm.is_compact_id("019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091"))
@@ -744,6 +795,627 @@ class ReconcileDriftTests(unittest.TestCase):
         check = invoke_script("reconcile_research_master.py", self.sandbox, "--check")
         self.assertEqual(check.returncode, 1)
         self.assertIn("is stale", check.stdout)
+
+
+class RelationshipCoverageValidationTests(unittest.TestCase):
+    """URL-bearing masters without a primary relationship row must fail the build."""
+
+    def master(self) -> list[dict[str, str]]:
+        return [
+            {"uuid": "10", "source_url_veritas": "https://veritaspub.com/product/a/"},
+            {"uuid": "12", "source_url_veritas": "https://veritaspub.com/product/b/"},
+            {"uuid": "13", "source_url_veritas": ""},
+        ]
+
+    def relationships(self) -> list[dict[str, str]]:
+        return [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "related_material"},
+        ]
+
+    def test_covered_masters_pass(self) -> None:
+        bcp.validate_primary_relationship_coverage(self.master(), [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
+        ])
+
+    def test_uncovered_master_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "12"):
+            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
+
+    def test_master_without_url_is_not_a_gap(self) -> None:
+        # 13 has no URL -> no gap; only 12 (related_material) is uncovered.
+        with self.assertRaises(ValueError) as ctx:
+            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
+        self.assertIn("12", str(ctx.exception))
+        self.assertNotIn("13", str(ctx.exception))
+
+    def test_committed_state_passes_after_promoted_rows_added(self) -> None:
+        # The 11 promoted masters (309-319) now have reviewed primary rows, so
+        # the committed state must build cleanly with no coverage failure.
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertNotIn("WARNING", result.stderr)
+            self.assertNotIn("no reviewed primary relationship", result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_edition_provenance_rows_are_self_covered(self) -> None:
+        # Promoted edition rows carry their primary product by construction;
+        # a Veritas URL on an edition-provenance master must not be a gap.
+        master = self.master()
+        master.append({
+            "uuid": "320",
+            "source_url_veritas": "https://veritaspub.com/product/tvf-cd-dvd/",
+            "raw_row_number": "candidate:edition-veritas-tvf-cddvd",
+        })
+        covered = [
+            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
+            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
+        ]
+        bcp.validate_primary_relationship_coverage(master, covered)
+
+    def test_deleting_a_promoted_relationship_row_fails_check(self) -> None:
+        # Tamper detection: dropping a primary row must fail --check loudly
+        # (the generator's failure contract is an uncaught exception -> exit 1).
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "product_relationships.csv"
+            lines = path.read_text(encoding="utf-8").splitlines()
+            kept = [line for line in lines if "rel-veritas-53277-309" not in line]
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "no reviewed primary relationship"):
+                invoke_script("build_catalogue_pages.py", sandbox, "--check")
+        finally:
+            tempdir.cleanup()
+
+
+class WorkFamilyTests(unittest.TestCase):
+    """Reviewed work-family input: validation and work_id assignment."""
+
+    FAMILY_HEADER = "work_id,member_master_uuid,canonical_work_title,evidence_note,review_status,reviewed_on"
+
+    def write_families(self, sandbox: Path, rows: list[str]) -> None:
+        (sandbox / "data" / "work_families.csv").write_text(
+            self.FAMILY_HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
+        )
+        # The committed edition candidates reference the committed work ids;
+        # custom family files invalidate them, so clear the edition layer.
+        (sandbox / "data" / "edition_candidates.csv").write_text(
+            "candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+            "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+            "proposed_owned,source_name,source_product_id,official_product_url,"
+            "official_product_title,evidence_note,review_status,reviewed_on,"
+            "promotion_status,promotion_notes\n", encoding="utf-8")
+        (sandbox / "data" / "edition_promotions.csv").write_text(
+            "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
+            "approval_status,approved_on,approval_reason\n", encoding="utf-8")
+
+    def approved_row(self, member: str = "289", work_id: str = "w-tvf") -> str:
+        return (f"{work_id},{member},Truth vs Falsehood,"
+                "Veritas book 50398 + Audible audiobook + CD&DVD set 1728 evidence,approved,2026-08-03")
+
+    def test_committed_families_build_clean(self) -> None:
+        # The committed work-families batch is fully approved: master rows
+        # carry work_id (book rows + minted edition rows) and --check passes.
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertIn("work_id", rows["1"])
+            self.assertEqual(rows["289"]["work_id"], "w-truth-vs-falsehood")
+            self.assertEqual(rows["320"]["work_id"], "w-power-vs-force")  # first minted edition row
+            tvf_audio = next(r for r in rows.values() if r["title"] == "Truth Vs Falsehood (Audiobook)")
+            self.assertEqual(tvf_audio["work_id"], "w-truth-vs-falsehood")
+            self.assertTrue(any(row["work_id"] for row in rows.values()))
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_family_assigns_work_id_and_check_passes(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row()])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("Applied 1 approved work-family memberships", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertEqual(rows["289"]["work_id"], "w-tvf")
+            self.assertEqual(rows["290"]["work_id"], "")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_proposed_rows_are_validated_but_not_applied(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [
+                "w-tvf,289,Truth vs Falsehood,title-only grouping proposal,proposed,"
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertEqual(rows["289"]["work_id"], "")
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_member_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row(member="9999")])
+            with self.assertRaisesRegex(ValueError, "unknown master ID"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_missing_columns_fail(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            (sandbox / "data" / "work_families.csv").write_text(
+                "work_id,member_master_uuid\nw-tvf,289\n", encoding="utf-8")
+            (sandbox / "data" / "edition_candidates.csv").write_text(
+                "candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+                "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+                "proposed_owned,source_name,source_product_id,official_product_url,"
+                "official_product_title,evidence_note,review_status,reviewed_on,"
+                "promotion_status,promotion_notes\n", encoding="utf-8")
+            (sandbox / "data" / "edition_promotions.csv").write_text(
+                "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
+                "approval_status,approved_on,approval_reason\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "missing required columns"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_row_needs_date_evidence_and_canonical_title(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,,approved,"])
+            with self.assertRaisesRegex(ValueError, "ISO reviewed_on"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,,approved,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "explain the evidence"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,,evidence,approved,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "canonical work title"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_families(sandbox, ["w-tvf,289,Truth vs Falsehood,evidence,pending,2026-08-03"])
+            with self.assertRaisesRegex(ValueError, "invalid review_status"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_duplicate_member_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [
+                self.approved_row(), "w-tvf2,289,Truth vs Falsehood,other evidence,approved,2026-08-03",
+            ])
+            with self.assertRaisesRegex(ValueError, "twice"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_tamper_detection_when_work_id_drifts(self) -> None:
+        # Approved family applied, then the committed master loses the id:
+        # --check must fail.
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_families(sandbox, [self.approved_row()])
+            invoke_script("build_research_master.py", sandbox)
+            path = sandbox / "data" / "research_master_draft.csv"
+            lines = path.read_text(encoding="utf-8").splitlines()
+            header = lines[0].split(",")
+            work_idx = header.index("work_id")
+            kept = [lines[0]]
+            for line in lines[1:]:
+                cells = line.split(",")
+                if cells[0] == "289" and len(cells) > work_idx:
+                    cells[work_idx] = ""
+                kept.append(",".join(cells))
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("stale relative to the current ledger", result.stdout)
+        finally:
+            tempdir.cleanup()
+
+
+class EditionCandidateTests(unittest.TestCase):
+    """Edition-candidate layer: validation and promotion-to-master rows."""
+
+    CAND_HEADER = ("candidate_key,work_id,edition_role,matched_master_uuid,candidate_title,"
+                   "proposed_item_type,proposed_year,proposed_format,proposed_format_detail,"
+                   "proposed_owned,source_name,source_product_id,official_product_url,"
+                   "official_product_title,evidence_note,review_status,reviewed_on,"
+                   "promotion_status,promotion_notes")
+    PROMO_HEADER = ("candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
+                    "approval_status,approved_on,approval_reason")
+
+    def family_rows(self) -> list[str]:
+        return ["w-tvf,289,Truth vs Falsehood,book 50398 + audiobook evidence,approved,2026-08-03"]
+
+    def candidate_rows(self, promotion_status: str = "not_promoted") -> list[str]:
+        return [
+            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audio,Audiobook,true,"
+            f"audible,https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,"
+            f"https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,Truth Vs Falsehood,"
+            f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition",
+        ]
+
+    def write_files(self, sandbox: Path, candidate_rows: list[str], promo_rows: list[str] | None = None,
+                    family_rows: list[str] | None = None) -> None:
+        (sandbox / "data" / "work_families.csv").write_text(
+            "work_id,member_master_uuid,canonical_work_title,evidence_note,review_status,reviewed_on\n"
+            + "\n".join(family_rows if family_rows is not None else self.family_rows()) + "\n",
+            encoding="utf-8")
+        (sandbox / "data" / "edition_candidates.csv").write_text(
+            self.CAND_HEADER + "\n" + "\n".join(candidate_rows) + "\n", encoding="utf-8")
+        (sandbox / "data" / "edition_promotions.csv").write_text(
+            self.PROMO_HEADER + "\n" + ("\n".join(promo_rows) + "\n" if promo_rows else ""),
+            encoding="utf-8")
+
+    def test_committed_candidates_validate_and_build_clean(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_research_master.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_promotion_mints_edition_row(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("promoted"), [
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertIn("320", rows)  # next compact ID above current max 319
+            row = rows["320"]
+            self.assertEqual(row["work_id"], "w-tvf")
+            self.assertEqual(row["item_type"], "book")
+            self.assertEqual(row["format"], "audio")
+            self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
+            self.assertEqual(row["raw_row_number"], "candidate:edition-audible-tvf")
+            # D3: the audiobook URL moved off the book row into its edition row
+            self.assertEqual(rows["289"]["source_url_audible"], "")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_promotion_requires_candidate_status_flip(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("not_promoted"), [
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+            ])
+            with self.assertRaisesRegex(ValueError, "must be 'promoted'"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_work_id_or_master_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            bad_work = [self.candidate_rows()[0].replace("w-tvf,audio,289", "w-nope,audio,289")]
+            self.write_files(sandbox, bad_work)
+            with self.assertRaisesRegex(ValueError, "unknown work_id"):
+                invoke_script("build_research_master.py", sandbox)
+            bad_master = [self.candidate_rows()[0].replace(",289,", ",9999,")]
+            self.write_files(sandbox, bad_master)
+            with self.assertRaisesRegex(ValueError, "unknown matched master ID"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_product_and_duplicate_key_fail(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            bad_product = [self.candidate_rows()[0].replace("B00NWS4SQO", "B00NOPE000")]
+            self.write_files(sandbox, bad_product)
+            with self.assertRaisesRegex(ValueError, "unknown audible product"):
+                invoke_script("build_research_master.py", sandbox)
+            self.write_files(sandbox, self.candidate_rows() * 2)
+            with self.assertRaisesRegex(ValueError, "unique candidate_key"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_hayhouse_candidate_validates_and_mismatch_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            url = "https://www.hayhouse.com/power-vs-force-paperback"
+            row = (f"edition-hh-pvf,w-power-vs-force,book,286,Power vs Force (Paperback),book,,book,,true,"
+                   f"hayhouse,{url},{url},Power vs Force,"
+                   "hayhouse paperback evidence,reviewed_candidate,2026-08-03,not_promoted,paperback edition")
+            families = ["w-power-vs-force,286,Power vs Force,book + audiobook evidence,approved,2026-08-03"]
+            self.write_files(sandbox, [row], family_rows=families)
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            # keep the valid product reference but corrupt the official URL copy
+            bad_url = row.replace(f",{url},{url},", f",{url},https://www.hayhouse.com/other-page,")
+            self.write_files(sandbox, [bad_url], family_rows=families)
+            with self.assertRaisesRegex(ValueError, "differs from the inventory"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_candidate_shape_validation(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            base = self.candidate_rows()[0]
+            cases = [
+                (base.replace(",book,,audio,", ",book,,vinyl,"), "carrier format"),
+                (base.replace("2026-08-03,not_promoted", "2026-08-03,maybe"), "must be 'not_promoted'"),
+                (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status must be"),
+                (base.replace("reviewed_candidate,2026-08-03", "reviewed_candidate,"), "ISO reviewed_on"),
+            ]
+            for row, expected in cases:
+                self.write_files(sandbox, [row])
+                with self.assertRaisesRegex(ValueError, expected):
+                    invoke_script("build_research_master.py", sandbox)
+            # invalid year
+            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audio",
+                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audio")])
+            with self.assertRaisesRegex(ValueError, "proposed_year"):
+                invoke_script("build_research_master.py", sandbox)
+            # invalid owned
+            self.write_files(sandbox, [base.replace(",true,audible,", ",maybe,audible,")])
+            with self.assertRaisesRegex(ValueError, "proposed_owned"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_promotion_edge_cases(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            promo = "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
+            # rejected promotion: no row minted, candidate stays not_promoted
+            self.write_files(sandbox, self.candidate_rows(), [promo.replace("approved,2026-08-03", "rejected,2026-08-03")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            # approved promotion missing date
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",2026-08-03,", ",,")])
+            with self.assertRaisesRegex(ValueError, "ISO approved_on"):
+                invoke_script("build_research_master.py", sandbox)
+            # work_id mismatch with candidate
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace("w-tvf,audio", "w-other,audio")])
+            with self.assertRaisesRegex(ValueError, "must match the candidate"):
+                invoke_script("build_research_master.py", sandbox)
+            # deprecated item_type in promotion
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audio,", ",video,audio,")])
+            with self.assertRaisesRegex(ValueError, "non-deprecated"):
+                invoke_script("build_research_master.py", sandbox)
+            # unknown approval status
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace("approved,2026-08-03", "pending,2026-08-03")])
+            with self.assertRaisesRegex(ValueError, "approval_status"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_tamper_detection_when_edition_row_vanishes(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_files(sandbox, self.candidate_rows("promoted"), [
+                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+            ])
+            invoke_script("build_research_master.py", sandbox)
+            path = sandbox / "data" / "research_master_draft.csv"
+            kept = [line for line in path.read_text(encoding="utf-8").splitlines()
+                    if not line.startswith("320,")]
+            path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+            result = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("stale relative to the current ledger", result.stdout)
+        finally:
+            tempdir.cleanup()
+
+
+class SourceOverrideStatusTests(unittest.TestCase):
+    """Proposed source overrides are validated but never applied."""
+
+    HEADER = "raw_row_number,target_field,override_value,review_status,approval_date,review_reason,evidence_source"
+
+    def write_overrides(self, sandbox: Path, rows: list[str]) -> None:
+        (sandbox / "data" / "research_master_source_overrides.csv").write_text(
+            self.HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
+        )
+
+    def row(self, status: str = "proposed") -> str:
+        return (f"328,source_url_hay_house,https://www.hayhouse.com/truth-vs-falsehood-parperback/,"
+                f"{status},,same-carrier paperback link,data/hayhouse_official_products.csv")
+
+    def test_proposed_rows_validate_but_do_not_apply(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("proposed")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("Applied 0 approved source overrides", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["289"]
+            self.assertEqual(row["source_url_hay_house"], "")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_approved_rows_apply(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("approved")])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            self.assertIn("1 approved source overrides", write.stdout)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["289"]
+            self.assertEqual(row["source_url_hay_house"], "https://www.hayhouse.com/truth-vs-falsehood-parperback/")
+        finally:
+            tempdir.cleanup()
+
+    def test_candidate_keyed_override_applies_to_promoted_row(self) -> None:
+        # Promoted masters (raw_row_number = candidate:<key>) can take source
+        # overrides too: the overrides layer runs after promotions.
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [
+                "candidate:manual-veritas-47979,source_url_hay_house,"
+                "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us,"
+                "approved,2026-08-03,paperback link for promoted master,data/hayhouse_official_products.csv",
+            ])
+            write = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(write.returncode, 0, write.stderr)
+            with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+                row = {r["uuid"]: r for r in csv.DictReader(handle)}["316"]
+            self.assertEqual(row["source_url_hay_house"], "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us")
+            check = invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_invalid_status_fails(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.write_overrides(sandbox, [self.row("pending")])
+            with self.assertRaisesRegex(ValueError, "review_status must be"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+
+class NewWorkQueueTests(unittest.TestCase):
+    """The new-work review lane must stay aligned with the Veritas inventory."""
+
+    def row(self, **overrides) -> dict[str, str]:
+        base = {
+            "candidate_title": "Satsang Series (Jan 2006)", "item_type": "lecture",
+            "series": "Satsang", "year": "2006", "format": "CD",
+            "source_product_id": "1304", "source_url_veritas": "https://veritaspub.com/product/satsang-series-1-january-11-2006-held-at-st-andrews-episcopal-church/",
+            "match_status": "not_found_in_current_draft", "match_notes": "candidate new work",
+            "approval": "", "review_notes": "",
+        }
+        base.update(overrides)
+        return base
+
+    def test_committed_queue_builds_clean(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            self.assertEqual(result.returncode, 0, result.stderr)
+        finally:
+            tempdir.cleanup()
+
+    def test_unknown_product_and_url_mismatch_fail(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unknown Veritas product"):
+            bcp.validate_new_work_queue([self.row(source_product_id="9999")], [])
+        inventory = [{"veritas_product_id": "1304", "official_product_url": "https://veritaspub.com/product/real/" }]
+        with self.assertRaisesRegex(ValueError, "differs from the inventory"):
+            bcp.validate_new_work_queue([self.row()], inventory)
+
+    def test_duplicate_and_empty_title_fail(self) -> None:
+        inventory = [{"veritas_product_id": "1304", "official_product_url": "https://veritaspub.com/product/satsang-series-1-january-11-2006-held-at-st-andrews-episcopal-church/"}]
+        with self.assertRaisesRegex(ValueError, "duplicates product"):
+            bcp.validate_new_work_queue([self.row(), self.row()], inventory)
+        with self.assertRaisesRegex(ValueError, "candidate_title"):
+            bcp.validate_new_work_queue([self.row(candidate_title="")], inventory)
+
+
+class DocumentationCurrencyTests(unittest.TestCase):
+    """Hand-maintained status documents must not drift from the generated data."""
+
+    def catalogue_meta(self) -> dict:
+        return json.loads((REPO / "docs/catalogue-meta.json").read_text(encoding="utf-8"))
+
+    def master_rows(self) -> list[dict[str, str]]:
+        with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+
+    def current_state_numbers(self) -> dict[str, int]:
+        meta = self.catalogue_meta()
+        master = self.master_rows()
+        codes = len({row["catalog_code"].strip() for row in master if row["catalog_code"].strip()})
+        with (REPO / "data/manual_candidate_promotions.csv").open(newline="", encoding="utf-8") as handle:
+            promotions = list(csv.DictReader(handle))
+        promoted = sum(1 for row in promotions if row["approval_status"].strip() == "approved")
+        return {
+            "master": meta["migrated_items"],
+            "catalogue codes": codes,
+            "exclusions": meta["master_exclusion_rows"],
+            "overrides": meta["approved_source_overrides"],
+            "promoted candidates": promoted,
+            "unpromoted candidates": meta["reviewed_manual_candidates"] - promoted,
+            "relationships": meta["reviewed_product_relationships"],
+            "compilations": meta["reviewed_series_compilations"],
+            "everything rows": sum(meta["everything_record_types"].values()),
+        }
+
+    def test_readme_current_state_matches_generated_data(self) -> None:
+        readme = (REPO / "README.md").read_text(encoding="utf-8")
+        section = readme.split("## Current reviewed catalogue state", 1)[1].split("## ", 1)[0]
+        numbers = self.current_state_numbers()
+        numbers.pop("everything rows")  # README states it in the record-type table, not this section
+        for label, value in numbers.items():
+            self.assertIn(
+                f"**{value}**", section,
+                f"README 'Current reviewed catalogue state' must document {label} as **{value}**",
+            )
+
+    def test_handoff_current_state_matches_generated_data(self) -> None:
+        handoff = (REPO / "NEXT_AGENT_HANDOFF.md").read_text(encoding="utf-8")
+        section = handoff.split("## 3. Current verified state", 1)[1].split("## 4.", 1)[0]
+        numbers = self.current_state_numbers()
+        self.assertIn(f"| Curated master | {numbers['master']} |", section)
+        self.assertIn(f"| Everything view | **{numbers['everything rows']}** |", section)
+        self.assertIn(
+            f"| Exclusions / source overrides | {numbers['exclusions']} / {numbers['overrides']} |",
+            section,
+        )
+        self.assertIn(
+            f"| Everything relationships | {numbers['relationships']} product relationships, "
+            f"{numbers['compilations']} series compilations |",
+            section,
+        )
+
+    def test_migration_ledger_summary_matches_ledger(self) -> None:
+        with (REPO / "migration_review_ledger.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        counts = collections.Counter(row["disposition"] for row in rows)
+        doc = (REPO / "MIGRATION_REVIEW_LEDGER.md").read_text(encoding="utf-8")
+        table = doc.split("## Current classification summary", 1)[1].split("## ", 1)[0]
+        for disposition, expected in counts.items():
+            self.assertIn(f"| `{disposition}` | {expected} |", table)
+        self.assertIn(f"| **Total** | **{len(rows)}** |", table)
 
 
 if __name__ == "__main__":

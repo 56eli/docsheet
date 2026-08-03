@@ -25,11 +25,16 @@ EXCLUSIONS = Path("data") / "research_master_exclusions.csv"
 SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
 MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
+AUDIBLE_PRODUCTS = Path("data") / "audible_official_products.csv"
+HAYHOUSE_PRODUCTS = Path("data") / "hayhouse_official_products.csv"
 PROMOTIONS = Path("data") / "manual_candidate_promotions.csv"
 SERIES_MAPPING = Path("data") / "series_category_mapping.csv"
+WORK_FAMILIES = Path("data") / "work_families.csv"
+EDITION_CANDIDATES = Path("data") / "edition_candidates.csv"
+EDITION_PROMOTIONS = Path("data") / "edition_promotions.csv"
 
 FIELDS = [
-    "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -58,6 +63,32 @@ MANUAL_CANDIDATE_REQUIRED_COLUMNS = {
 SERIES_MAPPING_REQUIRED_COLUMNS = {
     "veritas_product_id", "matched_master_uuids", "official_categories",
     "dominant_category", "mapped_series", "review_status",
+}
+WORK_FAMILY_REQUIRED_COLUMNS = {
+    "work_id", "member_master_uuid", "canonical_work_title",
+    "evidence_note", "review_status", "reviewed_on",
+}
+WORK_FAMILY_STATUSES = {"approved", "proposed", "rejected"}
+EDITION_CANDIDATE_REQUIRED_COLUMNS = {
+    "candidate_key", "work_id", "edition_role", "matched_master_uuid",
+    "candidate_title", "proposed_item_type", "proposed_year", "proposed_format",
+    "proposed_format_detail", "proposed_owned", "source_name",
+    "source_product_id", "official_product_url", "official_product_title",
+    "evidence_note", "review_status", "reviewed_on", "promotion_status",
+    "promotion_notes",
+}
+EDITION_PROMOTION_REQUIRED_COLUMNS = {
+    "candidate_key", "master_uuid", "work_id", "edition_role", "item_type", "format",
+    "series", "approval_status", "approved_on", "approval_reason",
+}
+EDITION_ROLES = {"book", "audio", "video", "streaming"}
+EDITION_FORMATS = {"DVD", "CD", "audio", "book", "streaming"}
+EDITION_SOURCES = {"veritas", "audible", "hayhouse"}
+EDITION_CANDIDATE_STATUSES = {"proposed", "reviewed_candidate"}
+EDITION_SOURCE_URL_COLUMNS = {
+    "veritas": "source_url_veritas",
+    "audible": "source_url_audible",
+    "hayhouse": "source_url_hay_house",
 }
 # Controlled vocabulary for ``item_type``.
 #
@@ -231,15 +262,25 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
 
 
 def infer_format_from_official_source(
-    item: dict[str, str], veritas_by_id: dict[str, dict[str, str]]
+    item: dict[str, str],
+    veritas_by_id: dict[str, dict[str, str]],
+    veritas_by_url: dict[str, dict[str, str]] | None = None,
 ) -> str:
-    """Infer a missing format from Veritas product slug and official title.
+    """Infer a missing format from Veritas product slug, title, and category.
 
     Uses reliable signals present in the committed official inventory
     (video/volume slugs → DVD, cd-set/satsang-cd → CD, question-answer → streaming,
-    audio markers → audio, book markers → book). Only returns a value when
-    the current format field is blank. This is a deterministic, reviewable
-    backfill that never overwrites an existing value.
+    audio markers → audio, book markers → book, and — for ``item_type=book``
+    records — the publisher's own ``Books Published by Dr. Hawkins`` category).
+
+    The inventory product is resolved by **exact URL match first** (master
+    ``source_url_veritas`` is validated to exist in the inventory) and only
+    falls back to the legacy numeric-ID-prefix slug guess, which misses the
+    many word-slug URLs (``healing-and-recovery-copy`` → no ID prefix). This
+    closed the 17-blank-book gap for every URL-bearing book record.
+
+    Only returns a value when the current format field is blank. This is a
+    deterministic, reviewable backfill that never overwrites an existing value.
     """
     if item.get("format"):
         return ""
@@ -247,8 +288,13 @@ def infer_format_from_official_source(
     if not url:
         return ""
     slug = url.rstrip("/").split("/")[-1].lower()
-    pid = slug.split("-")[0] if "-" in slug else slug
-    prod = veritas_by_id.get(pid, {})
+
+    prod: dict[str, str] = {}
+    if veritas_by_url:
+        prod = veritas_by_url.get(url, {})
+    if not prod:
+        pid = slug.split("-")[0] if "-" in slug else slug
+        prod = veritas_by_id.get(pid, {})
     ot = (prod.get("official_title", "") or item.get("title", "")).lower()
 
     if any(k in slug for k in ("video", "muscle-testing-video")) or slug.startswith("volume-"):
@@ -260,6 +306,15 @@ def infer_format_from_official_source(
     if "audio" in slug or "– audio" in ot or " audio" in ot:
         return "audio"
     if "book" in slug or "(book)" in ot:
+        return "book"
+    # Publisher-category evidence: the product sits on the publisher's own
+    # books shelf. Guarded by item_type so a lecture/audio edition that merely
+    # shares the category cannot be mislabeled; the carrier of a book-class
+    # record is the book edition the master is linked to.
+    if (
+        item.get("item_type") == "book"
+        and "Books Published by Dr. Hawkins" in prod.get("official_categories", "")
+    ):
         return "book"
     return ""
 
@@ -304,9 +359,9 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
                 f"{SOURCE_OVERRIDES}:{line_number} cannot override {target_field!r}; "
                 f"allowed fields: {', '.join(sorted(SOURCE_OVERRIDE_FIELDS))}"
             )
-        if status != "approved":
+        if status not in {"approved", "proposed"}:
             raise ValueError(
-                f"{SOURCE_OVERRIDES}:{line_number} must have review_status 'approved'"
+                f"{SOURCE_OVERRIDES}:{line_number} review_status must be 'approved' or 'proposed'"
             )
         if not value.startswith("https://"):
             raise ValueError(
@@ -321,9 +376,10 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
                 f"{SOURCE_OVERRIDES}:{line_number} conflicts with the raw-ledger value for "
                 f"{raw_row}/{target_field}; model a separate relationship instead"
             )
-        items_by_raw[raw_row][target_field] = value
+        if status == "approved":
+            items_by_raw[raw_row][target_field] = value
         seen.add(key)
-    return len(overrides)
+    return sum(1 for override in overrides if override["review_status"].strip() == "approved")
 
 
 def validate_manual_candidates() -> int:
@@ -440,6 +496,309 @@ def load_promotions() -> list[dict[str, str]]:
     return promoted
 
 
+def apply_work_families(items: list[dict[str, str]]) -> int:
+    """Assign ``work_id`` from the reviewed work-families input.
+
+    The edition model (see EDITION_MODEL_PROPOSAL.md) groups master rows of
+    the same work (book / audio / video editions) under a stable ``work_id``.
+    Identity must never be inferred from titles alone (the C2 lesson), so the
+    only source of truth is the reviewed ``data/work_families.csv`` input:
+    one row per family member, with ``approved`` rows applied and
+    ``proposed``/``rejected`` rows validated for shape but never applied.
+    """
+    if not WORK_FAMILIES.exists():
+        return 0
+    with WORK_FAMILIES.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = WORK_FAMILY_REQUIRED_COLUMNS - columns
+        if missing:
+            raise ValueError(
+                f"{WORK_FAMILIES.name} is missing required columns: "
+                f"{', '.join(sorted(missing))}"
+            )
+        rows = list(reader)
+
+    master_by_uuid = {item["uuid"]: item for item in items}
+    work_id_by_member: dict[str, str] = {}
+    for line_number, row in enumerate(rows, start=2):
+        work_id = row["work_id"].strip()
+        member = row["member_master_uuid"].strip()
+        status = row["review_status"].strip()
+        reviewed_on = row["reviewed_on"].strip()
+        if not work_id or not member:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} needs non-empty work_id and member_master_uuid"
+            )
+        if status not in WORK_FAMILY_STATUSES:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} has invalid review_status {status!r}; "
+                f"allowed values are {', '.join(sorted(WORK_FAMILY_STATUSES))}"
+            )
+        if member not in master_by_uuid:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} references an unknown master ID: {member!r}"
+            )
+        if member in work_id_by_member:
+            raise ValueError(
+                f"{WORK_FAMILIES.name}:{line_number} lists master ID {member} twice; "
+                "one row per family member"
+            )
+        if status == "approved":
+            if not ISO_DATE.fullmatch(reviewed_on):
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows need an ISO reviewed_on date"
+                )
+            if not row["evidence_note"].strip():
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows must explain the evidence"
+                )
+            if not row["canonical_work_title"].strip():
+                raise ValueError(
+                    f"{WORK_FAMILIES.name}:{line_number} approved rows need a canonical work title"
+                )
+            work_id_by_member[member] = work_id
+
+    applied = 0
+    for item in items:
+        work_id = work_id_by_member.get(item["uuid"], "")
+        if work_id:
+            item["work_id"] = work_id
+            applied += 1
+    if applied:
+        print(f"[work-families] Applied {applied} approved work-family memberships")
+    return applied
+
+
+def validate_edition_candidates(items: list[dict[str, str]]) -> int:
+    """Validate reviewed edition candidates without promoting them.
+
+    Edition candidates model the edition model's extra carrier rows
+    (audiobook, CD/DVD set, ...) for works already in the master (see
+    EDITION_MODEL_PROPOSAL.md). They have no raw spreadsheet row; each
+    references a work family, an existing master record, and an official
+    product in a committed inventory. Promotion is a later explicit action via
+    ``data/edition_promotions.csv``; this function never emits rows.
+    """
+    if not EDITION_CANDIDATES.exists():
+        return 0
+    with EDITION_CANDIDATES.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        missing_columns = EDITION_CANDIDATE_REQUIRED_COLUMNS - set(reader.fieldnames or [])
+        if missing_columns:
+            raise ValueError(
+                f"{EDITION_CANDIDATES} is missing required columns: "
+                f"{', '.join(sorted(missing_columns))}"
+            )
+        candidates = list(reader)
+
+    with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+        veritas_by_id = {row["veritas_product_id"]: row for row in csv.DictReader(handle)}
+    audible_by_url: dict[str, dict[str, str]] = {}
+    if AUDIBLE_PRODUCTS.exists():
+        with AUDIBLE_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+            audible_by_url = {row["audible_url"]: row for row in csv.DictReader(handle)}
+    hayhouse_by_url: dict[str, dict[str, str]] = {}
+    if HAYHOUSE_PRODUCTS.exists():
+        with HAYHOUSE_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+            hayhouse_by_url = {row["official_product_url"]: row for row in csv.DictReader(handle)}
+
+    master_by_uuid = {item["uuid"]: item for item in items}
+    known_work_ids: set[str] = set()
+    if WORK_FAMILIES.exists():
+        with WORK_FAMILIES.open(encoding="utf-8", newline="") as handle:
+            known_work_ids = {row["work_id"].strip() for row in csv.DictReader(handle)}
+
+    promoted_keys: set[str] = set()
+    if EDITION_PROMOTIONS.exists():
+        with EDITION_PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+            promoted_keys = {
+                row.get("candidate_key", "").strip()
+                for row in csv.DictReader(handle)
+                if row.get("approval_status", "").strip() == "approved"
+            }
+
+    seen_keys: set[str] = set()
+    for line_number, candidate in enumerate(candidates, start=2):
+        key = candidate["candidate_key"].strip()
+        work_id = candidate["work_id"].strip()
+        role = candidate["edition_role"].strip()
+        media_format = candidate["proposed_format"].strip()
+        source_name = candidate["source_name"].strip()
+        product_id = candidate["source_product_id"].strip()
+        year = candidate["proposed_year"].strip()
+
+        if not key.startswith("edition-") or key in seen_keys:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} needs a unique candidate_key beginning 'edition-'"
+            )
+        if not work_id or work_id not in known_work_ids:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} references an unknown work_id {work_id!r}; "
+                "declare the work in work_families.csv first"
+            )
+        if role not in EDITION_ROLES:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} has invalid edition_role {role!r}; "
+                f"allowed values: {', '.join(sorted(EDITION_ROLES))}"
+            )
+        if candidate["matched_master_uuid"].strip() not in master_by_uuid:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} references an unknown matched master ID"
+            )
+        if not candidate["candidate_title"].strip() or media_format not in EDITION_FORMATS:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} needs a title and a carrier format "
+                f"from {', '.join(sorted(EDITION_FORMATS))}"
+            )
+        if year and (len(year) != 4 or not year.isdigit()):
+            raise ValueError(f"{EDITION_CANDIDATES}:{line_number} proposed_year must be blank or YYYY")
+        if candidate["proposed_owned"].strip() not in {"", "true", "false"}:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} proposed_owned must be blank, true, or false"
+            )
+        if candidate["review_status"].strip() not in EDITION_CANDIDATE_STATUSES:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} review_status must be "
+                f"{', '.join(sorted(EDITION_CANDIDATE_STATUSES))}"
+            )
+        if candidate["review_status"].strip() == "proposed":
+            # Generated draft rows: shape-validated, never promotable until a
+            # reviewer flips them to reviewed_candidate with a date.
+            if candidate["reviewed_on"].strip() or candidate["promotion_status"].strip() != "not_promoted":
+                raise ValueError(
+                    f"{EDITION_CANDIDATES}:{line_number} proposed rows must have an empty "
+                    "reviewed_on and promotion_status 'not_promoted'"
+                )
+        else:
+            if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
+                raise ValueError(f"{EDITION_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
+            expected_promotion_status = "promoted" if key in promoted_keys else "not_promoted"
+            if candidate["promotion_status"].strip() != expected_promotion_status:
+                raise ValueError(
+                    f"{EDITION_CANDIDATES}:{line_number} must be {expected_promotion_status!r} "
+                    "to match the explicit edition promotion registry"
+                )
+        if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
+            raise ValueError(f"{EDITION_CANDIDATES}:{line_number} needs evidence and promotion notes")
+        if source_name not in EDITION_SOURCES or not product_id:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} needs a known source_name and product reference"
+            )
+        if source_name == "veritas":
+            product = veritas_by_id.get(product_id)
+        elif source_name == "audible":
+            product = audible_by_url.get(product_id)
+        else:
+            product = hayhouse_by_url.get(product_id)
+        if not product:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} references an unknown {source_name} product {product_id!r}"
+            )
+        expected_url = product.get("official_product_url", product.get("audible_url", ""))
+        if candidate["official_product_url"] != expected_url:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} official_product_url differs from the inventory"
+            )
+        if candidate["official_product_title"] != product["official_title"]:
+            raise ValueError(
+                f"{EDITION_CANDIDATES}:{line_number} official_product_title differs from the inventory"
+            )
+        seen_keys.add(key)
+    return len(candidates)
+
+
+def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str], str]]:
+    """Load owner-approved edition promotions and mint master rows.
+
+    Edition rows carry an explicitly assigned compact UUID in the promotion
+    registry (like the manual promotions path), so their IDs stay stable no
+    matter which other rows are added before them.
+    """
+    if not EDITION_PROMOTIONS.exists():
+        return []
+    with EDITION_CANDIDATES.open(encoding="utf-8", newline="") as handle:
+        candidates = {row["candidate_key"]: row for row in csv.DictReader(handle)}
+    with EDITION_PROMOTIONS.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        missing_columns = EDITION_PROMOTION_REQUIRED_COLUMNS - set(reader.fieldnames or [])
+        if missing_columns:
+            raise ValueError(
+                f"{EDITION_PROMOTIONS} is missing required columns: "
+                f"{', '.join(sorted(missing_columns))}"
+            )
+        rows = list(reader)
+
+    minted: list[tuple[dict[str, str], str]] = []
+    seen_keys: set[str] = set()
+    seen_ids: set[str] = set()
+    for line, row in enumerate(rows, 2):
+        key = row["candidate_key"].strip()
+        candidate = candidates.get(key)
+        if not candidate or key in seen_keys:
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} needs a known, unique candidate_key"
+            )
+        if candidate["review_status"].strip() != "reviewed_candidate":
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} candidate {key} is still {candidate['review_status']!r}; "
+                "review it (flip to reviewed_candidate) before promoting"
+            )
+        approval = row["approval_status"].strip()
+        if approval == "rejected":
+            seen_keys.add(key)
+            continue
+        if approval != "approved":
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} approval_status must be 'approved' or 'rejected'"
+            )
+        if not ISO_DATE.fullmatch(row["approved_on"].strip()) or not row["approval_reason"].strip():
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} approved rows need an ISO approved_on and a reason"
+            )
+        work_id = row["work_id"].strip()
+        role = row["edition_role"].strip()
+        item_type = row["item_type"].strip()
+        media_format = row["format"].strip()
+        uuid = row["master_uuid"].strip()
+        if (
+            not work_id or work_id != candidate["work_id"].strip()
+            or role != candidate["edition_role"].strip()
+        ):
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} work_id/edition_role must match the candidate"
+            )
+        if item_type not in CONTENT_ITEM_TYPES:
+            raise ValueError(f"{EDITION_PROMOTIONS}:{line} needs a non-deprecated content item_type")
+        if media_format not in EDITION_FORMATS:
+            raise ValueError(f"{EDITION_PROMOTIONS}:{line} format is outside the edition vocabulary")
+        if not uuid.isdigit() or uuid in seen_ids or uuid in existing_ids:
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} needs a unique, unused numeric master_uuid"
+            )
+        source_column = EDITION_SOURCE_URL_COLUMNS[candidate["source_name"].strip()]
+        row_dict = {
+            "uuid": uuid, "work_id": work_id, "catalog_code": "", "legacy_tempid": "",
+            "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
+            "title_source": "", "item_type": item_type, "series": row["series"].strip(),
+            "year": candidate["proposed_year"].strip(), "month": "",
+            "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
+            "owned": candidate["proposed_owned"].strip(),
+            "location_physical": "", "location_digital": "", "location_streaming": "",
+            "source_url_veritas": "", "source_url_hay_house": "",
+            "source_url_nightingale_conant": "", "source_url_audible": "",
+            "reference_url_1": "", "reference_url_2": "",
+            "notes": f"Promoted edition {role} of work {work_id} from candidate "
+                     f"{key}: {candidate['evidence_note']}",
+            "raw_row_number": f"candidate:{key}",
+        }
+        row_dict[source_column] = candidate["official_product_url"]
+        minted.append((row_dict, candidate["matched_master_uuid"].strip()))
+        seen_keys.add(key)
+        seen_ids.add(uuid)
+    return minted
+
+
 def apply_series_approvals(items: list[dict[str, str]]) -> int:
     """Apply approved taxonomy-to-series mappings after item assembly.
 
@@ -532,6 +891,7 @@ def build_master() -> MasterBuild:
         canonical_title = title_for(row)
         items.append({
             "uuid": compact_ids[row["raw_row_number"]],
+            "work_id": "",
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
@@ -557,7 +917,6 @@ def build_master() -> MasterBuild:
             "raw_row_number": row["raw_row_number"],
         })
 
-    source_overrides_applied = apply_source_overrides(items)
     existing_ids = {item["uuid"] for item in items}
     for candidate in load_promotions():
         if candidate["uuid"] in existing_ids:
@@ -570,7 +929,7 @@ def build_master() -> MasterBuild:
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
         items.append({
-            "uuid": candidate["uuid"], "catalog_code": code, "legacy_tempid": "",
+            "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
             "title_source": "", "item_type": item_type, "series": candidate["series"],
             "year": year, "month": "", "format": candidate["proposed_format"],
@@ -583,15 +942,36 @@ def build_master() -> MasterBuild:
             "raw_row_number": f"candidate:{candidate['candidate_key']}",
         })
         existing_ids.add(candidate["uuid"])
+    edition_rows = load_edition_promotions(existing_ids)
+    for row_dict, matched_uuid in edition_rows:
+        items.append(row_dict)
+
+    # Source overrides apply after promotions so they can also target
+    # candidate-provenance rows (raw_row_number = candidate:<key>), e.g. the
+    # Hay House links for promoted masters 316/318. Month backfill and format
+    # inference run afterwards, so override URLs still feed both.
+    source_overrides_applied = apply_source_overrides(items)
+
+    # D3 (edition model): the audiobook URL moves from the book row into its
+    # audiobook edition row and is cleared from the book row. Runs after
+    # overrides so an approved audible override cannot re-set the book row.
+    by_uuid = {item["uuid"]: item for item in items}
+    for row_dict, matched_uuid in edition_rows:
+        if row_dict["source_url_audible"] and matched_uuid in by_uuid:
+            master_row = by_uuid[matched_uuid]
+            if master_row["source_url_audible"] == row_dict["source_url_audible"]:
+                master_row["source_url_audible"] = ""
     backfill_months_from_official_source(items)
 
     # Format backfill from official Veritas inventory (only fills blanks)
     if VERITAS_PRODUCTS.exists():
         with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            veritas_by_id = {row["veritas_product_id"]: row for row in csv.DictReader(handle)}
+            inventory_rows = list(csv.DictReader(handle))
+        veritas_by_id = {row["veritas_product_id"]: row for row in inventory_rows}
+        veritas_by_url = {row["official_product_url"]: row for row in inventory_rows}
         inferred = 0
         for item in items:
-            fmt = infer_format_from_official_source(item, veritas_by_id)
+            fmt = infer_format_from_official_source(item, veritas_by_id, veritas_by_url)
             if fmt:
                 item["format"] = fmt
                 inferred += 1
@@ -600,6 +980,8 @@ def build_master() -> MasterBuild:
             print(f"[format] Inferred {inferred} formats from official Veritas inventory")
 
     series_approvals_applied = apply_series_approvals(items)
+    work_families_applied = apply_work_families(items)
+    edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}

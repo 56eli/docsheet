@@ -18,6 +18,7 @@ from pathlib import Path
 
 MASTER = Path("data/research_master_draft.csv")
 QUEUE = Path("data/official_discovery_queue.csv")
+NEW_WORK_QUEUE = Path("data/new_work_review_queue.csv")
 INTL_QUEUE = Path("data/international_discovery_queue.csv")
 VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
 VERITAS_MAPPING_DECISIONS = Path("data/veritas_mapping_decisions.csv")
@@ -38,6 +39,7 @@ OUT_MASTER_EXCLUSIONS = Path("docs/master-exclusions.json")
 OUT_MIGRATION_REVIEW = Path("docs/migration-review.json")
 OUT_SOURCE_OVERRIDES = Path("docs/source-overrides.json")
 OUT_OFFICIAL_DISCOVERY = Path("docs/official-discovery.json")
+OUT_NEW_WORK_REVIEW = Path("docs/new-work-review.json")
 OUT_VERITAS_MAPPING_DECISIONS = Path("docs/veritas-mapping-decisions.json")
 OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
 OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
@@ -114,7 +116,7 @@ RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 # view-level provenance label and is intentionally not part of the master CSV
 # schema, which stays owned by build_research_master.py.
 EVERYTHING_FIELDS = [
-    "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -320,6 +322,47 @@ def validate_product_relationships(
     return enriched
 
 
+def validate_primary_relationship_coverage(
+    master_items: list[dict[str, str]],
+    relationships: list[dict[str, str]],
+) -> None:
+    """Fail when a master's Veritas URL has no primary relationship row.
+
+    The schema invariant in PRODUCT_RELATIONSHIP_SCHEMA.md says every non-empty
+    master ``source_url_veritas`` must be covered by a reviewed
+    ``primary_product_for_item_part`` row. The promoted-candidate path used to
+    leave such a gap (master IDs 309-319); it was closed with 11 reviewed rows
+    on 2026-08-03 and the guard was then promoted from a warning to a hard
+    failure so the gap can never silently recur.
+    """
+    primary_masters = {
+        relation["master_uuid"].strip()
+        for relation in relationships
+        if relation["relationship_type"].strip() == "primary_product_for_item_part"
+    }
+    uncovered = sorted(
+        (
+            item["uuid"].strip()
+            for item in master_items
+            if item["source_url_veritas"].strip()
+            and item["uuid"].strip() not in primary_masters
+            # Promoted edition rows carry their primary product by
+            # construction: the promotion itself is the reviewed assertion
+            # (see EDITION_MODEL_PROPOSAL.md), so they are self-covered.
+            and not item.get("raw_row_number", "").startswith("candidate:edition-")
+        ),
+        key=int,
+    )
+    if uncovered:
+        raise ValueError(
+            "master record(s) have a Veritas source URL but no reviewed "
+            f"primary relationship in {PRODUCT_RELATIONSHIPS.name}: "
+            + ", ".join(uncovered)
+            + " — add reviewed primary_product_for_item_part rows or the "
+            "Product Relationships tab stays incomplete."
+        )
+
+
 def validate_series_compilations(
     master_items: list[dict[str, str]],
     veritas_products: list[dict[str, str]],
@@ -407,6 +450,42 @@ def validate_series_compilations(
     return enriched
 
 
+def validate_new_work_queue(
+    rows: list[dict[str, str]],
+    veritas_products: list[dict[str, str]],
+) -> None:
+    """Fail if a new-work queue row drifts from the official inventory.
+
+    The new-work review lane holds official Veritas products with no master
+    match (Satsang monthlies, Unity Church CDs, unique audio programs). Every
+    row must reference a real inventory product with the exact inventory URL,
+    so a hand-edit or a stale product ID cannot silently enter the queue.
+    """
+    veritas_by_id = {product["veritas_product_id"]: product for product in veritas_products}
+    seen: set[str] = set()
+    for line_number, row in enumerate(rows, start=2):
+        product_id = row["source_product_id"].strip()
+        url = row["source_url_veritas"].strip()
+        if not row["candidate_title"].strip():
+            raise ValueError(f"{NEW_WORK_QUEUE}:{line_number} needs a candidate_title")
+        if not row["match_status"].strip() or not row["match_notes"].strip():
+            raise ValueError(
+                f"{NEW_WORK_QUEUE}:{line_number} needs match_status and match_notes"
+            )
+        if product_id in seen:
+            raise ValueError(f"{NEW_WORK_QUEUE}:{line_number} duplicates product {product_id}")
+        seen.add(product_id)
+        product = veritas_by_id.get(product_id)
+        if not product:
+            raise ValueError(
+                f"{NEW_WORK_QUEUE}:{line_number} references an unknown Veritas product {product_id!r}"
+            )
+        if url != product["official_product_url"]:
+            raise ValueError(
+                f"{NEW_WORK_QUEUE}:{line_number} source_url_veritas differs from the inventory"
+            )
+
+
 def json_text(data: object) -> str:
     return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
@@ -433,10 +512,13 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         for record in master_records
     ]
     queue = read_csv(QUEUE)
+    new_work_queue = read_csv(NEW_WORK_QUEUE)
     veritas_products = read_csv(VERITAS_PRODUCTS)
     validate_veritas_inventory(veritas_products, master_records)
+    validate_new_work_queue(new_work_queue, veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
     product_relationships = validate_product_relationships(master_records, veritas_products)
+    validate_primary_relationship_coverage(master_records, product_relationships)
     series_compilations = validate_series_compilations(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)
@@ -585,6 +667,13 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             "current_state": "official discovery queue",
         },
         {
+            "review_sheet": "New Work Review",
+            "record_count": len(new_work_queue),
+            "purpose": "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
+            "source_file": str(NEW_WORK_QUEUE),
+            "current_state": "new-work review queue",
+        },
+        {
             "review_sheet": "Veritas Decisions",
             "record_count": len(veritas_mapping_decisions),
             "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
@@ -635,6 +724,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         OUT_MIGRATION_REVIEW: json_text(migration_review),
         OUT_SOURCE_OVERRIDES: json_text(source_overrides),
         OUT_OFFICIAL_DISCOVERY: json_text(queue),
+        OUT_NEW_WORK_REVIEW: json_text(new_work_queue),
         OUT_VERITAS_MAPPING_DECISIONS: json_text(veritas_mapping_decisions),
         OUT_VERITAS_PRODUCTS: json_text(veritas_products),
         OUT_PRODUCT_RELATIONSHIPS: json_text(product_relationships),
@@ -651,7 +741,9 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             "manual_research_leads": len(manual_leads),
             "master_exclusion_rows": len(master_exclusions),
             "migration_review_rows": len(migration_review),
-            "approved_source_overrides": len(source_overrides),
+            "approved_source_overrides": sum(
+                row["review_status"] == "approved" for row in source_overrides
+            ),
             "official_discovery_candidates": len(queue),
             "approved_veritas_mapping_decisions": len(veritas_mapping_decisions),
             "implemented_unreviewed": (
