@@ -96,3 +96,70 @@ change. `series` is not an input to compact-ID assignment or code generation.
 `item_type` for these records remains empty; it is handled separately in
 `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (decision D7 → `audio`). Series membership
 and content type are independent claims and are recorded as independent decisions.
+
+---
+
+## Decision IT-1 — classify the 87 untyped records by content class
+
+**Decided:** 2026-08-03
+**Status:** applied
+**Input changed:** `migration_review_ledger.csv` (`proposed_item_type` on 84 rows)
+**Full analysis:** `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (v3)
+
+### Governing rule (now enforced in code)
+
+> **`item_type` records what a record *is* (content class).
+> `format` records the carrier it arrives on.**
+
+Established by existing precedent: 198 DVD lecture recordings are
+`item_type='lecture'` with `format='DVD'` — they are *not* typed `video`.
+
+### Assignments
+
+| Series | Records | `item_type` |
+|---|---:|---|
+| Love & Spiritual Seeker Qualities | 3 | `lecture` |
+| Volume Series | 13 | `lecture` |
+| On The Road Talk Series | 30 | `lecture` |
+| Office Series | 16 | `lecture` |
+| Satsang Series | 13 | `lecture` |
+| Media Miscellaneous (265) | 1 | `lecture` |
+| Discussion Series | 8 | **`discussion`** |
+| Deferred (246, 249, 264) | 3 | *(none)* |
+
+`format` was deliberately left blank: the raw spreadsheet holds no format data for
+any of these records, and SKU/slug hints are partial and inconsistent.
+
+### Vocabulary change
+
+Added **`discussion`** to the controlled vocabulary. The Discussion Series is a
+two-party dialogue — the official page for *What is Meant by Spiritual (2012)*
+states *"Dr. Hawkins **and his wife Susan** explore…"* and the raw sheet names it
+*"Discussion Series with Dr. David Hawkins & Wife Susan"*. `interview` was rejected
+as misleading (Susan is a co-participant, not an interviewer) and `lecture` as
+inaccurate for a dialogue.
+
+The vocabulary is now split explicitly in `build_research_master.py`:
+
+- `CONTENT_ITEM_TYPES` — the supported content classes, including `discussion`.
+- `DEPRECATED_MEDIUM_ITEM_TYPES` — `audio` and `video`, retained only for backward
+  compatibility. They describe a medium, not a content class, and must not be used
+  for new classifications.
+
+### New guard
+
+`proposed_item_type` in the ledger was previously **unvalidated** — a typo would
+have silently produced a stray catalogue-code prefix. The builder now fails with
+the offending raw row and the list of allowed values.
+
+### Effect
+
+| Measure | Before | After |
+|---|---:|---:|
+| Records with `item_type` | 221 | **305** |
+| `lecture` / `book` / `discussion` | 198 / 23 / 0 | **274 / 23 / 8** |
+| Catalogue codes | 198 | **221** |
+| Existing codes changed | — | **0** |
+
+The 23 new codes are all `LECTURE-YYYY-NNN`, appending to existing year sequences.
+No master IDs, relationships, source URLs, or ownership values changed.
