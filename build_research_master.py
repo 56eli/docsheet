@@ -39,7 +39,7 @@ FIELDS = [
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "reference_url_1", "reference_url_2", "notes",
-    "raw_row_number",
+    "raw_row_number", "candidate_key",
 ]
 EXCLUSION_FIELDS = [
     "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
@@ -238,18 +238,57 @@ def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
 
 
 def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
-    """Derive a missing lecture month from an approved official product URL.
+    """Derive missing year/month from Veritas inventory published_date.
 
-    ``proposed_month`` in the ledger is derived from the official Veritas
-    product slug, which is the publisher's authoritative statement of when a
-    lecture was given. Some official links only arrive later through the
-    approved source-override input, so the month must be resolved again once
-    those overrides have been applied. Existing months are never overwritten.
+    Uses the Veritas inventory's ``published_date`` field (ISO format YYYY-MM-DD)
+    to backfill missing year and month values. For books, only year is filled
+    (publication months are not meaningful for books). For lectures/discussions,
+    both year and month are filled. Existing values are never overwritten.
+    
+    Also attempts legacy tempid-based month extraction for backward compatibility.
     """
     import generate_migration_ledger as ledger_tools
 
+    # Load Veritas inventory for published_date lookup
+    veritas_by_url = {}
+    if VERITAS_PRODUCTS.exists():
+        with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
+            for row in csv.DictReader(handle):
+                veritas_by_url[row["official_product_url"]] = row
+
     filled = 0
     for item in items:
+        item_type = item.get("item_type", "")
+        url = item.get("source_url_veritas", "").strip()
+        
+        # Try Veritas inventory published_date first
+        if url and url in veritas_by_url:
+            pub_date = veritas_by_url[url].get("published_date", "").strip()
+            if pub_date:
+                try:
+                    date_parts = pub_date.split("-")
+                    if len(date_parts) >= 2:
+                        year = date_parts[0]
+                        month = date_parts[1]
+                        
+                        # For books, only fill year
+                        if item_type == "book":
+                            if not item.get("year", "").strip():
+                                item["year"] = year
+                                filled += 1
+                        else:
+                            # For lectures/discussions, fill both
+                            if not item.get("year", "").strip():
+                                item["year"] = year
+                                filled += 1
+                            if not item.get("month", "").strip():
+                                item["month"] = month
+                                filled += 1
+                        continue  # Skip legacy tempid check if we filled from inventory
+                except (ValueError, IndexError):
+                    pass
+        
+        # Fallback: legacy tempid-based month extraction
         if item["month"] or not item["legacy_tempid"]:
             continue
         month = ledger_tools.proposed_month(
@@ -285,28 +324,28 @@ def infer_format_from_official_source(
     if item.get("format"):
         return ""
     url = item.get("source_url_veritas", "").strip()
-    if not url:
-        return ""
-    slug = url.rstrip("/").split("/")[-1].lower()
+    slug = url.rstrip("/").split("/")[-1].lower() if url else ""
 
     prod: dict[str, str] = {}
-    if veritas_by_url:
-        prod = veritas_by_url.get(url, {})
-    if not prod:
-        pid = slug.split("-")[0] if "-" in slug else slug
-        prod = veritas_by_id.get(pid, {})
+    if url:
+        if veritas_by_url:
+            prod = veritas_by_url.get(url, {})
+        if not prod:
+            pid = slug.split("-")[0] if "-" in slug else slug
+            prod = veritas_by_id.get(pid, {})
     ot = (prod.get("official_title", "") or item.get("title", "")).lower()
 
-    if any(k in slug for k in ("video", "muscle-testing-video")) or slug.startswith("volume-"):
-        return "DVD"
-    if "cd-set" in slug or ("satsang" in slug and "cd" in slug):
-        return "CD"
-    if any(k in slug for k in ("question-answer", "q&a")):
-        return "streaming"
-    if "audio" in slug or "– audio" in ot or " audio" in ot:
-        return "audio"
-    if "book" in slug or "(book)" in ot:
-        return "book"
+    if url:
+        if any(k in slug for k in ("video", "muscle-testing-video")) or slug.startswith("volume-") or slug.startswith("vol-"):
+            return "DVD"
+        if "cd-set" in slug or ("satsang" in slug and "cd" in slug):
+            return "CD"
+        if any(k in slug for k in ("question-answer", "question-and-answer", "q&a")):
+            return "streaming"
+        if "audio" in slug or "– audio" in ot or " audio" in ot:
+            return "audio"
+        if "book" in slug or "(book)" in ot:
+            return "book"
     # Publisher-category evidence: the product sits on the publisher's own
     # books shelf. Guarded by item_type so a lecture/audio edition that merely
     # shares the category cannot be mislabeled; the carrier of a book-class
@@ -315,6 +354,17 @@ def infer_format_from_official_source(
         item.get("item_type") == "book"
         and "Books Published by Dr. Hawkins" in prod.get("official_categories", "")
     ):
+        return "book"
+    # Category-based inference for DVD/CD products
+    cats = prod.get("official_categories", "")
+    if "On the Road - Talk Series" in cats or "Archival Office Visit Series" in cats or "Volume Series" in cats:
+        return "DVD"
+    if "Satsang" in cats:
+        return "CD"
+    if "Discussion Series" in cats:
+        return "streaming"
+    # Book item_type without URL (Hay House books without Veritas storefront)
+    if item.get("item_type") == "book" and not url:
         return "book"
     return ""
 
@@ -341,7 +391,13 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
             )
         overrides = list(reader)
 
-    items_by_raw = {row["raw_row_number"]: row for row in items}
+    items_by_raw = {}
+    for row in items:
+        if row["raw_row_number"]:
+            items_by_raw[row["raw_row_number"]] = row
+        if row.get("candidate_key"):
+            items_by_raw[row["candidate_key"]] = row
+    
     seen: set[tuple[str, str]] = set()
     for line_number, override in enumerate(overrides, start=2):
         raw_row = override["raw_row_number"].strip()
@@ -790,7 +846,8 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "reference_url_1": "", "reference_url_2": "",
             "notes": f"Promoted edition {role} of work {work_id} from candidate "
                      f"{key}: {candidate['evidence_note']}",
-            "raw_row_number": f"candidate:{key}",
+            "raw_row_number": "",
+            "candidate_key": f"candidate:{key}",
         }
         row_dict[source_column] = candidate["official_product_url"]
         minted.append((row_dict, candidate["matched_master_uuid"].strip()))
@@ -915,6 +972,7 @@ def build_master() -> MasterBuild:
             "reference_url_2": ref_2,
             "notes": notes_for(row),
             "raw_row_number": row["raw_row_number"],
+            "candidate_key": "",
         })
 
     existing_ids = {item["uuid"] for item in items}
@@ -939,7 +997,8 @@ def build_master() -> MasterBuild:
             "source_url_nightingale_conant": "", "source_url_audible": "",
             "reference_url_1": "", "reference_url_2": "",
             "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
-            "raw_row_number": f"candidate:{candidate['candidate_key']}",
+            "raw_row_number": "",
+            "candidate_key": f"candidate:{candidate['candidate_key']}",
         })
         existing_ids.add(candidate["uuid"])
     edition_rows = load_edition_promotions(existing_ids)

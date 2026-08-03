@@ -711,15 +711,6 @@
     "evidence_source": "https://www.hayhouse.com/the-highest-level-of-enlightenment-paperback (official publisher page; ISBN 1401964990)"
   },
   {
-    "raw_row_number": "341",
-    "target_field": "source_url_nightingale_conant",
-    "override_value": "https://www.nightingale.com/products/in-the-world-but-not-of-it",
-    "review_status": "approved",
-    "approval_date": "2026-08-03",
-    "review_reason": "Publisher explicitly listed on Veritas product 1661 page; matches official Nightingale-Conant product for the same work.",
-    "evidence_source": "web search + Veritas product 1661 metadata"
-  },
-  {
     "raw_row_number": "325",
     "target_field": "source_url_hay_house",
     "override_value": "https://www.hayhouse.com/power-vs-force-paperback",
@@ -898,5 +889,68 @@
     "approval_date": "2026-08-03",
     "review_reason": "Same-carrier paperback edition link for the promoted book master.",
     "evidence_source": "data/hayhouse_official_products.csv (The Wisdom of Dr David R Hawkins)"
+  },
+  {
+    "raw_row_number": "343",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-path-to-spiritual-advancement-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition; same book as UUID 303.",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "347",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-path-to-spiritual-advancement-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition (2024).",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "349",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/beyond-illusion-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition (2025).",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "351",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/karma-and-devotion-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition (2025).",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "352",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/the-final-doorway-to-enlightenment-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition (2026).",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "candidate:manual-veritas-43146",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/power-of-love-hardcover",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House hardcover edition (2020).",
+    "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "candidate:manual-veritas-55425",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/shop-by-topic/self-help/the-man-who-mapped-consciousness-paperback",
+    "review_status": "approved",
+    "approval_date": "2026-08-03",
+    "review_reason": "Hay House paperback edition (2025).",
+    "evidence_source": "web_search"
   }
 ]

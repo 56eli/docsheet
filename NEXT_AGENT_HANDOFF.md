@@ -36,7 +36,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 90 tests, offline, ~2s
+python -m unittest discover tests     # 93 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -65,13 +65,13 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 350 | 301 lecture / 38 book / 10 discussion / 1 untyped (record **264**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) |
 | Everything view | **396** | 350 master + 28 candidate_veritas + 6 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 68 / 100 | |
+| Exclusions / source overrides | 68 / 106 | |
 | Veritas inventory | 191 products | categories populated 191/191; 35 approved mapping decisions |
 | Everything relationships | 327 product relationships, 7 series compilations | |
 | Candidate pool | 26 reviewed manual candidates (20 promoted incl. 9 Satsang monthlies, 6 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 193 works / 326 members approved; work_id coverage 350/350 | `data/work_families.csv` |
 | Series taxonomy | 150 matched products → 147 approved / 3 rejected; approved mappings applied as a proven no-op | |
-| Test suite | **90 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **93 tests; coverage 92% total, every pipeline module ≥ 88%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `AUDIT_2026-08-03_FULL.md`, `VERITAS_ARTIFACT_REVIEW.md`).
@@ -95,7 +95,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    into display-only `year_month` (YYYY-MM), Series moved between Master ID and
    Title, CSV export now exports the **whole sheet** (`rowRange "all"`).
 7. **Tests + fail-safes (this turn):**
-   - `tests/test_pipeline.py` — 90 tests: end-to-end write/check/tamper runs of
+   - `tests/test_pipeline.py` — 93 tests: end-to-end write/check/tamper runs of
      all generators in sandboxed input copies, run-twice determinism for the two
      bootstrap generators, offline replay of the live fetcher (synthetic API
      rebuilt from the committed inventory + retry-ladder unit tests), CLI
@@ -113,7 +113,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    changes; run `30834666253` green (includes the full deterministic suite +
    coverage gate + Playwright).
 9. **Independent re-audit + doc-status pass (this turn, branch
-   `arena/019fc893-docsheet`):** verified every previous claim (90 tests,
+   `arena/019fc893-docsheet`):** verified every previous claim (93 tests,
    92% coverage, all `--check` modes, CI green on `main` at `6b28e66`), then
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
@@ -136,11 +136,11 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     Phases 1–4 implemented (work_id plumbing, edition-candidate layer with
     pinned UUIDs, inventory-wide batches, Work/Edition UI columns) and the
     full batch applied: master 317 → **350** (24 edition rows + 9 Satsang
-    monthlies), 193 works / 326 members (work_id 350/350), overrides →100
+    monthlies), 193 works / 326 members (work_id 350/350), overrides →106
     (incl. candidate-provenance support, 316/318 Hay House links), book-format
     backfill (12 books), relationships →327, Everything →396, New Work Review
     lane (14 → 5 rows after the Satsang rulings), D6a per-part works + C1
-    split, doc-currency/coverage/tamper tests (90 tests, 92%). Live site
+    split, doc-currency/coverage/tamper tests (93 tests, 92%). Live site
     checked: serves `main` (363 rows) until this branch merges.
 
 ## 5. Binding data rules (violating these has caused real defects)
@@ -189,7 +189,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   UUIDs in `edition_promotions.csv` — never renumber) and 9 promoted
   Satsang monthlies (344–352); **193 works / 326 family members approved,
   work_id coverage 350/350** (D6a per-part ruling + C1 split applied);
-  overrides 100 (candidate-provenance supported, incl. 316/318 Hay House);
+  overrides 106 (candidate-provenance supported, incl. 316/318 Hay House);
   relationships 327; Everything 396 (6 pending candidates). Remaining model
   work: rulings for the 5 New Work Review queue rows
   (`data/new_work_review_queue.csv`: Unity Church CDs ×2, Don't Set Sail,
