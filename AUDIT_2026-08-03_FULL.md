@@ -89,8 +89,8 @@ fetch_veritas_catalogue.py    ─── manual only ─▶ candidate CSV + diff 
 
 ### Structural weaknesses
 
-- `build_catalogue_pages.py` is 672 lines with a single ~300-line `build_catalogue()` function that inlines five near-identical record-shaping blocks (Veritas/HayHouse/Audible/queue/intl). Adding a source means copy-pasting a 23-key dict literal. This is the main maintainability debt.
-- `"original_source_rows": 374` is **hard-coded** in `build_catalogue_pages.py:616` rather than derived. If the raw CSV ever changes, `catalogue-meta.json` lies silently.
+- ~~`build_catalogue_pages.py` inlines five near-identical 23-key record-shaping dict literals.~~ **✅ Resolved in `23437a5`** — collapsed into a shared `everything_record()` helper that validates field names and enforces one row shape.
+- ~~`"original_source_rows": 374` is hard-coded.~~ **✅ Resolved in `23437a5`** — now derived from the ledger row count.
 - `docs/catalogue-meta.json` is generated and committed but **referenced by nothing** — neither `app.js` nor `index.html` loads it. It's a dead artifact (or an unimplemented feature).
 - `loadMeta()` / `metaLoaded` in `docs/app.js` are **dead code** — `loadMeta` is defined but never called; `docs/meta.json` is therefore never fetched by the UI.
 - No dependency lock for Python (`pandas>=2.0`, unbounded — I resolved 3.0.5 today), no lint/format config, no `LICENSE`, no `CONTRIBUTING`.
@@ -191,15 +191,18 @@ Escape-key handling; reduced-motion and 720px media queries.
 
 ### Findings
 
-- **F-1 (High, data governance): the default tab conflates curated data with candidates.**
-  `docs/master.json` has 344 rows: 308 curated master records and 36 official-product
-  candidates. The **only** distinguishing signals are an empty `uuid` and a free-text
-  `notes` string. There is no `record_type` column. A reviewer sorting or exporting
-  "Everything" gets a CSV where curated and unpromoted rows are visually identical.
-  *Fix:* emit an explicit `record_type` field (`master` / `candidate_veritas` /
-  `candidate_hayhouse` / `candidate_audible` / `candidate_discovery`), render it as a
-  badge, add it to the column preset, and make it the review filter for that view.
-  This is a ~20-line generator change plus a preset entry.
+- **F-1 (High, data governance) — ✅ RESOLVED 2026-08-03 in `23437a5`.**
+  *Was:* `docs/master.json` had 344 rows — 308 curated master records and 36
+  official-product candidates — distinguished **only** by an empty `uuid` and a
+  free-text `notes` string. A reviewer sorting or exporting "Everything" got a CSV
+  where curated and unpromoted rows were visually identical.
+  *Fixed by:* an explicit `record_type` field (`master` / `candidate_veritas` /
+  `candidate_hayhouse` / `candidate_audible` / `candidate_discovery`) emitted by
+  `build_catalogue_pages.py`, rendered as a frozen, distinctly-styled badge column,
+  and wired as the review filter for that view. Per-class counts are published in
+  `catalogue-meta.json` under `everything_record_types`. The Everything payload is
+  byte-identical apart from the new field; all `--check` modes and a clean-clone
+  rebuild pass, and a browser test asserts the filter isolates exactly 308 rows.
 
 - **F-2 (High, data governance): every cell in every sheet is editable.**
   `buildColumns()` sets `editor: "input"` unconditionally — including on generated,
@@ -299,7 +302,7 @@ single highest security-value change available.
 1. **Get `workflows` permission and land CI.** (Blocked on the user reconnecting/expanding the GitHub App scope.) Workflow content is trivial: `py_compile`, three `--check` runs, `node --check`, `npm ci`, `npm run test:e2e`. Everything it needs is already committed. *Without this, all guarantees in this audit are only as good as the last person who remembered to run the checks.*
 
 ### P1 — Correctness & governance visible to users
-2. **F-1: add `record_type` to the Everything view.** Highest value-per-line change in the repo — it removes a real risk of curated/candidate confusion in exports.
+2. ~~**F-1: add `record_type` to the Everything view.**~~ ✅ **Done** (`23437a5`).
 3. **F-2: make review sheets read-only by default.**
 4. **F-8: review the Veritas artifact** (`8851979247`) from a normal network before it expires.
 5. **Classify the 87 untyped master items** — six complete, well-bounded series.
@@ -311,25 +314,36 @@ single highest security-value change available.
 9. **Title normalization pass** — strip `.mp4` / `-converted` / leading sequence numbers into a `source_filename` field, preserving raw values; resolve the 2 "might not exist" placeholders and 1 whitespace defect.
 10. **Pin Python deps** (`pandas>=2,<4` or a constraints file); add `LICENSE`.
 11. **Drop or populate the 6 always-empty master columns.**
-12. **Remove dead code** (F-3) and derive `original_source_rows` instead of hard-coding it.
+12. **Remove dead code** (F-3). ~~Derive `original_source_rows`.~~ ✅ Done (`23437a5`).
 
 ### P3 — Maintainability & polish
-13. **Refactor `build_catalogue_pages.py`** — extract a shared `candidate_record()` helper to collapse the five duplicated dict literals.
+13. ~~**Refactor `build_catalogue_pages.py`**~~ ✅ **Done** (`23437a5`) — shared `everything_record()` helper.
 14. **Consolidate documentation** — one living `STATUS.md` generated from `catalogue-meta.json`; move decision records to `decisions/`; resolve the two `*_DRAFT` files.
 15. **Complete the a11y tab pattern** (F-4) and add per-chip dismiss (F-5).
 16. **Expand browser tests** to all 17 tabs, search+filter composition, column chooser, row drawer, dark mode, and console-error assertions.
 
 ---
 
-## 10. Recommended immediate next step
+## 10. Progress since this audit
 
-**Two things can move in parallel and neither is blocked:**
+| Item | Status |
+|---|---|
+| F-1 — curated/candidate conflation | ✅ Resolved (`23437a5`) |
+| `build_catalogue_pages.py` duplication | ✅ Resolved (`23437a5`) |
+| Hard-coded `original_source_rows` | ✅ Resolved (`23437a5`) |
+| CI workflow | ⏳ Owner action — see `UNBLOCK_INSTRUCTIONS.md` Task A |
+| Veritas artifact review | ⏳ Owner action — see `UNBLOCK_INSTRUCTIONS.md` Task B |
 
-- **F-1 (`record_type`)** — a contained generator + frontend change that closes the
-  most user-visible governance gap, fully verifiable locally via `--check` and the
-  clean-clone rebuild.
-- **The 87-item classification** — pure data work, well-bounded, needs your decisions
-  on item types for six series.
+## 11. Recommended next step
 
-**Blocked on you:** CI needs the GitHub App `workflows` permission; the Veritas
-artifact needs a download from a normal network.
+Unblocked and ready to pick up now:
+
+- **F-2 + SRI/CSP + dead-code removal** — a contained governance/hardening bundle,
+  fully verifiable locally.
+- **The 87-item classification** — pure data work, well-bounded, but needs your
+  decisions on item types for six series.
+
+**Blocked on the owner:** CI needs `.github/workflows/ci.yml` created via the web
+editor (the App cannot push workflow files — re-confirmed by probe); the Veritas
+artifact needs a download from a normal network. Both are documented step-by-step in
+[UNBLOCK_INSTRUCTIONS.md](UNBLOCK_INSTRUCTIONS.md).
