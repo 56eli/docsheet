@@ -11,7 +11,9 @@
 |---|---:|
 | Published official Veritas product records retrieved | 191 |
 | Normalized-title matches to the migrated research master | 110 |
-| Official products requiring review | 81 |
+| Products matched manually | 49 |
+| Products marked as unique or compilations | 28 |
+| Products excluded as non-teaching material | 4 |
 | Existing migrated master items | 308 |
 | Existing Nightingale-Conant discovery candidates | 4 |
 | Page 1 “Everything” records after adding unreviewed official products | 393 |
@@ -25,7 +27,7 @@
 
 ## Implemented but unreviewed items
 
-The 81 unmatched official Veritas products have been added to the broad Everything view with the official Veritas URL and a documentation note. They intentionally have no UUID, catalogue code, ownership value, or claimed item type until reviewed.
+The previously unmatched 81 official Veritas products have now been fully reviewed and mapped. The unique items and compilations have been added to the broad Everything view with the official Veritas URL and a documentation note. They intentionally have no UUID, catalogue code, ownership value, or claimed item type until reviewed.
 
 This approach preserves the instruction to show everything while retaining the approved human-review boundary for durable research-master identity data.
 
