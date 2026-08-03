@@ -1,7 +1,10 @@
 # Series Taxonomy Mapping — Schema and Lifecycle
 
-**Status:** Implemented 2026-08-03 as a reviewable proposal layer (not yet
-wired into the curated master).
+**Status:** Implemented 2026-08-03 and **wired into the master build**:
+`build_research_master.py:apply_series_approvals()` applies every `approved`
+mapping row to its master ID(s) after item assembly (it never touches
+`item_type`). First application was a verified no-op — every approved series
+already equalled the curated series.
 **Policy:** [CATEGORY_DOMINANCE_POLICY.md](CATEGORY_DOMINANCE_POLICY.md)
 **Generator:** `map_series_taxonomy.py` (stdlib only)
 
@@ -66,22 +69,28 @@ rows for one master ID fail the generator outright.
 
 ## Review flow
 
-1. `python map_series_taxonomy.py` — regenerate (preserves prior rulings).
+1. `python map_series_taxonomy.py` — regenerate (preserves prior rulings,
+   including hand-set dominance overrides like 50521's).
 2. Work `data/series_taxonomy_review_queue.csv` top to bottom; record each
    ruling in the mapping CSV as `approved` (with `mapped_series`) or
-   `rejected`, plus `reviewed_on` + `review_notes`.
-3. Approve or reject `proposed` rows in bulk or per row — the 2026-08-03
-   baseline shows 282 of 283 clean proposals already agreeing with the
-   curated series.
-4. **Only after approval**, wire `approved` rows into the master through the
-   ledger (`series` column) and rebuild — the deliberate follow-up step this
-   layer deliberately does not automate.
+   `rejected`, plus `reviewed_on` + `review_notes`. Queued rows keep their
+   `queue_reason` visible even after a ruling, for transparency.
+3. Approved rows apply on the next `python build_research_master.py` run —
+   the build fails if approvals reference unknown IDs, lack a series, or give
+   one master ID conflicting series.
 
-## Baseline (2026-08-03)
+## Baseline (2026-08-03, post-refresh)
 
-154 matched products: **141 clean proposals** (294 of 317 master records
-covered; 282/283 assignments equal to the current curated series) and
-**13 queued**: 1 unrecognized category (Map of Consciousness®), 1 multi-annual
-assignment, and 11 dual-edition conflicts (book *and* audio editions matched
-to one master record with competing categories — the `Books` vs
-`Media Miscellaneous` rulings, including deferred record 264's product 1661).
+150 matched products: **147 approved** (144 bulk approvals at 286/286
+uuid-level agreement with the curated series, plus 3 individually ruled) and
+**3 rejected** wrong-edition signals (book/audio products title-matched to the
+Volume I DVD record and the 2006 discussion title-matched to the 2006 lecture
+record). The queue's 6 rows are all ruled — 2 dual-signal conflicts resolved in
+favour of each record's own primary product, 1 multi-annual assignment resolved
+to the 2007 series by title evidence and sibling-product categorization.
+
+The first 2026-08-03 inventory refresh (pre-mapping) dropped four stale
+primary-source matches from scope (they are now `unreviewed_official_product`
+candidates and no longer propose series), and relinked product 1661 from
+record 300 to record 264 — matching the deferred record-264 decision
+territory without touching sources.

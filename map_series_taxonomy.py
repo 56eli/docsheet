@@ -238,6 +238,12 @@ def build_rows() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
             row["review_status"] = kept["review_status"]
             row["reviewed_on"] = kept["reviewed_on"]
             row["review_notes"] = kept["review_notes"]
+            # Reviewers may override the computed dominant/series (e.g. a
+            # manual dominance resolution for a multi-annual assignment);
+            # invariants below keep such overrides inside the vocabulary.
+            row["dominant_category"] = kept["dominant_category"]
+            row["dominance_rule"] = kept["dominance_rule"]
+            row["mapped_series"] = kept["mapped_series"]
         rows.append(row)
 
     # --- validation invariants -------------------------------------------
@@ -260,6 +266,12 @@ def build_rows() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
             raise ValueError(f"{MAPPING}: product {pid} dominant category is not among its official categories")
         if status == "approved" and (not row["dominant_category"] or not row["mapped_series"]):
             raise ValueError(f"{MAPPING}: product {pid} cannot be approved without a mapped series")
+        if row["dominant_category"] and row["dominant_category"] not in split_categories(row["official_categories"]):
+            raise ValueError(f"{MAPPING}: product {pid} dominant category is not among its official categories")
+        if row["dominant_category"] and row["mapped_series"] != mapped_series_for(row["dominant_category"]):
+            raise ValueError(
+                f"{MAPPING}: product {pid} mapped series does not follow the vocabulary for its dominant category"
+            )
 
     # --- fan-out consistency: one master ID, one proposed series ----------
     uuid_series: dict[str, set[str]] = {}

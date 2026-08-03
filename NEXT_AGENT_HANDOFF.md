@@ -217,14 +217,21 @@ persists all publisher categories (fetcher fixed to use `product_cat`), and
 
 Next steps for this layer, in order:
 
-1. **Owner rulings.** Rule on the 13-row review queue (dual-edition series —
-   Books vs Media Miscellaneous incl. record 264's product 1661; the
-   multi-annual 50521; the Map of Consciousness® category) and bulk-approve or
-   adjust the 141 clean proposals.
-2. **Wire approvals to the ledger.** Apply `approved` rows to the ledger
-   `series` column and rebuild (`python build_research_master.py`,
-   `python build_catalogue_pages.py`, then all checks). Categories may set
-   `series` but must not change `item_type`.
+1. **Owner rulings** — ✅ done 2026-08-03 (delegated): the queue was resolved
+   (dual-edition signals rejected in favour of each record's own primary
+   product; 50521's multi-annual dominance resolved to the 2007 series) and
+   the clean proposals bulk-approved at 286/286 uuid-level agreement.
+2. **Wire approvals** — ✅ done 2026-08-03:
+   `build_research_master.py:apply_series_approvals()` now applies approved
+   mappings after item assembly; first application provably changed **0**
+   series values (no-op verification). Future series changes flow through
+   approved rows in `data/series_category_mapping.csv` only.
+
+Inventory refresh (same session): see
+[VERITAS_ARTIFACT_REVIEW.md](VERITAS_ARTIFACT_REVIEW.md) Addendum 2 — four
+stale primary matches demoted to candidates (Everything 363 rows), product
+1661 relinked to record 264 (mapping row only; the deferred source decision
+still stands), upstream rename of 50810 handled.
 
 After that, continue candidate review: rechecked audio candidates, remaining
 Unity Church talks, and deferred record 264. Use official product pages as source

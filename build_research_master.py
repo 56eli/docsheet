@@ -26,6 +26,7 @@ SOURCE_OVERRIDES = Path("data") / "research_master_source_overrides.csv"
 MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
 PROMOTIONS = Path("data") / "manual_candidate_promotions.csv"
+SERIES_MAPPING = Path("data") / "series_category_mapping.csv"
 
 FIELDS = [
     "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
@@ -53,6 +54,10 @@ MANUAL_CANDIDATE_REQUIRED_COLUMNS = {
     "proposed_format", "proposed_format_detail", "proposed_owned", "source_name",
     "source_product_id", "official_product_url", "official_product_title", "evidence_note",
     "review_status", "reviewed_on", "promotion_status", "promotion_notes",
+}
+SERIES_MAPPING_REQUIRED_COLUMNS = {
+    "veritas_product_id", "matched_master_uuids", "official_categories",
+    "dominant_category", "mapped_series", "review_status",
 }
 # Controlled vocabulary for ``item_type``.
 #
@@ -435,6 +440,63 @@ def load_promotions() -> list[dict[str, str]]:
     return promoted
 
 
+def apply_series_approvals(items: list[dict[str, str]]) -> int:
+    """Apply approved taxonomy-to-series mappings after item assembly.
+
+    ``data/series_category_mapping.csv`` is the committed, reproducible
+    mapping input required by ``CATEGORY_DOMINANCE_POLICY.md``. Only rows a
+    reviewer marked ``approved`` may set ``series``, and they never touch
+    ``item_type`` (the policy's content-class boundary). Rulings are edited in
+    the mapping CSV; generated master files are never hand-edited.
+    """
+    if not SERIES_MAPPING.exists():
+        return 0
+    by_uuid = {item["uuid"]: item for item in items}
+    approved: dict[str, str] = {}
+    with SERIES_MAPPING.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing_columns = SERIES_MAPPING_REQUIRED_COLUMNS - columns
+        if missing_columns:
+            raise ValueError(
+                f"{SERIES_MAPPING} is missing required columns: "
+                + ", ".join(sorted(missing_columns))
+            )
+        for line_number, row in enumerate(reader, start=2):
+            if row["review_status"].strip() != "approved":
+                continue
+            series = row["mapped_series"].strip()
+            if not series:
+                raise ValueError(
+                    f"{SERIES_MAPPING}:{line_number} approved rows require a mapped_series"
+                )
+            uuids = [part.strip() for part in row["matched_master_uuids"].split(";") if part.strip()]
+            for uuid in uuids:
+                if uuid not in by_uuid:
+                    raise ValueError(
+                        f"{SERIES_MAPPING}:{line_number} references an unknown master ID: {uuid!r}"
+                    )
+                prior = approved.get(uuid)
+                if prior is not None and prior != series:
+                    raise ValueError(
+                        f"{SERIES_MAPPING}:{line_number} gives master ID {uuid} "
+                        f"conflicting approved series ({prior!r} vs {series!r})"
+                    )
+                approved[uuid] = series
+    changed = 0
+    for uuid, series in approved.items():
+        item = by_uuid[uuid]
+        if item["series"] != series:
+            item["series"] = series
+            changed += 1
+    if approved:
+        print(
+            f"[series-taxonomy] {len(approved)} approved mappings cover "
+            f"{len(approved)} master IDs; {changed} series values changed"
+        )
+    return changed
+
+
 def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
     with LEDGER.open(encoding="utf-8", newline="") as handle:
@@ -537,6 +599,7 @@ def build_master() -> MasterBuild:
             # Note for the build log (visible on manual run)
             print(f"[format] Inferred {inferred} formats from official Veritas inventory")
 
+    series_approvals_applied = apply_series_approvals(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}

@@ -16,7 +16,7 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 | Draft-only CSV records without a matching ledger `item` | 0 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 359 | 359 |
+| `docs/master.json` / ledger-projected Everything records | 363 | 363 |
 
 All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.
 
@@ -46,9 +46,9 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 359 | 359 |
+| `master_items` | 363 | 363 |
 | `migrated_items` | 317 | 317 |
-| `implemented_unreviewed` | 38 | 38 |
+| `implemented_unreviewed` | 42 | 42 |
 
 ## Current verification result
 

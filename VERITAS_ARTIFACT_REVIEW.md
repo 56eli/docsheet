@@ -118,3 +118,34 @@ products) plus `/wp-json/wp/v2/product_cat` (35 terms) confirms:
   would have rendered as `unresolved-category-<id>`; none did), enabling the
   Category Dominance Policy mapper (`map_series_taxonomy.py`,
   [SERIES_TAXONOMY_MAPPING.md](SERIES_TAXONOMY_MAPPING.md)).
+
+## Addendum 2 — reviewed inventory refresh 2026-08-03 (second pass)
+
+A full deterministic regeneration (live API → `build_inventory_rows` → 35
+approved overlay decisions reapplied) was committed to close internal drift the
+taxonomy work exposed. Change classes, all verified:
+
+1. **Stale primary-source matches corrected (4 products).** Products 1742,
+   1728, 1695, and 1560 still claimed `matched_by_primary_source` against
+   records whose source fields had since been corrected (the C2/C3 fixes). A
+   fresh deterministic match demotes all four to
+   `unreviewed_official_product` — they now surface as the four new
+   `candidate_veritas` rows in Everything (359 → 363 rows).
+2. **Re-link with review significance.** Product 1661 (`in-the-world-but-not
+   -of-it-cd`) no longer maps to book record 300; deterministic normalized
+   matching now attaches it to **record 264** ("In the World But Not of It –
+   Audio") — the deferred record-264 territory from the handoff. This is a
+   *mapping* row, not a source override; the deferred physical-edition
+   confirmation still stands before any source association is approved.
+3. **Upstream rename (1 product).** Product 50810 is now "Vol II:
+   Consciousness and Addiction" (was "Volume II: …") — a genuine upstream
+   change; the stored titles in `data/product_relationships.csv` (2 cells)
+   were aligned to keep validation green.
+4. **Overlay title hygiene (3 decision rows).** `matched_master_titles` in
+   `data/veritas_mapping_decisions.csv` for products 50411, 50432, 1542 still
+   held pre-hygiene titles (`.mp4`-suffix); aligned to current cleaned master
+   titles (the overlay's own invariant requires exact equality).
+5. **Derived title columns** (≈40 rows) refresh to the cleaned master titles
+   (`.mp4`/numeric-prefix removal) — deterministic mirror, no semantic change.
+
+No upstream additions/removals: the 191-product ID set is unchanged.

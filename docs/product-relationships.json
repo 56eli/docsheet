@@ -4066,7 +4066,7 @@
     "source_name": "veritas",
     "source_product_id": "50810",
     "official_product_url": "https://veritaspub.com/product/vol-ii-consciousness-and-addiction/",
-    "official_product_title": "Volume II: Consciousness and Addiction",
+    "official_product_title": "Vol II: Consciousness and Addiction",
     "relationship_type": "primary_product_for_item_part",
     "review_status": "reviewed",
     "reviewed_on": "2026-08-03",
@@ -4086,7 +4086,7 @@
     "source_name": "veritas",
     "source_product_id": "50810",
     "official_product_url": "https://veritaspub.com/product/vol-ii-consciousness-and-addiction/",
-    "official_product_title": "Volume II: Consciousness and Addiction",
+    "official_product_title": "Vol II: Consciousness and Addiction",
     "relationship_type": "primary_product_for_item_part",
     "review_status": "reviewed",
     "reviewed_on": "2026-08-03",
@@ -4837,7 +4837,7 @@
     "master_item_type": "lecture",
     "master_year": "",
     "source_product_published_date": "2007-03-16",
-    "source_product_mapping_status": "matched_by_primary_source"
+    "source_product_mapping_status": "unreviewed_official_product"
   },
   {
     "relationship_id": "rel-veritas-50438-248",
@@ -5557,7 +5557,7 @@
     "master_item_type": "book",
     "master_year": "",
     "source_product_published_date": "2011-11-03",
-    "source_product_mapping_status": "matched_by_primary_source"
+    "source_product_mapping_status": "unreviewed_official_product"
   },
   {
     "relationship_id": "rel-veritas-50370-290",
@@ -5597,7 +5597,7 @@
     "master_item_type": "book",
     "master_year": "",
     "source_product_published_date": "2010-07-12",
-    "source_product_mapping_status": "matched_by_primary_source"
+    "source_product_mapping_status": "unreviewed_official_product"
   },
   {
     "relationship_id": "rel-veritas-1302-292",
@@ -5737,7 +5737,7 @@
     "master_item_type": "book",
     "master_year": "",
     "source_product_published_date": "2009-01-28",
-    "source_product_mapping_status": "matched_by_primary_source"
+    "source_product_mapping_status": "matched_by_normalized_title"
   },
   {
     "relationship_id": "rel-veritas-1742-301",
@@ -5757,7 +5757,7 @@
     "master_item_type": "book",
     "master_year": "",
     "source_product_published_date": "2012-06-15",
-    "source_product_mapping_status": "matched_by_primary_source"
+    "source_product_mapping_status": "unreviewed_official_product"
   },
   {
     "relationship_id": "rel-veritas-54472-303",
