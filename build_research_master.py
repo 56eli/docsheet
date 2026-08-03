@@ -27,7 +27,7 @@ MANUAL_CANDIDATES = Path("data") / "manual_master_candidates.csv"
 VERITAS_PRODUCTS = Path("data") / "veritas_official_products.csv"
 
 FIELDS = [
-    "uuid", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
+    "uuid", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -38,7 +38,9 @@ EXCLUSION_FIELDS = [
     "raw_row_number", "disposition", "review_reason", "raw_tempid", "raw_title",
     "raw_we_have", "raw_original_source", "raw_product_link",
 ]
-SOURCE_OVERRIDE_FIELDS = {"source_url_veritas", "source_url_audible"}
+SOURCE_OVERRIDE_FIELDS = {
+    "source_url_veritas", "source_url_hay_house", "source_url_audible",
+}
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
 }
@@ -138,11 +140,30 @@ def existing_uuids() -> dict[str, str]:
 
 
 def title_for(row: dict[str, str]) -> str:
-    # The lecture-review batch proposed this limited canonicalization only.
+    """Produce the public display title while retaining the raw legacy title.
+
+    Carrier and part designators (for example ``DVD01``, ``CD02``, and
+    ``PART2``) intentionally remain in the display title by owner direction.
+    Only filesystem/transcoding noise and a leading numeric file sequence are
+    removed. The raw source string is always emitted separately as
+    ``legacy_title``.
+    """
+    import re
+
+    title = row["proposed_title"].strip()
     if row["raw_tempid"].startswith("LS"):
-        import re
-        return re.sub(r"\s*\([^)]*\)\s*DVD\d+\s*$", "", row["proposed_title"]).strip()
-    return row["proposed_title"]
+        return re.sub(r"\s*\([^)]*\)\s*DVD\d+\s*$", "", title).strip()
+
+    title = re.sub(r"\.mp4\s*$", "", title, flags=re.IGNORECASE)
+    title = re.sub(r"\s*-\s*converted\s*$", "", title, flags=re.IGNORECASE)
+    title = re.sub(r"^\d{1,3}[.\s]+(?=\S)", "", title)
+    title = re.sub(r"\s+", " ", title).strip()
+
+    # Official product 50432 and its two-disc SKU establish that raw row 224
+    # is Volume I, disc 2; the raw "Volume II" text is a transcription error.
+    if row["raw_row_number"] == "224":
+        title = title.replace("Volume II-", "Volume I-", 1)
+    return title
 
 
 def notes_for(row: dict[str, str]) -> str:
@@ -151,6 +172,10 @@ def notes_for(row: dict[str, str]) -> str:
         notes.append(f"Raw source note: {row['raw_original_source']}")
     if row["raw_unnamed_5"]:
         notes.append(row["raw_unnamed_5"])
+    if row["raw_row_number"] == "224":
+        notes.append(
+            "Display title corrects raw 'Volume II' to Volume I: official product 50432 is a two-disc Volume I set."
+        )
     return " | ".join(notes)
 
 
@@ -380,6 +405,7 @@ def build_master() -> MasterBuild:
             "catalog_code": code,
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
+            "legacy_title": row["raw_title"],
             "title_source": row["raw_title"] if canonical_title != row["raw_title"] else "",
             "item_type": item_type,
             "series": row["proposed_series"],

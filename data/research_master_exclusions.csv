@@ -24,6 +24,8 @@ raw_row_number,disposition,review_reason,raw_tempid,raw_title,raw_we_have,raw_or
 257,blank_separator,Empty visual separator row.,,,,,
 258,series_context,Collection/category heading.,,Office series https://veritaspub.com/archival-office-visit-series/,,,
 259,blank_separator,Empty visual separator row.,,,,,
+273,research_note,Owner approved exclusion on 2026-08-03: literal Office Series B-02/B-05 non-item placeholder; no corresponding official product exists.,OFF14,where is B-02? might not exist.,❌,veritas,
+276,research_note,Owner approved exclusion on 2026-08-03: literal Office Series B-02/B-05 non-item placeholder; no corresponding official product exists.,OFF17,where is B-05? might not exist.,❌,veritas,
 278,blank_separator,Empty visual separator row.,,,,,
 279,series_context,Collection/category heading.,,Missing satsang audios https://veritaspub.com/satsang-series-and-question-answer-sessions/,,,
 293,blank_separator,Empty visual separator row.,,,,,

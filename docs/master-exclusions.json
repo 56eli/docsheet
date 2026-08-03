@@ -250,6 +250,26 @@
     "raw_product_link": ""
   },
   {
+    "raw_row_number": "273",
+    "disposition": "research_note",
+    "review_reason": "Owner approved exclusion on 2026-08-03: literal Office Series B-02/B-05 non-item placeholder; no corresponding official product exists.",
+    "raw_tempid": "OFF14",
+    "raw_title": "where is B-02? might not exist.",
+    "raw_we_have": "❌",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "276",
+    "disposition": "research_note",
+    "review_reason": "Owner approved exclusion on 2026-08-03: literal Office Series B-02/B-05 non-item placeholder; no corresponding official product exists.",
+    "raw_tempid": "OFF17",
+    "raw_title": "where is B-05? might not exist.",
+    "raw_we_have": "❌",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
     "raw_row_number": "278",
     "disposition": "blank_separator",
     "review_reason": "Empty visual separator row.",
