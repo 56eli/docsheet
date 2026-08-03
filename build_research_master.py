@@ -84,6 +84,7 @@ EDITION_PROMOTION_REQUIRED_COLUMNS = {
 EDITION_ROLES = {"book", "audio", "video", "streaming"}
 EDITION_FORMATS = {"DVD", "CD", "audio", "book", "streaming"}
 EDITION_SOURCES = {"veritas", "audible", "hayhouse"}
+EDITION_CANDIDATE_STATUSES = {"proposed", "reviewed_candidate"}
 EDITION_SOURCE_URL_COLUMNS = {
     "veritas": "source_url_veritas",
     "audible": "source_url_audible",
@@ -655,18 +656,28 @@ def validate_edition_candidates(items: list[dict[str, str]]) -> int:
             raise ValueError(
                 f"{EDITION_CANDIDATES}:{line_number} proposed_owned must be blank, true, or false"
             )
-        if candidate["review_status"].strip() != "reviewed_candidate":
+        if candidate["review_status"].strip() not in EDITION_CANDIDATE_STATUSES:
             raise ValueError(
-                f"{EDITION_CANDIDATES}:{line_number} must have review_status 'reviewed_candidate'"
+                f"{EDITION_CANDIDATES}:{line_number} review_status must be "
+                f"{', '.join(sorted(EDITION_CANDIDATE_STATUSES))}"
             )
-        if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
-            raise ValueError(f"{EDITION_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
-        expected_promotion_status = "promoted" if key in promoted_keys else "not_promoted"
-        if candidate["promotion_status"].strip() != expected_promotion_status:
-            raise ValueError(
-                f"{EDITION_CANDIDATES}:{line_number} must be {expected_promotion_status!r} "
-                "to match the explicit edition promotion registry"
-            )
+        if candidate["review_status"].strip() == "proposed":
+            # Generated draft rows: shape-validated, never promotable until a
+            # reviewer flips them to reviewed_candidate with a date.
+            if candidate["reviewed_on"].strip() or candidate["promotion_status"].strip() != "not_promoted":
+                raise ValueError(
+                    f"{EDITION_CANDIDATES}:{line_number} proposed rows must have an empty "
+                    "reviewed_on and promotion_status 'not_promoted'"
+                )
+        else:
+            if not ISO_DATE.fullmatch(candidate["reviewed_on"].strip()):
+                raise ValueError(f"{EDITION_CANDIDATES}:{line_number} needs an ISO reviewed_on date")
+            expected_promotion_status = "promoted" if key in promoted_keys else "not_promoted"
+            if candidate["promotion_status"].strip() != expected_promotion_status:
+                raise ValueError(
+                    f"{EDITION_CANDIDATES}:{line_number} must be {expected_promotion_status!r} "
+                    "to match the explicit edition promotion registry"
+                )
         if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
             raise ValueError(f"{EDITION_CANDIDATES}:{line_number} needs evidence and promotion notes")
         if source_name not in EDITION_SOURCES or not product_id:
@@ -726,6 +737,11 @@ def load_edition_promotions(existing_ids: set[str]) -> list[dict[str, str]]:
         if not candidate or key in seen_keys:
             raise ValueError(
                 f"{EDITION_PROMOTIONS}:{line} needs a known, unique candidate_key"
+            )
+        if candidate["review_status"].strip() != "reviewed_candidate":
+            raise ValueError(
+                f"{EDITION_PROMOTIONS}:{line} candidate {key} is still {candidate['review_status']!r}; "
+                "review it (flip to reviewed_candidate) before promoting"
             )
         approval = row["approval_status"].strip()
         if approval == "rejected":

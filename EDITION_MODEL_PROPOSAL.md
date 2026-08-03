@@ -21,11 +21,19 @@ the `work_id` plumbing first.
   compact ID above max, `work_id`, per-source URL). Product 50411 (Power vs
   Force book) is a source-override candidate for master 286, not an edition
   row.
+- **Phase 3 (2026-08-03, drafted, `proposed` status):** inventory-wide
+  batch — 12 more work families (34 members, per-part works) and 12 more
+  edition candidates (Audible audiobook editions of lecture parts + the
+  Hay House *Live Life As A Prayer* audio). Candidate `review_status` gained
+  a `proposed` draft state (shape-validated, not promotable until reviewed).
+  Deliberate exclusions documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md`
+  §11i (Spanish editions, platform compilations, Highlights, merchandise,
+  unmatched new-work products, and 18 same-carrier Hay House links that are
+  source-override candidates rather than edition rows).
 
 No families/editions approved yet — master stays at 317 rows with empty
 `work_id` until the owner approves rows in `data/work_families.csv` and
-`data/edition_promotions.csv`. Phases 3–4 (inventory-wide batches, UI/docs
-labels) pending.
+`data/edition_promotions.csv`. Phase 4 (UI/docs labels) pending.
 **Related:** `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (content class vs carrier),
 `PRODUCT_RELATIONSHIP_SCHEMA.md`, `VERITAS_PRODUCT_MAPPING.md`,
 `NEXT_AGENT_HANDOFF.md` §5 (binding data rules).

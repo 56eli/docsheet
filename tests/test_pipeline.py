@@ -1149,7 +1149,7 @@ class EditionCandidateTests(unittest.TestCase):
             cases = [
                 (base.replace(",book,,audio,", ",book,,vinyl,"), "carrier format"),
                 (base.replace("2026-08-03,not_promoted", "2026-08-03,maybe"), "must be 'not_promoted'"),
-                (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status 'reviewed_candidate'"),
+                (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status must be"),
                 (base.replace("reviewed_candidate,2026-08-03", "reviewed_candidate,"), "ISO reviewed_on"),
             ]
             for row, expected in cases:

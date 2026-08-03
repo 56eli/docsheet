@@ -353,3 +353,30 @@ citing the candidate). Nothing promoted yet → master still 317 rows.
 guard, tamper detection. Suite: **82 tests**, coverage **92%**, module ≥ 90%.
 50411 (Power vs Force book product) is NOT an edition row — it is a source
 override candidate for master 286 (the book row already exists).
+
+### 11i. Edition model — Phase 3 batch drafted (owner: "inventory-wide coverage")
+
+Generated `proposed`-status drafts from the committed inventories (nothing
+applied; all values taken verbatim from inventory/master files):
+
+- **12 work families** (34 member rows): w-highest-level-of-enlightenment,
+  w-nature-of-divinity, w-advaita, w-realizing-root, w-intention,
+  w-alignment, w-identification-illusion, w-emotions-sensations,
+  w-god-vs-science, w-tlc-perception (VERIFY flag), w-compassion,
+  w-live-prayer — per-part works; series-level regrouping is an owner
+  decision.
+- **12 edition candidates** (proposed): Audible audiobook editions for
+  masters 301, 19, 22, 13, 79, 76, 64, 61, 127, 106 (VERIFY), 267, plus the
+  Hay House audio edition of w-live-prayer (121). Candidates total 24
+  (12 Phase-2 reviewed + 12 Phase-3 proposed).
+- **Deliberately excluded (documented here):** Spanish Audible editions
+  (El nivel mas alto / Disolver el ego), platform compilations (Ultimate
+  Library, Discovery, Naked, OM), Audible "Healing" + "Office Visit Set III"
+  (possible_related_match, ambiguous), Veritas Highlights (7, series-level
+  compilations already in series_compilation_relationships), merchandise
+  (Map wall chart 1560, Letting Go guided journal + card deck), Veritas
+  new-work products without master match (1792, 1814, 1546, 1548, 1544,
+  9 satsang monthlies) → new-work review lane, and the 18 Hay House
+  paperback/eBook rows for existing book masters → same-carrier, so they are
+  **source-override candidates** (incl. 50411 PvF book for 286) rather than
+  edition rows — a separate reviewed batch for the owner.
