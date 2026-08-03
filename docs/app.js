@@ -21,8 +21,15 @@
   const footerNote = $("footer-note");
   const spreadsheet = $("spreadsheet");
 
+  const VIEWS = {
+    master: { file: "master.json", label: "Research Master", exportName: "hawkins-research-master.csv" },
+    publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
+    original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
+  };
+
   let table = null;
   let allData = [];
+  let activeView = "master";
   let metaLoaded = false;
 
   /* ------------------------------------------------------------------ *
@@ -73,23 +80,17 @@
     }
   }
 
-  async function loadData() {
-    const res = await fetch("data.json", { cache: "no-store" });
+  async function loadData(viewName) {
+    const view = VIEWS[viewName];
+    const res = await fetch(view.file, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     allData = await res.json();
 
-    // Fallback timestamp: the file's Last-Modified header, when meta.json
-    // could not be read (e.g. served from a static host without meta.json).
-    if (!metaLoaded) {
-      const lastModified = res.headers.get("Last-Modified");
-      if (lastModified) {
-        footerUpdated.innerHTML =
-          `Last Updated: <span class="updated">${formatTimestamp(lastModified)}</span>`;
-      } else {
-        footerUpdated.textContent = "Last Updated: Unknown";
-      }
-    }
-    footerStats.textContent = `Total Rows: ${allData.length}`;
+    const lastModified = res.headers.get("Last-Modified");
+    footerUpdated.innerHTML = lastModified
+      ? `Last Updated: <span class="updated">${formatTimestamp(lastModified)}</span>`
+      : "Last Updated: Unknown";
+    footerStats.textContent = `${view.label}: ${allData.length} rows`;
     return allData;
   }
 
@@ -136,7 +137,8 @@
    *  Tabulator init
    * ------------------------------------------------------------------ */
   function initTable(data) {
-    table = new Tabulator($("spreadsheet"), {
+    spreadsheet.innerHTML = "";
+    table = new Tabulator(spreadsheet, {
       data,
       columns: buildColumns(data),
       layout: "fitColumns",
@@ -217,7 +219,7 @@
    * ------------------------------------------------------------------ */
   function exportCsv() {
     if (!table) return;
-    table.download("csv", "hawkins-archive.csv", { delimiter: ",", bom: true });
+    table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true });
   }
 
   /* ------------------------------------------------------------------ *
@@ -252,6 +254,39 @@
   /* ------------------------------------------------------------------ *
    *  Boot
    * ------------------------------------------------------------------ */
+  async function activateView(viewName) {
+    activeView = viewName;
+    const view = VIEWS[viewName];
+    searchInput.value = "";
+    clearSearchBtn.hidden = true;
+    spreadsheet.setAttribute("aria-busy", "true");
+    if (table) {
+      table.destroy();
+      table = null;
+    }
+    spreadsheet.innerHTML = `<div class="table-loading">Loading ${view.label.toLowerCase()}…</div>`;
+    document.querySelectorAll(".dataset-tab").forEach((tab) => {
+      const selected = tab.dataset.view === viewName;
+      tab.classList.toggle("active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+    });
+
+    try {
+      const data = await loadData(viewName);
+      initTable(data);
+      console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
+    } catch (err) {
+      console.error(`[docsheet] Failed to load ${view.file}:`, err);
+      spreadsheet.innerHTML =
+        `<div class="load-error">Could not load ${view.file} — make sure the site is served over HTTP ` +
+        '(e.g. GitHub Pages or `python -m http.server`), not opened directly from disk.</div>';
+      spreadsheet.setAttribute("aria-busy", "false");
+      footerStats.textContent = "Total Rows: —";
+      searchStatus.textContent = "Showing: —";
+      footerUpdated.textContent = "Last Updated: —";
+    }
+  }
+
   async function boot() {
     initDarkMode();
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
@@ -264,28 +299,10 @@
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); }
     });
-
-    try {
-      await loadMeta();          // fire and await footer info (fast, optional)
-    } catch (err) {
-      footerStats.textContent = "Total Rows: —";
-      footerUpdated.textContent = "Last Updated: —";
-    }
-
-    try {
-      const data = await loadData();
-      initTable(data);
-      console.info(`[docsheet] Loaded ${data.length} rows`);
-    } catch (err) {
-      console.error("[docsheet] Failed to load data.json:", err);
-      spreadsheet.innerHTML =
-        '<div class="load-error">Could not load data.json — make sure the site is served over HTTP ' +
-        '(e.g. GitHub Pages or `python -m http.server`), not opened directly from disk.</div>';
-      spreadsheet.setAttribute("aria-busy", "false");
-      footerStats.textContent = "Total Rows: —";
-      searchStatus.textContent = "Showing: —";
-      footerUpdated.textContent = "Last Updated: —";
-    }
+    document.querySelectorAll(".dataset-tab").forEach((tab) => {
+      tab.addEventListener("click", () => activateView(tab.dataset.view));
+    });
+    await activateView(activeView);
   }
 
   if (document.readyState === "loading") {

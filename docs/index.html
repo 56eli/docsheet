@@ -69,10 +69,16 @@
     </div>
   </header>
 
+  <nav class="dataset-tabs" aria-label="Catalogue views" role="tablist">
+    <button class="dataset-tab active" id="tab-master" type="button" role="tab" aria-selected="true" aria-controls="spreadsheet" data-view="master">Research Master</button>
+    <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Approved Publishers</button>
+    <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
+  </nav>
+
   <!-- ===== Spreadsheet ===== -->
   <main id="table-container" aria-label="Hawkins Archive spreadsheet">
     <div id="spreadsheet" aria-live="polite" aria-busy="true">
-      <div class="table-loading">Loading spreadsheet…</div>
+      <div class="table-loading">Loading research master…</div>
     </div>
   </main>
 
