@@ -1,1 +1,10 @@
 work_id,member_master_uuid,canonical_work_title,evidence_note,review_status,reviewed_on
+w-truth-vs-falsehood,289,Truth vs Falsehood,Book edition: Veritas 50398 primary; audiobook edition: Audible URL on row; video/audio set edition: Veritas 1728 related_material.,proposed,
+w-power-vs-force,286,Power vs Force,Book edition: Hay House paperback + Audible audiobook URL on row; video edition (Volume I) master 202 proposed in same family - REQUIRES RULING whether lecture series is same work as the book.,proposed,
+w-power-vs-force,202,Power vs Force,Volume I-Power vs Force (Part 1) lecture row; Veritas book 50411 + audiobook 1542 are related_material on this row - REQUIRES RULING (see 286).,proposed,
+w-eye-of-the-i,287,The Eye of the I,Book edition: Veritas primary; audiobook edition: Audible URL on row.,proposed,
+w-letting-go,290,Letting Go,Book edition: Veritas primary; audiobook edition: Audible URL on row.,proposed,
+w-healing-and-recovery,291,Healing and Recovery,Book edition: Veritas 50378 primary; audio edition: Veritas 1695 related_material; audiobook: Audible URL on row.,proposed,
+w-transcending-the-levels,294,Transcending the Levels of Consciousness,Book edition: Veritas primary; audiobook edition: Audible URL on row.,proposed,
+w-in-the-world-but-not-of-it,300,"In the World, But Not of It",Book edition: Veritas 53062 primary; audio edition: Veritas 1661 related_material; audiobook: Audible URL on row.,proposed,
+w-highest-level-of-enlightenment,301,The Highest Level of Enlightenment,Book edition: Hay House paperback (approved override); audio edition: Veritas 1742 related_material (audio-only at Veritas).,proposed,
