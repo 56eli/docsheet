@@ -27,4 +27,4 @@ Official products that remain outside the master are still retained in `data/ver
 
 ## Validation
 
-`build_catalogue_pages.py` validates that every relationship’s master UUID/raw row, Veritas product ID, official URL, title, status, and evidence are internally consistent before publishing `docs/product-relationships.json`.
+`build_catalogue_pages.py` validates that every relationship’s compact master ID/raw row, Veritas product ID, official URL, title, status, and evidence are internally consistent before publishing `docs/product-relationships.json`.

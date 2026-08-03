@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "019fc4e7-d1e4-7a09-89ed-11981eea5a6f",
+    "uuid": "1",
     "catalog_code": "LECTURE-2002-001",
     "legacy_tempid": "LS200201_1",
     "title": "Causality: The Ego's Foundation",
@@ -25,7 +25,7 @@
     "raw_row_number": "7"
   },
   {
-    "uuid": "019fc4e7-d1e5-7d1d-9d3b-4372b5ef9549",
+    "uuid": "2",
     "catalog_code": "LECTURE-2002-002",
     "legacy_tempid": "LS200201_2",
     "title": "Causality: The Ego's Foundation",
@@ -50,7 +50,7 @@
     "raw_row_number": "8"
   },
   {
-    "uuid": "019fc4e7-d1e5-7893-b934-3457c2135e64",
+    "uuid": "3",
     "catalog_code": "LECTURE-2002-003",
     "legacy_tempid": "LS200201_3",
     "title": "Causality: The Ego's Foundation",
@@ -75,7 +75,7 @@
     "raw_row_number": "9"
   },
   {
-    "uuid": "019fc4e7-d1e5-7bbd-bbff-a879a7026b61",
+    "uuid": "4",
     "catalog_code": "LECTURE-2002-004",
     "legacy_tempid": "LS200202_1",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -100,7 +100,7 @@
     "raw_row_number": "10"
   },
   {
-    "uuid": "019fc4e7-d1e5-7d8a-b499-6faa3c9faef3",
+    "uuid": "5",
     "catalog_code": "LECTURE-2002-005",
     "legacy_tempid": "LS200202_2",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -125,7 +125,7 @@
     "raw_row_number": "11"
   },
   {
-    "uuid": "019fc4e7-d1e5-72d1-8a5b-1fdd5a2fb06b",
+    "uuid": "6",
     "catalog_code": "LECTURE-2002-006",
     "legacy_tempid": "LS200202_3",
     "title": "Radical Subjectivity: The 'I' of Self",
@@ -150,7 +150,7 @@
     "raw_row_number": "12"
   },
   {
-    "uuid": "019fc4e7-d1e5-715c-90a6-a2c2dbaceb08",
+    "uuid": "7",
     "catalog_code": "LECTURE-2002-007",
     "legacy_tempid": "LS200203_1",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -175,7 +175,7 @@
     "raw_row_number": "13"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ee5-8ac9-92efb0646e63",
+    "uuid": "8",
     "catalog_code": "LECTURE-2002-008",
     "legacy_tempid": "LS200203_2",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -200,7 +200,7 @@
     "raw_row_number": "14"
   },
   {
-    "uuid": "019fc4e7-d1e5-784b-89f6-11d0e7d5b50f",
+    "uuid": "9",
     "catalog_code": "LECTURE-2002-009",
     "legacy_tempid": "LS200203_3",
     "title": "The Levels of Consciousness: Subjective & Social Consequences",
@@ -225,7 +225,7 @@
     "raw_row_number": "15"
   },
   {
-    "uuid": "019fc4e7-d1e5-7628-bb88-182636bc2abe",
+    "uuid": "10",
     "catalog_code": "LECTURE-2002-010",
     "legacy_tempid": "LS200204_1",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -250,7 +250,7 @@
     "raw_row_number": "16"
   },
   {
-    "uuid": "019fc4e7-d1e5-773d-a43a-b97abec50c3e",
+    "uuid": "11",
     "catalog_code": "LECTURE-2002-011",
     "legacy_tempid": "LS200204_2",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -275,7 +275,7 @@
     "raw_row_number": "17"
   },
   {
-    "uuid": "019fc4e7-d1e5-7f11-b6cc-738d6e31c05f",
+    "uuid": "12",
     "catalog_code": "LECTURE-2002-012",
     "legacy_tempid": "LS200204_3",
     "title": "Positionality and Duality: Transcending the Opposites",
@@ -300,7 +300,7 @@
     "raw_row_number": "18"
   },
   {
-    "uuid": "019fc4e7-d1e5-79f1-b678-3fadc9b98afc",
+    "uuid": "13",
     "catalog_code": "LECTURE-2002-013",
     "legacy_tempid": "LS200205_1",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -325,7 +325,7 @@
     "raw_row_number": "19"
   },
   {
-    "uuid": "019fc4e7-d1e5-7f01-a170-189b3d7207e2",
+    "uuid": "14",
     "catalog_code": "LECTURE-2002-014",
     "legacy_tempid": "LS200205_2",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -350,7 +350,7 @@
     "raw_row_number": "20"
   },
   {
-    "uuid": "019fc4e7-d1e5-7514-bb1f-7953228a8a66",
+    "uuid": "15",
     "catalog_code": "LECTURE-2002-015",
     "legacy_tempid": "LS200205_3",
     "title": "Perception and Illusion: Distortions of Reality",
@@ -375,7 +375,7 @@
     "raw_row_number": "21"
   },
   {
-    "uuid": "019fc4e7-d1e5-7602-b1cb-86c601e52207",
+    "uuid": "16",
     "catalog_code": "LECTURE-2002-016",
     "legacy_tempid": "LS200206_1",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -400,7 +400,7 @@
     "raw_row_number": "22"
   },
   {
-    "uuid": "019fc4e7-d1e5-73ac-94f7-65e6394ebac9",
+    "uuid": "17",
     "catalog_code": "LECTURE-2002-017",
     "legacy_tempid": "LS200206_2",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -425,7 +425,7 @@
     "raw_row_number": "23"
   },
   {
-    "uuid": "019fc4e7-d1e5-77ad-8e0a-0cbc54635af8",
+    "uuid": "18",
     "catalog_code": "LECTURE-2002-018",
     "legacy_tempid": "LS200206_3",
     "title": "Realizing the Root of Consciousness: Meditative and Contemplative Techniques",
@@ -450,7 +450,7 @@
     "raw_row_number": "24"
   },
   {
-    "uuid": "019fc4e7-d1e5-7b3e-aa69-bf8c71eadb04",
+    "uuid": "19",
     "catalog_code": "LECTURE-2002-019",
     "legacy_tempid": "LS200207_1",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -475,7 +475,7 @@
     "raw_row_number": "25"
   },
   {
-    "uuid": "019fc4e7-d1e5-71d9-aaf5-dc42b9bce0e9",
+    "uuid": "20",
     "catalog_code": "LECTURE-2002-020",
     "legacy_tempid": "LS200207_2",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -500,7 +500,7 @@
     "raw_row_number": "26"
   },
   {
-    "uuid": "019fc4e7-d1e5-731e-8234-b4463c5a0eb7",
+    "uuid": "21",
     "catalog_code": "LECTURE-2002-021",
     "legacy_tempid": "LS200207_3",
     "title": "The Nature of Divinity vs Religious Fallacy",
@@ -525,7 +525,7 @@
     "raw_row_number": "27"
   },
   {
-    "uuid": "019fc4e7-d1e5-7546-b8e4-c658ab90a909",
+    "uuid": "22",
     "catalog_code": "LECTURE-2002-022",
     "legacy_tempid": "LS200208_1",
     "title": "Advaita: The Way to God Through Mind",
@@ -550,7 +550,7 @@
     "raw_row_number": "28"
   },
   {
-    "uuid": "019fc4e7-d1e5-78b5-9a85-547054761d8a",
+    "uuid": "23",
     "catalog_code": "LECTURE-2002-023",
     "legacy_tempid": "LS200208_2",
     "title": "Advaita: The Way to God Through Mind",
@@ -575,7 +575,7 @@
     "raw_row_number": "29"
   },
   {
-    "uuid": "019fc4e7-d1e5-798b-b886-31ac96efba8b",
+    "uuid": "24",
     "catalog_code": "LECTURE-2002-024",
     "legacy_tempid": "LS200208_3",
     "title": "Advaita: The Way to God Through Mind",
@@ -600,7 +600,7 @@
     "raw_row_number": "30"
   },
   {
-    "uuid": "019fc4e7-d1e5-7dcb-8f67-bbba98fd24e7",
+    "uuid": "25",
     "catalog_code": "LECTURE-2002-025",
     "legacy_tempid": "LS200209_1",
     "title": "Devotion: The Way to God Through the Heart",
@@ -625,7 +625,7 @@
     "raw_row_number": "31"
   },
   {
-    "uuid": "019fc4e7-d1e5-78ea-ba65-99b3c97db608",
+    "uuid": "26",
     "catalog_code": "LECTURE-2002-026",
     "legacy_tempid": "LS200209_2",
     "title": "Devotion: The Way to God Through the Heart",
@@ -650,7 +650,7 @@
     "raw_row_number": "32"
   },
   {
-    "uuid": "019fc4e7-d1e5-76a2-b6e6-1ad38a9aea71",
+    "uuid": "27",
     "catalog_code": "LECTURE-2002-027",
     "legacy_tempid": "LS200209_3",
     "title": "Devotion: The Way to God Through the Heart",
@@ -675,7 +675,7 @@
     "raw_row_number": "33"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ea9-9fb3-762ceba51701",
+    "uuid": "28",
     "catalog_code": "LECTURE-2002-028",
     "legacy_tempid": "LS200210_1",
     "title": "Karma and the Afterlife",
@@ -700,7 +700,7 @@
     "raw_row_number": "34"
   },
   {
-    "uuid": "019fc4e7-d1e5-7238-85e8-cb220be36bc0",
+    "uuid": "29",
     "catalog_code": "LECTURE-2002-029",
     "legacy_tempid": "LS200210_2",
     "title": "Karma and the Afterlife",
@@ -725,7 +725,7 @@
     "raw_row_number": "35"
   },
   {
-    "uuid": "019fc4e7-d1e5-78a8-85a3-337483fe8006",
+    "uuid": "30",
     "catalog_code": "LECTURE-2002-030",
     "legacy_tempid": "LS200210_3",
     "title": "Karma and the Afterlife",
@@ -750,7 +750,7 @@
     "raw_row_number": "36"
   },
   {
-    "uuid": "019fc4e7-d1e5-7de1-b9b6-6001526eb0bb",
+    "uuid": "31",
     "catalog_code": "LECTURE-2002-031",
     "legacy_tempid": "LS200211_1",
     "title": "God: Transcendent and Immanent",
@@ -775,7 +775,7 @@
     "raw_row_number": "37"
   },
   {
-    "uuid": "019fc4e7-d1e5-7093-ab17-ef8488838dfb",
+    "uuid": "32",
     "catalog_code": "LECTURE-2002-032",
     "legacy_tempid": "LS200211_2",
     "title": "God: Transcendent and Immanent",
@@ -800,7 +800,7 @@
     "raw_row_number": "38"
   },
   {
-    "uuid": "019fc4e7-d1e5-7342-b04c-0646535333a4",
+    "uuid": "33",
     "catalog_code": "LECTURE-2002-033",
     "legacy_tempid": "LS200211_3",
     "title": "God: Transcendent and Immanent",
@@ -825,7 +825,7 @@
     "raw_row_number": "39"
   },
   {
-    "uuid": "019fc4e7-d1e5-70c8-9564-3f10fafa2ff2",
+    "uuid": "34",
     "catalog_code": "LECTURE-2002-034",
     "legacy_tempid": "LS200212_1",
     "title": "Realization of the Self: The Final Moments",
@@ -850,7 +850,7 @@
     "raw_row_number": "40"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ed6-a60e-08b33135fd62",
+    "uuid": "35",
     "catalog_code": "LECTURE-2002-035",
     "legacy_tempid": "LS200212_2",
     "title": "Realization of the Self: The Final Moments",
@@ -875,7 +875,7 @@
     "raw_row_number": "41"
   },
   {
-    "uuid": "019fc4e7-d1e5-7447-b5a2-44e104e267c4",
+    "uuid": "36",
     "catalog_code": "LECTURE-2002-036",
     "legacy_tempid": "LS200212_3",
     "title": "Realization of the Self: The Final Moments",
@@ -900,7 +900,7 @@
     "raw_row_number": "42"
   },
   {
-    "uuid": "019fc4e7-d1e5-74b3-ad19-fa134cfc279d",
+    "uuid": "37",
     "catalog_code": "LECTURE-2003-001",
     "legacy_tempid": "LS200301_1",
     "title": "Integration of Spirituality and Personal Life",
@@ -925,7 +925,7 @@
     "raw_row_number": "46"
   },
   {
-    "uuid": "019fc4e7-d1e5-7062-a6e6-9d7aefa8b99a",
+    "uuid": "38",
     "catalog_code": "LECTURE-2003-002",
     "legacy_tempid": "LS200301_2",
     "title": "Integration of Spirituality and Personal Life",
@@ -950,7 +950,7 @@
     "raw_row_number": "47"
   },
   {
-    "uuid": "019fc4e7-d1e5-726d-a682-1e44aea620c6",
+    "uuid": "39",
     "catalog_code": "LECTURE-2003-003",
     "legacy_tempid": "LS200301_3",
     "title": "Integration of Spirituality and Personal Life",
@@ -975,7 +975,7 @@
     "raw_row_number": "48"
   },
   {
-    "uuid": "019fc4e7-d1e5-7b17-ba24-bfa0e1aa5951",
+    "uuid": "40",
     "catalog_code": "LECTURE-2003-004",
     "legacy_tempid": "LS200302_1",
     "title": "Spirituality and the World",
@@ -1000,7 +1000,7 @@
     "raw_row_number": "49"
   },
   {
-    "uuid": "019fc4e7-d1e5-7af5-94bd-847518e6cb36",
+    "uuid": "41",
     "catalog_code": "LECTURE-2003-005",
     "legacy_tempid": "LS200302_2",
     "title": "Spirituality and the World",
@@ -1025,7 +1025,7 @@
     "raw_row_number": "50"
   },
   {
-    "uuid": "019fc4e7-d1e5-7816-a4c4-6087217859d0",
+    "uuid": "42",
     "catalog_code": "LECTURE-2003-006",
     "legacy_tempid": "LS200302_3",
     "title": "Spirituality and the World",
@@ -1050,7 +1050,7 @@
     "raw_row_number": "51"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a84-ad76-a33c7f7d0114",
+    "uuid": "43",
     "catalog_code": "LECTURE-2003-007",
     "legacy_tempid": "LS200303_1",
     "title": "Spiritual Community",
@@ -1075,7 +1075,7 @@
     "raw_row_number": "52"
   },
   {
-    "uuid": "019fc4e7-d1e5-79df-a981-44438760845f",
+    "uuid": "44",
     "catalog_code": "LECTURE-2003-008",
     "legacy_tempid": "LS200303_2",
     "title": "Spiritual Community",
@@ -1100,7 +1100,7 @@
     "raw_row_number": "53"
   },
   {
-    "uuid": "019fc4e7-d1e5-73bf-9a53-9ceeec940f98",
+    "uuid": "45",
     "catalog_code": "LECTURE-2003-009",
     "legacy_tempid": "LS200303_3",
     "title": "Spiritual Community",
@@ -1125,7 +1125,7 @@
     "raw_row_number": "54"
   },
   {
-    "uuid": "019fc4e7-d1e5-7d39-9e72-194f4f499ada",
+    "uuid": "46",
     "catalog_code": "LECTURE-2003-010",
     "legacy_tempid": "LS200304_1",
     "title": "Enlightenment",
@@ -1150,7 +1150,7 @@
     "raw_row_number": "55"
   },
   {
-    "uuid": "019fc4e7-d1e5-78b5-bdea-f55ce0dda8ef",
+    "uuid": "47",
     "catalog_code": "LECTURE-2003-011",
     "legacy_tempid": "LS200304_2",
     "title": "Enlightenment",
@@ -1175,7 +1175,7 @@
     "raw_row_number": "56"
   },
   {
-    "uuid": "019fc4e7-d1e5-704c-9ba3-0d73900ac4ba",
+    "uuid": "48",
     "catalog_code": "LECTURE-2003-012",
     "legacy_tempid": "LS200304_3",
     "title": "Enlightenment",
@@ -1200,7 +1200,7 @@
     "raw_row_number": "57"
   },
   {
-    "uuid": "019fc4e7-d1e5-72a2-813a-012b251eaef9",
+    "uuid": "49",
     "catalog_code": "LECTURE-2003-013",
     "legacy_tempid": "LS200305_1",
     "title": "Realization of the Self as the 'I'",
@@ -1225,7 +1225,7 @@
     "raw_row_number": "58"
   },
   {
-    "uuid": "019fc4e7-d1e5-7c4e-9dc6-afaaf658692a",
+    "uuid": "50",
     "catalog_code": "LECTURE-2003-014",
     "legacy_tempid": "LS200305_2",
     "title": "Realization of the Self as the 'I'",
@@ -1250,7 +1250,7 @@
     "raw_row_number": "59"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ba0-9502-388b6a479333",
+    "uuid": "51",
     "catalog_code": "LECTURE-2003-015",
     "legacy_tempid": "LS200305_3",
     "title": "Realization of the Self as the 'I'",
@@ -1275,7 +1275,7 @@
     "raw_row_number": "60"
   },
   {
-    "uuid": "019fc4e7-d1e5-727e-a6f1-340065577ba0",
+    "uuid": "52",
     "catalog_code": "LECTURE-2003-016",
     "legacy_tempid": "LS200306_1",
     "title": "Dialogue, Questions, and Answers",
@@ -1300,7 +1300,7 @@
     "raw_row_number": "61"
   },
   {
-    "uuid": "019fc4e7-d1e5-7b56-8a9b-91720e48811a",
+    "uuid": "53",
     "catalog_code": "LECTURE-2003-017",
     "legacy_tempid": "LS200306_2",
     "title": "Dialogue, Questions, and Answers",
@@ -1325,7 +1325,7 @@
     "raw_row_number": "62"
   },
   {
-    "uuid": "019fc4e7-d1e5-70f5-9116-97a4b5484e97",
+    "uuid": "54",
     "catalog_code": "LECTURE-2003-018",
     "legacy_tempid": "LS200306_3",
     "title": "Dialogue, Questions, and Answers",
@@ -1350,7 +1350,7 @@
     "raw_row_number": "63"
   },
   {
-    "uuid": "019fc4e7-d1e5-7912-b5a3-bf6b31b86ba9",
+    "uuid": "55",
     "catalog_code": "LECTURE-2004-001",
     "legacy_tempid": "LS200401_1",
     "title": "Thought and Ideation",
@@ -1375,7 +1375,7 @@
     "raw_row_number": "66"
   },
   {
-    "uuid": "019fc4e7-d1e5-78e0-ad68-0285fa54083e",
+    "uuid": "56",
     "catalog_code": "LECTURE-2004-002",
     "legacy_tempid": "LS200401_2",
     "title": "Thought and Ideation",
@@ -1400,7 +1400,7 @@
     "raw_row_number": "67"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ca1-8efc-bbdad946de56",
+    "uuid": "57",
     "catalog_code": "LECTURE-2004-003",
     "legacy_tempid": "LS200401_3",
     "title": "Thought and Ideation",
@@ -1425,7 +1425,7 @@
     "raw_row_number": "68"
   },
   {
-    "uuid": "019fc4e7-d1e5-745d-9862-dfdb5b69cbf5",
+    "uuid": "58",
     "catalog_code": "LECTURE-2004-004",
     "legacy_tempid": "LS200402_1",
     "title": "Emotions and Sensations",
@@ -1450,7 +1450,7 @@
     "raw_row_number": "69"
   },
   {
-    "uuid": "019fc4e7-d1e5-7554-83f9-2f39aeed4a45",
+    "uuid": "59",
     "catalog_code": "LECTURE-2004-005",
     "legacy_tempid": "LS200402_2",
     "title": "Emotions and Sensations",
@@ -1475,7 +1475,7 @@
     "raw_row_number": "70"
   },
   {
-    "uuid": "019fc4e7-d1e5-75cc-8936-b02b133d80ec",
+    "uuid": "60",
     "catalog_code": "LECTURE-2004-006",
     "legacy_tempid": "LS200402_3",
     "title": "Emotions and Sensations",
@@ -1500,7 +1500,7 @@
     "raw_row_number": "71"
   },
   {
-    "uuid": "019fc4e7-d1e5-700e-a555-a695e12a6b8c",
+    "uuid": "61",
     "catalog_code": "LECTURE-2004-007",
     "legacy_tempid": "LS200403_1",
     "title": "Perception and Positionality",
@@ -1525,7 +1525,7 @@
     "raw_row_number": "72"
   },
   {
-    "uuid": "019fc4e7-d1e5-7132-8506-7f56ee4f41cc",
+    "uuid": "62",
     "catalog_code": "LECTURE-2004-008",
     "legacy_tempid": "LS200403_2",
     "title": "Perception and Positionality",
@@ -1550,7 +1550,7 @@
     "raw_row_number": "73"
   },
   {
-    "uuid": "019fc4e7-d1e5-7748-a426-f8f315181ac5",
+    "uuid": "63",
     "catalog_code": "LECTURE-2004-009",
     "legacy_tempid": "LS200403_3",
     "title": "Perception and Positionality",
@@ -1575,7 +1575,7 @@
     "raw_row_number": "74"
   },
   {
-    "uuid": "019fc4e7-d1e5-7afa-ab15-506c8ac9a7e7",
+    "uuid": "64",
     "catalog_code": "LECTURE-2004-010",
     "legacy_tempid": "LS200404_1",
     "title": "Identification and Illusion",
@@ -1600,7 +1600,7 @@
     "raw_row_number": "75"
   },
   {
-    "uuid": "019fc4e7-d1e5-7f10-9e92-72500ab3a6e0",
+    "uuid": "65",
     "catalog_code": "LECTURE-2004-011",
     "legacy_tempid": "LS200404_2",
     "title": "Identification and Illusion",
@@ -1625,7 +1625,7 @@
     "raw_row_number": "76"
   },
   {
-    "uuid": "019fc4e7-d1e5-7b6e-8fc6-f5277e8d456f",
+    "uuid": "66",
     "catalog_code": "LECTURE-2004-012",
     "legacy_tempid": "LS200404_3",
     "title": "Identification and Illusion",
@@ -1650,7 +1650,7 @@
     "raw_row_number": "77"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ac3-b84e-2761c2e3144a",
+    "uuid": "67",
     "catalog_code": "LECTURE-2004-013",
     "legacy_tempid": "LS200405_1",
     "title": "Witnessing and Observing",
@@ -1675,7 +1675,7 @@
     "raw_row_number": "78"
   },
   {
-    "uuid": "019fc4e7-d1e5-7303-b7b0-d307eb78265c",
+    "uuid": "68",
     "catalog_code": "LECTURE-2004-014",
     "legacy_tempid": "LS200405_2",
     "title": "Witnessing and Observing",
@@ -1700,7 +1700,7 @@
     "raw_row_number": "79"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a74-9509-8af2f5fc1d14",
+    "uuid": "69",
     "catalog_code": "LECTURE-2004-015",
     "legacy_tempid": "LS200405_3",
     "title": "Witnessing and Observing",
@@ -1725,7 +1725,7 @@
     "raw_row_number": "80"
   },
   {
-    "uuid": "019fc4e7-d1e5-7002-a94b-f837e0cd4724",
+    "uuid": "70",
     "catalog_code": "LECTURE-2004-016",
     "legacy_tempid": "LS200406_1",
     "title": "The Ego and The Self",
@@ -1750,7 +1750,7 @@
     "raw_row_number": "81"
   },
   {
-    "uuid": "019fc4e7-d1e5-764d-b385-9a59e04fc776",
+    "uuid": "71",
     "catalog_code": "LECTURE-2004-017",
     "legacy_tempid": "LS200406_2",
     "title": "The Ego and The Self",
@@ -1775,7 +1775,7 @@
     "raw_row_number": "82"
   },
   {
-    "uuid": "019fc4e7-d1e5-79da-8a64-fb23419aa705",
+    "uuid": "72",
     "catalog_code": "LECTURE-2004-018",
     "legacy_tempid": "LS200406_3",
     "title": "The Ego and The Self",
@@ -1800,7 +1800,7 @@
     "raw_row_number": "83"
   },
   {
-    "uuid": "019fc4e7-d1e5-7bc7-90e7-467d52f1c470",
+    "uuid": "73",
     "catalog_code": "LECTURE-2005-001",
     "legacy_tempid": "LS200501_1",
     "title": "Vision",
@@ -1825,7 +1825,7 @@
     "raw_row_number": "85"
   },
   {
-    "uuid": "019fc4e7-d1e5-7cfd-95ea-8fc0f4683888",
+    "uuid": "74",
     "catalog_code": "LECTURE-2005-002",
     "legacy_tempid": "LS200501_2",
     "title": "Vision",
@@ -1850,7 +1850,7 @@
     "raw_row_number": "86"
   },
   {
-    "uuid": "019fc4e7-d1e5-7740-8b87-1df963641eb7",
+    "uuid": "75",
     "catalog_code": "LECTURE-2005-003",
     "legacy_tempid": "LS200501_3",
     "title": "Vision",
@@ -1875,7 +1875,7 @@
     "raw_row_number": "87"
   },
   {
-    "uuid": "019fc4e7-d1e5-7eda-82fd-9539dc3fa182",
+    "uuid": "76",
     "catalog_code": "LECTURE-2005-004",
     "legacy_tempid": "LS200502_1",
     "title": "Alignment",
@@ -1900,7 +1900,7 @@
     "raw_row_number": "88"
   },
   {
-    "uuid": "019fc4e7-d1e5-75f3-b794-d9972a701153",
+    "uuid": "77",
     "catalog_code": "LECTURE-2005-005",
     "legacy_tempid": "LS200502_2",
     "title": "Alignment",
@@ -1925,7 +1925,7 @@
     "raw_row_number": "89"
   },
   {
-    "uuid": "019fc4e7-d1e5-7909-994c-730b6c2f00b5",
+    "uuid": "78",
     "catalog_code": "LECTURE-2005-006",
     "legacy_tempid": "LS200502_3",
     "title": "Alignment",
@@ -1950,7 +1950,7 @@
     "raw_row_number": "90"
   },
   {
-    "uuid": "019fc4e7-d1e5-773e-9178-13c419b30122",
+    "uuid": "79",
     "catalog_code": "LECTURE-2005-007",
     "legacy_tempid": "LS200503_1",
     "title": "Intention",
@@ -1975,7 +1975,7 @@
     "raw_row_number": "91"
   },
   {
-    "uuid": "019fc4e7-d1e5-7065-aad1-d333729a43e1",
+    "uuid": "80",
     "catalog_code": "LECTURE-2005-008",
     "legacy_tempid": "LS200503_2",
     "title": "Intention",
@@ -2000,7 +2000,7 @@
     "raw_row_number": "92"
   },
   {
-    "uuid": "019fc4e7-d1e5-70f5-bff0-847456c217e1",
+    "uuid": "81",
     "catalog_code": "LECTURE-2005-009",
     "legacy_tempid": "LS200503_3",
     "title": "Intention",
@@ -2025,7 +2025,7 @@
     "raw_row_number": "93"
   },
   {
-    "uuid": "019fc4e7-d1e5-789c-92b7-cd5a79768203",
+    "uuid": "82",
     "catalog_code": "LECTURE-2005-010",
     "legacy_tempid": "LS200504_1",
     "title": "Transcending Barriers",
@@ -2050,7 +2050,7 @@
     "raw_row_number": "94"
   },
   {
-    "uuid": "019fc4e7-d1e5-7e79-88e6-47dea43ebc35",
+    "uuid": "83",
     "catalog_code": "LECTURE-2005-011",
     "legacy_tempid": "LS200504_2",
     "title": "Transcending Barriers",
@@ -2075,7 +2075,7 @@
     "raw_row_number": "95"
   },
   {
-    "uuid": "019fc4e7-d1e5-76e6-88b0-694e2663067c",
+    "uuid": "84",
     "catalog_code": "LECTURE-2005-012",
     "legacy_tempid": "LS200504_3",
     "title": "Transcending Barriers",
@@ -2100,7 +2100,7 @@
     "raw_row_number": "96"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a23-85ca-3702de5fae84",
+    "uuid": "85",
     "catalog_code": "LECTURE-2005-013",
     "legacy_tempid": "LS200505_1",
     "title": "Conviction",
@@ -2125,7 +2125,7 @@
     "raw_row_number": "97"
   },
   {
-    "uuid": "019fc4e7-d1e5-7cc4-a6b4-ccaa218b3cd4",
+    "uuid": "86",
     "catalog_code": "LECTURE-2005-014",
     "legacy_tempid": "LS200505_2",
     "title": "Conviction",
@@ -2150,7 +2150,7 @@
     "raw_row_number": "98"
   },
   {
-    "uuid": "019fc4e7-d1e5-7414-9072-6a476038fec9",
+    "uuid": "87",
     "catalog_code": "LECTURE-2005-015",
     "legacy_tempid": "LS200505_3",
     "title": "Conviction",
@@ -2175,7 +2175,7 @@
     "raw_row_number": "99"
   },
   {
-    "uuid": "019fc4e7-d1e5-7056-9c48-4da05c66da56",
+    "uuid": "88",
     "catalog_code": "LECTURE-2005-016",
     "legacy_tempid": "LS200506_1",
     "title": "Serenity",
@@ -2200,7 +2200,7 @@
     "raw_row_number": "100"
   },
   {
-    "uuid": "019fc4e7-d1e5-72a4-bd98-835560e1f04f",
+    "uuid": "89",
     "catalog_code": "LECTURE-2005-017",
     "legacy_tempid": "LS200506_2",
     "title": "Serenity",
@@ -2225,7 +2225,7 @@
     "raw_row_number": "101"
   },
   {
-    "uuid": "019fc4e7-d1e5-77d8-b41e-9f53f5f3d8b8",
+    "uuid": "90",
     "catalog_code": "LECTURE-2005-018",
     "legacy_tempid": "LS200506_3",
     "title": "Serenity",
@@ -2250,7 +2250,7 @@
     "raw_row_number": "102"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a62-a2eb-24ed944fc5c6",
+    "uuid": "91",
     "catalog_code": "LECTURE-2005-019",
     "legacy_tempid": "LS200507_1",
     "title": "Transcending Obstacles",
@@ -2275,7 +2275,7 @@
     "raw_row_number": "103"
   },
   {
-    "uuid": "019fc4e7-d1e5-7daa-9163-afcf9bc4dcd7",
+    "uuid": "92",
     "catalog_code": "LECTURE-2005-020",
     "legacy_tempid": "LS200507_2",
     "title": "Transcending Obstacles",
@@ -2300,7 +2300,7 @@
     "raw_row_number": "104"
   },
   {
-    "uuid": "019fc4e7-d1e5-7381-9923-48c3c1ec7eae",
+    "uuid": "93",
     "catalog_code": "LECTURE-2005-021",
     "legacy_tempid": "LS200507_3",
     "title": "Transcending Obstacles",
@@ -2325,7 +2325,7 @@
     "raw_row_number": "105"
   },
   {
-    "uuid": "019fc4e7-d1e5-7418-8877-296f824917f5",
+    "uuid": "94",
     "catalog_code": "LECTURE-2005-022",
     "legacy_tempid": "LS200508_1",
     "title": "Spiritual Traps",
@@ -2350,7 +2350,7 @@
     "raw_row_number": "106"
   },
   {
-    "uuid": "019fc4e7-d1e5-7eda-9101-832e5485d7a2",
+    "uuid": "95",
     "catalog_code": "LECTURE-2005-023",
     "legacy_tempid": "LS200508_2",
     "title": "Spiritual Traps",
@@ -2375,7 +2375,7 @@
     "raw_row_number": "107"
   },
   {
-    "uuid": "019fc4e7-d1e5-747e-9852-71a10085d4c0",
+    "uuid": "96",
     "catalog_code": "LECTURE-2005-024",
     "legacy_tempid": "LS200508_3",
     "title": "Spiritual Traps",
@@ -2400,7 +2400,7 @@
     "raw_row_number": "108"
   },
   {
-    "uuid": "019fc4e7-d1e5-7348-94b4-87a0b664e68f",
+    "uuid": "97",
     "catalog_code": "LECTURE-2005-025",
     "legacy_tempid": "LS200509_1",
     "title": "Valid Teachers and Teachings",
@@ -2425,7 +2425,7 @@
     "raw_row_number": "109"
   },
   {
-    "uuid": "019fc4e7-d1e5-7bf2-b36d-00b4fbcb614b",
+    "uuid": "98",
     "catalog_code": "LECTURE-2005-026",
     "legacy_tempid": "LS200509_2",
     "title": "Valid Teachers and Teachings",
@@ -2450,7 +2450,7 @@
     "raw_row_number": "110"
   },
   {
-    "uuid": "019fc4e7-d1e5-70de-a0a7-55037f88fc77",
+    "uuid": "99",
     "catalog_code": "LECTURE-2005-027",
     "legacy_tempid": "LS200509_3",
     "title": "Valid Teachers and Teachings",
@@ -2475,7 +2475,7 @@
     "raw_row_number": "111"
   },
   {
-    "uuid": "019fc4e7-d1e5-70ca-a37e-7004c7c095ac",
+    "uuid": "100",
     "catalog_code": "LECTURE-2005-028",
     "legacy_tempid": "LS200510_1",
     "title": "God, Religion, and Spirituality",
@@ -2500,7 +2500,7 @@
     "raw_row_number": "112"
   },
   {
-    "uuid": "019fc4e7-d1e5-7caa-97ec-c1023422a8f8",
+    "uuid": "101",
     "catalog_code": "LECTURE-2005-029",
     "legacy_tempid": "LS200510_2",
     "title": "God, Religion, and Spirituality",
@@ -2525,7 +2525,7 @@
     "raw_row_number": "113"
   },
   {
-    "uuid": "019fc4e7-d1e5-7fde-b040-619f3d35f4f4",
+    "uuid": "102",
     "catalog_code": "LECTURE-2005-030",
     "legacy_tempid": "LS200510_3",
     "title": "God, Religion, and Spirituality",
@@ -2550,7 +2550,7 @@
     "raw_row_number": "114"
   },
   {
-    "uuid": "019fc4e7-d1e5-7386-a167-6ce299239d8c",
+    "uuid": "103",
     "catalog_code": "LECTURE-2006-001",
     "legacy_tempid": "LS200601_1",
     "title": "Experiential Reality",
@@ -2575,7 +2575,7 @@
     "raw_row_number": "116"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a1d-b9e5-5035036baa6c",
+    "uuid": "104",
     "catalog_code": "LECTURE-2006-002",
     "legacy_tempid": "LS200601_2",
     "title": "Experiential Reality",
@@ -2600,7 +2600,7 @@
     "raw_row_number": "117"
   },
   {
-    "uuid": "019fc4e7-d1e5-7177-971d-0bc97ad3b7a9",
+    "uuid": "105",
     "catalog_code": "LECTURE-2006-003",
     "legacy_tempid": "LS200601_3",
     "title": "Experiential Reality",
@@ -2625,7 +2625,7 @@
     "raw_row_number": "118"
   },
   {
-    "uuid": "019fc4e7-d1e5-7ab9-980d-1f5a67a8ae90",
+    "uuid": "106",
     "catalog_code": "LECTURE-2006-004",
     "legacy_tempid": "LS200602_1",
     "title": "Perception vs Essence",
@@ -2650,7 +2650,7 @@
     "raw_row_number": "119"
   },
   {
-    "uuid": "019fc4e7-d1e5-7a07-b70c-31639b536c68",
+    "uuid": "107",
     "catalog_code": "LECTURE-2006-005",
     "legacy_tempid": "LS200602_2",
     "title": "Perception vs Essence",
@@ -2675,7 +2675,7 @@
     "raw_row_number": "120"
   },
   {
-    "uuid": "019fc4e7-d1e5-70c9-82eb-beb162646445",
+    "uuid": "108",
     "catalog_code": "LECTURE-2006-006",
     "legacy_tempid": "LS200602_3",
     "title": "Perception vs Essence",
@@ -2700,7 +2700,7 @@
     "raw_row_number": "121"
   },
   {
-    "uuid": "019fc4e7-d1e5-721b-b8be-c089fbd773c0",
+    "uuid": "109",
     "catalog_code": "LECTURE-2006-007",
     "legacy_tempid": "LS200603_1",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2725,7 +2725,7 @@
     "raw_row_number": "122"
   },
   {
-    "uuid": "019fc4e7-d1e5-71d6-ab19-6efe475dae57",
+    "uuid": "110",
     "catalog_code": "LECTURE-2006-008",
     "legacy_tempid": "LS200603_2",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2750,7 +2750,7 @@
     "raw_row_number": "123"
   },
   {
-    "uuid": "019fc4e7-d1e5-7f6e-83e0-4f07a2453013",
+    "uuid": "111",
     "catalog_code": "LECTURE-2006-009",
     "legacy_tempid": "LS200603_3",
     "title": "Spiritual Truth vs. Spiritual Fantasy",
@@ -2775,7 +2775,7 @@
     "raw_row_number": "124"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a5f-b85e-699d99108901",
+    "uuid": "112",
     "catalog_code": "LECTURE-2006-010",
     "legacy_tempid": "LS200604_1",
     "title": "Reason vs Truth",
@@ -2800,7 +2800,7 @@
     "raw_row_number": "125"
   },
   {
-    "uuid": "019fc4e7-d1e6-7da8-916c-3128c7b00986",
+    "uuid": "113",
     "catalog_code": "LECTURE-2006-011",
     "legacy_tempid": "LS200604_2",
     "title": "Reason vs Truth",
@@ -2825,7 +2825,7 @@
     "raw_row_number": "126"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b27-9386-ad69475bf501",
+    "uuid": "114",
     "catalog_code": "LECTURE-2006-012",
     "legacy_tempid": "LS200604_3",
     "title": "Reason vs Truth",
@@ -2850,7 +2850,7 @@
     "raw_row_number": "127"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a04-87fe-84457a4350f1",
+    "uuid": "115",
     "catalog_code": "LECTURE-2006-013",
     "legacy_tempid": "LS200605_1",
     "title": "A Review of the Work",
@@ -2875,7 +2875,7 @@
     "raw_row_number": "128"
   },
   {
-    "uuid": "019fc4e7-d1e6-72f4-a7c5-585ca78dabdd",
+    "uuid": "116",
     "catalog_code": "LECTURE-2006-014",
     "legacy_tempid": "LS200605_2",
     "title": "A Review of the Work",
@@ -2900,7 +2900,7 @@
     "raw_row_number": "129"
   },
   {
-    "uuid": "019fc4e7-d1e6-7182-a963-1a278c002bee",
+    "uuid": "117",
     "catalog_code": "LECTURE-2006-015",
     "legacy_tempid": "LS200605_3",
     "title": "A Review of the Work",
@@ -2925,7 +2925,7 @@
     "raw_row_number": "130"
   },
   {
-    "uuid": "019fc4e7-d1e6-7fe7-aadf-96c31a6938d7",
+    "uuid": "118",
     "catalog_code": "LECTURE-2006-016",
     "legacy_tempid": "LS200606_1",
     "title": "Spiritual Practice and Daily Life",
@@ -2950,7 +2950,7 @@
     "raw_row_number": "131"
   },
   {
-    "uuid": "019fc4e7-d1e6-7987-9b4a-8c63f3930550",
+    "uuid": "119",
     "catalog_code": "LECTURE-2006-017",
     "legacy_tempid": "LS200606_2",
     "title": "Spiritual Practice and Daily Life",
@@ -2975,7 +2975,7 @@
     "raw_row_number": "132"
   },
   {
-    "uuid": "019fc4e7-d1e6-7c2a-ac7f-df16d5d97282",
+    "uuid": "120",
     "catalog_code": "LECTURE-2006-018",
     "legacy_tempid": "LS200606_3",
     "title": "Spiritual Practice and Daily Life",
@@ -3000,7 +3000,7 @@
     "raw_row_number": "133"
   },
   {
-    "uuid": "019fc4e7-d1e6-7e67-a61c-48cb2d07e273",
+    "uuid": "121",
     "catalog_code": "LECTURE-2006-019",
     "legacy_tempid": "LS200607_1",
     "title": "Live Your Life Like a Prayer",
@@ -3025,7 +3025,7 @@
     "raw_row_number": "134"
   },
   {
-    "uuid": "019fc4e7-d1e6-717e-b4d5-423a44937560",
+    "uuid": "122",
     "catalog_code": "LECTURE-2006-020",
     "legacy_tempid": "LS200607_2",
     "title": "Live Your Life Like a Prayer",
@@ -3050,7 +3050,7 @@
     "raw_row_number": "135"
   },
   {
-    "uuid": "019fc4e7-d1e6-7839-bfd1-7da99b92be52",
+    "uuid": "123",
     "catalog_code": "LECTURE-2006-021",
     "legacy_tempid": "LS200607_3",
     "title": "Live Your Life Like a Prayer",
@@ -3075,7 +3075,7 @@
     "raw_row_number": "136"
   },
   {
-    "uuid": "019fc4e7-d1e6-7295-a039-fe4c465e83bf",
+    "uuid": "124",
     "catalog_code": "LECTURE-2006-022",
     "legacy_tempid": "LS200608_1",
     "title": "Is the Miraculous Real?",
@@ -3100,7 +3100,7 @@
     "raw_row_number": "137"
   },
   {
-    "uuid": "019fc4e7-d1e6-75f2-b648-160bab0fb5f1",
+    "uuid": "125",
     "catalog_code": "LECTURE-2006-023",
     "legacy_tempid": "LS200608_2",
     "title": "Is the Miraculous Real?",
@@ -3125,7 +3125,7 @@
     "raw_row_number": "138"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a91-b75e-8e43d4945da8",
+    "uuid": "126",
     "catalog_code": "LECTURE-2006-024",
     "legacy_tempid": "LS200608_3",
     "title": "Is the Miraculous Real?",
@@ -3150,7 +3150,7 @@
     "raw_row_number": "139"
   },
   {
-    "uuid": "019fc4e7-d1e6-7416-a7c5-3617494157d9",
+    "uuid": "127",
     "catalog_code": "LECTURE-2007-001",
     "legacy_tempid": "LS200701_1",
     "title": "God vs Science: Limits of the Mind",
@@ -3175,7 +3175,7 @@
     "raw_row_number": "141"
   },
   {
-    "uuid": "019fc4e7-d1e6-7434-868b-e56d93d3ca5b",
+    "uuid": "128",
     "catalog_code": "LECTURE-2007-002",
     "legacy_tempid": "LS200701_2",
     "title": "God vs Science: Limits of the Mind",
@@ -3200,7 +3200,7 @@
     "raw_row_number": "142"
   },
   {
-    "uuid": "019fc4e7-d1e6-7d19-add2-8748246a9ea4",
+    "uuid": "129",
     "catalog_code": "LECTURE-2007-003",
     "legacy_tempid": "LS200701_3",
     "title": "God vs Science: Limits of the Mind",
@@ -3225,7 +3225,7 @@
     "raw_row_number": "143"
   },
   {
-    "uuid": "019fc4e7-d1e6-7fd5-a51b-7d6bf89bea41",
+    "uuid": "130",
     "catalog_code": "LECTURE-2007-004",
     "legacy_tempid": "LS200702_1",
     "title": "Relativism vs Reality",
@@ -3250,7 +3250,7 @@
     "raw_row_number": "144"
   },
   {
-    "uuid": "019fc4e7-d1e6-7e40-b9e2-ddf5a8e72c2a",
+    "uuid": "131",
     "catalog_code": "LECTURE-2007-005",
     "legacy_tempid": "LS200702_2",
     "title": "Relativism vs Reality",
@@ -3275,7 +3275,7 @@
     "raw_row_number": "145"
   },
   {
-    "uuid": "019fc4e7-d1e6-767d-af51-61ccb71a7102",
+    "uuid": "132",
     "catalog_code": "LECTURE-2007-006",
     "legacy_tempid": "LS200702_3",
     "title": "Relativism vs Reality",
@@ -3300,7 +3300,7 @@
     "raw_row_number": "146"
   },
   {
-    "uuid": "019fc4e7-d1e6-761e-aa1a-9c36cc7b3e30",
+    "uuid": "133",
     "catalog_code": "LECTURE-2007-007",
     "legacy_tempid": "LS200703_1",
     "title": "What is 'Real'?",
@@ -3325,7 +3325,7 @@
     "raw_row_number": "147"
   },
   {
-    "uuid": "019fc4e7-d1e6-7dfc-b50e-cd557fcb69e6",
+    "uuid": "134",
     "catalog_code": "LECTURE-2007-008",
     "legacy_tempid": "LS200703_2",
     "title": "What is 'Real'?",
@@ -3350,7 +3350,7 @@
     "raw_row_number": "148"
   },
   {
-    "uuid": "019fc4e7-d1e6-76c8-b50b-576b4149e6f0",
+    "uuid": "135",
     "catalog_code": "LECTURE-2007-009",
     "legacy_tempid": "LS200703_3",
     "title": "What is 'Real'?",
@@ -3375,7 +3375,7 @@
     "raw_row_number": "149"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cd5-a4ce-1d9139709498",
+    "uuid": "136",
     "catalog_code": "LECTURE-2007-010",
     "legacy_tempid": "LS200704_1",
     "title": "What is Truth? The Absolute",
@@ -3400,7 +3400,7 @@
     "raw_row_number": "150"
   },
   {
-    "uuid": "019fc4e7-d1e6-732f-bbb6-38b765cbf6a0",
+    "uuid": "137",
     "catalog_code": "LECTURE-2007-011",
     "legacy_tempid": "LS200704_2",
     "title": "What is Truth? The Absolute",
@@ -3425,7 +3425,7 @@
     "raw_row_number": "151"
   },
   {
-    "uuid": "019fc4e7-d1e6-7218-803a-7758b55a66fa",
+    "uuid": "138",
     "catalog_code": "LECTURE-2007-012",
     "legacy_tempid": "LS200704_3",
     "title": "What is Truth? The Absolute",
@@ -3450,7 +3450,7 @@
     "raw_row_number": "152"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b0e-81a0-421be88bcdb4",
+    "uuid": "139",
     "catalog_code": "LECTURE-2007-013",
     "legacy_tempid": "LS200705_1",
     "title": "The Human Dilemma",
@@ -3475,7 +3475,7 @@
     "raw_row_number": "153"
   },
   {
-    "uuid": "019fc4e7-d1e6-7172-9f8c-b1682ccbcc8a",
+    "uuid": "140",
     "catalog_code": "LECTURE-2007-014",
     "legacy_tempid": "LS200705_2",
     "title": "The Human Dilemma",
@@ -3500,7 +3500,7 @@
     "raw_row_number": "154"
   },
   {
-    "uuid": "019fc4e7-d1e6-71fb-8d11-d43d269f9e7e",
+    "uuid": "141",
     "catalog_code": "LECTURE-2007-015",
     "legacy_tempid": "LS200705_3",
     "title": "The Human Dilemma",
@@ -3525,7 +3525,7 @@
     "raw_row_number": "155"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f3f-8dbf-fae508d37134",
+    "uuid": "142",
     "catalog_code": "LECTURE-2007-016",
     "legacy_tempid": "LS200706_1",
     "title": "A Review of the Work",
@@ -3550,7 +3550,7 @@
     "raw_row_number": "156"
   },
   {
-    "uuid": "019fc4e7-d1e6-7efb-a96c-54813440e124",
+    "uuid": "143",
     "catalog_code": "LECTURE-2007-017",
     "legacy_tempid": "LS200706_2",
     "title": "A Review of the Work",
@@ -3575,7 +3575,7 @@
     "raw_row_number": "157"
   },
   {
-    "uuid": "019fc4e7-d1e6-74aa-bfa1-ce0135952e1b",
+    "uuid": "144",
     "catalog_code": "LECTURE-2007-018",
     "legacy_tempid": "LS200706_3",
     "title": "A Review of the Work",
@@ -3600,7 +3600,7 @@
     "raw_row_number": "158"
   },
   {
-    "uuid": "019fc4e7-d1e6-7424-a584-84f20866aa7e",
+    "uuid": "145",
     "catalog_code": "LECTURE-2007-019",
     "legacy_tempid": "LS200707_1",
     "title": "Creation vs Evolution",
@@ -3625,7 +3625,7 @@
     "raw_row_number": "159"
   },
   {
-    "uuid": "019fc4e7-d1e6-7440-8f6c-0cd7c95ad156",
+    "uuid": "146",
     "catalog_code": "LECTURE-2007-020",
     "legacy_tempid": "LS200707_2",
     "title": "Creation vs Evolution",
@@ -3650,7 +3650,7 @@
     "raw_row_number": "160"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cca-a9bb-9d99476ec66d",
+    "uuid": "147",
     "catalog_code": "LECTURE-2007-021",
     "legacy_tempid": "LS200707_3",
     "title": "Creation vs Evolution",
@@ -3675,7 +3675,7 @@
     "raw_row_number": "161"
   },
   {
-    "uuid": "019fc4e7-d1e6-70db-b892-73e422be5a11",
+    "uuid": "148",
     "catalog_code": "LECTURE-2007-022",
     "legacy_tempid": "LS200708_1",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3700,7 +3700,7 @@
     "raw_row_number": "162"
   },
   {
-    "uuid": "019fc4e7-d1e6-7fa5-b7a3-e1b57548198d",
+    "uuid": "149",
     "catalog_code": "LECTURE-2007-023",
     "legacy_tempid": "LS200708_2",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3725,7 +3725,7 @@
     "raw_row_number": "163"
   },
   {
-    "uuid": "019fc4e7-d1e6-7fb3-8147-d9be995edb68",
+    "uuid": "150",
     "catalog_code": "LECTURE-2007-024",
     "legacy_tempid": "LS200708_3",
     "title": "Spiritual Survival: Realization of Reality",
@@ -3750,7 +3750,7 @@
     "raw_row_number": "164"
   },
   {
-    "uuid": "019fc4e7-d1e6-79dd-bc32-5ad4dbb282f6",
+    "uuid": "151",
     "catalog_code": "LECTURE-2007-025",
     "legacy_tempid": "LS200709_1",
     "title": "Experiential Reality: The Mystic",
@@ -3775,7 +3775,7 @@
     "raw_row_number": "165"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b9b-b27c-8c94dd4de5b1",
+    "uuid": "152",
     "catalog_code": "LECTURE-2007-026",
     "legacy_tempid": "LS200709_2",
     "title": "Experiential Reality: The Mystic",
@@ -3800,7 +3800,7 @@
     "raw_row_number": "166"
   },
   {
-    "uuid": "019fc4e7-d1e6-76e5-91d0-f9b38b4cda70",
+    "uuid": "153",
     "catalog_code": "LECTURE-2007-027",
     "legacy_tempid": "LS200709_3",
     "title": "Experiential Reality: The Mystic",
@@ -3825,7 +3825,7 @@
     "raw_row_number": "167"
   },
   {
-    "uuid": "019fc4e7-d1e6-7469-86ff-8db2a73b2520",
+    "uuid": "154",
     "catalog_code": "LECTURE-2008-001",
     "legacy_tempid": "LS200801_1",
     "title": "Spirituality: Reason and Faith",
@@ -3850,7 +3850,7 @@
     "raw_row_number": "169"
   },
   {
-    "uuid": "019fc4e7-d1e6-705e-8d2a-e35107905028",
+    "uuid": "155",
     "catalog_code": "LECTURE-2008-002",
     "legacy_tempid": "LS200801_2",
     "title": "Spirituality: Reason and Faith",
@@ -3875,7 +3875,7 @@
     "raw_row_number": "170"
   },
   {
-    "uuid": "019fc4e7-d1e6-732c-90ae-3d87904d6cf3",
+    "uuid": "156",
     "catalog_code": "LECTURE-2008-003",
     "legacy_tempid": "LS200801_3",
     "title": "Spirituality: Reason and Faith",
@@ -3900,7 +3900,7 @@
     "raw_row_number": "171"
   },
   {
-    "uuid": "019fc4e7-d1e6-779a-8510-e1e8a1650f6e",
+    "uuid": "157",
     "catalog_code": "LECTURE-2008-004",
     "legacy_tempid": "LS200802_1",
     "title": "The Clear Pathway to Enlightenment",
@@ -3925,7 +3925,7 @@
     "raw_row_number": "172"
   },
   {
-    "uuid": "019fc4e7-d1e6-76e9-b678-054e97b7d4af",
+    "uuid": "158",
     "catalog_code": "LECTURE-2008-005",
     "legacy_tempid": "LS200802_2",
     "title": "The Clear Pathway to Enlightenment",
@@ -3950,7 +3950,7 @@
     "raw_row_number": "173"
   },
   {
-    "uuid": "019fc4e7-d1e6-7c1e-9975-30d43beb4f94",
+    "uuid": "159",
     "catalog_code": "LECTURE-2008-006",
     "legacy_tempid": "LS200802_3",
     "title": "The Clear Pathway to Enlightenment",
@@ -3975,7 +3975,7 @@
     "raw_row_number": "174"
   },
   {
-    "uuid": "019fc4e7-d1e6-714f-9596-654a20aea3ce",
+    "uuid": "160",
     "catalog_code": "LECTURE-2008-007",
     "legacy_tempid": "LS200803_1",
     "title": "Belief, Trust and Credibility",
@@ -4000,7 +4000,7 @@
     "raw_row_number": "175"
   },
   {
-    "uuid": "019fc4e7-d1e6-70ac-891c-8f53c2a8b43b",
+    "uuid": "161",
     "catalog_code": "LECTURE-2008-008",
     "legacy_tempid": "LS200803_2",
     "title": "Belief, Trust and Credibility",
@@ -4025,7 +4025,7 @@
     "raw_row_number": "176"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cbe-8b42-cedceec1d6a8",
+    "uuid": "162",
     "catalog_code": "LECTURE-2008-009",
     "legacy_tempid": "LS200803_3",
     "title": "Belief, Trust and Credibility",
@@ -4050,7 +4050,7 @@
     "raw_row_number": "177"
   },
   {
-    "uuid": "019fc4e7-d1e6-738a-a164-c88b5b7a72af",
+    "uuid": "163",
     "catalog_code": "LECTURE-2008-010",
     "legacy_tempid": "LS200804_1",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4075,7 +4075,7 @@
     "raw_row_number": "178"
   },
   {
-    "uuid": "019fc4e7-d1e6-7880-a850-bfe15ab6a717",
+    "uuid": "164",
     "catalog_code": "LECTURE-2008-011",
     "legacy_tempid": "LS200804_2",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4100,7 +4100,7 @@
     "raw_row_number": "179"
   },
   {
-    "uuid": "019fc4e7-d1e6-7162-88cf-4f58ace7e589",
+    "uuid": "165",
     "catalog_code": "LECTURE-2008-012",
     "legacy_tempid": "LS200804_3",
     "title": "Overcoming Doubt, Skepticism & Disbelief",
@@ -4125,7 +4125,7 @@
     "raw_row_number": "180"
   },
   {
-    "uuid": "019fc4e7-d1e6-7d7e-a23d-d758dcc8818a",
+    "uuid": "166",
     "catalog_code": "LECTURE-2008-013",
     "legacy_tempid": "LS200805_1",
     "title": "Practical Spirituality",
@@ -4150,7 +4150,7 @@
     "raw_row_number": "181"
   },
   {
-    "uuid": "019fc4e7-d1e6-79e3-bb56-f873489b1f17",
+    "uuid": "167",
     "catalog_code": "LECTURE-2008-014",
     "legacy_tempid": "LS200805_2",
     "title": "Practical Spirituality",
@@ -4175,7 +4175,7 @@
     "raw_row_number": "182"
   },
   {
-    "uuid": "019fc4e7-d1e6-7051-8bac-37817e3156c3",
+    "uuid": "168",
     "catalog_code": "LECTURE-2008-015",
     "legacy_tempid": "LS200805_3",
     "title": "Practical Spirituality",
@@ -4200,7 +4200,7 @@
     "raw_row_number": "183"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a1a-b515-fcf9cce71604",
+    "uuid": "169",
     "catalog_code": "LECTURE-2008-016",
     "legacy_tempid": "LS200806_1",
     "title": "Freedom: Morality and Ethics",
@@ -4225,7 +4225,7 @@
     "raw_row_number": "184"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a88-8523-be6a9c993be4",
+    "uuid": "170",
     "catalog_code": "LECTURE-2008-017",
     "legacy_tempid": "LS200806_2",
     "title": "Freedom: Morality and Ethics",
@@ -4250,7 +4250,7 @@
     "raw_row_number": "185"
   },
   {
-    "uuid": "019fc4e7-d1e6-762f-8e3b-76a1e29252c6",
+    "uuid": "171",
     "catalog_code": "LECTURE-2008-018",
     "legacy_tempid": "LS200806_3",
     "title": "Freedom: Morality and Ethics",
@@ -4275,7 +4275,7 @@
     "raw_row_number": "186"
   },
   {
-    "uuid": "019fc4e7-d1e6-7296-b5f4-09ea7c7ba51a",
+    "uuid": "172",
     "catalog_code": "LECTURE-2008-019",
     "legacy_tempid": "LS200807_1",
     "title": "A Unique Sedona Seminar",
@@ -4300,7 +4300,7 @@
     "raw_row_number": "187"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a1e-b10c-46c078505582",
+    "uuid": "173",
     "catalog_code": "LECTURE-2008-020",
     "legacy_tempid": "LS200807_2",
     "title": "A Unique Sedona Seminar",
@@ -4325,7 +4325,7 @@
     "raw_row_number": "188"
   },
   {
-    "uuid": "019fc4e7-d1e6-7edb-921b-852747cdb2ee",
+    "uuid": "174",
     "catalog_code": "LECTURE-2008-021",
     "legacy_tempid": "LS200807_3",
     "title": "A Unique Sedona Seminar",
@@ -4350,7 +4350,7 @@
     "raw_row_number": "189"
   },
   {
-    "uuid": "019fc4e7-d1e6-7660-94ad-09721abba646",
+    "uuid": "175",
     "catalog_code": "LECTURE-2009-001",
     "legacy_tempid": "LS200901_1",
     "title": "What is the World?",
@@ -4375,7 +4375,7 @@
     "raw_row_number": "191"
   },
   {
-    "uuid": "019fc4e7-d1e6-7058-b91a-06a23a21db20",
+    "uuid": "176",
     "catalog_code": "LECTURE-2009-002",
     "legacy_tempid": "LS200901_2",
     "title": "What is the World?",
@@ -4400,7 +4400,7 @@
     "raw_row_number": "192"
   },
   {
-    "uuid": "019fc4e7-d1e6-725b-b971-840b56eef6f9",
+    "uuid": "177",
     "catalog_code": "LECTURE-2009-003",
     "legacy_tempid": "LS200901_3",
     "title": "What is the World?",
@@ -4425,7 +4425,7 @@
     "raw_row_number": "193"
   },
   {
-    "uuid": "019fc4e7-d1e6-79a1-a31c-5ea31e19641a",
+    "uuid": "178",
     "catalog_code": "LECTURE-2009-004",
     "legacy_tempid": "LS200902_1",
     "title": "Happiness",
@@ -4450,7 +4450,7 @@
     "raw_row_number": "194"
   },
   {
-    "uuid": "019fc4e7-d1e6-7512-bcf7-9fdaa7a43bd6",
+    "uuid": "179",
     "catalog_code": "LECTURE-2009-005",
     "legacy_tempid": "LS200902_2",
     "title": "Happiness",
@@ -4475,7 +4475,7 @@
     "raw_row_number": "195"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b0d-9b58-5f516f919bd8",
+    "uuid": "180",
     "catalog_code": "LECTURE-2009-006",
     "legacy_tempid": "LS200902_3",
     "title": "Happiness",
@@ -4500,7 +4500,7 @@
     "raw_row_number": "196"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f1f-91c8-4839afb869cd",
+    "uuid": "181",
     "catalog_code": "LECTURE-2009-007",
     "legacy_tempid": "LS200903_1",
     "title": "Peace",
@@ -4525,7 +4525,7 @@
     "raw_row_number": "197"
   },
   {
-    "uuid": "019fc4e7-d1e6-7365-bf1c-e4dcdb7fcf1f",
+    "uuid": "182",
     "catalog_code": "LECTURE-2009-008",
     "legacy_tempid": "LS200903_2",
     "title": "Peace",
@@ -4550,7 +4550,7 @@
     "raw_row_number": "198"
   },
   {
-    "uuid": "019fc4e7-d1e6-734c-9130-8f8ff3a4dfb1",
+    "uuid": "183",
     "catalog_code": "LECTURE-2009-009",
     "legacy_tempid": "LS200903_3",
     "title": "Peace",
@@ -4575,7 +4575,7 @@
     "raw_row_number": "199"
   },
   {
-    "uuid": "019fc4e7-d1e6-7924-981d-da25efd49665",
+    "uuid": "184",
     "catalog_code": "LECTURE-2009-010",
     "legacy_tempid": "LS200904_1",
     "title": "Success",
@@ -4600,7 +4600,7 @@
     "raw_row_number": "200"
   },
   {
-    "uuid": "019fc4e7-d1e6-72d0-a5c0-132828d7027a",
+    "uuid": "185",
     "catalog_code": "LECTURE-2009-011",
     "legacy_tempid": "LS200904_2",
     "title": "Success",
@@ -4625,7 +4625,7 @@
     "raw_row_number": "201"
   },
   {
-    "uuid": "019fc4e7-d1e6-7642-9feb-7b532bf4fe18",
+    "uuid": "186",
     "catalog_code": "LECTURE-2009-012",
     "legacy_tempid": "LS200904_3",
     "title": "Success",
@@ -4650,7 +4650,7 @@
     "raw_row_number": "202"
   },
   {
-    "uuid": "019fc4e7-d1e6-7525-9733-f4823fb0d36c",
+    "uuid": "187",
     "catalog_code": "LECTURE-2010-001",
     "legacy_tempid": "LS201001_1",
     "title": "Handling Spiritual Challenges",
@@ -4675,7 +4675,7 @@
     "raw_row_number": "204"
   },
   {
-    "uuid": "019fc4e7-d1e6-7183-9d20-b269ccf21269",
+    "uuid": "188",
     "catalog_code": "LECTURE-2010-002",
     "legacy_tempid": "LS201001_2",
     "title": "Handling Spiritual Challenges",
@@ -4700,7 +4700,7 @@
     "raw_row_number": "205"
   },
   {
-    "uuid": "019fc4e7-d1e6-7591-a094-7f1c91e6f70e",
+    "uuid": "189",
     "catalog_code": "LECTURE-2010-003",
     "legacy_tempid": "LS201001_3",
     "title": "Handling Spiritual Challenges",
@@ -4725,7 +4725,7 @@
     "raw_row_number": "206"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f4a-b991-a6037efb9d8b",
+    "uuid": "190",
     "catalog_code": "LECTURE-2010-004",
     "legacy_tempid": "LS201002_1",
     "title": "Spiritual Life In Today's World",
@@ -4750,7 +4750,7 @@
     "raw_row_number": "207"
   },
   {
-    "uuid": "019fc4e7-d1e6-7bdf-8337-e1c4f98e7236",
+    "uuid": "191",
     "catalog_code": "LECTURE-2010-005",
     "legacy_tempid": "LS201002_2",
     "title": "Spiritual Life In Today's World",
@@ -4775,7 +4775,7 @@
     "raw_row_number": "208"
   },
   {
-    "uuid": "019fc4e7-d1e6-72bf-ac41-726f6806ab7c",
+    "uuid": "192",
     "catalog_code": "LECTURE-2010-006",
     "legacy_tempid": "LS201002_3",
     "title": "Spiritual Life In Today's World",
@@ -4800,7 +4800,7 @@
     "raw_row_number": "209"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f35-93be-e7f833e9a833",
+    "uuid": "193",
     "catalog_code": "LECTURE-2011-001",
     "legacy_tempid": "LS201101_1",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -4825,7 +4825,7 @@
     "raw_row_number": "211"
   },
   {
-    "uuid": "019fc4e7-d1e6-704a-88a0-e936eaad7ca8",
+    "uuid": "194",
     "catalog_code": "LECTURE-2011-002",
     "legacy_tempid": "LS201101_2",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -4850,7 +4850,7 @@
     "raw_row_number": "212"
   },
   {
-    "uuid": "019fc4e7-d1e6-75a9-8f77-349963814148",
+    "uuid": "195",
     "catalog_code": "LECTURE-2011-003",
     "legacy_tempid": "LS201101_3",
     "title": "Most Valuable Qualities for a Spiritual Seeker",
@@ -4875,7 +4875,7 @@
     "raw_row_number": "213"
   },
   {
-    "uuid": "019fc4e7-d1e6-7520-ac3e-3a790b7ada21",
+    "uuid": "196",
     "catalog_code": "LECTURE-2011-004",
     "legacy_tempid": "LS201102_1",
     "title": "Love",
@@ -4900,7 +4900,7 @@
     "raw_row_number": "214"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cdc-864f-061e68ba2c94",
+    "uuid": "197",
     "catalog_code": "LECTURE-2011-005",
     "legacy_tempid": "LS201102_2",
     "title": "Love",
@@ -4925,7 +4925,7 @@
     "raw_row_number": "215"
   },
   {
-    "uuid": "019fc4e7-d1e6-7243-97c1-9dfa010a15e2",
+    "uuid": "198",
     "catalog_code": "LECTURE-2011-006",
     "legacy_tempid": "LS201102_3",
     "title": "Love",
@@ -4950,7 +4950,7 @@
     "raw_row_number": "216"
   },
   {
-    "uuid": "019fc4e7-d1e6-70a6-affe-a4f05c0e11ed",
+    "uuid": "199",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q01",
     "title": "Q&A Session (Jan 2011)",
@@ -4975,7 +4975,7 @@
     "raw_row_number": "218"
   },
   {
-    "uuid": "019fc4e7-d1e6-711a-8de3-b6a8e89547a2",
+    "uuid": "200",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q02",
     "title": "Q&A Session (Mar 2011)",
@@ -5000,7 +5000,7 @@
     "raw_row_number": "219"
   },
   {
-    "uuid": "019fc4e7-d1e6-7190-a106-e4494aab4f32",
+    "uuid": "201",
     "catalog_code": "",
     "legacy_tempid": "SAT2011Q03",
     "title": "Q&A Session (Jul 2011)",
@@ -5025,7 +5025,7 @@
     "raw_row_number": "220"
   },
   {
-    "uuid": "019fc4e7-d1e6-774e-ad0f-2982f20bb90a",
+    "uuid": "202",
     "catalog_code": "",
     "legacy_tempid": "VOL101",
     "title": "101 Volume I-Power vs Force (Part 1).mp4",
@@ -5050,7 +5050,7 @@
     "raw_row_number": "223"
   },
   {
-    "uuid": "019fc4e7-d1e6-762e-b898-9c183832e71a",
+    "uuid": "203",
     "catalog_code": "",
     "legacy_tempid": "VOL102",
     "title": "102 Volume II-David Hawkins -Applied Kinesiology-Power vs Force - Part 2.mp4",
@@ -5075,7 +5075,7 @@
     "raw_row_number": "224"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a43-ba0d-6bd5e5219641",
+    "uuid": "204",
     "catalog_code": "",
     "legacy_tempid": "VOL201",
     "title": "201 Volume II-Consciousness and Addiction (Part 1).mp4",
@@ -5100,7 +5100,7 @@
     "raw_row_number": "225"
   },
   {
-    "uuid": "019fc4e7-d1e6-731b-a5a7-ce10a6cb6e4a",
+    "uuid": "205",
     "catalog_code": "",
     "legacy_tempid": "VOL202",
     "title": "202 Volume II-Consciousness and Addiction (Part 2).mp4",
@@ -5125,7 +5125,7 @@
     "raw_row_number": "226"
   },
   {
-    "uuid": "019fc4e7-d1e6-778e-805b-506adb22a0c5",
+    "uuid": "206",
     "catalog_code": "",
     "legacy_tempid": "VOL301",
     "title": "301 Volume III-Advanced States of Consciousness (Part 1).mp4",
@@ -5150,7 +5150,7 @@
     "raw_row_number": "227"
   },
   {
-    "uuid": "019fc4e7-d1e6-7238-9dea-3e5c3461a7e9",
+    "uuid": "207",
     "catalog_code": "",
     "legacy_tempid": "VOL302",
     "title": "302 Volume III-Advanced States of Consciousness (Part 2).mp4",
@@ -5175,7 +5175,7 @@
     "raw_row_number": "228"
   },
   {
-    "uuid": "019fc4e7-d1e6-7087-9a74-df50041d63d7",
+    "uuid": "208",
     "catalog_code": "",
     "legacy_tempid": "VOL401",
     "title": "401 Volume IV-How to Tell the Truth about Anything (Part 1).mp4",
@@ -5200,7 +5200,7 @@
     "raw_row_number": "229"
   },
   {
-    "uuid": "019fc4e7-d1e6-7bcb-8645-1a241edb1b33",
+    "uuid": "209",
     "catalog_code": "",
     "legacy_tempid": "VOL402",
     "title": "402 Volume IV-How to Tell the Truth about Anything (Part 2).mp4",
@@ -5225,7 +5225,7 @@
     "raw_row_number": "230"
   },
   {
-    "uuid": "019fc4e7-d1e6-7fdd-a977-f0c0a7319d6e",
+    "uuid": "210",
     "catalog_code": "",
     "legacy_tempid": "VOL501",
     "title": "501 Volume V-Undoing the Barriers to Spiritual Progress (Part 1).mp4",
@@ -5250,7 +5250,7 @@
     "raw_row_number": "231"
   },
   {
-    "uuid": "019fc4e7-d1e6-7e3e-b82c-36b8e4773d8d",
+    "uuid": "211",
     "catalog_code": "",
     "legacy_tempid": "VOL502",
     "title": "502 Volume V-Undoing the Barriers to Spiritual Progress (Part 2)- converted.mp4",
@@ -5275,7 +5275,7 @@
     "raw_row_number": "232"
   },
   {
-    "uuid": "019fc4e7-d1e6-72c4-914b-d2a749e6fcf6",
+    "uuid": "212",
     "catalog_code": "",
     "legacy_tempid": "VOL503",
     "title": "503 Volume V-Undoing the Barriers to Spiritual Progress (Part 3)- converted.mp4",
@@ -5300,7 +5300,7 @@
     "raw_row_number": "233"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f08-9a95-19eaad4bce2a",
+    "uuid": "213",
     "catalog_code": "",
     "legacy_tempid": "VOL601",
     "title": "601 Volume VI-How to Raise Your Level of Consciousness-converted.mp4",
@@ -5325,7 +5325,7 @@
     "raw_row_number": "234"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b74-9f0a-5dea7e1e918a",
+    "uuid": "214",
     "catalog_code": "",
     "legacy_tempid": "VOL701",
     "title": "701 Volume VII A-Conversation with Knowingness-converted.mp4",
@@ -5350,7 +5350,7 @@
     "raw_row_number": "235"
   },
   {
-    "uuid": "019fc4e7-d1e6-7519-a374-f3326bd0c2e6",
+    "uuid": "215",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART1.mp4",
@@ -5375,7 +5375,7 @@
     "raw_row_number": "239"
   },
   {
-    "uuid": "019fc4e7-d1e6-7823-9152-b5c52cfb5921",
+    "uuid": "216",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART2.mp4",
@@ -5400,7 +5400,7 @@
     "raw_row_number": "240"
   },
   {
-    "uuid": "019fc4e7-d1e6-7e6b-8c03-36ff0e1b8172",
+    "uuid": "217",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Become That Which You Are (June 2004) PART3.mp4",
@@ -5425,7 +5425,7 @@
     "raw_row_number": "241"
   },
   {
-    "uuid": "019fc4e7-d1e6-7c00-b134-cdc3f4e192da",
+    "uuid": "218",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART1.mp4",
@@ -5450,7 +5450,7 @@
     "raw_row_number": "242"
   },
   {
-    "uuid": "019fc4e7-d1e6-7f9d-b736-d360ebc7a079",
+    "uuid": "219",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART2.mp4",
@@ -5475,7 +5475,7 @@
     "raw_row_number": "243"
   },
   {
-    "uuid": "019fc4e7-d1e6-7514-984d-b3111159c30d",
+    "uuid": "220",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Love is a Way of Being (January 2004) PART3.mp4",
@@ -5500,7 +5500,7 @@
     "raw_row_number": "244"
   },
   {
-    "uuid": "019fc4e7-d1e6-737e-af96-07f462b15b45",
+    "uuid": "221",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003).mp4",
@@ -5525,7 +5525,7 @@
     "raw_row_number": "245"
   },
   {
-    "uuid": "019fc4e7-d1e6-76d8-bdf4-d05a26da8442",
+    "uuid": "222",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART1.mp4",
@@ -5550,7 +5550,7 @@
     "raw_row_number": "246"
   },
   {
-    "uuid": "019fc4e7-d1e6-7362-acdb-39c6e46168e6",
+    "uuid": "223",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART2.mp4",
@@ -5575,7 +5575,7 @@
     "raw_row_number": "247"
   },
   {
-    "uuid": "019fc4e7-d1e6-74c9-9bb2-9eacd120e2a2",
+    "uuid": "224",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness PART3.mp4",
@@ -5600,7 +5600,7 @@
     "raw_row_number": "248"
   },
   {
-    "uuid": "019fc4e7-d1e6-7633-a07a-832b7597e16e",
+    "uuid": "225",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Devotion to Truth.mp4",
@@ -5625,7 +5625,7 @@
     "raw_row_number": "249"
   },
   {
-    "uuid": "019fc4e7-d1e6-7365-bfb4-581037fabdb7",
+    "uuid": "226",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Mind, Heart, and Service PART1.mp4",
@@ -5650,7 +5650,7 @@
     "raw_row_number": "250"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b22-8337-86c00621ddcf",
+    "uuid": "227",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Mind, Heart, and Service PART2.mp4",
@@ -5675,7 +5675,7 @@
     "raw_row_number": "251"
   },
   {
-    "uuid": "019fc4e7-d1e6-787d-8c31-862723aef87a",
+    "uuid": "228",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Will PART1.mp4",
@@ -5700,7 +5700,7 @@
     "raw_row_number": "252"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cb5-ad58-10f7268bfe6a",
+    "uuid": "229",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Will PART2.mp4",
@@ -5725,7 +5725,7 @@
     "raw_row_number": "253"
   },
   {
-    "uuid": "019fc4e7-d1e6-78df-bf3a-5a3c28111eb8",
+    "uuid": "230",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART1.mp4",
@@ -5750,7 +5750,7 @@
     "raw_row_number": "254"
   },
   {
-    "uuid": "019fc4e7-d1e6-72f4-adbd-4e8c836d81dc",
+    "uuid": "231",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART2.mp4",
@@ -5775,7 +5775,7 @@
     "raw_row_number": "255"
   },
   {
-    "uuid": "019fc4e7-d1e6-76f9-ba61-e97814544476",
+    "uuid": "232",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities PART3.mp4",
@@ -5800,7 +5800,7 @@
     "raw_row_number": "256"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a52-9c83-955e9e92619b",
+    "uuid": "233",
     "catalog_code": "",
     "legacy_tempid": "OFF01",
     "title": "A-01 Office Series-Stress.mp4",
@@ -5825,7 +5825,7 @@
     "raw_row_number": "260"
   },
   {
-    "uuid": "019fc4e7-d1e6-7ea7-bb11-5ad8ec811e36",
+    "uuid": "234",
     "catalog_code": "",
     "legacy_tempid": "OFF02",
     "title": "A-02 Office Series-Health.mp4",
@@ -5850,7 +5850,7 @@
     "raw_row_number": "261"
   },
   {
-    "uuid": "019fc4e7-d1e6-709e-8a74-77b3d4f55c44",
+    "uuid": "235",
     "catalog_code": "",
     "legacy_tempid": "OFF03",
     "title": "A-03 Office Series-Spiritual First Aid.mp4",
@@ -5875,7 +5875,7 @@
     "raw_row_number": "262"
   },
   {
-    "uuid": "019fc4e7-d1e6-7224-8a66-6df2b0d0dac1",
+    "uuid": "236",
     "catalog_code": "",
     "legacy_tempid": "OFF04",
     "title": "A-04 Office Series-Sexuality.mp4",
@@ -5900,7 +5900,7 @@
     "raw_row_number": "263"
   },
   {
-    "uuid": "019fc4e7-d1e6-7ebc-aa8d-86e2f6be1005",
+    "uuid": "237",
     "catalog_code": "",
     "legacy_tempid": "OFF05",
     "title": "A-05 Office Series-The Aging Process.mp4",
@@ -5925,7 +5925,7 @@
     "raw_row_number": "264"
   },
   {
-    "uuid": "019fc4e7-d1e6-7572-a316-c12e02e49df9",
+    "uuid": "238",
     "catalog_code": "",
     "legacy_tempid": "OFF06",
     "title": "A-06 Office Series-Handling Major Crises.mp4",
@@ -5950,7 +5950,7 @@
     "raw_row_number": "265"
   },
   {
-    "uuid": "019fc4e7-d1e6-7157-88bb-486d1ff9942f",
+    "uuid": "239",
     "catalog_code": "",
     "legacy_tempid": "OFF07",
     "title": "A-07 Office Series-Worry Fear and Anxiety.mp4",
@@ -5975,7 +5975,7 @@
     "raw_row_number": "266"
   },
   {
-    "uuid": "019fc4e7-d1e6-796a-9c7e-8254469c6d33",
+    "uuid": "240",
     "catalog_code": "",
     "legacy_tempid": "OFF08",
     "title": "A-08 Office Series-Pain and Suffering.mp4",
@@ -6000,7 +6000,7 @@
     "raw_row_number": "267"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cb5-971b-2d2fa4f27dfa",
+    "uuid": "241",
     "catalog_code": "",
     "legacy_tempid": "OFF09",
     "title": "A-09 Office Series-Losing Weight.mp4",
@@ -6025,7 +6025,7 @@
     "raw_row_number": "268"
   },
   {
-    "uuid": "019fc4e7-d1e6-7a2a-abac-efdf591c74c8",
+    "uuid": "242",
     "catalog_code": "",
     "legacy_tempid": "OFF10",
     "title": "A-10 Office Series-Depression.mp4",
@@ -6050,7 +6050,7 @@
     "raw_row_number": "269"
   },
   {
-    "uuid": "019fc4e7-d1e6-756f-b6a9-fc34c5e00cca",
+    "uuid": "243",
     "catalog_code": "",
     "legacy_tempid": "OFF11",
     "title": "A-11 Office Series-Illness and Self-Healing.mp4",
@@ -6075,7 +6075,7 @@
     "raw_row_number": "270"
   },
   {
-    "uuid": "019fc4e7-d1e6-7ede-9e05-58d17372a66e",
+    "uuid": "244",
     "catalog_code": "",
     "legacy_tempid": "OFF12",
     "title": "A-12 Office Series-Alcoholism.mp4",
@@ -6100,7 +6100,7 @@
     "raw_row_number": "271"
   },
   {
-    "uuid": "019fc4e7-d1e6-721e-91eb-a79fdb069251",
+    "uuid": "245",
     "catalog_code": "",
     "legacy_tempid": "OFF13",
     "title": "B-01 Office Series-Drug Addiction and Alcoholism....mp4",
@@ -6125,7 +6125,7 @@
     "raw_row_number": "272"
   },
   {
-    "uuid": "019fc4e7-d1e6-7216-ba76-b365e892aea8",
+    "uuid": "246",
     "catalog_code": "",
     "legacy_tempid": "OFF14",
     "title": "where is B-02? might not exist.",
@@ -6150,7 +6150,7 @@
     "raw_row_number": "273"
   },
   {
-    "uuid": "019fc4e7-d1e6-75a1-b219-f1c4e848506c",
+    "uuid": "247",
     "catalog_code": "",
     "legacy_tempid": "OFF15",
     "title": "B-03 Office Series-A Map Of Consciousness.mp4",
@@ -6175,7 +6175,7 @@
     "raw_row_number": "274"
   },
   {
-    "uuid": "019fc4e7-d1e6-74df-ae52-ac762548709e",
+    "uuid": "248",
     "catalog_code": "",
     "legacy_tempid": "OFF16",
     "title": "B-04 Office Series-Cancer.mp4",
@@ -6200,7 +6200,7 @@
     "raw_row_number": "275"
   },
   {
-    "uuid": "019fc4e7-d1e6-76f5-a9e2-2ffa57d2450f",
+    "uuid": "249",
     "catalog_code": "",
     "legacy_tempid": "OFF17",
     "title": "where is B-05? might not exist.",
@@ -6225,7 +6225,7 @@
     "raw_row_number": "276"
   },
   {
-    "uuid": "019fc4e7-d1e6-7e61-96a9-6e92ec2d0f2a",
+    "uuid": "250",
     "catalog_code": "",
     "legacy_tempid": "OFF18",
     "title": "B-06 Office Series-Death and Dying.mp4",
@@ -6250,7 +6250,7 @@
     "raw_row_number": "277"
   },
   {
-    "uuid": "019fc4e7-d1e6-7686-a4a9-b4e026c80915",
+    "uuid": "251",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jan 2007)",
@@ -6275,7 +6275,7 @@
     "raw_row_number": "280"
   },
   {
-    "uuid": "019fc4e7-d1e6-76b4-b22b-e32a12d66f6b",
+    "uuid": "252",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Mar 2007)",
@@ -6300,7 +6300,7 @@
     "raw_row_number": "281"
   },
   {
-    "uuid": "019fc4e7-d1e6-77e8-885e-095f649b5c4f",
+    "uuid": "253",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2007)",
@@ -6325,7 +6325,7 @@
     "raw_row_number": "282"
   },
   {
-    "uuid": "019fc4e7-d1e6-7cb9-9731-0938ea01fabc",
+    "uuid": "254",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jul 2007)",
@@ -6350,7 +6350,7 @@
     "raw_row_number": "283"
   },
   {
-    "uuid": "019fc4e7-d1e6-7ddd-a10f-41b88085b3f1",
+    "uuid": "255",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2007)",
@@ -6375,7 +6375,7 @@
     "raw_row_number": "284"
   },
   {
-    "uuid": "019fc4e7-d1e6-7168-93d1-cbdf21fbb59e",
+    "uuid": "256",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2008)",
@@ -6400,7 +6400,7 @@
     "raw_row_number": "285"
   },
   {
-    "uuid": "019fc4e7-d1e6-7b97-b0f3-540d61684ebd",
+    "uuid": "257",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2008)",
@@ -6425,7 +6425,7 @@
     "raw_row_number": "286"
   },
   {
-    "uuid": "019fc4e7-d1e6-7757-b3d8-ce4b9cd076e7",
+    "uuid": "258",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Jan 2009)",
@@ -6450,7 +6450,7 @@
     "raw_row_number": "287"
   },
   {
-    "uuid": "019fc4e7-d1e6-75ec-9dfe-0612af78c34d",
+    "uuid": "259",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (May 2009)",
@@ -6475,7 +6475,7 @@
     "raw_row_number": "288"
   },
   {
-    "uuid": "019fc4e7-d1e6-7365-bec0-24f93ad939c4",
+    "uuid": "260",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Sep 2009)",
@@ -6500,7 +6500,7 @@
     "raw_row_number": "289"
   },
   {
-    "uuid": "019fc4e7-d1e7-7a8e-90aa-e010906ecb59",
+    "uuid": "261",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Nov 2009)",
@@ -6525,7 +6525,7 @@
     "raw_row_number": "290"
   },
   {
-    "uuid": "019fc4e7-d1e7-739f-a7ad-530b14fc6493",
+    "uuid": "262",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Feb 2010)",
@@ -6550,7 +6550,7 @@
     "raw_row_number": "291"
   },
   {
-    "uuid": "019fc4e7-d1e7-7011-b7ec-297ea46ba9e7",
+    "uuid": "263",
     "catalog_code": "",
     "legacy_tempid": "2cds each?",
     "title": "Satsang Series (Nov 2010)",
@@ -6575,7 +6575,7 @@
     "raw_row_number": "292"
   },
   {
-    "uuid": "019fc4e7-d1e7-7472-9e25-78174b1f887d",
+    "uuid": "264",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "26. \"In the World But Not of It\" –",
@@ -6600,7 +6600,7 @@
     "raw_row_number": "296"
   },
   {
-    "uuid": "019fc4e7-d1e7-74b3-bda4-3409216dc1f7",
+    "uuid": "265",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Audio 27. Golden Word Book Signing – Audio",
@@ -6625,7 +6625,7 @@
     "raw_row_number": "297"
   },
   {
-    "uuid": "019fc4e7-d1e7-74fb-ac04-ace36d1a485c",
+    "uuid": "266",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "All is Divinity",
@@ -6650,7 +6650,7 @@
     "raw_row_number": "300"
   },
   {
-    "uuid": "019fc4e7-d1e7-7d89-b8b7-cf710c856883",
+    "uuid": "267",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Compassion: The Pathway of the Heart",
@@ -6675,7 +6675,7 @@
     "raw_row_number": "301"
   },
   {
-    "uuid": "019fc4e7-d1e7-7da7-8f2d-f640e9710a27",
+    "uuid": "268",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "God is Hidden Within the Beauty of the Music",
@@ -6700,7 +6700,7 @@
     "raw_row_number": "302"
   },
   {
-    "uuid": "019fc4e7-d1e7-7950-b538-b6eb3af29d63",
+    "uuid": "269",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "God is The Infinite Field",
@@ -6725,7 +6725,7 @@
     "raw_row_number": "303"
   },
   {
-    "uuid": "019fc4e7-d1e7-7a0d-a306-6d2c402f8014",
+    "uuid": "270",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Reality",
@@ -6750,7 +6750,7 @@
     "raw_row_number": "304"
   },
   {
-    "uuid": "019fc4e7-d1e7-762f-9baa-fd4da6c6ba9d",
+    "uuid": "271",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Ever-Present Joy",
@@ -6775,7 +6775,7 @@
     "raw_row_number": "305"
   },
   {
-    "uuid": "019fc4e7-d1e7-7f22-87d2-06e63ca17663",
+    "uuid": "272",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Power of Devotion",
@@ -6800,7 +6800,7 @@
     "raw_row_number": "306"
   },
   {
-    "uuid": "019fc4e7-d1e7-7284-86ff-7a05e4934df2",
+    "uuid": "273",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Prevailing Silence",
@@ -6825,7 +6825,7 @@
     "raw_row_number": "307"
   },
   {
-    "uuid": "019fc4e7-d1e7-7736-b0bd-67ff80a22ce5",
+    "uuid": "274",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Transcending the Ego",
@@ -6850,7 +6850,7 @@
     "raw_row_number": "308"
   },
   {
-    "uuid": "019fc4e7-d1e7-7bd8-b07b-12e486e16a2b",
+    "uuid": "275",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Truth Shines Forth",
@@ -6875,7 +6875,7 @@
     "raw_row_number": "309"
   },
   {
-    "uuid": "019fc4e7-d1e7-766c-b0be-102c1e9bd1f9",
+    "uuid": "276",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Virtues: The Spiritual Foundation",
@@ -6900,7 +6900,7 @@
     "raw_row_number": "310"
   },
   {
-    "uuid": "019fc4e7-d1e7-7200-8502-c56e42357ac4",
+    "uuid": "277",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "You Are the Light of Consciousness",
@@ -6925,7 +6925,7 @@
     "raw_row_number": "311"
   },
   {
-    "uuid": "019fc4e7-d1e7-756b-848b-ea3fc2643ad7",
+    "uuid": "278",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "How to Live Your Life Like a Prayer.mp4",
@@ -6950,7 +6950,7 @@
     "raw_row_number": "315"
   },
   {
-    "uuid": "019fc4e7-d1e7-7142-9121-bbac774cb552",
+    "uuid": "279",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "How to See the Reality of Life.mp4",
@@ -6975,7 +6975,7 @@
     "raw_row_number": "316"
   },
   {
-    "uuid": "019fc4e7-d1e7-7198-a769-d90f01ab8b8d",
+    "uuid": "280",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Improving Your Relationships.mp4",
@@ -7000,7 +7000,7 @@
     "raw_row_number": "317"
   },
   {
-    "uuid": "019fc4e7-d1e7-790b-a287-c40fa98022c5",
+    "uuid": "281",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Permanent Inner Peace.mp4",
@@ -7025,7 +7025,7 @@
     "raw_row_number": "318"
   },
   {
-    "uuid": "019fc4e7-d1e7-7016-b535-958e7e027304",
+    "uuid": "282",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Importance of Family.mp4",
@@ -7050,7 +7050,7 @@
     "raw_row_number": "319"
   },
   {
-    "uuid": "019fc4e7-d1e7-7250-b9ac-0eb1cc2324e9",
+    "uuid": "283",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What is Meant by Spiritual.mp4",
@@ -7075,7 +7075,7 @@
     "raw_row_number": "320"
   },
   {
-    "uuid": "019fc4e7-d1e7-7ba8-8ab8-2b9c526b896a",
+    "uuid": "284",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What is Real Success.mp4",
@@ -7100,7 +7100,7 @@
     "raw_row_number": "321"
   },
   {
-    "uuid": "019fc4e7-d1e7-7658-9971-9d3eb7526e6f",
+    "uuid": "285",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "What You are Changes the World.mp4",
@@ -7125,7 +7125,7 @@
     "raw_row_number": "322"
   },
   {
-    "uuid": "019fc4e7-d1e7-7e4d-bd0e-879d6b774218",
+    "uuid": "286",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Power vs Force",
@@ -7150,7 +7150,7 @@
     "raw_row_number": "325"
   },
   {
-    "uuid": "019fc4e7-d1e7-7416-8d48-a0b5f4dd1dc5",
+    "uuid": "287",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Eye of the I",
@@ -7175,7 +7175,7 @@
     "raw_row_number": "326"
   },
   {
-    "uuid": "019fc4e7-d1e7-7096-a237-5862a0ce1022",
+    "uuid": "288",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "I Reality and Subjectivity",
@@ -7200,7 +7200,7 @@
     "raw_row_number": "327"
   },
   {
-    "uuid": "019fc4e7-d1e7-79cb-bc12-718d34b89a0b",
+    "uuid": "289",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Truth vs Falsehood",
@@ -7225,7 +7225,7 @@
     "raw_row_number": "328"
   },
   {
-    "uuid": "019fc4e7-d1e7-79b4-99a0-1bf383745b9a",
+    "uuid": "290",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Letting Go",
@@ -7250,7 +7250,7 @@
     "raw_row_number": "329"
   },
   {
-    "uuid": "019fc4e7-d1e7-7192-9b48-f1b46f7a3a6c",
+    "uuid": "291",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Healing and Recovery",
@@ -7275,7 +7275,7 @@
     "raw_row_number": "330"
   },
   {
-    "uuid": "019fc4e7-d1e7-7aee-b21a-4eef38685e59",
+    "uuid": "292",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Discovery of the Presence of God",
@@ -7300,7 +7300,7 @@
     "raw_row_number": "331"
   },
   {
-    "uuid": "019fc4e7-d1e7-7ed5-a442-ecc7d29affb9",
+    "uuid": "293",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Reality, Spirituality and Modern Man",
@@ -7325,7 +7325,7 @@
     "raw_row_number": "332"
   },
   {
-    "uuid": "019fc4e7-d1e7-7824-9d5d-28bb986f8fed",
+    "uuid": "294",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Transcending the Levels of Consciousness",
@@ -7350,7 +7350,7 @@
     "raw_row_number": "333"
   },
   {
-    "uuid": "019fc4e7-d1e7-79d8-b768-723ff09b362d",
+    "uuid": "295",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Map of Consciousness Explained",
@@ -7375,7 +7375,7 @@
     "raw_row_number": "334"
   },
   {
-    "uuid": "019fc4e7-d1e7-7681-b805-9876f313b8a3",
+    "uuid": "296",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Success Is for You",
@@ -7400,7 +7400,7 @@
     "raw_row_number": "335"
   },
   {
-    "uuid": "019fc4e7-d1e7-72d3-833a-d03202d81997",
+    "uuid": "297",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Daily Reflections",
@@ -7425,7 +7425,7 @@
     "raw_row_number": "337"
   },
   {
-    "uuid": "019fc4e7-d1e7-7e8a-9d49-7a08ccf7ca02",
+    "uuid": "298",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Along the Path to Enlightenment",
@@ -7450,7 +7450,7 @@
     "raw_row_number": "339"
   },
   {
-    "uuid": "019fc4e7-d1e7-7414-8d11-d095909fe248",
+    "uuid": "299",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Dissolving the Ego",
@@ -7475,7 +7475,7 @@
     "raw_row_number": "340"
   },
   {
-    "uuid": "019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091",
+    "uuid": "300",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "In the World, But Not of It",
@@ -7500,7 +7500,7 @@
     "raw_row_number": "341"
   },
   {
-    "uuid": "019fc4e7-d1e7-74d5-bfca-7e2d86784c95",
+    "uuid": "301",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Highest Level of Enlightenment",
@@ -7525,7 +7525,7 @@
     "raw_row_number": "342"
   },
   {
-    "uuid": "019fc4e7-d1e7-7c08-bad5-cf50497d4b8f",
+    "uuid": "302",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Path to Spiritual Advancement",
@@ -7550,7 +7550,7 @@
     "raw_row_number": "343"
   },
   {
-    "uuid": "019fc4e7-d1e7-7293-8f46-4a12e3a4b78a",
+    "uuid": "303",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Path to Spiritual Advancement: How to Transcend the Ego and Experience the Presence of God",
@@ -7575,7 +7575,7 @@
     "raw_row_number": "347"
   },
   {
-    "uuid": "019fc4e7-d1e7-7aef-b133-c5d61f3de9c8",
+    "uuid": "304",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Evolution of Consciousness: Navigating the Levels of Awareness and Unlocking Spiritual Potential",
@@ -7600,7 +7600,7 @@
     "raw_row_number": "348"
   },
   {
-    "uuid": "019fc4e7-d1e7-75fc-8855-a613498e74fd",
+    "uuid": "305",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Beyond Illusion: Exploring Perception, Ego, and Meditation on the Path to Truth",
@@ -7625,7 +7625,7 @@
     "raw_row_number": "349"
   },
   {
-    "uuid": "019fc4e7-d1e7-7e54-8e21-a7f2dad9c16b",
+    "uuid": "306",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Spiritual Power and Integrity: Uncovering Spiritual Reality and Realizing Peace, Love, and Divinity",
@@ -7650,7 +7650,7 @@
     "raw_row_number": "350"
   },
   {
-    "uuid": "019fc4e7-d1e7-790b-bad3-b7d6bd8b8af9",
+    "uuid": "307",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Karma and Devotion: The Sacred Path to God through the Heart",
@@ -7675,7 +7675,7 @@
     "raw_row_number": "351"
   },
   {
-    "uuid": "019fc4e7-d1e7-75e0-9656-7e644a5205e3",
+    "uuid": "308",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "The Final Doorway to Enlightenment: Prayer, Transcendence and Realization of the Self",

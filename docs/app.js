@@ -130,7 +130,8 @@
   };
 
   const COLUMN_LABELS = {
-    uuid: "Master UUID",
+    uuid: "Master ID",
+    master_uuid: "Master ID",
     raw_row_number: "Raw Row",
     catalog_code: "Catalogue Code",
     legacy_tempid: "Legacy ID",
@@ -140,6 +141,7 @@
     proposed_owned: "Proposed Owned",
     proposed_year: "Proposed Year",
     proposed_title: "Proposed Title",
+    matched_master_uuids: "Matched Master IDs",
     source_product_id: "Source Product ID",
     source_name: "Source",
     official_product_url: "Official Product URL",
@@ -182,6 +184,12 @@
     "raw_unnamed_10", "raw_unnamed_11",
   ];
   const COLUMN_WIDTHS = {
+    uuid: 90,
+    master_uuid: 90,
+    matched_master_uuids: 130,
+    raw_row_number: 90,
+    catalog_code: 160,
+    legacy_tempid: 120,
     title: 300,
     raw_title: 300,
     proposed_title: 300,
@@ -201,8 +209,8 @@
   };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
-      frozen: ["title"],
+      priority: ["uuid", "title", "item_type", "series", "year", "month", "format", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      frozen: ["uuid", "title"],
     },
     original: {
       priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
@@ -214,8 +222,9 @@
     masterExclusions: { priority: ["raw_title", "disposition", "review_reason", "raw_row_number", "raw_tempid", "raw_we_have", "raw_product_link"], frozen: ["raw_title"] },
     migrationReview: { priority: ["proposed_title", "disposition", "review_reason", "proposed_item_type", "proposed_series", "proposed_year", "proposed_owned", "raw_row_number", "raw_title"], frozen: ["proposed_title"] },
     officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
-    veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
-    productRelationships: { priority: ["master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_title"] },
+    veritasMappingDecisions: { priority: ["veritas_product_id", "mapping_status", "matched_master_uuids", "matched_master_titles", "review_status", "decision_reason"], frozen: ["veritas_product_id"] },
+    veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_uuids", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
+    productRelationships: { priority: ["master_uuid", "master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_uuid", "master_title"] },
     seriesCompilations: { priority: ["official_product_title", "target_series", "target_year", "relationship_type", "included_lecture_count", "review_status", "target_lecture_titles"], frozen: ["official_product_title"] },
     hayhouseProducts: { priority: ["official_title", "format", "mapping_status", "official_product_url", "review_notes"], frozen: ["official_title"] },
     audibleProducts: { priority: ["official_title", "mapping_status", "audible_url", "review_notes"], frozen: ["official_title"] },

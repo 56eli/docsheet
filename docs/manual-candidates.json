@@ -15,7 +15,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-1546",
@@ -33,7 +33,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-1548",
@@ -51,7 +51,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-1792",
@@ -69,7 +69,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-1814",
@@ -87,7 +87,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-38608",
@@ -105,7 +105,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-43146",
@@ -123,7 +123,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-47979",
@@ -141,7 +141,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-50485",
@@ -159,7 +159,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-50488",
@@ -177,7 +177,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-53036",
@@ -195,7 +195,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-53058",
@@ -213,7 +213,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-53277",
@@ -231,7 +231,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-54219",
@@ -249,7 +249,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-55425",
@@ -267,7 +267,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-55473",
@@ -285,7 +285,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   },
   {
     "candidate_key": "manual-veritas-55576",
@@ -303,6 +303,6 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "not_promoted",
-    "promotion_notes": "Requires an explicit master-promotion decision and durable master UUID."
+    "promotion_notes": "Requires an explicit master-promotion decision and durable master ID."
   }
 ]

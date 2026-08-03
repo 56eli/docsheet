@@ -57,7 +57,7 @@ Wide spreadsheet rows are hard to read. Clicking a row could open a side panel/m
 - all source links,
 - notes/evidence,
 - relationship summaries,
-- copy buttons for UUID/source URLs.
+- copy buttons for ID/source URLs.
 
 **Impact:** High. Keeps the table compact while preserving full detail.
 

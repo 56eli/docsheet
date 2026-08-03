@@ -38,7 +38,7 @@ Each record below is present in the committed draft CSV and therefore included b
 
 ## Field differences for matching provenance rows
 
-Each entry is an exact current-draft value followed by the current ledger-derived value. UUIDs are included if they differ, because an identity change requires review.
+Each entry is an exact current-draft value followed by the current ledger-derived value. Master IDs are included if they differ, because an identity change requires review.
 
 No matching-record field differences were found.
 

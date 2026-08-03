@@ -12,7 +12,7 @@ The ledger is the approval surface for migrating the existing spreadsheet into t
 
 | Proposed disposition | Rows | Treatment |
 |---|---:|---|
-| `item` | 308 | Candidate flat catalogue records. No UUID or catalogue code has been assigned yet. |
+| `item` | 308 | Candidate flat catalogue records. No ID or catalogue code has been assigned yet. |
 | `blank_separator` | 31 | Empty presentation rows; retained as raw provenance only. |
 | `series_context` | 21 | Annual/category labels used only to propose a `series` tag for following item candidates. |
 | `research_note` | 8 | Editorial gaps, missing-material reminders, or ambiguous note rows; not items until identity is confirmed. |
@@ -23,7 +23,7 @@ The ledger is the approval surface for migrating the existing spreadsheet into t
 ## Safe proposal rules applied
 
 - The raw source CSV is read only; it is not altered.
-- No UUIDs or catalogue codes are generated yet.
+- No IDs or catalogue codes are generated yet.
 - `LSYYYYMM_part` values only suggest year/month, lecture type, DVD detail, and series context; they are retained unchanged as `raw_tempid`.
 - ✅ and ❌ are only proposed as `true` and `false` on candidate item rows; blank stays blank.
 - Existing valid Veritas product links are proposed as `source_url_veritas` on item candidates.

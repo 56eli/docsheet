@@ -8,7 +8,7 @@
 
 - Scope: all Hawkins-related material, including authorized derivatives, edited/transcribed/compiled and posthumous material.
 - Catalogue shape: flat public records; every disc, file, or part is a separate top-level item.
-- Identity: each item receives an immutable technical UUID plus a readable `TYPE-YEAR-SEQUENCE` catalogue code; current `tempid` stays as a legacy reference only.
+- Identity: each item receives an compact numeric master ID plus a readable `TYPE-YEAR-SEQUENCE` catalogue code; current `tempid` stays as a legacy reference only.
 - Metadata: canonical title; core tags for type, series, year, and format; per-part ownership; item-to-series grouping only.
 - Editions: make a separate item only where content changes.
 - Sources: retain separate official-source URL columns; approved starting sources are Veritas, Hay House, Nightingale-Conant, and Audible.
@@ -22,7 +22,7 @@ This is a flat **item** table. It contains true catalogue items only; hierarchy 
 
 | Field | Required | Format / controlled values | Purpose and migration rule |
 |---|---|---|---|
-| `uuid` | Yes | UUIDv7 | Permanent universal technical ID, created once for each approved item. Never derived from title or URL. |
+| `uuid` | Yes | Compact numeric master ID, 1..10000 | Permanent technical ID, created once for each approved item. The field name is retained for compatibility. |
 | `catalog_code` | Yes | `TYPE-YEAR-SEQUENCE` | Readable unique item ID, for example `LECTURE-2002-001` or `BOOK-2011-001`. Sequence is per item; because discs/files are top-level items, each gets its own code. |
 | `legacy_tempid` | No | Raw text | Preserves current `tempid`; it is not unique enough to become the primary key. |
 | `title` | Yes | Canonical human-readable title | Normalized canonical title. Do not place collection URLs or editorial notes here. |
@@ -56,7 +56,7 @@ This is a flat **item** table. It contains true catalogue items only; hierarchy 
 
 | Current raw field / row form | Current condition | Proposed curated destination | Rule / approval need |
 |---|---|---|---|
-| `uuid` | Empty in all 374 rows | `uuid` | Generate UUIDv7 only for approved true-item rows. |
+| `uuid` | Empty in all 374 rows | `uuid` | Generate compact numeric IDs only for approved true-item rows. |
 | `tempid` | 245 populated; 233 distinct; `2cds each?` repeated 13 times | `legacy_tempid` | Preserve raw value. Do not use placeholder/note values as IDs. |
 | `title` | Mixes item titles, section headings, notes, and URLs | `title`, `series`, `notes`, or migration ledger | Manual/approved classification required before output. Canonical item titles go to `title`; headings yield a `series` tag for associated items; notes/URLs do not become item titles. |
 | `WE HAVE?` | ✅, ❌, blank | `owned` | ✅ → `true`; ❌ → `false`; blank → blank. Apply only to true items. |
@@ -90,7 +90,7 @@ This classification is critical because the current 374 published rows are not 3
 
 ## 5. ID assignment rules
 
-1. Generate `uuid` as UUIDv7 after an item is approved. It is never reissued or changed.
+1. Generate `uuid` as a compact numeric ID after an item is approved. It is never reissued or changed.
 2. Generate `catalog_code` after canonical `item_type` and `year` are approved.
 3. `SEQUENCE` is a zero-padded running number among items sharing the same `TYPE-YEAR` prefix. Example: three distinct 2002 lecture-disc records could become `LECTURE-2002-001`, `LECTURE-2002-002`, and `LECTURE-2002-003`.
 4. Preserve any legacy identifier in `legacy_tempid`, even if malformed or duplicated. Never overwrite raw evidence.
@@ -102,7 +102,7 @@ The first identifiable 2002 DVD row currently has `tempid = LS200201_1`, title `
 
 ```json
 {
-  "uuid": "<generated UUIDv7 after approval>",
+  "uuid": "<generated compact numeric ID after approval>",
   "catalog_code": "LECTURE-2002-001",
   "legacy_tempid": "LS200201_1",
   "title": "Causality: The Ego's Foundation",

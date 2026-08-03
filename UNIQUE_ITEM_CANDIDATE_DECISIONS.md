@@ -13,7 +13,7 @@ Nine `unique_item` products reviewed in `UNIQUE_ITEM_REVIEW_PACKET.md` are recor
 - blank year where the product page did not establish a recording/release year;
 - `promotion_status = not_promoted`.
 
-They remain visible in **Everything** as official broad candidates but do not receive a master UUID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is recorded. *Spiritual Will Inspiring Q & A* is not retained as a candidate because its official URL already maps directly to two existing master parts; see `COMPILATION_CANDIDATE_DECISIONS.md`.
+They remain visible in **Everything** as official broad candidates but do not receive a master ID, catalogue code, ownership assertion, or master-source relationship until a separate promotion decision is recorded. *Spiritual Will Inspiring Q & A* is not retained as a candidate because its official URL already maps directly to two existing master parts; see `COMPILATION_CANDIDATE_DECISIONS.md`.
 
 ## Validation boundary
 

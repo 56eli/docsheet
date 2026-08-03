@@ -24,7 +24,7 @@ test('CSV export downloads the active filtered spreadsheet view', async ({ page 
 
   const csv = await fs.readFile(downloadPath, 'utf8');
   expect(csv).toContain('Causality');
-  expect(csv).toContain('Master UUID');
+  expect(csv).toContain('Master ID');
 });
 
 test('CSV export uses the selected view filename', async ({ page }) => {

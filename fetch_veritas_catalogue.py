@@ -261,17 +261,17 @@ def apply_mapping_decisions(
         if not decision["decision_reason"].strip():
             raise ValueError(f"{DECISIONS}:{line_number} needs a decision_reason")
         if any(item_uuid not in master_by_uuid for item_uuid in uuids):
-            raise ValueError(f"{DECISIONS}:{line_number} references an unknown master UUID")
+            raise ValueError(f"{DECISIONS}:{line_number} references an unknown master ID")
 
         expected_titles = " | ".join(master_by_uuid[item_uuid]["title"] for item_uuid in uuids)
         if decision["matched_master_titles"] != expected_titles:
             raise ValueError(
-                f"{DECISIONS}:{line_number} matched_master_titles must match the referenced master UUIDs"
+                f"{DECISIONS}:{line_number} matched_master_titles must match the referenced master IDs"
             )
         if status in {"matched_by_title", "matched_by_normalized_title"} and not uuids:
-            raise ValueError(f"{DECISIONS}:{line_number} match statuses require master UUIDs")
+            raise ValueError(f"{DECISIONS}:{line_number} match statuses require master IDs")
         if status not in {"matched_by_title", "matched_by_normalized_title"} and uuids:
-            raise ValueError(f"{DECISIONS}:{line_number} non-match statuses cannot contain master UUIDs")
+            raise ValueError(f"{DECISIONS}:{line_number} non-match statuses cannot contain master IDs")
 
         target = inventory_by_id[product_id]
         target["mapping_status"] = status

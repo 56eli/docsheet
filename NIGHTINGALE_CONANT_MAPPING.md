@@ -19,4 +19,4 @@
 
 The four items in `data/official_discovery_queue.csv` are the currently unreviewed Nightingale-Conant candidates: *The Ultimate David Hawkins Library*, *The Discovery*, *Healing*, and *Naked*. The remaining three programmes match existing research-master titles by name and should be treated as official source/format relationships until content comparison proves they are distinct works.
 
-No ownership, UUID, catalogue code, or item-type claim is added merely from this commercial catalogue listing.
+No ownership, ID, catalogue code, or item-type claim is added merely from this commercial catalogue listing.

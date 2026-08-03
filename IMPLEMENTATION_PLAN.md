@@ -75,7 +75,7 @@ Delivered and verified:
 
 1. Define a promotion-decision input keyed by `candidate_key`.
 2. Require approved final item type, year, format, ownership, source product, and promotion rationale.
-3. Extend the master builder to generate stable UUIDs/codes for promoted candidates while retaining manual provenance.
+3. Extend the master builder to generate stable IDs/codes for promoted candidates while retaining manual provenance.
 4. Keep non-promoted candidates visible in the review workspace.
 
 **Done when:** a selected candidate can enter the master reproducibly without direct generated-file edits.
@@ -91,7 +91,7 @@ Delivered and verified:
 **Deliverables**
 
 1. Publish versioned machine-readable contracts for master, candidates, source overrides, inventory decisions, item relationships, and series compilations.
-2. Validate controlled vocabularies, URL/source consistency, unique keys, UUIDs, years/months, and promotion state.
+2. Validate controlled vocabularies, URL/source consistency, unique keys, IDs, years/months, and promotion state.
 3. Emit a compact build manifest with input hashes, row counts, schema version, generator commit, and build time.
 4. Add a raw `process_data.py --check` mode that handles the dynamic metadata timestamp safely.
 

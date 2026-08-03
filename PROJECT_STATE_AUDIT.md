@@ -55,7 +55,7 @@ DocSheet is a static GitHub Pages catalogue/review workspace backed by a preserv
 
 | Check | Result |
 |---|---:|
-| Master UUIDs | 308 non-empty, 0 duplicates |
+| Master IDs | 308 non-empty, 0 duplicates |
 | Catalogue codes | 198 non-empty, 0 duplicates |
 | Raw row provenance keys | 308 non-empty, 0 duplicates |
 | Item types | 198 `lecture`, 23 `book`, 87 blank/unclassified |
@@ -150,7 +150,7 @@ The latest `Map Veritas Catalogue` run on `main` (`30803991007`) reached the can
 
 ### P1 — Define the candidate-promotion workflow
 
-**Issue:** 17 evidence-backed manual candidates are durable and validated, but no approved generator path promotes selected candidates into the master with UUID, catalogue code, ownership, source provenance, and rationale.
+**Issue:** 17 evidence-backed manual candidates are durable and validated, but no approved generator path promotes selected candidates into the master with ID, catalogue code, ownership, source provenance, and rationale.
 
 **Required remedy:** Add a promotion-decision input keyed by `candidate_key`; update `build_research_master.py` to generate stable promoted records; keep non-promoted candidates visible in review sheets.
 

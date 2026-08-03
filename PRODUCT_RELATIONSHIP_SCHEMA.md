@@ -15,7 +15,7 @@ The table is intentionally separate from the flat research-master schema. It can
 | Field | Rule | Purpose |
 |---|---|---|
 | `relationship_id` | Unique string beginning `rel-` | Stable identifier for this master-to-product assertion. |
-| `master_uuid` | Existing master UUID | The catalogue item being related. |
+| `master_uuid` | Existing compact master ID | The catalogue item being related; the column name is retained for compatibility. |
 | `raw_row_number` | Must match the referenced master row | Human-readable provenance cross-check. |
 | `source_name` | `veritas` for the initial implementation | Identifies the official inventory. |
 | `source_product_id` | Existing source-inventory product ID | Stable commercial-product reference. |
@@ -47,7 +47,7 @@ See `RELATIONSHIP_EXPANSION_AUDIT.md` for the complete validated coverage and in
 
 ## Validation and build behavior
 
-`build_catalogue_pages.py` validates every relationship against the current master and Veritas inventory before it writes Pages JSON. It rejects duplicate IDs, unknown master UUIDs or product IDs, source URL/title drift, invalid controlled values, missing evidence, invalid reviewed dates, and an attempt to make a primary relationship disagree with the master’s primary Veritas URL.
+`build_catalogue_pages.py` validates every relationship against the current master and Veritas inventory before it writes Pages JSON. It rejects duplicate IDs, unknown master IDs or product IDs, source URL/title drift, invalid controlled values, missing evidence, invalid reviewed dates, and an attempt to make a primary relationship disagree with the master’s primary Veritas URL.
 
 Run:
 

@@ -61,7 +61,7 @@ The candidate CSV and diff patch paths are ignored by Git. Never use a live fetc
 
 - **Raw evidence:** never edit `hawkins archive clone - Sheet1.csv` through a generator.
 - **Master:** generated from the migration ledger plus reviewed source overrides; do not hand-edit its CSV/JSON outputs.
-- **Manual candidates:** intentionally `not_promoted`; promotion needs a dedicated reviewed source input and UUID/code assignment path.
+- **Manual candidates:** intentionally `not_promoted`; promotion needs a dedicated reviewed source input and ID/code assignment path.
 - **Veritas decisions:** `data/veritas_mapping_decisions.csv` persists non-primary mapping dispositions. The fetch script derives exact primary-source/date-aware results, then reapplies this overlay.
 - **Relationships:** `data/product_relationships.csv` is specific item-to-product evidence; `data/series_compilation_relationships.csv` records annual Highlights at series level because official pages do not identify individual DVD parts.
 - **Pages:** `docs/` is generated/static. The review workspace exposes overview, candidates, leads, exclusions, migration review, source overrides, official discovery, Veritas decisions, product relationships, and series compilations.
