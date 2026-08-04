@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 100 tests, no browser/network needed
+python -m unittest discover tests          # 103 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -64,11 +64,13 @@ live in `data/series_category_mapping.csv`, reviewed through
 `data/series_taxonomy_review_queue.csv`, and become master data only after
 owner approval — see `SERIES_TAXONOMY_MAPPING.md`.
 
-Approved master-to-product assertions are stored separately in
-`data/product_relationships.csv` and rendered in the **Product Relationships**
-site tab; evidence-backed annual compilation relationships live in
-`data/series_compilation_relationships.csv` and render in **Series
-Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
+Approved master-to-product assertions render in the **Product Relationships**
+site tab: the primary item→product links are **derived automatically** from
+each master's `source_url_veritas`, and only the distinct non-primary
+relationships (`related_material`) are hand-maintained in
+`data/product_relationships.csv`; evidence-backed annual compilation
+relationships live in `data/series_compilation_relationships.csv` and render
+in **Series Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
 `data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The
@@ -117,7 +119,7 @@ folders.
 ## Current reviewed catalogue state
 
 The current curated master has **356** records (307 `lecture`, 38 `book`,
-10 `discussion`, 1 untyped), **236** catalogue codes, **68** retained exclusions,
+10 `discussion`, 1 untyped), **271** catalogue codes, **68** retained exclusions,
 **110** approved source overrides (including the four Nightingale-Conant audio
 editions), **26** promoted
 and **0** unpromoted official candidates, **333** item-to-product relationships,
@@ -143,6 +145,16 @@ rejects them — use the content class and record the carrier in `format`.
 publisher's authoritative date. It is **not** taken from the legacy `LSyyyynn_p`
 identifier, whose `nn` segment is an ordinal position within the annual series
 (this distinction caused a 156-record defect that was fixed on 2026-08-03).
+For lectures/discussions the `year`/`month` reflect the recording date where
+known and otherwise fall back to the publisher's product date.
+
+For `book` rows, `year` is the work's **first-publication year**, never the day
+the listing appeared on the storefront (Veritas added a whole batch of books
+with a `published_date` of 2014-03-30 — e.g. *Power vs. Force* was first
+published in **1995**, *The Eye of the I* in **2001**, *The Ego is Not the Real
+You* in **2021**). Book years come only from the reviewed ledger / candidate
+inputs, so they are never overwritten from an official inventory listing date,
+and books never receive a catalogue code (codes are lecture/discussion only).
 
 ### Edition model (work × carrier)
 

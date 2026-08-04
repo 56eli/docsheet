@@ -550,7 +550,7 @@ class FormatInferenceTests(unittest.TestCase):
             "official_categories": "Books Published by Dr. Hawkins",
         }
         by_url = {product["official_product_url"]: product}
-        item = {"format": "audio", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
+        item = {"format": "audiobook", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
         self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
 
     def test_compact_id_recognition(self) -> None:
@@ -801,7 +801,7 @@ class ReconcileDriftTests(unittest.TestCase):
             missing=[{"raw_row_number": "10", "title": "Missing", "item_type": "book"}],
             changed=[(
                 {"raw_row_number": "11", "title": "Before", "format": ""},
-                {"raw_row_number": "11", "title": "After", "format": "audio"},
+                {"raw_row_number": "11", "title": "After", "format": "audiobook"},
                 ["title", "format"],
             )],
         )
@@ -810,7 +810,7 @@ class ReconcileDriftTests(unittest.TestCase):
                 report = rrm.render_report()
         self.assertIn("Extra", report)
         self.assertIn("Missing", report)
-        self.assertIn("`∅` → `audio`", report)  # empty-before drift stays visible
+        self.assertIn("`∅` → `audiobook`", report)  # empty-before drift stays visible
 
         write = invoke_script("reconcile_research_master.py", self.sandbox)
         self.assertEqual(write.returncode, 0, write.stderr)
@@ -821,78 +821,100 @@ class ReconcileDriftTests(unittest.TestCase):
         self.assertIn("is stale", check.stdout)
 
 
-class RelationshipCoverageValidationTests(unittest.TestCase):
-    """URL-bearing masters without a primary relationship row must fail the build."""
+class DerivedPrimaryRelationshipTests(unittest.TestCase):
+    """Primary item→product links are derived from the master's own URLs.
 
-    def master(self) -> list[dict[str, str]]:
-        return [
-            {"uuid": "10", "source_url_veritas": "https://veritaspub.com/product/a/"},
-            {"uuid": "12", "source_url_veritas": "https://veritaspub.com/product/b/"},
-            {"uuid": "13", "source_url_veritas": ""},
+    Since every master with a ``source_url_veritas`` gets exactly one derived
+    ``primary_product_for_item_part`` relationship, ``product_relationships.csv``
+    only needs to hold the genuinely distinct non-primary rows
+    (``related_material``). This replaces the old hand-maintained primary rows.
+    """
+
+    def test_derive_primary_relationships_builds_from_master_urls(self) -> None:
+        product_a = {"veritas_product_id": "7", "official_product_url": "https://veritaspub.com/product/a/",
+                     "official_title": "Alpha", "published_date": "2002-01-01", "mapping_status": "matched_by_primary_source"}
+        product_b = {"veritas_product_id": "8", "official_product_url": "https://veritaspub.com/product/b/",
+                     "official_title": "Beta", "published_date": "2003-01-01", "mapping_status": "matched_by_primary_source"}
+        master = [
+            {"uuid": "10", "source_url_veritas": product_a["official_product_url"],
+             "raw_row_number": "7", "candidate_key": "", "catalog_code": "LECTURE-2002-001",
+             "title": "Alpha", "item_type": "lecture", "year": "2002"},
+            {"uuid": "12", "source_url_veritas": product_b["official_product_url"],
+             "raw_row_number": "", "candidate_key": "candidate:edition-x", "catalog_code": "",
+             "title": "Beta", "item_type": "book", "year": "2003"},
+            {"uuid": "13", "source_url_veritas": "", "raw_row_number": "9", "candidate_key": "",
+             "catalog_code": "", "title": "No URL", "item_type": "lecture", "year": ""},
         ]
+        derived = bcp.derive_primary_relationships(master, [product_a, product_b])
+        self.assertEqual(len(derived), 2)  # only URL-bearing masters
+        by_uuid = {rel["master_uuid"]: rel for rel in derived}
+        a = by_uuid["10"]
+        self.assertEqual(a["relationship_id"], "rel-veritas-7-10")
+        self.assertEqual(a["relationship_type"], "primary_product_for_item_part")
+        self.assertEqual(a["review_status"], "reviewed")
+        self.assertEqual(a["master_year"], "2002")
+        self.assertEqual(a["source_product_published_date"], "2002-01-01")
+        # edition-provenance master uses its candidate_key as raw provenance
+        self.assertEqual(by_uuid["12"]["raw_row_number"], "candidate:edition-x")
 
-    def relationships(self) -> list[dict[str, str]]:
-        return [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "related_material"},
-        ]
+    def test_primary_relationship_note_provenance(self) -> None:
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:edition-veritas-x"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:edition-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:manual-veritas-satsang-1304"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:manual-veritas-satsang-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:manual-veritas-47979"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:manual-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": ""}),
+            bcp.PRIMARY_RELATIONSHIP_NOTE,
+        )
 
-    def test_covered_masters_pass(self) -> None:
-        bcp.validate_primary_relationship_coverage(self.master(), [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
-        ])
-
-    def test_uncovered_master_fails(self) -> None:
-        with self.assertRaisesRegex(ValueError, "12"):
-            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
-
-    def test_master_without_url_is_not_a_gap(self) -> None:
-        # 13 has no URL -> no gap; only 12 (related_material) is uncovered.
-        with self.assertRaises(ValueError) as ctx:
-            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
-        self.assertIn("12", str(ctx.exception))
-        self.assertNotIn("13", str(ctx.exception))
-
-    def test_committed_state_passes_after_promoted_rows_added(self) -> None:
-        # The 11 promoted masters (309-319) now have reviewed primary rows, so
-        # the committed state must build cleanly with no coverage failure.
+    def test_committed_state_derives_325_primary_plus_8_related(self) -> None:
+        # The committed master + inventory + CSV must assemble to exactly the
+        # published relationship count: 325 derived primary + 8 related_material.
         tempdir = make_sandbox()
         try:
-            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            sandbox = Path(tempdir.name)
+            result = invoke_script("build_catalogue_pages.py", sandbox, "--check")
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertNotIn("WARNING", result.stderr)
-            self.assertNotIn("no reviewed primary relationship", result.stderr)
+            master = bcp.read_csv(bcp.MASTER)
+            veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
+            derived = bcp.derive_primary_relationships(master, veritas)
+            self.assertEqual(len(derived), 325)
+            self.assertEqual(len(derived) + 8, 333)  # 333 total relationships
+            meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
+            self.assertEqual(meta["reviewed_product_relationships"], 333)
         finally:
             tempdir.cleanup()
 
-    def test_edition_provenance_rows_are_self_covered(self) -> None:
-        # Promoted edition rows carry their primary product by construction;
-        # a Veritas URL on an edition-provenance master must not be a gap.
-        master = self.master()
-        master.append({
-            "uuid": "320",
-            "source_url_veritas": "https://veritaspub.com/product/tvf-cd-dvd/",
-            "raw_row_number": "candidate:edition-veritas-tvf-cddvd",
-        })
-        covered = [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
-        ]
-        bcp.validate_primary_relationship_coverage(master, covered)
+    def test_product_relationships_csv_holds_only_non_primary_rows(self) -> None:
+        with (REPO / "data/product_relationships.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertTrue(rows, "product_relationships.csv must retain its header + rows")
+        self.assertNotIn(
+            "primary_product_for_item_part",
+            {row["relationship_type"].strip() for row in rows},
+            "primary relationships are derived from the master, not stored in the CSV",
+        )
 
-    def test_deleting_a_promoted_relationship_row_fails_check(self) -> None:
-        # Tamper detection: dropping a primary row must fail --check loudly
-        # (the generator's failure contract is an uncaught exception -> exit 1).
+    def test_deleting_a_related_material_row_fails_check(self) -> None:
+        # Tamper detection: dropping a curated related_material row must fail
+        # --check loudly (the generator's failure contract is exit 1).
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
             path = sandbox / "data" / "product_relationships.csv"
             lines = path.read_text(encoding="utf-8").splitlines()
-            kept = [line for line in lines if "rel-veritas-53277-309" not in line]
+            kept = [line for line in lines if "rel-veritas-1542-202" not in line]
             path.write_text("\n".join(kept) + "\n", encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "no reviewed primary relationship"):
-                invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            result = invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
         finally:
             tempdir.cleanup()
 
@@ -1078,7 +1100,7 @@ class EditionCandidateTests(unittest.TestCase):
 
     def candidate_rows(self, promotion_status: str = "not_promoted") -> list[str]:
         return [
-            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audio,Audiobook,true,"
+            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audiobook,Audiobook,true,"
             f"audible,https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,"
             f"https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,Truth Vs Falsehood,"
             f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition",
@@ -1110,7 +1132,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved audiobook edition",
             ])
             write = invoke_script("build_research_master.py", sandbox)
             self.assertEqual(write.returncode, 0, write.stderr)
@@ -1120,7 +1142,7 @@ class EditionCandidateTests(unittest.TestCase):
             row = rows["320"]
             self.assertEqual(row["work_id"], "w-tvf")
             self.assertEqual(row["item_type"], "book")
-            self.assertEqual(row["format"], "audio")
+            self.assertEqual(row["format"], "audiobook")
             self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
             self.assertEqual(row["candidate_key"], "candidate:edition-audible-tvf")
             # D3: the audiobook URL moved off the book row into its edition row
@@ -1135,7 +1157,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("not_promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved",
             ])
             with self.assertRaisesRegex(ValueError, "must be 'promoted'"):
                 invoke_script("build_research_master.py", sandbox)
@@ -1197,7 +1219,7 @@ class EditionCandidateTests(unittest.TestCase):
             sandbox = Path(tempdir.name)
             base = self.candidate_rows()[0]
             cases = [
-                (base.replace(",book,,audio,", ",book,,vinyl,"), "carrier format"),
+                (base.replace(",book,,audiobook,", ",book,,vinyl,"), "carrier format"),
                 (base.replace("2026-08-03,not_promoted", "2026-08-03,maybe"), "must be 'not_promoted'"),
                 (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status must be"),
                 (base.replace("reviewed_candidate,2026-08-03", "reviewed_candidate,"), "ISO reviewed_on"),
@@ -1207,8 +1229,8 @@ class EditionCandidateTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, expected):
                     invoke_script("build_research_master.py", sandbox)
             # invalid year
-            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audio",
-                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audio")])
+            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audiobook",
+                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audiobook")])
             with self.assertRaisesRegex(ValueError, "proposed_year"):
                 invoke_script("build_research_master.py", sandbox)
             # invalid owned
@@ -1222,7 +1244,7 @@ class EditionCandidateTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            promo = "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
+            promo = "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved"
             # rejected promotion: no row minted, candidate stays not_promoted
             self.write_files(sandbox, self.candidate_rows(), [promo.replace("approved,2026-08-03", "rejected,2026-08-03")])
             write = invoke_script("build_research_master.py", sandbox)
@@ -1236,7 +1258,7 @@ class EditionCandidateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "must match the candidate"):
                 invoke_script("build_research_master.py", sandbox)
             # deprecated item_type in promotion
-            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audio,", ",video,audio,")])
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audiobook,", ",video,audiobook,")])
             with self.assertRaisesRegex(ValueError, "non-deprecated"):
                 invoke_script("build_research_master.py", sandbox)
             # unknown approval status
@@ -1251,7 +1273,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved",
             ])
             invoke_script("build_research_master.py", sandbox)
             path = sandbox / "data" / "research_master_draft.csv"
@@ -1443,6 +1465,129 @@ class DocumentationCurrencyTests(unittest.TestCase):
         for disposition, expected in counts.items():
             self.assertIn(f"| `{disposition}` | {expected} |", table)
         self.assertIn(f"| **Total** | **{len(rows)}** |", table)
+
+    def test_review_overview_master_candidates_state_matches_data(self) -> None:
+        """The Review-Overview 'Master Candidates' state must reflect real promotion data.
+
+        Regression guard for the 2026-08-04 stale-label fix: the row used to
+        hardcode ``reviewed_candidate / not_promoted`` even after every
+        candidate was promoted. It must now be derived from the actual
+        ``promotion_status`` column so it can never drift again.
+        """
+        overview = json.loads((REPO / "docs/review-overview.json").read_text(encoding="utf-8"))
+        row = next(item for item in overview if item["review_sheet"] == "Master Candidates")
+        with (REPO / "data/manual_master_candidates.csv").open(newline="", encoding="utf-8") as handle:
+            candidates = list(csv.DictReader(handle))
+        promoted = sum(1 for c in candidates if c.get("promotion_status", "").strip() == "promoted")
+        total = len(candidates)
+        self.assertEqual(row["record_count"], total)
+        self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
+        self.assertIn("all", row["purpose"].lower())
+
+    def test_backfill_month_guard_skips_listing_month_for_year_mismatch(self) -> None:
+        """A lecture month is backfilled from the product date only when the
+        product's year matches the record's year — a 2014 storefront-listing
+        month must not leak into a 2003-2005 On-the-Road record."""
+        with tempfile.TemporaryDirectory() as tmp:
+            inv = Path(tmp) / "veritas.csv"
+            inv.write_text(
+                "veritas_product_id,official_product_url,published_date\n"
+                "1,https://veritaspub.com/product/x/,2014-01-13\n",
+                encoding="utf-8",
+            )
+            original = brm.VERITAS_PRODUCTS
+            brm.VERITAS_PRODUCTS = inv
+            self.addCleanup(setattr, brm, "VERITAS_PRODUCTS", original)
+            url = "https://veritaspub.com/product/x/"
+            items = [
+                # year from ledger (2003), product listed 2014 -> month stays blank
+                {"item_type": "lecture", "year": "2003", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+                # year matches product year -> month backfilled
+                {"item_type": "lecture", "year": "2014", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+                # no year -> both year and month derive from the product date
+                {"item_type": "lecture", "year": "", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+            ]
+            brm.backfill_months_from_official_source(items)
+        self.assertEqual(items[0]["year"], "2003")
+        self.assertEqual(items[0]["month"], "", "listing month must not leak into a 2003 record")
+        self.assertEqual(items[1]["year"], "2014")
+        self.assertEqual(items[1]["month"], "01", "matching-year product month is backfilled")
+        self.assertEqual(items[2]["year"], "2014")
+        self.assertEqual(items[2]["month"], "01")
+
+    def test_official_title_cleanup_only_changes_matching_titles(self) -> None:
+        """Title hygiene is evidence-based: strip PART/DVD noise only when the
+        cleaned title matches the official Veritas listing; otherwise keep the
+        current title. The raw verbatim text stays in ``legacy_title``."""
+        by_url = [
+            {"official_product_url": "https://veritaspub.com/product/posa/",
+             "official_title": "The Presence of Spiritual Awareness"},
+            {"official_product_url": "https://veritaspub.com/product/vpf/",
+             "official_title": "Volume I: Power vs. Force Muscle Testing"},
+        ]
+        items = [
+            # PART noise, cleaned form matches official -> cleaned
+            {"item_type": "lecture", "title": "The Presence of Spiritual Awareness PART1",
+             "legacy_title": "The Presence of Spiritual Awareness PART1", "title_source": "raw",
+             "source_url_veritas": "https://veritaspub.com/product/posa/"},
+            # PART noise, cleaned form does NOT match official -> kept
+            {"item_type": "lecture", "title": "Volume I-Power vs Force (Part 1)",
+             "legacy_title": "Volume I-Power vs Force (Part 1)", "title_source": "raw",
+             "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+            # non-lecture never touched
+            {"item_type": "book", "title": "Power vs Force (Part 1)", "legacy_title": "",
+             "title_source": "", "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+        ]
+        brm.apply_official_title_cleanup(items, by_url)
+        self.assertEqual(items[0]["title"], "The Presence of Spiritual Awareness")
+        self.assertIn("Official listing", items[0]["title_source"])
+        self.assertEqual(items[0]["legacy_title"], "The Presence of Spiritual Awareness PART1")
+        self.assertEqual(items[1]["title"], "Volume I-Power vs Force (Part 1)",
+                         "a non-matching cleaned title must be left unchanged")
+        self.assertEqual(items[2]["title"], "Power vs Force (Part 1)")
+
+    def test_books_use_first_publication_year_not_product_listing(self) -> None:
+        """Book ``year`` must be the work's first publication year.
+
+        Regression guard for the 2026-08-04 fix: the Veritas storefront lists a
+        whole batch of books with ``published_date`` 2014-03-30 (the day they
+        appeared on the site), which is not when they were first published.
+        ``build_research_master.backfill_months_from_official_source`` now
+        skips ``item_type='book'`` rows entirely, and book years come only from
+        the reviewed ledger / candidate inputs. This pins the classic titles to
+        their documented first-publication years so the product-listing date
+        cannot silently creep back in.
+        """
+        master = {row["uuid"].strip(): row for row in self.master_rows()}
+        expected = {
+            "286": "1995",  # Power vs Force (product-listing date was 2014)
+            "287": "2001",  # The Eye of the I
+            "288": "2003",  # I: Reality and Subjectivity
+            "289": "2005",  # Truth vs Falsehood
+            "290": "2012",  # Letting Go
+            "291": "2009",  # Healing and Recovery
+            "293": "2008",  # Reality, Spirituality and Modern Man
+            "294": "2006",  # Transcending the Levels of Consciousness
+            "316": "2021",  # The Ego is Not the Real You (Hay House)
+        }
+        for uuid, year in expected.items():
+            row = master.get(uuid)
+            self.assertIsNotNone(row, f"expected a master record for UUID {uuid}")
+            self.assertEqual(
+                row["year"], year,
+                f"master {uuid} ({row['title']!r}) must use its first-publication year {year}",
+            )
+        # Book rows (including audiobook/carrier editions) never get a
+        # catalogue code; codes exist for lecture/discussion only.
+        coded_books = [
+            (row["uuid"], row["title"])
+            for row in self.master_rows()
+            if row["item_type"].strip() == "book" and row["catalog_code"].strip()
+        ]
+        self.assertEqual(coded_books, [], "book rows must never receive a catalogue code")
 
 
 if __name__ == "__main__":

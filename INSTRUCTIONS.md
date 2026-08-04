@@ -102,7 +102,7 @@ npm run test:e2e
 Since 2026-08-03 the curated master holds **one row per edition** of a work
 (book / audio / video). The Work column shows the `work_id` that groups a
 work's edition rows; the Edition column merges `format` + `format_detail`
-(e.g. "audio · Audiobook"). Two reviewed inputs drive this:
+(e.g. "audiobook · Audiobook"). Two reviewed inputs drive this:
 
 - `data/work_families.csv` — `work_id` per master row (approved rows only;
   never title-inferred).
@@ -152,7 +152,7 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 96 deterministic tests
+python -m unittest discover tests      # 103 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 80% floor (.coveragerc)
 ```
