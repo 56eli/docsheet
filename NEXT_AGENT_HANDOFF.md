@@ -37,7 +37,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 101 tests, offline, ~2s
+python -m unittest discover tests     # 102 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -72,7 +72,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
-| Test suite | **101 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **102 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -331,6 +331,24 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     by a generator (no orphans). Remaining structural dedup is **F2** (merge
     the manual + edition candidate lanes — deliberately deferred as the one
     higher-risk cut).
+23. **Lecture recording-year correction (2026-08-04, owner-approved):**
+    investigation (`LECTURE_YEAR_INVESTIGATION.md`) found 35 lectures showed
+    `year=2014` = the Veritas **storefront-listing** date, not their recording
+    date. For the On-the-Road talks the Audible ©year is the reliable recording
+    year, and it **varies (©2003–2005)**, not a uniform 2003. Corrected the 8
+    verified talks to their true recording years and **cleared their wrong
+    listing months** (year-only): ©2003 Compassion / God Is the Infinite Field /
+    Power of Devotion / You Are the Light; ©2004 All Is Divinity / Spiritual
+    Reality / Virtues; ©2005 The Prevailing Silence. Mechanism:
+    `backfill_months_from_official_source` now fills a lecture month from the
+    product date **only when the product's year matches the record's year** (a
+    2014 listing month can no longer leak into a 2003-2005 record); recording
+    months known from titles were set in the reviewed inputs (Become That Which
+    You Are = June, Love is a Way of Being = January, Unity Church March/June).
+    Side effect: the 8 talks are lectures with years now, so catalogue codes
+    **236 → 244**. The remaining 27 talks stay flagged pending their © years.
+    Tests 101 → **102** (new backfill-guard regression test), 92% coverage, all
+    5 checks green.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -363,6 +381,11 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   (`related_material`). A master with a `source_url_veritas` automatically
   gets its primary relationship; never add a `primary_product_for_item_part`
   row to that CSV.
+- **A lecture's `month` is never taken from a different-year product listing.**
+  `backfill_months_from_official_source` fills a lecture month from the
+  product date only when the product's year matches the record's year. If a
+  record's recording month is known, set it in the reviewed input
+  (`proposed_month`); otherwise leave it blank (year-only).
 - **Relationships stay at the evidence level actually supported** (item-level
   when proven; series-level for annual Highlights).
 - **Merchandise (card decks, wall charts) are products, not master records.**

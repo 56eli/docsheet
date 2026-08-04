@@ -304,11 +304,21 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
                         year = date_parts[0]
                         month = date_parts[1]
                         if not item.get("year", "").strip():
+                            # Both year and month derive together from the
+                            # product date (the recording/release date).
                             item["year"] = year
-                            filled += 1
-                        if not item.get("month", "").strip():
                             item["month"] = month
                             filled += 1
+                        elif item["year"] == year:
+                            # A record with an explicit ledger year only takes
+                            # the month when the product's year matches it —
+                            # never a storefront-listing year's month. A whole
+                            # batch of 2003-2005 On-the-Road talks was listed
+                            # in 2014, so the 2014 month would be a false
+                            # recording month for them.
+                            if not item.get("month", "").strip():
+                                item["month"] = month
+                                filled += 1
                         continue  # Skip legacy tempid check if we filled from inventory
                 except (ValueError, IndexError):
                     pass

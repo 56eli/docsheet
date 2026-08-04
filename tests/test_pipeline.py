@@ -1484,6 +1484,40 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
         self.assertIn("all", row["purpose"].lower())
 
+    def test_backfill_month_guard_skips_listing_month_for_year_mismatch(self) -> None:
+        """A lecture month is backfilled from the product date only when the
+        product's year matches the record's year — a 2014 storefront-listing
+        month must not leak into a 2003-2005 On-the-Road record."""
+        with tempfile.TemporaryDirectory() as tmp:
+            inv = Path(tmp) / "veritas.csv"
+            inv.write_text(
+                "veritas_product_id,official_product_url,published_date\n"
+                "1,https://veritaspub.com/product/x/,2014-01-13\n",
+                encoding="utf-8",
+            )
+            original = brm.VERITAS_PRODUCTS
+            brm.VERITAS_PRODUCTS = inv
+            self.addCleanup(setattr, brm, "VERITAS_PRODUCTS", original)
+            url = "https://veritaspub.com/product/x/"
+            items = [
+                # year from ledger (2003), product listed 2014 -> month stays blank
+                {"item_type": "lecture", "year": "2003", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+                # year matches product year -> month backfilled
+                {"item_type": "lecture", "year": "2014", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+                # no year -> both year and month derive from the product date
+                {"item_type": "lecture", "year": "", "month": "",
+                 "source_url_veritas": url, "legacy_tempid": ""},
+            ]
+            brm.backfill_months_from_official_source(items)
+        self.assertEqual(items[0]["year"], "2003")
+        self.assertEqual(items[0]["month"], "", "listing month must not leak into a 2003 record")
+        self.assertEqual(items[1]["year"], "2014")
+        self.assertEqual(items[1]["month"], "01", "matching-year product month is backfilled")
+        self.assertEqual(items[2]["year"], "2014")
+        self.assertEqual(items[2]["month"], "01")
+
     def test_books_use_first_publication_year_not_product_listing(self) -> None:
         """Book ``year`` must be the work's first publication year.
 
