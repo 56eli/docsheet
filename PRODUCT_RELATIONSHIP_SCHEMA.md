@@ -1,12 +1,19 @@
 # Product Relationship Schema
 
-**Status:** Implemented review layer, seeded 2026-08-03  
-**Input:** `data/product_relationships.csv`  
+**Status:** Implemented review layer; primary rows derived since 2026-08-04  
+**Input:** `data/product_relationships.csv` (non-primary rows only)  
 **Generated Pages output:** `docs/product-relationships.json`
 
 ## Purpose
 
-A research-master item and a commercial product are not interchangeable. One product can cover several item parts; a separately recorded interview, edition, compilation, or related product can have the same or a similar title without being the same material. This table records an explicit, reviewable relationship without duplicating a master item or replacing the item’s primary source URL.
+A research-master item and a commercial product are not interchangeable. One product can cover several item parts; a separately recorded interview, edition, compilation, or related product can have the same or a similar title without being the same material. The relationship layer records an explicit, reviewable relationship without duplicating a master item or replacing the item’s primary source URL.
+
+**Since 2026-08-04 the primary link is no longer hand-maintained.** Every
+master record already carries its primary Veritas product URL in
+`source_url_veritas`, so `build_catalogue_pages.derive_primary_relationships`
+derives the `primary_product_for_item_part` rows automatically from the
+master. `data/product_relationships.csv` therefore holds **only the genuinely
+distinct non-primary relationships** (`related_material`).
 
 The table is intentionally separate from the flat research-master schema. It can be extended to other sources after each source has a stable official product inventory and a validation rule.
 
@@ -39,9 +46,25 @@ The table is intentionally separate from the flat research-master schema. It can
 
 ## Current reviewed coverage
 
-**Invariant:** every non-empty master `source_url_veritas` must be represented as a reviewed `primary_product_for_item_part` relationship after exact URL validation against the committed Veritas inventory. `build_catalogue_pages.py` enforces this as a **hard build failure** (`validate_primary_relationship_coverage`); the one historical gap — the 11 promoted candidates (master IDs 309–319), whose promotion path initially did not mint relationship rows — was closed on 2026-08-03 with 11 reviewed rows.
+**Invariant (by construction):** every master with a non-empty
+`source_url_veritas` automatically yields one reviewed
+`primary_product_for_item_part` relationship (derived by
+`derive_primary_relationships` after exact URL validation against the
+committed Veritas inventory). There is no separate coverage guard to
+maintain — the rows exist whenever the master's URL exists. The historical
+gap (the 11 promoted candidates 309–319, whose promotion path did not mint
+relationship rows) is moot: those masters now carry their URL and therefore
+derive their primary relationship automatically.
 
-As of 2026-08-03 the relationship layer covers **all 304** URL-bearing master records: 304 primary + 8 related = **312 reviewed rows** across 165 distinct products. The 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture set, with a reviewed primary relationship for each of the master’s DVD01, DVD02, and DVD03 records. Eight reviewed `related_material` records preserve distinct official products without overwriting a primary source. The reviewed book, Satsang, and final title-match batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`, `decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
+As of 2026-08-04 the relationship layer renders **333 rows = 325 derived
+primary + 8 reviewed `related_material`** across 165 distinct products. The
+2006 *Live Your Life Like a Prayer* product is one such three-disc lecture
+set, with a primary relationship for each of the master’s DVD01, DVD02, and
+DVD03 records (all three derived from the same master URL). Eight reviewed
+`related_material` records preserve distinct official products without
+overwriting a primary source. The reviewed book, Satsang, and final title-match
+batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`,
+`decisions/SATSANG_MAPPING_DECISIONS.md`, and `decisions/FINAL_TITLE_MATCH_DECISIONS.md`.
 
 See `archive/RELATIONSHIP_EXPANSION_AUDIT.md` for the complete validated coverage and inventory-only disposition boundary.
 

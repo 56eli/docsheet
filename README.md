@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 101 tests, no browser/network needed
+python -m unittest discover tests          # 100 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -64,11 +64,13 @@ live in `data/series_category_mapping.csv`, reviewed through
 `data/series_taxonomy_review_queue.csv`, and become master data only after
 owner approval — see `SERIES_TAXONOMY_MAPPING.md`.
 
-Approved master-to-product assertions are stored separately in
-`data/product_relationships.csv` and rendered in the **Product Relationships**
-site tab; evidence-backed annual compilation relationships live in
-`data/series_compilation_relationships.csv` and render in **Series
-Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
+Approved master-to-product assertions render in the **Product Relationships**
+site tab: the primary item→product links are **derived automatically** from
+each master's `source_url_veritas`, and only the distinct non-primary
+relationships (`related_material`) are hand-maintained in
+`data/product_relationships.csv`; evidence-backed annual compilation
+relationships live in `data/series_compilation_relationships.csv` and render
+in **Series Compilations**. See `PRODUCT_RELATIONSHIP_SCHEMA.md` and
 `SERIES_COMPILATION_SCHEMA.md` before adding either relationship type. Live
 Veritas inventory refreshes use the approved product-ID overlay in
 `data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The

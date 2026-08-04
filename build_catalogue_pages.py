@@ -218,6 +218,72 @@ def validate_veritas_inventory(
         )
 
 
+# Provenance-aware evidence notes for derived primary relationships. The note
+# records how the master's primary Veritas URL was established (ledger /
+# promotion / edition / Satsang), mirroring the hand-curated notes the rows
+# used to carry. Ordered longest-prefix-first so the Satsang prefix is matched
+# before the generic manual-promotion prefix.
+PRIMARY_RELATIONSHIP_NOTE = "Master primary Veritas URL matches the official product inventory."
+PRIMARY_RELATIONSHIP_NOTES = {
+    "candidate:edition-": "Promoted edition row (owner-approved 2026-08-03); master primary Veritas URL matches the official product inventory.",
+    "candidate:manual-veritas-satsang-": "Owner-approved Satsang new-work promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
+    "candidate:manual-": "Owner-approved promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
+}
+
+
+def primary_relationship_note(item: dict[str, str]) -> str:
+    """Choose the evidence note for a derived primary relationship from its master provenance."""
+    candidate_key = item.get("candidate_key", "")
+    for prefix, note in PRIMARY_RELATIONSHIP_NOTES.items():
+        if candidate_key.startswith(prefix):
+            return note
+    return PRIMARY_RELATIONSHIP_NOTE
+
+
+def derive_primary_relationships(
+    master_items: list[dict[str, str]],
+    veritas_products: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    """Derive primary item→product relationships from the master's own URLs.
+
+    Every curated master record carries its primary Veritas product URL in
+    ``source_url_veritas`` (a reviewed field, populated by the ledger, an
+    override, or a promotion). The Product Relationships tab therefore does
+    not need a hand-maintained row per primary link: those rows are derived
+    deterministically here, so ``data/product_relationships.csv`` only holds
+    the genuinely distinct non-primary relationships (``related_material``).
+    """
+    veritas_by_url = {product["official_product_url"]: product for product in veritas_products}
+    derived: list[dict[str, str]] = []
+    for item in master_items:
+        url = item.get("source_url_veritas", "").strip()
+        if not url or url not in veritas_by_url:
+            continue
+        product = veritas_by_url[url]
+        product_id = product["veritas_product_id"]
+        derived.append({
+            "relationship_id": f"rel-veritas-{product_id}-{item['uuid']}",
+            "master_uuid": item["uuid"],
+            "raw_row_number": item.get("raw_row_number", "") or item.get("candidate_key", ""),
+            "source_name": "veritas",
+            "source_product_id": product_id,
+            "official_product_url": url,
+            "official_product_title": product["official_title"],
+            "relationship_type": "primary_product_for_item_part",
+            "review_status": "reviewed",
+            "reviewed_on": "2026-08-03",
+            "evidence_url": url,
+            "evidence_note": primary_relationship_note(item),
+            "master_catalog_code": item.get("catalog_code", ""),
+            "master_title": item.get("title", ""),
+            "master_item_type": item.get("item_type", ""),
+            "master_year": item.get("year", ""),
+            "source_product_published_date": product.get("published_date", ""),
+            "source_product_mapping_status": product.get("mapping_status", ""),
+        })
+    return derived
+
+
 def validate_product_relationships(
     master_items: list[dict[str, str]],
     veritas_products: list[dict[str, str]],
@@ -331,47 +397,6 @@ def validate_product_relationships(
         })
         seen_ids.add(relation_id)
     return enriched
-
-
-def validate_primary_relationship_coverage(
-    master_items: list[dict[str, str]],
-    relationships: list[dict[str, str]],
-) -> None:
-    """Fail when a master's Veritas URL has no primary relationship row.
-
-    The schema invariant in PRODUCT_RELATIONSHIP_SCHEMA.md says every non-empty
-    master ``source_url_veritas`` must be covered by a reviewed
-    ``primary_product_for_item_part`` row. The promoted-candidate path used to
-    leave such a gap (master IDs 309-319); it was closed with 11 reviewed rows
-    on 2026-08-03 and the guard was then promoted from a warning to a hard
-    failure so the gap can never silently recur.
-    """
-    primary_masters = {
-        relation["master_uuid"].strip()
-        for relation in relationships
-        if relation["relationship_type"].strip() == "primary_product_for_item_part"
-    }
-    uncovered = sorted(
-        (
-            item["uuid"].strip()
-            for item in master_items
-            if item["source_url_veritas"].strip()
-            and item["uuid"].strip() not in primary_masters
-            # Promoted edition rows carry their primary product by
-            # construction: the promotion itself is the reviewed assertion
-            # (see EDITION_MODEL_PROPOSAL.md), so they are self-covered.
-            and not item.get("raw_row_number", "").startswith("candidate:edition-")
-        ),
-        key=int,
-    )
-    if uncovered:
-        raise ValueError(
-            "master record(s) have a Veritas source URL but no reviewed "
-            f"primary relationship in {PRODUCT_RELATIONSHIPS.name}: "
-            + ", ".join(uncovered)
-            + " — add reviewed primary_product_for_item_part rows or the "
-            "Product Relationships tab stays incomplete."
-        )
 
 
 def validate_series_compilations(
@@ -529,8 +554,11 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     validate_veritas_inventory(veritas_products, master_records)
     validate_new_work_queue(new_work_queue, veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
-    product_relationships = validate_product_relationships(master_records, veritas_products)
-    validate_primary_relationship_coverage(master_records, product_relationships)
+    # Primary item→product links are derived from each master's own
+    # ``source_url_veritas``; the CSV holds only the distinct non-primary
+    # relationships (e.g. ``related_material``). See derive_primary_relationships.
+    primary_relationships = derive_primary_relationships(master_records, veritas_products)
+    product_relationships = primary_relationships + validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
     hayhouse_products = read_csv(HAYHOUSE_PRODUCTS)
     audible_products = read_csv(AUDIBLE_PRODUCTS)

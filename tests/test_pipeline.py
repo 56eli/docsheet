@@ -821,78 +821,100 @@ class ReconcileDriftTests(unittest.TestCase):
         self.assertIn("is stale", check.stdout)
 
 
-class RelationshipCoverageValidationTests(unittest.TestCase):
-    """URL-bearing masters without a primary relationship row must fail the build."""
+class DerivedPrimaryRelationshipTests(unittest.TestCase):
+    """Primary item→product links are derived from the master's own URLs.
 
-    def master(self) -> list[dict[str, str]]:
-        return [
-            {"uuid": "10", "source_url_veritas": "https://veritaspub.com/product/a/"},
-            {"uuid": "12", "source_url_veritas": "https://veritaspub.com/product/b/"},
-            {"uuid": "13", "source_url_veritas": ""},
+    Since every master with a ``source_url_veritas`` gets exactly one derived
+    ``primary_product_for_item_part`` relationship, ``product_relationships.csv``
+    only needs to hold the genuinely distinct non-primary rows
+    (``related_material``). This replaces the old hand-maintained primary rows.
+    """
+
+    def test_derive_primary_relationships_builds_from_master_urls(self) -> None:
+        product_a = {"veritas_product_id": "7", "official_product_url": "https://veritaspub.com/product/a/",
+                     "official_title": "Alpha", "published_date": "2002-01-01", "mapping_status": "matched_by_primary_source"}
+        product_b = {"veritas_product_id": "8", "official_product_url": "https://veritaspub.com/product/b/",
+                     "official_title": "Beta", "published_date": "2003-01-01", "mapping_status": "matched_by_primary_source"}
+        master = [
+            {"uuid": "10", "source_url_veritas": product_a["official_product_url"],
+             "raw_row_number": "7", "candidate_key": "", "catalog_code": "LECTURE-2002-001",
+             "title": "Alpha", "item_type": "lecture", "year": "2002"},
+            {"uuid": "12", "source_url_veritas": product_b["official_product_url"],
+             "raw_row_number": "", "candidate_key": "candidate:edition-x", "catalog_code": "",
+             "title": "Beta", "item_type": "book", "year": "2003"},
+            {"uuid": "13", "source_url_veritas": "", "raw_row_number": "9", "candidate_key": "",
+             "catalog_code": "", "title": "No URL", "item_type": "lecture", "year": ""},
         ]
+        derived = bcp.derive_primary_relationships(master, [product_a, product_b])
+        self.assertEqual(len(derived), 2)  # only URL-bearing masters
+        by_uuid = {rel["master_uuid"]: rel for rel in derived}
+        a = by_uuid["10"]
+        self.assertEqual(a["relationship_id"], "rel-veritas-7-10")
+        self.assertEqual(a["relationship_type"], "primary_product_for_item_part")
+        self.assertEqual(a["review_status"], "reviewed")
+        self.assertEqual(a["master_year"], "2002")
+        self.assertEqual(a["source_product_published_date"], "2002-01-01")
+        # edition-provenance master uses its candidate_key as raw provenance
+        self.assertEqual(by_uuid["12"]["raw_row_number"], "candidate:edition-x")
 
-    def relationships(self) -> list[dict[str, str]]:
-        return [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "related_material"},
-        ]
+    def test_primary_relationship_note_provenance(self) -> None:
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:edition-veritas-x"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:edition-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:manual-veritas-satsang-1304"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:manual-veritas-satsang-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": "candidate:manual-veritas-47979"}),
+            bcp.PRIMARY_RELATIONSHIP_NOTES["candidate:manual-"],
+        )
+        self.assertEqual(
+            bcp.primary_relationship_note({"candidate_key": ""}),
+            bcp.PRIMARY_RELATIONSHIP_NOTE,
+        )
 
-    def test_covered_masters_pass(self) -> None:
-        bcp.validate_primary_relationship_coverage(self.master(), [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
-        ])
-
-    def test_uncovered_master_fails(self) -> None:
-        with self.assertRaisesRegex(ValueError, "12"):
-            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
-
-    def test_master_without_url_is_not_a_gap(self) -> None:
-        # 13 has no URL -> no gap; only 12 (related_material) is uncovered.
-        with self.assertRaises(ValueError) as ctx:
-            bcp.validate_primary_relationship_coverage(self.master(), self.relationships())
-        self.assertIn("12", str(ctx.exception))
-        self.assertNotIn("13", str(ctx.exception))
-
-    def test_committed_state_passes_after_promoted_rows_added(self) -> None:
-        # The 11 promoted masters (309-319) now have reviewed primary rows, so
-        # the committed state must build cleanly with no coverage failure.
+    def test_committed_state_derives_325_primary_plus_8_related(self) -> None:
+        # The committed master + inventory + CSV must assemble to exactly the
+        # published relationship count: 325 derived primary + 8 related_material.
         tempdir = make_sandbox()
         try:
-            result = invoke_script("build_catalogue_pages.py", Path(tempdir.name), "--check")
+            sandbox = Path(tempdir.name)
+            result = invoke_script("build_catalogue_pages.py", sandbox, "--check")
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertNotIn("WARNING", result.stderr)
-            self.assertNotIn("no reviewed primary relationship", result.stderr)
+            master = bcp.read_csv(bcp.MASTER)
+            veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
+            derived = bcp.derive_primary_relationships(master, veritas)
+            self.assertEqual(len(derived), 325)
+            self.assertEqual(len(derived) + 8, 333)  # 333 total relationships
+            meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
+            self.assertEqual(meta["reviewed_product_relationships"], 333)
         finally:
             tempdir.cleanup()
 
-    def test_edition_provenance_rows_are_self_covered(self) -> None:
-        # Promoted edition rows carry their primary product by construction;
-        # a Veritas URL on an edition-provenance master must not be a gap.
-        master = self.master()
-        master.append({
-            "uuid": "320",
-            "source_url_veritas": "https://veritaspub.com/product/tvf-cd-dvd/",
-            "raw_row_number": "candidate:edition-veritas-tvf-cddvd",
-        })
-        covered = [
-            {"master_uuid": "10", "relationship_type": "primary_product_for_item_part"},
-            {"master_uuid": "12", "relationship_type": "primary_product_for_item_part"},
-        ]
-        bcp.validate_primary_relationship_coverage(master, covered)
+    def test_product_relationships_csv_holds_only_non_primary_rows(self) -> None:
+        with (REPO / "data/product_relationships.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertTrue(rows, "product_relationships.csv must retain its header + rows")
+        self.assertNotIn(
+            "primary_product_for_item_part",
+            {row["relationship_type"].strip() for row in rows},
+            "primary relationships are derived from the master, not stored in the CSV",
+        )
 
-    def test_deleting_a_promoted_relationship_row_fails_check(self) -> None:
-        # Tamper detection: dropping a primary row must fail --check loudly
-        # (the generator's failure contract is an uncaught exception -> exit 1).
+    def test_deleting_a_related_material_row_fails_check(self) -> None:
+        # Tamper detection: dropping a curated related_material row must fail
+        # --check loudly (the generator's failure contract is exit 1).
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
             path = sandbox / "data" / "product_relationships.csv"
             lines = path.read_text(encoding="utf-8").splitlines()
-            kept = [line for line in lines if "rel-veritas-53277-309" not in line]
+            kept = [line for line in lines if "rel-veritas-1542-202" not in line]
             path.write_text("\n".join(kept) + "\n", encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "no reviewed primary relationship"):
-                invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            result = invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
         finally:
             tempdir.cleanup()
 

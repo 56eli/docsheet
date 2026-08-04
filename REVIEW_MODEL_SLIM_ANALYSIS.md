@@ -143,5 +143,14 @@ validation with a re-derivable result. F3 (queue consolidation) is the safest
 additional low-effort win. F2 (candidate-lane merge) is the biggest structural
 cut but carries the most risk and should be done carefully and last.
 
-I have **not changed anything** in this pass — this is the analysis the owner
-asked for. The project remains green (101 tests, 92% coverage, all checks).
+> **Update (2026-08-04):** **F1 is now implemented** on branch
+> `arena/019fcd2c-docsheet`. `derive_primary_relationships` in
+> `build_catalogue_pages.py` derives the 325 primary rows from the master;
+> `data/product_relationships.csv` is 333 → **8 rows** (only `related_material`);
+> `validate_primary_relationship_coverage` removed. The rendered
+> `docs/product-relationships.json` has the identical 333 relationship IDs
+> (only 4 `evidence_note` texts normalize). Tests 101 → 100 (replaced 6
+> obsolete coverage-guard tests with 5 `DerivedPrimaryRelationshipTests`), 92%
+> coverage, all 5 `--check` modes green.
+
+The project remains green (100 tests, 92% coverage, all checks).
