@@ -49,6 +49,23 @@ But the **specific year (and month) for each of the 35 cannot be sourced
 reliably** from the committed data or public pages without per-title
 confirmation.
 
+### 2a. Follow-up: the On-the-Road talks are ©2003, not 2002
+
+The owner's "targeted 2002" ruling assumed the 2014-batch On-the-Road talks
+were from the 2002 *The Way to God* series. **Audible copyright lines show
+otherwise.** The Audible listings give the original recording-year copyright
+(©), distinct from the 2022 audiobook release date:
+
+- **God Is the Infinite Field** (product 1802) → `©2003 Institute for Spiritual Research`
+- **You Are the Light of Consciousness** (product 37223) → `©2003 ...`
+- Related "Homo Spiritus: Devotional Nonduality Series (… February 2003)"
+
+So the 2014-batch On-the-Road talks belong to the **2003 *Devotional
+Nonduality*** series, **not** 2002. The "targeted 2002" scope therefore
+applies to **zero** of the 35 — they are verifiably **2003**, not 2002. The
+Audible ©year is a reliable, non-guessing source for the true recording year,
+so a broader correction (to 2003 etc.) is now feasible if the owner wants it.
+
 ## 3. Recommendation
 
 Setting guessed recording dates into the review-gated master is **riskier than
@@ -63,8 +80,10 @@ real data defect and hard to unwind. I therefore recommend **one of**:
    least the year groups), and I apply them through the ledger `proposed_year`
    / `proposed_month` (the same reviewed path as the book fix).
 3. **Targeted partial fix:** correct only the subset where the recording year
-   is well-attested (e.g. any talk verifiably part of the 2002 *The Way to
-   God* series) and leave the rest flagged.
+   is well-attested. The Audible ©year is a reliable source — e.g. the
+   On-the-Road talks in this batch are verifiably **©2003** (not 2002), so a
+   correction to **2003** is defensible if the owner approves that broader
+   scope (the earlier "2002 only" scope applies to zero of the 35).
 
 **I have not changed the curated master** for these 35 records. The pipeline
 remains green (101 tests, 92% coverage, all 5 checks). The 2014 values are
