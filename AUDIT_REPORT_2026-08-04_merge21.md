@@ -12,7 +12,7 @@ recent merge. This is a *fresh* pass on the merged state (the earlier
 ## 1. Verdict
 
 The project is **healthy and internally consistent** post–merge #21. Every
-`--check` mode passes, 100/100 tests pass, coverage is 92% (every pipeline
+`--check` mode passes, 103/103 tests pass, coverage is 92% (every pipeline
 module ≥ 89% against the 80% floor), and data referential integrity is intact
 across master / relationships / work-families / Veritas / taxonomy. The two
 HIGH/MED defects found in the prior pass are confirmed **correctly fixed** in
@@ -107,7 +107,7 @@ not data, so it does not affect any master/relationship counts.
   - `build_catalogue_pages.py --check` (376 Everything rows)
   - `reconcile_research_master.py --check`
   - `map_series_taxonomy.py --check` (179 mappings / 6 queued)
-- **Tests:** `python -m unittest discover tests` — **100/100 pass (~2s)**,
+- **Tests:** `python -m unittest discover tests` — **103/103 pass (~2s)**,
   including the full generator end-to-end/tamper suite, run-twice determinism,
   offline Veritas-fetcher replay + retry ladder, rule matrices, the
   README/handoff documentation-currency tests, and the new book-year
@@ -151,7 +151,7 @@ not data, so it does not affect any master/relationship counts.
 
 ## 4. One-sentence summary
 
-The docsheet pipeline is green after merge #21 — all checks pass, 100/100
+The docsheet pipeline is green after merge #21 — all checks pass, 103/103
 tests, 92% coverage, data integrity intact, and both prior defects (CSP hash,
 Veritas 50810) correctly fixed. During this session the **book Year-Month
 defect was fixed** (books now show first-publication year, e.g. Power vs Force
@@ -185,7 +185,7 @@ years — the code count stays **236**. A regression guard
 (`test_books_use_first_publication_year_not_product_listing`) pins the classic
 years and asserts books never get a catalogue code.
 
-**Verification.** All five `--check` modes pass; 100/100 tests pass at 92%
+**Verification.** All five `--check` modes pass; 103/103 tests pass at 92%
 coverage; `docs/master.json` shows Power vs Force = 1995 and The Ego is Not
 the Real You = 2021; the only field changed in the three input CSVs is
 `proposed_year` (23 + 6 + 9 rows). Docs updated (README, INSTRUCTIONS,
@@ -195,7 +195,7 @@ NEXT_AGENT_HANDOFF).
 slimmed with a **behavior-preserving dedup**: added `read_csv` / `index_csv` /
 `veritas_products_by_id` / `veritas_products_by_url` / `require_columns`
 helpers and replaced the ~20 inline CSV-read blocks. No signatures or
-semantics changed; output is byte-identical (`--check` green), 100/100 tests
+semantics changed; output is byte-identical (`--check` green), 103/103 tests
 pass, coverage 92% (module 615 → 580 statements). The residual weight is the
 review-gated data model itself, not redundancy; a larger structural merge of
 the manual + edition candidate lanes was offered but deferred as higher-risk.
