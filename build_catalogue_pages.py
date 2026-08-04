@@ -667,13 +667,26 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         ))
 
     intl_items.extend(intl_queue)
+    promoted_candidates = sum(
+        1 for cand in manual_candidates if cand.get("promotion_status", "").strip() == "promoted"
+    )
+    unpromoted_candidates = len(manual_candidates) - promoted_candidates
     review_overview = [
         {
             "review_sheet": "Master Candidates",
             "record_count": len(manual_candidates),
-            "purpose": "Evidence-backed official candidates awaiting an explicit master-promotion decision.",
+            "purpose": (
+                "All reviewed official candidates have been promoted to the master."
+                if unpromoted_candidates == 0
+                else f"{promoted_candidates} reviewed candidates promoted; "
+                     f"{unpromoted_candidates} still awaiting an explicit master-promotion decision."
+            ),
             "source_file": str(MANUAL_CANDIDATES),
-            "current_state": "reviewed_candidate / not_promoted",
+            "current_state": (
+                f"{promoted_candidates}/{len(manual_candidates)} promoted"
+                if unpromoted_candidates == 0
+                else f"{promoted_candidates} promoted / {unpromoted_candidates} not_promoted"
+            ),
         },
         {
             "review_sheet": "Manual Leads",

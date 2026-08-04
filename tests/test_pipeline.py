@@ -1466,6 +1466,24 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertIn(f"| `{disposition}` | {expected} |", table)
         self.assertIn(f"| **Total** | **{len(rows)}** |", table)
 
+    def test_review_overview_master_candidates_state_matches_data(self) -> None:
+        """The Review-Overview 'Master Candidates' state must reflect real promotion data.
+
+        Regression guard for the 2026-08-04 stale-label fix: the row used to
+        hardcode ``reviewed_candidate / not_promoted`` even after every
+        candidate was promoted. It must now be derived from the actual
+        ``promotion_status`` column so it can never drift again.
+        """
+        overview = json.loads((REPO / "docs/review-overview.json").read_text(encoding="utf-8"))
+        row = next(item for item in overview if item["review_sheet"] == "Master Candidates")
+        with (REPO / "data/manual_master_candidates.csv").open(newline="", encoding="utf-8") as handle:
+            candidates = list(csv.DictReader(handle))
+        promoted = sum(1 for c in candidates if c.get("promotion_status", "").strip() == "promoted")
+        total = len(candidates)
+        self.assertEqual(row["record_count"], total)
+        self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
+        self.assertIn("all", row["purpose"].lower())
+
     def test_books_use_first_publication_year_not_product_listing(self) -> None:
         """Book ``year`` must be the work's first publication year.
 

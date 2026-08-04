@@ -37,7 +37,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 100 tests, offline, ~2s
+python -m unittest discover tests     # 101 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -72,7 +72,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
-| Test suite | **100 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **101 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -307,6 +307,15 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     use the generic provenance note). Tests 101 → 100 (replaced the 6 obsolete
     coverage-guard tests with 5 `DerivedPrimaryRelationshipTests`); 92%
     coverage, all 5 `--check` modes green. See `PRODUCT_RELATIONSHIP_SCHEMA.md`.
+21. **Review-Overview "Master Candidates" label fixed (2026-08-04):** the
+    Review-Overview row for Master Candidates hardcoded
+    `reviewed_candidate / not_promoted` even though all 26 candidates are
+    promoted (a LOW finding from the audit). `build_catalogue_pages.py` now
+    **derives** `current_state` and `purpose` from the real
+    `promotion_status` column (`26/26 promoted`), and a new
+    `test_review_overview_master_candidates_state_matches_data` doc-currency
+    guard prevents it drifting again. Tests 100 → 101; 92% coverage, all 5
+    `--check` modes green.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
