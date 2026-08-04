@@ -9,7 +9,6 @@ impact before any generated file is overwritten.
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import sys
 from collections import defaultdict, deque
@@ -18,6 +17,7 @@ from pathlib import Path
 
 import build_catalogue_pages
 import build_research_master
+from _common import read_csv
 
 REPORT = Path("RECONCILIATION_REPORT.md")
 CURRENT_MASTER = Path("data/research_master_draft.csv")
@@ -34,11 +34,6 @@ class DraftComparison:
     extras: list[dict[str, str]]
     missing: list[dict[str, str]]
     changed: list[tuple[dict[str, str], dict[str, str], list[str]]]
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
 
 
 def markdown_cell(value: str) -> str:

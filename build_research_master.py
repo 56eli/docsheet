@@ -11,12 +11,12 @@ from __future__ import annotations
 
 import argparse
 import csv
-import io
-import json
 import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+from _common import ISO_DATE, json_text, read_csv, render_csv
 
 LEDGER = Path("migration_review_ledger.csv")
 OUTPUT_CSV = Path("data") / "research_master_draft.csv"
@@ -114,7 +114,6 @@ CONTENT_ITEM_TYPES = {
 # (lecture + discussion only) now that books carry explicit years.
 CODE_ITEM_TYPES = {"lecture", "discussion"}
 MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
-ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 @dataclass
@@ -222,18 +221,8 @@ def reference_urls(row: dict[str, str]) -> tuple[str, str]:
 
 
 def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
-    """Render stable UTF-8 CSV text with LF line endings."""
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=fieldnames, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
-    return buffer.getvalue()
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    """Read a committed CSV into a list of row dicts."""
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
+    """Render rows as stable UTF-8 CSV text with LF line endings."""
+    return render_csv(fieldnames, rows)
 
 
 def index_csv(path: Path, key: str) -> dict[str, dict[str, str]]:
@@ -1057,7 +1046,7 @@ def build_master() -> MasterBuild:
     ]
     outputs = {
         OUTPUT_CSV: csv_text(FIELDS, items),
-        OUTPUT_JSON: json.dumps(items, ensure_ascii=False, indent=2) + "\n",
+        OUTPUT_JSON: json_text(items),
         EXCLUSIONS: csv_text(EXCLUSION_FIELDS, exclusions),
     }
     return MasterBuild(

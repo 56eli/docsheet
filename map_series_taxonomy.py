@@ -27,11 +27,10 @@ their lane is ``data/veritas_mapping_decisions.csv`` / the candidate views.
 from __future__ import annotations
 
 import argparse
-import csv
-import io
-import re
 import sys
 from pathlib import Path
+
+from _common import ISO_DATE, read_csv, render_csv
 
 INVENTORY = Path("data/veritas_official_products.csv")
 MASTER = Path("data/research_master_draft.csv")
@@ -45,7 +44,6 @@ MAPPING_FIELDS = [
 ]
 QUEUE_FIELDS = MAPPING_FIELDS + ["queue_reason"]
 REVIEWED_STATUSES = {"approved", "rejected"}
-ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 # --- Policy encoding (CATEGORY_DOMINANCE_POLICY.md) ----------------------
 # Category display names exactly as persisted in the inventory.
@@ -165,25 +163,12 @@ def mapped_series_for(dominant: str) -> str:
     return ""
 
 
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
-
-
 def write_csv(path: Path, fields: list[str], rows: list[dict[str, str]]) -> None:
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=fields, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
-    path.write_text(buffer.getvalue(), encoding="utf-8")
+    path.write_text(render_csv(fields, rows), encoding="utf-8")
 
 
 def csv_text(fields: list[str], rows: list[dict[str, str]]) -> str:
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=fields, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
-    return buffer.getvalue()
+    return render_csv(fields, rows)
 
 
 def load_review_overlay() -> dict[str, dict[str, str]]:

@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import csv
 import html
-import io
 import json
 import re
 import sys
@@ -21,6 +20,8 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+from _common import ISO_DATE, read_csv, render_csv
 
 API = "https://veritaspub.com/wp-json/wp/v2/product"
 API_CAT = "https://veritaspub.com/wp-json/wp/v2/product_cat"
@@ -42,7 +43,6 @@ DECISION_STATUSES = {
     "unique_item", "compilation_or_new_edition", "excluded_related_material",
     "matched_by_title", "matched_by_normalized_title",
 }
-ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_PAGE_ATTEMPTS = 4
 
 
@@ -151,11 +151,6 @@ def category_names(product: dict, term_names: dict[str, str]) -> str:
             name = f"unresolved-category-{key}"
         categories.append(name)
     return "; ".join(categories)
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
 
 
 def fetch_products() -> list[dict]:
@@ -324,11 +319,7 @@ def apply_mapping_decisions(
 
 
 def csv_text(rows: list[dict[str, str]]) -> str:
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=OUTPUT_FIELDS, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
-    return buffer.getvalue()
+    return render_csv(OUTPUT_FIELDS, rows)
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

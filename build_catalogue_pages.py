@@ -10,11 +10,11 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+from _common import ISO_DATE, json_text, read_csv
 
 MASTER = Path("data/research_master_draft.csv")
 QUEUE = Path("data/official_discovery_queue.csv")
@@ -99,7 +99,6 @@ SERIES_COMPILATION_REQUIRED_COLUMNS = {
     "reviewed_on", "evidence_url", "evidence_note",
 }
 SERIES_COMPILATION_TYPE = "compilation_draws_from_series"
-ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 # Everything-view provenance classes. The Everything sheet deliberately shows
 # curated master records next to official candidates so reviewers can compare
@@ -149,11 +148,6 @@ class CatalogueBuild:
     product_relationships: list[dict[str, str]]
     series_compilations: list[dict[str, str]]
     outputs: dict[Path, str]
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open(encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))
 
 
 def validate_work_family_coverage(master_items: list[dict[str, str]]) -> None:
@@ -520,10 +514,6 @@ def validate_new_work_queue(
             raise ValueError(
                 f"{NEW_WORK_QUEUE}:{line_number} source_url_veritas differs from the inventory"
             )
-
-
-def json_text(data: object) -> str:
-    return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 
 def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:

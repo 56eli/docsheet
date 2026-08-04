@@ -316,6 +316,21 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     `test_review_overview_master_candidates_state_matches_data` doc-currency
     guard prevents it drifting again. Tests 100 → 101; 92% coverage, all 5
     `--check` modes green.
+22. **Re-audit + shared-code dedup (2026-08-04):** full project re-audit
+    confirmed the pipeline green (101 tests, 92% coverage, all 5 checks) and
+    then removed cross-module duplication **without regression risk** by
+    adding `_common.py`, a tiny shared helper module the generators already
+    import (they already cross-import each other, so a shared module is
+    consistent with the design). Moved into it the 5× duplicated `read_csv`,
+    the 4× duplicated `ISO_DATE`, the 2× duplicated `json_text`, and the
+    4-way CSV writer core as `render_csv` (the three `csv_text`/`write_csv`
+    wrappers with different signatures keep their own names and now delegate
+    to it). Removed the resulting unused `io`/`json`/`csv`/`re` imports.
+    Combined coverage statements 1617 → **1594**; 101 tests, 92% coverage,
+    all 5 `--check` modes green. Every committed data file is still consumed
+    by a generator (no orphans). Remaining structural dedup is **F2** (merge
+    the manual + edition candidate lanes — deliberately deferred as the one
+    higher-risk cut).
 
 ## 5. Binding data rules (violating these has caused real defects)
 
