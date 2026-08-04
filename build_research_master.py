@@ -82,7 +82,7 @@ EDITION_PROMOTION_REQUIRED_COLUMNS = {
     "series", "approval_status", "approved_on", "approval_reason",
 }
 EDITION_ROLES = {"book", "audio", "video", "streaming"}
-EDITION_FORMATS = {"DVD", "CD", "audio", "book", "streaming"}
+EDITION_FORMATS = {"DVD", "CD", "audiobook", "book", "streaming"}
 EDITION_SOURCES = {"veritas", "audible", "hayhouse"}
 EDITION_CANDIDATE_STATUSES = {"proposed", "reviewed_candidate"}
 EDITION_SOURCE_URL_COLUMNS = {
@@ -113,7 +113,7 @@ CONTENT_ITEM_TYPES = {
 # would be meaningless. This also keeps the catalogue-code count stable
 # (lecture + discussion only) now that books carry explicit years.
 CODE_ITEM_TYPES = {"lecture", "discussion"}
-MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
+MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audiobook", "book"}
 
 
 @dataclass
@@ -378,7 +378,7 @@ def infer_format_from_official_source(
         if any(k in slug for k in ("question-answer", "question-and-answer", "q&a")):
             return "streaming"
         if "audio" in slug or "– audio" in ot or " audio" in ot:
-            return "audio"
+            return "audiobook"
         if "book" in slug or "(book)" in ot:
             return "book"
     # Publisher-category evidence: the product sits on the publisher's own

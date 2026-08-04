@@ -550,7 +550,7 @@ class FormatInferenceTests(unittest.TestCase):
             "official_categories": "Books Published by Dr. Hawkins",
         }
         by_url = {product["official_product_url"]: product}
-        item = {"format": "audio", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
+        item = {"format": "audiobook", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
         self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
 
     def test_compact_id_recognition(self) -> None:
@@ -801,7 +801,7 @@ class ReconcileDriftTests(unittest.TestCase):
             missing=[{"raw_row_number": "10", "title": "Missing", "item_type": "book"}],
             changed=[(
                 {"raw_row_number": "11", "title": "Before", "format": ""},
-                {"raw_row_number": "11", "title": "After", "format": "audio"},
+                {"raw_row_number": "11", "title": "After", "format": "audiobook"},
                 ["title", "format"],
             )],
         )
@@ -810,7 +810,7 @@ class ReconcileDriftTests(unittest.TestCase):
                 report = rrm.render_report()
         self.assertIn("Extra", report)
         self.assertIn("Missing", report)
-        self.assertIn("`∅` → `audio`", report)  # empty-before drift stays visible
+        self.assertIn("`∅` → `audiobook`", report)  # empty-before drift stays visible
 
         write = invoke_script("reconcile_research_master.py", self.sandbox)
         self.assertEqual(write.returncode, 0, write.stderr)
@@ -1100,7 +1100,7 @@ class EditionCandidateTests(unittest.TestCase):
 
     def candidate_rows(self, promotion_status: str = "not_promoted") -> list[str]:
         return [
-            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audio,Audiobook,true,"
+            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audiobook,Audiobook,true,"
             f"audible,https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,"
             f"https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,Truth Vs Falsehood,"
             f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition",
@@ -1132,7 +1132,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved audiobook edition",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved audiobook edition",
             ])
             write = invoke_script("build_research_master.py", sandbox)
             self.assertEqual(write.returncode, 0, write.stderr)
@@ -1142,7 +1142,7 @@ class EditionCandidateTests(unittest.TestCase):
             row = rows["320"]
             self.assertEqual(row["work_id"], "w-tvf")
             self.assertEqual(row["item_type"], "book")
-            self.assertEqual(row["format"], "audio")
+            self.assertEqual(row["format"], "audiobook")
             self.assertEqual(row["source_url_audible"], "https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO")
             self.assertEqual(row["candidate_key"], "candidate:edition-audible-tvf")
             # D3: the audiobook URL moved off the book row into its edition row
@@ -1157,7 +1157,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("not_promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved",
             ])
             with self.assertRaisesRegex(ValueError, "must be 'promoted'"):
                 invoke_script("build_research_master.py", sandbox)
@@ -1219,7 +1219,7 @@ class EditionCandidateTests(unittest.TestCase):
             sandbox = Path(tempdir.name)
             base = self.candidate_rows()[0]
             cases = [
-                (base.replace(",book,,audio,", ",book,,vinyl,"), "carrier format"),
+                (base.replace(",book,,audiobook,", ",book,,vinyl,"), "carrier format"),
                 (base.replace("2026-08-03,not_promoted", "2026-08-03,maybe"), "must be 'not_promoted'"),
                 (base.replace("reviewed_candidate,2026-08-03", "pending,2026-08-03"), "review_status must be"),
                 (base.replace("reviewed_candidate,2026-08-03", "reviewed_candidate,"), "ISO reviewed_on"),
@@ -1229,8 +1229,8 @@ class EditionCandidateTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, expected):
                     invoke_script("build_research_master.py", sandbox)
             # invalid year
-            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audio",
-                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audio")])
+            self.write_files(sandbox, [base.replace("Truth Vs Falsehood (Audiobook),book,,audiobook",
+                                                    "Truth Vs Falsehood (Audiobook),book,20xx,audiobook")])
             with self.assertRaisesRegex(ValueError, "proposed_year"):
                 invoke_script("build_research_master.py", sandbox)
             # invalid owned
@@ -1244,7 +1244,7 @@ class EditionCandidateTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            promo = "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved"
+            promo = "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved"
             # rejected promotion: no row minted, candidate stays not_promoted
             self.write_files(sandbox, self.candidate_rows(), [promo.replace("approved,2026-08-03", "rejected,2026-08-03")])
             write = invoke_script("build_research_master.py", sandbox)
@@ -1258,7 +1258,7 @@ class EditionCandidateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "must match the candidate"):
                 invoke_script("build_research_master.py", sandbox)
             # deprecated item_type in promotion
-            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audio,", ",video,audio,")])
+            self.write_files(sandbox, self.candidate_rows("promoted"), [promo.replace(",book,audiobook,", ",video,audiobook,")])
             with self.assertRaisesRegex(ValueError, "non-deprecated"):
                 invoke_script("build_research_master.py", sandbox)
             # unknown approval status
@@ -1273,7 +1273,7 @@ class EditionCandidateTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_files(sandbox, self.candidate_rows("promoted"), [
-                "edition-audible-tvf,320,w-tvf,audio,book,audio,,approved,2026-08-03,owner approved",
+                "edition-audible-tvf,320,w-tvf,audio,book,audiobook,,approved,2026-08-03,owner approved",
             ])
             invoke_script("build_research_master.py", sandbox)
             path = sandbox / "data" / "research_master_draft.csv"

@@ -153,5 +153,20 @@ to be clean so the columns and filters match the new model.
 5. **Books grouping** — drop `series="Books"` and rely on `work_id` + a
    `item_type=book` filter?
 
+> **Owner decisions (2026-08-04):**
+> 1. **Format — minimal:** keep a small closed vocabulary; do NOT expand to
+>    paperback/hardcover/ebook. Net set: `DVD`, `CD`, `streaming`, `book`,
+>    `audiobook` (i.e. migrate the 24 `audio` → `audiobook`; keep `book`).
+> 2. **Series — keep the umbrella:** `series` stays `On The Road Talk Series`
+>    (and other umbrella values); the year lives in the existing `year` field.
+>    Convert the 208 yearly-name records (`The Way to God`, `Devotional
+>    Nonduality`, …) back to the umbrella series instead of the yearly names.
+> 3. **Titles — strip noise only where it matches the official distributor
+>    title** (e.g. the Veritas listing). Clean `PART`/`(Part)`/`DVD`/`Volume`/
+>    transcoding noise from a public title **only when the cleaned form equals
+>    the official listing title**; otherwise keep the current title.
+> 4. **Audiobooks:** keep `item_type="book"`, set `format="audiobook"`.
+> 5. **Books grouping:** keep `series="Books"` (do not drop it).
+
 The pipeline is green (102 tests, 92% coverage, all 5 checks). No changes have
 been made for this roadmap.

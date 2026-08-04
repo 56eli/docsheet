@@ -371,6 +371,16 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     Set Sail (356), Peace is the Natural State (357). Catalogue codes
     **265 → 271**. Tests 102, 92% coverage, all 5 checks green.
 
+25. **Format vocabulary: `audio` → `audiobook` (2026-08-04, owner decision):**
+    per the readability roadmap decisions, `format` now uses a small closed
+    vocabulary `{DVD, CD, book, audiobook, streaming}` — the 24 `audio` format
+    values were renamed `audiobook` (across the master, edition candidates/
+    promotions, a manual candidate, and the Audible-candidate rendering).
+    `EDITION_FORMATS` / `MANUAL_CANDIDATE_FORMATS` and `infer_format` updated.
+    Note `audio`/`video` remain **retired as item_type** (unchanged), and the
+    `audio` **edition_role** value is unchanged. Tests 102, 92% coverage, all 5
+    checks green.
+
 ## 5. Binding data rules (violating these has caused real defects)
 
 - **Never hand-edit generated files** — `data/research_master_draft.*`,

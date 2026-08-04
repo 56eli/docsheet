@@ -651,7 +651,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         items.append(everything_record(
             RECORD_TYPE_CANDIDATE_AUDIBLE,
             title=product["official_title"],
-            format="audio",
+            format="audiobook",
             source_url_audible=product["audible_url"],
             notes="Official Audible product; unreviewed for deduplication and metadata.",
         ))
