@@ -119,7 +119,7 @@ folders.
 ## Current reviewed catalogue state
 
 The current curated master has **356** records (307 `lecture`, 38 `book`,
-10 `discussion`, 1 untyped), **249** catalogue codes, **68** retained exclusions,
+10 `discussion`, 1 untyped), **265** catalogue codes, **68** retained exclusions,
 **110** approved source overrides (including the four Nightingale-Conant audio
 editions), **26** promoted
 and **0** unpromoted official candidates, **333** item-to-product relationships,

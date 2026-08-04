@@ -89,17 +89,16 @@ lecture month from the product-listing date for these records.
 | 222–224 | Presence of Spiritual Awareness | **2004** | ✅ corrected |
 | 271 | The Ever-Present Joy | **2004** | ✅ corrected |
 | 275 | Truth Shines Forth | **2004** | ✅ corrected |
-| 233–250 | Office Series (18 talks) | **2014** (first release) | ✅ **left at 2014** (the Office-Visit sets genuinely debuted 2014, so 2014 is the correct first-release year — not a wrong listing date) |
+| 233–250 | Office Series (16 talks) | **1982** | ✅ corrected (the Office-Visit CDs were released **1982** — e.g. Worry/Fear/Anxiety Jul 1982, A Map of Consciousness Dec 1982, Sexuality Apr 1982 — so the recording year is 1982, not the 2014 storefront re-listing) |
 | 230–232 | Verification of Spiritual Realities | unverified | ⏳ flagged |
 | 268 | God is Hidden Within the Beauty of the Music | unverified (Audible page unavailable) | ⏳ flagged |
 | 356 | Don't Set Sail Without A Compass – Audio | unverified | ⏳ flagged |
 | 357 | Peace is the Natural State | unverified | ⏳ flagged |
 
-**13 On-the-Road talks are corrected** to their verified recording years
-(2003–2005) with wrong listing months cleared (year-only). The **18 Office
-Series talks keep 2014** because the Office-Visit sets were genuinely first
-released in 2014 (Audible ©2014) — that is their first release date, not a
-wrong listing date. **4 talks remain flagged** pending their © years.
+**13 On-the-Road talks + 16 Office Series talks are corrected** to their
+verified recording years (On-the-Road ©2003–2005; Office Series **1982**) with
+wrong listing months cleared (year-only). **4 talks remain flagged** pending
+their © years.
 
 ## 3. Recommendation
 

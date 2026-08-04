@@ -239,12 +239,14 @@ record's year — so a 2014 listing month can no longer leak into a 2003–2005
 record. Recording months known from titles (Become That Which You Are = June,
 Love is a Way of Being = January, Unity Church March/June) were set in the
 reviewed inputs. Extending the research to the whole batch: **13 On-the-Road
-talks corrected** (2003–2005); the **18 Office Series talks keep 2014** (the
-Office-Visit sets genuinely first-released 2014 — a correct first-release
-date, not a wrong listing); **4 talks stay flagged** (Verification of
-Spiritual Realities, God is Hidden, Peace is the Natural State, Don't Set
-Sail) pending their © years. Catalogue codes **236 → 249**. Tests 102,
-coverage 92%, all 5 checks green.
+talks corrected** (©2003–2005) and the **16 Office Series talks corrected to
+1982** (the owner noted Hawkins died in 2012; the Office-Visit CDs were
+released 1982 — Worry/Fear/Anxiety Jul 1982, A Map of Consciousness Dec 1982,
+Sexuality Apr 1982 — so 1982 is the recording year, not the 2014 storefront
+re-listing); **4 talks stay flagged** (Verification of Spiritual Realities,
+God is Hidden, Peace is the Natural State, Don't Set Sail) pending their ©
+years. Catalogue codes **236 → 265**. Tests 102, coverage 92%, all 5 checks
+green.
 
 A full re-audit confirmed the pipeline green (101 tests, 92% coverage, all 5
 checks) and then removed cross-module duplication **without regression risk**.
