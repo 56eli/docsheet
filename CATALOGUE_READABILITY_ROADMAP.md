@@ -168,7 +168,9 @@ to be clean so the columns and filters match the new model.
 >    title** (e.g. the Veritas listing). Clean `PART`/`(Part)`/`DVD`/`Volume`/
 >    transcoding noise from a public title **only when the cleaned form equals
 >    the official listing title**; otherwise keep the current title.
->    **⏳ DEFERRED** — pending a later session.
+>    **✅ IMPLEMENTED 2026-08-04** (commit `0fdce41`): 13 lecture titles
+>    cleaned, raw kept in `legacy_title`, 5 inventory `matched_master_titles`
+>    rows synced.
 > 4. **Audiobooks:** keep `item_type="book"`, set `format="audiobook"`.
 >    **✅ IMPLEMENTED 2026-08-04** (part of commit `2bc45c9`).
 > 5. **Books grouping:** keep `series="Books"` (do not drop it).
