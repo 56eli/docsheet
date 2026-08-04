@@ -157,16 +157,21 @@ to be clean so the columns and filters match the new model.
 > 1. **Format — minimal:** keep a small closed vocabulary; do NOT expand to
 >    paperback/hardcover/ebook. Net set: `DVD`, `CD`, `streaming`, `book`,
 >    `audiobook` (i.e. migrate the 24 `audio` → `audiobook`; keep `book`).
+>    **✅ IMPLEMENTED 2026-08-04** (commit `2bc45c9`).
 > 2. **Series — keep the umbrella:** `series` stays `On The Road Talk Series`
 >    (and other umbrella values); the year lives in the existing `year` field.
 >    Convert the 208 yearly-name records (`The Way to God`, `Devotional
 >    Nonduality`, …) back to the umbrella series instead of the yearly names.
+>    **⏳ DEFERRED** — pending a later session (collapsing drops the yearly
+>    theme names; 10 edition rows have no year).
 > 3. **Titles — strip noise only where it matches the official distributor
 >    title** (e.g. the Veritas listing). Clean `PART`/`(Part)`/`DVD`/`Volume`/
 >    transcoding noise from a public title **only when the cleaned form equals
 >    the official listing title**; otherwise keep the current title.
+>    **⏳ DEFERRED** — pending a later session.
 > 4. **Audiobooks:** keep `item_type="book"`, set `format="audiobook"`.
+>    **✅ IMPLEMENTED 2026-08-04** (part of commit `2bc45c9`).
 > 5. **Books grouping:** keep `series="Books"` (do not drop it).
+>    **✅ DECIDED** (no change needed).
 
-The pipeline is green (102 tests, 92% coverage, all 5 checks). No changes have
-been made for this roadmap.
+The pipeline is green (102 tests, 92% coverage, all 5 checks).
