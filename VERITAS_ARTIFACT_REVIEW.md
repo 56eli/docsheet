@@ -178,3 +178,43 @@ artifact diff was reviewed row by row. Findings and actions:
    rows (20 equal the curated baseline; 10 differ — owner ruling listed in
    `NEXT_AGENT_HANDOFF.md` §6). Everything is 396 → 376 rows. The next
    workflow run should pass clean.
+
+## Addendum 4 — taxonomy rulings, NC edition fills, Master-ID sort (2026-08-04)
+
+1. **All 10 remaining series-taxonomy proposals ruled.** 3 approved:
+   product 1814 → master **357** (Peace is the Natural State) re-seriesed
+   Media Miscellaneous → **On The Road Talk Series** (publisher category and
+   the original On-The-Road audio evidence agree); products 50485/50488 →
+   masters **312/313** (the 2012 per-title discussion works) re-seriesed →
+   **Discussion Series**. 7 rejected with documented rationale: 1546/1548
+   (Unity Church Sedona CDs — the curated On-The-Road run stands over the
+   "Media Miscellaneous" carrier shelf), 1661/1695/1728/1742 (audio/CD-DVD
+   editions keep their work's `Books` series; precedent: product 1542), and
+   55576 (six conflicting publisher categories, no dominant home; original
+   12-session audio program, not a transcription-series book). Master rebuilt:
+   exactly **3 series values changed**; taxonomy 179 matched → **169 approved
+   / 0 proposed / 10 rejected**; 316 approved mappings cover 316 master IDs.
+2. **`source_url_nightingale_conant` 0 → 4.** The official Nightingale-Conant
+   author page (nightingale.com/pages/david-hawkins) fetched live 2026-08-04
+   lists 7 Hawkins programs. The 4 that are master audio editions —
+   masters **327–330** (Truth Vs Falsehood, Healing, In The World But Not Of
+   It, The Highest Level Of Enlightenment) — received approved override rows
+   keyed by edition `candidate_key` (they have no `raw_row_number`). The
+   remaining 3 (The Ultimate David Hawkins Library, The Discovery, Naked) are
+   unmapped compilations that stay in the official discovery queue pending
+   owner ruling. Hay House needed no new fills: its unreviewed inventory rows
+   are a merchandise journal/deck and an audio program already carried as a
+   `candidate_hayhouse` row. Approved overrides **106 → 110**.
+3. **Master ID column sort fixed.** `docs/app.js` detects fully-numeric
+   columns and applies Tabulator's built-in `number` sorter with
+   `alignEmptyValues: "bottom"`, so Master ID counts 1, 2, 3, … (not the
+   lexical 1, 10, 100, … produced by the first-row-guessed string sorter)
+   and blank candidate IDs pin to the bottom in both sort directions. CI e2e
+   assertion added (`tests/column-layout.spec.js`: ascending 1/2/3,
+   descending 358/357 — IDs 249 and 264 are retired); the same ordering was
+   verified in the sandbox by replaying Tabulator 6.5.2's `_sortRow`
+   semantics against the committed `docs/master.json`.
+4. **Verification battery re-run green:** all 5 `--check` modes, 100 unittest
+   tests (fixtures now strip edition-keyed overrides when a test rewrites
+   the edition layer), coverage 92% (gate 80%), `node --check` on all four
+   JS files, `py_compile` on all pipeline modules.

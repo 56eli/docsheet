@@ -662,6 +662,19 @@
       const cap = /title|note|reason|purpose|role/i.test(key) ? MAX_TEXT_WIDTH : MAX_COLUMN_WIDTH;
       col.width = Math.min(measured, cap);
 
+      // Numeric columns count up in numeric order, never lexically. Without an
+      // explicit number sorter Tabulator guesses the sorter from the FIRST
+      // row's value, and when that row is blank (official candidates sit
+      // above some sheets) it fell back to a string sort — the "Master ID
+      // counts 1, 10, 100, 2, 20, ..." bug. Tabulator's built-in number
+      // sorter with alignEmptyValues "bottom" pins empty cells (candidate
+      // rows without a Master ID) to the bottom in BOTH sort directions.
+      if (nonEmpty.length > 0 &&
+          nonEmpty.every((v) => /^-?\d+(\.\d+)?$/.test(String(v).trim()))) {
+        col.sorter = "number";
+        col.sorterParams = { alignEmptyValues: "bottom" };
+      }
+
       if ((preset.frozen || []).includes(key)) {
         col.frozen = true;
       }

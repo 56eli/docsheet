@@ -77,6 +77,21 @@ def make_sandbox() -> "tempfile.TemporaryDirectory[str]":
     return tempdir
 
 
+def drop_edition_scoped_overrides(sandbox: Path) -> None:
+    """Drop committed source overrides that target edition candidates.
+
+    Fixture tests replace the edition layer (edition_candidates.csv and
+    edition_promotions.csv) with synthetic content. The committed overrides
+    keyed on real edition candidate ids would then reference items that no
+    longer exist, breaking the build for reasons unrelated to the fixture.
+    """
+    overrides = sandbox / "data" / "research_master_source_overrides.csv"
+    lines = overrides.read_text(encoding="utf-8").splitlines(keepends=True)
+    kept = [lines[0], *[line for line in lines[1:] if not line.startswith("candidate:edition-")]]
+    if len(kept) != len(lines):
+        overrides.write_text("".join(kept), encoding="utf-8")
+
+
 SCRIPT_MODULES = {
     "process_data.py": "process_data",
     "build_research_master.py": "build_research_master",
@@ -902,6 +917,7 @@ class WorkFamilyTests(unittest.TestCase):
         (sandbox / "data" / "edition_promotions.csv").write_text(
             "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
             "approval_status,approved_on,approval_reason\n", encoding="utf-8")
+        drop_edition_scoped_overrides(sandbox)
 
     def approved_row(self, member: str = "289", work_id: str = "w-tvf") -> str:
         return (f"{work_id},{member},Truth vs Falsehood,"
@@ -983,6 +999,7 @@ class WorkFamilyTests(unittest.TestCase):
             (sandbox / "data" / "edition_promotions.csv").write_text(
                 "candidate_key,master_uuid,work_id,edition_role,item_type,format,series,"
                 "approval_status,approved_on,approval_reason\n", encoding="utf-8")
+            drop_edition_scoped_overrides(sandbox)
             with self.assertRaisesRegex(ValueError, "missing required columns"):
                 invoke_script("build_research_master.py", sandbox)
         finally:
@@ -1078,6 +1095,7 @@ class EditionCandidateTests(unittest.TestCase):
         (sandbox / "data" / "edition_promotions.csv").write_text(
             self.PROMO_HEADER + "\n" + ("\n".join(promo_rows) + "\n" if promo_rows else ""),
             encoding="utf-8")
+        drop_edition_scoped_overrides(sandbox)
 
     def test_committed_candidates_validate_and_build_clean(self) -> None:
         tempdir = make_sandbox()

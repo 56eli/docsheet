@@ -79,19 +79,27 @@ rows for one master ID fail the generator outright.
    the build fails if approvals reference unknown IDs, lack a series, or give
    one master ID conflicting series.
 
-## Baseline (2026-08-04, post-refresh)
+## Baseline (2026-08-04, post-rulings)
 
-179 matched products: **166 approved** (143 bulk approvals at 286/286
-uuid-level agreement with the curated series, plus 3 individually ruled, plus
-20 bulk approvals 2026-08-04 at 313/313 uuid-level agreement — again a proven
-no-op),
-**10 proposed** (the conflicting 2026-08-04 rows, listed for owner ruling in
-`NEXT_AGENT_HANDOFF.md` §6), and
-**3 rejected** wrong-edition signals (book/audio products title-matched to the
-Volume I DVD record and the 2006 discussion title-matched to the 2006 lecture
-record). The queue's 6 rows are all ruled — 2 dual-signal conflicts resolved in
-favour of each record's own primary product, 1 multi-annual assignment resolved
-to the 2007 series by title evidence and sibling-product categorization.
+179 matched products: **169 approved** (143 bulk approvals at 286/286
+uuid-level agreement with the curated series, 6 individually ruled over the
+2026-08-03/08-04 sessions, and 20 bulk approvals 2026-08-04 at 313/313
+uuid-level agreement — the bulk approvals were proven no-ops),
+**0 proposed**, and
+**10 rejected** wrong-edition/carrier-shelf signals. The final 10 conflicting
+2026-08-04 proposals were **ruled 2026-08-04**: 3 approved — product 1814
+re-seriesed master 357 to **On The Road Talk Series** and products
+50485/50488 re-seriesed masters 312/313 to **Discussion Series** (build
+confirms exactly 3 series values changed; 316 approved mappings cover 316
+master IDs) — and 7 rejected with documented rationale: 1546/1548 (curated
+On The Road run stands over the publisher's carrier shelf), 1661/1695/1728/1742
+(audio/CD-DVD editions keep their work's `Books` series; precedent: the
+product-1542 rejection), 55576 (six conflicting publisher categories offer no
+dominant home; the item is an original 12-session audio program, not a
+transcription-series book). The queue's 6 rows are all ruled — 2 dual-signal
+conflicts resolved in favour of each record's own primary product, 1
+multi-annual assignment resolved to the 2007 series by title evidence and
+sibling-product categorization.
 
 The first 2026-08-03 inventory refresh (pre-mapping) dropped four stale
 primary-source matches from scope (three were relinked 2026-08-04 to their

@@ -9,6 +9,29 @@ workflows), documentation, and security posture.
 **Supersedes:** the five overlapping 2026-08-03 audit reports now archived
 under `archive/` (see `archive/README.md`).
 
+> ## Re-verification refresh — 2026-08-04 (branch `arena/019fc9b5-docsheet`)
+>
+> Every command in §2 was re-executed after the 2026-08-04 batch (taxonomy
+> rulings, NC edition fills, Master-ID sort fix) and is **green**: all 5
+> `--check` modes pass; the deterministic suite runs **100/100 tests** at
+> **92% coverage** (fixtures now strip edition-keyed overrides when a test
+> rewrites the edition layer); `py_compile` on all 8 modules; `node --check`
+> on `docs/app.js`, `playwright.config.js`, `tests/csv-export.spec.js`, and
+> `tests/column-layout.spec.js`. Re-derived counts: master 356 (307 lecture /
+> 38 book / 10 discussion / 1 untyped), 236 catalogue codes, 68 exclusions,
+> **110 approved overrides** (was 106 — four `source_url_nightingale_conant`
+> fills keyed by edition candidate key), 333 relationships, 7 compilations,
+> Everything 376, series taxonomy 179 matched → **169 approved / 0 proposed /
+> 10 rejected** (all 10 conflicting 2026-08-04 proposals ruled: 3 approvals
+> re-seriesed masters 357/312/313; build confirms exactly 3 series changes).
+> Frontend: numeric-column detection now applies Tabulator's built-in
+> `number` sorter with empties pinned bottom — the "Master ID not counting
+> in order" defect is fixed and guarded by new e2e assertions (Chromium runs
+> in CI; ordering additionally verified by replaying Tabulator 6.5.2
+> `_sortRow` semantics over committed `docs/master.json` in the sandbox).
+> Open items from §7 shrink to: record 246, 8 blank formats, **four**
+> always-empty master columns (NC column left the list), wider browser tests.
+
 ---
 
 ## 1. Executive summary

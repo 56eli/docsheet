@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 96 tests, no browser/network needed
+python -m unittest discover tests          # 100 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -118,7 +118,8 @@ folders.
 
 The current curated master has **356** records (307 `lecture`, 38 `book`,
 10 `discussion`, 1 untyped), **236** catalogue codes, **68** retained exclusions,
-**106** approved source overrides (including Nightingale-Conant), **26** promoted
+**110** approved source overrides (including the four Nightingale-Conant audio
+editions), **26** promoted
 and **0** unpromoted official candidates, **333** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable.

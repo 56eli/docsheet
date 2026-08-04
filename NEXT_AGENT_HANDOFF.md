@@ -37,7 +37,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 96 tests, offline, ~2s
+python -m unittest discover tests     # 100 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -66,13 +66,13 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 356 | 307 lecture / 38 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) |
 | Everything view | **376** | 356 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 68 / 106 | |
+| Exclusions / source overrides | 68 / 110 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 |
 | Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
 | Everything relationships | 333 product relationships, 7 series compilations | |
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
-| Series taxonomy | 179 matched products → 166 approved / 10 proposed / 3 rejected; approved mappings applied as a proven no-op | the 10 conflicting 2026-08-04 proposals await owner review |
-| Test suite | **96 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
+| Test suite | **100 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -201,7 +201,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     the Map of Consciousness poster, merchandise). Series taxonomy absorbed
     the 30 newly matched products as **30 new `proposed` rows** (146
     approved unchanged; 20/30 proposals equal the curated series baseline,
-    10 differ and await owner review — listed in §6). `RECONCILIATION_REPORT.md`
+    10 differ — **ruled 2026-08-04, see §4 item 17**). `RECONCILIATION_REPORT.md`
     regenerated; all 5 `--check` modes green; 100 tests pass after currency
     updates. The next Map Veritas workflow run should pass with "Candidate
     matches the reviewed inventory."
@@ -220,6 +220,47 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     `innerHTML`). New CI e2e spec `tests/column-layout.spec.js` guards the
     Work-column placement and width application (runs in CI; Chromium is not
     installable in the sandbox).
+17. **Taxonomy rulings + Nightingale-Conant fills + Master-ID sort fix
+    (2026-08-04, same branch):**
+    (a) **All 10 remaining series-taxonomy proposals ruled:** **3 approved**
+    — product 1814 → master **357** (Media Miscellaneous → **On The Road Talk
+    Series**; publisher category and original evidence agree), products
+    50485/50488 → masters **312/313** (→ **Discussion Series**; the 2012
+    discussion per-title works) — and **7 rejected** with documented
+    rationale (1546/1548: the On-The-Road run stands over the carrier shelf;
+    1661/1695/1728/1742: editions keep their work's `Books` series,
+    precedent product 1542; 55576: six conflicting publisher categories, no
+    dominant home). Master regenerated: **3 series changed**, taxonomy now
+    169 approved / 0 proposed / 10 rejected, 316 approved mappings cover
+    316 master IDs.
+    (b) **`source_url_nightingale_conant` 0 → 4:** the official NC author
+    page (nightingale.com/pages/david-hawkins, fetched live 2026-08-04)
+    lists exactly 7 Hawkins programs; the 4 that are master audio editions
+    (masters **327–330**: Truth Vs Falsehood, Healing, In The World But Not
+    Of It, The Highest Level Of Enlightenment) got approved override rows
+    keyed by edition candidate key; the other 3 (Ultimate Library / The
+    Discovery / Naked) are unmapped compilations that stay in the discovery
+    queue pending owner ruling. Hay House: no new fills — the only
+    unreviewed inventory products are a merchandise journal/deck and an
+    audio title already living as a `candidate_hayhouse` row. Overrides
+    **106 → 110**; `archive/TEMP_NIGHTINGALE_PROVENANCE.md` annotated as
+    resolved.
+    (c) **Master ID sort order fixed:** `docs/app.js` auto-detects
+    fully-numeric columns and attaches Tabulator's built-in `number` sorter
+    with `alignEmptyValues: "bottom"` — Master ID now counts 1, 2, 3, …
+    (was 1, 10, 100, …) and blank candidate IDs pin to the bottom in both
+    directions. Root cause: without an explicit sorter Tabulator guesses
+    from the first row, and a blank first-row value falls back to a string
+    sort. New e2e assertions in `tests/column-layout.spec.js` (click the
+    header → 1/2/3 asc, 358/357 desc — IDs 249/264 are retired, so max is
+    358) run in CI; ordering additionally verified in the sandbox by
+    replaying Tabulator 6.5.2's `_sortRow` semantics over real
+    `docs/master.json`.
+    (d) **Test fixtures:** `tests/test_pipeline.py` now strips
+    edition-keyed override rows (`drop_edition_scoped_overrides`) when a
+    fixture rewrites the edition layer, so synthetic candidate fixtures
+    coexist with the committed 2026-08-04 NC overrides. 100 tests pass,
+    all 5 `--check` modes green.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -265,12 +306,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 **P1 — Data decisions needing a ruling:**
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  **fully applied.** Master **350 rows** (301 lecture / 38 book / 10
+  **fully applied.** Master **356 rows** (307 lecture / 38 book / 10
   discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
-  UUIDs in `edition_promotions.csv` — never renumber) and 9 promoted
-  Satsang monthlies (344–352); **193 works / 326 family members approved,
+  UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
+  Satsang monthlies (344–352), and 6 promoted manual candidates (353–358);
+  **199 works / 332 family members approved,
   work_id coverage 356/356** (D6a per-part ruling + C1 split applied);
-  overrides 106 (candidate-provenance supported, incl. 316/318 Hay House);
+  overrides 110 (candidate-provenance supported, incl. 316/318 Hay House
+  and the 4 Nightingale-Conant edition URLs keyed by edition candidate);
   relationships 333; Everything 376 (0 pending candidates; Veritas
   candidate rows 28 → 8 after the 2026-08-04 refresh linked all
   already-promoted works). Remaining model
@@ -280,29 +323,33 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
 - **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
-- **10 conflicting series-taxonomy proposals** (from the 2026-08-04
-  refresh; the 20 baseline-matching proposals were bulk-approved 2026-08-04
-  as a proven no-op — 0 series changes) in
-  `data/series_category_mapping.csv` with `review_status=proposed`, awaiting
-  a ruling either way: Veritas products 1546/1548 (→ Media
-  Miscellaneous vs master On The Road Talk Series), 1661/1695/1728/1742
-  (→ Media Miscellaneous vs master Books), 1814 (→ On The Road Talk Series
-  vs master Media Miscellaneous), 50485/50488 (→ Discussion Series vs master
-  Media Miscellaneous), 55576 (→ Transcription Series Books vs master Media
-  Miscellaneous). Approve/reject through the review columns; the master is
-  unaffected until approval.
+- ~~**10 conflicting series-taxonomy proposals**~~ — **RULED 2026-08-04**:
+  **3 approved** (1814 → master 357 re-seriesed to On The Road Talk Series;
+  50485/50488 → masters 312/313 re-seriesed to Discussion Series; build
+  confirms exactly 3 series changes) and **7 rejected** with rationale in
+  the review notes (1546/1548, 1661/1695/1728/1742, 55576 — the curated
+  series stands; editions keep their work's series; the publisher's
+  "Media Miscellaneous" shelf describes the carrier, not the series). Taxonomy is
+  now **169 approved / 0 proposed / 10 rejected** (179 matched products).
 - **`format` blank on 8 records** (was 73): the 2026-08-03 format backfill
   inferred 65 formats (89% fill rate). The remaining 8 blank-format records
   have no automated inference match — root cause and evidence in `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md`
   §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
   strings, streaming markers) stays in
   `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
-- **Five always-empty master columns** (`location_physical`,
-  `location_digital`, `location_streaming`, `source_url_nightingale_conant`,
+- **Four always-empty master columns** (`location_physical`,
+  `location_digital`, `location_streaming`,
   `reference_url_2`): populate or drop. (`source_url_hay_house` is **not**
-  empty — 28 values after the 2026-08-03 Hay House backfill.)
-- **Nightingale-Conant provenance:** override schema exists; remaining NC
-  product URLs missing (`archive/TEMP_NIGHTINGALE_PROVENANCE.md`).
+  empty — 28 values after the 2026-08-03 Hay House backfill —
+  and `source_url_nightingale_conant` holds **4** values after the
+  2026-08-04 NC edition fills.)
+- ~~**Nightingale-Conant provenance**~~ — **resolved 2026-08-04**: the four
+  NC-published audio editions (masters 327–330) now carry their official
+  NC product URLs via candidate-keyed overrides (110 total). The remaining
+  NC products (The Ultimate David Hawkins Library, The Discovery, Naked)
+  are unmapped compilations/programs that stay in the official discovery
+  queue pending owner ruling; see the decision note in
+  `archive/TEMP_NIGHTINGALE_PROVENANCE.md`.
 
 **P2 — Hygiene:**
 

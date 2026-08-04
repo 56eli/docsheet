@@ -952,5 +952,41 @@
     "approval_date": "2026-08-03",
     "review_reason": "Hay House paperback edition (2025).",
     "evidence_source": "web_search"
+  },
+  {
+    "raw_row_number": "candidate:edition-veritas-tvf-cddvd",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/truth-vs-falsehood",
+    "review_status": "approved",
+    "approval_date": "2026-08-04",
+    "review_reason": "Official Nightingale-Conant audio program of this exact work (Truth Vs Falsehood: The Art of Spiritual Discernment); NC author-page roster and live product page verified 2026-08-04.",
+    "evidence_source": "https://www.nightingale.com/products/truth-vs-falsehood (live official NC product page; title and author match)"
+  },
+  {
+    "raw_row_number": "candidate:edition-veritas-healing-audio",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/healing",
+    "review_status": "approved",
+    "approval_date": "2026-08-04",
+    "review_reason": "Official Nightingale-Conant Healing audio program (full subtitle: Achieving Total Wellness Through Higher Levels of Consciousness) matching this master audio edition; live product page verified 2026-08-04.",
+    "evidence_source": "https://www.nightingale.com/products/healing (live official NC product page; sessions match the edition)"
+  },
+  {
+    "raw_row_number": "candidate:edition-veritas-itwbnoi-audio",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/in-the-world-but-not-of-it",
+    "review_status": "approved",
+    "approval_date": "2026-08-04",
+    "review_reason": "Official Nightingale-Conant product page for this NC 6-CD audio edition (edition_candidates note: 6-CD set (Nightingale-Conant)); live product page verified 2026-08-04.",
+    "evidence_source": "https://www.nightingale.com/products/in-the-world-but-not-of-it (live official NC product page; edition_candidates NC evidence)"
+  },
+  {
+    "raw_row_number": "candidate:edition-veritas-hle-audio",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/the-highest-level-of-enlightenment",
+    "review_status": "approved",
+    "approval_date": "2026-08-04",
+    "review_reason": "Official Nightingale-Conant audio program of this exact work; NC author-page roster and live product page verified 2026-08-04.",
+    "evidence_source": "https://www.nightingale.com/products/the-highest-level-of-enlightenment (live official NC product page; title and author match)"
   }
 ]

@@ -29,7 +29,7 @@
   },
   {
     "review_sheet": "Source Overrides",
-    "record_count": 106,
+    "record_count": 110,
     "purpose": "Approved official source associations retained after the original ledger pass.",
     "source_file": "data/research_master_source_overrides.csv",
     "current_state": "approved source override"
