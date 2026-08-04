@@ -51,11 +51,8 @@
     officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
     newWorkReview: { file: "new-work-review.json", label: "New Work Review", exportName: "hawkins-new-work-review.csv" },
     veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Veritas Decisions", exportName: "hawkins-veritas-decisions.csv" },
-    veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
     productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
     seriesCompilations: { file: "series-compilations.json", label: "Series Compilations", exportName: "hawkins-series-compilations.csv" },
-    hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
-    audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
     internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
     publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
@@ -102,10 +99,6 @@
       type: "Refresh decisions",
       description: "Approved Veritas product-ID dispositions reapplied after every live catalogue refresh.",
     },
-    veritasProducts: {
-      type: "Official inventory",
-      description: "Reviewed Veritas product inventory and mapping status; commercial products are not automatically master records.",
-    },
     productRelationships: {
       type: "Relationship evidence",
       description: "Reviewed item-to-product assertions kept separate from master identity and source inventory.",
@@ -113,14 +106,6 @@
     seriesCompilations: {
       type: "Series evidence",
       description: "Compilation links to annual lecture series where evidence supports a series/month scope rather than individual DVD parts.",
-    },
-    hayhouseProducts: {
-      type: "Official inventory",
-      description: "Hay House product listings used for source discovery and deduplication review.",
-    },
-    audibleProducts: {
-      type: "Platform inventory",
-      description: "Audible listings used for source discovery, edition review, and international leads.",
     },
     internationalProducts: {
       type: "International leads",
@@ -226,11 +211,8 @@
     officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
     newWorkReview: { priority: ["candidate_title", "item_type", "series", "year", "format", "source_product_id", "match_status", "approval", "source_url_veritas", "match_notes", "review_notes"], frozen: ["candidate_title"] },
     veritasMappingDecisions: { priority: ["veritas_product_id", "mapping_status", "matched_master_uuids", "matched_master_titles", "review_status", "decision_reason"], frozen: ["veritas_product_id"] },
-    veritasProducts: { priority: ["official_title", "mapping_status", "published_date", "official_product_url", "matched_master_uuids", "matched_master_titles", "review_notes"], frozen: ["official_title"] },
     productRelationships: { priority: ["master_uuid", "master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_uuid", "master_title"] },
     seriesCompilations: { priority: ["official_product_title", "target_series", "target_year", "relationship_type", "included_lecture_count", "review_status", "target_lecture_titles"], frozen: ["official_product_title"] },
-    hayhouseProducts: { priority: ["official_title", "format", "mapping_status", "official_product_url", "review_notes"], frozen: ["official_title"] },
-    audibleProducts: { priority: ["official_title", "mapping_status", "audible_url", "review_notes"], frozen: ["official_title"] },
     internationalProducts: { priority: ["candidate_title", "publisher", "market", "language", "item_type", "match_status", "source_url", "review_notes"], frozen: ["candidate_title"] },
     publishers: { priority: ["publisher", "status", "role", "official_catalogue_url"], frozen: ["publisher"] },
   };

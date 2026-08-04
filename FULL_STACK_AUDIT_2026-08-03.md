@@ -73,7 +73,9 @@ a missing LICENSE, narrow browser-test coverage, and minor frontend dead code.
   Catalogue workflow are review-only (diff artifact + intentional fail-gate;
   nothing auto-commits from the network).
 - **Frontend security:** strict CSP without `unsafe-inline` for scripts
-  (one hashed inline bootstrap), SRI-pinned Tabulator 6.5.2 CDN,
+  (one hashed inline bootstrap — the `script-src` hash was corrected on
+  2026-08-04 to the CSP3 whitespace-stripped value after it had drifted out of
+  sync with the pre-paint bootstrap), SRI-pinned Tabulator 6.5.2 CDN,
   `object-src 'none'`, `base-uri 'self'`, `connect-src 'self'`; cell editing
   deliberately disabled with an in-code rationale.
 - **Documentation-currency tests:** README/handoff/ledger counts are asserted

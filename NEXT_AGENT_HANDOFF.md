@@ -299,9 +299,11 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   Latest run passed 2026-08-03 (run `30834666253`). Nothing outstanding here.
 - ⚠️ **Re-run the Map Veritas Catalogue workflow on `main` after this branch
   merges** — the 2026-08-04 refresh diff was reviewed and accepted (see §4
-  item 15 and `VERITAS_ARTIFACT_REVIEW.md` Addendum 3), and the reviewed
-  inventory is now LF-normalized like the fetcher output, so the next run
-  should print "Candidate matches the reviewed inventory" and pass.
+  item 15 and `VERITAS_ARTIFACT_REVIEW.md` Addendum 3), the reviewed
+  inventory is LF-normalized like the fetcher output, **and the Veritas 50810
+  title drift (`Vol II` → `Volume II`) was reconciled in branch
+  `arena/019fcbde-docsheet`**, so the next run should print "Candidate matches
+  the reviewed inventory" and pass.
 
 **P1 — Data decisions needing a ruling:**
 
@@ -359,7 +361,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   the 8 last candidate rows migrated to owner-approved types; 100 tests incl.
   4 retirement guards. Remaining: the 4 free-text `audio` values in the
   unreviewed discovery triage lane (owner ruling).
-- Widen browser tests: all 17 tabs, column chooser, drawer, dark mode
+- Widen browser tests: all 15 tabs, column chooser, drawer, dark mode
   (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
   measured-width assertions).
 
