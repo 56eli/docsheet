@@ -1444,6 +1444,46 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertIn(f"| `{disposition}` | {expected} |", table)
         self.assertIn(f"| **Total** | **{len(rows)}** |", table)
 
+    def test_books_use_first_publication_year_not_product_listing(self) -> None:
+        """Book ``year`` must be the work's first publication year.
+
+        Regression guard for the 2026-08-04 fix: the Veritas storefront lists a
+        whole batch of books with ``published_date`` 2014-03-30 (the day they
+        appeared on the site), which is not when they were first published.
+        ``build_research_master.backfill_months_from_official_source`` now
+        skips ``item_type='book'`` rows entirely, and book years come only from
+        the reviewed ledger / candidate inputs. This pins the classic titles to
+        their documented first-publication years so the product-listing date
+        cannot silently creep back in.
+        """
+        master = {row["uuid"].strip(): row for row in self.master_rows()}
+        expected = {
+            "286": "1995",  # Power vs Force (product-listing date was 2014)
+            "287": "2001",  # The Eye of the I
+            "288": "2003",  # I: Reality and Subjectivity
+            "289": "2005",  # Truth vs Falsehood
+            "290": "2012",  # Letting Go
+            "291": "2009",  # Healing and Recovery
+            "293": "2008",  # Reality, Spirituality and Modern Man
+            "294": "2006",  # Transcending the Levels of Consciousness
+            "316": "2021",  # The Ego is Not the Real You (Hay House)
+        }
+        for uuid, year in expected.items():
+            row = master.get(uuid)
+            self.assertIsNotNone(row, f"expected a master record for UUID {uuid}")
+            self.assertEqual(
+                row["year"], year,
+                f"master {uuid} ({row['title']!r}) must use its first-publication year {year}",
+            )
+        # Book rows (including audiobook/carrier editions) never get a
+        # catalogue code; codes exist for lecture/discussion only.
+        coded_books = [
+            (row["uuid"], row["title"])
+            for row in self.master_rows()
+            if row["item_type"].strip() == "book" and row["catalog_code"].strip()
+        ]
+        self.assertEqual(coded_books, [], "book rows must never receive a catalogue code")
+
 
 if __name__ == "__main__":
     unittest.main()

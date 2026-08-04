@@ -37,7 +37,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 100 tests, offline, ~2s
+python -m unittest discover tests     # 101 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -72,7 +72,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
-| Test suite | **100 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **101 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -261,6 +261,38 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     fixture rewrites the edition layer, so synthetic candidate fixtures
     coexist with the committed 2026-08-04 NC overrides. 100 tests pass,
     all 5 `--check` modes green.
+18. **Year-Month semantics: books use first-publication year (2026-08-04):**
+    Owner-directed: the Year-Month column must show the **recording date**
+    (lectures/discussions) or **first release date** (books), never the day
+    the product was **listed on the website**. The whole classic-books batch
+    (Power vs Force, The Eye of the I, I: Reality and Subjectivity, Truth vs
+    Falsehood, Letting Go, Healing and Recovery, Reality Spirituality and
+    Modern Man, Transcending the Levels of Consciousness, and The Ego is Not
+    the Real You) showed `2014` — the Veritas storefront `published_date`
+    (2014-03-30 batch), not their real publication years. Fixes:
+    `build_research_master.backfill_months_from_official_source()` now skips
+    `item_type='book'` rows entirely (book `year` is **never** derived from a
+    product-listing date); book first-publication years were set in the
+    reviewed inputs (`migration_review_ledger.csv` 23 rows,
+    `manual_master_candidates.csv` 6 rows, `edition_candidates.csv` 9
+    audiobook rows = their work's year); and catalogue codes are now
+    **lecture/discussion-only** (`CODE_ITEM_TYPES`) so books never receive a
+    code even though they now carry years. Verified: Power vs Force = **1995**,
+    The Eye of the I = **2001**, The Ego is Not the Real You = **2021**; codes
+    still **236**; 101 tests pass (new `test_books_use_first_publication_year_not_product_listing`
+    regression guard), 92% coverage, all 5 `--check` modes green.
+19. **Pipeline safe-trim (2026-08-04):** owner requested a slimmer
+    `build_research_master.py` (it felt like "building a mountain for one
+    change"). Performed a **behavior-preserving dedup only**: added
+    `read_csv` / `index_csv` / `veritas_products_by_id` / `veritas_products_by_url`
+    / `require_columns` helpers and replaced the ~20 inline `with …open…
+    csv.DictReader` blocks (which rebuilt the same Veritas lookup dicts in 4+
+    places). No signatures or semantics changed; `--check` output is
+    byte-identical; 101 tests pass; coverage 92% (module 615 → 580 stmts).
+    The remaining weight is the review-gated data model itself (editions,
+    work families, taxonomy, promotions, validation), not redundancy — a
+    bigger structural cut (merging the manual + edition candidate lanes) was
+    offered but deferred as higher-risk.
 
 ## 5. Binding data rules (violating these has caused real defects)
 
@@ -284,6 +316,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - **`work_id` comes only from approved `data/work_families.csv` rows.**
   Never infer work identity from titles alone (C2 lesson); `proposed` rows
   are validated but never applied.
+- **A book's `year` is its first-publication year, never the storefront
+  listing date.** `backfill_months_from_official_source()` skips `book` rows;
+  book years come only from the reviewed ledger / candidate `proposed_year`.
+  Books never get a catalogue code (codes are lecture/discussion only).
 - **Relationships stay at the evidence level actually supported** (item-level
   when proven; series-level for annual Highlights).
 - **Merchandise (card decks, wall charts) are products, not master records.**

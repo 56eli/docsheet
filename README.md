@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 100 tests, no browser/network needed
+python -m unittest discover tests          # 101 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -143,6 +143,16 @@ rejects them — use the content class and record the carrier in `format`.
 publisher's authoritative date. It is **not** taken from the legacy `LSyyyynn_p`
 identifier, whose `nn` segment is an ordinal position within the annual series
 (this distinction caused a 156-record defect that was fixed on 2026-08-03).
+For lectures/discussions the `year`/`month` reflect the recording date where
+known and otherwise fall back to the publisher's product date.
+
+For `book` rows, `year` is the work's **first-publication year**, never the day
+the listing appeared on the storefront (Veritas added a whole batch of books
+with a `published_date` of 2014-03-30 — e.g. *Power vs. Force* was first
+published in **1995**, *The Eye of the I* in **2001**, *The Ego is Not the Real
+You* in **2021**). Book years come only from the reviewed ledger / candidate
+inputs, so they are never overwritten from an official inventory listing date,
+and books never receive a catalogue code (codes are lecture/discussion only).
 
 ### Edition model (work × carrier)
 

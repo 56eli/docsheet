@@ -107,6 +107,12 @@ CONTENT_ITEM_TYPES = {
     "lecture", "book", "discussion", "interview", "transcript", "highlight",
     "dissertation", "article", "other",
 }
+# Item types that receive a readable catalogue code (``LECTURE-2004-022``).
+# Books intentionally get no code: their ``year`` is the work's first
+# publication year, not a release-slot within a numbered series, so a code
+# would be meaningless. This also keeps the catalogue-code count stable
+# (lecture + discussion only) now that books carry explicit years.
+CODE_ITEM_TYPES = {"lecture", "discussion"}
 MANUAL_CANDIDATE_FORMATS = {"", "DVD", "CD", "audio", "book"}
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -164,18 +170,6 @@ def assign_compact_ids(
         used.add(assigned)
         next_id += 1
     return ids_by_raw
-
-
-def existing_uuids() -> dict[str, str]:
-    """Read retained IDs from the committed draft, if it exists."""
-    if not OUTPUT_CSV.exists():
-        return {}
-    with OUTPUT_CSV.open(encoding="utf-8", newline="") as handle:
-        return {
-            row["raw_row_number"]: row["uuid"]
-            for row in csv.DictReader(handle)
-            if row.get("raw_row_number") and row.get("uuid")
-        }
 
 
 def title_for(row: dict[str, str]) -> str:
@@ -236,30 +230,81 @@ def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
     return buffer.getvalue()
 
 
+def read_csv(path: Path) -> list[dict[str, str]]:
+    """Read a committed CSV into a list of row dicts."""
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def index_csv(path: Path, key: str) -> dict[str, dict[str, str]]:
+    """Index a committed CSV by one of its columns (e.g. product id / URL)."""
+    return {row[key]: row for row in read_csv(path)}
+
+
+def veritas_products_by_id() -> dict[str, dict[str, str]]:
+    """Index the committed Veritas inventory by numeric product ID."""
+    return index_csv(VERITAS_PRODUCTS, "veritas_product_id")
+
+
+def veritas_products_by_url() -> dict[str, dict[str, str]]:
+    """Index the committed Veritas inventory by official product URL."""
+    return index_csv(VERITAS_PRODUCTS, "official_product_url")
+
+
+def require_columns(path: Path, required: set[str]) -> set[str]:
+    """Fail if a committed CSV's header is missing a required column.
+
+    Returns the header columns (kept so callers can reuse the opened rows if
+    desired). Reading the header separately mirrors the original
+    ``csv.DictReader.fieldnames`` semantics, including for empty files.
+    """
+    with path.open(encoding="utf-8", newline="") as handle:
+        columns = set(csv.DictReader(handle).fieldnames or [])
+    missing = required - columns
+    if missing:
+        raise ValueError(f"{path} is missing required columns: {', '.join(sorted(missing))}")
+    return columns
+
+
+def existing_uuids() -> dict[str, str]:
+    """Read retained IDs from the committed draft, if it exists."""
+    if not OUTPUT_CSV.exists():
+        return {}
+    return {
+        row["raw_row_number"]: row["uuid"]
+        for row in read_csv(OUTPUT_CSV)
+        if row.get("raw_row_number") and row.get("uuid")
+    }
+
+
 def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
     """Derive missing year/month from Veritas inventory published_date.
 
     Uses the Veritas inventory's ``published_date`` field (ISO format YYYY-MM-DD)
-    to backfill missing year and month values. For books, only year is filled
-    (publication months are not meaningful for books). For lectures/discussions,
-    both year and month are filled. Existing values are never overwritten.
-    
+    to backfill missing month (and, when missing, year) values for lectures,
+    discussions and other dated content records.
+
+    ``item_type='book'`` rows are intentionally skipped: the Veritas
+    ``published_date`` for a book is the date the listing appeared on the
+    storefront (a whole batch of books was added 2014-03-30), not the work's
+    first publication year. Book years come exclusively from the reviewed
+    ledger / manual-candidate / edition-candidate ``proposed_year`` inputs.
+    Existing values are never overwritten.
+
     Also attempts legacy tempid-based month extraction for backward compatibility.
     """
     import generate_migration_ledger as ledger_tools
 
-    # Load Veritas inventory for published_date lookup
-    veritas_by_url = {}
-    if VERITAS_PRODUCTS.exists():
-        with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            for row in csv.DictReader(handle):
-                veritas_by_url[row["official_product_url"]] = row
+    veritas_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
 
     filled = 0
     for item in items:
         item_type = item.get("item_type", "")
+        # Books are curated by first-publication year, not product-listing date.
+        if item_type == "book":
+            continue
         url = item.get("source_url_veritas", "").strip()
-        
+
         # Try Veritas inventory published_date first
         if url and url in veritas_by_url:
             pub_date = veritas_by_url[url].get("published_date", "").strip()
@@ -269,24 +314,16 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
                     if len(date_parts) >= 2:
                         year = date_parts[0]
                         month = date_parts[1]
-                        
-                        # For books, only fill year
-                        if item_type == "book":
-                            if not item.get("year", "").strip():
-                                item["year"] = year
-                                filled += 1
-                        else:
-                            # For lectures/discussions, fill both
-                            if not item.get("year", "").strip():
-                                item["year"] = year
-                                filled += 1
-                            if not item.get("month", "").strip():
-                                item["month"] = month
-                                filled += 1
+                        if not item.get("year", "").strip():
+                            item["year"] = year
+                            filled += 1
+                        if not item.get("month", "").strip():
+                            item["month"] = month
+                            filled += 1
                         continue  # Skip legacy tempid check if we filled from inventory
                 except (ValueError, IndexError):
                     pass
-        
+
         # Fallback: legacy tempid-based month extraction
         if item["month"] or not item["legacy_tempid"]:
             continue
@@ -379,16 +416,8 @@ def apply_source_overrides(items: list[dict[str, str]]) -> int:
     if not SOURCE_OVERRIDES.exists():
         return 0
 
-    with SOURCE_OVERRIDES.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = set(reader.fieldnames or [])
-        missing_columns = SOURCE_OVERRIDE_REQUIRED_COLUMNS - columns
-        if missing_columns:
-            raise ValueError(
-                f"{SOURCE_OVERRIDES} is missing required columns: "
-                f"{', '.join(sorted(missing_columns))}"
-            )
-        overrides = list(reader)
+    require_columns(SOURCE_OVERRIDES, SOURCE_OVERRIDE_REQUIRED_COLUMNS)
+    overrides = read_csv(SOURCE_OVERRIDES)
 
     items_by_raw = {}
     for row in items:
@@ -448,27 +477,13 @@ def validate_manual_candidates() -> int:
     if not MANUAL_CANDIDATES.exists():
         return 0
 
-    with MANUAL_CANDIDATES.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = set(reader.fieldnames or [])
-        missing_columns = MANUAL_CANDIDATE_REQUIRED_COLUMNS - columns
-        if missing_columns:
-            raise ValueError(
-                f"{MANUAL_CANDIDATES} is missing required columns: "
-                f"{', '.join(sorted(missing_columns))}"
-            )
-        candidates = list(reader)
-
-    with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-        veritas_by_id = {
-            row["veritas_product_id"]: row
-            for row in csv.DictReader(handle)
-        }
+    require_columns(MANUAL_CANDIDATES, MANUAL_CANDIDATE_REQUIRED_COLUMNS)
+    candidates = read_csv(MANUAL_CANDIDATES)
+    veritas_by_id = veritas_products_by_id()
 
     promoted_keys: set[str] = set()
     if PROMOTIONS.exists():
-        with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
-            promoted_keys = {row.get("candidate_key", "").strip() for row in csv.DictReader(handle)}
+        promoted_keys = {row.get("candidate_key", "").strip() for row in read_csv(PROMOTIONS)}
 
     seen_keys: set[str] = set()
     for line_number, candidate in enumerate(candidates, start=2):
@@ -532,10 +547,8 @@ def load_promotions() -> list[dict[str, str]]:
     """Load explicit, owner-approved promotions for official candidates."""
     if not PROMOTIONS.exists():
         return []
-    with MANUAL_CANDIDATES.open(encoding="utf-8", newline="") as handle:
-        candidates = {row["candidate_key"]: row for row in csv.DictReader(handle)}
-    with PROMOTIONS.open(encoding="utf-8", newline="") as handle:
-        rows = list(csv.DictReader(handle))
+    candidates = index_csv(MANUAL_CANDIDATES, "candidate_key")
+    rows = read_csv(PROMOTIONS)
     promoted = []
     seen_ids: set[str] = set()
     for line, row in enumerate(rows, 2):
@@ -563,16 +576,8 @@ def apply_work_families(items: list[dict[str, str]]) -> int:
     """
     if not WORK_FAMILIES.exists():
         return 0
-    with WORK_FAMILIES.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = set(reader.fieldnames or [])
-        missing = WORK_FAMILY_REQUIRED_COLUMNS - columns
-        if missing:
-            raise ValueError(
-                f"{WORK_FAMILIES.name} is missing required columns: "
-                f"{', '.join(sorted(missing))}"
-            )
-        rows = list(reader)
+    require_columns(WORK_FAMILIES, WORK_FAMILY_REQUIRED_COLUMNS)
+    rows = read_csv(WORK_FAMILIES)
 
     master_by_uuid = {item["uuid"]: item for item in items}
     work_id_by_member: dict[str, str] = {}
@@ -668,41 +673,29 @@ def validate_edition_candidates(items: list[dict[str, str]]) -> int:
     """
     if not EDITION_CANDIDATES.exists():
         return 0
-    with EDITION_CANDIDATES.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        missing_columns = EDITION_CANDIDATE_REQUIRED_COLUMNS - set(reader.fieldnames or [])
-        if missing_columns:
-            raise ValueError(
-                f"{EDITION_CANDIDATES} is missing required columns: "
-                f"{', '.join(sorted(missing_columns))}"
-            )
-        candidates = list(reader)
+    require_columns(EDITION_CANDIDATES, EDITION_CANDIDATE_REQUIRED_COLUMNS)
+    candidates = read_csv(EDITION_CANDIDATES)
 
-    with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-        veritas_by_id = {row["veritas_product_id"]: row for row in csv.DictReader(handle)}
-    audible_by_url: dict[str, dict[str, str]] = {}
-    if AUDIBLE_PRODUCTS.exists():
-        with AUDIBLE_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            audible_by_url = {row["audible_url"]: row for row in csv.DictReader(handle)}
-    hayhouse_by_url: dict[str, dict[str, str]] = {}
-    if HAYHOUSE_PRODUCTS.exists():
-        with HAYHOUSE_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            hayhouse_by_url = {row["official_product_url"]: row for row in csv.DictReader(handle)}
+    veritas_by_id = veritas_products_by_id()
+    audible_by_url: dict[str, dict[str, str]] = (
+        index_csv(AUDIBLE_PRODUCTS, "audible_url") if AUDIBLE_PRODUCTS.exists() else {}
+    )
+    hayhouse_by_url: dict[str, dict[str, str]] = (
+        index_csv(HAYHOUSE_PRODUCTS, "official_product_url") if HAYHOUSE_PRODUCTS.exists() else {}
+    )
 
     master_by_uuid = {item["uuid"]: item for item in items}
     known_work_ids: set[str] = set()
     if WORK_FAMILIES.exists():
-        with WORK_FAMILIES.open(encoding="utf-8", newline="") as handle:
-            known_work_ids = {row["work_id"].strip() for row in csv.DictReader(handle)}
+        known_work_ids = {row["work_id"].strip() for row in read_csv(WORK_FAMILIES)}
 
     promoted_keys: set[str] = set()
     if EDITION_PROMOTIONS.exists():
-        with EDITION_PROMOTIONS.open(encoding="utf-8", newline="") as handle:
-            promoted_keys = {
-                row.get("candidate_key", "").strip()
-                for row in csv.DictReader(handle)
-                if row.get("approval_status", "").strip() == "approved"
-            }
+        promoted_keys = {
+            row.get("candidate_key", "").strip()
+            for row in read_csv(EDITION_PROMOTIONS)
+            if row.get("approval_status", "").strip() == "approved"
+        }
 
     seen_keys: set[str] = set()
     for line_number, candidate in enumerate(candidates, start=2):
@@ -803,17 +796,9 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
     """
     if not EDITION_PROMOTIONS.exists():
         return []
-    with EDITION_CANDIDATES.open(encoding="utf-8", newline="") as handle:
-        candidates = {row["candidate_key"]: row for row in csv.DictReader(handle)}
-    with EDITION_PROMOTIONS.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        missing_columns = EDITION_PROMOTION_REQUIRED_COLUMNS - set(reader.fieldnames or [])
-        if missing_columns:
-            raise ValueError(
-                f"{EDITION_PROMOTIONS} is missing required columns: "
-                f"{', '.join(sorted(missing_columns))}"
-            )
-        rows = list(reader)
+    require_columns(EDITION_PROMOTIONS, EDITION_PROMOTION_REQUIRED_COLUMNS)
+    candidates = index_csv(EDITION_CANDIDATES, "candidate_key")
+    rows = read_csv(EDITION_PROMOTIONS)
 
     minted: list[tuple[dict[str, str], str]] = []
     seen_keys: set[str] = set()
@@ -899,16 +884,8 @@ def apply_series_approvals(items: list[dict[str, str]]) -> int:
         return 0
     by_uuid = {item["uuid"]: item for item in items}
     approved: dict[str, str] = {}
-    with SERIES_MAPPING.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = set(reader.fieldnames or [])
-        missing_columns = SERIES_MAPPING_REQUIRED_COLUMNS - columns
-        if missing_columns:
-            raise ValueError(
-                f"{SERIES_MAPPING} is missing required columns: "
-                + ", ".join(sorted(missing_columns))
-            )
-        for line_number, row in enumerate(reader, start=2):
+    require_columns(SERIES_MAPPING, SERIES_MAPPING_REQUIRED_COLUMNS)
+    for line_number, row in enumerate(read_csv(SERIES_MAPPING), start=2):
             if row["review_status"].strip() != "approved":
                 continue
             series = row["mapped_series"].strip()
@@ -945,8 +922,7 @@ def apply_series_approvals(items: list[dict[str, str]]) -> int:
 
 def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
-    with LEDGER.open(encoding="utf-8", newline="") as handle:
-        ledger = list(csv.DictReader(handle))
+    ledger = read_csv(LEDGER)
 
     retained_uuids = existing_uuids()
     item_rows = [row for row in ledger if row["disposition"] == "item"]
@@ -969,8 +945,10 @@ def build_master() -> MasterBuild:
             )
         code = ""
         # The approved rule is ID-only until type and year are verified.
-        # This conservative draft assigns readable codes only where both are proposed.
-        if item_type and year:
+        # This conservative draft assigns readable codes only where both are
+        # proposed, and only for code-bearing types (lecture/discussion). Books
+        # carry their first-publication year but never receive a catalogue code.
+        if item_type in CODE_ITEM_TYPES and year:
             key = (item_type.upper(), year)
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
@@ -1012,7 +990,9 @@ def build_master() -> MasterBuild:
         year = candidate["proposed_year"]
         item_type = candidate["item_type"]
         code = ""
-        if year:
+        # Same rule as the ledger loop: books carry a first-publication year
+        # but never get a catalogue code (only lecture/discussion do).
+        if year and item_type in CODE_ITEM_TYPES:
             key = (item_type.upper(), year)
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
@@ -1054,10 +1034,8 @@ def build_master() -> MasterBuild:
 
     # Format backfill from official Veritas inventory (only fills blanks)
     if VERITAS_PRODUCTS.exists():
-        with VERITAS_PRODUCTS.open(encoding="utf-8", newline="") as handle:
-            inventory_rows = list(csv.DictReader(handle))
-        veritas_by_id = {row["veritas_product_id"]: row for row in inventory_rows}
-        veritas_by_url = {row["official_product_url"]: row for row in inventory_rows}
+        veritas_by_id = veritas_products_by_id()
+        veritas_by_url = veritas_products_by_url()
         inferred = 0
         for item in items:
             fmt = infer_format_from_official_source(item, veritas_by_id, veritas_by_url)
