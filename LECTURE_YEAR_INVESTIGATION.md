@@ -79,6 +79,28 @@ alone would still leave a wrong `month` unless it is cleared too — which needs
 a small `backfill_months_from_official_source` change so it doesn't refill a
 lecture month from the product-listing date for these records.
 
+### 2b. Full research outcome (follow-up)
+
+| uuid | Title | © year | Status |
+|---|---|---|---|
+| 267/269/272/277 | Compassion / God Is the Infinite Field / Power of Devotion / You Are the Light | **2003** | ✅ corrected |
+| 266/270/276 | All Is Divinity / Spiritual Reality / Virtues | **2004** | ✅ corrected |
+| 273 | The Prevailing Silence | **2005** | ✅ corrected |
+| 222–224 | Presence of Spiritual Awareness | **2004** | ✅ corrected |
+| 271 | The Ever-Present Joy | **2004** | ✅ corrected |
+| 275 | Truth Shines Forth | **2004** | ✅ corrected |
+| 233–250 | Office Series (18 talks) | **2014** (first release) | ✅ **left at 2014** (the Office-Visit sets genuinely debuted 2014, so 2014 is the correct first-release year — not a wrong listing date) |
+| 230–232 | Verification of Spiritual Realities | unverified | ⏳ flagged |
+| 268 | God is Hidden Within the Beauty of the Music | unverified (Audible page unavailable) | ⏳ flagged |
+| 356 | Don't Set Sail Without A Compass – Audio | unverified | ⏳ flagged |
+| 357 | Peace is the Natural State | unverified | ⏳ flagged |
+
+**13 On-the-Road talks are corrected** to their verified recording years
+(2003–2005) with wrong listing months cleared (year-only). The **18 Office
+Series talks keep 2014** because the Office-Visit sets were genuinely first
+released in 2014 (Audible ©2014) — that is their first release date, not a
+wrong listing date. **4 talks remain flagged** pending their © years.
+
 ## 3. Recommendation
 
 Setting guessed recording dates into the review-gated master is **riskier than

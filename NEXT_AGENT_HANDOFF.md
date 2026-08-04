@@ -345,8 +345,13 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     2014 listing month can no longer leak into a 2003-2005 record); recording
     months known from titles were set in the reviewed inputs (Become That Which
     You Are = June, Love is a Way of Being = January, Unity Church March/June).
-    Side effect: the 8 talks are lectures with years now, so catalogue codes
-    **236 → 244**. The remaining 27 talks stay flagged pending their © years.
+    Side effect: the corrected lectures gain catalogue codes. Extending the
+    research to the rest of the batch (same session): **13 On-the-Road talks
+    corrected** (2003–2005), the **18 Office Series talks keep 2014** (the
+    Office-Visit sets genuinely first-released 2014 — that is their first
+    release date, not a wrong listing), and **4 talks stay flagged**
+    (Verification of Spiritual Realities 230–232, God is Hidden 268, Peace 357,
+    Don't Set Sail 356) pending their © years. Catalogue codes **236 → 249**.
     Tests 101 → **102** (new backfill-guard regression test), 92% coverage, all
     5 checks green.
 
