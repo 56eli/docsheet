@@ -37,7 +37,7 @@ python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 102 tests, offline, ~2s
+python -m unittest discover tests     # 103 tests, offline, ~2s
 coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -72,7 +72,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
-| Test suite | **102 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **103 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -381,6 +381,18 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     `audio` **edition_role** value is unchanged. Tests 102, 92% coverage, all 5
     checks green.
 
+26. **Title hygiene (2026-08-04, owner decision 3):** public lecture titles
+    are cleaned **only where the stripped form matches the official Veritas
+    listing title** (`apply_official_title_cleanup` + `_strip_title_part_noise`).
+    Removed trailing `PART1`/`(Part 1)`/`DVD0x`/`-converted`/`.mp4` noise from
+    **13 lecture titles** (Volume II/III/V parts, Presence of Spiritual
+    Awareness, Verification of Spiritual Realities) — accepted only when the
+    normalized cleaned title equals the normalized official inventory title,
+    never a guess. Raw text stays in `legacy_title`; `title_source` records the
+    official listing. Synced the 5 stale `matched_master_titles` rows in the
+    Veritas inventory. Tests 102 → **103** (title-cleanup regression guard),
+    92% coverage, all 5 checks green.
+
 ## 5. Binding data rules (violating these has caused real defects)
 
 - **Never hand-edit generated files** — `data/research_master_draft.*`,
@@ -417,6 +429,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   product date only when the product's year matches the record's year. If a
   record's recording month is known, set it in the reviewed input
   (`proposed_month`); otherwise leave it blank (year-only).
+- **Titles are cleaned only against the official listing.** Public lecture
+  titles drop trailing part/disc/transcoding noise only when the stripped form
+  matches the official Veritas title; never guess a title. The verbatim raw
+  text always stays in `legacy_title`.
 - **Relationships stay at the evidence level actually supported** (item-level
   when proven; series-level for annual Highlights).
 - **Merchandise (card decks, wall charts) are products, not master records.**

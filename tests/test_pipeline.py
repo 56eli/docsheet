@@ -1518,6 +1518,37 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(items[2]["year"], "2014")
         self.assertEqual(items[2]["month"], "01")
 
+    def test_official_title_cleanup_only_changes_matching_titles(self) -> None:
+        """Title hygiene is evidence-based: strip PART/DVD noise only when the
+        cleaned title matches the official Veritas listing; otherwise keep the
+        current title. The raw verbatim text stays in ``legacy_title``."""
+        by_url = [
+            {"official_product_url": "https://veritaspub.com/product/posa/",
+             "official_title": "The Presence of Spiritual Awareness"},
+            {"official_product_url": "https://veritaspub.com/product/vpf/",
+             "official_title": "Volume I: Power vs. Force Muscle Testing"},
+        ]
+        items = [
+            # PART noise, cleaned form matches official -> cleaned
+            {"item_type": "lecture", "title": "The Presence of Spiritual Awareness PART1",
+             "legacy_title": "The Presence of Spiritual Awareness PART1", "title_source": "raw",
+             "source_url_veritas": "https://veritaspub.com/product/posa/"},
+            # PART noise, cleaned form does NOT match official -> kept
+            {"item_type": "lecture", "title": "Volume I-Power vs Force (Part 1)",
+             "legacy_title": "Volume I-Power vs Force (Part 1)", "title_source": "raw",
+             "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+            # non-lecture never touched
+            {"item_type": "book", "title": "Power vs Force (Part 1)", "legacy_title": "",
+             "title_source": "", "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+        ]
+        brm.apply_official_title_cleanup(items, by_url)
+        self.assertEqual(items[0]["title"], "The Presence of Spiritual Awareness")
+        self.assertIn("Official listing", items[0]["title_source"])
+        self.assertEqual(items[0]["legacy_title"], "The Presence of Spiritual Awareness PART1")
+        self.assertEqual(items[1]["title"], "Volume I-Power vs Force (Part 1)",
+                         "a non-matching cleaned title must be left unchanged")
+        self.assertEqual(items[2]["title"], "Power vs Force (Part 1)")
+
     def test_books_use_first_publication_year_not_product_listing(self) -> None:
         """Book ``year`` must be the work's first publication year.
 

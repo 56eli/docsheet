@@ -404,6 +404,49 @@ def infer_format_from_official_source(
     return ""
 
 
+def _strip_title_part_noise(title: str) -> str:
+    """Remove trailing part/disc and transcoding noise from a lecture title."""
+    title = re.sub(r"\s*(\(\s*part\s*\d+\s*\)|part\s*\d+|dvd\d*|cd\d*)\s*$", "", title, flags=re.IGNORECASE).strip()
+    title = re.sub(r"\s*-\s*converted\s*$", "", title, flags=re.IGNORECASE).strip()
+    title = re.sub(r"\.mp4\s*$", "", title, flags=re.IGNORECASE).strip()
+    return title
+
+
+def _normalized_title(title: str) -> str:
+    """Lowercase, punctuation-free, whitespace-collapsed key for title matching."""
+    lowered = title.lower()
+    lowered = re.sub(r"[^a-z0-9 ]", " ", lowered)
+    return re.sub(r"\s+", " ", lowered).strip()
+
+
+def apply_official_title_cleanup(items: list[dict[str, str]], veritas_products: list[dict[str, str]]) -> int:
+    """Clean a lecture's public title only when the stripped form matches the official Veritas title.
+
+    Title hygiene is evidence-based: remove trailing part/disc and transcoding
+    noise (``PART1``, ``(Part 1)``, ``DVD01``, ``-converted``, ``.mp4``) from a
+    lecture's public title, and accept the cleaned title **only** when its
+    normalized form equals the normalized official inventory listing title.
+    Otherwise the current title is kept unchanged, so we never guess. The raw
+    verbatim text stays in ``legacy_title``.
+    """
+    by_url = {product["official_product_url"]: product for product in veritas_products}
+    changed = 0
+    for item in items:
+        if item.get("item_type") != "lecture":
+            continue
+        url = item.get("source_url_veritas", "").strip()
+        if not url or url not in by_url:
+            continue
+        official = by_url[url].get("official_title", "")
+        current = item.get("title", "")
+        cleaned = _strip_title_part_noise(current)
+        if cleaned != current and _normalized_title(cleaned) == _normalized_title(official):
+            item["title"] = cleaned
+            item["title_source"] = f"Official listing: {official}"
+            changed += 1
+    return changed
+
+
 def apply_source_overrides(items: list[dict[str, str]]) -> int:
     """Apply explicit, approved official-source links after ledger migration.
 
@@ -1044,6 +1087,11 @@ def build_master() -> MasterBuild:
         if inferred:
             # Note for the build log (visible on manual run)
             print(f"[format] Inferred {inferred} formats from official Veritas inventory")
+        # Title hygiene (decision 3): only clean where the stripped title matches
+        # the official Veritas listing title — never guess.
+        title_cleanups = apply_official_title_cleanup(items, read_csv(VERITAS_PRODUCTS))
+        if title_cleanups:
+            print(f"[title] Cleaned {title_cleanups} lecture titles against official Veritas listings")
 
     series_approvals_applied = apply_series_approvals(items)
     work_families_applied = apply_work_families(items)
