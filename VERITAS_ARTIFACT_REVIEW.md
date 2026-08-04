@@ -149,3 +149,72 @@ taxonomy work exposed. Change classes, all verified:
    (`.mp4`/numeric-prefix removal) — deterministic mirror, no semantic change.
 
 No upstream additions/removals: the 191-product ID set is unchanged.
+
+## Addendum 3 — refresh accepted and candidate/overlay link-up 2026-08-04
+
+The Map Veritas Catalogue workflow's fail-gate fired on a real drift and the
+artifact diff was reviewed row by row. Findings and actions:
+
+1. **Diff accepted (13 rows).** The live fetch correctly re-matched products
+   whose masters were minted on 2026-08-03: 9 Satsang monthlies (1304/1306/
+   1308/1310/1312/1314 → masters 344–349; 1639 → 350; 1697 → 351; 1699 → 352),
+   edition rows 1728 → 327, 1695 → 328, 1742 → 330, and 1661 → 329
+   (`in-the-world-but-not-of-it-cd` — the edition row, not deferred record
+   246). Every accepted row was asserted against its master's primary Veritas
+   URL before committing; validator invariants (`count == len(uuids)`,
+   `matched_master_titles` equal current master titles) pass.
+2. **Overlay trimmed 35 → 18.** The 17 decisions preserving pre-promotion
+   `unique_item`/`compilation_or_new_edition` dispositions for products whose
+   works are now curated masters (309–319, 353–358) were removed; the
+   deterministic primary-source matcher now links them (Everything
+   `candidate_veritas` 28 → 8). What remains: the 7 annual Highlights
+   compilations (Series Compilations lane by ruling) and the Map of
+   Consciousness® poster (merchandise — not a master record).
+3. **Line-ending normalization.** The diff rendered as a whole-file rewrite
+   because the committed inventory had CRLF endings while the fetcher writes
+   `lineterminator="\n"`. The reviewed inventory is now LF, so future
+   artifact diffs show content changes only.
+4. **Fallout tracked.** Series-taxonomy mapper regenerated: 30 new `proposed`
+   rows (20 equal the curated baseline; 10 differ — owner ruling listed in
+   `NEXT_AGENT_HANDOFF.md` §6). Everything is 396 → 376 rows. The next
+   workflow run should pass clean.
+
+## Addendum 4 — taxonomy rulings, NC edition fills, Master-ID sort (2026-08-04)
+
+1. **All 10 remaining series-taxonomy proposals ruled.** 3 approved:
+   product 1814 → master **357** (Peace is the Natural State) re-seriesed
+   Media Miscellaneous → **On The Road Talk Series** (publisher category and
+   the original On-The-Road audio evidence agree); products 50485/50488 →
+   masters **312/313** (the 2012 per-title discussion works) re-seriesed →
+   **Discussion Series**. 7 rejected with documented rationale: 1546/1548
+   (Unity Church Sedona CDs — the curated On-The-Road run stands over the
+   "Media Miscellaneous" carrier shelf), 1661/1695/1728/1742 (audio/CD-DVD
+   editions keep their work's `Books` series; precedent: product 1542), and
+   55576 (six conflicting publisher categories, no dominant home; original
+   12-session audio program, not a transcription-series book). Master rebuilt:
+   exactly **3 series values changed**; taxonomy 179 matched → **169 approved
+   / 0 proposed / 10 rejected**; 316 approved mappings cover 316 master IDs.
+2. **`source_url_nightingale_conant` 0 → 4.** The official Nightingale-Conant
+   author page (nightingale.com/pages/david-hawkins) fetched live 2026-08-04
+   lists 7 Hawkins programs. The 4 that are master audio editions —
+   masters **327–330** (Truth Vs Falsehood, Healing, In The World But Not Of
+   It, The Highest Level Of Enlightenment) — received approved override rows
+   keyed by edition `candidate_key` (they have no `raw_row_number`). The
+   remaining 3 (The Ultimate David Hawkins Library, The Discovery, Naked) are
+   unmapped compilations that stay in the official discovery queue pending
+   owner ruling. Hay House needed no new fills: its unreviewed inventory rows
+   are a merchandise journal/deck and an audio program already carried as a
+   `candidate_hayhouse` row. Approved overrides **106 → 110**.
+3. **Master ID column sort fixed.** `docs/app.js` detects fully-numeric
+   columns and applies Tabulator's built-in `number` sorter with
+   `alignEmptyValues: "bottom"`, so Master ID counts 1, 2, 3, … (not the
+   lexical 1, 10, 100, … produced by the first-row-guessed string sorter)
+   and blank candidate IDs pin to the bottom in both sort directions. CI e2e
+   assertion added (`tests/column-layout.spec.js`: ascending 1/2/3,
+   descending 358/357 — IDs 249 and 264 are retired); the same ordering was
+   verified in the sandbox by replaying Tabulator 6.5.2's `_sortRow`
+   semantics against the committed `docs/master.json`.
+4. **Verification battery re-run green:** all 5 `--check` modes, 100 unittest
+   tests (fixtures now strip edition-keyed overrides when a test rewrites
+   the edition layer), coverage 92% (gate 80%), `node --check` on all four
+   JS files, `py_compile` on all pipeline modules.

@@ -1,5 +1,24 @@
 # TEMP — Nightingale-Conant Provenance Gap Fill (2026-08-03)
 
+> **RESOLVED 2026-08-04 — kept for the audit trail.**
+> Option 1 was adopted (schema extended to include `source_url_nightingale_conant`
+> in `SOURCE_OVERRIDE_FIELDS`). The official NC author page
+> (https://www.nightingale.com/pages/david-hawkins, fetched live 2026-08-04)
+> lists exactly 7 Hawkins programs. The 4 that are master audio editions were
+> filled via **candidate-keyed** approved overrides (masters **327–330**:
+> Truth Vs Falsehood, Healing, In The World But Not Of It, The Highest Level
+> Of Enlightenment — the edition rows minted from `edition_candidates.csv`;
+> they have no `raw_row_number`, so overrides key on their `candidate_key`).
+> The other 3 NC products (The Ultimate David Hawkins Library, The Discovery,
+> Naked) are unmapped compilations/programs that remain in
+> `data/official_discovery_queue.csv` pending owner ruling — deliberately NOT
+> force-mapped onto masters. `source_url_nightingale_conant` is now 4/356
+> populated (was 0/317 when this note was written).
+>
+> Note: the record-300/1661 analysis below refers to the pre-edition-model
+> master (record 300 then carried the audio-edition association directly);
+> under the 2026-08-03 edition model the NC 6-CD edition became master 329.
+
 **Task completion summary:** Identified the primary evidence case (record 300 / product 1661) and the official Nightingale-Conant product page; prepared proposal for safe population of `source_url_nightingale_conant`.
 
 ## Evidence

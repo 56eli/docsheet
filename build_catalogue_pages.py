@@ -614,7 +614,11 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
                 "publisher": "Audible",
                 "market": "Spanish",
                 "candidate_title": product["official_title"],
-                "item_type": "audio",
+                # Audiobook editions of book-typed works: the edition model
+                # (EDITION_MODEL_PROPOSAL.md) keeps item_type=book and puts
+                # the carrier in format; the retired medium value "audio"
+                # must not be used as an item_type.
+                "item_type": "book",
                 "format": "digital",
                 "language": "Spanish",
                 "source_url": product["audible_url"],

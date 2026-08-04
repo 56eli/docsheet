@@ -6,7 +6,7 @@
 24 edition candidates reviewed + promoted, 18 source overrides approved.
 Master is now **341 rows** (24 minted edition rows 320–343, each with
 `work_id`), Everything **387**, relationships **318**; D3 (audiobook URLs
-moved into their edition rows) applied. See `AUDIT_2026-08-03_FULL.md`
+moved into their edition rows) applied. See `archive/AUDIT_2026-08-03_FULL.md`
 §12.9. Remaining: new-work review lane, candidate-provenance overrides,
 series-level regrouping (P1).
 
@@ -35,7 +35,7 @@ the `work_id` plumbing first.
   edition candidates (Audible audiobook editions of lecture parts + the
   Hay House *Live Life As A Prayer* audio). Candidate `review_status` gained
   a `proposed` draft state (shape-validated, not promotable until reviewed).
-  Deliberate exclusions documented in `TEMP_RESPONSE_AUDIT_2026-08-03.md`
+  Deliberate exclusions documented in `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md`
   §11i (Spanish editions, platform compilations, Highlights, merchandise,
   unmatched new-work products, and 18 same-carrier Hay House links that are
   source-override candidates rather than edition rows).

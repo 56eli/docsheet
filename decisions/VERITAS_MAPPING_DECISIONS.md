@@ -30,4 +30,16 @@ This prevents a live refresh from resetting reviewed non-primary dispositions su
 
 ## Current seed
 
-The current overlay contains **35** approved decisions: 15 compilation/new-edition products, 9 unique products, 4 excluded related products, and 7 non-primary master associations. Exact primary-source and date-aware results remain deterministic and do not need overlay rows.
+The current overlay contains **18** approved decisions: 7 annual-Highlights
+compilation products, 4 excluded related products, and 7 non-primary master
+associations. Exact primary-source and date-aware results remain
+deterministic and do not need overlay rows.
+
+**2026-08-04 reduction (35 → 18):** the 17 decisions that preserved
+pre-promotion `unique_item`/`compilation_or_new_edition` dispositions for
+products whose works were promoted to the curated master on 2026-08-03
+(masters 309–319, 353–358) were removed. Their master rows carry the exact
+Veritas primary URLs, so the deterministic primary-source matcher now links
+them — the suppression rows had become stale duplicates of curated records.
+See `../VERITAS_ARTIFACT_REVIEW.md` Addendum 3 and
+`../NEXT_AGENT_HANDOFF.md` §4 item 15.

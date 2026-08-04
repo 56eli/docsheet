@@ -1,50 +1,10 @@
 [
   {
-    "veritas_product_id": "55576",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "55473",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "55425",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
     "veritas_product_id": "54838",
     "mapping_status": "excluded_related_material",
     "matched_master_uuids": "",
     "matched_master_titles": "",
     "review_notes": "Spin-off physical product, not an original teaching record.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "54219",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
@@ -60,16 +20,6 @@
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   },
   {
-    "veritas_product_id": "53277",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
     "veritas_product_id": "53062",
     "mapping_status": "matched_by_title",
     "matched_master_uuids": "300",
@@ -80,51 +30,11 @@
     "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
   },
   {
-    "veritas_product_id": "53058",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "53036",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
     "veritas_product_id": "54226",
     "mapping_status": "excluded_related_material",
     "matched_master_uuids": "",
     "matched_master_titles": "",
     "review_notes": "Spin-off physical product, not an original teaching record.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "43146",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "38608",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique compilation: Book of Slides",
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
@@ -140,26 +50,6 @@
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   },
   {
-    "veritas_product_id": "47979",
-    "mapping_status": "compilation_or_new_edition",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Identified as a compilation, biography, or posthumous edition.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "1792",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
     "veritas_product_id": "50491",
     "mapping_status": "matched_by_title",
     "matched_master_uuids": "121",
@@ -168,26 +58,6 @@
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
-    "veritas_product_id": "50488",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "50485",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   },
   {
     "veritas_product_id": "50411",
@@ -228,46 +98,6 @@
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
-    "veritas_product_id": "1814",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "1548",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "1546",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "1544",
-    "mapping_status": "unique_item",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "review_notes": "Unique item not found in legacy spreadsheet.",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   },
   {
     "veritas_product_id": "1542",

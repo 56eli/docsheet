@@ -2,8 +2,11 @@
    Live Spreadsheet — app.js
    Loads docs/data.json (+ docs/meta.json) and renders it as an
    interactive Tabulator table: sortable headers, global live search,
-   all rows in a scrollable view, inline editing, CSV export, column resizing,
-   horizontal overflow for every column, dark mode with localStorage persistence.
+   all rows in a scrollable view, CSV export, column resizing,
+   horizontal overflow for every column, dark mode with localStorage
+   persistence. Editing is intentionally disabled (editor: false):
+   generated catalogue data is corrected in the declared CSV review
+   inputs and republished, never patched session-locally in the UI.
    ========================================================================== */
 (function () {
   "use strict";
@@ -18,7 +21,6 @@
   const footerStats = $("footer-stats");
   const searchStatus = $("search-status");
   const footerUpdated = $("footer-updated");
-  const footerNote = $("footer-note");
   const spreadsheet = $("spreadsheet");
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
@@ -204,47 +206,13 @@
     "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
     "raw_unnamed_10", "raw_unnamed_11",
   ];
-  const COLUMN_WIDTHS = {
-    // Compact defaults sized to content (owner-directed 2026-08-03):
-    // Record Type badge ("Curated master"), 4-digit Master IDs, "discussion",
-    // "audio", "false", the "Veritas product" link label, "YYYY-MM" periods,
-    // and the longest series name ("Transcending Levels of Consciousness").
-    record_type: 135,
-    uuid: 64,
-    master_uuid: 64,
-    item_type: 104,
-    series: 300,
-    format: 68,
-    format_detail: 160,
-    edition: 160,
-    owned: 68,
-    source_url_veritas: 140,
-    year_month: 80,
-    matched_master_uuids: 130,
-    raw_row_number: 90,
-    catalog_code: 160,
-    legacy_tempid: 120,
-    title: 300,
-    raw_title: 300,
-    proposed_title: 300,
-    candidate_title: 300,
-    official_title: 320,
-    official_product_title: 320,
-    matched_master_titles: 320,
-    target_lecture_titles: 340,
-    notes: 320,
-    review_notes: 320,
-    review_reason: 320,
-    evidence_note: 340,
-    promotion_notes: 320,
-    match_notes: 320,
-    purpose: 360,
-    role: 300,
-  };
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "work_id", "series", "title", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "series", "title", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
       frozen: ["record_type", "title"],
+      // Owner-directed 2026-08-04: park the Work grouping column between
+      // Legacy ID and Location Physical instead of up front.
+      moveAfter: { work_id: "legacy_tempid" },
     },
     original: {
       priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
@@ -272,7 +240,6 @@
   let activeView = "master";
   let activeSearchQuery = "";
   let activeReviewFilter = null;
-  const FOOTER_IDLE_NOTE = "Click a row for details; published views are read-only";
 
   /* ------------------------------------------------------------------ *
    *  Helpers
@@ -482,9 +449,15 @@
     });
 
     const lastModified = res.headers.get("Last-Modified");
-    footerUpdated.innerHTML = lastModified
-      ? `Last Updated: <span class="updated">${formatTimestamp(lastModified)}</span>`
-      : "Last Updated: Unknown";
+    footerUpdated.replaceChildren();
+    if (lastModified) {
+      const stamp = document.createElement("span");
+      stamp.className = "updated";
+      stamp.textContent = formatTimestamp(lastModified);
+      footerUpdated.append("Last Updated: ", stamp);
+    } else {
+      footerUpdated.textContent = "Last Updated: Unknown";
+    }
     footerStats.textContent = `${view.label}: ${allData.length} rows`;
     return allData;
   }
@@ -591,41 +564,63 @@
       ...keys.filter((key) => !priority.includes(key) && !lowPriority.includes(key)),
       ...lowPriority,
     ];
-    return [...new Set(ordered)];
+    const deduped = [...new Set(ordered)];
+    // Per-view placement overrides: park a column immediately after another.
+    Object.entries(preset.moveAfter || {}).forEach(([field, anchor]) => {
+      const from = deduped.indexOf(field);
+      if (from === -1) return;
+      deduped.splice(from, 1);
+      const at = deduped.indexOf(anchor);
+      deduped.splice(at === -1 ? deduped.length : at + 1, 0, field);
+    });
+    return deduped;
   }
 
-  function widthForColumn(key, urlRatio) {
-    if (COLUMN_WIDTHS[key]) return COLUMN_WIDTHS[key];
-    if (/title|note|reason|purpose|role/i.test(key)) return 280;
-    if (urlRatio >= 0.6 || /url|link/i.test(key)) return 175;
-    if (/status|disposition|approval|owned|year|month|format|count/i.test(key)) return 135;
-    return null;
+  /* ------------------------------------------------------------------ *
+   *  Column width engine — every column is sized to its widest rendered
+   *  entry. Widths are measured in real pixels with an offscreen canvas
+   *  (never character counts), across ALL rows (not a sample), and what
+   *  gets measured is what gets rendered: URL columns measure their link
+   *  label (e.g. "Veritas product"), badge columns measure the humanized
+   *  badge text, and the header title (with sort indicator) is included.
+   *  Earlier char-count heuristics truncated real content and oversized
+   *  URL columns; measuring rendered text is what finally fits.
+   * ------------------------------------------------------------------ */
+  const measureContext = document.createElement("canvas").getContext("2d");
+  const CELL_FONT = '14px Roboto, "Segoe UI", Arial, sans-serif';
+  const BADGE_FONT = '500 11px Roboto, "Segoe UI", Arial, sans-serif';
+  const HEADER_FONT = '500 14px Roboto, "Segoe UI", Arial, sans-serif';
+  const CELL_PADDING = 24;   // left/right cell padding + breathing room
+  const BADGE_PADDING = 18;  // badge inner padding
+  const HEADER_EXTRA = 26;   // header padding + sort-indicator reserve
+  const MAX_TEXT_WIDTH = 560;      // guardrail for title/note-style columns
+  const MAX_COLUMN_WIDTH = 720;    // absolute guardrail for anything else
+
+  function measureText(text, font) {
+    measureContext.font = font;
+    return measureContext.measureText(text).width;
   }
 
-  function calculateWidthForContent(values) {
-    if (!values || values.length === 0) return null;
-    // Calculate width based on longest content (character count * average char width)
-    // Average character width is approximately 7-8 pixels for typical fonts
-    const charWidth = 7.5;
-    const padding = 20; // Padding for cell borders and spacing
-    const minWidth = 110;
-    const maxWidth = 400; // Prevent columns from becoming too wide
-    
-    let maxLen = 0;
-    for (const val of values) {
-      if (val !== null && val !== undefined && val !== "") {
-        const len = String(val).length;
-        if (len > maxLen) maxLen = len;
-      }
+  function renderedValueForWidth(key, value) {
+    const raw = String(value ?? "").trim();
+    if (!raw) return "";
+    if (looksLikeUrl(raw)) return urlLabelFor(key, raw);
+    if (STATUS_FIELDS.has(key)) return statusLabel(key, raw);
+    return raw;
+  }
+
+  function measuredColumnWidth(key, headerTitle, rows) {
+    const isBadge = STATUS_FIELDS.has(key) || FORMAT_FIELDS.has(key);
+    const font = isBadge ? BADGE_FONT : CELL_FONT;
+    const padding = isBadge ? BADGE_PADDING : CELL_PADDING;
+    let maxPx = measureText(headerTitle, HEADER_FONT) + HEADER_EXTRA;
+    for (const row of rows) {
+      const text = renderedValueForWidth(key, row[key]);
+      if (!text) continue;
+      const px = measureText(text, font) + padding;
+      if (px > maxPx) maxPx = px;
     }
-    
-    if (maxLen === 0) return minWidth;
-    
-    // Calculate width: characters * char width + padding
-    const calculatedWidth = Math.ceil(maxLen * charWidth + padding);
-    
-    // Clamp between minWidth and maxWidth
-    return Math.max(minWidth, Math.min(maxWidth, calculatedWidth));
+    return Math.ceil(maxPx);
   }
 
   function buildColumns(data) {
@@ -641,11 +636,10 @@
     if (keys.includes("edition")) {
       keys = keys.filter((key) => key !== "format" && key !== "format_detail");
     }
-    const sample = data.slice(0, 120);
     const preset = columnPresetFor(activeView);
 
     return keys.map((key) => {
-      const nonEmpty = sample.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
+      const nonEmpty = data.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
       const urlRatio = nonEmpty.length
         ? nonEmpty.filter(looksLikeUrl).length / nonEmpty.length
         : 0;
@@ -655,24 +649,32 @@
         field: key,
         headerSort: true,          // click header to sort asc/desc
         resizable: true,           // drag column edge to resize
-        minWidth: 110,
+        minWidth: 60,              // narrow floor; the measured width fits anyway
         // Pages publishes generated catalogue/review data. Edits must occur in
         // the declared CSV review inputs, never as misleading session-only UI edits.
         editor: false,
         tooltip: (e, cell) => String(cell.getValue() ?? ""),
       };
 
-      // Calculate width based on actual content, fallback to predefined width
-      const contentWidth = calculateWidthForContent(nonEmpty);
-      const preferredWidth = widthForColumn(key, urlRatio);
-      
-      // Use content-based width if available, otherwise use predefined width
-      if (contentWidth) {
-        col.width = contentWidth;
-      } else if (preferredWidth) {
-        col.width = preferredWidth;
+      // Size the column to its widest rendered entry (see width engine above);
+      // long free-text columns are capped so one verbose note cannot dominate.
+      const measured = measuredColumnWidth(key, col.title, data);
+      const cap = /title|note|reason|purpose|role/i.test(key) ? MAX_TEXT_WIDTH : MAX_COLUMN_WIDTH;
+      col.width = Math.min(measured, cap);
+
+      // Numeric columns count up in numeric order, never lexically. Without an
+      // explicit number sorter Tabulator guesses the sorter from the FIRST
+      // row's value, and when that row is blank (official candidates sit
+      // above some sheets) it fell back to a string sort — the "Master ID
+      // counts 1, 10, 100, 2, 20, ..." bug. Tabulator's built-in number
+      // sorter with alignEmptyValues "bottom" pins empty cells (candidate
+      // rows without a Master ID) to the bottom in BOTH sort directions.
+      if (nonEmpty.length > 0 &&
+          nonEmpty.every((v) => /^-?\d+(\.\d+)?$/.test(String(v).trim()))) {
+        col.sorter = "number";
+        col.sorterParams = { alignEmptyValues: "bottom" };
       }
-      
+
       if ((preset.frozen || []).includes(key)) {
         col.frozen = true;
       }
@@ -770,18 +772,12 @@
       selectableRows: false,
     });
 
-    configureReviewFilter(data);
+      configureReviewFilter(data);
     configureColumnChooser();
     table.on("dataFiltered", updateSearchStatus);
     table.on("rowClick", (event, row) => {
       if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
       openRowDetails(row.getData());
-    });
-    table.on("cellEdited", (cell) => {
-      const row = cell.getRow().getData();
-      const label = humanizeField(cell.getColumn().getField());
-      const id = row.tempid || row.uuid || `row ${cell.getRow().getPosition(true)}`;
-      flashNote(`✎ Edited “${label}” (${id}) — local only, not saved back to the CSV`);
     });
     spreadsheet.setAttribute("aria-busy", "false");
     updateSearchStatus();
@@ -802,14 +798,6 @@
   }
 
   window.addEventListener("resize", debounce(fitTableToContainer, 150));
-
-  function flashNote(message) {
-    footerNote.textContent = message;
-    clearTimeout(flashNote._t);
-    flashNote._t = setTimeout(() => {
-      footerNote.textContent = FOOTER_IDLE_NOTE;
-    }, 3500);
-  }
 
   /* ------------------------------------------------------------------ *
    *  Global live search (client-side, across every column)
