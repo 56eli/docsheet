@@ -245,8 +245,12 @@ released 1982 — Worry/Fear/Anxiety Jul 1982, A Map of Consciousness Dec 1982,
 Sexuality Apr 1982 — so 1982 is the recording year, not the 2014 storefront
 re-listing); **4 talks stay flagged** (Verification of Spiritual Realities,
 God is Hidden, Peace is the Natural State, Don't Set Sail) pending their ©
-years. Catalogue codes **236 → 265**. Tests 102, coverage 92%, all 5 checks
-green.
+years. A follow-up **post-2012 audit** (Hawkins died 2012) corrected the 5
+Discussion Series talks to **2012** and Transcending the Ego to **2004**, kept
+The Essence of Letting Go at 2025 (genuinely posthumous compilation), and
+flagged 7 lecture records still carrying release-date years > 2012 pending
+their recording years. Catalogue codes **236 → 271**. Tests 102, coverage 92%,
+all 5 checks green.
 
 A full re-audit confirmed the pipeline green (101 tests, 92% coverage, all 5
 checks) and then removed cross-module duplication **without regression risk**.

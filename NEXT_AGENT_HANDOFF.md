@@ -357,6 +357,20 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     Tests 101 → **102** (new backfill-guard regression test), 92% coverage, all
     5 checks green.
 
+24. **Post-2012 audit (2026-08-04, owner request):** checked every record
+    with a year after 2012 (the year Hawkins died). Books are fine (their year
+    is the posthumous publication year), but lectures/discussions are
+    recordings from his lifetime, so a year > 2012 is a release date, not a
+    recording year. Corrected the **5 Discussion Series talks to 2012** (their
+    product titles say "(2012)") and **Transcending the Ego to 2004** (Audible
+    ©2004). **The Essence of Letting Go (2025) is genuinely posthumous** (a Hay
+    House audio compilation) and stays 2025. **7 lecture records remain
+    flagged** with release-date years > 2012 pending their recording years:
+    Spiritual Will (228–229), Progressive Levels of Consciousness (309),
+    Verification of Spiritual Realities (230–232), God is Hidden (268), Don't
+    Set Sail (356), Peace is the Natural State (357). Catalogue codes
+    **265 → 271**. Tests 102, 92% coverage, all 5 checks green.
+
 ## 5. Binding data rules (violating these has caused real defects)
 
 - **Never hand-edit generated files** — `data/research_master_draft.*`,

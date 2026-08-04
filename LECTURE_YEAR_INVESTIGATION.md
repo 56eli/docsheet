@@ -100,8 +100,31 @@ verified recording years (On-the-Road ©2003–2005; Office Series **1982**) wit
 wrong listing months cleared (year-only). **4 talks remain flagged** pending
 their © years.
 
-## 3. Recommendation
+### 2c. Post-2012 audit (owner request)
 
+The owner asked to check every record with a year after **2012** (the year
+Hawkins died). **Books are fine** — their year is the (posthumous) publication
+year. But **lectures/discussions** are recordings that must come from his
+lifetime, so a year > 2012 on a lecture is the **release date**, not the
+recording year. Findings and corrections:
+
+| uuid | Title | year was | year now | note |
+|---|---|---|---|---|
+| 279/280/282/283/285 | Discussion Series (5) | 2014 | **2012** | product titles "(2012)"; the 2012 discussion per-title works |
+| 274 | Transcending the Ego | 2022 | **2004** | Audible ©2004 |
+| 358 | The Essence of Letting Go | 2025 | 2025 | ✅ genuinely posthumous (Hay House audio compilation, released 2025) |
+| 228/229 | Spiritual Will | 2023 | flagged | recording year unverified |
+| 309 | Progressive Levels of Consciousness | 2023 | flagged | recording year unverified |
+| 230–232 | Verification of Spiritual Realities | 2014 | flagged | recording year unverified |
+| 268 | God is Hidden Within the Beauty of the Music | 2014 | flagged | recording year unverified |
+| 356 | Don't Set Sail Without A Compass | 2014 | flagged | recording year unverified |
+| 357 | Peace is the Natural State | 2014 | flagged | recording year unverified |
+
+The flagged lecture records all carry a **release date > 2012** that must not
+be read as their recording year; they remain open until their recording years
+are sourced.
+
+## 4. Recommendation
 Setting guessed recording dates into the review-gated master is **riskier than
 leaving the listing date**, because a wrong year on a curated record is a
 real data defect and hard to unwind. I therefore recommend **one of**:
