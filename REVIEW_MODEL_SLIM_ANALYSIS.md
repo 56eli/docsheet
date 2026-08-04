@@ -153,4 +153,14 @@ cut but carries the most risk and should be done carefully and last.
 > obsolete coverage-guard tests with 5 `DerivedPrimaryRelationshipTests`), 92%
 > coverage, all 5 `--check` modes green.
 
+> **Update (2026-08-04):** **F3 is not recommended and was skipped.** After
+> inspecting the five queues' schemas they are distinct domains (candidate /
+> international / manual-leads / taxonomy) with different columns; a force-merge
+> into one `review_queues.csv` would create a wide, mostly-empty sparse file,
+> keep every per-type validator (filtering by `queue_type`), and couple
+> unrelated review lanes — a net negative that does not serve the goal of
+> slimming the pipeline. The two near-identical candidate queues
+> (`new_work_review_queue` + `official_discovery_queue`) could merge, but that
+> is cosmetic (they render as separate tabs) and was also left as-is.
+
 The project remains green (100 tests, 92% coverage, all checks).
