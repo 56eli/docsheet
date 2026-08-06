@@ -64,11 +64,11 @@ test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   await expect(uuidCellInRow(page, 1)).toHaveText('2');
   await expect(uuidCellInRow(page, 2)).toHaveText('3');
 
-  // Descending: the highest Master ID first (IDs run 1-358; 249 and 264 are
-  // retired, so max is 358). Empty candidate IDs must stay pinned to the
+  // Descending: the highest Master ID first (IDs run 1-361; 249 and 264 are
+  // retired, so max is 361 after academic promotion 359-361). Empty candidate IDs must stay pinned to the
   // bottom, not jump to the top.
   await uuidHeader.click();
   await expect(uuidHeader).toHaveAttribute('aria-sort', 'descending');
-  await expect(uuidCellInRow(page, 0)).toHaveText('358');
-  await expect(uuidCellInRow(page, 1)).toHaveText('357');
+  await expect(uuidCellInRow(page, 0)).toHaveText('361');
+  await expect(uuidCellInRow(page, 1)).toHaveText('360');
 });
