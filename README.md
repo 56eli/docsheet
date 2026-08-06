@@ -81,7 +81,7 @@ build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, `FULL_STACK_AUDIT_2026-08-06.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
@@ -129,8 +129,8 @@ so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
 months match the publisher's own dates. See
-[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
-audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
+[FULL_STACK_AUDIT_2026-08-06.md](FULL_STACK_AUDIT_2026-08-06.md) for the latest
+full audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
 
 ### Field semantics
 

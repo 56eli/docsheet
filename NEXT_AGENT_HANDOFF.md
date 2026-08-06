@@ -75,7 +75,7 @@ Sandbox traps learned the hard way (all still true):
 | Test suite | **103 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
-(see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
+(see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
 `VERITAS_ARTIFACT_REVIEW.md`).
 
 ## 4. What happened in the 2026-08-03 sessions (in order)
@@ -518,6 +518,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 
 ## 2026-08-04 Final Audit (arena/019fcddb-docsheet, same as main)
 
+> ⚠️ **Superseded 2026-08-06** — the counts below predate the PR #23 close-out;
+> current verified numbers are in §3 and in
+> [FULL_STACK_AUDIT_2026-08-06.md](FULL_STACK_AUDIT_2026-08-06.md).
+
 - Full integrity audit re-executed: all 5 --check modes pass (fetch_veritas offline expected), 103/103 tests, 92% coverage, JS syntax OK.
 - Counts confirmed: master 356 (307 lecture/38 book/10 discussion/1 untyped), catalogue codes 271, exclusions 68, overrides 110, relationships rendered 333 (325 derived primary + 8 related_material hand-maintained), veritas 191, everything 376, taxonomy 169/0/10, work families 332.
 - CSP hash verified correct `sha256-u2/...`, SRI pinned, no innerHTML injection, LF line endings.
@@ -531,8 +535,25 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   cite those numbers — do not hand-count).
 - Present long results via a committed Markdown report
   (`archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` is the 2026-08-03 log;
-  `FULL_STACK_AUDIT_2026-08-03.md` is the current full-project audit); the
+  `FULL_STACK_AUDIT_2026-08-06.md` is the current full-project audit); the
   chat should stay a one-sentence summary plus the `ask_user` question for
   what is next.
 - Update this handoff at the end of each session so the next agent inherits
   your context verbatim.
+
+## 2026-08-06 session (arena/019fd6fa-docsheet)
+
+- **Independent full-stack audit re-executed from a clean venv:** all 5
+  `--check` modes, 103/103 tests, 92% coverage, JS syntax, live site (378
+  rows), and CI-on-main state all verified green; every guarded count in
+  README/§3/meta independently reproduced. No new data defects. Findings
+  F1–F6 in [FULL_STACK_AUDIT_2026-08-06.md](FULL_STACK_AUDIT_2026-08-06.md):
+  stale "2026-08-04 Final Audit" section above (now marked superseded),
+  11 blank-year edition rows 333–343 (owner ruling), unrecorded D6a
+  per-part ruling (6 multi-part groups carry per-part `work_id`s while
+  ~64 share one — see F4 there), CRLF in `data/filename_proposal_YYYYMM.csv`,
+  and one expired-log main CI failure after PR #22 (green again since PR #23).
+- **Consolidation:** `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md` moved to
+  `archive/`; README/archive index/handoff audit links point at the 2026-08-06
+  audit; the broken `../FULL_STACK_AUDIT_2026-08-03.md` link in
+  `archive/README.md` fixed.

@@ -5,11 +5,15 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-03.md](../FULL_STACK_AUDIT_2026-08-03.md), and the
+[FULL_STACK_AUDIT_2026-08-06.md](../FULL_STACK_AUDIT_2026-08-06.md), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
 - `HANDOFF.md`, `PROJECT_STATE_AUDIT.md` — superseded status stubs (kept so old
   external references resolve).
+- `FULL_STACK_AUDIT_2026-08-03.md`, `FULL_STACK_AUDIT_2026-08-04_COMPLETE_359.md`,
+  `FULL_STACK_AUDIT_2026-08-04_FINAL.md`, `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`
+  — successive full-stack audits, each superseded by the next; the current one
+  is `../FULL_STACK_AUDIT_2026-08-06.md`.
 - `IMPLEMENTATION_PLAN.md` — earlier roadmap, absorbed into
   `NEXT_AGENT_HANDOFF.md`.
 - `UNBLOCK_INSTRUCTIONS.md` — the CI-workflow web-editor instructions from
