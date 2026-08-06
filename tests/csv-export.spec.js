@@ -117,8 +117,9 @@ test('edition model columns render on the Everything tab', async ({ page }) => {
   await expect(workCells.first()).toHaveText('w-truth-vs-falsehood');
 
   // The audiobook edition row renders with its merged edition label.
+  // After filename proposal v4, edition still merges format + format_detail, e.g. "audiobook · Audiobook" and "book"
   const editionCells = page.locator('.tabulator-cell[tabulator-field="edition"]');
-  await expect(editionCells.filter({ hasText: 'audio · Audiobook' }).first()).toBeVisible();
+  await expect(editionCells.filter({ hasText: 'Audiobook' }).first()).toBeVisible();
 
   // The book row shows its own edition label.
   await expect(editionCells.filter({ hasText: 'book' }).first()).toBeVisible();
