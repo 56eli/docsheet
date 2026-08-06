@@ -33,9 +33,10 @@ WORK_FAMILIES = Path("data") / "work_families.csv"
 EDITION_CANDIDATES = Path("data") / "edition_candidates.csv"
 EDITION_PROMOTIONS = Path("data") / "edition_promotions.csv"
 VERITAS_STREAMING = Path("data") / "veritas_streaming_urls.csv"
+FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 
 FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
@@ -489,6 +490,37 @@ def apply_veritas_streaming_urls(items: list[dict[str, str]]) -> int:
             applied += 1
     if applied:
         print(f"[streaming] Applied {applied} approved Veritas streaming URLs as reference_url_1")
+    return applied
+
+
+def apply_filename_proposal(items: list[dict[str, str]]) -> int:
+    """Apply proposed filenames from data/filename_proposal_YYYYMM.csv as proposed_filename column.
+
+    The proposal file is deterministic and reviewed: one row per master UUID with
+    proposed_filename (safe [1-3]) and proposed_filename_display ([1/3]).
+    This populates the new 'proposed_filename' field in the master draft between
+    Title and Item Type per owner request.
+    """
+    if not FILENAME_PROPOSAL.exists():
+        return 0
+    require_columns(FILENAME_PROPOSAL, {"uuid", "proposed_filename"})
+    mapping = {row["uuid"].strip(): row["proposed_filename"].strip() for row in read_csv(FILENAME_PROPOSAL)}
+    applied = 0
+    for item in items:
+        uuid = item.get("uuid", "").strip()
+        if not uuid:
+            continue
+        prop = mapping.get(uuid, "")
+        if prop:
+            # Only set if not already set or different (allows override via file)
+            if item.get("proposed_filename", "") != prop:
+                item["proposed_filename"] = prop
+                applied += 1
+        else:
+            # Ensure field exists even if no proposal (blank)
+            item.setdefault("proposed_filename", "")
+    if applied:
+        print(f"[filename] Applied {applied} proposed filenames from {FILENAME_PROPOSAL}")
     return applied
 
 
@@ -1134,6 +1166,8 @@ def build_master() -> MasterBuild:
     source_overrides_applied = apply_source_overrides(items)
     # Option A minimal streaming blind-spot fix: apply approved streaming URLs as reference_url_1
     apply_veritas_streaming_urls(items)
+    # Filename proposal YYYY-MM - Name [1/X].mp4 between Title and Item Type
+    apply_filename_proposal(items)
 
     # D3 (edition model): the audiobook URL moves from the book row into its
     # audiobook edition row and is cleared from the book row. Runs after

@@ -457,17 +457,18 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 **P1 — Data decisions needing a ruling:**
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  **fully applied.** Master **356 rows** (307 lecture / 38 book / 10
+  **fully applied + filename proposal v4 + Volume year strip.** Master **358 rows** (307 lecture / 40 book / 10
   discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
   UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
-  Satsang monthlies (344–352), and 6 promoted manual candidates (353–358);
-  **199 works / 332 family members approved,
-  work_id coverage 356/356** (D6a per-part ruling + C1 split applied);
-  overrides 110 (candidate-provenance supported, incl. 316/318 Hay House
-  and the 4 Nightingale-Conant edition URLs keyed by edition candidate);
-  relationships 333; Everything 376 (0 pending candidates; Veritas
+  Satsang monthlies (344–352), 6 promoted manual candidates (353–358) + 3 academic (359-361, Orthomolecular 1973, Qualitative 1998, Dialogues 1998),
+  with Path duplicate 302 removed and Volume Series years stripped to blank pre-2000 per owner (catalogue codes 284→271);
+  **201 works / 334 members approved,
+  work_id coverage 358/358** (D6a per-part ruling + C1 split applied + academic families + Volume canonical mapping);
+  overrides 109 (candidate-provenance supported, incl. 316/318 Hay House
+  and the 4 Nightingale-Conant edition URLs + 34 streaming URLs → 52 master rows);
+  relationships 333; Everything 378 (0 pending candidates; Veritas
   candidate rows 28 → 8 after the 2026-08-04 refresh linked all
-  already-promoted works). Remaining model
+  already-promoted works). Proposed filename column added between Title and Item Type (YYYY-MM - Name [1/3].mp4 safe [1-3] display [1/3], no bracket for single, audiobook label removed). Remaining model
   work: all 5 New Work Review queue rows and 6 pending manual candidates were
   promoted 2026-08-03 as master UUIDs 353–358.
 - **Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):

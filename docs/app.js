@@ -131,6 +131,8 @@
     raw_row_number: "Raw Row",
     catalog_code: "Catalogue Code",
     legacy_tempid: "Legacy ID",
+    proposed_filename: "Proposed File Name",
+    proposed_filename_display: "Proposed File Name Display",
     proposed_item_type: "Proposed Item Type",
     proposed_format: "Proposed Format",
     proposed_format_detail: "Proposed Format Detail",
@@ -178,7 +180,7 @@
   };
   const DEFAULT_PRIORITY_FIELDS = [
     "record_type",
-    "title", "candidate_title", "official_title", "review_sheet", "publisher",
+    "title", "proposed_filename", "candidate_title", "official_title", "review_sheet", "publisher",
     "relationship_id", "raw_row_number", "disposition", "review_status",
     "mapping_status", "promotion_status", "match_status", "item_type", "series",
     "year", "format", "owned", "source_name", "official_product_url",
@@ -193,10 +195,11 @@
   ];
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "series", "title", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "series", "title", "proposed_filename", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
       frozen: ["record_type", "title"],
       // Owner-directed 2026-08-04: park the Work grouping column between
       // Legacy ID and Location Physical instead of up front.
+      // Owner-directed 2026-08-04 v2: proposed_filename between Title and Item Type.
       moveAfter: { work_id: "legacy_tempid" },
     },
     original: {

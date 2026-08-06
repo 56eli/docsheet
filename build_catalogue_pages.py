@@ -114,8 +114,9 @@ RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 # Master identity fields carried into the Everything view. ``record_type`` is a
 # view-level provenance label and is intentionally not part of the master CSV
 # schema, which stays owned by build_research_master.py.
+# ``proposed_filename`` sits between Title and Item Type per owner request 2026-08-04.
 EVERYTHING_FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "title_source", "item_type",
     "series", "year", "month", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
