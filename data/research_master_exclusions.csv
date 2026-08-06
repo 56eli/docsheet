@@ -40,6 +40,7 @@ raw_row_number,disposition,review_reason,raw_tempid,raw_title,raw_we_have,raw_or
 324,series_context,Collection/category heading.,,Books https://veritaspub.com/books-2/,,,
 336,series_context,Collection/category heading.,,Books of Slides,✅,veritas,
 338,blank_separator,Empty visual separator row.,,,,,
+343,duplicate,"Duplicate of raw row 347 — same work, full title variant kept as master 303; truncated title variant previously created duplicate work_id.",,The Path to Spiritual Advancement,✅,veritas,
 344,blank_separator,Empty visual separator row.,,,,,
 345,series_context,Collection/category heading.,,TRANSCRIPTION SERIES BOOKS https://veritaspub.com/the-six-book-transcription-series-transcribed-from-the-lectures-presented-in-2002-the-core-lectures-of-dr-hawkins-work/,,,
 346,blank_separator,Empty visual separator row.,,,,,

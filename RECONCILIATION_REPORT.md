@@ -10,13 +10,13 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 356 | 356 |
-| Research-master JSON records | 356 | 356 |
-| Research-master exclusion records | 68 | 68 |
-| Draft-only CSV records without a matching ledger `item` | 50 | 0 |
+| Research-master CSV records | 358 | 358 |
+| Research-master JSON records | 358 | 358 |
+| Research-master exclusion records | 69 | 69 |
+| Draft-only CSV records without a matching ledger `item` | 53 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 376 | 376 |
+| `docs/master.json` / ledger-projected Everything records | 378 | 378 |
 
 The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
 
@@ -33,6 +33,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Devotion to Truth Talk | lecture | Promoted from official candidate manual-veritas-55473: Official page identifies a 2003 On-the-Road talk and makes the full lecture available through streaming video. |
 | — | Devotional Nonduality Intensive: Alignment (Audiobook) | lecture | Promoted edition audio of work w-alignment from candidate edition-audible-dni-alignment: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Devotional Nonduality Intensive: Intention (Audiobook) | lecture | Promoted edition audio of work w-intention from candidate edition-audible-dni-intention: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
+| — | Dialogues on Consciousness and Spirituality | book | Promoted from official candidate manual-academic-dialogues-1998: Veritas Publishing 1998-01-01, 94 pages, spiral-bound, ISBN 0964326175; early transcript collection; evidence: Amazon, AbeBooks, Goodreads, Open Library; completeness audit. |
 | — | Don’t Set Sail Without A Compass – Audio | lecture | Promoted from official candidate manual-veritas-1792: Official page identifies a one-CD 67-minute audio product. |
 | — | Giving Up Illness through A Course in Miracles© – Audio | lecture | Promoted from official candidate manual-veritas-1544: Official page identifies a three-CD 3h45m audio presentation. |
 | — | Healing and Recovery (Audiobook) | book | Promoted edition audio of work w-healing-and-recovery from candidate edition-audible-healing: Audible audiobook edition; Audible inventory row matched_by_title. |
@@ -42,11 +43,13 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
 | — | Live Life As A Prayer (Audio) | lecture | Promoted edition audio of work w-live-prayer from candidate edition-hh-liveprayer: Hay House audio edition of the lecture work; Hay House inventory row unreviewed_official_product. |
 | — | Mind, Heart and Service: The Pathway of Devotional Non-Duality | lecture | Promoted from official candidate manual-veritas-54219: Official page identifies a 2003 Science of Mind church lecture available through streaming video. |
+| — | Orthomolecular Psychiatry: Treatment of Schizophrenia | book | Promoted from official candidate manual-academic-orthomolecular-1973: Co-authored with Linus Pauling (double Nobel laureate), W.H. Freeman 1973, 697 pages, ISBN 0716708981, early psychiatric academic work pre-dating spiritual corpus; listed in BookNotification, EverybodyWiki, Wellcome Collection; part of completeness audit for all Hawkins material ever produced. |
 | — | Peace is the Natural State | lecture | Promoted from official candidate manual-veritas-1814: Official page identifies an On-the-Road audio product. |
 | — | Permanent Inner Peace (2012) | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
 | — | Power vs. Force (Audiobook) | book | Promoted edition audio of work w-power-vs-force from candidate edition-audible-pvf: Audible audiobook edition of the Power vs Force work; Audible inventory row matched_by_title. |
 | — | Power vs. Force Audio Book | book | Promoted edition audio of work w-power-vs-force from candidate edition-veritas-pvf-audiobook: Veritas product 1542; audiobook edition of the Power vs Force work; currently related_material on lecture 202 - REQUIRES RULING on family placement. |
 | — | Progressive Levels of Consciousness | lecture | Promoted from official candidate manual-veritas-53277: Official page identifies an On-the-Road UK talk available through streaming video. |
+| — | Qualitative and Quantitative Analysis and Calibration of the Level of Human Consciousness | book | Promoted from official candidate manual-academic-qualitative-1998: Doctoral dissertation published by Veritas Publishing 1998-01-31, 200 pages, spiral-bound, ISBN 0964326183; defines Scale of Consciousness; evidence: Amazon, Open Library OL11707875M, BooksRun; completeness audit. |
 | — | Satsang Series (Jan 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1304: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Satsang Series (Jul 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1310: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Satsang Series (Jul 2008) | lecture | Promoted from official candidate manual-veritas-satsang-1639: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
@@ -95,8 +98,8 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 376 | 376 |
-| `migrated_items` | 356 | 356 |
+| `master_items` | 378 | 378 |
+| `migrated_items` | 358 | 358 |
 | `implemented_unreviewed` | 22 | 22 |
 
 ## Required resolution before rebuilding

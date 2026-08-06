@@ -339,7 +339,7 @@ raw_row_number,disposition,review_reason,proposed_series,proposed_title,proposed
 340,item,Item candidate indicated by ownership status and/or legacy tempid.,Books,Dissolving the Ego,book,2011,,,,true,,,,Dissolving the Ego,✅,veritas,,,,,,,,
 341,item,Item candidate indicated by ownership status and/or legacy tempid.,Books,"In the World, But Not of It",book,2023,,,,true,,,,"In the World, But Not of It",✅,veritas,,,,,,,,
 342,item,Item candidate indicated by ownership status and/or legacy tempid.,Books,The Highest Level of Enlightenment,book,2024,,,,true,,,,The Highest Level of Enlightenment,✅,veritas,,,,,,,,
-343,item,Item candidate indicated by ownership status and/or legacy tempid.,Books,The Path to Spiritual Advancement,book,2024,,,,true,,,,The Path to Spiritual Advancement,✅,veritas,,,,,,,,
+343,duplicate,"Duplicate of raw row 347 — same work, full title variant kept as master 303; truncated title variant previously created duplicate work_id.",Books,The Path to Spiritual Advancement,book,2024,,,,true,,,,The Path to Spiritual Advancement,✅,veritas,,,,,,,,
 344,blank_separator,Empty visual separator row.,,,,,,,,,,,,,,,,,,,,,,
 345,series_context,Collection/category heading.,,,,,,,,,,,,TRANSCRIPTION SERIES BOOKS https://veritaspub.com/the-six-book-transcription-series-transcribed-from-the-lectures-presented-in-2002-the-core-lectures-of-dr-hawkins-work/,,,,,,,,,,
 346,blank_separator,Empty visual separator row.,,,,,,,,,,,,,,,,,,,,,,

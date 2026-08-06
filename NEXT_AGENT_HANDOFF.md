@@ -64,13 +64,13 @@ Sandbox traps learned the hard way (all still true):
 | Layer | Count | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 356 | 307 lecture / 38 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) |
-| Everything view | **376** | 356 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 68 / 110 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 |
+| Curated master | 358 | 307 lecture / 40 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) |
+| Everything view | **378** | 358 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Exclusions / source overrides | 69 / 109 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved overrides after dedup of Path duplicate) |
 | Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
 | Everything relationships | 333 product relationships, 7 series compilations | |
-| Candidate pool | 26 reviewed manual candidates (all 26 promoted incl. 9 Satsang monthlies and 6 manual candidates, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
+| Candidate pool | 29 reviewed manual candidates (all 29 promoted incl. 9 Satsang monthlies and 6 manual candidates and 3 academic, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
+| Work families | 201 works / 334 members approved; work_id coverage 358/358 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
 | Test suite | **103 tests; coverage 92% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
@@ -513,6 +513,16 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - Widen browser tests: all 15 tabs, column chooser, drawer, dark mode
   (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
   measured-width assertions).
+
+
+## 2026-08-04 Final Audit (arena/019fcddb-docsheet, same as main)
+
+- Full integrity audit re-executed: all 5 --check modes pass (fetch_veritas offline expected), 103/103 tests, 92% coverage, JS syntax OK.
+- Counts confirmed: master 356 (307 lecture/38 book/10 discussion/1 untyped), catalogue codes 271, exclusions 68, overrides 110, relationships rendered 333 (325 derived primary + 8 related_material hand-maintained), veritas 191, everything 376, taxonomy 169/0/10, work families 332.
+- CSP hash verified correct `sha256-u2/...`, SRI pinned, no innerHTML injection, LF line endings.
+- New finding: 11 lecture audiobook edition rows (UUIDs 333-343) have blank year (proposed_year empty in edition_candidates.csv) — suggestion: inherit year from matched master.
+- Reports: `FULL_STACK_AUDIT_2026-08-04_FINAL.md` (this audit) + earlier `AUDIT_REPORT_2026-08-04.md`.
+- Proposed: `FILENAME_SCHEME_PROPOSAL.md` — year-first human filename scheme (`2004-02 TM - Thought and Ideation [DVD01].mp4`) with three profiles (canonical/human/plex) + organizer script roadmap.
 
 ## 7. House-keeping for every turn
 

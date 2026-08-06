@@ -891,15 +891,6 @@
     "evidence_source": "data/hayhouse_official_products.csv (The Wisdom of Dr David R Hawkins)"
   },
   {
-    "raw_row_number": "343",
-    "target_field": "source_url_hay_house",
-    "override_value": "https://www.hayhouse.com/the-path-to-spiritual-advancement-paperback",
-    "review_status": "approved",
-    "approval_date": "2026-08-03",
-    "review_reason": "Hay House paperback edition; same book as UUID 303.",
-    "evidence_source": "web_search"
-  },
-  {
     "raw_row_number": "347",
     "target_field": "source_url_hay_house",
     "override_value": "https://www.hayhouse.com/the-path-to-spiritual-advancement-paperback",

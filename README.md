@@ -96,7 +96,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (356) |
+| `master` | A curated master catalogue record (358) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -118,10 +118,10 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **356** records (307 `lecture`, 38 `book`,
-10 `discussion`, 1 untyped), **271** catalogue codes, **68** retained exclusions,
-**110** approved source overrides (including the four Nightingale-Conant audio
-editions), **26** promoted
+The current curated master has **358** records (307 `lecture`, 40 `book`,
+10 `discussion`, 1 untyped), **271** catalogue codes, **69** retained exclusions,
+**109** approved source overrides (including the four Nightingale-Conant audio
+editions), **29** promoted
 and **0** unpromoted official candidates, **333** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable.

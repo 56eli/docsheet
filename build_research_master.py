@@ -32,6 +32,7 @@ SERIES_MAPPING = Path("data") / "series_category_mapping.csv"
 WORK_FAMILIES = Path("data") / "work_families.csv"
 EDITION_CANDIDATES = Path("data") / "edition_candidates.csv"
 EDITION_PROMOTIONS = Path("data") / "edition_promotions.csv"
+VERITAS_STREAMING = Path("data") / "veritas_streaming_urls.csv"
 
 FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "legacy_title", "title_source", "item_type",
@@ -447,6 +448,47 @@ def apply_official_title_cleanup(items: list[dict[str, str]], veritas_products: 
     return changed
 
 
+def apply_veritas_streaming_urls(items: list[dict[str, str]]) -> int:
+    """Apply approved Veritas streaming page URLs as reference_url_1 (Option A minimal).
+
+    Veritas lecture products have a streaming page (e.g. https://veritaspub.com/success-october-2009/)
+    linked via Stream icon on the product page. Those pages are not Veritas product URLs,
+    but they are the streaming carrier for the same lecture work. For Option A minimal,
+    we keep the DVD master rows and add the streaming page as reference_url_1 so the
+    Everything sheet surfaces the streaming availability without minting new edition rows.
+    """
+    if not VERITAS_STREAMING.exists():
+        return 0
+    require_columns(VERITAS_STREAMING, {"veritas_product_id", "streaming_url", "review_status"})
+    streaming = {row["veritas_product_id"].strip(): row for row in read_csv(VERITAS_STREAMING) if row["review_status"].strip() == "approved"}
+    if not streaming:
+        return 0
+    veritas_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
+    # Map product_id -> streaming_url
+    applied = 0
+    for item in items:
+        v_url = item.get("source_url_veritas", "").strip()
+        if not v_url:
+            continue
+        prod = veritas_by_url.get(v_url)
+        if not prod:
+            continue
+        pid = prod.get("veritas_product_id", "").strip()
+        s_row = streaming.get(pid)
+        if not s_row:
+            continue
+        s_url = s_row.get("streaming_url", "").strip()
+        if not s_url or not s_url.startswith("https://"):
+            continue
+        # Only fill if reference_url_1 is empty, to not overwrite existing evidence
+        if not item.get("reference_url_1", "").strip():
+            item["reference_url_1"] = s_url
+            applied += 1
+    if applied:
+        print(f"[streaming] Applied {applied} approved Veritas streaming URLs as reference_url_1")
+    return applied
+
+
 def apply_source_overrides(items: list[dict[str, str]]) -> int:
     """Apply explicit, approved official-source links after ledger migration.
 
@@ -568,19 +610,35 @@ def validate_manual_candidates() -> int:
             )
         if not candidate["evidence_note"].strip() or not candidate["promotion_notes"].strip():
             raise ValueError(f"{MANUAL_CANDIDATES}:{line_number} needs evidence and promotion notes")
-        if source_name != "veritas" or product_id not in veritas_by_id:
-            raise ValueError(
-                f"{MANUAL_CANDIDATES}:{line_number} needs a known Veritas source product"
-            )
-        product = veritas_by_id[product_id]
-        if candidate["official_product_url"] != product["official_product_url"]:
-            raise ValueError(
-                f"{MANUAL_CANDIDATES}:{line_number} official_product_url differs from the inventory"
-            )
-        if candidate["official_product_title"] != product["official_title"]:
-            raise ValueError(
-                f"{MANUAL_CANDIDATES}:{line_number} official_product_title differs from the inventory"
-            )
+        if source_name == "veritas":
+            if product_id not in veritas_by_id:
+                raise ValueError(
+                    f"{MANUAL_CANDIDATES}:{line_number} needs a known Veritas source product"
+                )
+            product = veritas_by_id[product_id]
+            if candidate["official_product_url"] != product["official_product_url"]:
+                raise ValueError(
+                    f"{MANUAL_CANDIDATES}:{line_number} official_product_url differs from the inventory"
+                )
+            if candidate["official_product_title"] != product["official_title"]:
+                raise ValueError(
+                    f"{MANUAL_CANDIDATES}:{line_number} official_product_title differs from the inventory"
+                )
+        else:
+            # Completeness audit 2026-08-04: allow academic / external works (Orthomolecular Psychiatry 1973,
+            # Qualitative and Quantitative analysis 1998, Dialogues on Consciousness 1998)
+            # that have no Veritas product. They are validated via HTTPS evidence when present.
+            allowed_external = {"academic", "other", "freeman", "amazon", "openlibrary"}
+            if source_name not in allowed_external:
+                raise ValueError(
+                    f"{MANUAL_CANDIDATES}:{line_number} has unsupported source_name {source_name!r}; "
+                    f"allowed: veritas + {', '.join(sorted(allowed_external))}"
+                )
+            url = candidate["official_product_url"].strip()
+            if url and not url.startswith("https://"):
+                raise ValueError(
+                    f"{MANUAL_CANDIDATES}:{line_number} non-Veritas official_product_url must be blank or HTTPS"
+                )
         seen_keys.add(key)
     return len(candidates)
 
@@ -1038,6 +1096,15 @@ def build_master() -> MasterBuild:
             key = (item_type.upper(), year)
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
+        # Academic / external candidates (completeness audit) have no Veritas URL — put external URL in reference_url_1
+        veritas_url = ""
+        hay_url = ""
+        audible_url = ""
+        ref1 = ""
+        if candidate.get("source_name", "").strip() == "veritas":
+            veritas_url = candidate["official_product_url"]
+        else:
+            ref1 = candidate["official_product_url"]
         items.append({
             "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
@@ -1045,9 +1112,9 @@ def build_master() -> MasterBuild:
             "year": year, "month": "", "format": candidate["proposed_format"],
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
             "location_physical": "", "location_digital": "", "location_streaming": "",
-            "source_url_veritas": candidate["official_product_url"], "source_url_hay_house": "",
-            "source_url_nightingale_conant": "", "source_url_audible": "",
-            "reference_url_1": "", "reference_url_2": "",
+            "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
+            "source_url_nightingale_conant": "", "source_url_audible": audible_url,
+            "reference_url_1": ref1, "reference_url_2": "",
             "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
             "raw_row_number": "",
             "candidate_key": f"candidate:{candidate['candidate_key']}",
@@ -1062,6 +1129,8 @@ def build_master() -> MasterBuild:
     # Hay House links for promoted masters 316/318. Month backfill and format
     # inference run afterwards, so override URLs still feed both.
     source_overrides_applied = apply_source_overrides(items)
+    # Option A minimal streaming blind-spot fix: apply approved streaming URLs as reference_url_1
+    apply_veritas_streaming_urls(items)
 
     # D3 (edition model): the audiobook URL moves from the book row into its
     # audiobook edition row and is cleared from the book row. Runs after

@@ -9181,8 +9181,8 @@
   },
   {
     "raw_row_number": "343",
-    "disposition": "item",
-    "review_reason": "Item candidate indicated by ownership status and/or legacy tempid.",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of raw row 347 — same work, full title variant kept as master 303; truncated title variant previously created duplicate work_id.",
     "proposed_series": "Books",
     "proposed_title": "The Path to Spiritual Advancement",
     "proposed_item_type": "book",

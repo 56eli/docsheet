@@ -410,6 +410,16 @@
     "raw_product_link": ""
   },
   {
+    "raw_row_number": "343",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of raw row 347 — same work, full title variant kept as master 303; truncated title variant previously created duplicate work_id.",
+    "raw_tempid": "",
+    "raw_title": "The Path to Spiritual Advancement",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
     "raw_row_number": "344",
     "disposition": "blank_separator",
     "review_reason": "Empty visual separator row.",
