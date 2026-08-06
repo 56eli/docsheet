@@ -293,6 +293,9 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
         # Books are curated by first-publication year, not product-listing date.
         if item_type == "book":
             continue
+        # Volume Series years are under investigation, believed pre-2000; product listing date 2007 is not recording date
+        if item.get("series", "").strip() == "Volume Series":
+            continue
         url = item.get("source_url_veritas", "").strip()
 
         # Try Veritas inventory published_date first
