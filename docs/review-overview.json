@@ -15,7 +15,7 @@
   },
   {
     "review_sheet": "Master Exclusions",
-    "record_count": 69,
+    "record_count": 71,
     "purpose": "Raw rows intentionally excluded from the curated master, with their disposition and review reason.",
     "source_file": "data/research_master_exclusions.csv",
     "current_state": "excluded from master / retained as provenance"

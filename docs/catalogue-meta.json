@@ -1,8 +1,8 @@
 {
-  "master_items": 378,
-  "migrated_items": 358,
+  "master_items": 376,
+  "migrated_items": 356,
   "everything_record_types": {
-    "master": 358,
+    "master": 356,
     "candidate_discovery": 4,
     "candidate_veritas": 8,
     "candidate_hayhouse": 4,
@@ -11,7 +11,7 @@
   },
   "reviewed_manual_candidates": 29,
   "manual_research_leads": 1,
-  "master_exclusion_rows": 69,
+  "master_exclusion_rows": 71,
   "migration_review_rows": 374,
   "approved_source_overrides": 127,
   "official_discovery_candidates": 4,

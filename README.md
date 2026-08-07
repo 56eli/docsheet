@@ -96,7 +96,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (358) |
+| `master` | A curated master catalogue record (356) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -118,8 +118,8 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **358** records (307 `lecture`, 40 `book`,
-10 `discussion`, 1 untyped), **280** catalogue codes, **69** retained exclusions,
+The current curated master has **356** records (307 `lecture`, 40 `book`,
+8 `discussion`, 1 untyped), **278** catalogue codes, **71** retained exclusions,
 **127** approved source overrides (including the four Nightingale-Conant audio
 editions and two Amazon Office Series links), **29** promoted
 and **0** unpromoted official candidates, **336** item-to-product relationships,

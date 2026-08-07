@@ -150,3 +150,19 @@ node --check docs/app.js && node --check tests/*.spec.js
 - All checks re-verified after the change: 106/106 tests, 5 `--check` modes green, coverage 91% (gate 80%). If the user's browser still shows the old strings, it is a stale cache — hard-refresh.
 
 *Addendum end — 2026-08-07.*
+
+---
+
+## Addendum — Date-parenthetical filename cleanup + duplicate-pair ruling (owner follow-up 2)
+
+**Reported:** `Permanent Inner Peace (2012) 2012 - Permanent Inner Peace (2012).mp4`, `Become That Which You Are (June 2004) PART1 2004-06 - Become That Which You Are (June 2004) [1-3].mp4` — filenames repeating the month-year that the `YYYY-MM - ` prefix already carries.
+
+**Fixed (data, reviewed input `data/filename_proposal_YYYYMM.csv`):** stripped the redundant parenthetical from `clean_title` + filenames on 12 rows — Become That Which You Are (June 2004) ×3, Love is a Way of Being (January 2004) ×3, ... Oxford (2003), Live Life As A Prayer (Audio) (audiobook label, `.m4b` indicates), Unity Church of Sedona 2005 March / 2006 June (CD) (date words moved into a `2005-03 -` / `2006-06 -` prefix, month title-derived). All 356 filenames unique.
+
+**New data finding — duplicate pairs (owner ruling 2026-08-07):** the strip collided because legacy archive rows 281 ("Permanent Inner Peace", ledger raw 318) and 284 ("What is Real Success", ledger raw 321) are the **same 2012 Discussion Series talks** as the promoted Veritas product rows 312/313 (products 50485/50488, `matched_by_primary_source`). Per owner ruling, rows 281/284 were **excluded** (ledger disposition `duplicate` with evidence; exclusions 69 → 71), their work-family memberships dropped (201/334 → 199/332), their filename-proposal rows removed, and 312/313's `(2012)` disambiguator stripped → `2012 - Permanent Inner Peace.mp4` / `2012 - What is Real Success.mp4`.
+
+**New counts:** master **356** (307 lecture / 40 book / 8 discussion / 1 untyped), Everything **376**, codes **278**, exclusions **71**, works 199/332, filename proposal 356 rows. Also fixed stale `year_provenance.csv` rows 278/281/284 (blank_under_investigation → ledger_user_input 2012; 281/284 annotated excluded).
+
+**Verified:** 5 `--check` modes green, 106/106 tests, 91% coverage, JS OK. Living docs updated: README, NEXT_AGENT_HANDOFF §3/§6, MIGRATION_REVIEW_LEDGER.md, FILENAME_PROPOSAL_V4.md, YEAR_COLUMN_PROVENANCE.md, deep-audit sync note.
+
+*Addendum 2 end — 2026-08-07.*

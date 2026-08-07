@@ -36,6 +36,8 @@ raw_row_number,disposition,review_reason,raw_tempid,raw_title,raw_we_have,raw_or
 312,blank_separator,Empty visual separator row.,,,,,
 313,series_context,Collection/category heading.,,Discussion Series with Dr. David Hawkins & Wife Susan https://veritaspub.com/discussion-series-2/,,,
 314,blank_separator,Empty visual separator row.,,,,,
+318,duplicate,Duplicate of promoted master 312 — same 2012 Discussion Series talk; Veritas product 50485 'Permanent Inner Peace (2012)' matched_by_primary_source to 312. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'Permanent Inner Peace.mp4') from the master; provenance kept here.,,Permanent Inner Peace.mp4,✅,veritas,
+321,duplicate,Duplicate of promoted master 313 — same 2012 Discussion Series talk; Veritas product 50488 'What is Real Success? (2012)' matched_by_primary_source to 313. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'What is Real Success.mp4') from the master; provenance kept here.,,What is Real Success.mp4,✅,veritas,
 323,blank_separator,Empty visual separator row.,,,,,
 324,series_context,Collection/category heading.,,Books https://veritaspub.com/books-2/,,,
 336,series_context,Collection/category heading.,,Books of Slides,✅,veritas,

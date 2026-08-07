@@ -370,6 +370,26 @@
     "raw_product_link": ""
   },
   {
+    "raw_row_number": "318",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 312 — same 2012 Discussion Series talk; Veritas product 50485 'Permanent Inner Peace (2012)' matched_by_primary_source to 312. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'Permanent Inner Peace.mp4') from the master; provenance kept here.",
+    "raw_tempid": "",
+    "raw_title": "Permanent Inner Peace.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "321",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 313 — same 2012 Discussion Series talk; Veritas product 50488 'What is Real Success? (2012)' matched_by_primary_source to 313. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'What is Real Success.mp4') from the master; provenance kept here.",
+    "raw_tempid": "",
+    "raw_title": "What is Real Success.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
     "raw_row_number": "323",
     "disposition": "blank_separator",
     "review_reason": "Empty visual separator row.",

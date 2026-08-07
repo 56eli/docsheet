@@ -4170,21 +4170,6 @@
     "proposed_filename_display": "2012 - Improving Your Relationships.mp4"
   },
   {
-    "uuid": "281",
-    "work_id": "w-permanent-inner-peace",
-    "item_type": "discussion",
-    "series": "Discussion Series",
-    "year": "2012",
-    "month": "",
-    "format": "streaming",
-    "title": "Permanent Inner Peace",
-    "clean_title": "Permanent Inner Peace",
-    "part_index": "",
-    "part_total": "",
-    "proposed_filename": "2012 - Permanent Inner Peace.mp4",
-    "proposed_filename_display": "2012 - Permanent Inner Peace.mp4"
-  },
-  {
     "uuid": "282",
     "work_id": "w-the-importance-of-family",
     "item_type": "discussion",
@@ -4213,21 +4198,6 @@
     "part_total": "",
     "proposed_filename": "2012 - What is Meant by Spiritual.mp4",
     "proposed_filename_display": "2012 - What is Meant by Spiritual.mp4"
-  },
-  {
-    "uuid": "284",
-    "work_id": "w-what-is-real-success",
-    "item_type": "discussion",
-    "series": "Discussion Series",
-    "year": "2012",
-    "month": "",
-    "format": "streaming",
-    "title": "What is Real Success",
-    "clean_title": "What is Real Success",
-    "part_index": "",
-    "part_total": "",
-    "proposed_filename": "2012 - What is Real Success.mp4",
-    "proposed_filename_display": "2012 - What is Real Success.mp4"
   },
   {
     "uuid": "285",
@@ -4628,11 +4598,11 @@
     "month": "",
     "format": "streaming",
     "title": "Permanent Inner Peace (2012)",
-    "clean_title": "Permanent Inner Peace (2012)",
+    "clean_title": "Permanent Inner Peace",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2012 - Permanent Inner Peace (2012).mp4",
-    "proposed_filename_display": "2012 - Permanent Inner Peace (2012).mp4"
+    "proposed_filename": "2012 - Permanent Inner Peace.mp4",
+    "proposed_filename_display": "2012 - Permanent Inner Peace.mp4"
   },
   {
     "uuid": "313",
@@ -4643,11 +4613,11 @@
     "month": "",
     "format": "streaming",
     "title": "What is Real Success? (2012)",
-    "clean_title": "What is Real Success? (2012)",
+    "clean_title": "What is Real Success?",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2012 - What is Real Success (2012).mp4",
-    "proposed_filename_display": "2012 - What is Real Success (2012).mp4"
+    "proposed_filename": "2012 - What is Real Success.mp4",
+    "proposed_filename_display": "2012 - What is Real Success.mp4"
   },
   {
     "uuid": "314",

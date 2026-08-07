@@ -1,7 +1,7 @@
 # Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, audiobook label removed, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
 
 **Date:** 2026-08-07 (v4 updated, per owner feedback on v3 + blank-year ruling 2026-08-04)  
-**Master baseline:** 358 records (307 lecture /40 book /10 discussion /1 untyped) after academic promotion and Path duplicate dedup (current)  
+**Master baseline:** 356 records (307 lecture /40 book /8 discussion /1 untyped) after academic promotion, Path duplicate dedup, and the 2026-08-07 duplicate-pair exclusion of legacy rows 281/284 (same 2012 Discussion Series talks as promoted masters 312/313)  
 **Pattern v4:**  
 - Single part: `YYYY-MM - Name.ext` — no bracket; if year blank, `Name.ext` (no prefix)
 - Multi-part (same Year-Month, same cleaned title, same format, same product): `YYYY-MM - Name [1/3].mp4` safe on-disk `[1-3]`, display `[1/3]`; if Year-Month blank, `Name [1-3].mp4` safe / `Name [1/3].mp4` display
@@ -71,11 +71,11 @@ Volume VI How to Raise Your Level of Consciousness.mp4
 Volume VII A Conversation with Knowingness.mp4
 ```
 
-Counts: 358 total, with bracket ~180 (multi-part), without ~178 (single). All 358 unique, 0 collisions (verified).
+Counts: 356 total, with bracket ~180 (multi-part), without ~176 (single). All 356 unique, 0 collisions (verified).
 
 ## Files
 
-- `data/filename_proposal_YYYYMM.csv` — 358 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
+- `data/filename_proposal_YYYYMM.csv` — 356 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
 - `docs/filename-proposal.json` — same for frontend
 - This doc v4 (updated 2026-08-07)
 
@@ -111,12 +111,15 @@ reviewed `data/filename_proposal_YYYYMM.csv` (clean_title + filenames):
 - `Unity Church of Sedona 2005 March (CD)` → `2005-03 - Unity Church of Sedona (CD).mp3` (date words moved to the prefix; month title-derived, same evidence as the June/January rows)
 - `Unity Church of Sedona 2006 June (CD)` → `2006-06 - Unity Church of Sedona (CD).mp3`
 
-Kept (disambiguators or non-date labels): `Permanent Inner Peace (2012)` /
-`What is Real Success? (2012)` **pending the 281↔312 / 284↔313 duplicate-pair
-ruling** (the legacy archive rows 281/284 and the promoted Veritas product
-rows 312/313 are the same 2012 Discussion Series talks; stripping the
-parenthetical would collide with the legacy rows' filenames), plus
-`Book of Slides (The Complete Collection)`, `Truth vs. Falsehood: ... (CD & DVD set)`.
+Resolved 2026-08-07 (owner ruling): the legacy archive rows 281/284 were
+duplicates of the promoted Veritas product rows 312/313 (same 2012 Discussion
+Series talks; products 50485/50488) and were excluded from the master, so the
+`(2012)` disambiguator is no longer needed — both rows now strip to
+`2012 - Permanent Inner Peace.mp4` and `2012 - What is Real Success.mp4`
+(358-row proposal reduced to **356 rows**, all unique).
+
+Kept as non-date labels (not redundant): `Book of Slides (The Complete
+Collection)`, `Truth vs. Falsehood: ... (CD & DVD set)`.
 
 Rule for future edits: a clean_title parenthetical `(YYYY)` or `(Month YYYY)`
 that duplicates the row's own year/month must be stripped unless stripping
@@ -127,4 +130,4 @@ would collide with another row's filename (then it is the disambiguator).
 - Exact recording years for Volume Series pre-2000 need verification via Veritas archives or VHS tape dates. Owner ruling 2026-08-04: “do not name any if cannot name all” → master year blank, no catalogue codes, filename no year prefix (`Volume I Power vs Force [1-2].mp4`). Better than incorrect 2007 listing date or partial 1995-1999 estimates.
 - Future: if all Volume years become known, restore YYYY-MM prefix and catalogue codes.
 
-*Updated 2026-08-07 from 358 master rows — Volume Series year blank pre-2000, not estimated.*
+*Updated 2026-08-07 from 356 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313).*

@@ -274,13 +274,13 @@ uuid,title,item_type,series,year,month,raw_row_number,candidate_key,source_url_v
 275,Truth Shines Forth,lecture,On The Road Talk Series,2004,,309,,https://veritaspub.com/product/truth-shines-forth-3-cd-set/,ledger_user_input,ledger raw_row 309 proposed_year=2004 proposed_month=
 276,Virtues: The Spiritual Foundation,lecture,On The Road Talk Series,2004,,310,,https://veritaspub.com/product/virtues-the-spiritual-foundation/,ledger_user_input,ledger raw_row 310 proposed_year=2004 proposed_month=
 277,You Are the Light of Consciousness,lecture,On The Road Talk Series,2003,,311,,https://veritaspub.com/product/you-are-light-consciousness/,ledger_user_input,ledger raw_row 311 proposed_year=2003 proposed_month=
-278,How to Live Your Life Like a Prayer,discussion,Discussion Series,,,315,,,blank_under_investigation,ledger raw 315 proposed_year blank remains blank series=Discussion Series
+278,How to Live Your Life Like a Prayer,discussion,Discussion Series,2012,,315,,,ledger_user_input,ledger raw 315 proposed_year 2012 (Discussion Series product titles '(2012)')
 279,How to See the Reality of Life,discussion,Discussion Series,2012,,316,,https://veritaspub.com/product/how-to-see-the-reality-of-life/,ledger_user_input,ledger raw_row 316 proposed_year=2012 proposed_month=
 280,Improving Your Relationships,discussion,Discussion Series,2012,,317,,https://veritaspub.com/product/improving-your-relationships-2012/,ledger_user_input,ledger raw_row 317 proposed_year=2012 proposed_month=
-281,Permanent Inner Peace,discussion,Discussion Series,,,318,,,blank_under_investigation,ledger raw 318 proposed_year blank remains blank series=Discussion Series
+281,Permanent Inner Peace,discussion,Discussion Series,2012,,318,,,ledger_user_input,ledger raw 318 proposed_year 2012 (Discussion Series product titles '(2012)'); excluded 2026-08-07 as duplicate of promoted master 312 (product 50485)
 282,The Importance of Family,discussion,Discussion Series,2012,,319,,https://veritaspub.com/product/the-importance-of-family-2014/,ledger_user_input,ledger raw_row 319 proposed_year=2012 proposed_month=
 283,What is Meant by Spiritual,discussion,Discussion Series,2012,,320,,https://veritaspub.com/product/what-is-meant-by-spiritual-2012/,ledger_user_input,ledger raw_row 320 proposed_year=2012 proposed_month=
-284,What is Real Success,discussion,Discussion Series,,,321,,,blank_under_investigation,ledger raw 321 proposed_year blank remains blank series=Discussion Series
+284,What is Real Success,discussion,Discussion Series,2012,,321,,,ledger_user_input,ledger raw 321 proposed_year 2012 (Discussion Series product titles '(2012)'); excluded 2026-08-07 as duplicate of promoted master 313 (product 50488)
 285,What You are Changes the World,discussion,Discussion Series,2012,,322,,https://veritaspub.com/product/what-you-are-changes-the-world-2/,ledger_user_input,ledger raw_row 322 proposed_year=2012 proposed_month=
 286,Power vs Force,book,Books,1995,,325,,https://veritaspub.com/product/power-vs-force-the-hidden-determinants-of-human-behavior-book/,ledger_user_input,ledger raw_row 325 proposed_year=1995 proposed_month=
 287,The Eye of the I,book,Books,2001,,326,,https://veritaspub.com/product/the-eye-of-the-i-book/,ledger_user_input,ledger raw_row 326 proposed_year=2001 proposed_month=
