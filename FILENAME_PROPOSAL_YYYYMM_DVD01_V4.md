@@ -61,7 +61,14 @@ Sample after blank-year fix (2026-08-07 verified from `data/filename_proposal_YY
 Volume I Power vs Force [1-2].mp4 (no year prefix, year blank pre-2000)
 Volume I Power vs Force [2-2].mp4
 Volume II Consciousness and Addiction [1-2].mp4
-Volume V Undoing... [1-3].mp4 etc
+Volume II Consciousness and Addiction [2-2].mp4
+Volume III Advanced States of Consciousness [1-2].mp4
+Volume III Advanced States of Consciousness [2-2].mp4
+Volume V Undoing the Barriers to Spiritual Progress [1-3].mp4
+Volume V Undoing the Barriers to Spiritual Progress [2-3].mp4
+Volume V Undoing the Barriers to Spiritual Progress [3-3].mp4
+Volume VI How to Raise Your Level of Consciousness.mp4
+Volume VII A Conversation with Knowingness.mp4
 ```
 
 Counts: 358 total, with bracket ~180 (multi-part), without ~178 (single). All 358 unique, 0 collisions (verified).
@@ -76,6 +83,20 @@ Counts: 358 total, with bracket ~180 (multi-part), without ~178 (single). All 35
 
 - Safe on-disk uses hyphen `-` in `[1-3]` because slash `/` illegal. Display uses slash `[1/3]` for human.
 - Illegal chars `<>:"/\\|?*` stripped, max 120 chars.
+
+## 2026-08-07 Volume Series correction
+
+A post-PR audit found a v4 data-entry/grouping drift in `data/filename_proposal_YYYYMM.csv`: Volume III rows 206-207 had been accidentally folded into the Volume II part set (`[3/4]`, `[4/4]`), and Volume VI/VII rows 213-214 had been accidentally folded into the Volume V part set (`[4/5]`, `[5/5]`). The CSV, master draft, and Pages JSON were corrected so each Volume title now has its own part group:
+
+- Volume I Power vs Force: `[1/2]`, `[2/2]`
+- Volume II Consciousness and Addiction: `[1/2]`, `[2/2]`
+- Volume III Advanced States of Consciousness: `[1/2]`, `[2/2]`
+- Volume IV How to Tell the Truth about Anything: `[1/2]`, `[2/2]`
+- Volume V Undoing the Barriers to Spiritual Progress: `[1/3]`, `[2/3]`, `[3/3]`
+- Volume VI How to Raise Your Level of Consciousness: single file, no bracket
+- Volume VII A Conversation with Knowingness: single file, no bracket
+
+A regression test now pins these Volume filename groups so adjacent volumes cannot be silently merged again.
 
 ## Remaining open for Volume Series
 
