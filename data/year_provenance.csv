@@ -252,13 +252,13 @@ uuid,title,item_type,series,year,month,raw_row_number,candidate_key,source_url_v
 253,Satsang Series (May 2007),lecture,Satsang Series,2007,05,282,,https://veritaspub.com/product/satsang-series-may-2007-cd/,ledger_user_input,ledger raw_row 282 proposed_year=2007 proposed_month=
 254,Satsang Series (Jul 2007),lecture,Satsang Series,2007,07,283,,https://veritaspub.com/product/satsang-series-4-july-11-2007/,ledger_user_input,ledger raw_row 283 proposed_year=2007 proposed_month=
 255,Satsang Series (Sep 2007),lecture,Satsang Series,2007,09,284,,https://veritaspub.com/product/satsang-series-sept-2007-cd/,ledger_user_input,ledger raw_row 284 proposed_year=2007 proposed_month=
-256,Satsang Series (May 2008),lecture,Satsang Series,2008,06,285,,https://veritaspub.com/product/satsang-series-may-2008-cd/,ledger_user_input,ledger raw_row 285 proposed_year=2008 proposed_month=
+256,Satsang Series (May 2008),lecture,Satsang Series,2008,05,285,,https://veritaspub.com/product/satsang-series-may-2008-cd/,ledger_user_input,ledger raw_row 285 proposed_year=2008 proposed_month=05
 257,Satsang Series (Sep 2008),lecture,Satsang Series,2008,09,286,,https://veritaspub.com/product/satsang-series-3-september-10-2008/,ledger_user_input,ledger raw_row 286 proposed_year=2008 proposed_month=
 258,Satsang Series (Jan 2009),lecture,Satsang Series,2009,01,287,,https://veritaspub.com/product/satsang-series-1-january-7-2009/,ledger_user_input,ledger raw_row 287 proposed_year=2009 proposed_month=
-259,Satsang Series (May 2009),lecture,Satsang Series,2009,06,288,,https://veritaspub.com/product/satsang-series-2-may-13-2009/,ledger_user_input,ledger raw_row 288 proposed_year=2009 proposed_month=
+259,Satsang Series (May 2009),lecture,Satsang Series,2009,05,288,,https://veritaspub.com/product/satsang-series-2-may-13-2009/,ledger_user_input,ledger raw_row 288 proposed_year=2009 proposed_month=05
 260,Satsang Series (Sep 2009),lecture,Satsang Series,2009,09,289,,https://veritaspub.com/product/satsang-series-september-2009-cd/,ledger_user_input,ledger raw_row 289 proposed_year=2009 proposed_month=
 261,Satsang Series (Nov 2009),lecture,Satsang Series,2009,11,290,,https://veritaspub.com/product/satsang-november-2009-cd/,ledger_user_input,ledger raw_row 290 proposed_year=2009 proposed_month=
-262,Satsang Series (Feb 2010),lecture,Satsang Series,2010,03,291,,https://veritaspub.com/product/satsang-series-february-2010/,ledger_user_input,ledger raw_row 291 proposed_year=2010 proposed_month=
+262,Satsang Series (Feb 2010),lecture,Satsang Series,2010,02,291,,https://veritaspub.com/product/satsang-series-february-2010/,ledger_user_input,ledger raw_row 291 proposed_year=2010 proposed_month=02
 263,Satsang Series (Nov 2010),lecture,Satsang Series,2010,11,292,,https://veritaspub.com/product/2010-11-satsang-series-nov-2010/,ledger_user_input,ledger raw_row 292 proposed_year=2010 proposed_month=
 265,Golden Word Book Signing – Audio,lecture,Media Miscellaneous,2007,03,297,,https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/,veritas_published_date_backfill,"ledger blank, backfilled from Veritas product 1552 published_date 2007-03-16"
 266,All is Divinity,lecture,On The Road Talk Series,2004,,300,,https://veritaspub.com/product/all-is-divinity/,ledger_user_input,ledger raw_row 300 proposed_year=2004 proposed_month=

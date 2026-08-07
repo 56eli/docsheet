@@ -243,7 +243,7 @@ uuid,work_id,item_type,series,year,month,format,title,clean_title,part_index,par
 242,w-a-10-office-series-depression,lecture,Office Series,198X,,DVD,A-10 Office Series-Depression,A-10 Office Series-Depression,,,198X - A-10 Office Series-Depression.mp4,198X - A-10 Office Series-Depression.mp4
 243,w-a-11-office-series-illness-and-self-heal,lecture,Office Series,198X,,DVD,A-11 Office Series-Illness and Self-Healing,A-11 Office Series-Illness and Self-Healing,,,198X - A-11 Office Series-Illness and Self-Healing.mp4,198X - A-11 Office Series-Illness and Self-Healing.mp4
 244,w-a-12-office-series-alcoholism,lecture,Office Series,198X,,DVD,A-12 Office Series-Alcoholism,A-12 Office Series-Alcoholism,,,198X - A-12 Office Series-Alcoholism.mp4,198X - A-12 Office Series-Alcoholism.mp4
-245,w-b-01-office-series-drug-addiction-and-al,lecture,Office Series,198X,,DVD,B-01 Office Series-Drug Addiction and Alcoholism...,B-01 Office Series-Drug Addiction and Alcoholism...,,,198X - B-01 Office Series-Drug Addiction and Alcoholism....mp4,198X - B-01 Office Series-Drug Addiction and Alcoholism....mp4
+245,w-b-01-office-series-drug-addiction-and-al,lecture,Office Series,198X,,DVD,B-01 Office Series-Drug Addiction and Alcoholism...,B-01 Office Series-Drug Addiction and Alcoholism...,,,198X - B-01 Office Series-Drug Addiction and Alcoholism.mp4,198X - B-01 Office Series-Drug Addiction and Alcoholism.mp4
 247,w-b-03-office-series-a-map-of-consciousnes,lecture,Office Series,198X,,DVD,B-03 Office Series-A Map Of Consciousness,B-03 Office Series-A Map Of Consciousness,,,198X - B-03 Office Series-A Map Of Consciousness.mp4,198X - B-03 Office Series-A Map Of Consciousness.mp4
 248,w-b-04-office-series-cancer,lecture,Office Series,198X,,DVD,B-04 Office Series-Cancer,B-04 Office Series-Cancer,,,198X - B-04 Office Series-Cancer.mp4,198X - B-04 Office Series-Cancer.mp4
 250,w-b-06-office-series-death-and-dying,lecture,Office Series,198X,,DVD,B-06 Office Series-Death and Dying,B-06 Office Series-Death and Dying,,,198X - B-06 Office Series-Death and Dying.mp4,198X - B-06 Office Series-Death and Dying.mp4
@@ -252,13 +252,13 @@ uuid,work_id,item_type,series,year,month,format,title,clean_title,part_index,par
 253,w-satsang-series-may-2007,lecture,Satsang Series,2007,05,CD,Satsang Series (May 2007),Satsang Series,,,2007-05 - Satsang Series.mp3,2007-05 - Satsang Series.mp3
 254,w-satsang-series-jul-2007,lecture,Satsang Series,2007,07,CD,Satsang Series (Jul 2007),Satsang Series,,,2007-07 - Satsang Series.mp3,2007-07 - Satsang Series.mp3
 255,w-satsang-series-sep-2007,lecture,Satsang Series,2007,09,CD,Satsang Series (Sep 2007),Satsang Series,,,2007-09 - Satsang Series.mp3,2007-09 - Satsang Series.mp3
-256,w-satsang-series-may-2008,lecture,Satsang Series,2008,06,CD,Satsang Series (May 2008),Satsang Series,,,2008-06 - Satsang Series.mp3,2008-06 - Satsang Series.mp3
+256,w-satsang-series-may-2008,lecture,Satsang Series,2008,05,CD,Satsang Series (May 2008),Satsang Series,,,2008-05 - Satsang Series.mp3,2008-05 - Satsang Series.mp3
 257,w-satsang-series-sep-2008,lecture,Satsang Series,2008,09,CD,Satsang Series (Sep 2008),Satsang Series,,,2008-09 - Satsang Series.mp3,2008-09 - Satsang Series.mp3
 258,w-satsang-series-jan-2009,lecture,Satsang Series,2009,01,CD,Satsang Series (Jan 2009),Satsang Series,,,2009-01 - Satsang Series.mp3,2009-01 - Satsang Series.mp3
-259,w-satsang-series-may-2009,lecture,Satsang Series,2009,06,CD,Satsang Series (May 2009),Satsang Series,,,2009-06 - Satsang Series.mp3,2009-06 - Satsang Series.mp3
+259,w-satsang-series-may-2009,lecture,Satsang Series,2009,05,CD,Satsang Series (May 2009),Satsang Series,,,2009-05 - Satsang Series.mp3,2009-05 - Satsang Series.mp3
 260,w-satsang-series-sep-2009,lecture,Satsang Series,2009,09,CD,Satsang Series (Sep 2009),Satsang Series,,,2009-09 - Satsang Series.mp3,2009-09 - Satsang Series.mp3
 261,w-satsang-series-nov-2009,lecture,Satsang Series,2009,11,CD,Satsang Series (Nov 2009),Satsang Series,,,2009-11 - Satsang Series.mp3,2009-11 - Satsang Series.mp3
-262,w-satsang-series-feb-2010,lecture,Satsang Series,2010,03,CD,Satsang Series (Feb 2010),Satsang Series,,,2010-03 - Satsang Series.mp3,2010-03 - Satsang Series.mp3
+262,w-satsang-series-feb-2010,lecture,Satsang Series,2010,02,CD,Satsang Series (Feb 2010),Satsang Series,,,2010-02 - Satsang Series.mp3,2010-02 - Satsang Series.mp3
 263,w-satsang-series-nov-2010,lecture,Satsang Series,2010,11,CD,Satsang Series (Nov 2010),Satsang Series,,,2010-11 - Satsang Series.mp3,2010-11 - Satsang Series.mp3
 265,w-golden-word-book-signing-audio,lecture,Media Miscellaneous,2007,01,audiobook,Golden Word Book Signing – Audio,Golden Word Book Signing,,,2007-01 - Golden Word Book Signing.m4b,2007-01 - Golden Word Book Signing.m4b
 266,w-all-is-divinity,lecture,On The Road Talk Series,2004,,DVD,All is Divinity,All is Divinity,,,2004 - All is Divinity.mp4,2004 - All is Divinity.mp4

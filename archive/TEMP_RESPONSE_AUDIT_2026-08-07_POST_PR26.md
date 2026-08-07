@@ -36,6 +36,7 @@ The Hawkins archive catalogue and interactive spreadsheet pipeline is in excepti
 - **Series Taxonomy (`data/series_category_mapping.csv`):** **186 mappings** (176 approved / 0 proposed / 10 rejected). The review queue (`data/series_taxonomy_review_queue.csv`) holds **6 records**, all of which are already ruled on and retained as transparent conflict evidence.
 - **Proposed Filenames (`data/filename_proposal_YYYYMM.csv`):** **366 unique filenames** applied cleanly, canonicalizing *Volume Series*, stripping redundant date parentheticals, and guarding multi-part groups against cross-title folds.
   - **Audiobook Disambiguation & Series Correction:** Corrected UUID 331's series from *Volume Series* to *Books* and disambiguated UUID 320 (*Power vs. Force (Audiobook)*) and UUID 331 (*Power vs. Force Audio Book*) in `data/filename_proposal_YYYYMM.csv`, removing the erroneous `[1-2]` and `[2-2]` multi-part brackets.
+  - **Human-Readable Filename Audit & Anomaly Resolution:** Completed a row-by-row manual inspection of all 366 proposed filenames, correcting 3 Satsang Series month-prefix mismatches (`UUIDs 256, 259, 262`) where store publication dates contradicted the title month, and eliminating trailing ellipsis dot collisions (`UUID 245`, `....mp4` -> `.mp4`).
 
 ---
 
