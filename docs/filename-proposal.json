@@ -4703,11 +4703,11 @@
     "month": "",
     "format": "audiobook",
     "title": "Power vs. Force (Audiobook)",
-    "clean_title": "Power vs. Force",
+    "clean_title": "Power vs. Force (Audiobook)",
     "part_index": "1",
-    "part_total": "2",
-    "proposed_filename": "1995 - Power vs. Force [1-2].m4b",
-    "proposed_filename_display": "1995 - Power vs. Force [1/2].m4b"
+    "part_total": "1",
+    "proposed_filename": "1995 - Power vs. Force (Audiobook).m4b",
+    "proposed_filename_display": "1995 - Power vs. Force (Audiobook).m4b"
   },
   {
     "uuid": "321",
@@ -4863,16 +4863,16 @@
     "uuid": "331",
     "work_id": "w-power-vs-force",
     "item_type": "book",
-    "series": "Volume Series",
+    "series": "Books",
     "year": "1995",
     "month": "",
     "format": "audiobook",
     "title": "Power vs. Force Audio Book",
-    "clean_title": "Power vs. Force",
-    "part_index": "2",
-    "part_total": "2",
-    "proposed_filename": "1995 - Power vs. Force [2-2].m4b",
-    "proposed_filename_display": "1995 - Power vs. Force [2/2].m4b"
+    "clean_title": "Power vs. Force Audio Book",
+    "part_index": "1",
+    "part_total": "1",
+    "proposed_filename": "1995 - Power vs. Force Audio Book.m4b",
+    "proposed_filename_display": "1995 - Power vs. Force Audio Book.m4b"
   },
   {
     "uuid": "332",

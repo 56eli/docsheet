@@ -10629,7 +10629,7 @@
     "notes": "Promoted edition audio of work w-power-vs-force from candidate edition-audible-pvf: Audible audiobook edition of the Power vs Force work; Audible inventory row matched_by_title.",
     "raw_row_number": "",
     "candidate_key": "candidate:edition-audible-pvf",
-    "proposed_filename": "1995 - Power vs. Force [1-2].m4b",
+    "proposed_filename": "1995 - Power vs. Force (Audiobook).m4b",
     "year_source": "Edition promotion: 1995"
   },
   {
@@ -10951,7 +10951,7 @@
     "legacy_title": "Power vs. Force Audio Book",
     "title_source": "",
     "item_type": "book",
-    "series": "Volume Series",
+    "series": "Books",
     "year": "1995",
     "month": "",
     "format": "audiobook",
@@ -10970,7 +10970,7 @@
     "notes": "Promoted edition audio of work w-power-vs-force from candidate edition-veritas-pvf-audiobook: Veritas product 1542; audiobook edition of the Power vs Force work; currently related_material on lecture 202 - REQUIRES RULING on family placement.",
     "raw_row_number": "",
     "candidate_key": "candidate:edition-veritas-pvf-audiobook",
-    "proposed_filename": "1995 - Power vs. Force [2-2].m4b",
+    "proposed_filename": "1995 - Power vs. Force Audio Book.m4b",
     "year_source": "Edition promotion: 1995"
   },
   {
