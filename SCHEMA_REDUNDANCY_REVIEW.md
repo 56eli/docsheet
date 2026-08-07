@@ -5,8 +5,51 @@ or basically useless columns to remove — ask for permission for those first."
 **Method:** fill-rate + distinct-value analysis on all 365 masters, consumer
 grep across scripts/sheet/tests, duplication checks.
 
-**Status:** awaiting owner permission on the one real candidate (question at
-the end). No data changed.
+**Status:** awaiting owner permission on the candidates (questions at the
+end). No data changed.
+
+---
+
+## Second pass (owner pick 2026-08-07): all 20 published sheets
+
+Every `docs/*.json` sheet was scanned for all-empty / constant columns and
+cross-file consumers were grepped (`docs/app.js`, pipeline scripts, tests).
+
+**Reviewed and kept (not proposed):**
+
+- `migration-review.json` / `master-exclusions.json` — their empty
+  `raw_unnamed_8/9/10`, `raw_other_links`, `raw_product_link`, `raw_uuid`
+  columns are verbatim provenance mirrors of the raw spreadsheet's own empty
+  cells, already parked in the app's low-priority field list.
+- `manual-candidates.json` `proposed_owned` (all blank) — designed vocabulary
+  slot; current owner policy is "ownership intentionally unknown", a future
+  candidate may use it.
+- Constant vocabulary columns (`review_status: approved`, `source_name:
+  veritas`, `record_type: master`, …) — invariant-*bearing*, not redundant;
+  they must be able to express other values.
+- `new-work-review.json` / `official-discovery.json` (0 rows) — intake lanes,
+  adjudicated in hygiene batch 1 (README note still owed).
+- `manual-leads.json` (1 row), `international-products.json` notes column,
+  `data.json` vs `master.json` (original-raw view vs curated master — different
+  sheets by design).
+
+**New candidates found:**
+
+1. **`docs/meta.json` — stop generating (genuinely useless).** Its only
+   consumer is `process_data.py`'s own staleness self-check. The app never
+   fetches it (per-view `fetch(view.file)` only; the footer uses the HTTP
+   `Last-Modified` header, and the `app.js` line-3 "loads meta.json" comment
+   is stale). Its `generated_at_utc` also churns every regeneration.
+   Removal = delete file + strip emit/self-check from `process_data.py` +
+   adapt its 2 failure-path tests + delete the stale app.js comment.
+2. **`data.json` (Original Spreadsheet view) — trim 5 all-empty raw columns.**
+   `uuid`, `Unnamed: 8/9/10`, `other links` are empty on all 374 rows (the raw
+   CSV on disk keeps them untouched). Same class as the dropped master
+   columns, but at *view* level. Optional — it trades verbatim-view purity
+   for 13 → 8 columns.
+
+(+ the deferred master candidate `title_source` from pass 1.)
+
 
 ---
 
