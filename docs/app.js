@@ -748,6 +748,10 @@
       renderComplete: () => fitTableToContainer(),
       /* sorting */
       headerSort: true,
+      initialSort: [
+        {column: "series", dir: "asc"},
+        {column: "uuid", dir: "asc"},
+      ],
       /* All records stay in one scrollable view — no pagination. */
       pagination: false,
       /* columns */
