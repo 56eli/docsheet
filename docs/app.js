@@ -862,6 +862,10 @@
     configureColumnChooser();
     configureExpertToggle(activeView);
     table.on("dataFiltered", updateSearchStatus);
+    // The synchronous call below can run before Tabulator has processed its
+    // initial data ("active" row pipeline is still empty), leaving the footer
+    // stuck on "Showing: 0"; tableBuilt corrects the count once rows exist.
+    table.on("tableBuilt", updateSearchStatus);
     table.on("rowClick", (event, row) => {
       if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
       openRowDetails(row.getData());
