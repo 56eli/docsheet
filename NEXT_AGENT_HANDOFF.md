@@ -550,6 +550,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - Counts after both today's batches: master 366, relationships **343 = 336 derived + 7 related**, overrides **133**, HH inventory **29**; all checks + 107 tests green.
 - **v4 filename rule amendment (same branch, owner pick):** `/` now maps to `-` in proposed filenames (was stripped) → masters 199–201 are `2011-01 - Question-Answer Session.mp4` etc. Rule line updated in `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`; the volume-filename test's sanitize helper mirrors the amended rule.
 
+### Pending owner ruling: master 309 vs 221 (product 53277)
+
+- Evidence memo `RULING_PREP_PROGRESSIVE_LEVELS_309_221.md` (committed, no data changed): Veritas product 53277's own description names **Oxford, England** — the same talk as raw-derived master **221** (*Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)*). Master **309** was minted 2026-08-03 from candidate `manual-veritas-53277` (i.e., from that listing), carries wrong year 2023 (= storefront listing date, not recording year). Recommendation = **merge links into 221, exclude 309 as duplicate** (precedent 246/281/284); impact: master 366 → 365, relationships stay 343, promoted candidates 40 → 39, families 342 → 341 members. Awaiting owner pick (Option A merge / Option B keep both); if A, implement with full regeneration + tests + doc sync.
+
 ## 7. House-keeping for every turn
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
