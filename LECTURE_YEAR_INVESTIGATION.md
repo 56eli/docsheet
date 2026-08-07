@@ -146,3 +146,33 @@ real data defect and hard to unwind. I therefore recommend **one of**:
 **I have not changed the curated master** for these 35 records. The pipeline
 remains green (101 tests, 92% coverage, all 5 checks). The 2014 values are
 unchanged pending the owner's ruling on how to source the true recording dates.
+
+---
+
+## 2026-08-07 research follow-up (session audit)
+
+**Verification of Spiritual Realities (230–232, product 1830) and God is Hidden
+Within the Beauty of the Music (268, product 1810)** remain the only
+under-investigation blank years. Research performed 2026-08-07:
+
+| Source | Finding |
+|---|---|
+| Veritas product page (both) | No recording year stated; only "Original Product Details" (Verification: Three Compact Disc Set, 269 min, ISBN 9781938033957) |
+| Veritas streaming page | No year |
+| Veritas "On the Road – Talk Series" category page | 21 talks listed, no years |
+| Amazon | God is Hidden CD: publication date **2015-09-22** = re-release (ISBN 9781938033605); Verification CD not listed |
+| Audible | **No listing exists** for either talk (search returned no results) |
+| Vimeo trailer (654479044) | Page removed |
+| Web search | No ©-year source |
+
+**Conclusion:** no reachable official source states the recording years. Per
+the project's no-guessing rule the years stay **blank, under investigation**;
+the correct fix will need physical-media © lines or archive documentation.
+(The 2014 listing dates were already cleared; the 2015 Amazon date is a
+re-release, not a recording year.)
+
+**Also fixed 2026-08-07:** Progressive Levels of Consciousness – A Special
+Talk Presented in Oxford (221) format was blank; the official Veritas page
+sells it streaming-only ($1.00, Stream button, no physical SKU) → ledger
+`proposed_format = streaming` (verified 2026-08-07). Master now has **0 blank
+formats**.

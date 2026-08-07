@@ -413,6 +413,11 @@ def infer_format_from_official_source(
         return "CD"
     if "Discussion Series" in cats:
         return "streaming"
+    # Annual Highlights compilations are sold as streaming videos on the
+    # official storefront ("Product Details: Streaming", verified 2026-08-07
+    # for the 2003/2005 Highlights product pages).
+    if "Lecture Highlights" in cats:
+        return "streaming"
     # Book item_type without URL (Hay House books without Veritas storefront)
     if item.get("item_type") == "book" and not url:
         return "book"
@@ -513,6 +518,7 @@ def apply_filename_proposal(items: list[dict[str, str]]) -> int:
     """
     if not FILENAME_PROPOSAL.exists():
         return 0
+    validate_filename_proposal_groups()
     require_columns(FILENAME_PROPOSAL, {"uuid", "proposed_filename"})
     mapping = {row["uuid"].strip(): row["proposed_filename"].strip() for row in read_csv(FILENAME_PROPOSAL)}
     applied = 0
@@ -532,6 +538,70 @@ def apply_filename_proposal(items: list[dict[str, str]]) -> int:
     if applied:
         print(f"[filename] Applied {applied} proposed filenames from {FILENAME_PROPOSAL}")
     return applied
+
+
+def _normalized_tokens(text: str) -> set[str]:
+    """Lowercased alphanumeric tokens of a title for group-coherence checks."""
+    return set(re.findall(r"[a-z0-9]+", text.lower()))
+
+
+def validate_filename_proposal_groups() -> None:
+    """Fail the build if reviewed filename-proposal part groups are incoherent.
+
+    Regression guard for the 2026-08-07 Volume-Series fold: UUIDs 213/214
+    (Volume VI/VII) were reviewed into Volume V's part set as ``[4/5]``/``[5/5]``
+    and UUIDs 206/207 (Volume III) into Volume II's ``[3/4]``/``[4/4]``. The
+    proposal file is a reviewed input that the builder applies verbatim, so
+    coherence must be validated here — a row can never belong to a part group
+    of a different title:
+
+    * every ``clean_title`` token must appear in the row's own ``title``
+      (a Volume VI row may not carry a Volume V clean title),
+    * ``part_index`` must not exceed ``part_total``,
+    * no duplicate ``part_index`` inside a part group,
+    * all non-empty ``part_total`` values inside a part group must agree.
+    """
+    if not FILENAME_PROPOSAL.exists():
+        return
+    require_columns(FILENAME_PROPOSAL, {"uuid", "title", "clean_title", "part_index", "part_total"})
+    groups: dict[tuple[str, str, str, str], list[dict[str, str]]] = {}
+    for row in read_csv(FILENAME_PROPOSAL):
+        key = (row["clean_title"].strip(), row["year"].strip(),
+               row["month"].strip(), row["format"].strip())
+        groups.setdefault(key, []).append(row)
+    for (clean_title, _year, _month, _format), group in groups.items():
+        clean_tokens = _normalized_tokens(clean_title)
+        if not clean_tokens:
+            continue
+        for row in group:
+            uuid = row["uuid"].strip()
+            missing = sorted(clean_tokens - _normalized_tokens(row["title"]))
+            if missing:
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: UUID {uuid} clean_title {clean_title!r} "
+                    f"is not derived from its own title {row['title']!r} "
+                    f"(missing tokens: {', '.join(missing)}) — a row cannot join "
+                    "the part group of a different title"
+                )
+            part_index = row["part_index"].strip()
+            part_total = row["part_total"].strip()
+            if part_index and part_total and int(part_index) > int(part_total):
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: UUID {uuid} part_index {part_index} "
+                    f"exceeds part_total {part_total}"
+                )
+        indexes = [row["part_index"].strip() for row in group if row["part_index"].strip()]
+        totals = {row["part_total"].strip() for row in group if row["part_total"].strip()}
+        if len(indexes) != len(set(indexes)):
+            raise ValueError(
+                f"{FILENAME_PROPOSAL}: part group {clean_title!r} contains "
+                "duplicate part_index values"
+            )
+        if len(totals) > 1:
+            raise ValueError(
+                f"{FILENAME_PROPOSAL}: part group {clean_title!r} mixes part_total "
+                f"values {sorted(totals)}"
+            )
 
 
 def apply_source_overrides(items: list[dict[str, str]]) -> int:

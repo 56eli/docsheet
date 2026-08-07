@@ -1141,5 +1141,59 @@
     "approval_date": "2026-08-07",
     "review_reason": "Amazon direct product link for book: Success Is for You Amazon Hay House Apr 19 2016",
     "evidence_source": "https://www.amazon.com/Success-You-Heart-Centered-Principles-Fulfillment/dp/1401951511"
+  },
+  {
+    "raw_row_number": "candidate:manual-audible-discovery",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/The-Discovery-Audiobook/B00NO7TMRI",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Audible listing of 'The Discovery' (promoted master 369 per owner ruling 2026-08-07); live Audible page verified 2026-08-07.",
+    "evidence_source": "https://www.audible.com/ (live official Audible product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-audible-discovery",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/the-discovery",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Nightingale-Conant program page of 'The Discovery' (promoted master 369 per owner ruling 2026-08-07); live NC page verified 2026-08-07.",
+    "evidence_source": "https://www.nightingale.com/ (live official NC product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-audible-ultimate-library",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/The-Ultimate-David-Hawkins-Library-Audiobook/B01ENWKFOQ",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Audible listing of 'The Ultimate David Hawkins Library' (promoted master 370 per owner ruling 2026-08-07); live Audible page verified 2026-08-07.",
+    "evidence_source": "https://www.audible.com/ (live official Audible product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-audible-ultimate-library",
+    "target_field": "source_url_nightingale_conant",
+    "override_value": "https://www.nightingale.com/products/the-ultimate-david-hawkins-library",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Nightingale-Conant program page of 'The Ultimate David Hawkins Library' (promoted master 370 per owner ruling 2026-08-07); live NC page verified 2026-08-07.",
+    "evidence_source": "https://www.nightingale.com/ (live official NC product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-audible-om",
+    "target_field": "source_url_audible",
+    "override_value": "https://www.audible.com/pd/OM-Audiobook/B09YFZQ121",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Audible listing of 'OM' (promoted master 371 per owner ruling 2026-08-07); live Audible page verified 2026-08-07.",
+    "evidence_source": "https://www.audible.com/ (live official Audible product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-hayhouse-how-to-surrender",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/how-to-surrender-to-god-audiodownload",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Hay House audio program page of 'How to Surrender to God' (promoted master 372 per owner ruling 2026-08-07); live Hay House page verified 2026-08-07.",
+    "evidence_source": "https://www.hayhouse.com/ (live official Hay House product page)"
   }
 ]

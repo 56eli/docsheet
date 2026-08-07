@@ -320,6 +320,16 @@
     "raw_product_link": ""
   },
   {
+    "raw_row_number": "296",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of master 329 (\"In the World But Not of It\" – Audio, the Nightingale-Conant 6-CD audio edition; Veritas product 1661 matched_by_primary_source to 329). Legacy archive row (raw \"26. In the World But Not of It –\", owned, source veritas) is the same audio edition. Owner ruling 2026-08-07: exclude from the master; provenance kept here.",
+    "raw_tempid": "",
+    "raw_title": "26. \"In the World But Not of It\" – ",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
     "raw_row_number": "298",
     "disposition": "blank_separator",
     "review_reason": "Empty visual separator row.",
@@ -367,6 +377,26 @@
     "raw_title": "",
     "raw_we_have": "",
     "raw_original_source": "",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "318",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 312 — same 2012 Discussion Series talk; Veritas product 50485 'Permanent Inner Peace (2012)' matched_by_primary_source to 312. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'Permanent Inner Peace.mp4') from the master; provenance kept here.",
+    "raw_tempid": "",
+    "raw_title": "Permanent Inner Peace.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "321",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 313 — same 2012 Discussion Series talk; Veritas product 50488 'What is Real Success? (2012)' matched_by_primary_source to 313. Owner ruling 2026-08-07: exclude legacy archive row (raw file 'What is Real Success.mp4') from the master; provenance kept here.",
+    "raw_tempid": "",
+    "raw_title": "What is Real Success.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
     "raw_product_link": ""
   },
   {

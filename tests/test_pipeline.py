@@ -553,6 +553,24 @@ class FormatInferenceTests(unittest.TestCase):
         item = {"format": "audiobook", "title": "", "item_type": "book", "source_url_veritas": product["official_product_url"]}
         self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
 
+    def test_lecture_highlights_category_infers_streaming(self) -> None:
+        """Annual Highlights products are streaming videos (official storefront
+        'Product Details: Streaming', verified 2026-08-07 for 2003/2005 pages)."""
+        product = {
+            "veritas_product_id": "1824",
+            "official_product_url": "https://veritaspub.com/product/highlights-of-the-lectures-of-2003/",
+            "official_title": "Highlights of the 2003 Lectures",
+            "official_categories": "Highlights; Lecture Highlights",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {"format": "", "title": "", "item_type": "highlight",
+                "source_url_veritas": product["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "streaming")
+        # legacy pid guess (no URL map) also resolves via the numeric prefix slug
+        item = {"format": "", "title": "", "item_type": "highlight",
+                "source_url_veritas": "https://veritaspub.com/product/1824-highlights-of-the-lectures-of-2003/"}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
+
     def test_compact_id_recognition(self) -> None:
         self.assertTrue(brm.is_compact_id("317"))
         self.assertFalse(brm.is_compact_id("019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091"))
@@ -875,9 +893,10 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             bcp.PRIMARY_RELATIONSHIP_NOTE,
         )
 
-    def test_committed_state_derives_325_primary_plus_8_related(self) -> None:
+    def test_committed_state_derives_335_primary_plus_8_related(self) -> None:
         # The committed master + inventory + CSV must assemble to exactly the
-        # published relationship count: 328 derived primary + 8 related_material (was 325+8=333, now 328+8=336 after Devotion/Mind Heart/Spiritual Will URL fixes).
+        # published relationship count: 335 derived primary + 8 related_material
+        # (was 328+8=336 before the 2026-08-07 Highlights promotion added 7 masters).
 
         tempdir = make_sandbox()
         try:
@@ -887,10 +906,10 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             master = bcp.read_csv(bcp.MASTER)
             veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
             derived = bcp.derive_primary_relationships(master, veritas)
-            self.assertEqual(len(derived), 328)
-            self.assertEqual(len(derived) + 8, 336)  # 336 total relationships (328 derived + 8 related)
+            self.assertEqual(len(derived), 335)
+            self.assertEqual(len(derived) + 8, 343)  # 343 total relationships (335 derived + 8 related)
             meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
-            self.assertEqual(meta["reviewed_product_relationships"], 336)
+            self.assertEqual(meta["reviewed_product_relationships"], 343)
         finally:
             tempdir.cleanup()
 
@@ -1733,6 +1752,57 @@ class DefensiveDepthTests(unittest.TestCase):
         item = {"uuid": "100", "title": "Title", "item_type": "lecture", "work_id": ""}
         with self.assertRaisesRegex(ValueError, "has a missing work_id"):
             bcp.validate_work_family_coverage([item])
+
+    def test_filename_proposal_group_coherence_fails(self) -> None:
+        """A filename-proposal row may not join another title's part group.
+
+        Regression guard for the 2026-08-07 Volume-Series fold (UUIDs 213/214
+        were reviewed into Volume V's part set as ``[4/5]``/``[5/5]`` and
+        UUIDs 206/207 into Volume II's ``[3/4]``/``[4/4]``): the builder
+        applies the reviewed CSV verbatim, so incoherent part groups must
+        fail the build instead of silently minting nonsense filenames.
+        """
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "filename_proposal_YYYYMM.csv"
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            for row in rows:
+                if row["uuid"] == "213":
+                    # Reproduce the historical fold: the Volume VI row joins
+                    # the Volume V part set as part 4 of 5.
+                    row["clean_title"] = "Volume V Undoing the Barriers to Spiritual Progress"
+                    row["part_index"] = "4"
+                    row["part_total"] = "5"
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "not derived from its own title"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_filename_proposal_part_index_out_of_range_fails(self) -> None:
+        """part_index may never exceed part_total in the reviewed proposal."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "filename_proposal_YYYYMM.csv"
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            for row in rows:
+                if row["uuid"] == "1":
+                    row["part_index"] = "4"  # part_total is 3
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "exceeds part_total"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
 
 
 class RetiredVocabularyTests(unittest.TestCase):

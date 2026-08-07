@@ -1,7 +1,7 @@
 # Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, audiobook label removed, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
 
 **Date:** 2026-08-07 (v4 updated, per owner feedback on v3 + blank-year ruling 2026-08-04)  
-**Master baseline:** 358 records (307 lecture /40 book /10 discussion /1 untyped) after academic promotion and Path duplicate dedup (current)  
+**Master baseline:** 363 records (307 lecture /40 book /8 discussion /7 highlight /1 untyped) after academic promotion, Path duplicate dedup, the 2026-08-07 duplicate-pair exclusion of legacy rows 281/284 (same 2012 Discussion Series talks as promoted masters 312/313), and the 2026-08-07 promotion of the 7 annual Highlights (362–368)  
 **Pattern v4:**  
 - Single part: `YYYY-MM - Name.ext` — no bracket; if year blank, `Name.ext` (no prefix)
 - Multi-part (same Year-Month, same cleaned title, same format, same product): `YYYY-MM - Name [1/3].mp4` safe on-disk `[1-3]`, display `[1/3]`; if Year-Month blank, `Name [1-3].mp4` safe / `Name [1/3].mp4` display
@@ -26,7 +26,7 @@
 1982 - A-01 Office Series-Stress.mp4
 ...
 1995 - Power vs Force.pdf
-1995 - Power vs. Force.m4b  (was [1-2].m4b and [2-2].m4b for two audiobook editions? Now with grouping by format, two audiobook editions same title same year same format would still be [1-2],[2-2] to disambiguate. But if they are Audible vs Veritas, same format m4b, same cleaned title, same year-month, they would be [1-2],[2-2] — need disambiguation. Currently after fix, Power vs Force audiobooks: 320 and 331 both cleaned to Power vs. Force, same year 1995, same format audiobook, same year_month, so they are grouped as 2 → [1-2],[2-2]. Is that desired? They are different files, not part of series, but same extension, so need disambiguation. Could keep [1-2] or add source tag. For now kept as [1-2],[2-2] for same-format duplicates.
+1995 - Power vs. Force [1-2].m4b / [2-2].m4b (two audiobook editions 320 & 331 — same title/year/format, disambiguated)
 1998 - Dialogues on Consciousness and Spirituality.pdf
 2001 - The Eye of the I.pdf
 2001 - The Eye of the I.m4b
@@ -39,10 +39,10 @@
 2012 - Letting Go.pdf
 2012 - Letting Go.m4b (was Letting Go (Audiobook).m4b)
 ...
-1995 - Volume I Power vs Force [1-2].mp4 => display [1/2] (was 2007-03 - Volume I-Power vs Force (Part 1) etc)
-1995 - Volume I Power vs Force [2-2].mp4 => display [2/2]
-1996 - Volume II Consciousness and Addiction [1-2].mp4 => [1/2]
-1996 - Volume II Consciousness and Addiction [2-2].mp4 => [2/2]
+Volume I Power vs Force [1-2].mp4 => display [1/2] (year blank pre-2000 per owner ruling — no year prefix; was 2007-03 - Volume I-Power vs Force (Part 1) etc)
+Volume I Power vs Force [2-2].mp4 => display [2/2]
+Volume II Consciousness and Addiction [1-2].mp4 => [1/2]
+Volume II Consciousness and Addiction [2-2].mp4 => [2/2]
 ...
 ```
 
@@ -71,11 +71,21 @@ Volume VI How to Raise Your Level of Consciousness.mp4
 Volume VII A Conversation with Knowingness.mp4
 ```
 
-Counts: 358 total, with bracket ~180 (multi-part), without ~178 (single). All 358 unique, 0 collisions (verified).
+Counts: 363 total, with bracket ~180 (multi-part), without ~183 (single). All 363 unique, 0 collisions (verified).
+
+## 2026-08-07 Highlights promotion (owner ruling)
+
+The seven annual Highlights products were promoted to curated master records
+(UUIDs 362–368, series Lecture Highlights, year from the title). Per owner
+directive the proposed filename equals the title itself (no year prefix, no
+bracket): `Highlights of the 2002 Lectures 1-6.mp4`,
+`Highlights of the 2002 Lectures 7-12.mp4`, `Highlights of the 2003 Lectures.mp4`,
+`Highlights of the 2004 Lectures.mp4`, `Highlights of the 2005 Lectures.mp4`,
+`Highlights of the 2006 Lectures.mp4`, `Highlights of the 2007 Lectures.mp4`.
 
 ## Files
 
-- `data/filename_proposal_YYYYMM.csv` — 358 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
+- `data/filename_proposal_YYYYMM.csv` — 363 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
 - `docs/filename-proposal.json` — same for frontend
 - This doc v4 (updated 2026-08-07)
 
@@ -98,9 +108,36 @@ A post-PR audit found a v4 data-entry/grouping drift in `data/filename_proposal_
 
 A regression test now pins these Volume filename groups so adjacent volumes cannot be silently merged again.
 
+## 2026-08-07 Date-parenthetical strip (second session pass)
+
+Owner feedback: proposed filenames must not repeat the month-year inside
+brackets when the `YYYY-MM - ` prefix already carries it. Applied to the
+reviewed `data/filename_proposal_YYYYMM.csv` (clean_title + filenames):
+
+- `Become That Which You Are (June 2004)` → `2004-06 - Become That Which You Are [1-3].mp4` (3 parts)
+- `Love is a Way of Being (January 2004)` → `2004-01 - Love is a Way of Being [1-3].mp4` (3 parts)
+- `Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)` → `2003 - ...Oxford.mp4`
+- `Live Life As A Prayer (Audio)` → `2006 - Live Life As A Prayer.m4b` (audiobook label stripped; `.m4b` indicates — extends the v4 audiobook-label rule to `(Audio)`)
+- `Unity Church of Sedona 2005 March (CD)` → `2005-03 - Unity Church of Sedona (CD).mp3` (date words moved to the prefix; month title-derived, same evidence as the June/January rows)
+- `Unity Church of Sedona 2006 June (CD)` → `2006-06 - Unity Church of Sedona (CD).mp3`
+
+Resolved 2026-08-07 (owner ruling): the legacy archive rows 281/284 were
+duplicates of the promoted Veritas product rows 312/313 (same 2012 Discussion
+Series talks; products 50485/50488) and were excluded from the master, so the
+`(2012)` disambiguator is no longer needed — both rows now strip to
+`2012 - Permanent Inner Peace.mp4` and `2012 - What is Real Success.mp4`
+(358-row proposal reduced to **356 rows**, all unique; the 7 Highlights rows then brought it to **363 rows**, all unique).
+
+Kept as non-date labels (not redundant): `Book of Slides (The Complete
+Collection)`, `Truth vs. Falsehood: ... (CD & DVD set)`.
+
+Rule for future edits: a clean_title parenthetical `(YYYY)` or `(Month YYYY)`
+that duplicates the row's own year/month must be stripped unless stripping
+would collide with another row's filename (then it is the disambiguator).
+
 ## Remaining open for Volume Series
 
 - Exact recording years for Volume Series pre-2000 need verification via Veritas archives or VHS tape dates. Owner ruling 2026-08-04: “do not name any if cannot name all” → master year blank, no catalogue codes, filename no year prefix (`Volume I Power vs Force [1-2].mp4`). Better than incorrect 2007 listing date or partial 1995-1999 estimates.
 - Future: if all Volume years become known, restore YYYY-MM prefix and catalogue codes.
 
-*Updated 2026-08-07 from 358 master rows — Volume Series year blank pre-2000, not estimated.*
+*Updated 2026-08-07 from 363 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313); 7 annual Highlights promoted with filename = title.*

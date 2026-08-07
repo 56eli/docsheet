@@ -17,6 +17,15 @@
 
 ## Result
 
-The four items in `data/official_discovery_queue.csv` are the currently unreviewed Nightingale-Conant candidates: *The Ultimate David Hawkins Library*, *The Discovery*, *Healing*, and *Naked*. The remaining three programmes match existing research-master titles by name and should be treated as official source/format relationships until content comparison proves they are distinct works.
+The four queue candidates were **all ruled 2026-08-07** (owner directive: deduplicate the discovery/audible candidates and implement the unique ones as curated masters; live NC + Audible pages verified):
+
+| Programme | Ruling |
+|---|---|
+| The Ultimate David Hawkins Library | **Unique → master 370** (lecture, Nightingale-Conant, ©2016, audiobook) |
+| The Discovery | **Unique → master 369** (lecture, Nightingale-Conant, ©2007, audiobook) |
+| Healing | **Duplicate of master 328** (same NC program "Healing: Achieving Total Wellness…", NC URL already on 328; ©2010) |
+| Naked | **Excluded** — multi-contributor best-of (Williamson, Katie, Dyer, Hawkins); not a Hawkins master record |
+
+The queue was emptied (0 rows); the Audible inventory statuses now read `matched_by_title` / `excluded_related_material`; masters 369/370 carry their NC + Audible URLs via approved source overrides. The remaining three programmes (Highest Level of Enlightenment, In The World But Not Of It, Truth Vs Falsehood) keep their existing master/edition relationships (327–330).
 
 No ownership, ID, catalogue code, or item-type claim is added merely from this commercial catalogue listing.

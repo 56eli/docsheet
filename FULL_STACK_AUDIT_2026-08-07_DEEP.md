@@ -1,6 +1,8 @@
 # Full-Stack Deep Audit — 2026-08-07
 
 > **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 104/104 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
+>
+> **2026-08-07 session sync:** current-state counts below were refreshed post-PR #24/#25 — catalogue codes **280** (was 271), source overrides **127** (was 109), rendered relationships **336** (328 derived + 8 related), streaming refs **59 masters** (was 56), year blanks **18** (was 31), format blanks **2** (was 8), tests **106** (91% coverage). Later same day: legacy duplicate rows 281/284 excluded (same 2012 Discussion Series talks as promoted masters 312/313, owner ruling) → master **356**, Everything **376**, exclusions **71**, codes **278**. Final state 2026-08-07: the 7 annual Highlights products promoted to curated master (362–368, series **Lecture Highlights**, year from title, filename = title) → master **363**, Everything **376** (candidate_veritas 8 → 1), relationships **343** (335 derived + 8), taxonomy **186** (176 approved), works **206/339**, tests **107**. Day-end: discovery/Audible lanes deduplicated and the 3 unique programs promoted (**369 The Discovery ©2007, 370 The Ultimate David Hawkins Library ©2016 — series Nightingale-Conant; 371 OM ©2017, Media Miscellaneous**) → master **366** (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped), Everything **371** (discovery 0, audible 0; healing matched to 328, Naked excluded multi-contributor), overrides **132**, promoted candidates **39**, works **209/342**, codes **280** (the two lecture-typed NC programs carry codes). Day-end: **record 246 ruled a duplicate of master 329 and excluded** (no untyped records remain); HayHouse lane ruled (Live Life As A Prayer = 343, Letting Go Journal/Deck excluded as merchandise, **How to Surrender to God promoted as master 372** — Hay House series, ©2019, audiobook) → master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other), Everything **367** (only the Map poster veritas candidate remains), overrides **133**, codes **281**, exclusions **72**, candidates **40**.
 
 
 **Branch:** `arena/019fdb8b-docsheet` (HEAD `0b54614`, same as `main` at PR #23 merge)
@@ -13,14 +15,14 @@
 **Verdict: HEALTHY & VERIFIED, with known, documented gaps that are intentional review boundaries, not drift.**
 
 - Pipeline deterministic, 5 `--check` modes green (pandas missing in base image is expected sandbox trap, venv run proves green)
-- Tests: **103/103 pass**, coverage **92% total, every module ≥89%** (gate 80%)
+- Tests: **106/106 pass**, coverage **91% total, every module ≥89%** (gate 80%)
 - Current curated master: **358 records** = 307 lecture / 40 book / 10 discussion / 1 untyped (246 deferred)
 - Everything view: **378 rows** = 358 master + 8 candidate_veritas + 4 discovery + 4 hayhouse + 4 audible + 0 pending
-- Catalogue codes: **271** distinct (lecture/discussion only, books never coded)
-- Exclusions: **69**, source overrides: **109 approved** (72 veritas, 26 hayhouse, 7 audible, 4 NC)
+- Catalogue codes: **280** distinct (lecture/discussion only, books never coded)
+- Exclusions: **69**, source overrides: **127 approved** (72 veritas, 26 hayhouse, 7 audible, 4 NC, 18 Amazon)
 - Veritas inventory: **191 products** (172 matched_by_primary_source, 7 compilation_or_new_edition, 6 matched_by_title, 4 excluded_related_material, 1 matched_by_normalized_title, 1 unreviewed)
 - HayHouse: **24** (20 matched_by_title, 4 unreviewed), Audible: **26** (17 matched_by_title, 6 unreviewed, 3 possible_related_match)
-- Product relationships: **333 rendered** = **325 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
+- Product relationships: **336 rendered** = **328 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
 - Series compilations: **7** reviewed
 - Work families: **201 works / 334 members**, approved, coverage **358/358**
 - Edition layer: **24 candidates / 24 promotions / 24 approved** (minted as master UUIDs 320-343 etc), D3 applied (audible URLs moved off book rows)
@@ -39,14 +41,14 @@ migration_review_ledger.csv         (374 rows: 305 item / 69 provenance)
 data/
   research_master_draft.{csv,json}  (358 curated master)
   research_master_exclusions.csv    (69)
-  research_master_source_overrides.csv (109 approved)
+  research_master_source_overrides.csv (127 approved)
   manual_master_candidates.csv      (29, all promoted)
   manual_candidate_promotions.csv   (29 approvals -> UUIDs 353-361 etc)
   edition_candidates/promotions     (24/24)
   work_families.csv                 (334 rows, 201 works)
   veritas_official_products.csv     (191)
   veritas_mapping_decisions.csv     (18 approved, overlay)
-  veritas_streaming_urls.csv        (36 approved -> 56 masters ref1)
+  veritas_streaming_urls.csv        (36 approved -> 59 masters ref1)
   filename_proposal_YYYYMM.csv      (358)
   series_category_mapping.csv       (179)
   series_taxonomy_review_queue.csv  (6)
@@ -78,26 +80,26 @@ Shared: `_common.py` (read_csv, render_csv, json_text, ISO_DATE)
 | Raw CSV rows | 374 | header=1 skips Google Sheets title |
 | Ledger dispositions | 305 item, 69 excluded, 31 blank_separator, 21 series_context, 10 research_note, 5 source_context, 1 duplicate, 1 needs_review | ledger hand-maintained |
 | Curated master | 358 | 307 lecture / 40 book / 10 discussion / 1 untyped (246) |
-| Year blank | 31 | 13 Volume Series (blank per owner, pre-2000 unknown), 4 On The Road (Devotion, Mind Heart etc), 3 Discussion, rest yearly series gaps |
-| Format blank | 8 | 4 On The Road (221,225,226,227), 3 Discussion (278,281,284), 1 untyped 246 — same set as year blank overlap |
+| Year blank | 18 | 13 Volume Series (blank per owner, pre-2000 unknown) + 5 under investigation (Verification of Spiritual Realities 230–232, 246, God is Hidden 268) — was 31 pre-PR24 (11 edition audiobook years + 2 Office outliers fixed) |
+| Format blank | 2 | Progressive Levels of Consciousness – Oxford 2003 (221) + untyped 246 — same set as year-blank overlap (was 8 pre-PR24) |
 | Proposed filename coverage | 358/358 | unique 358 safe, 358 display |
 | Work_id coverage | 358/358 | 201 works, 334 members |
-| Catalogue codes | 271 | distinct, lecture/discussion only, Volume stripped -> no codes |
+| Catalogue codes | 280 | distinct, lecture/discussion only, Volume stripped -> no codes |
 | Master exclusions | 69 | |
-| Source overrides | 109 approved | 72 veritas, 26 hayhouse, 7 audible, 4 NC (327-330) |
+| Source overrides | 127 approved | 72 veritas, 26 hayhouse, 7 audible, 4 NC (327-330), 18 Amazon |
 | Manual candidates | 29 promoted / 0 pending | 6 original Veritas + 9 Satsang + 3 academic + rest |
 | Manual leads | 1 | outside master |
 | Edition candidates/promotions | 24/24 | all promoted, minted UUIDs 320-343 etc, D3 applied |
 | Veritas products | 191 | 172 primary, 7 compilation, 6 title, 4 excluded, 1 normalized, 1 unreviewed (1560 Map poster) |
 | HayHouse | 24 | 20 matched, 4 unreviewed |
 | Audible | 26 | 17 matched, 6 unreviewed, 3 possible |
-| Product relationships CSV | 8 | related_material only, primary 325 derived |
-| Rendered relationships | 333 | 325 derived + 8 related |
+| Product relationships CSV | 8 | related_material only, primary 328 derived |
+| Rendered relationships | 336 | 328 derived + 8 related |
 | Series compilations | 7 | Highlights annual |
 | Series mapping | 179 | 169 approved / 10 rejected / 0 proposed |
 | Taxonomy queue | 6 | conflict guardrails, all ruled |
 | Filename proposal | 358 | unique |
-| Streaming URLs | 36 approved | -> 56 masters have reference_url_1 |
+| Streaming URLs | 36 approved | -> 59 masters have reference_url_1 |
 | Everything view | 378 | 358 master + 8 veritas candidate (7 Highlights + 1 merchandise) + 4 discovery + 4 hayhouse + 4 audible |
 | Original source rows | 374 | |
 
@@ -110,7 +112,7 @@ All counts from `docs/catalogue-meta.json` match docs.
 - Compact ID assignment: stable 1..10000 by raw_row_number, retained from committed draft
 - Ledger → items: title cleaning (mp4, -converted, numeric prefix, Volume II->I fix for raw 224), notes, reference URLs
 - Promotions: manual candidates (UUID explicit), edition promotions (UUID explicit, D3 audible URL move off book row)
-- Applies in order: source overrides (including candidate_keyed for promoted rows 316/318 etc) → streaming (52 masters) → filename proposal (358) → backfill months (Veritas published_date, year-matching guard prevents 2014 leak into 2003-2005) → format inference (104 inferred, exact URL first then pid fallback, book category guard) → title hygiene (13 cleaned, normalized equality guard, legacy_title preserved) → series approvals (316 approved mappings, 3 values changed) → work families (334) → integrity (UUID unique, title non-empty, work_id w- prefix, only 246 may be untyped)
+- Applies in order: source overrides (including candidate_keyed for promoted rows 316/318 etc) → streaming (59 masters) → filename proposal (358) → backfill months (Veritas published_date, year-matching guard prevents 2014 leak into 2003-2005) → format inference (104 inferred, exact URL first then pid fallback, book category guard) → title hygiene (13 cleaned, normalized equality guard, legacy_title preserved) → series approvals (316 approved mappings, 3 values changed) → work families (334) → integrity (UUID unique, title non-empty, work_id w- prefix, only 246 may be untyped)
 - Validates manual candidates (promotion_status must match promotion registry), edition candidates (work_id must exist in families, role in set, matched_master_uuid exists, carrier format, year YYYY, owned bool, review_status proposed/reviewed_candidate, ISO dates, evidence, source_name veritas/audible/hayhouse, inventory exact URL/title match)
 - Writes CSV/JSON + exclusions, `csv_text` uses `render_csv` with LF.
 
@@ -177,7 +179,7 @@ Invariants enforced:
 - Veritas fetcher offline: synthetic live API from committed inventory, write→check, tamper, custom output rejection, API failure preserves inventory
 - get_page retry: pagination until 400, HTML retries, non-list retries, 400 first page error, URLError retries, taxonomy compact fields
 - Reconcile drift: markdown/code cell hygiene, compare_drafts extras/missing/changed, report sections + stale check
-- Derived primary relationships: builds from master URLs, note provenance, committed 325+8=333, CSV holds only non-primary, deleting related_material fails check
+- Derived primary relationships: builds from master URLs, note provenance, committed 328+8=336, CSV holds only non-primary, deleting related_material fails check
 - Work families: committed clean, approved assigns, proposed not applied, unknown member, missing columns, needs date/evidence/canonical, duplicate member, tamper drift
 - Edition candidates: committed clean, promotion mints, requires status flip, unknown work/master/product, duplicate key, hayhouse valid + mismatch, shape validation (format, promotion status, review_status, ISO, year, owned), promotion edges (rejected no row, missing date, work_id mismatch, deprecated item_type, unknown approval status), tamper when row vanishes
 - Source overrides: proposed not applied, approved applies, candidate-keyed applies (316), invalid status fails
@@ -196,7 +198,7 @@ Total: 104 tests, 92% coverage
 - All 5 --check modes pass (venv)
 - Veritas inventory derived fields consistent: count == len(uuids), titles match master
 - Work family coverage 358/358
-- Product relationships derived 325 + 8 = 333
+- Product relationships derived 328 + 8 = 336
 - Filename proposal 358 unique, no collisions
 
 ### Year Blank 31
@@ -214,9 +216,9 @@ Total: 104 tests, 92% coverage
 ### Untyped Record 246
 - `"In the World But Not of It" – Audio`, raw_row 296, work_id `w-in-the-world-but-not-of-it-audio`, deferred per deduplication rebuild (duplicate audio territory with book). Allowed by allowlist. Provenance: raw title `26. "In the World But Not of It" – `, owned true. Should be ruled as lecture? Product 1661 mapping-row only, not override. Needs owner ruling.
 
-### Streaming Blind Spot — Option A Minimal Implemented 36 products → 56 masters
+### Streaming Blind Spot — Option A Minimal Implemented 36 products → 59 masters
 - `data/veritas_streaming_urls.csv` 36 approved rows (all approved), each veritas_product_id → streaming_url (e.g., https://veritaspub.com/success-october-2009/)
-- Applied as reference_url_1 when empty (52 masters in latest build log, 56 in this audit count? Slight difference due to maybe duplicate product IDs covering multiple parts)
+- Applied as reference_url_1 when empty: **59 masters** carry a streaming reference (one product can map to several masters/parts; count verified 2026-08-07)
 - Methodology proven, remaining ~115 Veritas lecture products need same fetch (owner note: 5 per turn). Open P1.
 
 ### Veritas Unreviewed 1
@@ -285,8 +287,8 @@ Decisions: 13 files (AUDIBLE_MAPPING, BOOK_RELATIONSHIP, COMPILATION_CANDIDATE, 
 Archive: 46 files (superseded audits, backfill reports, dedup scripts) indexed in archive/README.md
 
 Living docs accurate? Checks:
-- README current state: master 358, 271 codes, 69 exclusions, 109 overrides, 29 promoted, 333 relationships, 7 compilations, proposed_filename note — matches catalogue-meta (except README still says 307 lecture/40 book/10 discussion/1 untyped which matches, but filename proposal doc still mentions 1995-1999 estimated years while master uses blank — minor drift)
-- NEXT_AGENT_HANDOFF §3 table: 358/378/69/109/201 works/334 members etc — matches
+- README current state: master 358, 280 codes, 69 exclusions, 127 overrides, 29 promoted, 336 relationships, 7 compilations, proposed_filename note — matches catalogue-meta (307 lecture/40 book/10 discussion/1 untyped matches; filename-proposal doc synced to blank Volume years 2026-08-07)
+- NEXT_AGENT_HANDOFF §3 table: 358/378/69/127/201 works/334 members etc — matches
 - MIGRATION_REVIEW_LEDGER.md classification summary: item 305 etc — matches ledger
 - REVIEW_OVERVIEW Master Candidates derived state guard exists (test)
 
@@ -313,10 +315,10 @@ RECONCILIATION_REPORT.md intentionally shows 53 draft-only records (edition rows
 - GitHub Pages source still Deploy from branch main /docs, .nojekyll present — verify live site https://56eli.github.io/docsheet serves master 378 after merge.
 
 **P1 — Data decisions needing ruling (real gaps, not bugs):**
-- **Year blank 31**: 13 Volume Series intentionally blank (pre-2000 unknown), but doc FILENAME_PROPOSAL_V4 still says 1995-1999 estimated — update doc to blank rationale. Other 18 On The Road/Discussion/Yearly series blanks need © year research (Audible ©, Veritas product page, physical media). Owner suggested: "Find the right years and fix it project-wide" for Volume, then stripped to blank per "do not name any if cannot name all". For other blanks: Devotion 2003? Mind Heart Service 2005? Oxford 2003? Discussion 2012? Need per-product evidence.
-- **Format blank 8**: same as year blank subset. Should infer from series: On The Road → DVD (Office Visit precedent), Discussion → streaming, untyped 246 → audiobook? Could add second inference pass using series_category_mapping or manual overrides.
+- **Year blank 18** (was 31): 13 Volume Series intentionally blank (pre-2000 unknown; FILENAME_PROPOSAL_V4 synced to the blank rationale 2026-08-07) + 5 under investigation (Verification of Spiritual Realities 230–232, record 246, God is Hidden 268). The remaining blanks need © year research (Audible ©, Veritas product page, physical media). For other blanks: Devotion 2003? Mind Heart Service 2005? Oxford 2003? Discussion 2012? Need per-product evidence.
+- **Format blank 2** (was 8): Oxford 2003 lecture (221) + untyped 246. Should infer from series: On The Road → DVD (Office Visit precedent), Discussion → streaming, untyped 246 → audiobook? Could add second inference pass using series_category_mapping or manual overrides.
 - **Record 246 untyped**: deferred pending physical-edition confirmation. Should be typed lecture or excluded? Product 1661 mapping-row only, not override. Needs owner decision whether to promote as distinct audio edition (NW?).
-- **Streaming blind spot**: 36 product IDs mapped → 56 masters have streaming URL via reference_url_1. Methodology proven, remaining ~115 Veritas lecture products need same fetch (5 per turn per earlier handoff). Could continue in batches.
+- **Streaming blind spot**: 36 product IDs mapped → 59 masters have streaming URL via reference_url_1. Methodology proven, remaining ~115 Veritas lecture products need same fetch (5 per turn per earlier handoff). Could continue in batches.
 - **Official discovery queue 4 NC**: The Ultimate Library, Discovery, Healing, Naked — compilations/programs that need content/edition review. Healing is possible_related_match to Healing and Recovery but distinct program. Owner ruling needed whether they become new master rows, related_material, or stay discovery.
 - **HayHouse 4 + Audible 6+3 unreviewed**: remaining inventory products not yet ruled as unique_item/compilation/etc. Need mapping decisions.
 - **Series taxonomy queue 6**: informational conflicts (IDs 202, 121, 50521) — all approved/rejected but queue still shows because fan-out conflict persists. Either clear queue_reason after ruling or accept as transparent audit trail. Currently docs say 0 proposed but 6 queued — could be clarified.

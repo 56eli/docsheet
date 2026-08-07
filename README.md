@@ -96,7 +96,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (358) |
+| `master` | A curated master catalogue record (366) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -118,11 +118,13 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **358** records (307 `lecture`, 40 `book`,
-10 `discussion`, 1 untyped), **280** catalogue codes, **69** retained exclusions,
-**127** approved source overrides (including the four Nightingale-Conant audio
-editions and two Amazon Office Series links), **29** promoted
-and **0** unpromoted official candidates, **336** item-to-product relationships,
+The current curated master has **366** records (310 `lecture`, 40 `book`,
+8 `discussion`, 7 `highlight`, 1 `other` — no untyped records remain since the
+2026-08-07 ruling that record 246 was the audio edition already held as master
+329), **281** catalogue codes, **72** retained exclusions,
+**133** approved source overrides (including the four Nightingale-Conant audio
+editions, two Amazon Office Series links, and the Audible/NC/Hay House program URLs),
+**40** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as Amazon search link.
 

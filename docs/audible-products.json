@@ -2,20 +2,20 @@
   {
     "official_title": "The Ultimate David Hawkins Library",
     "audible_url": "https://www.audible.com/pd/The-Ultimate-David-Hawkins-Library-Audiobook/B01ENWKFOQ",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Official Audible link supplied by Nightingale-Conant"
+    "mapping_status": "matched_by_title",
+    "review_notes": "Promoted to curated master 370 (owner ruling 2026-08-07); Audible edition of the NC program."
   },
   {
     "official_title": "The Discovery",
     "audible_url": "https://www.audible.com/pd/The-Discovery-Audiobook/B00NO7TMRI",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Official Audible link supplied by Nightingale-Conant"
+    "mapping_status": "matched_by_title",
+    "review_notes": "Promoted to curated master 369 (owner ruling 2026-08-07); Audible edition of the NC program."
   },
   {
     "official_title": "Healing",
     "audible_url": "https://www.audible.com/pd/Healing-Audiobook/B00NPBHS2Y",
-    "mapping_status": "possible_related_match",
-    "review_notes": "Official Audible link supplied by Nightingale-Conant"
+    "mapping_status": "matched_by_title",
+    "review_notes": "Same NC program as master 328 (Healing: Achieving Total Wellness Through Higher Levels of Consciousness); deduplicated 2026-08-07."
   },
   {
     "official_title": "The Highest Level of Enlightenment",
@@ -38,8 +38,8 @@
   {
     "official_title": "Naked",
     "audible_url": "https://www.audible.com/pd/Naked-Audiobook/B07DD2NH9L",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Multi-contributor programme"
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Multi-contributor best-of compilation (Williamson, Katie, Dyer, Hawkins); not a Hawkins master record. Ruled 2026-08-07."
   },
   {
     "official_title": "Letting Go",
@@ -56,14 +56,14 @@
   {
     "official_title": "OM",
     "audible_url": "https://www.audible.com/pd/OM-Audiobook/B09YFZQ121",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Extracted from Audible author catalogue; relationship requires review where noted."
+    "mapping_status": "matched_by_title",
+    "review_notes": "Promoted to curated master 371 (owner ruling 2026-08-07); Audible edition of the meditation recording."
   },
   {
     "official_title": "Transcending the Mind Series: Identification & Illusion",
     "audible_url": "https://www.audible.com/pd/Transcending-the-Mind-Series-Identification-Illusion-Audiobook/B008Y23T9U",
-    "mapping_status": "possible_related_match",
-    "review_notes": "Extracted from Audible author catalogue; relationship requires review where noted."
+    "mapping_status": "matched_by_title",
+    "review_notes": "Audible edition of edition master 338 (Transcending the Mind Series: Identification & Illusion audiobook); deduplicated 2026-08-07."
   },
   {
     "official_title": "Devotional Nonduality Intensive: Intention",
@@ -74,8 +74,8 @@
   {
     "official_title": "Office Visit Set III: Worry, Fear & Anxiety, Pain & Suffering, and Losing Weight",
     "audible_url": "https://www.audible.com/pd/Office-Visit-Set-III-Worry-Fear-Anxiety-Pain-Suffering-and-Losing-Weight-Audiobook/B00K5ZR9M2",
-    "mapping_status": "possible_related_match",
-    "review_notes": "Extracted from Audible author catalogue; relationship requires review where noted."
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Audible 3-program bundle of existing 1982 Office Visit masters; compilation, not a new work. Ruled 2026-08-07."
   },
   {
     "official_title": "The Way to God: The Nature of Divinity vs. Religious Fallacy",
@@ -92,8 +92,8 @@
   {
     "official_title": "El nivel más alto de iluminación",
     "audible_url": "https://www.audible.com/pd/El-nivel-mas-alto-de-iluminacion-Audiobook/B0D3FH2QLH",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Extracted from Audible author catalogue; relationship requires review where noted."
+    "mapping_status": "matched_by_title",
+    "review_notes": "Spanish audiobook edition of master 301 (The Highest Level of Enlightenment); deduplicated 2026-08-07."
   },
   {
     "official_title": "The Way to God: Advaita - The Way to God Through Mind",
@@ -128,8 +128,8 @@
   {
     "official_title": "Disolver el ego",
     "audible_url": "https://www.audible.com/pd/Disolver-el-ego-Audiobook/8412363027",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": "Extracted from Audible author catalogue; relationship requires review where noted."
+    "mapping_status": "matched_by_title",
+    "review_notes": "Spanish audiobook edition of master 299 (Dissolving the Ego); deduplicated 2026-08-07."
   },
   {
     "official_title": "The Way to God: Realizing the Root of Consciousness",
