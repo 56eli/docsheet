@@ -18,7 +18,7 @@ hand-maintained `migration_review_ledger.csv` into generators that emit 20
 
 | Generator | Input → Output (committed artifacts; never hand-edit) |
 |---|---|
-| `process_data.py` | raw CSV → `docs/data.json`, `docs/meta.json` |
+| `process_data.py` | raw CSV → `docs/data.json` (`docs/meta.json` was stopped 2026-08-07 — never consumed; footer reads HTTP `Last-Modified`) |
 | `build_research_master.py` | raw CSV + ledger + review overlays → `data/research_master_draft.{csv,json}`, `data/research_master_exclusions.csv` |
 | `build_catalogue_pages.py` | master + all review CSVs → the 20 `docs/*.json` sheets + `docs/catalogue-meta.json` |
 | `map_series_taxonomy.py` | Veritas inventory + mapping review input → `data/series_category_mapping.csv`, `data/series_taxonomy_review_queue.csv` |
@@ -36,7 +36,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 110 tests, offline, ~3s
+python -m unittest discover tests     # 112 tests, offline, ~3s
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -71,7 +71,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 208 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 1 row (50521 R3) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **110 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **112 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -152,7 +152,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
   UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
   Satsang monthlies (344–352), 6 promoted manual candidates (353–358) + 3 academic (359-361, Orthomolecular 1973, Qualitative 1998, Dialogues 1998),
-  with Path duplicate 302 removed and Volume Series years stripped to blank pre-2000 per owner (catalogue codes 284→271 after the strip; **280** as of the 2026-08-07 year-provenance fixes);
+  with Path duplicate 302 removed and Volume Series years stripped to blank pre-2000 per owner (catalogue codes 284→271 after the strip; **281** as of the 2026-08-07 year-provenance fixes);
   **201 works / 334 members approved → 209 works / 342 members by
   2026-08-07 (281/284 excluded as duplicates of 312/313; +7 Highlights;
   +3 NC/Audible programs 369–371), work_id coverage 366/366**
@@ -266,6 +266,13 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 - **4 always-empty columns dropped** (`location_physical`, `location_digital`, `location_streaming`, `reference_url_2`) — owner ruling; memo `archive/RULING_PREP_EMPTY_COLUMNS.md`. Master schema 29 → 25.
 - **Redundancy review approved 3/3** (`archive/SCHEMA_REDUNDANCY_REVIEW.md`, passes 1+2): `title_source` dropped (259/265 duplicated `legacy_title`; the 6 unique "Official listing" evidence values now live in `notes` as "Title cleaned against official listing: X"; fetcher date extraction switched to `legacy_title`, provably behavior-neutral); `docs/meta.json` stopped (nothing but `process_data.py`'s self-check had ever read it; footer uses HTTP `Last-Modified`); Original view trims 5 always-empty raw columns (13 → 8; raw CSV untouched). Master schema now **24 columns**.
 - Suite 112 → **110 tests** (2 meta-specific failure-path tests retired); all 6 `--check` + node green; review sheets otherwise adjudicated keep (verbatim raw mirrors, invariant vocabulary, intake lanes).
+
+### Filename proposal v4.1: collision fix + global uniqueness guard (owner directive 6-part, item 6; 2026-08-07)
+
+- **Defect found in the naming-consistency pass:** master **225** (DVD carrier, promoted) and master **311** (streaming, raw row 245) both generate `2003 - Devotion to Truth Talk.mp4` — the *same talk* carried on two media, neither part-indexed, so the per-group rules could not separate them. (Contrast the `226;227;310` family: its raw parts carry `[1-2]`/`[2-2]` part brackets, so no collision there.)
+- **v4.1 carrier-suffix rule:** when the same proposed filename would serve two master rows with different carriers, append ` (DVD)` / ` (streaming)` after the title and before the extension: raw 226's csv row → 225 = `2003 - Devotion to Truth Talk (DVD).mp4`, 311 = `2003 - Devotion to Truth Talk (streaming).mp4`.
+- **New guard in `validate_filename_proposal_groups`:** *global* uniqueness of `proposed_filename` and `proposed_filename_display` (not just within work families) — a ValueError citing the v4.1 rule fails the build on any seeded duplicate. 2 new tests (`test_filename_proposal_filenames_are_globally_unique`, `test_filename_uniqueness_guard_fails_on_seeded_duplicate`), suite 110 → **112**.
+- Filename sheet: **365 rows = 365 unique safe = 365 unique display**; `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` carries the v4.1 amendment. All 6 `--check` + 112 tests + node green.
 
 ## 7. House-keeping for every turn
 

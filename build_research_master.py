@@ -563,7 +563,28 @@ def validate_filename_proposal_groups() -> None:
     """
     if not FILENAME_PROPOSAL.exists():
         return
-    require_columns(FILENAME_PROPOSAL, {"uuid", "title", "clean_title", "part_index", "part_total"})
+    require_columns(
+        FILENAME_PROPOSAL,
+        {"uuid", "title", "clean_title", "part_index", "part_total",
+         "proposed_filename", "proposed_filename_display"},
+    )
+    seen_names: dict[str, str] = {}
+    for row in read_csv(FILENAME_PROPOSAL):
+        for column in ("proposed_filename", "proposed_filename_display"):
+            name = row[column].strip()
+            if not name:
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: UUID {row['uuid'].strip()} has an empty {column}"
+                )
+            other = seen_names.get(f"{column}::{name}")
+            if other and other != row["uuid"].strip():
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: {column} {name!r} is used by both "
+                    f"UUID {other} and UUID {row['uuid'].strip()} — filenames must be "
+                    "globally unique (v4.1: same-work carrier variants that differ "
+                    "only by carrier carry a (streaming)/(DVD) suffix)"
+                )
+            seen_names[f"{column}::{name}"] = row["uuid"].strip()
     groups: dict[tuple[str, str, str, str], list[dict[str, str]]] = {}
     for row in read_csv(FILENAME_PROPOSAL):
         key = (row["clean_title"].strip(), row["year"].strip(),

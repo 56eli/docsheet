@@ -1590,6 +1590,42 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
         self.assertIn("all", row["purpose"].lower())
 
+    def test_filename_proposal_filenames_are_globally_unique(self) -> None:
+        # v4.1 guard (2026-08-07): the pipeline validator re-checks this on
+        # every build; this committed-state test pins the known-clean set and
+        # the carrier-suffix resolution of the 225/311 collision.
+        with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        for column in ("proposed_filename", "proposed_filename_display"):
+            names = [row[column].strip() for row in rows]
+            self.assertEqual(len(names), len(set(names)), f"duplicate {column} values")
+        by_uuid = {row["uuid"]: row for row in rows}
+        self.assertEqual(
+            by_uuid["225"]["proposed_filename"],
+            "2003 - Devotion to Truth Talk (streaming).mp4",
+        )
+        self.assertEqual(
+            by_uuid["311"]["proposed_filename"],
+            "2003 - Devotion to Truth Talk (DVD).mp4",
+        )
+
+    def test_filename_uniqueness_guard_fails_on_seeded_duplicate(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            proposal = sandbox / "data/filename_proposal_YYYYMM.csv"
+            text = proposal.read_text(encoding="utf-8")
+            seeded = text.replace(
+                "2003 - Devotion to Truth Talk (DVD).mp4", "2003 - Devotion to Truth Talk (streaming).mp4"
+            )
+            self.assertNotEqual(seeded, text)
+            proposal.write_text(seeded, encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertIn("globally unique", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
+
     def test_volume_series_filename_groups_match_volume_titles(self) -> None:
         """Volume Series filenames must not merge adjacent volumes into one part set.
 

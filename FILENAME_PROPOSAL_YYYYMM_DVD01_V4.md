@@ -73,6 +73,8 @@ Volume VII A Conversation with Knowingness.mp4
 
 Counts: 363 total, with bracket ~180 (multi-part), without ~183 (single). All 363 unique, 0 collisions (verified).
 
+**v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — is resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get ` (streaming)`/` (DVD)` appended so every file stays uniquely named. Current counts: **365 rows, 365 unique safe, 365 unique display** (2026-08-07).
+
 ## 2026-08-07 Highlights promotion (owner ruling)
 
 The seven annual Highlights products were promoted to curated master records
