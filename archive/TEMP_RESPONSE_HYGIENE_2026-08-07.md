@@ -6,8 +6,11 @@ deleted, doc slimmed to policy + pointer), F withdrawn (premise corrected below)
 **Batch 2 done** — C (coverage gate 80 → 85 in `.coveragerc`, README,
 INSTRUCTIONS), D (handoff §4 history → `archive/HANDOFF_HISTORY.md`,
 572 → 258 lines).
-**Batch 3 (E, derivable-mirrors tool) awaits owner pick**; H/I/J deferred;
-K needs the owner (CI Node 20 → 22).
+**Batch 3 done** — E built as `sync_inventory_mirrors.py` (mirrors re-derived
+from master; refuses to write on URL-evidence contradictions); first run fixed
+2 mechanical drifts (55473, 54219) and surfaced 2 true contradictions
+(50411→286, 1542→331) whose 2026-08-03 owner decisions predate the URLs —
+owner ruling asked. H/I/J deferred; K needs the owner (CI Node 20 → 22).
 
 ---
 

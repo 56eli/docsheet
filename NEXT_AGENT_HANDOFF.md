@@ -34,9 +34,10 @@ python build_research_master.py --check
 python build_catalogue_pages.py --check
 python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check   # inventory mirrors; exits 1 on the 2 known 2026-08-07 contradictions (50411/1542) pending owner ruling
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 103 tests, offline, ~2s
-coverage run -m unittest discover tests && coverage report   # gate: 80%; currently 92%
+python -m unittest discover tests     # 111 tests, offline, ~3s
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
 
@@ -70,7 +71,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 208 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **176 approved / 0 proposed / 10 rejected**; all proposals ruled | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 7 rejections carry documented rationale |
-| Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **111 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -250,7 +251,13 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 - **C — coverage gate:** `.coveragerc` `fail_under` 80 → **85** (actual 91% total, floor module 88%); README/INSTRUCTIONS floor mentions updated.
 - **D — handoff checkpoint:** §4's 2026-08-03 chronicle (~315 lines) + the 2026-08-04 final-audit notes moved to `archive/HANDOFF_HISTORY.md`; handoff 572 → 258 lines; section numbers kept (§4 is now an archive pointer; §3/§4 heading shape preserved for the doc-parity tests).
-- Remaining hygiene offers: batch 3 (derivable-mirrors tool, item E); deferred/ruling items H/I/J; owner-action K (CI Node 20 → 22, workflows permission).
+
+### Hygiene batch 3 EXECUTED: derivable inventory mirrors (owner pick, 2026-08-07)
+
+- **New tool `sync_inventory_mirrors.py`** (~170 lines, 96% covered, 4 fixture tests — suite **107 → 111**): re-derives the Veritas inventory's mirror columns from the master — `matched_master_uuids` for `matched_by_primary_source` rows (authoritative = master `source_url_veritas`, same join as `derive_primary_relationships`), `matched_master_titles` (` | `-joined), and `normalized_title_match_count` (`; `-joined ID count) for every row. Reviewed columns (`mapping_status`, `review_notes`, non-primary associations) are never touched. It **refuses to write** on violations (unknown IDs; primary status with no URL on any master) or on **URL-evidence contradictions** of reviewed non-primary cells (owner-ruling territory). Run it after changing master titles/URLs; documented in INSTRUCTIONS + §2 (its `--check` intentionally exits 1 on the 2 known contradictions below until ruled; a committed-state-clean test + CI wiring — owner permission needed for CI — follow the ruling).
+- **First-run harvest — 2 mechanical drifts fixed** (stale since the title-alignment session; tax/JSON mirrors regenerated): product 55473 cell `311` → **`225; 311`**; product 54219 cell `310` → **`226; 227; 310`**. The derived relationships already pointed this way; only mirrors were stale.
+- **2 contradictions surfaced, OWNER RULING ASKED:** product **50411** (*Power vs. Force book*) — URL sits on master **286** (derived relationship already primary to 286) but an approved 2026-08-03 `veritas_mapping_decisions` row title-matches it to master 202; product **1542** (*Power vs. Force Audio Book*) — URL on master **331** (primary there) vs approved 2026-08-03 decision title-match 202. Both decisions predate the URL evidence (added 2026-08-07 by the title audit). Proposed: flip both decisions+inventory rows to `matched_by_primary_source` on 286/331 (202 keeps its `related_material` rows). Awaiting owner pick.
+- Also fixed in passing: handoff §2 quick-verify block was stale (103 tests/gate 80/92% → 111 tests/gate 85/91%).
 
 ## 7. House-keeping for every turn
 

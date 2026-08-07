@@ -129,13 +129,24 @@ python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
 python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check   # derived inventory mirrors (see below)
 ```
+
+The Veritas inventory's mirror columns (`normalized_title_match_count`,
+`matched_master_titles`, and — for `matched_by_primary_source` rows —
+`matched_master_uuids`) are derived from the curated master, never edited by
+hand. After changing master titles or Veritas URLs, run
+`python sync_inventory_mirrors.py` to re-derive them (then rebuild below and
+re-run the checks). The tool refuses to write when a reviewed non-primary
+association contradicts URL evidence — that needs an owner ruling, not a sync.
 
 After an approved review-input change, rebuild in this order and then repeat the
 checks:
 
 ```bash
 python build_research_master.py
+python map_series_taxonomy.py        # taxonomy mirrors follow the master + inventory
+python build_research_master.py      # re-apply if mapped_series values changed
 python build_catalogue_pages.py
 python reconcile_research_master.py
 ```
@@ -159,7 +170,7 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 107 deterministic tests
+python -m unittest discover tests      # 111 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```

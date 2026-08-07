@@ -102,6 +102,7 @@ SCRIPT_MODULES = {
     "reconcile_research_master.py": "reconcile_research_master",
     "generate_lecture_review.py": "generate_lecture_review",
     "generate_migration_ledger.py": "generate_migration_ledger",
+    "sync_inventory_mirrors.py": "sync_inventory_mirrors",
 }
 
 
@@ -1422,6 +1423,128 @@ class NewWorkQueueTests(unittest.TestCase):
             bcp.validate_new_work_queue([self.row(), self.row()], inventory)
         with self.assertRaisesRegex(ValueError, "candidate_title"):
             bcp.validate_new_work_queue([self.row(candidate_title="")], inventory)
+
+
+class SyncInventoryMirrorsTests(unittest.TestCase):
+    """sync_inventory_mirrors.py re-derives the inventory's mirror columns."""
+
+    @staticmethod
+    def normalize_known_contradictions(sandbox: Path) -> None:
+        """Flip products 50411/1542 from stale title matches to URL evidence.
+
+        Their owner-approved 2026-08-03 title matches to master 202 predate the
+        2026-08-07 URL evidence on masters 286/331 (owner ruling pending), so
+        committed data intentionally carries the two contradictions. Happy-path
+        fixtures need a contradiction-free inventory; this becomes a no-op
+        once the ruling lands.
+        """
+        inv = sandbox / "data" / "veritas_official_products.csv"
+        with inv.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected = {
+            "50411": ("286", "Power vs. Force: The Hidden Determinants of Human Behavior"),
+            "1542": ("331", "Power vs. Force Audio Book"),
+        }
+        for row in rows:
+            wanted = expected.get(row["veritas_product_id"])
+            if wanted and row["mapping_status"] != "matched_by_primary_source":
+                row["mapping_status"] = "matched_by_primary_source"
+                row["normalized_title_match_count"] = "1"
+                row["matched_master_uuids"] = wanted[0]
+                row["matched_master_titles"] = wanted[1]
+        with inv.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()), lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(rows)
+
+    def test_sync_fixes_drifted_mirror_cells(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.normalize_known_contradictions(sandbox)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(
+                ",2,225; 311,Devotion to Truth Talk | Devotion to Truth Talk,",
+                ",1,311,Devotion to Truth Talk,",
+            )
+            self.assertNotEqual(drifted, text)  # fixture actually drifted the row
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with inv.open(newline="", encoding="utf-8") as handle:
+                row = next(r for r in csv.DictReader(handle) if r["veritas_product_id"] == "55473")
+            self.assertEqual(row["normalized_title_match_count"], "2")
+            self.assertEqual(row["matched_master_uuids"], "225; 311")
+            self.assertEqual(
+                row["matched_master_titles"],
+                "Devotion to Truth Talk | Devotion to Truth Talk",
+            )
+            # reviewed columns are never rewritten
+            self.assertEqual(row["mapping_status"], "matched_by_primary_source")
+            self.assertEqual(row["review_notes"], "Exact master primary Veritas URL match.")
+            check = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+            self.assertIn("already match", check.stdout)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_check_flags_drift_without_writing(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.normalize_known_contradictions(sandbox)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",3,226; 227; 310,", ",1,310,")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("54219", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_flags_url_contradiction_on_reviewed_status(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.normalize_known_contradictions(sandbox)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",1,300,In the World But Not Of It", ",1,202,In the World But Not Of It")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("CONTRADICTION", result.stderr)
+            self.assertIn("53062", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_flags_unknown_master_id(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            self.normalize_known_contradictions(sandbox)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",1,300,In the World But Not Of It", ",1,9999,In the World But Not Of It")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("VIOLATION", result.stderr)
+            self.assertIn("unknown matched master ID", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
 
 
 class DocumentationCurrencyTests(unittest.TestCase):
