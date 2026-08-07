@@ -535,6 +535,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - Notes: international discovery queue is **36 rows** (7 publisher + 19 ES / 6 FR / 4 PT unreviewed), not 19 as the post-PR #26 audit said; masters with `reference_url_1` now **63** (promotions grew it); PR #24's merge also had a red CI run (generated-output drift, already fixed via PR #25).
 - Report: `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`.
 
+### Distributor title alignment (same branch, owner directive)
+
+- **60 master titles aligned to official distributor naming** (directive: "fix titles per official naming; make everything correct"), every one live-verified: full Veritas WP-API re-fetch (191 products), 5 slug re-queries, live Nightingale-Conant author page; Hay House/Audible from committed reviewed inventories; Amazon via approved override evidence. Report + full change table + rules (R1–R5): `archive/TEMP_RESPONSE_TITLE_AUDIT_2026-08-07.md`.
+- Inputs edited, outputs regenerated (never hand-edited): ledger `proposed_title` on 54 rows (+ part designators preserved in `format_detail`: `Part 1/2/3`, `PART1`, `A-01…B-06`), 1 edition candidate (341 → official `Perception vs. Essence`), 2 manual candidates (312/313 drop `(2012)` per R2), filename proposal re-synced on 57 rows, inventory + mapping-decision title mirrors re-synced (`; `-joined `matched_master_uuids`, `| `-joined titles — don't split on the wrong separator).
+- **50491 re-linked:** product 50491 (*How to Live Your Life Like A Prayer (2012)*) was title-matched to master 121 (name collision with the Nov-2006 lecture); it is master 278's own listing → approved override on ledger raw 315 (overrides **134**), inventory primary matches **180**, stale `rel-veritas-50491-121` removed (related_material **7**), taxonomy queue conflict rows dropped **6 → 4**. Relationships: **343 = 336 derived primary + 7 related** (docs/tests updated).
+- Store titles **renamed upstream**: 225 → `Devotion to Truth Talk`, 228/229 → `Spiritual Will Inspiring Q & A`, 226/227 → `Mind, Heart and Service: The Pathway of Devotional Non-Duality`; Volumes I/IV official names include `Muscle Testing` / `Consciousness:` subtitles — the test guard `test_volume_series_filename_groups_match_volume_titles` now encodes those.
+- All 5 `--check` modes + 107/107 tests + `node --check` green after every batch.
+
 ## 7. House-keeping for every turn
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
