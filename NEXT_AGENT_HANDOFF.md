@@ -1,6 +1,7 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-07 — latest refresh: full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
+**Prepared:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
+**Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
 If you are the next agent: **read this file top to bottom before touching
@@ -69,7 +70,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 40 reviewed manual candidates (all 40 promoted incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 209 works / 342 members approved; work_id coverage 366/366 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **176 approved / 0 proposed / 10 rejected**; all proposals ruled | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 7 rejections carry documented rationale |
-| Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -525,6 +526,14 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - New finding: 11 lecture audiobook edition rows (UUIDs 333-343) have blank year (proposed_year empty in edition_candidates.csv) — suggestion: inherit year from matched master.
 - Reports: `FULL_STACK_AUDIT_2026-08-04_FINAL.md` (this audit) + earlier `AUDIT_REPORT_2026-08-04.md`.
 - Proposed: `FILENAME_SCHEME_PROPOSAL.md` — year-first human filename scheme (`2004-02 TM - Thought and Ideation [DVD01].mp4`) with three profiles (canonical/human/plex) + organizer script roadmap.
+
+## 2026-08-07 Post-PR #27 Audit (arena/019fdd68-docsheet)
+
+- Full re-verification green: 5 `--check` modes, **107/107 tests**, coverage **91%** (`build_catalogue_pages.py` at **88%** — the "every module ≥ 89%" claim in README/INSTRUCTIONS/this file was stale; corrected to ≥ 88%), JS syntax OK. Live site serves 366 masters / 0 candidates.
+- **F1 (fixed here): CI red on `main` since the PR #27 merge** (run `31202697657`) — `tests/csv-export.spec.js` "Everything view separates curated master records from candidates" still required `option[value="candidate_veritas"]`; with 0 candidates `configureReviewFilter()` hides the toolbar by design. Spec rewritten data-driven (derives record-type set from `master.json`; asserts the filter UI when candidates exist, the hidden toolbar + bare `Showing: N` status when all-master). Chromium is CI-only, so watch the PR's "Run browser smoke tests" step.
+- **F2 (fixed here):** README/INSTRUCTIONS drift — 103 → **107 tests**, 92% → **91%** coverage.
+- Notes: international discovery queue is **36 rows** (7 publisher + 19 ES / 6 FR / 4 PT unreviewed), not 19 as the post-PR #26 audit said; masters with `reference_url_1` now **63** (promotions grew it); PR #24's merge also had a red CI run (generated-output drift, already fixed via PR #25).
+- Report: `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`.
 
 ## 7. House-keeping for every turn
 

@@ -8,7 +8,8 @@ the repository root: [README.md](../README.md),
 [FULL_STACK_AUDIT_2026-08-03.md](../FULL_STACK_AUDIT_2026-08-03.md), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
-- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` — comprehensive post-PR #26 system audit and verification report (2026-08-07); validates 366 master items, 0 untyped, 0 format blank, and recent rulings.
+- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md` — post-PR #27 audit (2026-08-07); re-verified all catalogue counts, root-caused the red CI run on `main` to the stale Playwright candidate assertions (fixed data-driven), and corrected the 103-test/92%-coverage doc drift.
+- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` — comprehensive post-PR #26 system audit and verification report (2026-08-07); validates 366 master items, 0 untyped, 0 format blank, and recent rulings. (Note: its "19 international queue rows" figure was stale — the queue holds 36 rows.)
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md`, `TEMP_RESPONSE_AUDIT_2026-08-07_SESSION.md` — earlier 2026-08-07 session logs and post-PR #24 check verifications.
 - `HANDOFF.md`, `PROJECT_STATE_AUDIT.md` — superseded status stubs (kept so old
   external references resolve).
