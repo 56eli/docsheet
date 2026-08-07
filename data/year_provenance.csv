@@ -231,22 +231,22 @@ uuid,title,item_type,series,year,month,raw_row_number,candidate_key,source_url_v
 230,Verification of Spiritual Realities,lecture,On The Road Talk Series,2014,01,254,,https://veritaspub.com/product/verification-of-spiritual-realities/,veritas_published_date_backfill,"ledger blank, backfilled from Veritas product 1830 published_date 2014-01-21"
 231,Verification of Spiritual Realities,lecture,On The Road Talk Series,2014,01,255,,https://veritaspub.com/product/verification-of-spiritual-realities/,veritas_published_date_backfill,"ledger blank, backfilled from Veritas product 1830 published_date 2014-01-21"
 232,Verification of Spiritual Realities,lecture,On The Road Talk Series,2014,01,256,,https://veritaspub.com/product/verification-of-spiritual-realities/,veritas_published_date_backfill,"ledger blank, backfilled from Veritas product 1830 published_date 2014-01-21"
-233,A-01 Office Series-Stress,lecture,Office Series,1982,,260,,https://veritaspub.com/product/stress/,ledger_user_input,ledger raw_row 260 proposed_year=1982 proposed_month=
-234,A-02 Office Series-Health,lecture,Office Series,1982,,261,,https://veritaspub.com/product/health/,ledger_user_input,ledger raw_row 261 proposed_year=1982 proposed_month=
-235,A-03 Office Series-Spiritual First Aid,lecture,Office Series,1982,,262,,https://veritaspub.com/product/spiritual-first-aid-2/,ledger_user_input,ledger raw_row 262 proposed_year=1982 proposed_month=
-236,A-04 Office Series-Sexuality,lecture,Office Series,1982,,263,,https://veritaspub.com/product/sexuality-2/,ledger_user_input,ledger raw_row 263 proposed_year=1982 proposed_month=
-237,A-05 Office Series-The Aging Process,lecture,Office Series,1982,,264,,https://veritaspub.com/product/the-aging-process/,ledger_user_input,ledger raw_row 264 proposed_year=1982 proposed_month=
-238,A-06 Office Series-Handling Major Crises,lecture,Office Series,1982,,265,,https://veritaspub.com/product/handling-major-crises-2/,ledger_user_input,ledger raw_row 265 proposed_year=1982 proposed_month=
-239,A-07 Office Series-Worry Fear and Anxiety,lecture,Office Series,1982,,266,,https://veritaspub.com/product/worry-fear-and-anxiety-2/,ledger_user_input,ledger raw_row 266 proposed_year=1982 proposed_month=
-240,A-08 Office Series-Pain and Suffering,lecture,Office Series,1982,,267,,https://veritaspub.com/product/pain-and-suffering/,ledger_user_input,ledger raw_row 267 proposed_year=1982 proposed_month=
-241,A-09 Office Series-Losing Weight,lecture,Office Series,1982,,268,,https://veritaspub.com/product/losing-weight/,ledger_user_input,ledger raw_row 268 proposed_year=1982 proposed_month=
-242,A-10 Office Series-Depression,lecture,Office Series,1982,,269,,https://veritaspub.com/product/depression/,ledger_user_input,ledger raw_row 269 proposed_year=1982 proposed_month=
-243,A-11 Office Series-Illness and Self-Healing,lecture,Office Series,1982,,270,,https://veritaspub.com/product/illness-and-self-healing/,ledger_user_input,ledger raw_row 270 proposed_year=1982 proposed_month=
-244,A-12 Office Series-Alcoholism,lecture,Office Series,1982,,271,,https://veritaspub.com/product/alcoholism/,ledger_user_input,ledger raw_row 271 proposed_year=1982 proposed_month=
-245,B-01 Office Series-Drug Addiction and Alcoholism...,lecture,Office Series,1982,,272,,https://veritaspub.com/product/drug-addiction-and-alcoholism/,ledger_user_input,ledger raw_row 272 proposed_year=1982 proposed_month=
-247,B-03 Office Series-A Map Of Consciousness,lecture,Office Series,1982,,274,,https://veritaspub.com/product/a-map-of-consciousness/,ledger_user_input,ledger raw_row 274 proposed_year=1982 proposed_month=
-248,B-04 Office Series-Cancer,lecture,Office Series,1982,,275,,https://veritaspub.com/product/cancer/,ledger_user_input,ledger raw_row 275 proposed_year=1982 proposed_month=
-250,B-06 Office Series-Death and Dying,lecture,Office Series,1982,,277,,https://veritaspub.com/product/death-and-dying/,ledger_user_input,ledger raw_row 277 proposed_year=1982 proposed_month=
+233,A-01 Office Series-Stress,lecture,Office Series,198X,,260,,https://veritaspub.com/product/stress/,ledger_user_input,ledger raw_row 260 proposed_year=198X proposed_month=
+234,A-02 Office Series-Health,lecture,Office Series,198X,,261,,https://veritaspub.com/product/health/,ledger_user_input,ledger raw_row 261 proposed_year=198X proposed_month=
+235,A-03 Office Series-Spiritual First Aid,lecture,Office Series,198X,,262,,https://veritaspub.com/product/spiritual-first-aid-2/,ledger_user_input,ledger raw_row 262 proposed_year=198X proposed_month=
+236,A-04 Office Series-Sexuality,lecture,Office Series,198X,,263,,https://veritaspub.com/product/sexuality-2/,ledger_user_input,ledger raw_row 263 proposed_year=198X proposed_month=
+237,A-05 Office Series-The Aging Process,lecture,Office Series,198X,,264,,https://veritaspub.com/product/the-aging-process/,ledger_user_input,ledger raw_row 264 proposed_year=198X proposed_month=
+238,A-06 Office Series-Handling Major Crises,lecture,Office Series,198X,,265,,https://veritaspub.com/product/handling-major-crises-2/,ledger_user_input,ledger raw_row 265 proposed_year=198X proposed_month=
+239,A-07 Office Series-Worry Fear and Anxiety,lecture,Office Series,198X,,266,,https://veritaspub.com/product/worry-fear-and-anxiety-2/,ledger_user_input,ledger raw_row 266 proposed_year=198X proposed_month=
+240,A-08 Office Series-Pain and Suffering,lecture,Office Series,198X,,267,,https://veritaspub.com/product/pain-and-suffering/,ledger_user_input,ledger raw_row 267 proposed_year=198X proposed_month=
+241,A-09 Office Series-Losing Weight,lecture,Office Series,198X,,268,,https://veritaspub.com/product/losing-weight/,ledger_user_input,ledger raw_row 268 proposed_year=198X proposed_month=
+242,A-10 Office Series-Depression,lecture,Office Series,198X,,269,,https://veritaspub.com/product/depression/,ledger_user_input,ledger raw_row 269 proposed_year=198X proposed_month=
+243,A-11 Office Series-Illness and Self-Healing,lecture,Office Series,198X,,270,,https://veritaspub.com/product/illness-and-self-healing/,ledger_user_input,ledger raw_row 270 proposed_year=198X proposed_month=
+244,A-12 Office Series-Alcoholism,lecture,Office Series,198X,,271,,https://veritaspub.com/product/alcoholism/,ledger_user_input,ledger raw_row 271 proposed_year=198X proposed_month=
+245,B-01 Office Series-Drug Addiction and Alcoholism...,lecture,Office Series,198X,,272,,https://veritaspub.com/product/drug-addiction-and-alcoholism/,ledger_user_input,ledger raw_row 272 proposed_year=198X proposed_month=
+247,B-03 Office Series-A Map Of Consciousness,lecture,Office Series,198X,,274,,https://veritaspub.com/product/a-map-of-consciousness/,ledger_user_input,ledger raw_row 274 proposed_year=198X proposed_month=
+248,B-04 Office Series-Cancer,lecture,Office Series,198X,,275,,https://veritaspub.com/product/cancer/,ledger_user_input,ledger raw_row 275 proposed_year=198X proposed_month=
+250,B-06 Office Series-Death and Dying,lecture,Office Series,198X,,277,,https://veritaspub.com/product/death-and-dying/,ledger_user_input,ledger raw_row 277 proposed_year=198X proposed_month=
 251,Satsang Series (Jan 2007),lecture,Satsang Series,2007,01,280,,https://veritaspub.com/product/satsang-series-january-2007-cd/,ledger_user_input,ledger raw_row 280 proposed_year=2007 proposed_month=
 252,Satsang Series (Mar 2007),lecture,Satsang Series,2007,03,281,,https://veritaspub.com/product/satsang-series-march-2007-cd/,ledger_user_input,ledger raw_row 281 proposed_year=2007 proposed_month=
 253,Satsang Series (May 2007),lecture,Satsang Series,2007,05,282,,https://veritaspub.com/product/satsang-series-may-2007-cd/,ledger_user_input,ledger raw_row 282 proposed_year=2007 proposed_month=

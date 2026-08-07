@@ -29,6 +29,7 @@ The Hawkins archive catalogue and interactive spreadsheet pipeline is in excepti
 - **Catalogue Codes:** **281 distinct codes** (lectures and discussions; books are never coded).
 - **Data Completeness & Hygiene:**
   - **Blank Years: 17** (strictly documented exceptions: 13 undated multi-year *Volume Series* DVDs and 4 undated *On The Road Talk Series* lectures).
+  - **Office Series Decade Standardization:** Standardized all 16 *Office Series* lectures (`UUIDs 233..250`) to year `198X` (`LECTURE-198X-001` through `016`) per owner ruling, as most are believed 1982 but exact individual recording dates are unconfirmed.
   - **Blank Formats: 0** (Oxford 2003 talk format resolved to streaming).
   - **Blank Series: 0** (100% of master items have a curated series).
 - **Work Families (`data/work_families.csv`):** **209 works / 342 members**, providing **100% coverage** of all curated master records.
