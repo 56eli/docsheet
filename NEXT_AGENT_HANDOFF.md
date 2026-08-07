@@ -274,6 +274,15 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 - **New guard in `validate_filename_proposal_groups`:** *global* uniqueness of `proposed_filename` and `proposed_filename_display` (not just within work families) — a ValueError citing the v4.1 rule fails the build on any seeded duplicate. 2 new tests (`test_filename_proposal_filenames_are_globally_unique`, `test_filename_uniqueness_guard_fails_on_seeded_duplicate`), suite 110 → **112**.
 - Filename sheet: **365 rows = 365 unique safe = 365 unique display**; `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` carries the v4.1 amendment. All 6 `--check` + 112 tests + node green.
 
+### Owner 6-part directive EXECUTED (documentation, re-audit, hygiene, UX, mobile, naming — 2026-08-07 PM)
+
+1. **Docs updated + project re-audited:** `FULL_STACK_AUDIT_2026-08-07_DEEP.md` got a PM refresh — exec summary, repo layout, *Current Verified State* table, pipeline deep-dive (all module line/stmt/coverage numbers; `sync_inventory_mirrors.py` added) and reproduction commands re-executed live, plus a PM Session Changelog section itemizing all 8 same-day rulings. Handoff stale bits fixed (meta.json removed from generator table, 112 tests, codes 281).
+2. **Hygiene leftovers:** README now documents the two intentionally-empty sheets (Official Discovery, New Work Review) as standing **intake lanes**; CI **item K** documented — Node 20 EOL 2026-04, owner must bump the workflow to 22 (app can't push `.github/workflows/*`).
+3. **Visitor-first UX:** Everything view reordered to product facts first (Title · Series · Item Type · Edition · Year-Month · Catalogue Code · Owned · Veritas/Hay House/Audible/Amazon/Nightingale-Conant links · Streaming · Notes); technical columns (uuid, work_id, legacy_tempid, proposed_filename(_display), year_source, raw_row_number, legacy_title) hidden behind a persisted **Expert columns** toggle; friendly labels (`Veritas (Official Store)`, `Streaming`) and linkified cells (`Amazon page`, `Streaming link`); view description rewritten.
+4. **Mobile:** dense cells (13px, 5×8 padding), full-width row-details sheet with 44px close target, touch-height scrolling tabs, stacked view-tools; expert toggle flex-fills.
+5. **Naming scheme:** filename v4.1 (earlier this session) — carrier suffix + global-uniqueness guard, 365 unique safe = 365 unique display.
+6. **Specs:** Playwright specs enable Expert columns before asserting technical columns; new `column-layout` spec locks the visitor-first default. CI note: watch the "Run browser smoke tests" step after merge (Chromium is CI-only here).
+
 ## 7. House-keeping for every turn
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
