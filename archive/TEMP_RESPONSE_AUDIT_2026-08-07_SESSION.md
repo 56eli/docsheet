@@ -166,3 +166,21 @@ node --check docs/app.js && node --check tests/*.spec.js
 **Verified:** 5 `--check` modes green, 106/106 tests, 91% coverage, JS OK. Living docs updated: README, NEXT_AGENT_HANDOFF §3/§6, MIGRATION_REVIEW_LEDGER.md, FILENAME_PROPOSAL_V4.md, YEAR_COLUMN_PROVENANCE.md, deep-audit sync note.
 
 *Addendum 2 end — 2026-08-07.*
+
+---
+
+## Addendum — Annual Highlights promoted to curated master (owner ruling 3)
+
+**Directive:** "Categorize all 'Highlights of the YYYY lectures' as curated master in the category 'Lecture Highlights' with the Year YYYY and proposed file name same as Title."
+
+**Applied (2026-08-07):**
+- **7 new master rows 362–368** (products 1800/1808/1824/36857/39238/40747/44429) via the reviewed promotion path: `manual_master_candidates.csv` +7, `manual_candidate_promotions.csv` +7 (master UUIDs 362–368, `item_type=highlight`, `series=Lecture Highlights`, year from the title, format **streaming** — official storefront pages say "Product Details: Streaming", verified live for 2003/2005; `infer_format` gained a "Lecture Highlights" category rule + unit test).
+- **Filename = title** per directive: `Highlights of the 2002 Lectures 1-6.mp4` … `Highlights of the 2007 Lectures.mp4` (no year prefix, no bracket).
+- **Inventory:** 7 rows → `matched_by_primary_source` (matched_master_uuids 362–368); the 7 mapping-decision suppression rows lifted (18 → 11); taxonomy mapper proposed and (per the ruling) approved `Lecture Highlights` via rule R1 (179 → 186 mappings, 176 approved).
+- **Work families:** 7 per-title works added (206 works / 339 members, coverage 363/363); year_provenance register extended; `series_compilation_relationships.csv` kept (7 rows still document what each Highlights product draws from); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` marked superseded.
+- **Counts:** master **363** (307 lecture / 40 book / 8 discussion / 7 highlight / 1 untyped), Everything **376** (candidate_veritas 8 → 1 — only the Map poster remains), relationships **343** (335 derived + 8), codes unchanged **278** (highlights never coded), promoted candidates **36**.
+- **Hygiene fix found en route:** `manual_candidate_promotions.csv` had 3 historical rows with unquoted commas in `approval_reason` (parsed as an extra column); re-quoted (content unchanged). A crashed in-place write temporarily truncated the file — restored from git HEAD and rebuilt (36 rows) before regenerating.
+
+**Verified:** 5 `--check` modes green, **107/107 tests** (new format-inference test + relationship-count test updated 328/336 → 335/343), 91% coverage, JS OK. Docs synced: README, NEXT_AGENT_HANDOFF §3, FILENAME_PROPOSAL_V4, YEAR_COLUMN_PROVENANCE, deep-audit sync note.
+
+*Addendum 3 end — 2026-08-07.*

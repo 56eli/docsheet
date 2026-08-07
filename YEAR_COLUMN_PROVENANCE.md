@@ -27,7 +27,7 @@ Detailed CSV: `data/year_provenance.csv` (358 rows, machine-readable) — regene
 | `edition_candidate_year_inherited_or_blank` | 4 | Edition candidate blank but master year present via other path (maybe work family inheritance or duplicate) |
 | `academic_publication_year` | 3 | Academic works promoted: Orthomolecular 1973, Qualitative 1998, Dialogues 1998 — first-publication year from external bibliographic evidence |
 
-Total 358 → **356** (legacy duplicates 281/284 excluded 2026-08-07 — same 2012 Discussion Series talks as promoted masters 312/313), blank **18** (13 intentional + 5 under investigation) — down from 31 after inheriting 11 edition years and the 2012 Discussion rulings.
+Total 358 → 356 → **363** (legacy duplicates 281/284 excluded 2026-08-07 — same 2012 Discussion Series talks as promoted masters 312/313; then the 7 annual Highlights promoted 2026-08-07 with year from title, series Lecture Highlights), blank **18** (13 intentional + 5 under investigation) — down from 31 after inheriting 11 edition years and the 2012 Discussion rulings.
 
 Fix applied 2026-08-07: `data/edition_candidates.csv` 11 Audible/HH lecture audiobooks (edition-audible-wtg-nature/advaita/root, dni-intention/alignment, tms-id/emotions, srmm-godvs, tlc-perception, compassion, hh-liveprayer) now have `proposed_year` = matched master year (2002-2007). `build_catalogue_pages.py` excludes edition rows from series-compilation lecture count (raw_row_number filter) to prevent Highlights counts inflating from 6→8.
 

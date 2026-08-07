@@ -96,7 +96,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (356) |
+| `master` | A curated master catalogue record (363) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -118,11 +118,11 @@ folders.
 
 ## Current reviewed catalogue state
 
-The current curated master has **356** records (307 `lecture`, 40 `book`,
-8 `discussion`, 1 untyped), **278** catalogue codes, **71** retained exclusions,
+The current curated master has **363** records (307 `lecture`, 40 `book`,
+8 `discussion`, 7 `highlight`, 1 untyped), **278** catalogue codes, **71** retained exclusions,
 **127** approved source overrides (including the four Nightingale-Conant audio
-editions and two Amazon Office Series links), **29** promoted
-and **0** unpromoted official candidates, **336** item-to-product relationships,
+editions and two Amazon Office Series links), **36** promoted
+and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as Amazon search link.
 

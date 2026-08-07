@@ -64,15 +64,15 @@ Sandbox traps learned the hard way (all still true):
 | Layer | Count | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 356 | 307 lecture / 40 book / 8 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
-| Everything view | **376** | 356 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
+| Curated master | 363 | 307 lecture / 40 book / 8 discussion / 7 highlight / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights, owner ruling 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
+| Everything view | **376** | 363 master + 1 candidate_veritas (Map poster) + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
 | Exclusions / source overrides | 71 / 127 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved at that time after dedup of the Path duplicate; now 127 incl. the 18 Amazon direct links) |
-| Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
-| Everything relationships | 336 product relationships, 7 series compilations | |
-| Candidate pool | 29 reviewed manual candidates (all 29 promoted incl. 9 Satsang monthlies and 6 manual candidates and 3 academic, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 199 works / 332 members approved; work_id coverage 356/356 | `data/work_families.csv` |
-| Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |
-| Test suite | **106 tests; coverage 91% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
+| Veritas inventory | 191 products | categories populated 191/191; 11 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07) |
+| Everything relationships | 343 product relationships, 7 series compilations | 335 derived primary + 8 related_material |
+| Candidate pool | 36 reviewed manual candidates (all 36 promoted incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, and the 7 Highlights, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
+| Work families | 206 works / 339 members approved; work_id coverage 363/363 | `data/work_families.csv` |
+| Series taxonomy | 186 matched products → **176 approved / 0 proposed / 10 rejected**; all proposals ruled | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 7 rejections carry documented rationale |
+| Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,

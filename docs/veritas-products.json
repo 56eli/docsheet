@@ -2213,11 +2213,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-of-the-2007-lectures/",
     "published_date": "2001-01-07",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "368",
+    "matched_master_titles": "Highlights of the 2007 Lectures",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "40747",
@@ -2225,11 +2225,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-of-the-lectures-of-2006/",
     "published_date": "2001-01-06",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "367",
+    "matched_master_titles": "Highlights of the 2006 Lectures",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "39238",
@@ -2237,11 +2237,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-lectures-2005/",
     "published_date": "2001-01-05",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "366",
+    "matched_master_titles": "Highlights of the 2005 Lectures",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "36857",
@@ -2249,11 +2249,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-of-the-lectures-of-2004/",
     "published_date": "2001-01-04",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "365",
+    "matched_master_titles": "Highlights of the 2004 Lectures",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "1824",
@@ -2261,11 +2261,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-of-the-lectures-of-2003/",
     "published_date": "2001-01-03",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "364",
+    "matched_master_titles": "Highlights of the 2003 Lectures",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "1808",
@@ -2273,11 +2273,11 @@
     "official_product_url": "https://veritaspub.com/product/highlights-of-the-last-6-lectures-of-2002/",
     "published_date": "2001-01-02",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "363",
+    "matched_master_titles": "Highlights of the 2002 Lectures 7-12",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   },
   {
     "veritas_product_id": "1800",
@@ -2285,10 +2285,10 @@
     "official_product_url": "https://veritaspub.com/product/the-way-to-god-highlights-of-the-first-6-lectures-of-2002-dvd/",
     "published_date": "2001-01-01",
     "official_categories": "Highlights; Lecture Highlights",
-    "normalized_title_match_count": "0",
-    "matched_master_uuids": "",
-    "matched_master_titles": "",
-    "mapping_status": "compilation_or_new_edition",
-    "review_notes": "Identified as a compilation of highlights or Q&A."
+    "normalized_title_match_count": "1",
+    "matched_master_uuids": "362",
+    "matched_master_titles": "Highlights of the 2002 Lectures 1-6",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match (promoted 2026-08-07 per owner ruling)."
   }
 ]

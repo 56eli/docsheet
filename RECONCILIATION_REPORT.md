@@ -10,10 +10,10 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 356 | 356 |
-| Research-master JSON records | 356 | 356 |
+| Research-master CSV records | 363 | 363 |
+| Research-master JSON records | 363 | 363 |
 | Research-master exclusion records | 71 | 71 |
-| Draft-only CSV records without a matching ledger `item` | 53 | 0 |
+| Draft-only CSV records without a matching ledger `item` | 60 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
 | `docs/master.json` / ledger-projected Everything records | 376 | 376 |
@@ -38,6 +38,13 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Giving Up Illness through A Course in Miracles© – Audio | lecture | Promoted from official candidate manual-veritas-1544: Official page identifies a three-CD 3h45m audio presentation. |
 | — | Healing and Recovery (Audiobook) | book | Promoted edition audio of work w-healing-and-recovery from candidate edition-audible-healing: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Healing: Achieving Total Wellness Through Higher Levels of Consciousness | lecture | Promoted edition audio of work w-healing-and-recovery from candidate edition-veritas-healing-audio: Veritas product 1695; audio edition of the work; inventory status unreviewed_official_product. |
+| — | Highlights of the 2002 Lectures 1-6 | highlight | Promoted from official candidate manual-veritas-1800: Official Veritas product 1800 (title 'Highlights of the 2002 Lectures 1-6'); product page lists it as a streaming compilation of the 2002 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2002. |
+| — | Highlights of the 2002 Lectures 7-12 | highlight | Promoted from official candidate manual-veritas-1808: Official Veritas product 1808 (title 'Highlights of the 2002 Lectures 7-12'); product page lists it as a streaming compilation of the 2002 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2002. |
+| — | Highlights of the 2003 Lectures | highlight | Promoted from official candidate manual-veritas-1824: Official Veritas product 1824 (title 'Highlights of the 2003 Lectures'); product page lists it as a streaming compilation of the 2003 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2003. |
+| — | Highlights of the 2004 Lectures | highlight | Promoted from official candidate manual-veritas-36857: Official Veritas product 36857 (title 'Highlights of the 2004 Lectures'); product page lists it as a streaming compilation of the 2004 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2004. |
+| — | Highlights of the 2005 Lectures | highlight | Promoted from official candidate manual-veritas-39238: Official Veritas product 39238 (title 'Highlights of the 2005 Lectures'); product page lists it as a streaming compilation of the 2005 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2005. |
+| — | Highlights of the 2006 Lectures | highlight | Promoted from official candidate manual-veritas-40747: Official Veritas product 40747 (title 'Highlights of the 2006 Lectures'); product page lists it as a streaming compilation of the 2006 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2006. |
+| — | Highlights of the 2007 Lectures | highlight | Promoted from official candidate manual-veritas-44429: Official Veritas product 44429 (title 'Highlights of the 2007 Lectures'); product page lists it as a streaming compilation of the 2007 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2007. |
 | — | In The World But Not Of It (Audiobook) | book | Promoted edition audio of work w-in-the-world-but-not-of-it from candidate edition-audible-itwbnoi: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Letting Go (Audiobook) | book | Promoted edition audio of work w-letting-go from candidate edition-audible-lettinggo: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
@@ -99,8 +106,8 @@ No matching-record field differences were found.
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
 | `master_items` | 376 | 376 |
-| `migrated_items` | 356 | 356 |
-| `implemented_unreviewed` | 22 | 22 |
+| `migrated_items` | 363 | 363 |
+| `implemented_unreviewed` | 15 | 15 |
 
 ## Required resolution before rebuilding
 

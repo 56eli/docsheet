@@ -18,7 +18,7 @@
     "target_item_part_count": 18,
     "target_lecture_titles": "Causality: The Ego's Foundation | Perception and Illusion: Distortions of Reality | Positionality and Duality: Transcending the Opposites | Radical Subjectivity: The 'I' of Self | Realizing the Root of Consciousness: Meditative and Contemplative Techniques | The Levels of Consciousness: Subjective & Social Consequences",
     "source_product_published_date": "2001-01-01",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-1808-way-to-god-2002-07-12",
@@ -39,7 +39,7 @@
     "target_item_part_count": 18,
     "target_lecture_titles": "Advaita: The Way to God Through Mind | Devotion: The Way to God Through the Heart | God: Transcendent and Immanent | Karma and the Afterlife | Realization of the Self: The Final Moments | The Nature of Divinity vs Religious Fallacy",
     "source_product_published_date": "2001-01-02",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-1824-devotional-nonduality-2003",
@@ -60,7 +60,7 @@
     "target_item_part_count": 18,
     "target_lecture_titles": "Dialogue, Questions, and Answers | Enlightenment | Integration of Spirituality and Personal Life | Realization of the Self as the 'I' | Spiritual Community | Spirituality and the World",
     "source_product_published_date": "2001-01-03",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-36857-transcending-mind-2004",
@@ -81,7 +81,7 @@
     "target_item_part_count": 18,
     "target_lecture_titles": "Emotions and Sensations | Identification and Illusion | Perception and Positionality | The Ego and The Self | Thought and Ideation | Witnessing and Observing",
     "source_product_published_date": "2001-01-04",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-39238-nonduality-intensive-2005",
@@ -102,7 +102,7 @@
     "target_item_part_count": 30,
     "target_lecture_titles": "Alignment | Conviction | God, Religion, and Spirituality | Intention | Serenity | Spiritual Traps | Transcending Barriers | Transcending Obstacles | Valid Teachers and Teachings | Vision",
     "source_product_published_date": "2001-01-05",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-40747-transcending-levels-2006",
@@ -123,7 +123,7 @@
     "target_item_part_count": 24,
     "target_lecture_titles": "A Review of the Work | Experiential Reality | Is the Miraculous Real? | Live Your Life Like a Prayer | Perception vs Essence | Reason vs Truth | Spiritual Practice and Daily Life | Spiritual Truth vs. Spiritual Fantasy",
     "source_product_published_date": "2001-01-06",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   },
   {
     "relationship_id": "series-compilation-veritas-44429-spiritual-reality-2007",
@@ -144,6 +144,6 @@
     "target_item_part_count": 27,
     "target_lecture_titles": "A Review of the Work | Creation vs Evolution | Experiential Reality: The Mystic | God vs Science: Limits of the Mind | Relativism vs Reality | Spiritual Survival: Realization of Reality | The Human Dilemma | What is 'Real'? | What is Truth? The Absolute",
     "source_product_published_date": "2001-01-07",
-    "source_product_mapping_status": "compilation_or_new_edition"
+    "source_product_mapping_status": "matched_by_primary_source"
   }
 ]

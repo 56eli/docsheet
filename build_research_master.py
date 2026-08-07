@@ -413,6 +413,11 @@ def infer_format_from_official_source(
         return "CD"
     if "Discussion Series" in cats:
         return "streaming"
+    # Annual Highlights compilations are sold as streaming videos on the
+    # official storefront ("Product Details: Streaming", verified 2026-08-07
+    # for the 2003/2005 Highlights product pages).
+    if "Lecture Highlights" in cats:
+        return "streaming"
     # Book item_type without URL (Hay House books without Veritas storefront)
     if item.get("item_type") == "book" and not url:
         return "book"

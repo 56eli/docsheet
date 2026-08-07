@@ -20,3 +20,15 @@ The official product pages explicitly identify clips or segments from every lect
 ## Deliberate boundary
 
 The master holds each DVD part as a separate top-level item, while the Highlights pages identify lectures rather than individual DVD parts. Therefore no `compilation_includes_item` relationships are created for the 171 parts in the covered annual scopes. The Highlights products remain broad official candidates in Everything, not master items.
+
+## SUPERSEDED 2026-08-07 (owner ruling)
+
+The seven Highlights products are **promoted to curated master records** (UUIDs
+362–368, `item_type=highlight`, `series=Lecture Highlights`, year from the
+title, proposed filename = title, format streaming per the official storefront
+"Product Details: Streaming"). The `compilation_draws_from_series` rows in
+`data/series_compilation_relationships.csv` are **kept** — they document what
+each Highlights product draws from. The seven inventory rows are now
+`matched_by_primary_source`; the seven mapping-decision suppression rows were
+lifted and the taxonomy mapping approves `Lecture Highlights` (rule R1) for
+them.

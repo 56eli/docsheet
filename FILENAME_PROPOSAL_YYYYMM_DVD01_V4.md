@@ -1,7 +1,7 @@
 # Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, audiobook label removed, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
 
 **Date:** 2026-08-07 (v4 updated, per owner feedback on v3 + blank-year ruling 2026-08-04)  
-**Master baseline:** 356 records (307 lecture /40 book /8 discussion /1 untyped) after academic promotion, Path duplicate dedup, and the 2026-08-07 duplicate-pair exclusion of legacy rows 281/284 (same 2012 Discussion Series talks as promoted masters 312/313)  
+**Master baseline:** 363 records (307 lecture /40 book /8 discussion /7 highlight /1 untyped) after academic promotion, Path duplicate dedup, the 2026-08-07 duplicate-pair exclusion of legacy rows 281/284 (same 2012 Discussion Series talks as promoted masters 312/313), and the 2026-08-07 promotion of the 7 annual Highlights (362–368)  
 **Pattern v4:**  
 - Single part: `YYYY-MM - Name.ext` — no bracket; if year blank, `Name.ext` (no prefix)
 - Multi-part (same Year-Month, same cleaned title, same format, same product): `YYYY-MM - Name [1/3].mp4` safe on-disk `[1-3]`, display `[1/3]`; if Year-Month blank, `Name [1-3].mp4` safe / `Name [1/3].mp4` display
@@ -71,11 +71,21 @@ Volume VI How to Raise Your Level of Consciousness.mp4
 Volume VII A Conversation with Knowingness.mp4
 ```
 
-Counts: 356 total, with bracket ~180 (multi-part), without ~176 (single). All 356 unique, 0 collisions (verified).
+Counts: 363 total, with bracket ~180 (multi-part), without ~183 (single). All 363 unique, 0 collisions (verified).
+
+## 2026-08-07 Highlights promotion (owner ruling)
+
+The seven annual Highlights products were promoted to curated master records
+(UUIDs 362–368, series Lecture Highlights, year from the title). Per owner
+directive the proposed filename equals the title itself (no year prefix, no
+bracket): `Highlights of the 2002 Lectures 1-6.mp4`,
+`Highlights of the 2002 Lectures 7-12.mp4`, `Highlights of the 2003 Lectures.mp4`,
+`Highlights of the 2004 Lectures.mp4`, `Highlights of the 2005 Lectures.mp4`,
+`Highlights of the 2006 Lectures.mp4`, `Highlights of the 2007 Lectures.mp4`.
 
 ## Files
 
-- `data/filename_proposal_YYYYMM.csv` — 356 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
+- `data/filename_proposal_YYYYMM.csv` — 363 rows, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
 - `docs/filename-proposal.json` — same for frontend
 - This doc v4 (updated 2026-08-07)
 
@@ -116,7 +126,7 @@ duplicates of the promoted Veritas product rows 312/313 (same 2012 Discussion
 Series talks; products 50485/50488) and were excluded from the master, so the
 `(2012)` disambiguator is no longer needed — both rows now strip to
 `2012 - Permanent Inner Peace.mp4` and `2012 - What is Real Success.mp4`
-(358-row proposal reduced to **356 rows**, all unique).
+(358-row proposal reduced to **356 rows**, all unique; the 7 Highlights rows then brought it to **363 rows**, all unique).
 
 Kept as non-date labels (not redundant): `Book of Slides (The Complete
 Collection)`, `Truth vs. Falsehood: ... (CD & DVD set)`.
@@ -130,4 +140,4 @@ would collide with another row's filename (then it is the disambiguator).
 - Exact recording years for Volume Series pre-2000 need verification via Veritas archives or VHS tape dates. Owner ruling 2026-08-04: “do not name any if cannot name all” → master year blank, no catalogue codes, filename no year prefix (`Volume I Power vs Force [1-2].mp4`). Better than incorrect 2007 listing date or partial 1995-1999 estimates.
 - Future: if all Volume years become known, restore YYYY-MM prefix and catalogue codes.
 
-*Updated 2026-08-07 from 356 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313).*
+*Updated 2026-08-07 from 363 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313); 7 annual Highlights promoted with filename = title.*
