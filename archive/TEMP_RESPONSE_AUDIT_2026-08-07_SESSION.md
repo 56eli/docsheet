@@ -126,3 +126,25 @@ node --check docs/app.js && node --check tests/*.spec.js
 ```
 
 *End of session audit — 2026-08-07.*
+
+---
+
+## Addendum — Volume Series filename investigation (owner follow-up)
+
+**Reported:** `Volume VI-How to Raise Your Level of Consciousness Volume V Undoing the Barriers to Spiritual Progress [4-5].mp4` and `Volume VII A-Conversation with Knowingness Volume V Undoing the Barriers to Spiritual Progress [5-5].mp4`.
+
+### Root cause (investigated, evidence-based)
+- The strings are **not in any committed file** (grep over master, proposal CSV, Pages JSONs, raw CSV, docs — zero hits). They are the pre-PR-#25 **visual/export concatenation** of two adjacent Everything-tab columns: `title` = "Volume VI-How to Raise Your Level of Consciousness" + `proposed_filename` = "Volume V Undoing the Barriers to Spiritual Progress [4-5].mp4" (same for 214 → [5-5]).
+- The pre-PR25 `data/filename_proposal_YYYYMM.csv` (reconstructed from the PR #25 diff) contained a **data-entry/grouping error in the reviewed file**: rows 213/214 (Volume VI/VII) had `clean_title` = "Volume V Undoing the Barriers to Spiritual Progress" and `part_index/part_total` = 4/5 and 5/5 (folded into Volume V's group of 5); rows 206/207 (Volume III) were folded into Volume II's group as [3/4]/[4/4]. Same signature confirmed in the pre-PR25 master draft (`VOL601`/`VOL701` rows).
+- **Not a generator bug:** nothing writes `filename_proposal_YYYYMM.csv` — it is a reviewed input consumed verbatim by `apply_filename_proposal()` (`build_research_master.py:506`). The generator faithfully applied bad reviewed data, and no validator checked that a part group's titles are mutually consistent, so `--check` stayed green. The error entered during the PR #24 full-file rewrite of the CSV (359+359 lines).
+- The live site showed it because the PR #25 Pages deploy (which fixed the CSV + regenerated master/Pages JSONs + added the Volume-group pin test) only completed at 2026-08-07 **15:34:48**; before that the site served the PR #24-era build.
+
+### Fix status
+- **Data fixed** by PR #25 (merged 15:31, live 15:34): 213 → `Volume VI How to Raise Your Level of Consciousness.mp4`, 214 → `Volume VII A Conversation with Knowingness.mp4`; Volume V group back to [1-3]/[2-3]/[3-3]; Volume III back to its own [1-2]/[2-2]. Verified again this session in the repo and via the live `filename-proposal.json`.
+- **Recurrence guard added this session (new code, 2 new tests, suite 104 → 106):**
+  - `build_research_master.validate_filename_proposal_groups()` — fails the build when a reviewed proposal row's `clean_title` tokens are not a subset of its own `title` tokens (a Volume VI row can never carry a Volume V clean title), when `part_index > part_total`, when a part group has duplicate `part_index`, or when a group mixes `part_total` values.
+  - Verified zero false positives on all 358 current rows (all 7 legitimately multi-title groups — PART1/2/3 suffixes, Volume I raw titles, Power vs Force audiobook label pair — satisfy the token-subset rule).
+  - `tests/test_pipeline.py`: `test_filename_proposal_group_coherence_fails` (replays the historical 213→Volume-V fold, expects build failure) + `test_filename_proposal_part_index_out_of_range_fails`.
+- All checks re-verified after the change: 106/106 tests, 5 `--check` modes green, coverage 91% (gate 80%). If the user's browser still shows the old strings, it is a stale cache — hard-refresh.
+
+*Addendum end — 2026-08-07.*

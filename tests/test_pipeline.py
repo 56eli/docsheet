@@ -1734,6 +1734,57 @@ class DefensiveDepthTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "has a missing work_id"):
             bcp.validate_work_family_coverage([item])
 
+    def test_filename_proposal_group_coherence_fails(self) -> None:
+        """A filename-proposal row may not join another title's part group.
+
+        Regression guard for the 2026-08-07 Volume-Series fold (UUIDs 213/214
+        were reviewed into Volume V's part set as ``[4/5]``/``[5/5]`` and
+        UUIDs 206/207 into Volume II's ``[3/4]``/``[4/4]``): the builder
+        applies the reviewed CSV verbatim, so incoherent part groups must
+        fail the build instead of silently minting nonsense filenames.
+        """
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "filename_proposal_YYYYMM.csv"
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            for row in rows:
+                if row["uuid"] == "213":
+                    # Reproduce the historical fold: the Volume VI row joins
+                    # the Volume V part set as part 4 of 5.
+                    row["clean_title"] = "Volume V Undoing the Barriers to Spiritual Progress"
+                    row["part_index"] = "4"
+                    row["part_total"] = "5"
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "not derived from its own title"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
+    def test_filename_proposal_part_index_out_of_range_fails(self) -> None:
+        """part_index may never exceed part_total in the reviewed proposal."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            path = sandbox / "data" / "filename_proposal_YYYYMM.csv"
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            for row in rows:
+                if row["uuid"] == "1":
+                    row["part_index"] = "4"  # part_total is 3
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "exceeds part_total"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
 
 class RetiredVocabularyTests(unittest.TestCase):
     """The deprecated medium item types (audio/video) were retired 2026-08-03.
