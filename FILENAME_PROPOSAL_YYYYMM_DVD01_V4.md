@@ -98,6 +98,30 @@ A post-PR audit found a v4 data-entry/grouping drift in `data/filename_proposal_
 
 A regression test now pins these Volume filename groups so adjacent volumes cannot be silently merged again.
 
+## 2026-08-07 Date-parenthetical strip (second session pass)
+
+Owner feedback: proposed filenames must not repeat the month-year inside
+brackets when the `YYYY-MM - ` prefix already carries it. Applied to the
+reviewed `data/filename_proposal_YYYYMM.csv` (clean_title + filenames):
+
+- `Become That Which You Are (June 2004)` → `2004-06 - Become That Which You Are [1-3].mp4` (3 parts)
+- `Love is a Way of Being (January 2004)` → `2004-01 - Love is a Way of Being [1-3].mp4` (3 parts)
+- `Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)` → `2003 - ...Oxford.mp4`
+- `Live Life As A Prayer (Audio)` → `2006 - Live Life As A Prayer.m4b` (audiobook label stripped; `.m4b` indicates — extends the v4 audiobook-label rule to `(Audio)`)
+- `Unity Church of Sedona 2005 March (CD)` → `2005-03 - Unity Church of Sedona (CD).mp3` (date words moved to the prefix; month title-derived, same evidence as the June/January rows)
+- `Unity Church of Sedona 2006 June (CD)` → `2006-06 - Unity Church of Sedona (CD).mp3`
+
+Kept (disambiguators or non-date labels): `Permanent Inner Peace (2012)` /
+`What is Real Success? (2012)` **pending the 281↔312 / 284↔313 duplicate-pair
+ruling** (the legacy archive rows 281/284 and the promoted Veritas product
+rows 312/313 are the same 2012 Discussion Series talks; stripping the
+parenthetical would collide with the legacy rows' filenames), plus
+`Book of Slides (The Complete Collection)`, `Truth vs. Falsehood: ... (CD & DVD set)`.
+
+Rule for future edits: a clean_title parenthetical `(YYYY)` or `(Month YYYY)`
+that duplicates the row's own year/month must be stripped unless stripping
+would collide with another row's filename (then it is the disambiguator).
+
 ## Remaining open for Volume Series
 
 - Exact recording years for Volume Series pre-2000 need verification via Veritas archives or VHS tape dates. Owner ruling 2026-08-04: “do not name any if cannot name all” → master year blank, no catalogue codes, filename no year prefix (`Volume I Power vs Force [1-2].mp4`). Better than incorrect 2007 listing date or partial 1995-1999 estimates.

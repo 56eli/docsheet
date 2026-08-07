@@ -3218,11 +3218,11 @@
     "month": "06",
     "format": "DVD",
     "title": "Become That Which You Are (June 2004) PART1",
-    "clean_title": "Become That Which You Are (June 2004)",
+    "clean_title": "Become That Which You Are",
     "part_index": "1",
     "part_total": "3",
-    "proposed_filename": "2004-06 - Become That Which You Are (June 2004) [1-3].mp4",
-    "proposed_filename_display": "2004-06 - Become That Which You Are (June 2004) [1/3].mp4"
+    "proposed_filename": "2004-06 - Become That Which You Are [1-3].mp4",
+    "proposed_filename_display": "2004-06 - Become That Which You Are [1/3].mp4"
   },
   {
     "uuid": "216",
@@ -3233,11 +3233,11 @@
     "month": "06",
     "format": "DVD",
     "title": "Become That Which You Are (June 2004) PART2",
-    "clean_title": "Become That Which You Are (June 2004)",
+    "clean_title": "Become That Which You Are",
     "part_index": "2",
     "part_total": "3",
-    "proposed_filename": "2004-06 - Become That Which You Are (June 2004) [2-3].mp4",
-    "proposed_filename_display": "2004-06 - Become That Which You Are (June 2004) [2/3].mp4"
+    "proposed_filename": "2004-06 - Become That Which You Are [2-3].mp4",
+    "proposed_filename_display": "2004-06 - Become That Which You Are [2/3].mp4"
   },
   {
     "uuid": "217",
@@ -3248,11 +3248,11 @@
     "month": "06",
     "format": "DVD",
     "title": "Become That Which You Are (June 2004) PART3",
-    "clean_title": "Become That Which You Are (June 2004)",
+    "clean_title": "Become That Which You Are",
     "part_index": "3",
     "part_total": "3",
-    "proposed_filename": "2004-06 - Become That Which You Are (June 2004) [3-3].mp4",
-    "proposed_filename_display": "2004-06 - Become That Which You Are (June 2004) [3/3].mp4"
+    "proposed_filename": "2004-06 - Become That Which You Are [3-3].mp4",
+    "proposed_filename_display": "2004-06 - Become That Which You Are [3/3].mp4"
   },
   {
     "uuid": "218",
@@ -3263,11 +3263,11 @@
     "month": "01",
     "format": "DVD",
     "title": "Love is a Way of Being (January 2004) PART1",
-    "clean_title": "Love is a Way of Being (January 2004)",
+    "clean_title": "Love is a Way of Being",
     "part_index": "1",
     "part_total": "3",
-    "proposed_filename": "2004-01 - Love is a Way of Being (January 2004) [1-3].mp4",
-    "proposed_filename_display": "2004-01 - Love is a Way of Being (January 2004) [1/3].mp4"
+    "proposed_filename": "2004-01 - Love is a Way of Being [1-3].mp4",
+    "proposed_filename_display": "2004-01 - Love is a Way of Being [1/3].mp4"
   },
   {
     "uuid": "219",
@@ -3278,11 +3278,11 @@
     "month": "01",
     "format": "DVD",
     "title": "Love is a Way of Being (January 2004) PART2",
-    "clean_title": "Love is a Way of Being (January 2004)",
+    "clean_title": "Love is a Way of Being",
     "part_index": "2",
     "part_total": "3",
-    "proposed_filename": "2004-01 - Love is a Way of Being (January 2004) [2-3].mp4",
-    "proposed_filename_display": "2004-01 - Love is a Way of Being (January 2004) [2/3].mp4"
+    "proposed_filename": "2004-01 - Love is a Way of Being [2-3].mp4",
+    "proposed_filename_display": "2004-01 - Love is a Way of Being [2/3].mp4"
   },
   {
     "uuid": "220",
@@ -3293,11 +3293,11 @@
     "month": "01",
     "format": "DVD",
     "title": "Love is a Way of Being (January 2004) PART3",
-    "clean_title": "Love is a Way of Being (January 2004)",
+    "clean_title": "Love is a Way of Being",
     "part_index": "3",
     "part_total": "3",
-    "proposed_filename": "2004-01 - Love is a Way of Being (January 2004) [3-3].mp4",
-    "proposed_filename_display": "2004-01 - Love is a Way of Being (January 2004) [3/3].mp4"
+    "proposed_filename": "2004-01 - Love is a Way of Being [3-3].mp4",
+    "proposed_filename_display": "2004-01 - Love is a Way of Being [3/3].mp4"
   },
   {
     "uuid": "221",
@@ -3308,11 +3308,11 @@
     "month": "",
     "format": "",
     "title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
-    "clean_title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
+    "clean_title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2003 - Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003).mp4",
-    "proposed_filename_display": "2003 - Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003).mp4"
+    "proposed_filename": "2003 - Progressive Levels of Consciousness - A Special Talk Presented in Oxford.mp4",
+    "proposed_filename_display": "2003 - Progressive Levels of Consciousness - A Special Talk Presented in Oxford.mp4"
   },
   {
     "uuid": "222",
@@ -5093,11 +5093,11 @@
     "month": "",
     "format": "audiobook",
     "title": "Live Life As A Prayer (Audio)",
-    "clean_title": "Live Life As A Prayer (Audio)",
+    "clean_title": "Live Life As A Prayer",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2006 - Live Life As A Prayer (Audio).m4b",
-    "proposed_filename_display": "2006 - Live Life As A Prayer (Audio).m4b"
+    "proposed_filename": "2006 - Live Life As A Prayer.m4b",
+    "proposed_filename_display": "2006 - Live Life As A Prayer.m4b"
   },
   {
     "uuid": "344",
@@ -5255,14 +5255,14 @@
     "item_type": "lecture",
     "series": "On The Road Talk Series",
     "year": "2005",
-    "month": "",
+    "month": "03",
     "format": "CD",
     "title": "Unity Church of Sedona 2005 March (CD)",
-    "clean_title": "Unity Church of Sedona 2005 March (CD)",
+    "clean_title": "Unity Church of Sedona (CD)",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2005 - Unity Church of Sedona 2005 March (CD).mp3",
-    "proposed_filename_display": "2005 - Unity Church of Sedona 2005 March (CD).mp3"
+    "proposed_filename": "2005-03 - Unity Church of Sedona (CD).mp3",
+    "proposed_filename_display": "2005-03 - Unity Church of Sedona (CD).mp3"
   },
   {
     "uuid": "355",
@@ -5270,14 +5270,14 @@
     "item_type": "lecture",
     "series": "On The Road Talk Series",
     "year": "2006",
-    "month": "",
+    "month": "06",
     "format": "CD",
     "title": "Unity Church of Sedona 2006 June (CD)",
-    "clean_title": "Unity Church of Sedona 2006 June (CD)",
+    "clean_title": "Unity Church of Sedona (CD)",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2006 - Unity Church of Sedona 2006 June (CD).mp3",
-    "proposed_filename_display": "2006 - Unity Church of Sedona 2006 June (CD).mp3"
+    "proposed_filename": "2006-06 - Unity Church of Sedona (CD).mp3",
+    "proposed_filename_display": "2006-06 - Unity Church of Sedona (CD).mp3"
   },
   {
     "uuid": "356",
