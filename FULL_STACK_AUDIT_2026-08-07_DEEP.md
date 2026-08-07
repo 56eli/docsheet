@@ -1,5 +1,7 @@
 # Full-Stack Deep Audit — 2026-08-07
 
+> **PM refresh (2026-08-07, end-of-day, branch `arena/019fdd68-docsheet`; owner directive: "reaudit the project"):** Executive Summary, Repo Layout, Current Verified State, Pipeline Deep Dive, and Reproduction Commands below were **re-executed against committed HEAD** after the day's rulings (309→221 duplicate merge, schema drops, flip-both sync, filename v4.1). All PM numbers below are live-verified; older narrative sections and dated morning banners are kept as history. PM changes are itemized in the new [PM Session Changelog](#pm-session-changelog-2026-08-07) section.
+>
 > **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 104/104 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
 >
 > **2026-08-07 session sync:** current-state counts below were refreshed post-PR #24/#25 — catalogue codes **280** (was 271), source overrides **127** (was 109), rendered relationships **336** (328 derived + 8 related), streaming refs **59 masters** (was 56), year blanks **18** (was 31), format blanks **2** (was 8), tests **106** (91% coverage). Later same day: legacy duplicate rows 281/284 excluded (same 2012 Discussion Series talks as promoted masters 312/313, owner ruling) → master **356**, Everything **376**, exclusions **71**, codes **278**. Final state 2026-08-07: the 7 annual Highlights products promoted to curated master (362–368, series **Lecture Highlights**, year from title, filename = title) → master **363**, Everything **376** (candidate_veritas 8 → 1), relationships **343** (335 derived + 8), taxonomy **186** (176 approved), works **206/339**, tests **107**. Day-end: discovery/Audible lanes deduplicated and the 3 unique programs promoted (**369 The Discovery ©2007, 370 The Ultimate David Hawkins Library ©2016 — series Nightingale-Conant; 371 OM ©2017, Media Miscellaneous**) → master **366** (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped), Everything **371** (discovery 0, audible 0; healing matched to 328, Naked excluded multi-contributor), overrides **132**, promoted candidates **39**, works **209/342**, codes **280** (the two lecture-typed NC programs carry codes). Day-end: **record 246 ruled a duplicate of master 329 and excluded** (no untyped records remain); HayHouse lane ruled (Live Life As A Prayer = 343, Letting Go Journal/Deck excluded as merchandise, **How to Surrender to God promoted as master 372** — Hay House series, ©2019, audiobook) → master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other), Everything **366** (all candidates ruled out; Map poster 1560 ruled excluded_related_material), overrides **133**, codes **281**, exclusions **72**, candidates **40**; all 16 Office Series lectures standardized to year **198X** (`LECTURE-198X-001` through `016`); UUID 331 series corrected to `Books` and disambiguated from UUID 320 (`[1-2]`/`[2-2]` removed); completed human-readable row-by-row filename audit (3 Satsang month mismatches and trailing dots resolved). See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` for the complete post-PR #26 verification report.
@@ -12,107 +14,118 @@
 
 ## Executive Summary
 
+> Refreshed end-of-day 2026-08-07 PM (owner re-audit directive). Every number live-verified against `docs/catalogue-meta.json`, the committed CSVs, and a fresh test/coverage run on `arena/019fdd68-docsheet`.
+
 **Verdict: HEALTHY & VERIFIED, with known, documented gaps that are intentional review boundaries, not drift.**
 
-- Pipeline deterministic, 5 `--check` modes green (pandas missing in base image is expected sandbox trap, venv run proves green)
-- Tests: **107/107 pass**, coverage **91% total, every module ≥89%** (gate 80%)
-- Current curated master: **366 records** = 310 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled duplicate of master 329 and excluded 2026-08-07)
-- Everything view: **366 rows** = 366 master + 0 candidate_veritas (*Map of Consciousness®* poster ruled excluded_related_material) + 0 discovery + 0 hayhouse + 0 audible
+- Pipeline deterministic, **6 `--check` modes green** (pandas missing in base image is expected sandbox trap, venv run proves green)
+- Tests: **112/112 pass**, coverage **91% total, every module ≥ 88%** (floor `build_catalogue_pages.py`; gate **85%**, raised from 80 same day)
+- Current curated master: **365 records** (24 columns) = 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (246 → duplicate of 329 excluded; 309 → duplicate of 221 un-minted, both ruled same day)
+- Everything view: **365 rows** = 365 master + 0 candidates of any kind
 - Catalogue codes: **281** distinct (lecture/discussion only, books never coded)
-- Exclusions: **72**, source overrides: **133 approved** (73 veritas, 27 hayhouse, 10 audible, 5 NC, 18 Amazon)
-- Veritas inventory: **191 products** (179 matched_by_primary_source, 6 matched_by_title, 5 excluded_related_material, 1 matched_by_normalized_title, 0 unreviewed)
-- HayHouse: **24** (22 matched_by_title, 2 excluded_related_material, 0 unreviewed), Audible: **26** (24 matched_by_title, 2 excluded_related_material, 0 unreviewed)
-- Product relationships: **343 rendered** = **335 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
+- Exclusions: **72**, source overrides: **134 approved** (74 veritas, 26 hayhouse, 18 Amazon, 10 audible, 6 NC)
+- Veritas inventory: **191 products** (182 matched_by_primary_source, 3 matched_by_title, 5 excluded_related_material, 1 matched_by_normalized_title, 0 unreviewed)
+- HayHouse: **29** reviewed rows, Audible: **26** reviewed rows
+- Product relationships: **343 rendered** = **336 derived primary** (auto-derived from master URL) + **7 related_material** (hand-maintained CSV)
 - Series compilations: **7** reviewed
-- Work families: **209 works / 342 members**, approved, coverage **366/366**
-- Edition layer: **24 candidates / 24 promotions / 24 approved** (minted as master UUIDs 320-343 etc), D3 applied (audible URLs moved off book rows)
-- Series taxonomy: **186 matched** → **176 approved / 0 proposed / 10 rejected**, queue **6** (conflict evidence guardrails, all ruled but lingering for visibility)
-- Filename proposal: **366 unique**, safe `[1-3]` / display `[1/3]`, grouped by (year_month, clean_title, format), Volume Series canonicalized, Satsang month stripped, audiobook label removed
-- Frontend: Tabulator 6.5.2 pinned + SRI, CSP `sha256-u2/...` correct, measured-width engine across all rows, badges, filters, dark mode, `.nojekyll` present
-- CI: green on main, 5 checks + unittest + coverage + JS syntax + Playwright
+- Work families: **208 works / 341 approved memberships**, `work_id` coverage **365/365**
+- Edition layer: **24/24 promoted** (minted master UUIDs 320-343 etc), D3 applied
+- Series taxonomy: **177 approved / 0 proposed / 9 rejected**, queue **1** (product 50521 R3, last standing item)
+- Filename proposal **v4.1**: **365 rows = 365 unique safe = 365 unique display**, carrier-suffix rule (`(DVD)`/`(streaming)`) resolves same-talk-two-carriers collisions; **global-uniqueness guard** in the builder fails on any seeded duplicate
+- Schema rulings same day: master 29 → 25 → **24 columns** (4 always-empty location/reference columns dropped, then `title_source` after the redundancy review); `docs/meta.json` stopped (never consumed); Original view trimmed 13 → 8 columns
+- New tool same day: `sync_inventory_mirrors.py` (96% covered) re-derives inventory mirror columns from the master and refuses to write on URL-evidence contradictions
+- Frontend: Tabulator 6.5.2 pinned + SRI, CSP correct, measured-width engine, badges, filters, dark mode, `.nojekyll` present
+- CI: green on `main`, 6 checks + unittest + 85% coverage gate + JS syntax + Playwright (workflow file owner-managed — the Arena app cannot push `.github/workflows/*`)
 
 **No blocking defect found.** Open items are P1/P2 review queues, not pipeline breakage.
 
 ## Repo Layout
 
+> Refreshed end-of-day 2026-08-07 PM.
+
 ```
 hawkins archive clone - Sheet1.csv  (374 raw rows, source of truth, header=1)
-migration_review_ledger.csv         (374 rows: 305 item / 69 provenance)
+migration_review_ledger.csv         (374 rows: 302 item, 31 blank_separator, 21 series_context,
+                                     10 research_note, 5 source_context, 4 duplicate, 1 needs_review)
 data/
-  research_master_draft.{csv,json}  (358 curated master)
-  research_master_exclusions.csv    (69)
-  research_master_source_overrides.csv (127 approved)
-  manual_master_candidates.csv      (29, all promoted)
-  manual_candidate_promotions.csv   (29 approvals -> UUIDs 353-361 etc)
+  research_master_draft.{csv,json}  (365 curated master, 24 columns)
+  research_master_exclusions.csv    (72)
+  research_master_source_overrides.csv (134 approved)
+  manual_master_candidates.csv      (39, all promoted)
+  manual_candidate_promotions.csv   (39 approvals -> UUIDs 353-372 etc)
   edition_candidates/promotions     (24/24)
-  work_families.csv                 (334 rows, 201 works)
+  work_families.csv                 (341 memberships, 208 works)
   veritas_official_products.csv     (191)
-  veritas_mapping_decisions.csv     (18 approved, overlay)
-  veritas_streaming_urls.csv        (36 approved -> 59 masters ref1)
-  filename_proposal_YYYYMM.csv      (358)
-  series_category_mapping.csv       (179)
-  series_taxonomy_review_queue.csv  (6)
-  product_relationships.csv         (8 related_material only)
+  veritas_mapping_decisions.csv     (10 overlay rows — non-primary outcomes only)
+  veritas_streaming_urls.csv        (36 approved -> 64 masters ref1)
+  filename_proposal_YYYYMM.csv      (365 — v4.1 carrier suffix)
+  series_category_mapping.csv       (186: 177 approved / 9 rejected)
+  series_taxonomy_review_queue.csv  (1)
+  product_relationships.csv         (7 related_material only)
   series_compilation_relationships.csv (7)
-  official_discovery_queue.csv      (4 NC)
+  official_discovery_queue.csv      (0 pending)
   audible/hayhouse/international queues
 docs/
-  master.json (378 Everything rows)
+  master.json (365 Everything rows)
   catalogue-meta.json
-  18 other review JSONs + data.json/meta.json
+  18 other review JSONs + data.json (meta.json stopped 2026-08-07)
   index.html / app.js / style.css / .nojekyll
 ```
 
 Generators:
-- `process_data.py` → `docs/data.json/meta.json` (pass-through, header=1)
-- `build_research_master.py` → master draft + exclusions (includes streaming apply, filename apply, format inference 104, title cleanup 13, series approvals 316, work families 334)
-- `build_catalogue_pages.py` → 20 JSONs + meta (derives primary relationships)
-- `map_series_taxonomy.py` → series mapping + queue (preserves approved/rejected overlay, validates fan-out conflicts)
-- `fetch_veritas_catalogue.py` → candidate inventory + diff artifact (review-only, never auto-commit, retry ladder MAX_PAGE_ATTEMPTS=4)
-- `reconcile_research_master.py` → `RECONCILIATION_REPORT.md` read-only
+- `process_data.py` (148 lines) → `docs/data.json` (pass-through, header=1; meta.json emit removed)
+- `build_research_master.py` (1486 lines) → master draft + exclusions (streaming apply, filename apply + v4.1 global-uniqueness guard, format inference, title cleanup, series approvals, work families 341)
+- `build_catalogue_pages.py` (904 lines) → 20 JSONs + catalogue-meta (derives primary relationships)
+- `map_series_taxonomy.py` (337 lines) → series mapping + queue (preserves approved/rejected overlay, validates fan-out conflicts)
+- `fetch_veritas_catalogue.py` (375 lines) → candidate inventory + diff artifact (review-only, never auto-commit, retry ladder MAX_PAGE_ATTEMPTS=4)
+- `reconcile_research_master.py` (283 lines) → `RECONCILIATION_REPORT.md` read-only
+- `sync_inventory_mirrors.py` (168 lines, new 2026-08-07) → re-derives inventory mirror columns from the master; refuses to write on URL-evidence contradictions (owner-ruling territory)
 
 Shared: `_common.py` (read_csv, render_csv, json_text, ISO_DATE)
 
 ## Current Verified State — Re-executed
 
+> Re-executed end-of-day 2026-08-07 PM against committed `arena/019fdd68-docsheet` (this table supersedes every earlier same-day table in this file).
+
 | Metric | Count | Notes |
 |---|---:|---|
 | Raw CSV rows | 374 | header=1 skips Google Sheets title |
-| Ledger dispositions | 305 item, 69 excluded, 31 blank_separator, 21 series_context, 10 research_note, 5 source_context, 1 duplicate, 1 needs_review | ledger hand-maintained |
-| Curated master | 358 | 307 lecture / 40 book / 10 discussion / 1 untyped (246) |
-| Year blank | 18 | 13 Volume Series (blank per owner, pre-2000 unknown) + 5 under investigation (Verification of Spiritual Realities 230–232, 246, God is Hidden 268) — was 31 pre-PR24 (11 edition audiobook years + 2 Office outliers fixed) |
-| Format blank | 2 | Progressive Levels of Consciousness – Oxford 2003 (221) + untyped 246 — same set as year-blank overlap (was 8 pre-PR24) |
-| Proposed filename coverage | 358/358 | unique 358 safe, 358 display |
-| Work_id coverage | 358/358 | 201 works, 334 members |
-| Catalogue codes | 280 | distinct, lecture/discussion only, Volume stripped -> no codes |
-| Master exclusions | 69 | |
-| Source overrides | 127 approved | 72 veritas, 26 hayhouse, 7 audible, 4 NC (327-330), 18 Amazon |
-| Manual candidates | 29 promoted / 0 pending | 6 original Veritas + 9 Satsang + 3 academic + rest |
+| Ledger dispositions | 302 item, 31 blank_separator, 21 series_context, 10 research_note, 5 source_context, 4 duplicate, 1 needs_review | ledger hand-maintained |
+| Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **24 columns**, no untyped records |
+| Year blank | 17 | 13 Volume Series (blank per owner, pre-2000 unknown) + 4 under investigation (Verification of Spiritual Realities 230–232, God is Hidden 268) |
+| Format blank | 0 | fully populated (221 received its format during the 2026-08-07 Oxford rulings) |
+| Proposed filename coverage | 365/365 | **365 unique safe, 365 unique display** (v4.1 carrier suffix + global-uniqueness guard, 2026-08-07 PM) |
+| Work_id coverage | 365/365 | 208 works, 341 approved memberships |
+| Catalogue codes | 281 | distinct, lecture/discussion only, Volume stripped -> no codes |
+| Master exclusions | 72 | |
+| Source overrides | 134 approved | 74 veritas, 26 hayhouse, 18 Amazon, 10 audible, 6 NC |
+| Manual candidates | 39 promoted / 0 pending | |
 | Manual leads | 1 | outside master |
 | Edition candidates/promotions | 24/24 | all promoted, minted UUIDs 320-343 etc, D3 applied |
-| Veritas products | 191 | 172 primary, 7 compilation, 6 title, 4 excluded, 1 normalized, 1 unreviewed (1560 Map poster) |
-| HayHouse | 24 | 20 matched, 4 unreviewed |
-| Audible | 26 | 17 matched, 6 unreviewed, 3 possible |
-| Product relationships CSV | 8 | related_material only, primary 328 derived |
-| Rendered relationships | 336 | 328 derived + 8 related |
+| Veritas products | 191 | 182 primary, 3 title, 5 excluded, 1 normalized, 0 unreviewed |
+| HayHouse | 29 | reviewed rows |
+| Audible | 26 | reviewed rows |
+| Product relationships CSV | 7 | related_material only, primary 336 derived |
+| Rendered relationships | 343 | 336 derived + 7 related |
 | Series compilations | 7 | Highlights annual |
-| Series mapping | 179 | 169 approved / 10 rejected / 0 proposed |
-| Taxonomy queue | 6 | conflict guardrails, all ruled |
-| Filename proposal | 358 | unique |
-| Streaming URLs | 36 approved | -> 59 masters have reference_url_1 |
-| Everything view | 378 | 358 master + 8 veritas candidate (7 Highlights + 1 merchandise) + 4 discovery + 4 hayhouse + 4 audible |
+| Series mapping | 186 | 177 approved / 9 rejected / 0 proposed |
+| Taxonomy queue | 1 | product 50521 R3 — last standing item |
+| Filename proposal | 365 | unique (v4.1) |
+| Streaming URLs | 36 approved | -> 64 masters have reference_url_1 |
+| Everything view | 365 | 365 master + 0 candidates of any kind |
 | Original source rows | 374 | |
+| Test suite | 112 tests | coverage 91% total, floor module 88%, gate 85 |
 
 All counts from `docs/catalogue-meta.json` match docs.
 
 ## Pipeline Deep Dive
 
-### `build_research_master.py` (1278 stmts, 670 measured)
+### `build_research_master.py` (1486 lines, 798 stmts, 89% coverage — PM refresh)
 - Helpers: `read_csv`, `index_csv`, `veritas_products_by_id/by_url`, `require_columns` — deduped into `_common.py`
 - Compact ID assignment: stable 1..10000 by raw_row_number, retained from committed draft
 - Ledger → items: title cleaning (mp4, -converted, numeric prefix, Volume II->I fix for raw 224), notes, reference URLs
 - Promotions: manual candidates (UUID explicit), edition promotions (UUID explicit, D3 audible URL move off book row)
-- Applies in order: source overrides (including candidate_keyed for promoted rows 316/318 etc) → streaming (59 masters) → filename proposal (358) → backfill months (Veritas published_date, year-matching guard prevents 2014 leak into 2003-2005) → format inference (104 inferred, exact URL first then pid fallback, book category guard) → title hygiene (13 cleaned, normalized equality guard, legacy_title preserved) → series approvals (316 approved mappings, 3 values changed) → work families (334) → integrity (UUID unique, title non-empty, work_id w- prefix, only 246 may be untyped)
+- Applies in order: source overrides (including candidate_keyed for promoted rows 316/318 etc) → streaming (36 approved → 56 applications → 64 masters carry reference_url_1) → filename proposal (365, **v4.1 carrier suffix + global-uniqueness guard**) → backfill months (Veritas published_date, year-matching guard prevents 2014 leak into 2003-2005) → format inference (exact URL first then pid fallback, book category guard) → title hygiene (6 cleaned against official listings, normalized equality guard, legacy_title preserved) → series approvals (327 approved mappings, 3 values changed) → work families (341 memberships) → integrity (UUID unique, title non-empty, work_id w- prefix, **zero untyped records allowed**)
 - Validates manual candidates (promotion_status must match promotion registry), edition candidates (work_id must exist in families, role in set, matched_master_uuid exists, carrier format, year YYYY, owned bool, review_status proposed/reviewed_candidate, ISO dates, evidence, source_name veritas/audible/hayhouse, inventory exact URL/title match)
 - Writes CSV/JSON + exclusions, `csv_text` uses `render_csv` with LF.
 
@@ -123,7 +136,7 @@ Invariants enforced:
 - `EDITION_FORMATS` = DVD/CD/audiobook/book/streaming
 - Duplicate source override detection, URL HTTPS, target_field whitelist
 
-### `build_catalogue_pages.py` (896 stmts, 311 measured)
+### `build_catalogue_pages.py` (904 lines, 314 stmts, 88% coverage — PM refresh)
 - Reads master + all review CSVs
 - Validates work family coverage (every master needs work_id) → prevents orphan
 - Validates veritas inventory: `normalized_title_match_count == len(uuids)` and `matched_master_titles == master titles join` and unknown UUIDs fail
@@ -136,7 +149,7 @@ Invariants enforced:
 - Record_type coverage guard: sum(everything_record_types) must equal len(items)
 - Outputs 18 JSONs + meta with counts
 
-### `map_series_taxonomy.py` (337 stmts)
+### `map_series_taxonomy.py` (337 lines, 187 stmts, 89% coverage — PM refresh)
 - Splits official_categories by ";"
 - Dominance rules: R1 Lecture Highlights > annual, R2 Satsang + Highlights conflict queued, R2 Satsang years subcategory, R5 Six Book > 2002 annual, R3 single annual → vocab, multiple annual queued, R4 On The Road, R6 Office > Media Miscellaneous, R7 Card Decks + collection order Books > Discussion > Volume > Media Miscellaneous, R8 fallback only queued, R9 unknown/unresolved queued
 - Vocabulary: DIRECT_SERIES, ANNUAL_SERIES (10 yearly lecture series), COLLECTION_SERIES
@@ -145,7 +158,12 @@ Invariants enforced:
 - Fan-out guard: one master ID cannot get two different proposed series from multiple products → conflict, all involved queued; two conflicting approved fail outright
 - Invariants: duplicate pid fails, status in set, approved needs ISO date + notes, dominant must be among official categories, approved needs mapped_series, mapped_series must follow vocabulary for dominant
 
-### `fetch_veritas_catalogue.py` (373 stmts)
+### `fetch_veritas_catalogue.py` (375 lines, 211 stmts, 95% coverage — PM refresh)
+
+### `sync_inventory_mirrors.py` (168 lines, 89 stmts, 96% coverage — new 2026-08-07 PM)
+- Re-derives the Veritas inventory's mirror columns from the master: `matched_master_uuids` for `matched_by_primary_source` rows (authoritative join = master `source_url_veritas`, same join as `derive_primary_relationships`), `matched_master_titles` (` | `-joined), `normalized_title_match_count` for every row
+- Reviewed columns (`mapping_status`, `review_notes`, non-primary associations) are never touched; **refuses to write** on unknown IDs or URL-evidence contradictions of reviewed non-primary cells
+- `--check` wired into the standard verification block; first run fixed 2 stale mirrors (55473 → `225; 311`, 54219 → `226; 227; 310`)
 - API: `https://veritaspub.com/wp-json/wp/v2/product?_fields=id,date,link,title,product_cat` + `product_cat?_fields=id,name` paged per_page 100
 - get_page retry ladder 4 attempts, HTML detection (non-JSON preview), non-list check, URLError/HTTPError, 400 on page>1 = terminal
 - category_names: IDs → names, unresolved marker `unresolved-category-{id}`
@@ -154,7 +172,7 @@ Invariants enforced:
 - Overlay decisions: DECISION_REQUIRED_COLUMNS, DECISION_STATUSES (unique_item, compilation_or_new_edition, excluded_related_material, matched_by_title, matched_by_normalized_title), ISO dates, decision_reason non-empty, uuids valid, titles exact match, match statuses require/ forbid uuids, count recomputed
 - Writes LF, CLI --check vs custom --output mutual exclusion
 
-### Frontend (`docs/index.html` 157 lines, `app.js` 926, `style.css` 794)
+### Frontend (`docs/index.html` 157 lines, `app.js` 928, `style.css` 793 — PM refresh)
 - Top bar: search (debounced 250ms), clear, export CSV (whole view, rowRange all), dark toggle
 - Tabs: 15 views (Everything + Review Overview + 9 review sheets + Product Relationships + Series Compilations + International + Publishers + Original)
 - View summary: rows, type, export name, description
@@ -171,7 +189,7 @@ Invariants enforced:
 - Security: CSP `default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-u2/u4gxax738T0FZixKekRcJpSj2LbWauC5THe95guI='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:` — hash verified matches inline dark-mode script; SRI pinned for Tabulator CSS+JS; no innerHTML injection (footer uses textContent, drawer uses textContent + anchor)
 - `.nojekyll` present to bypass Jekyll on large JSONs
 
-### Tests (`tests/test_pipeline.py` 1779 lines)
+### Tests (`tests/test_pipeline.py` 2011 lines — PM refresh)
 - Sandbox per test (fresh copy of all inputs, drop edition-scoped overrides when edition layer replaced)
 - Integration: write → check → tamper for each generator, CSV determinism (two runs identical), CLI smoke, reduced pending view
 - Unit: taxonomy dominance matrix, norm/title_date_key/satsang/category_names/split_uuids, build_inventory primary/satsang/normalized/unreviewed, mapping decisions validation, inventory validation (count, unknown uuid, title mismatch), everything_record defaults, record_type coverage, format inference slug signals + exact URL lookup + category guard + never overwrite, compact ID, json_text shape
@@ -188,9 +206,9 @@ Invariants enforced:
 - Defensive depth: edition UUID stability, source override idempotency, missing column clear error, untyped allowlist 246, malformed work_id, missing work_id in catalogue build
 - Retired vocabulary: CONTENT_ITEM_TYPES excludes audio/video, committed inputs clean except discovery queue triage, manual candidate audio fails, ledger video fails
 
-Playwright (`tests/column-layout.spec.js`): Work column parked between Legacy ID and Location Physical, measured width, numeric sort asc 1/2/3 desc 358/357
+Playwright (`tests/column-layout.spec.js`): Work column parked right after Legacy ID (PM refresh: Location Physical was dropped from the schema), measured width, numeric sort asc/desc
 
-Total: 104 tests, 92% coverage
+Total: **112 tests, 91% coverage, gate 85** (PM refresh)
 
 ## Data Quality Findings
 
@@ -360,7 +378,7 @@ RECONCILIATION_REPORT.md intentionally shows 53 draft-only records (edition rows
 9. **Frontend**: vendor Tabulator locally to allow offline dev? Optional. Add test for .nojekyll presence (doc-currency).
 10. **CI**: consider PAT for update_spreadsheet workflow to trigger Pages deploy, or document manual re-run requirement in INSTRUCTIONS.
 
-## Reproduction Commands (all green)
+## Reproduction Commands (all green — PM refresh)
 
 ```bash
 python3 -m venv /tmp/venv && /tmp/venv/bin/pip install -r requirements-dev.txt
@@ -368,14 +386,28 @@ python3 -m venv /tmp/venv && /tmp/venv/bin/pip install -r requirements-dev.txt
 /tmp/venv/bin/python build_catalogue_pages.py --check
 /tmp/venv/bin/python reconcile_research_master.py --check
 /tmp/venv/bin/python map_series_taxonomy.py --check
+/tmp/venv/bin/python sync_inventory_mirrors.py --check
 /tmp/venv/bin/python process_data.py --check
-/tmp/venv/bin/python -m unittest discover tests -v
-/tmp/venv/bin/coverage run -m unittest discover tests && /tmp/venv/bin/coverage report
+/tmp/venv/bin/python -m unittest discover tests -v        # 112/112
+/tmp/venv/bin/coverage run -m unittest discover tests && /tmp/venv/bin/coverage report   # 91%, gate 85
 node --check docs/app.js
 ```
 
+## PM Session Changelog (2026-08-07)
+
+Owner-directed rulings + hygiene executed on `arena/019fdd68-docsheet` after the morning audit. Each item links its memo/report; full session narration in `NEXT_AGENT_HANDOFF.md` §2026-08-07.
+
+1. **Duplicate merge 309 → 221** (owner Option A): Veritas product 53277's own description names Oxford — same talk as raw-derived 221; minted 309 un-minted, override moved product+streaming URLs onto 221. Master 366 → **365**. Memo: `archive/RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`.
+2. **Hygiene batch 1 (A+B)**: root Markdown 27 → 18 (9 executed docs archived, cross-references fixed); `data/year_provenance.csv` deleted, `YEAR_COLUMN_PROVENANCE.md` rewritten as policy doc; taxonomy queue confirmed *generated*, not a register.
+3. **Hygiene batch 2 (C+D)**: coverage gate 80 → **85**; handoff 572 → 258 lines, chronicle archived to `archive/HANDOFF_HISTORY.md`.
+4. **Hygiene batch 3 (E)**: new `sync_inventory_mirrors.py` mirror gate; first run fixed mirrors 55473 → `225; 311`, 54219 → `226; 227; 310`.
+5. **Flip-both ruling**: products 50411/1542 primary-matched to 286/331; stale 2026-08-03 decision rows deleted (decisions 12 → **10**); taxonomy 177/9, queue 4 → **1**; committed-state guard added.
+6. **Empty-column ruling**: 4 always-empty columns dropped (master 29 → 25 cols). Memo: `archive/RULING_PREP_EMPTY_COLUMNS.md`.
+7. **Redundancy pass 2 (3/3 approved)**: `title_source` dropped (evidence moved to `notes`; fetcher date extraction switched to `legacy_title`, behavior-neutral); `docs/meta.json` stopped; Original view 13 → 8 columns. Master → **24 columns**. Review: `archive/SCHEMA_REDUNDANCY_REVIEW.md`.
+8. **Filename v4.1**: carrier-suffix rule resolves the 225/311 `2003 - Devotion to Truth Talk.mp4` collision (`(DVD)` / `(streaming)`); **global-uniqueness guard** added to the builder; suite 110 → **112**.
+
 ## One-Sentence Summary
 
-The curated Hawkins archive pipeline is deterministically green post-PR #26 (366 master, 366 Everything, 107 tests, 91% coverage, all checks) with intentional review boundaries (17 year-blank, 0 format-blank, 0 untyped, 0 unreviewed candidates) and 100% work-family/series-taxonomy reconciliation.
+The curated Hawkins archive pipeline is deterministically green end-of-day 2026-08-07 (365 master × 24 columns, 365 Everything with 0 candidates, 112 tests, 91% coverage against an 85% gate, all 6 checks) with intentional review boundaries (17 year-blank, 0 format-blank, 0 untyped, 0 unreviewed candidates) and 100% work-family/series-taxonomy reconciliation.
 
-*End of deep audit 2026-08-07.*
+*End of deep audit 2026-08-07 (PM refresh).*

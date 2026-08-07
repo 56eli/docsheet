@@ -114,7 +114,10 @@ Review**, **Source Overrides**, **Official Discovery**, **New Work Review**
 Compilations**, and **Veritas Decisions** are separate sheets alongside the
 catalogue and official-product views. Reviewers can search, sort, export, and
 filter sheets with multiple review-status values without opening repository
-folders.
+folders. Two of these sheets (**Official Discovery** and **New Work Review**)
+are intentionally empty right now: every queued item has been ruled, and the
+sheets remain as standing **intake lanes** so any future Veritas catalogue
+refresh lands its unmatched products there instead of in the curated views.
 
 ## Current reviewed catalogue state
 
