@@ -5,10 +5,30 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-03.md](../FULL_STACK_AUDIT_2026-08-03.md), and the
+[FULL_STACK_AUDIT_2026-08-07_DEEP.md](../FULL_STACK_AUDIT_2026-08-07_DEEP.md), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
-- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` — comprehensive post-PR #26 system audit and verification report (2026-08-07); validates 366 master items, 0 untyped, 0 format blank, and recent rulings.
+- `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
+  final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07
+  hygiene checkpoint (kept for ruling rationale; not current state).
+- `SCHEMA_REDUNDANCY_REVIEW.md` — two-pass column/sheet redundancy audit
+  (2026-08-07); owner approved all three removals (title_source, meta.json,
+  Original-view empty columns); includes the documented keep-list.
+- `RULING_PREP_EMPTY_COLUMNS.md` — evidence + executed ruling (2026-08-07):
+  the four always-empty master columns were dropped from the schema after
+  showing no input could ever populate them.
+- `TITLE_HYGIENE_PROPOSAL.md`, `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md`,
+  `VERITAS_ARTIFACT_REVIEW.md`, `VERITAS_PRODUCT_MAPPING.md`,
+  `LECTURE_YEAR_INVESTIGATION.md`, `OFFICIAL_CATALOGUE_DISCOVERY.md`,
+  `GITHUB_PAGES_DEPLOYMENT_ANALYSIS.md`, `RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`,
+  `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md` — completed/executed documents
+  moved from the root in the 2026-08-07 hygiene triage (batch 1 of
+  `TEMP_RESPONSE_HYGIENE_2026-08-07.md`); kept for provenance, their findings
+  are implemented/closed.
+- `TEMP_RESPONSE_HYGIENE_2026-08-07.md` — hygiene/ledger/complexity assessment (2026-08-07): ranked improvement proposals (root-doc triage, year-mirror retirement, derivable inventory mirrors, coverage-gate raise, handoff checkpointing), with an "already clean, do not fix" list.
+- `TEMP_RESPONSE_TITLE_AUDIT_2026-08-07.md` — distributor title-alignment session (2026-08-07): 60 live-verified title corrections to official naming, the 50491 re-link 121→278, decision rules R1–R5, and the full change table.
+- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md` — post-PR #27 audit (2026-08-07); re-verified all catalogue counts, root-caused the red CI run on `main` to the stale Playwright candidate assertions (fixed data-driven), and corrected the 103-test/92%-coverage doc drift.
+- `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` — comprehensive post-PR #26 system audit and verification report (2026-08-07); validates 366 master items, 0 untyped, 0 format blank, and recent rulings. (Note: its "19 international queue rows" figure was stale — the queue holds 36 rows.)
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md`, `TEMP_RESPONSE_AUDIT_2026-08-07_SESSION.md` — earlier 2026-08-07 session logs and post-PR #24 check verifications.
 - `HANDOFF.md`, `PROJECT_STATE_AUDIT.md` — superseded status stubs (kept so old
   external references resolve).

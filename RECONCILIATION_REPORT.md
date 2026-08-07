@@ -10,13 +10,13 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 366 | 366 |
-| Research-master JSON records | 366 | 366 |
+| Research-master CSV records | 365 | 365 |
+| Research-master JSON records | 365 | 365 |
 | Research-master exclusion records | 72 | 72 |
-| Draft-only CSV records without a matching ledger `item` | 64 | 0 |
+| Draft-only CSV records without a matching ledger `item` | 63 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 366 | 366 |
+| `docs/master.json` / ledger-projected Everything records | 365 | 365 |
 
 The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
 
@@ -54,10 +54,9 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | OM | other | Promoted from official candidate manual-audible-om: Audible listing of the mantra recording 'OM' by Dr. Hawkins with a 300-year-old Tibetan bell (59 min, meditation; publisher Veritas Publishing; (c)2017 Institute for Spiritual Research (P)2022; live Audible page verified 2026-08-07). No existing master matches; unique recording promoted per owner ruling 2026-08-07. |
 | — | Orthomolecular Psychiatry: Treatment of Schizophrenia | book | Promoted from official candidate manual-academic-orthomolecular-1973: Co-authored with Linus Pauling (double Nobel laureate), W.H. Freeman 1973, 697 pages, ISBN 0716708981, early psychiatric academic work pre-dating spiritual corpus; listed in BookNotification, EverybodyWiki, Wellcome Collection; part of completeness audit for all Hawkins material ever produced. |
 | — | Peace is the Natural State | lecture | Promoted from official candidate manual-veritas-1814: Official page identifies an On-the-Road audio product. |
-| — | Permanent Inner Peace (2012) | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
+| — | Permanent Inner Peace | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
 | — | Power vs. Force (Audiobook) | book | Promoted edition audio of work w-power-vs-force from candidate edition-audible-pvf: Audible audiobook edition of the Power vs Force work; Audible inventory row matched_by_title. |
 | — | Power vs. Force Audio Book | book | Promoted edition audio of work w-power-vs-force from candidate edition-veritas-pvf-audiobook: Veritas product 1542; audiobook edition of the Power vs Force work; currently related_material on lecture 202 - REQUIRES RULING on family placement. |
-| — | Progressive Levels of Consciousness | lecture | Promoted from official candidate manual-veritas-53277: Official page identifies an On-the-Road UK talk available through streaming video. |
 | — | Qualitative and Quantitative Analysis and Calibration of the Level of Human Consciousness | book | Promoted from official candidate manual-academic-qualitative-1998: Doctoral dissertation published by Veritas Publishing 1998-01-31, 200 pages, spiral-bound, ISBN 0964326183; defines Scale of Consciousness; evidence: Amazon, Open Library OL11707875M, BooksRun; completeness audit. |
 | — | Satsang Series (Jan 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1304: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Satsang Series (Jul 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1310: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
@@ -83,14 +82,14 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | The Way to God: The Nature of Divinity vs. Religious Fallacy (Audiobook) | lecture | Promoted edition audio of work w-nature-of-divinity from candidate edition-audible-wtg-nature: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | The Wisdom of Dr. David R. Hawkins: Classic Teachings on Spiritual Truth and Enlightenment | book | Promoted from official candidate manual-veritas-53058: Official page identifies a book collecting ten core teachings and excerpts. |
 | — | Transcending the Levels of Consciousness (Audiobook) | book | Promoted edition audio of work w-transcending-the-levels from candidate edition-audible-transcending: Audible audiobook edition; Audible inventory row matched_by_title. |
-| — | Transcending the Levels of Consciousness Series: Perception (Audiobook) | lecture | Promoted edition audio of work w-tlc-perception from candidate edition-audible-tlc-perception: Audible audiobook edition; fuzzy title match to Perception vs Essence - VERIFY series part mapping. |
+| — | Transcending the Levels of Consciousness Series: Perception vs. Essence (Audiobook) | lecture | Promoted edition audio of work w-tlc-perception from candidate edition-audible-tlc-perception: Audible audiobook edition; fuzzy title match to Perception vs Essence - VERIFY series part mapping.; candidate_title aligned to official Audible listing title (2026-08-07 distributor-naming audit) |
 | — | Transcending the Mind Series: Emotions & Sensations (Audiobook) | lecture | Promoted edition audio of work w-emotions-sensations from candidate edition-audible-tms-emotions: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Transcending the Mind Series: Identification & Illusion (Audiobook) | lecture | Promoted edition audio of work w-identification-illusion from candidate edition-audible-tms-id: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Truth Vs Falsehood (Audiobook) | book | Promoted edition audio of work w-truth-vs-falsehood from candidate edition-audible-tvf: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Truth vs. Falsehood: The Art of Spiritual Discernment (CD & DVD set) | lecture | Promoted edition video of work w-truth-vs-falsehood from candidate edition-veritas-tvf-cddvd: Veritas product 1728; video/audio set edition of the work; inventory status unreviewed_official_product. |
 | — | Unity Church of Sedona 2005 March (CD) | lecture | Promoted from official candidate manual-veritas-1546: Official page identifies a one-CD 67-minute March 2005 presentation. |
 | — | Unity Church of Sedona 2006 June (CD) | lecture | Promoted from official candidate manual-veritas-1548: Official page identifies a one-CD 60-minute June 2006 presentation. |
-| — | What is Real Success? (2012) | discussion | Promoted from official candidate manual-veritas-50488: Official page identifies a 2012 one-disc discussion/interview of approximately 60 minutes. |
+| — | What is Real Success? | discussion | Promoted from official candidate manual-veritas-50488: Official page identifies a 2012 one-disc discussion/interview of approximately 60 minutes. |
 | — | “In the World But Not of It” – Audio | lecture | Promoted edition audio of work w-in-the-world-but-not-of-it from candidate edition-veritas-itwbnoi-audio: Veritas product 1661; Nightingale-Conant 6-CD audio edition; inventory status matched_by_normalized_title. |
 
 ## Ledger items absent from the committed draft
@@ -109,8 +108,8 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 366 | 366 |
-| `migrated_items` | 366 | 366 |
+| `master_items` | 365 | 365 |
+| `migrated_items` | 365 | 365 |
 | `implemented_unreviewed` | 0 | 0 |
 
 ## Required resolution before rebuilding

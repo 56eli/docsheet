@@ -36,11 +36,10 @@ VERITAS_STREAMING = Path("data") / "veritas_streaming_urls.csv"
 FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 
 FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
-    "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "source_url_amazon", "reference_url_1", "reference_url_2", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "notes",
     "raw_row_number", "candidate_key",
 ]
 EXCLUSION_FIELDS = [
@@ -214,13 +213,13 @@ def notes_for(row: dict[str, str]) -> str:
     return " | ".join(notes)
 
 
-def reference_urls(row: dict[str, str]) -> tuple[str, str]:
+def reference_url(row: dict[str, str]) -> str:
     urls = [
         value
         for value in (row["raw_format"], row["raw_unnamed_11"], row["raw_other_links"])
         if value
     ]
-    return (urls + ["", ""])[:2]
+    return urls[0] if urls else ""
 
 
 def csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
@@ -462,7 +461,8 @@ def apply_official_title_cleanup(items: list[dict[str, str]], veritas_products: 
         cleaned = _strip_title_part_noise(current)
         if cleaned != current and _normalized_title(cleaned) == _normalized_title(official):
             item["title"] = cleaned
-            item["title_source"] = f"Official listing: {official}"
+            evidence = f"Title cleaned against official listing: {official}"
+            item["notes"] = f"{item.get('notes', '')}; {evidence}".lstrip("; ")
             changed += 1
     return changed
 
@@ -563,7 +563,28 @@ def validate_filename_proposal_groups() -> None:
     """
     if not FILENAME_PROPOSAL.exists():
         return
-    require_columns(FILENAME_PROPOSAL, {"uuid", "title", "clean_title", "part_index", "part_total"})
+    require_columns(
+        FILENAME_PROPOSAL,
+        {"uuid", "title", "clean_title", "part_index", "part_total",
+         "proposed_filename", "proposed_filename_display"},
+    )
+    seen_names: dict[str, str] = {}
+    for row in read_csv(FILENAME_PROPOSAL):
+        for column in ("proposed_filename", "proposed_filename_display"):
+            name = row[column].strip()
+            if not name:
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: UUID {row['uuid'].strip()} has an empty {column}"
+                )
+            other = seen_names.get(f"{column}::{name}")
+            if other and other != row["uuid"].strip():
+                raise ValueError(
+                    f"{FILENAME_PROPOSAL}: {column} {name!r} is used by both "
+                    f"UUID {other} and UUID {row['uuid'].strip()} — filenames must be "
+                    "globally unique (v4.1: same-work carrier variants that differ "
+                    "only by carrier carry a (streaming)/(DVD) suffix)"
+                )
+            seen_names[f"{column}::{name}"] = row["uuid"].strip()
     groups: dict[tuple[str, str, str, str], list[dict[str, str]]] = {}
     for row in read_csv(FILENAME_PROPOSAL):
         key = (row["clean_title"].strip(), row["year"].strip(),
@@ -1066,14 +1087,13 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
         row_dict = {
             "uuid": uuid, "work_id": work_id, "catalog_code": "", "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
-            "title_source": "", "item_type": item_type, "series": row["series"].strip(),
+            "item_type": item_type, "series": row["series"].strip(),
             "year": candidate["proposed_year"].strip(), "month": "",
             "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
             "owned": candidate["proposed_owned"].strip(),
-            "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": "", "source_url_hay_house": "",
             "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
-            "reference_url_1": "", "reference_url_2": "",
+            "reference_url_1": "",
             "notes": f"Promoted edition {role} of work {work_id} from candidate "
                      f"{key}: {candidate['evidence_note']}",
             "raw_row_number": "",
@@ -1167,7 +1187,7 @@ def build_master() -> MasterBuild:
             key = (item_type.upper(), year)
             sequences[key] = sequences.get(key, 0) + 1
             code = f"{key[0]}-{year}-{sequences[key]:03d}"
-        ref_1, ref_2 = reference_urls(row)
+        ref_1 = reference_url(row)
         canonical_title = title_for(row)
         items.append({
             "uuid": compact_ids[row["raw_row_number"]],
@@ -1176,7 +1196,6 @@ def build_master() -> MasterBuild:
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
             "legacy_title": row["raw_title"],
-            "title_source": row["raw_title"] if canonical_title != row["raw_title"] else "",
             "item_type": item_type,
             "series": row["proposed_series"],
             "year": year,
@@ -1184,16 +1203,12 @@ def build_master() -> MasterBuild:
             "format": row["proposed_format"],
             "format_detail": row["proposed_format_detail"],
             "owned": row["proposed_owned"],
-            "location_physical": "",
-            "location_digital": "",
-            "location_streaming": "",
             "source_url_veritas": row["proposed_source_url_veritas"],
             "source_url_hay_house": "",
             "source_url_nightingale_conant": "",
             "source_url_audible": "",
             "source_url_amazon": "",
             "reference_url_1": ref_1,
-            "reference_url_2": ref_2,
             "notes": notes_for(row),
             "raw_row_number": row["raw_row_number"],
             "candidate_key": "",
@@ -1225,13 +1240,12 @@ def build_master() -> MasterBuild:
         items.append({
             "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
-            "title_source": "", "item_type": item_type, "series": candidate["series"],
+            "item_type": item_type, "series": candidate["series"],
             "year": year, "month": "", "format": candidate["proposed_format"],
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
-            "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
             "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
-            "reference_url_1": ref1, "reference_url_2": "",
+            "reference_url_1": ref1,
             "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
             "raw_row_number": "",
             "candidate_key": f"candidate:{candidate['candidate_key']}",

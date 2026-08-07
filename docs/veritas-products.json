@@ -41,9 +41,9 @@
     "official_product_url": "https://veritaspub.com/product/devotion-to-truth-talk/",
     "published_date": "2025-07-15",
     "official_categories": "* * New Products * *; On the Road - Talk Series",
-    "normalized_title_match_count": "1",
-    "matched_master_uuids": "311",
-    "matched_master_titles": "Devotion to Truth Talk",
+    "normalized_title_match_count": "2",
+    "matched_master_uuids": "225; 311",
+    "matched_master_titles": "Devotion to Truth Talk | Devotion to Truth Talk",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -125,9 +125,9 @@
     "official_product_url": "https://veritaspub.com/product/mind-heart-and-service-the-pathway-of-devotional-non-duality/",
     "published_date": "2024-06-14",
     "official_categories": "* * New Products * *; On the Road - Talk Series",
-    "normalized_title_match_count": "1",
-    "matched_master_uuids": "310",
-    "matched_master_titles": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
+    "normalized_title_match_count": "3",
+    "matched_master_uuids": "226; 227; 310",
+    "matched_master_titles": "Mind, Heart and Service: The Pathway of Devotional Non-Duality | Mind, Heart and Service: The Pathway of Devotional Non-Duality | Mind, Heart and Service: The Pathway of Devotional Non-Duality",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -150,8 +150,8 @@
     "published_date": "2023-09-17",
     "official_categories": "On the Road - Talk Series",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "309",
-    "matched_master_titles": "Progressive Levels of Consciousness",
+    "matched_master_uuids": "221",
+    "matched_master_titles": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -163,7 +163,7 @@
     "official_categories": "Books Published by Dr. Hawkins; Media Miscellaneous",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "300",
-    "matched_master_titles": "In the World, But Not of It",
+    "matched_master_titles": "In the World But Not Of It: Transforming Everyday Experience into a Spiritual Path",
     "mapping_status": "matched_by_title",
     "review_notes": ""
   },
@@ -187,7 +187,7 @@
     "official_categories": "On the Road - Talk Series",
     "normalized_title_match_count": "2",
     "matched_master_uuids": "228; 229",
-    "matched_master_titles": "Spiritual Will PART1 | Spiritual Will PART2",
+    "matched_master_titles": "Spiritual Will Inspiring Q & A | Spiritual Will Inspiring Q & A",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -223,7 +223,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "297",
-    "matched_master_titles": "Daily Reflections",
+    "matched_master_titles": "Daily Reflections from Dr. David R. Hawkins: 365 Contemplations on Surrender, Healing, and Consciousness",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -247,7 +247,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "295",
-    "matched_master_titles": "The Map of Consciousness Explained",
+    "matched_master_titles": "The Map of Consciousness Explained: A Proven Energy Scale to Actualize Your Ultimate Potential",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -295,7 +295,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "296",
-    "matched_master_titles": "Success Is for You",
+    "matched_master_titles": "Success Is for You: Using Heart-Centered Power Principles for Lasting Abundance and Fulfillment",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -390,10 +390,10 @@
     "published_date": "2014-03-31",
     "official_categories": "Discussion Series",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "121",
-    "matched_master_titles": "Live Your Life Like a Prayer",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "matched_master_uuids": "278",
+    "matched_master_titles": "How to Live Your Life Like A Prayer",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Remapped 2026-08-07: was matched_by_title to master 121; this listing is the 2012 Discussion Series talk (master 278) and is now its approved primary source (override raw 315)."
   },
   {
     "veritas_product_id": "50488",
@@ -403,7 +403,7 @@
     "official_categories": "Discussion Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "313",
-    "matched_master_titles": "What is Real Success? (2012)",
+    "matched_master_titles": "What is Real Success?",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -415,7 +415,7 @@
     "official_categories": "Discussion Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "312",
-    "matched_master_titles": "Permanent Inner Peace (2012)",
+    "matched_master_titles": "Permanent Inner Peace",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -426,10 +426,10 @@
     "published_date": "2014-03-30",
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I-Power vs Force (Part 1)",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "matched_master_uuids": "286",
+    "matched_master_titles": "Power vs. Force: The Hidden Determinants of Human Behavior",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50407",
@@ -451,7 +451,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "289",
-    "matched_master_titles": "Truth vs Falsehood",
+    "matched_master_titles": "Truth vs. Falsehood: How to Tell the Difference",
     "mapping_status": "matched_by_title",
     "review_notes": ""
   },
@@ -487,7 +487,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "288",
-    "matched_master_titles": "I Reality and Subjectivity",
+    "matched_master_titles": "I: Reality and Subjectivity",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -511,7 +511,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "290",
-    "matched_master_titles": "Letting Go",
+    "matched_master_titles": "Letting Go: The Pathway of Surrender",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -523,7 +523,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "250",
-    "matched_master_titles": "B-06 Office Series-Death and Dying",
+    "matched_master_titles": "Death and Dying",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -535,7 +535,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "248",
-    "matched_master_titles": "B-04 Office Series-Cancer",
+    "matched_master_titles": "Cancer",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -547,7 +547,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "247",
-    "matched_master_titles": "B-03 Office Series-A Map Of Consciousness",
+    "matched_master_titles": "A Map of Consciousness",
     "mapping_status": "matched_by_title",
     "review_notes": ""
   },
@@ -559,7 +559,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "245",
-    "matched_master_titles": "B-01 Office Series-Drug Addiction and Alcoholism...",
+    "matched_master_titles": "Drug Addiction and Alcoholism",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -571,7 +571,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "244",
-    "matched_master_titles": "A-12 Office Series-Alcoholism",
+    "matched_master_titles": "Alcoholism",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -583,7 +583,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "243",
-    "matched_master_titles": "A-11 Office Series-Illness and Self-Healing",
+    "matched_master_titles": "Illness and Self-Healing",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -595,7 +595,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "242",
-    "matched_master_titles": "A-10 Office Series-Depression",
+    "matched_master_titles": "Depression",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -607,7 +607,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "241",
-    "matched_master_titles": "A-09 Office Series-Losing Weight",
+    "matched_master_titles": "Losing Weight",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -619,7 +619,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "240",
-    "matched_master_titles": "A-08 Office Series-Pain and Suffering",
+    "matched_master_titles": "Pain and Suffering",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -631,7 +631,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "239",
-    "matched_master_titles": "A-07 Office Series-Worry Fear and Anxiety",
+    "matched_master_titles": "Worry, Fear, and Anxiety",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -643,7 +643,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "238",
-    "matched_master_titles": "A-06 Office Series-Handling Major Crises",
+    "matched_master_titles": "Handling Major Crises",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -655,7 +655,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "237",
-    "matched_master_titles": "A-05 Office Series-The Aging Process",
+    "matched_master_titles": "The Aging Process",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -667,7 +667,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "236",
-    "matched_master_titles": "A-04 Office Series-Sexuality",
+    "matched_master_titles": "Sexuality",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -679,7 +679,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "235",
-    "matched_master_titles": "A-03 Office Series-Spiritual First Aid",
+    "matched_master_titles": "Spiritual First Aid",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -691,7 +691,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "234",
-    "matched_master_titles": "A-02 Office Series-Health",
+    "matched_master_titles": "Health",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -703,7 +703,7 @@
     "official_categories": "Archival Office Visit Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "233",
-    "matched_master_titles": "A-01 Office Series-Stress",
+    "matched_master_titles": "Stress",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -835,7 +835,7 @@
     "official_categories": "On the Road - Talk Series",
     "normalized_title_match_count": "3",
     "matched_master_uuids": "218; 219; 220",
-    "matched_master_titles": "Love is a Way of Being (January 2004) PART1 | Love is a Way of Being (January 2004) PART2 | Love is a Way of Being (January 2004) PART3",
+    "matched_master_titles": "Love is a Way of Being | Love is a Way of Being | Love is a Way of Being",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -883,7 +883,7 @@
     "official_categories": "On the Road - Talk Series",
     "normalized_title_match_count": "3",
     "matched_master_uuids": "215; 216; 217",
-    "matched_master_titles": "Become That Which You Are (June 2004) PART1 | Become That Which You Are (June 2004) PART2 | Become That Which You Are (June 2004) PART3",
+    "matched_master_titles": "Become That Which You Are | Become That Which You Are | Become That Which You Are",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -943,7 +943,7 @@
     "official_categories": "Satsang; Satsang 2011; Satsang Series and Question & Answer Sessions",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "201",
-    "matched_master_titles": "Q&A Session (Jul 2011)",
+    "matched_master_titles": "Question/Answer Session (Jul 2011)",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -967,7 +967,7 @@
     "official_categories": "Satsang; Satsang 2011; Satsang Series and Question & Answer Sessions",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "200",
-    "matched_master_titles": "Q&A Session (Mar 2011)",
+    "matched_master_titles": "Question/Answer Session (Mar 2011)",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -979,7 +979,7 @@
     "official_categories": "Satsang; Satsang 2011; Satsang Series and Question & Answer Sessions",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "199",
-    "matched_master_titles": "Q&A Session (Jan 2011)",
+    "matched_master_titles": "Question/Answer Session (Jan 2011)",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1494,10 +1494,10 @@
     "published_date": "2007-03-16",
     "official_categories": "Media Miscellaneous",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I-Power vs Force (Part 1)",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "matched_master_uuids": "331",
+    "matched_master_titles": "Power vs. Force Audio Book",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50801",
@@ -1507,7 +1507,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "214",
-    "matched_master_titles": "Volume VII A-Conversation with Knowingness",
+    "matched_master_titles": "Volume VII: A Conversation with Knowingness",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1519,7 +1519,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "213",
-    "matched_master_titles": "Volume VI-How to Raise Your Level of Consciousness",
+    "matched_master_titles": "Volume VI: How to Raise Your Level of Consciousness",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1531,7 +1531,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "3",
     "matched_master_uuids": "210; 211; 212",
-    "matched_master_titles": "Volume V-Undoing the Barriers to Spiritual Progress | Volume V-Undoing the Barriers to Spiritual Progress | Volume V-Undoing the Barriers to Spiritual Progress",
+    "matched_master_titles": "Volume V: Undoing the Barriers to Spiritual Progress | Volume V: Undoing the Barriers to Spiritual Progress | Volume V: Undoing the Barriers to Spiritual Progress",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1543,7 +1543,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "2",
     "matched_master_uuids": "208; 209",
-    "matched_master_titles": "Volume IV-How to Tell the Truth about Anything (Part 1) | Volume IV-How to Tell the Truth about Anything (Part 2)",
+    "matched_master_titles": "Volume IV: Consciousness: How to Tell the Truth About Anything | Volume IV: Consciousness: How to Tell the Truth About Anything",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1555,7 +1555,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "2",
     "matched_master_uuids": "206; 207",
-    "matched_master_titles": "Volume III-Advanced States of Consciousness | Volume III-Advanced States of Consciousness",
+    "matched_master_titles": "Volume III: Advanced States of Consciousness | Volume III: Advanced States of Consciousness",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1579,7 +1579,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "2",
     "matched_master_uuids": "204; 205",
-    "matched_master_titles": "Volume II-Consciousness and Addiction | Volume II-Consciousness and Addiction",
+    "matched_master_titles": "Volume II: Consciousness and Addiction | Volume II: Consciousness and Addiction",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1591,7 +1591,7 @@
     "official_categories": "Volume Series",
     "normalized_title_match_count": "2",
     "matched_master_uuids": "202; 203",
-    "matched_master_titles": "Volume I-Power vs Force (Part 1) | Volume I-David Hawkins -Applied Kinesiology-Power vs Force - Part 2",
+    "matched_master_titles": "Volume I: Power vs. Force Muscle Testing | Volume I: Power vs. Force Muscle Testing",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },
@@ -1615,7 +1615,7 @@
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
     "matched_master_uuids": "292",
-    "matched_master_titles": "Discovery of the Presence of God",
+    "matched_master_titles": "Discovery of the Presence of God: Devotional Nonduality",
     "mapping_status": "matched_by_primary_source",
     "review_notes": "Exact master primary Veritas URL match."
   },

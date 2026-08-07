@@ -6,9 +6,22 @@ async function waitForTable(page) {
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
 }
 
+// The Everything view opens visitor-first (owner directive 2026-08-07);
+// exports follow the visible columns, so specs asserting technical header
+// names (e.g. "Master ID") switch Expert columns on first.
+async function enableExpertColumns(page) {
+  const toggle = page.locator('#expert-toggle-btn');
+  await expect(toggle).toBeVisible();
+  if ((await toggle.getAttribute('aria-pressed')) !== 'true') {
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  }
+}
+
 test('CSV export downloads the whole active view even when filtered', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   await page.getByRole('searchbox', { name: /search across all columns/i }).fill('Causality');
   await expect(page.locator('#search-status')).toContainText(/Showing: \d+ of \d+/);
@@ -71,25 +84,40 @@ test('Everything view separates curated master records from candidates', async (
   await expect(page.locator('.tabulator-cell[tabulator-field="record_type"]').first())
     .toContainText(/Curated master|Candidate/);
 
-  // The review filter must offer the provenance values.
-  const reviewFilter = page.locator('#review-filter');
-  await expect(reviewFilter).toBeVisible();
-  await expect(reviewFilter.locator('option[value="master"]')).toHaveCount(1);
-  await expect(reviewFilter.locator('option[value="candidate_veritas"]')).toHaveCount(1);
+  // Derive the expected provenance state from the committed data: after the
+  // 2026-08-07 rulings the Everything view holds 366 curated masters and 0
+  // unreviewed candidates, but a future candidate lane may reopen it.
+  const { expectedMasterCount, expectedTotalCount, recordTypes } = await page.evaluate(async () => {
+    const rows = await fetch('/docs/master.json').then((response) => response.json());
+    return {
+      expectedMasterCount: rows.filter((row) => row.record_type === 'master').length,
+      expectedTotalCount: rows.length,
+      recordTypes: [...new Set(rows.map((row) => row.record_type).filter(Boolean))],
+    };
+  });
 
-  // Filtering to curated master must exclude every candidate row.
-  const expectedMasterCount = await page.evaluate(async () => {
-    const rows = await fetch('/docs/master.json').then((response) => response.json());
-    return rows.filter((row) => row.record_type === 'master').length;
-  });
-  const expectedTotalCount = await page.evaluate(async () => {
-    const rows = await fetch('/docs/master.json').then((response) => response.json());
-    return rows.length;
-  });
-  await reviewFilter.selectOption('master');
-  await expect(page.locator('#search-status'))
-    .toContainText(`Showing: ${expectedMasterCount} of ${expectedTotalCount}`);
-  await expect(page.locator('#filter-chips')).toContainText('Curated master');
+  const reviewToolbar = page.locator('#review-toolbar');
+  const reviewFilter = page.locator('#review-filter');
+  if (recordTypes.length > 1) {
+    // Candidates are present: the review filter must offer every provenance
+    // value and filtering to curated master must exclude every candidate row.
+    await expect(reviewFilter).toBeVisible();
+    for (const recordType of recordTypes) {
+      await expect(reviewFilter.locator(`option[value="${recordType}"]`)).toHaveCount(1);
+    }
+    await reviewFilter.selectOption('master');
+    await expect(page.locator('#search-status'))
+      .toContainText(`Showing: ${expectedMasterCount} of ${expectedTotalCount}`);
+    await expect(page.locator('#filter-chips')).toContainText('Curated master');
+  } else {
+    // Every row is a curated master: the review filter is hidden by design
+    // (app.js configureReviewFilter requires >1 distinct value to offer it).
+    expect(recordTypes).toEqual(['master']);
+    await expect(reviewToolbar).toBeHidden();
+    // Unfiltered sheets show the bare visible count (no "of N" suffix).
+    await expect(page.locator('#search-status'))
+      .toHaveText(`Showing: ${expectedTotalCount}`);
+  }
 
   const badges = page.locator('.tabulator-cell[tabulator-field="record_type"] .status-badge');
   expect(await badges.count()).toBeGreaterThan(0);
@@ -101,6 +129,7 @@ test('Everything view separates curated master records from candidates', async (
 test('edition model columns render on the Everything tab', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   // Work + Edition columns exist (edition model, 2026-08-03).
   await expect(page.locator('.tabulator-col[tabulator-field="work_id"]').first()).toBeVisible();

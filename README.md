@@ -50,12 +50,12 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 103 tests, no browser/network needed
+python -m unittest discover tests          # 110 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 80` in `.coveragerc`) passes at **92%** as of
-2026-08-03; every pipeline module is ≥ 89%. Approved official links added after the ledger
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
+2026-08-07; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
@@ -76,12 +76,12 @@ Veritas inventory refreshes use the approved product-ID overlay in
 `data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The
 inventory's `normalized_title_match_count` is derived and must always equal the
 number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
-build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
+build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIEW.md`.
 
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, `archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
@@ -96,7 +96,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (366) |
+| `master` | A curated master catalogue record (365) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -104,6 +104,15 @@ an explicit `record_type`:
 Only `master` rows are catalogue records. Use the Record Type filter on that tab
 to isolate curated data before exporting. Counts per class are published in
 `docs/catalogue-meta.json` under `everything_record_types`.
+
+The **Everything** view opens visitor-first: product facts (title, series,
+type, edition, date, official store and streaming links, notes) are visible at
+first sight, while technical metadata (Master ID, Work grouping, proposed file
+names, provenance columns) stays hidden until the **Expert columns** toggle —
+next to the Columns menu — is switched on; the choice persists per browser.
+Clicking any row always shows every stored field, and the layout adapts to
+phone screens (dense cells, full-width row details, horizontally scrolling
+tabs).
 
 ## Review workspace
 
@@ -114,24 +123,29 @@ Review**, **Source Overrides**, **Official Discovery**, **New Work Review**
 Compilations**, and **Veritas Decisions** are separate sheets alongside the
 catalogue and official-product views. Reviewers can search, sort, export, and
 filter sheets with multiple review-status values without opening repository
-folders.
+folders. Two of these sheets (**Official Discovery** and **New Work Review**)
+are intentionally empty right now: every queued item has been ruled, and the
+sheets remain as standing **intake lanes** so any future Veritas catalogue
+refresh lands its unmatched products there instead of in the curated views.
 
 ## Current reviewed catalogue state
 
-The current curated master has **366** records (310 `lecture`, 40 `book`,
+The current curated master has **365** records (309 `lecture`, 40 `book`,
 8 `discussion`, 7 `highlight`, 1 `other` — no untyped records remain since the
-2026-08-07 ruling that record 246 was the audio edition already held as master
-329), **281** catalogue codes, **72** retained exclusions,
-**133** approved source overrides (including the four Nightingale-Conant audio
-editions, two Amazon Office Series links, and the Audible/NC/Hay House program URLs),
-**40** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
+2026-08-07 rulings that record 246 was the audio edition already held as master
+329 and that record 309 duplicated the Oxford talk already held as master 221),
+**281** catalogue codes, **72** retained exclusions,
+**134** approved source overrides (including the four Nightingale-Conant audio
+editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
+and the official Veritas product link moved from retired duplicate 309 onto master 221),
+**39** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as Amazon search link.
 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
 months match the publisher's own dates. See
-[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
+[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
 audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
 
 ### Field semantics

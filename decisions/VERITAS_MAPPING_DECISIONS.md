@@ -41,5 +41,5 @@ products whose works were promoted to the curated master on 2026-08-03
 (masters 309–319, 353–358) were removed. Their master rows carry the exact
 Veritas primary URLs, so the deterministic primary-source matcher now links
 them — the suppression rows had become stale duplicates of curated records.
-See `../VERITAS_ARTIFACT_REVIEW.md` Addendum 3 and
+See `../archive/VERITAS_ARTIFACT_REVIEW.md` Addendum 3 and
 `../NEXT_AGENT_HANDOFF.md` §4 item 15.

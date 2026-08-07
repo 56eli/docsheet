@@ -145,7 +145,7 @@
   },
   {
     "candidate_key": "manual-veritas-50485",
-    "candidate_title": "Permanent Inner Peace (2012)",
+    "candidate_title": "Permanent Inner Peace",
     "proposed_item_type": "discussion",
     "proposed_year": "2012",
     "proposed_format": "",
@@ -159,11 +159,11 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "promoted",
-    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03.; title aligned to official Veritas listing minus (2012) store-date annotation per family convention (2026-08-07 distributor-naming audit)"
   },
   {
     "candidate_key": "manual-veritas-50488",
-    "candidate_title": "What is Real Success? (2012)",
+    "candidate_title": "What is Real Success?",
     "proposed_item_type": "discussion",
     "proposed_year": "2012",
     "proposed_format": "",
@@ -177,7 +177,7 @@
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "promoted",
-    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
+    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03.; title aligned to official Veritas listing minus (2012) store-date annotation per family convention (2026-08-07 distributor-naming audit)"
   },
   {
     "candidate_key": "manual-veritas-53036",
@@ -210,24 +210,6 @@
     "official_product_url": "https://veritaspub.com/product/the-wisdom-of-dr-david-r-hawkins-classic-teachings-on-spiritual-truth-and-enlightenment/",
     "official_product_title": "The Wisdom of Dr. David R. Hawkins: Classic Teachings on Spiritual Truth and Enlightenment",
     "evidence_note": "Official page identifies a book collecting ten core teachings and excerpts.",
-    "review_status": "reviewed_candidate",
-    "reviewed_on": "2026-08-03",
-    "promotion_status": "promoted",
-    "promotion_notes": "Promoted to the curated master through data/manual_candidate_promotions.csv on 2026-08-03."
-  },
-  {
-    "candidate_key": "manual-veritas-53277",
-    "candidate_title": "Progressive Levels of Consciousness",
-    "proposed_item_type": "lecture",
-    "proposed_year": "",
-    "proposed_format": "",
-    "proposed_format_detail": "streaming video",
-    "proposed_owned": "",
-    "source_name": "veritas",
-    "source_product_id": "53277",
-    "official_product_url": "https://veritaspub.com/product/progressive-levels-of-consciousness/",
-    "official_product_title": "Progressive Levels of Consciousness",
-    "evidence_note": "Official page identifies an On-the-Road UK talk available through streaming video.",
     "review_status": "reviewed_candidate",
     "reviewed_on": "2026-08-03",
     "promotion_status": "promoted",

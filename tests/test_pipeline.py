@@ -23,6 +23,7 @@ import inspect
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -101,6 +102,7 @@ SCRIPT_MODULES = {
     "reconcile_research_master.py": "reconcile_research_master",
     "generate_lecture_review.py": "generate_lecture_review",
     "generate_migration_ledger.py": "generate_migration_ledger",
+    "sync_inventory_mirrors.py": "sync_inventory_mirrors",
 }
 
 
@@ -338,11 +340,11 @@ class VeritasMatchingTests(unittest.TestCase):
     def make_master(self) -> list[dict[str, str]]:
         return [
             {
-                "uuid": "10", "title": "Some Lecture", "title_source": "",
+                "uuid": "10", "title": "Some Lecture", "legacy_title": "Some Lecture",
                 "source_url_veritas": "https://veritaspub.com/product/some-lecture/",
             },
             {
-                "uuid": "11", "title": "Satsang Series (Jan 2007)", "title_source": "",
+                "uuid": "11", "title": "Satsang Series (Jan 2007)", "legacy_title": "Satsang Series (Jan 2007)",
                 "source_url_veritas": "",
             },
         ]
@@ -603,7 +605,7 @@ class ProcessDataFailurePathTests(unittest.TestCase):
         (self.sandbox / "docs" / "data.json").unlink()
         result = invoke_script("process_data.py", self.sandbox, "--check")
         self.assertEqual(result.returncode, 1)
-        self.assertIn("must both exist", result.stderr)
+        self.assertIn("data.json must exist", result.stderr)
 
     def test_stale_data_json_fails_check(self) -> None:
         path = self.sandbox / "docs" / "data.json"
@@ -611,21 +613,6 @@ class ProcessDataFailurePathTests(unittest.TestCase):
         result = invoke_script("process_data.py", self.sandbox, "--check")
         self.assertEqual(result.returncode, 1)
         self.assertIn("docs/data.json is stale", result.stderr)
-
-    def test_invalid_meta_json_fails_check(self) -> None:
-        (self.sandbox / "docs" / "meta.json").write_text("not json", encoding="utf-8")
-        result = invoke_script("process_data.py", self.sandbox, "--check")
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("not valid JSON", result.stderr)
-
-    def test_stale_meta_fails_check(self) -> None:
-        path = self.sandbox / "docs" / "meta.json"
-        meta = json.loads(path.read_text(encoding="utf-8"))
-        meta["total_rows"] += 1
-        path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
-        result = invoke_script("process_data.py", self.sandbox, "--check")
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("stale or malformed", result.stderr)
 
     def test_missing_source_csv_fails_loud(self) -> None:
         with tempfile.TemporaryDirectory() as empty:
@@ -893,10 +880,13 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             bcp.PRIMARY_RELATIONSHIP_NOTE,
         )
 
-    def test_committed_state_derives_335_primary_plus_8_related(self) -> None:
+    def test_committed_state_derives_336_primary_plus_8_related(self) -> None:
         # The committed master + inventory + CSV must assemble to exactly the
-        # published relationship count: 335 derived primary + 8 related_material
-        # (was 328+8=336 before the 2026-08-07 Highlights promotion added 7 masters).
+        # published relationship count: 336 derived primary + 7 related_material
+        # (was 335+8=343 before the 2026-08-07 distributor-naming audit: the approved
+        # primary-source override linking master 278 to Veritas product 50491 added one
+        # derived primary, and the stale related_material row for that same product
+        # (rel-veritas-50491-121, superseded by the primary link) was removed).
 
         tempdir = make_sandbox()
         try:
@@ -906,8 +896,8 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             master = bcp.read_csv(bcp.MASTER)
             veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
             derived = bcp.derive_primary_relationships(master, veritas)
-            self.assertEqual(len(derived), 335)
-            self.assertEqual(len(derived) + 8, 343)  # 343 total relationships (335 derived + 8 related)
+            self.assertEqual(len(derived), 336)
+            self.assertEqual(len(derived) + 7, 343)  # 343 total relationships (336 derived + 7 related)
             meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
             self.assertEqual(meta["reviewed_product_relationships"], 343)
         finally:
@@ -1420,6 +1410,102 @@ class NewWorkQueueTests(unittest.TestCase):
             bcp.validate_new_work_queue([self.row(candidate_title="")], inventory)
 
 
+class SyncInventoryMirrorsTests(unittest.TestCase):
+    """sync_inventory_mirrors.py re-derives the inventory's mirror columns."""
+
+    def test_committed_inventory_mirrors_match_master(self) -> None:
+        # The 2026-08-07 owner ruling resolved the last URL-evidence
+        # contradictions (50411->286, 1542->331); committed mirrors are clean.
+        result = invoke_script("sync_inventory_mirrors.py", REPO, "--check")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("already match", result.stdout)
+
+    def test_sync_fixes_drifted_mirror_cells(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(
+                ",2,225; 311,Devotion to Truth Talk | Devotion to Truth Talk,",
+                ",1,311,Devotion to Truth Talk,",
+            )
+            self.assertNotEqual(drifted, text)  # fixture actually drifted the row
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with inv.open(newline="", encoding="utf-8") as handle:
+                row = next(r for r in csv.DictReader(handle) if r["veritas_product_id"] == "55473")
+            self.assertEqual(row["normalized_title_match_count"], "2")
+            self.assertEqual(row["matched_master_uuids"], "225; 311")
+            self.assertEqual(
+                row["matched_master_titles"],
+                "Devotion to Truth Talk | Devotion to Truth Talk",
+            )
+            # reviewed columns are never rewritten
+            self.assertEqual(row["mapping_status"], "matched_by_primary_source")
+            self.assertEqual(row["review_notes"], "Exact master primary Veritas URL match.")
+            check = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
+            self.assertIn("already match", check.stdout)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_check_flags_drift_without_writing(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",3,226; 227; 310,", ",1,310,")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("54219", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_flags_url_contradiction_on_reviewed_status(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",1,300,In the World But Not Of It", ",1,202,In the World But Not Of It")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("CONTRADICTION", result.stderr)
+            self.assertIn("53062", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
+
+    def test_sync_flags_unknown_master_id(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            inv = sandbox / "data" / "veritas_official_products.csv"
+            text = inv.read_text(encoding="utf-8")
+            drifted = text.replace(",1,300,In the World But Not Of It", ",1,9999,In the World But Not Of It")
+            self.assertNotEqual(drifted, text)
+            inv.write_text(drifted, encoding="utf-8")
+
+            result = invoke_script("sync_inventory_mirrors.py", sandbox)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("VIOLATION", result.stderr)
+            self.assertIn("unknown matched master ID", result.stderr)
+            self.assertEqual(inv.read_text(encoding="utf-8"), drifted)
+        finally:
+            tempdir.cleanup()
+
+
 class DocumentationCurrencyTests(unittest.TestCase):
     """Hand-maintained status documents must not drift from the generated data."""
 
@@ -1504,6 +1590,42 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
         self.assertIn("all", row["purpose"].lower())
 
+    def test_filename_proposal_filenames_are_globally_unique(self) -> None:
+        # v4.1 guard (2026-08-07): the pipeline validator re-checks this on
+        # every build; this committed-state test pins the known-clean set and
+        # the carrier-suffix resolution of the 225/311 collision.
+        with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        for column in ("proposed_filename", "proposed_filename_display"):
+            names = [row[column].strip() for row in rows]
+            self.assertEqual(len(names), len(set(names)), f"duplicate {column} values")
+        by_uuid = {row["uuid"]: row for row in rows}
+        self.assertEqual(
+            by_uuid["225"]["proposed_filename"],
+            "2003 - Devotion to Truth Talk (streaming).mp4",
+        )
+        self.assertEqual(
+            by_uuid["311"]["proposed_filename"],
+            "2003 - Devotion to Truth Talk (DVD).mp4",
+        )
+
+    def test_filename_uniqueness_guard_fails_on_seeded_duplicate(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            proposal = sandbox / "data/filename_proposal_YYYYMM.csv"
+            text = proposal.read_text(encoding="utf-8")
+            seeded = text.replace(
+                "2003 - Devotion to Truth Talk (DVD).mp4", "2003 - Devotion to Truth Talk (streaming).mp4"
+            )
+            self.assertNotEqual(seeded, text)
+            proposal.write_text(seeded, encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_research_master.py", sandbox, "--check")
+            self.assertIn("globally unique", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
+
     def test_volume_series_filename_groups_match_volume_titles(self) -> None:
         """Volume Series filenames must not merge adjacent volumes into one part set.
 
@@ -1514,19 +1636,19 @@ class DocumentationCurrencyTests(unittest.TestCase):
         with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
             rows = {row["uuid"]: row for row in csv.DictReader(handle)}
         expected = {
-            "202": ("Volume I Power vs Force", "1", "2"),
-            "203": ("Volume I Power vs Force", "2", "2"),
-            "204": ("Volume II Consciousness and Addiction", "1", "2"),
-            "205": ("Volume II Consciousness and Addiction", "2", "2"),
-            "206": ("Volume III Advanced States of Consciousness", "1", "2"),
-            "207": ("Volume III Advanced States of Consciousness", "2", "2"),
-            "208": ("Volume IV How to Tell the Truth about Anything", "1", "2"),
-            "209": ("Volume IV How to Tell the Truth about Anything", "2", "2"),
-            "210": ("Volume V Undoing the Barriers to Spiritual Progress", "1", "3"),
-            "211": ("Volume V Undoing the Barriers to Spiritual Progress", "2", "3"),
-            "212": ("Volume V Undoing the Barriers to Spiritual Progress", "3", "3"),
-            "213": ("Volume VI How to Raise Your Level of Consciousness", "1", "1"),
-            "214": ("Volume VII A Conversation with Knowingness", "1", "1"),
+            "202": ("Volume I: Power vs. Force Muscle Testing", "1", "2"),
+            "203": ("Volume I: Power vs. Force Muscle Testing", "2", "2"),
+            "204": ("Volume II: Consciousness and Addiction", "1", "2"),
+            "205": ("Volume II: Consciousness and Addiction", "2", "2"),
+            "206": ("Volume III: Advanced States of Consciousness", "1", "2"),
+            "207": ("Volume III: Advanced States of Consciousness", "2", "2"),
+            "208": ("Volume IV: Consciousness: How to Tell the Truth About Anything", "1", "2"),
+            "209": ("Volume IV: Consciousness: How to Tell the Truth About Anything", "2", "2"),
+            "210": ("Volume V: Undoing the Barriers to Spiritual Progress", "1", "3"),
+            "211": ("Volume V: Undoing the Barriers to Spiritual Progress", "2", "3"),
+            "212": ("Volume V: Undoing the Barriers to Spiritual Progress", "3", "3"),
+            "213": ("Volume VI: How to Raise Your Level of Consciousness", "1", "1"),
+            "214": ("Volume VII: A Conversation with Knowingness", "1", "1"),
         }
         for uuid, (clean_title, part_index, part_total) in expected.items():
             row = rows[uuid]
@@ -1534,8 +1656,12 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertEqual(row["clean_title"], clean_title)
             self.assertEqual(row["part_index"], part_index)
             self.assertEqual(row["part_total"], part_total)
+            # Filenames sanitize the clean title per the v4 rule (`/` maps
+            # to `-`; other illegal chars <>:"\|?* stripped) before adding
+            # the part suffix.
+            safe_title = re.sub(r'[<>:"\\|?*]', "", clean_title.replace("/", "-"))
             self.assertTrue(
-                row["proposed_filename"].startswith(clean_title),
+                row["proposed_filename"].startswith(safe_title),
                 f"UUID {uuid} filename must start with its own volume title",
             )
 
@@ -1586,19 +1712,20 @@ class DocumentationCurrencyTests(unittest.TestCase):
         items = [
             # PART noise, cleaned form matches official -> cleaned
             {"item_type": "lecture", "title": "The Presence of Spiritual Awareness PART1",
-             "legacy_title": "The Presence of Spiritual Awareness PART1", "title_source": "raw",
+             "legacy_title": "The Presence of Spiritual Awareness PART1",
              "source_url_veritas": "https://veritaspub.com/product/posa/"},
             # PART noise, cleaned form does NOT match official -> kept
             {"item_type": "lecture", "title": "Volume I-Power vs Force (Part 1)",
-             "legacy_title": "Volume I-Power vs Force (Part 1)", "title_source": "raw",
+             "legacy_title": "Volume I-Power vs Force (Part 1)",
              "source_url_veritas": "https://veritaspub.com/product/vpf/"},
             # non-lecture never touched
             {"item_type": "book", "title": "Power vs Force (Part 1)", "legacy_title": "",
-             "title_source": "", "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+             "source_url_veritas": "https://veritaspub.com/product/vpf/"},
         ]
         brm.apply_official_title_cleanup(items, by_url)
         self.assertEqual(items[0]["title"], "The Presence of Spiritual Awareness")
-        self.assertIn("Official listing", items[0]["title_source"])
+        self.assertIn("Title cleaned against official listing: The Presence of Spiritual Awareness",
+                      items[0]["notes"])
         self.assertEqual(items[0]["legacy_title"], "The Presence of Spiritual Awareness PART1")
         self.assertEqual(items[1]["title"], "Volume I-Power vs Force (Part 1)",
                          "a non-matching cleaned title must be left unchanged")

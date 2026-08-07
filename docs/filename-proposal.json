@@ -2977,12 +2977,12 @@
     "year": "2011",
     "month": "01",
     "format": "streaming",
-    "title": "Q&A Session (Jan 2011)",
-    "clean_title": "Q&A Session",
+    "title": "Question/Answer Session (Jan 2011)",
+    "clean_title": "Question/Answer Session",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2011-01 - Q&A Session.mp4",
-    "proposed_filename_display": "2011-01 - Q&A Session.mp4"
+    "proposed_filename": "2011-01 - Question-Answer Session.mp4",
+    "proposed_filename_display": "2011-01 - Question-Answer Session.mp4"
   },
   {
     "uuid": "200",
@@ -2992,12 +2992,12 @@
     "year": "2011",
     "month": "03",
     "format": "streaming",
-    "title": "Q&A Session (Mar 2011)",
-    "clean_title": "Q&A Session",
+    "title": "Question/Answer Session (Mar 2011)",
+    "clean_title": "Question/Answer Session",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2011-03 - Q&A Session.mp4",
-    "proposed_filename_display": "2011-03 - Q&A Session.mp4"
+    "proposed_filename": "2011-03 - Question-Answer Session.mp4",
+    "proposed_filename_display": "2011-03 - Question-Answer Session.mp4"
   },
   {
     "uuid": "201",
@@ -3007,12 +3007,12 @@
     "year": "2011",
     "month": "07",
     "format": "streaming",
-    "title": "Q&A Session (Jul 2011)",
-    "clean_title": "Q&A Session",
+    "title": "Question/Answer Session (Jul 2011)",
+    "clean_title": "Question/Answer Session",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2011-07 - Q&A Session.mp4",
-    "proposed_filename_display": "2011-07 - Q&A Session.mp4"
+    "proposed_filename": "2011-07 - Question-Answer Session.mp4",
+    "proposed_filename_display": "2011-07 - Question-Answer Session.mp4"
   },
   {
     "uuid": "202",
@@ -3022,12 +3022,12 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume I-Power vs Force (Part 1)",
-    "clean_title": "Volume I Power vs Force",
+    "title": "Volume I: Power vs. Force Muscle Testing",
+    "clean_title": "Volume I: Power vs. Force Muscle Testing",
     "part_index": "1",
     "part_total": "2",
-    "proposed_filename": "Volume I Power vs Force [1-2].mp4",
-    "proposed_filename_display": "Volume I Power vs Force [1/2].mp4"
+    "proposed_filename": "Volume I Power vs. Force Muscle Testing [1-2].mp4",
+    "proposed_filename_display": "Volume I Power vs. Force Muscle Testing [1/2].mp4"
   },
   {
     "uuid": "203",
@@ -3037,12 +3037,12 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume I-David Hawkins -Applied Kinesiology-Power vs Force - Part 2",
-    "clean_title": "Volume I Power vs Force",
+    "title": "Volume I: Power vs. Force Muscle Testing",
+    "clean_title": "Volume I: Power vs. Force Muscle Testing",
     "part_index": "2",
     "part_total": "2",
-    "proposed_filename": "Volume I Power vs Force [2-2].mp4",
-    "proposed_filename_display": "Volume I Power vs Force [2/2].mp4"
+    "proposed_filename": "Volume I Power vs. Force Muscle Testing [2-2].mp4",
+    "proposed_filename_display": "Volume I Power vs. Force Muscle Testing [2/2].mp4"
   },
   {
     "uuid": "204",
@@ -3052,8 +3052,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume II-Consciousness and Addiction",
-    "clean_title": "Volume II Consciousness and Addiction",
+    "title": "Volume II: Consciousness and Addiction",
+    "clean_title": "Volume II: Consciousness and Addiction",
     "part_index": "1",
     "part_total": "2",
     "proposed_filename": "Volume II Consciousness and Addiction [1-2].mp4",
@@ -3067,8 +3067,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume II-Consciousness and Addiction",
-    "clean_title": "Volume II Consciousness and Addiction",
+    "title": "Volume II: Consciousness and Addiction",
+    "clean_title": "Volume II: Consciousness and Addiction",
     "part_index": "2",
     "part_total": "2",
     "proposed_filename": "Volume II Consciousness and Addiction [2-2].mp4",
@@ -3082,8 +3082,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume III-Advanced States of Consciousness",
-    "clean_title": "Volume III Advanced States of Consciousness",
+    "title": "Volume III: Advanced States of Consciousness",
+    "clean_title": "Volume III: Advanced States of Consciousness",
     "part_index": "1",
     "part_total": "2",
     "proposed_filename": "Volume III Advanced States of Consciousness [1-2].mp4",
@@ -3097,8 +3097,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume III-Advanced States of Consciousness",
-    "clean_title": "Volume III Advanced States of Consciousness",
+    "title": "Volume III: Advanced States of Consciousness",
+    "clean_title": "Volume III: Advanced States of Consciousness",
     "part_index": "2",
     "part_total": "2",
     "proposed_filename": "Volume III Advanced States of Consciousness [2-2].mp4",
@@ -3112,12 +3112,12 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume IV-How to Tell the Truth about Anything (Part 1)",
-    "clean_title": "Volume IV How to Tell the Truth about Anything",
+    "title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
+    "clean_title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
     "part_index": "1",
     "part_total": "2",
-    "proposed_filename": "Volume IV How to Tell the Truth about Anything [1-2].mp4",
-    "proposed_filename_display": "Volume IV How to Tell the Truth about Anything [1/2].mp4"
+    "proposed_filename": "Volume IV Consciousness How to Tell the Truth About Anything [1-2].mp4",
+    "proposed_filename_display": "Volume IV Consciousness How to Tell the Truth About Anything [1/2].mp4"
   },
   {
     "uuid": "209",
@@ -3127,12 +3127,12 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume IV-How to Tell the Truth about Anything (Part 2)",
-    "clean_title": "Volume IV How to Tell the Truth about Anything",
+    "title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
+    "clean_title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
     "part_index": "2",
     "part_total": "2",
-    "proposed_filename": "Volume IV How to Tell the Truth about Anything [2-2].mp4",
-    "proposed_filename_display": "Volume IV How to Tell the Truth about Anything [2/2].mp4"
+    "proposed_filename": "Volume IV Consciousness How to Tell the Truth About Anything [2-2].mp4",
+    "proposed_filename_display": "Volume IV Consciousness How to Tell the Truth About Anything [2/2].mp4"
   },
   {
     "uuid": "210",
@@ -3142,8 +3142,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume V-Undoing the Barriers to Spiritual Progress",
-    "clean_title": "Volume V Undoing the Barriers to Spiritual Progress",
+    "title": "Volume V: Undoing the Barriers to Spiritual Progress",
+    "clean_title": "Volume V: Undoing the Barriers to Spiritual Progress",
     "part_index": "1",
     "part_total": "3",
     "proposed_filename": "Volume V Undoing the Barriers to Spiritual Progress [1-3].mp4",
@@ -3157,8 +3157,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume V-Undoing the Barriers to Spiritual Progress",
-    "clean_title": "Volume V Undoing the Barriers to Spiritual Progress",
+    "title": "Volume V: Undoing the Barriers to Spiritual Progress",
+    "clean_title": "Volume V: Undoing the Barriers to Spiritual Progress",
     "part_index": "2",
     "part_total": "3",
     "proposed_filename": "Volume V Undoing the Barriers to Spiritual Progress [2-3].mp4",
@@ -3172,8 +3172,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume V-Undoing the Barriers to Spiritual Progress",
-    "clean_title": "Volume V Undoing the Barriers to Spiritual Progress",
+    "title": "Volume V: Undoing the Barriers to Spiritual Progress",
+    "clean_title": "Volume V: Undoing the Barriers to Spiritual Progress",
     "part_index": "3",
     "part_total": "3",
     "proposed_filename": "Volume V Undoing the Barriers to Spiritual Progress [3-3].mp4",
@@ -3187,8 +3187,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume VI-How to Raise Your Level of Consciousness",
-    "clean_title": "Volume VI How to Raise Your Level of Consciousness",
+    "title": "Volume VI: How to Raise Your Level of Consciousness",
+    "clean_title": "Volume VI: How to Raise Your Level of Consciousness",
     "part_index": "1",
     "part_total": "1",
     "proposed_filename": "Volume VI How to Raise Your Level of Consciousness.mp4",
@@ -3202,8 +3202,8 @@
     "year": "",
     "month": "",
     "format": "DVD",
-    "title": "Volume VII A-Conversation with Knowingness",
-    "clean_title": "Volume VII A Conversation with Knowingness",
+    "title": "Volume VII: A Conversation with Knowingness",
+    "clean_title": "Volume VII: A Conversation with Knowingness",
     "part_index": "1",
     "part_total": "1",
     "proposed_filename": "Volume VII A Conversation with Knowingness.mp4",
@@ -3217,7 +3217,7 @@
     "year": "2004",
     "month": "06",
     "format": "DVD",
-    "title": "Become That Which You Are (June 2004) PART1",
+    "title": "Become That Which You Are",
     "clean_title": "Become That Which You Are",
     "part_index": "1",
     "part_total": "3",
@@ -3232,7 +3232,7 @@
     "year": "2004",
     "month": "06",
     "format": "DVD",
-    "title": "Become That Which You Are (June 2004) PART2",
+    "title": "Become That Which You Are",
     "clean_title": "Become That Which You Are",
     "part_index": "2",
     "part_total": "3",
@@ -3247,7 +3247,7 @@
     "year": "2004",
     "month": "06",
     "format": "DVD",
-    "title": "Become That Which You Are (June 2004) PART3",
+    "title": "Become That Which You Are",
     "clean_title": "Become That Which You Are",
     "part_index": "3",
     "part_total": "3",
@@ -3262,7 +3262,7 @@
     "year": "2004",
     "month": "01",
     "format": "DVD",
-    "title": "Love is a Way of Being (January 2004) PART1",
+    "title": "Love is a Way of Being",
     "clean_title": "Love is a Way of Being",
     "part_index": "1",
     "part_total": "3",
@@ -3277,7 +3277,7 @@
     "year": "2004",
     "month": "01",
     "format": "DVD",
-    "title": "Love is a Way of Being (January 2004) PART2",
+    "title": "Love is a Way of Being",
     "clean_title": "Love is a Way of Being",
     "part_index": "2",
     "part_total": "3",
@@ -3292,7 +3292,7 @@
     "year": "2004",
     "month": "01",
     "format": "DVD",
-    "title": "Love is a Way of Being (January 2004) PART3",
+    "title": "Love is a Way of Being",
     "clean_title": "Love is a Way of Being",
     "part_index": "3",
     "part_total": "3",
@@ -3367,12 +3367,12 @@
     "year": "2003",
     "month": "",
     "format": "streaming",
-    "title": "Devotion to Truth",
-    "clean_title": "Devotion to Truth",
+    "title": "Devotion to Truth Talk",
+    "clean_title": "Devotion to Truth Talk",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2003 - Devotion to Truth.mp4",
-    "proposed_filename_display": "2003 - Devotion to Truth.mp4"
+    "proposed_filename": "2003 - Devotion to Truth Talk (streaming).mp4",
+    "proposed_filename_display": "2003 - Devotion to Truth Talk (streaming).mp4"
   },
   {
     "uuid": "226",
@@ -3382,12 +3382,12 @@
     "year": "2003",
     "month": "",
     "format": "streaming",
-    "title": "Mind, Heart, and Service PART1",
-    "clean_title": "Mind, Heart, and Service",
+    "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
+    "clean_title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
     "part_index": "1",
     "part_total": "2",
-    "proposed_filename": "2003 - Mind, Heart, and Service [1-2].mp4",
-    "proposed_filename_display": "2003 - Mind, Heart, and Service [1/2].mp4"
+    "proposed_filename": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [1-2].mp4",
+    "proposed_filename_display": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [1/2].mp4"
   },
   {
     "uuid": "227",
@@ -3397,12 +3397,12 @@
     "year": "2003",
     "month": "",
     "format": "streaming",
-    "title": "Mind, Heart, and Service PART2",
-    "clean_title": "Mind, Heart, and Service",
+    "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
+    "clean_title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
     "part_index": "2",
     "part_total": "2",
-    "proposed_filename": "2003 - Mind, Heart, and Service [2-2].mp4",
-    "proposed_filename_display": "2003 - Mind, Heart, and Service [2/2].mp4"
+    "proposed_filename": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [2-2].mp4",
+    "proposed_filename_display": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [2/2].mp4"
   },
   {
     "uuid": "228",
@@ -3412,12 +3412,12 @@
     "year": "2004",
     "month": "",
     "format": "DVD",
-    "title": "Spiritual Will PART1",
-    "clean_title": "Spiritual Will",
+    "title": "Spiritual Will Inspiring Q & A",
+    "clean_title": "Spiritual Will Inspiring Q & A",
     "part_index": "1",
     "part_total": "2",
-    "proposed_filename": "2004 - Spiritual Will [1-2].mp4",
-    "proposed_filename_display": "2004 - Spiritual Will [1/2].mp4"
+    "proposed_filename": "2004 - Spiritual Will Inspiring Q & A [1-2].mp4",
+    "proposed_filename_display": "2004 - Spiritual Will Inspiring Q & A [1/2].mp4"
   },
   {
     "uuid": "229",
@@ -3427,12 +3427,12 @@
     "year": "2004",
     "month": "",
     "format": "DVD",
-    "title": "Spiritual Will PART2",
-    "clean_title": "Spiritual Will",
+    "title": "Spiritual Will Inspiring Q & A",
+    "clean_title": "Spiritual Will Inspiring Q & A",
     "part_index": "2",
     "part_total": "2",
-    "proposed_filename": "2004 - Spiritual Will [2-2].mp4",
-    "proposed_filename_display": "2004 - Spiritual Will [2/2].mp4"
+    "proposed_filename": "2004 - Spiritual Will Inspiring Q & A [2-2].mp4",
+    "proposed_filename_display": "2004 - Spiritual Will Inspiring Q & A [2/2].mp4"
   },
   {
     "uuid": "230",
@@ -3487,12 +3487,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-01 Office Series-Stress",
-    "clean_title": "A-01 Office Series-Stress",
+    "title": "Stress",
+    "clean_title": "Stress",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-01 Office Series-Stress.mp4",
-    "proposed_filename_display": "198X - A-01 Office Series-Stress.mp4"
+    "proposed_filename": "198X - Stress.mp4",
+    "proposed_filename_display": "198X - Stress.mp4"
   },
   {
     "uuid": "234",
@@ -3502,12 +3502,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-02 Office Series-Health",
-    "clean_title": "A-02 Office Series-Health",
+    "title": "Health",
+    "clean_title": "Health",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-02 Office Series-Health.mp4",
-    "proposed_filename_display": "198X - A-02 Office Series-Health.mp4"
+    "proposed_filename": "198X - Health.mp4",
+    "proposed_filename_display": "198X - Health.mp4"
   },
   {
     "uuid": "235",
@@ -3517,12 +3517,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-03 Office Series-Spiritual First Aid",
-    "clean_title": "A-03 Office Series-Spiritual First Aid",
+    "title": "Spiritual First Aid",
+    "clean_title": "Spiritual First Aid",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-03 Office Series-Spiritual First Aid.mp4",
-    "proposed_filename_display": "198X - A-03 Office Series-Spiritual First Aid.mp4"
+    "proposed_filename": "198X - Spiritual First Aid.mp4",
+    "proposed_filename_display": "198X - Spiritual First Aid.mp4"
   },
   {
     "uuid": "236",
@@ -3532,12 +3532,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-04 Office Series-Sexuality",
-    "clean_title": "A-04 Office Series-Sexuality",
+    "title": "Sexuality",
+    "clean_title": "Sexuality",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-04 Office Series-Sexuality.mp4",
-    "proposed_filename_display": "198X - A-04 Office Series-Sexuality.mp4"
+    "proposed_filename": "198X - Sexuality.mp4",
+    "proposed_filename_display": "198X - Sexuality.mp4"
   },
   {
     "uuid": "237",
@@ -3547,12 +3547,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-05 Office Series-The Aging Process",
-    "clean_title": "A-05 Office Series-The Aging Process",
+    "title": "The Aging Process",
+    "clean_title": "The Aging Process",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-05 Office Series-The Aging Process.mp4",
-    "proposed_filename_display": "198X - A-05 Office Series-The Aging Process.mp4"
+    "proposed_filename": "198X - The Aging Process.mp4",
+    "proposed_filename_display": "198X - The Aging Process.mp4"
   },
   {
     "uuid": "238",
@@ -3562,12 +3562,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-06 Office Series-Handling Major Crises",
-    "clean_title": "A-06 Office Series-Handling Major Crises",
+    "title": "Handling Major Crises",
+    "clean_title": "Handling Major Crises",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-06 Office Series-Handling Major Crises.mp4",
-    "proposed_filename_display": "198X - A-06 Office Series-Handling Major Crises.mp4"
+    "proposed_filename": "198X - Handling Major Crises.mp4",
+    "proposed_filename_display": "198X - Handling Major Crises.mp4"
   },
   {
     "uuid": "239",
@@ -3577,12 +3577,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-07 Office Series-Worry Fear and Anxiety",
-    "clean_title": "A-07 Office Series-Worry Fear and Anxiety",
+    "title": "Worry, Fear, and Anxiety",
+    "clean_title": "Worry, Fear, and Anxiety",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-07 Office Series-Worry Fear and Anxiety.mp4",
-    "proposed_filename_display": "198X - A-07 Office Series-Worry Fear and Anxiety.mp4"
+    "proposed_filename": "198X - Worry, Fear, and Anxiety.mp4",
+    "proposed_filename_display": "198X - Worry, Fear, and Anxiety.mp4"
   },
   {
     "uuid": "240",
@@ -3592,12 +3592,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-08 Office Series-Pain and Suffering",
-    "clean_title": "A-08 Office Series-Pain and Suffering",
+    "title": "Pain and Suffering",
+    "clean_title": "Pain and Suffering",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-08 Office Series-Pain and Suffering.mp4",
-    "proposed_filename_display": "198X - A-08 Office Series-Pain and Suffering.mp4"
+    "proposed_filename": "198X - Pain and Suffering.mp4",
+    "proposed_filename_display": "198X - Pain and Suffering.mp4"
   },
   {
     "uuid": "241",
@@ -3607,12 +3607,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-09 Office Series-Losing Weight",
-    "clean_title": "A-09 Office Series-Losing Weight",
+    "title": "Losing Weight",
+    "clean_title": "Losing Weight",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-09 Office Series-Losing Weight.mp4",
-    "proposed_filename_display": "198X - A-09 Office Series-Losing Weight.mp4"
+    "proposed_filename": "198X - Losing Weight.mp4",
+    "proposed_filename_display": "198X - Losing Weight.mp4"
   },
   {
     "uuid": "242",
@@ -3622,12 +3622,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-10 Office Series-Depression",
-    "clean_title": "A-10 Office Series-Depression",
+    "title": "Depression",
+    "clean_title": "Depression",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-10 Office Series-Depression.mp4",
-    "proposed_filename_display": "198X - A-10 Office Series-Depression.mp4"
+    "proposed_filename": "198X - Depression.mp4",
+    "proposed_filename_display": "198X - Depression.mp4"
   },
   {
     "uuid": "243",
@@ -3637,12 +3637,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-11 Office Series-Illness and Self-Healing",
-    "clean_title": "A-11 Office Series-Illness and Self-Healing",
+    "title": "Illness and Self-Healing",
+    "clean_title": "Illness and Self-Healing",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-11 Office Series-Illness and Self-Healing.mp4",
-    "proposed_filename_display": "198X - A-11 Office Series-Illness and Self-Healing.mp4"
+    "proposed_filename": "198X - Illness and Self-Healing.mp4",
+    "proposed_filename_display": "198X - Illness and Self-Healing.mp4"
   },
   {
     "uuid": "244",
@@ -3652,12 +3652,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "A-12 Office Series-Alcoholism",
-    "clean_title": "A-12 Office Series-Alcoholism",
+    "title": "Alcoholism",
+    "clean_title": "Alcoholism",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - A-12 Office Series-Alcoholism.mp4",
-    "proposed_filename_display": "198X - A-12 Office Series-Alcoholism.mp4"
+    "proposed_filename": "198X - Alcoholism.mp4",
+    "proposed_filename_display": "198X - Alcoholism.mp4"
   },
   {
     "uuid": "245",
@@ -3667,12 +3667,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "B-01 Office Series-Drug Addiction and Alcoholism...",
-    "clean_title": "B-01 Office Series-Drug Addiction and Alcoholism...",
+    "title": "Drug Addiction and Alcoholism",
+    "clean_title": "Drug Addiction and Alcoholism",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - B-01 Office Series-Drug Addiction and Alcoholism.mp4",
-    "proposed_filename_display": "198X - B-01 Office Series-Drug Addiction and Alcoholism.mp4"
+    "proposed_filename": "198X - Drug Addiction and Alcoholism.mp4",
+    "proposed_filename_display": "198X - Drug Addiction and Alcoholism.mp4"
   },
   {
     "uuid": "247",
@@ -3682,12 +3682,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "B-03 Office Series-A Map Of Consciousness",
-    "clean_title": "B-03 Office Series-A Map Of Consciousness",
+    "title": "A Map of Consciousness",
+    "clean_title": "A Map of Consciousness",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - B-03 Office Series-A Map Of Consciousness.mp4",
-    "proposed_filename_display": "198X - B-03 Office Series-A Map Of Consciousness.mp4"
+    "proposed_filename": "198X - A Map of Consciousness.mp4",
+    "proposed_filename_display": "198X - A Map of Consciousness.mp4"
   },
   {
     "uuid": "248",
@@ -3697,12 +3697,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "B-04 Office Series-Cancer",
-    "clean_title": "B-04 Office Series-Cancer",
+    "title": "Cancer",
+    "clean_title": "Cancer",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - B-04 Office Series-Cancer.mp4",
-    "proposed_filename_display": "198X - B-04 Office Series-Cancer.mp4"
+    "proposed_filename": "198X - Cancer.mp4",
+    "proposed_filename_display": "198X - Cancer.mp4"
   },
   {
     "uuid": "250",
@@ -3712,12 +3712,12 @@
     "year": "198X",
     "month": "",
     "format": "DVD",
-    "title": "B-06 Office Series-Death and Dying",
-    "clean_title": "B-06 Office Series-Death and Dying",
+    "title": "Death and Dying",
+    "clean_title": "Death and Dying",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "198X - B-06 Office Series-Death and Dying.mp4",
-    "proposed_filename_display": "198X - B-06 Office Series-Death and Dying.mp4"
+    "proposed_filename": "198X - Death and Dying.mp4",
+    "proposed_filename_display": "198X - Death and Dying.mp4"
   },
   {
     "uuid": "251",
@@ -4117,12 +4117,12 @@
     "year": "2012",
     "month": "",
     "format": "streaming",
-    "title": "How to Live Your Life Like a Prayer",
-    "clean_title": "How to Live Your Life Like a Prayer",
+    "title": "How to Live Your Life Like A Prayer",
+    "clean_title": "How to Live Your Life Like A Prayer",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2012 - How to Live Your Life Like a Prayer.mp4",
-    "proposed_filename_display": "2012 - How to Live Your Life Like a Prayer.mp4"
+    "proposed_filename": "2012 - How to Live Your Life Like A Prayer.mp4",
+    "proposed_filename_display": "2012 - How to Live Your Life Like A Prayer.mp4"
   },
   {
     "uuid": "279",
@@ -4207,12 +4207,12 @@
     "year": "1995",
     "month": "",
     "format": "book",
-    "title": "Power vs Force",
-    "clean_title": "Power vs Force",
+    "title": "Power vs. Force: The Hidden Determinants of Human Behavior",
+    "clean_title": "Power vs. Force: The Hidden Determinants of Human Behavior",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "1995 - Power vs Force.pdf",
-    "proposed_filename_display": "1995 - Power vs Force.pdf"
+    "proposed_filename": "1995 - Power vs. Force The Hidden Determinants of Human Behavior.pdf",
+    "proposed_filename_display": "1995 - Power vs. Force The Hidden Determinants of Human Behavior.pdf"
   },
   {
     "uuid": "287",
@@ -4237,8 +4237,8 @@
     "year": "2003",
     "month": "",
     "format": "book",
-    "title": "I Reality and Subjectivity",
-    "clean_title": "I Reality and Subjectivity",
+    "title": "I: Reality and Subjectivity",
+    "clean_title": "I: Reality and Subjectivity",
     "part_index": "",
     "part_total": "",
     "proposed_filename": "2003 - I Reality and Subjectivity.pdf",
@@ -4252,12 +4252,12 @@
     "year": "2005",
     "month": "",
     "format": "book",
-    "title": "Truth vs Falsehood",
-    "clean_title": "Truth vs Falsehood",
+    "title": "Truth vs. Falsehood: How to Tell the Difference",
+    "clean_title": "Truth vs. Falsehood: How to Tell the Difference",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2005 - Truth vs Falsehood.pdf",
-    "proposed_filename_display": "2005 - Truth vs Falsehood.pdf"
+    "proposed_filename": "2005 - Truth vs. Falsehood How to Tell the Difference.pdf",
+    "proposed_filename_display": "2005 - Truth vs. Falsehood How to Tell the Difference.pdf"
   },
   {
     "uuid": "290",
@@ -4267,12 +4267,12 @@
     "year": "2012",
     "month": "",
     "format": "book",
-    "title": "Letting Go",
-    "clean_title": "Letting Go",
+    "title": "Letting Go: The Pathway of Surrender",
+    "clean_title": "Letting Go: The Pathway of Surrender",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2012 - Letting Go.pdf",
-    "proposed_filename_display": "2012 - Letting Go.pdf"
+    "proposed_filename": "2012 - Letting Go The Pathway of Surrender.pdf",
+    "proposed_filename_display": "2012 - Letting Go The Pathway of Surrender.pdf"
   },
   {
     "uuid": "291",
@@ -4297,12 +4297,12 @@
     "year": "2007",
     "month": "",
     "format": "book",
-    "title": "Discovery of the Presence of God",
-    "clean_title": "Discovery of the Presence of God",
+    "title": "Discovery of the Presence of God: Devotional Nonduality",
+    "clean_title": "Discovery of the Presence of God: Devotional Nonduality",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2007 - Discovery of the Presence of God.pdf",
-    "proposed_filename_display": "2007 - Discovery of the Presence of God.pdf"
+    "proposed_filename": "2007 - Discovery of the Presence of God Devotional Nonduality.pdf",
+    "proposed_filename_display": "2007 - Discovery of the Presence of God Devotional Nonduality.pdf"
   },
   {
     "uuid": "293",
@@ -4342,12 +4342,12 @@
     "year": "2020",
     "month": "",
     "format": "book",
-    "title": "The Map of Consciousness Explained",
-    "clean_title": "The Map of Consciousness Explained",
+    "title": "The Map of Consciousness Explained: A Proven Energy Scale to Actualize Your Ultimate Potential",
+    "clean_title": "The Map of Consciousness Explained: A Proven Energy Scale to Actualize Your Ultimate Potential",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2020 - The Map of Consciousness Explained.pdf",
-    "proposed_filename_display": "2020 - The Map of Consciousness Explained.pdf"
+    "proposed_filename": "2020 - The Map of Consciousness Explained A Proven Energy Scale to Actualize Your Ultimate Potential.pdf",
+    "proposed_filename_display": "2020 - The Map of Consciousness Explained A Proven Energy Scale to Actualize Your Ultimate Potential.pdf"
   },
   {
     "uuid": "296",
@@ -4357,12 +4357,12 @@
     "year": "2016",
     "month": "",
     "format": "book",
-    "title": "Success Is for You",
-    "clean_title": "Success Is for You",
+    "title": "Success Is for You: Using Heart-Centered Power Principles for Lasting Abundance and Fulfillment",
+    "clean_title": "Success Is for You: Using Heart-Centered Power Principles for Lasting Abundance and Fulfillment",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2016 - Success Is for You.pdf",
-    "proposed_filename_display": "2016 - Success Is for You.pdf"
+    "proposed_filename": "2016 - Success Is for You Using Heart-Centered Power Principles for Lasting Abundance and Fulfillment.pdf",
+    "proposed_filename_display": "2016 - Success Is for You Using Heart-Centered Power Principles for Lasting Abundance and Fulfillment.pdf"
   },
   {
     "uuid": "297",
@@ -4372,12 +4372,12 @@
     "year": "2022",
     "month": "",
     "format": "book",
-    "title": "Daily Reflections",
-    "clean_title": "Daily Reflections",
+    "title": "Daily Reflections from Dr. David R. Hawkins: 365 Contemplations on Surrender, Healing, and Consciousness",
+    "clean_title": "Daily Reflections from Dr. David R. Hawkins: 365 Contemplations on Surrender, Healing, and Consciousness",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2022 - Daily Reflections.pdf",
-    "proposed_filename_display": "2022 - Daily Reflections.pdf"
+    "proposed_filename": "2022 - Daily Reflections from Dr. David R. Hawkins 365 Contemplations on Surrender, Healing, and Consciousness.pdf",
+    "proposed_filename_display": "2022 - Daily Reflections from Dr. David R. Hawkins 365 Contemplations on Surrender, Healing, and Consciousness.pdf"
   },
   {
     "uuid": "298",
@@ -4402,12 +4402,12 @@
     "year": "2011",
     "month": "",
     "format": "book",
-    "title": "Dissolving the Ego",
-    "clean_title": "Dissolving the Ego",
+    "title": "Dissolving the Ego Realizing the Self",
+    "clean_title": "Dissolving the Ego Realizing the Self",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2011 - Dissolving the Ego.pdf",
-    "proposed_filename_display": "2011 - Dissolving the Ego.pdf"
+    "proposed_filename": "2011 - Dissolving the Ego Realizing the Self.pdf",
+    "proposed_filename_display": "2011 - Dissolving the Ego Realizing the Self.pdf"
   },
   {
     "uuid": "300",
@@ -4417,12 +4417,12 @@
     "year": "2023",
     "month": "",
     "format": "book",
-    "title": "In the World, But Not of It",
-    "clean_title": "In the World, But Not of It",
+    "title": "In the World But Not Of It: Transforming Everyday Experience into a Spiritual Path",
+    "clean_title": "In the World But Not Of It: Transforming Everyday Experience into a Spiritual Path",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2023 - In the World, But Not of It.pdf",
-    "proposed_filename_display": "2023 - In the World, But Not of It.pdf"
+    "proposed_filename": "2023 - In the World But Not Of It Transforming Everyday Experience into a Spiritual Path.pdf",
+    "proposed_filename_display": "2023 - In the World But Not Of It Transforming Everyday Experience into a Spiritual Path.pdf"
   },
   {
     "uuid": "301",
@@ -4530,21 +4530,6 @@
     "proposed_filename_display": "2026 - The Final Doorway to Enlightenment Prayer, Transcendence and Realization of the Self.pdf"
   },
   {
-    "uuid": "309",
-    "work_id": "w-progressive-levels-of-consciousness",
-    "item_type": "lecture",
-    "series": "On The Road Talk Series",
-    "year": "2023",
-    "month": "09",
-    "format": "DVD",
-    "title": "Progressive Levels of Consciousness",
-    "clean_title": "Progressive Levels of Consciousness",
-    "part_index": "",
-    "part_total": "",
-    "proposed_filename": "2023-09 - Progressive Levels of Consciousness.mp4",
-    "proposed_filename_display": "2023-09 - Progressive Levels of Consciousness.mp4"
-  },
-  {
     "uuid": "310",
     "work_id": "w-mind-heart-and-service-the-pathway-of-de",
     "item_type": "lecture",
@@ -4571,8 +4556,8 @@
     "clean_title": "Devotion to Truth Talk",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2003 - Devotion to Truth Talk.mp4",
-    "proposed_filename_display": "2003 - Devotion to Truth Talk.mp4"
+    "proposed_filename": "2003 - Devotion to Truth Talk (DVD).mp4",
+    "proposed_filename_display": "2003 - Devotion to Truth Talk (DVD).mp4"
   },
   {
     "uuid": "312",
@@ -4582,7 +4567,7 @@
     "year": "2012",
     "month": "",
     "format": "streaming",
-    "title": "Permanent Inner Peace (2012)",
+    "title": "Permanent Inner Peace",
     "clean_title": "Permanent Inner Peace",
     "part_index": "",
     "part_total": "",
@@ -4597,7 +4582,7 @@
     "year": "2012",
     "month": "",
     "format": "streaming",
-    "title": "What is Real Success? (2012)",
+    "title": "What is Real Success?",
     "clean_title": "What is Real Success?",
     "part_index": "",
     "part_total": "",
@@ -5017,12 +5002,12 @@
     "year": "2006",
     "month": "",
     "format": "audiobook",
-    "title": "Transcending the Levels of Consciousness Series: Perception (Audiobook)",
-    "clean_title": "Transcending the Levels of Consciousness Series: Perception",
+    "title": "Transcending the Levels of Consciousness Series: Perception vs. Essence (Audiobook)",
+    "clean_title": "Transcending the Levels of Consciousness Series: Perception vs. Essence",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2006 - Transcending the Levels of Consciousness Series Perception.m4b",
-    "proposed_filename_display": "2006 - Transcending the Levels of Consciousness Series Perception.m4b"
+    "proposed_filename": "2006 - Transcending the Levels of Consciousness Series Perception vs. Essence.m4b",
+    "proposed_filename_display": "2006 - Transcending the Levels of Consciousness Series Perception vs. Essence.m4b"
   },
   {
     "uuid": "342",

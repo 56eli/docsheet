@@ -43,8 +43,8 @@ the `work_id` plumbing first.
 No families/editions approved yet — master stays at 317 rows with empty
 `work_id` until the owner approves rows in `data/work_families.csv` and
 `data/edition_promotions.csv`. Phase 4 (UI/docs labels) pending.
-**Related:** `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (content class vs carrier),
-`PRODUCT_RELATIONSHIP_SCHEMA.md`, `VERITAS_PRODUCT_MAPPING.md`,
+**Related:** `archive/ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (content class vs carrier),
+`PRODUCT_RELATIONSHIP_SCHEMA.md`, `archive/VERITAS_PRODUCT_MAPPING.md`,
 `NEXT_AGENT_HANDOFF.md` §5 (binding data rules).
 
 ---

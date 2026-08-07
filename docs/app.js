@@ -1,6 +1,6 @@
 /* ==========================================================================
    Live Spreadsheet — app.js
-   Loads docs/data.json (+ docs/meta.json) and renders it as an
+   Loads the per-view sheet JSON files and renders them as
    interactive Tabulator table: sortable headers, global live search,
    all rows in a scrollable view, CSV export, column resizing,
    horizontal overflow for every column, dark mode with localStorage
@@ -30,6 +30,7 @@
   const viewMeta = $("view-meta");
   const columnMenuBtn = $("column-menu-btn");
   const columnMenu = $("column-menu");
+  const expertToggleBtn = $("expert-toggle-btn");
   const columnList = $("column-list");
   const showAllColumnsBtn = $("show-all-columns");
   const rowDetails = $("row-details");
@@ -60,8 +61,8 @@
 
   const VIEW_DETAILS = {
     master: {
-      type: "Catalogue + candidates",
-      description: "The primary working view. Use the Record Type column to tell curated master records apart from official candidates: only “Curated master” rows are catalogue records — candidate rows are official listings shown for review and are not promoted master items. Since 2026-08-03 the master holds one row per edition of a work (book / audio / video); the Work column groups a work's editions together.",
+      type: "Complete curated catalogue",
+      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
     },
     reviewOverview: {
       type: "Review index",
@@ -129,7 +130,16 @@
     master_uuid: "Master ID",
     year_month: "Year-Month",
     year_source: "Year Source",
-    source_url_amazon: "Amazon Search",
+    item_type: "Item Type",
+    series: "Series",
+    owned: "Owned",
+    source_url_veritas: "Veritas (Official Store)",
+    source_url_hay_house: "Hay House",
+    source_url_nightingale_conant: "Nightingale-Conant",
+    source_url_audible: "Audible",
+    source_url_amazon: "Amazon",
+    reference_url_1: "Streaming",
+    legacy_title: "Original Spreadsheet Title",
     raw_row_number: "Raw Row",
     catalog_code: "Catalogue Code",
     legacy_tempid: "Legacy ID",
@@ -191,16 +201,23 @@
   const LOW_PRIORITY_FIELDS = [
     "uuid", "work_id", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
     "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
-    "normalized_title_match_count", "location_physical", "location_digital",
-    "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
+    "normalized_title_match_count", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
     "raw_unnamed_10", "raw_unnamed_11",
   ];
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "series", "title", "proposed_filename", "item_type", "edition", "year_month", "year_source", "owned", "source_url_veritas", "source_url_audible", "source_url_amazon", "notes"],
+      // Visitor-first (owner directive 2026-08-07 PM): a first-time visitor sees
+      // the product-relevant facts — what it is, when, which edition, where to
+      // buy/listen — before any technical metadata comes into view.
+      priority: ["record_type", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
       frozen: ["record_type", "title"],
-      // Owner-directed 2026-08-04: park the Work grouping column between
-      // Legacy ID and Location Physical instead of up front.
+      // Expert columns: internal IDs, file-naming proposes, and provenance
+      // fields. Hidden by default so the catalogue opens on product info;
+      // the "Expert columns" toggle (or the Columns menu) reveals them.
+      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
+      // Owner-directed 2026-08-04: park the Work grouping column right after
+      // Legacy ID (the empty Location placeholders it used to precede were
+      // dropped from the schema by owner ruling 2026-08-07).
       // Owner-directed 2026-08-04 v2: proposed_filename between Title and Item Type.
       moveAfter: { work_id: "legacy_tempid" },
     },
@@ -227,6 +244,75 @@
   let activeView = "master";
   let activeSearchQuery = "";
   let activeReviewFilter = null;
+
+  /* ------------------------------------------------------------------ *
+   *  Expert columns (per-view, persisted): views whose preset declares a
+   *  `hidden` list open in reader mode — product facts first, technical
+   *  metadata (Master ID, Work, file-name proposes, provenance) hidden.
+   *  The "Expert columns" toggle reveals/hides that list; the Columns menu
+   *  can still show any single column, and the row-details drawer always
+   *  shows every stored field.
+   * ------------------------------------------------------------------ */
+  const EXPERT_STORAGE_KEY = "docsheet-expert-columns";
+
+  function readExpertState() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(EXPERT_STORAGE_KEY) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function expertColumnsOn(viewName) {
+    return Boolean(readExpertState()[viewName]);
+  }
+
+  function setExpertColumns(viewName, on) {
+    const state = readExpertState();
+    state[viewName] = on;
+    try {
+      localStorage.setItem(EXPERT_STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+      /* storage unavailable (private mode) — toggle just won't persist */
+    }
+  }
+
+  function expertHiddenFields(viewName) {
+    const preset = COLUMN_PRESETS[viewName];
+    return (preset && preset.hidden) || [];
+  }
+
+  function configureExpertToggle(viewName) {
+    if (!expertToggleBtn) return;
+    const hasHidden = expertHiddenFields(viewName).length > 0;
+    expertToggleBtn.hidden = !hasHidden;
+    if (!hasHidden) return;
+    expertToggleBtn.setAttribute("aria-pressed", String(expertColumnsOn(viewName)));
+  }
+
+  function applyExpertVisibility() {
+    if (!table) return;
+    const on = expertColumnsOn(activeView);
+    const present = new Set(table.getColumns().map((column) => column.getField()));
+    expertHiddenFields(activeView).filter((field) => present.has(field)).forEach((field) => {
+      const column = table.getColumn(field);
+      if (on) {
+        column.show();
+      } else {
+        column.hide();
+      }
+    });
+    fitTableToContainer();
+  }
+
+  function toggleExpertColumns() {
+    const on = !expertColumnsOn(activeView);
+    setExpertColumns(activeView, on);
+    applyExpertVisibility();
+    configureExpertToggle(activeView);
+    configureColumnChooser();
+  }
 
   /* ------------------------------------------------------------------ *
    *  Helpers
@@ -349,6 +435,12 @@
     columnList.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = true;
     });
+    // Showing everything is the expert superset: keep the toggle state
+    // consistent so a later toggle-off restores the reader view.
+    if (expertHiddenFields(activeView).length > 0) {
+      setExpertColumns(activeView, true);
+      configureExpertToggle(activeView);
+    }
     fitTableToContainer();
   }
 
@@ -462,9 +554,10 @@
       ["veritas", "Veritas product"],
       ["hay_house", "Hay House product"],
       ["nightingale_conant", "Nightingale-Conant listing"],
+      ["amazon", "Amazon page"],
       ["audible", "Audible listing"],
       ["evidence", "Evidence"],
-      ["reference", "Reference"],
+      ["reference", "Streaming link"],
       ["catalogue", "Catalogue"],
       ["official", "Official product"],
       ["source", "Source"],
@@ -624,6 +717,9 @@
       keys = keys.filter((key) => key !== "format" && key !== "format_detail");
     }
     const preset = columnPresetFor(activeView);
+    // Expert columns (preset.hidden) stay out of the first-sight view unless
+    // the user has switched them on for this view (persisted per view).
+    const hiddenByDefault = new Set(expertColumnsOn(activeView) ? [] : (preset.hidden || []));
 
     return keys.map((key) => {
       const nonEmpty = data.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
@@ -683,6 +779,9 @@
       // This does NOT modify the underlying data.
       if (urlRatio >= 0.6 && !STATUS_FIELDS.has(key)) {
         col.formatter = urlFormatter;
+      }
+      if (hiddenByDefault.has(key)) {
+        col.visible = false;
       }
       return col;
     });
@@ -761,7 +860,12 @@
 
       configureReviewFilter(data);
     configureColumnChooser();
+    configureExpertToggle(activeView);
     table.on("dataFiltered", updateSearchStatus);
+    // The synchronous call below can run before Tabulator has processed its
+    // initial data ("active" row pipeline is still empty), leaving the footer
+    // stuck on "Showing: 0"; tableBuilt corrects the count once rows exist.
+    table.on("tableBuilt", updateSearchStatus);
     table.on("rowClick", (event, row) => {
       if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
       openRowDetails(row.getData());
@@ -902,6 +1006,9 @@
       columnMenuBtn.setAttribute("aria-expanded", String(willOpen));
     });
     columnMenu.addEventListener("click", (event) => event.stopPropagation());
+    if (expertToggleBtn) {
+      expertToggleBtn.addEventListener("click", toggleExpertColumns);
+    }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
     document.addEventListener("click", closeColumnMenu);

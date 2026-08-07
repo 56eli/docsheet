@@ -9,7 +9,7 @@ the site in one click.
 hawkins archive clone - Sheet1.csv        (source of truth — you edit this)
         │
         ▼  python process_data.py   (GitHub Actions: "Update Spreadsheet")
-docs/data.json  +  docs/meta.json
+docs/data.json
         │
         ▼  GitHub Pages serves /docs
 https://<username>.github.io/<repo-name>   (the live site)
@@ -84,7 +84,7 @@ When you're ready to transform the data:
 
 ```bash
 pip install -r requirements.txt   # installs pandas
-python process_data.py            # regenerates docs/data.json + meta.json
+python process_data.py            # regenerates docs/data.json (view trims 5 always-empty raw columns)
 python process_data.py --check    # verifies generated outputs match the source
 ```
 
@@ -129,13 +129,24 @@ python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
 python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check   # derived inventory mirrors (see below)
 ```
+
+The Veritas inventory's mirror columns (`normalized_title_match_count`,
+`matched_master_titles`, and — for `matched_by_primary_source` rows —
+`matched_master_uuids`) are derived from the curated master, never edited by
+hand. After changing master titles or Veritas URLs, run
+`python sync_inventory_mirrors.py` to re-derive them (then rebuild below and
+re-run the checks). The tool refuses to write when a reviewed non-primary
+association contradicts URL evidence — that needs an owner ruling, not a sync.
 
 After an approved review-input change, rebuild in this order and then repeat the
 checks:
 
 ```bash
 python build_research_master.py
+python map_series_taxonomy.py        # taxonomy mirrors follow the master + inventory
+python build_research_master.py      # re-apply if mapped_series values changed
 python build_catalogue_pages.py
 python reconcile_research_master.py
 ```
@@ -159,12 +170,12 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 103 deterministic tests
+python -m unittest discover tests      # 110 deterministic tests
 coverage run -m unittest discover tests
-coverage report                        # exits non-zero below the 80% floor (.coveragerc)
+coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
-Current coverage: **92% total, every pipeline module ≥ 89%** (2026-08-03).
+Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-07).
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright
 (`npm run test:e2e`), which needs Chromium and runs in CI.
@@ -194,7 +205,7 @@ inspect the artifact before accepting any live-source update.
 | File | Purpose |
 |---|---|
 | `hawkins archive clone - Sheet1.csv` | Your source data — never modified by the pipeline. |
-| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects) + `docs/meta.json` (row count, timestamp). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
+| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 5 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Python dependencies (pandas only, for now). |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
 | `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable view, inline editing, CSV export, column resizing, horizontal access to every column, and footer stats. |
@@ -208,8 +219,9 @@ inspect the artifact before accepting any live-source update.
   `process_data.py` reads with `header=1`. Cell values are passed through
   **unchanged**.
 - **Footer:** shows the active view's row count and its HTTP `Last-Modified`
-  value. `docs/meta.json` remains a machine-readable build artifact for the raw
-  spreadsheet pipeline and its `--check` validation.
+  value. (The legacy `docs/meta.json` descriptor was dropped by owner ruling
+  2026-08-07: nothing but `process_data.py`'s own self-check ever read it,
+  and its `generated_at` timestamp only churned diffs.)
 - **Read-only published views:** catalogue and review sheets are generated from
   committed CSV inputs and cannot be edited in the browser. Make reviewed changes
   in their declared input file, regenerate the derived outputs, and run the
