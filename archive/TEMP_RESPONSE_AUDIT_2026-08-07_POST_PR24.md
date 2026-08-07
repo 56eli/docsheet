@@ -58,7 +58,7 @@ Results:
 - `build_catalogue_pages.py --check`: initially failed, then pass after regeneration.
 - `reconcile_research_master.py --check`: pass.
 - `map_series_taxonomy.py --check`: pass.
-- Python unit suite: 103/103 pass.
+- Python unit suite: 104/104 pass.
 - Coverage: 91% total, above 80% gate.
 - JavaScript syntax checks: pass.
 
@@ -146,3 +146,7 @@ From `docs/catalogue-meta.json` and CSV profiling:
 3. Next data task: resolve record 246 and the two blank-format rows first because they are small, high-signal catalogue holes.
 4. Next docs task: update the main deep-audit doc or handoff to point to this post-PR #24 audit and clarify current counts.
 5. Next research task: continue streaming URL mapping in small approved batches.
+
+## Follow-up requested in chat: Volume Series filename mismatch
+
+After the audit summary, the Volume Series proposed filenames were inspected side-by-side. The cause was not in the live build logic; `build_research_master.py` only applies the reviewed `data/filename_proposal_YYYYMM.csv` mapping. The reviewed CSV itself contained bad Volume groupings: UUIDs 206-207 (Volume III) were labeled as Volume II parts 3/4 and 4/4, while UUIDs 213-214 (Volume VI/VII) were labeled as Volume V parts 4/5 and 5/5. I corrected the reviewed filename CSV, regenerated master and Pages JSON, documented the fix in `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, and added a regression test that pins each Volume Series title to its own part group.

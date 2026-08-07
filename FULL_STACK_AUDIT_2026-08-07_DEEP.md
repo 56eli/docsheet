@@ -1,6 +1,6 @@
 # Full-Stack Deep Audit — 2026-08-07
 
-> **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 103/103 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
+> **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 104/104 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
 
 
 **Branch:** `arena/019fdb8b-docsheet` (HEAD `0b54614`, same as `main` at PR #23 merge)
@@ -188,7 +188,7 @@ Invariants enforced:
 
 Playwright (`tests/column-layout.spec.js`): Work column parked between Legacy ID and Location Physical, measured width, numeric sort asc 1/2/3 desc 358/357
 
-Total: 103 tests, 92% coverage
+Total: 104 tests, 92% coverage
 
 ## Data Quality Findings
 
@@ -374,6 +374,6 @@ node --check docs/app.js
 
 ## One-Sentence Summary
 
-The curated Hawkins archive pipeline is deterministically green (358 master, 378 Everything, 103 tests, 92% coverage, all checks) with intentional review gaps (31 year-blank, 8 format-blank, 1 untyped 246, 36→56 streaming mapped, 4 NC discovery pending) and minor doc drift in filename proposal V4.
+The curated Hawkins archive pipeline is deterministically green (358 master, 378 Everything, 104 tests, 92% coverage, all checks) with intentional review gaps (31 year-blank, 8 format-blank, 1 untyped 246, 36→56 streaming mapped, 4 NC discovery pending) and minor doc drift in filename proposal V4.
 
 *End of deep audit 2026-08-07.*

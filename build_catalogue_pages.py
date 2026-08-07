@@ -30,6 +30,7 @@ MANUAL_CANDIDATES = Path("data/manual_master_candidates.csv")
 MANUAL_LEADS = Path("data/research_manual_leads.csv")
 MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
 SOURCE_OVERRIDES = Path("data/research_master_source_overrides.csv")
+FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 MIGRATION_LEDGER = Path("migration_review_ledger.csv")
 OUT_MASTER = Path("docs/master.json")
 OUT_REVIEW_OVERVIEW = Path("docs/review-overview.json")
@@ -47,6 +48,7 @@ OUT_SERIES_COMPILATIONS = Path("docs/series-compilations.json")
 OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
 OUT_AUDIBLE_PRODUCTS = Path("docs/audible-products.json")
 OUT_INTERNATIONAL = Path("docs/international-products.json")
+OUT_FILENAME_PROPOSAL = Path("docs/filename-proposal.json")
 OUT_PUBLISHERS = Path("docs/publishers.json")
 OUT_META = Path("docs/catalogue-meta.json")
 
@@ -561,6 +563,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     intl_queue = read_csv(INTL_QUEUE)
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
+    filename_proposal = read_csv(FILENAME_PROPOSAL)
 
     # Pending-promotion candidates are surfaced for owner review by default
     # (opt out locally with --no-include-pending).
@@ -785,6 +788,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         OUT_HAYHOUSE_PRODUCTS: json_text(hayhouse_products),
         OUT_AUDIBLE_PRODUCTS: json_text(audible_products),
         OUT_INTERNATIONAL: json_text(intl_items),
+        OUT_FILENAME_PROPOSAL: json_text(filename_proposal),
         OUT_PUBLISHERS: json_text(PUBLISHERS),
         OUT_META: json_text({
             "master_items": len(items),

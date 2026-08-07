@@ -1485,6 +1485,41 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(row["current_state"], f"{promoted}/{total} promoted")
         self.assertIn("all", row["purpose"].lower())
 
+    def test_volume_series_filename_groups_match_volume_titles(self) -> None:
+        """Volume Series filenames must not merge adjacent volumes into one part set.
+
+        Regression guard for the 2026-08-07 Volume filename drift where Volume
+        III was accidentally named as Volume II parts 3/4 and Volumes VI-VII
+        were accidentally named as Volume V parts 4/5 and 5/5.
+        """
+        with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
+            rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+        expected = {
+            "202": ("Volume I Power vs Force", "1", "2"),
+            "203": ("Volume I Power vs Force", "2", "2"),
+            "204": ("Volume II Consciousness and Addiction", "1", "2"),
+            "205": ("Volume II Consciousness and Addiction", "2", "2"),
+            "206": ("Volume III Advanced States of Consciousness", "1", "2"),
+            "207": ("Volume III Advanced States of Consciousness", "2", "2"),
+            "208": ("Volume IV How to Tell the Truth about Anything", "1", "2"),
+            "209": ("Volume IV How to Tell the Truth about Anything", "2", "2"),
+            "210": ("Volume V Undoing the Barriers to Spiritual Progress", "1", "3"),
+            "211": ("Volume V Undoing the Barriers to Spiritual Progress", "2", "3"),
+            "212": ("Volume V Undoing the Barriers to Spiritual Progress", "3", "3"),
+            "213": ("Volume VI How to Raise Your Level of Consciousness", "1", "1"),
+            "214": ("Volume VII A Conversation with Knowingness", "1", "1"),
+        }
+        for uuid, (clean_title, part_index, part_total) in expected.items():
+            row = rows[uuid]
+            self.assertEqual(row["series"], "Volume Series")
+            self.assertEqual(row["clean_title"], clean_title)
+            self.assertEqual(row["part_index"], part_index)
+            self.assertEqual(row["part_total"], part_total)
+            self.assertTrue(
+                row["proposed_filename"].startswith(clean_title),
+                f"UUID {uuid} filename must start with its own volume title",
+            )
+
     def test_backfill_month_guard_skips_listing_month_for_year_mismatch(self) -> None:
         """A lecture month is backfilled from the product date only when the
         product's year matches the record's year — a 2014 storefront-listing
