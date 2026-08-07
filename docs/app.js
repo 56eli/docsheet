@@ -128,6 +128,8 @@
     edition: "Edition",
     master_uuid: "Master ID",
     year_month: "Year-Month",
+    year_source: "Year Source",
+    source_url_amazon: "Amazon Search",
     raw_row_number: "Raw Row",
     catalog_code: "Catalogue Code",
     legacy_tempid: "Legacy ID",
@@ -183,7 +185,7 @@
     "title", "proposed_filename", "candidate_title", "official_title", "review_sheet", "publisher",
     "relationship_id", "raw_row_number", "disposition", "review_status",
     "mapping_status", "promotion_status", "match_status", "item_type", "series",
-    "year", "format", "owned", "source_name", "official_product_url",
+    "year", "year_source", "format", "owned", "source_name", "official_product_url",
     "evidence_url", "review_notes", "notes",
   ];
   const LOW_PRIORITY_FIELDS = [
@@ -195,7 +197,7 @@
   ];
   const COLUMN_PRESETS = {
     master: {
-      priority: ["record_type", "uuid", "series", "title", "proposed_filename", "item_type", "edition", "year_month", "owned", "source_url_veritas", "source_url_audible", "notes"],
+      priority: ["record_type", "uuid", "series", "title", "proposed_filename", "item_type", "edition", "year_month", "year_source", "owned", "source_url_veritas", "source_url_audible", "source_url_amazon", "notes"],
       frozen: ["record_type", "title"],
       // Owner-directed 2026-08-04: park the Work grouping column between
       // Legacy ID and Location Physical instead of up front.

@@ -37,10 +37,10 @@ FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 
 FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "title_source", "item_type",
-    "series", "year", "month", "format", "format_detail", "owned",
+    "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "reference_url_1", "reference_url_2", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "reference_url_2", "notes",
     "raw_row_number", "candidate_key",
 ]
 EXCLUSION_FIELDS = [
@@ -52,6 +52,7 @@ SOURCE_OVERRIDE_FIELDS = {
     "source_url_hay_house",
     "source_url_audible",
     "source_url_nightingale_conant",
+    "source_url_amazon",
 }
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
@@ -288,6 +289,12 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
 
     veritas_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
 
+    # Raw rows whose year should stay blank for investigation (owner request).
+    # These are On The Road talks where the Veritas published_date is a listing
+    # date, not recording date. They remain blank until true recording year is
+    # found.
+    DO_NOT_BACKFILL_YEAR = {"254", "255", "256", "302"}  # Verification + God is Hidden
+
     filled = 0
     for item in items:
         item_type = item.get("item_type", "")
@@ -296,6 +303,9 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
             continue
         # Volume Series years are under investigation, believed pre-2000; product listing date 2007 is not recording date
         if item.get("series", "").strip() == "Volume Series":
+            continue
+        # Explicit blank-under-investigation rows stay blank
+        if item.get("raw_row_number", "").strip() in DO_NOT_BACKFILL_YEAR and not item.get("year", "").strip():
             continue
         url = item.get("source_url_veritas", "").strip()
 
@@ -992,7 +1002,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "owned": candidate["proposed_owned"].strip(),
             "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": "", "source_url_hay_house": "",
-            "source_url_nightingale_conant": "", "source_url_audible": "",
+            "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
             "reference_url_1": "", "reference_url_2": "",
             "notes": f"Promoted edition {role} of work {work_id} from candidate "
                      f"{key}: {candidate['evidence_note']}",
@@ -1111,6 +1121,7 @@ def build_master() -> MasterBuild:
             "source_url_hay_house": "",
             "source_url_nightingale_conant": "",
             "source_url_audible": "",
+            "source_url_amazon": "",
             "reference_url_1": ref_1,
             "reference_url_2": ref_2,
             "notes": notes_for(row),
@@ -1135,6 +1146,7 @@ def build_master() -> MasterBuild:
         veritas_url = ""
         hay_url = ""
         audible_url = ""
+        amazon_url = ""
         ref1 = ""
         if candidate.get("source_name", "").strip() == "veritas":
             veritas_url = candidate["official_product_url"]
@@ -1148,7 +1160,7 @@ def build_master() -> MasterBuild:
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
             "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
-            "source_url_nightingale_conant": "", "source_url_audible": audible_url,
+            "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
             "reference_url_1": ref1, "reference_url_2": "",
             "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
             "raw_row_number": "",
@@ -1201,6 +1213,118 @@ def build_master() -> MasterBuild:
 
     series_approvals_applied = apply_series_approvals(items)
     work_families_applied = apply_work_families(items)
+
+    # --- Year provenance (new column next to Year-Month) ---
+    # Human-readable explanation of how `year` was derived: ledger recording /
+    try:
+        ledger_by_raw = {r["raw_row_number"]: r for r in ledger if r.get("raw_row_number")}
+    except Exception:
+        ledger_by_raw = {}
+    try:
+        manual_by_key = index_csv(MANUAL_CANDIDATES, "candidate_key") if MANUAL_CANDIDATES.exists() else {}
+    except Exception:
+        manual_by_key = {}
+    try:
+        edition_by_key = index_csv(EDITION_CANDIDATES, "candidate_key") if EDITION_CANDIDATES.exists() else {}
+    except Exception:
+        edition_by_key = {}
+    try:
+        v_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
+    except Exception:
+        v_by_url = {}
+    # For edition inheritance we need matched master year lookup
+    by_uuid_for_provenance = {it["uuid"]: it for it in items}
+
+    for it in items:
+        year = it.get("year", "").strip()
+        month = it.get("month", "").strip()
+        raw = it.get("raw_row_number", "").strip()
+        ckey = it.get("candidate_key", "").strip()
+        series = it.get("series", "").strip()
+        item_type = it.get("item_type", "").strip()
+        veritas_url = it.get("source_url_veritas", "").strip()
+        src = ""
+
+        if raw and raw in ledger_by_raw:
+            lrow = ledger_by_raw[raw]
+            prop_year = (lrow.get("proposed_year") or "").strip()
+            if prop_year:
+                if item_type == "book":
+                    src = f"Ledger: first-publication {prop_year}"
+                else:
+                    # Distinguish if year came from title slug vs Audible etc – keep simple
+                    src = f"Ledger: recording date {prop_year}" if prop_year == year else f"Ledger: {prop_year} → final {year}"
+            else:
+                if series == "Volume Series":
+                    src = "Blank: intentional pre-2000 (Volume Series)"
+                elif not year:
+                    src = "Blank: under investigation"
+                else:
+                    prod = v_by_url.get(veritas_url)
+                    if prod:
+                        pd = prod.get("published_date", "")
+                        src = f"Veritas listing backfill (product {prod.get('veritas_product_id')} {pd})"
+                    else:
+                        src = f"Veritas listing backfill (year {year})"
+        elif ckey:
+            orig = ckey.replace("candidate:", "")
+            if orig.startswith("manual-"):
+                mc = manual_by_key.get(orig)
+                if mc:
+                    src_name = mc.get("source_name", "")
+                    py = (mc.get("proposed_year") or "").strip()
+                    if src_name == "academic":
+                        src = f"Academic: {year} first-publication"
+                    elif py:
+                        src = f"Manual candidate: {year} ({orig})"
+                    else:
+                        src = "Blank: manual candidate blank" if not year else f"Manual candidate blank → {year}"
+                else:
+                    src = f"Manual candidate unknown {orig}"
+            elif orig.startswith("edition-"):
+                ec = edition_by_key.get(orig)
+                if ec:
+                    py = (ec.get("proposed_year") or "").strip()
+                    matched = ec.get("matched_master_uuid", "")
+                    if py and py == year:
+                        # Inherited or explicit?
+                        # If matched master year equals py, it's inherited
+                        matched_item = by_uuid_for_provenance.get(matched, {})
+                        matched_year = matched_item.get("year", "") if matched_item else ""
+                        if matched_year and matched_year == py and orig not in {"edition-veritas-pvf-audiobook","edition-audible-pvf","edition-audible-eye","edition-audible-tvf","edition-audible-lettinggo","edition-audible-healing","edition-audible-transcending","edition-audible-itwbnoi","edition-audible-hle"}:
+                            src = f"Edition inherited from matched master {matched} ({year})"
+                        else:
+                            src = f"Edition promotion: {year}"
+                    elif not py and year:
+                        prod = v_by_url.get(veritas_url)
+                        if prod:
+                            src = f"Veritas listing backfill (edition) product {prod.get('veritas_product_id')} {prod.get('published_date')}"
+                        else:
+                            src = f"Edition inherited / backfill: {year}"
+                    elif not year:
+                        src = "Blank: edition candidate blank"
+                    else:
+                        src = f"Edition: candidate {py} → final {year}"
+                else:
+                    src = f"Edition unknown {orig}"
+            else:
+                src = f"Unknown candidate {orig}"
+        else:
+            src = "Unknown"
+
+        # Truncate to reasonable length for table cell
+        it["year_source"] = src[:200]
+    # Ensure every item has the column (for CSV header stability)
+    for it in items:
+        it.setdefault("year_source", "")
+        # Amazon product column: only direct product links, blank otherwise (owner request 2026-08-07)
+        # Previously a broad Amazon search URL was generated for all rows, but owner
+        # wants only curated direct Amazon product pages. We initialize blank here;
+        # approved Amazon product URLs come from data/research_master_source_overrides.csv
+        # (target_field source_url_amazon) or from a future amazon_official_products.csv inventory.
+        it.setdefault("source_url_amazon", "")
+
+
     validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
