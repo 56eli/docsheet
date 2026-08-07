@@ -283,6 +283,15 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 5. **Naming scheme:** filename v4.1 (earlier this session) — carrier suffix + global-uniqueness guard, 365 unique safe = 365 unique display.
 6. **Specs:** Playwright specs enable Expert columns before asserting technical columns; new `column-layout` spec locks the visitor-first default. CI note: watch the "Run browser smoke tests" step after merge (Chromium is CI-only here).
 
+### PR #28 MERGED to main (owner directive "push pr merge", 2026-08-07 PM) — main CI green again
+
+- PR #28 merged 22:33Z; main CI run `31224228427` **success** (the PR-#27 browser-spec red is cured), Pages deployed; live site verified serving the visitor-first Everything view.
+- **Two CI-surfaced defects fixed on the branch before merge** (both confirmed via a local jsdom harness — npm registry IS reachable from the sandbox, so a Tabulator-in-jsdom harness at `/tmp/jsdom-test` reproduces the page headlessly):
+  1. `.review-toolbar[hidden] { display:none }` — the empty review toolbar rendered as a stray bar whenever a sheet had nothing to filter (flex CSS overrode the `hidden` attribute; latent since the toolbar got flex styling, first caught by the 0-candidate spec path).
+  2. Footer count race: `updateSearchStatus()` ran synchronously after `new Tabulator(...)`, before rows were processed → stuck on "Showing: 0"; now also re-runs on `tableBuilt`.
+- Spec lessons: Tabulator 6.5 keeps hidden columns' header nodes in the DOM — never assert `toHaveCount(0)`, assert `toBeHidden()`; GitHub job **logs + artifacts are downloadable via fetch_page on the signed `*.blob.core.windows.net` URL** (curl/urllib TLS-EOF from the sandbox; grab the 302 `Location` from `gh api .../logs`).
+- **Owner follow-ups open:** re-run the Map Veritas Catalogue workflow (expect "Candidate matches the reviewed inventory"); **item K** — bump CI `node-version` 20 → 22 (workflow files owner-managed).
+
 ## 7. House-keeping for every turn
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
