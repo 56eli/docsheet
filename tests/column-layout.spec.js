@@ -5,6 +5,19 @@ async function waitForTable(page) {
   await page.locator('.tabulator-row').first().waitFor();
 }
 
+// The Everything view opens visitor-first (owner directive 2026-08-07):
+// technical columns (Master ID, Work, Legacy ID, provenance) are hidden until
+// the "Expert columns" toggle is switched on. Specs that assert those columns
+// enable them first.
+async function enableExpertColumns(page) {
+  const toggle = page.locator('#expert-toggle-btn');
+  await expect(toggle).toBeVisible();
+  if ((await toggle.getAttribute('aria-pressed')) !== 'true') {
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  }
+}
+
 async function columnFields(page) {
   return page.locator('#spreadsheet .tabulator-col[tabulator-field]').evaluateAll(
     (cols) => cols.map((col) => col.getAttribute('tabulator-field')),
@@ -19,6 +32,7 @@ function uuidCellInRow(page, rowIndex) {
 test('Everything view parks the Work column right after Legacy ID', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   const fields = await columnFields(page);
   const work = fields.indexOf('work_id');
@@ -39,6 +53,7 @@ test('Everything view parks the Work column right after Legacy ID', async ({ pag
 test('columns are sized to their widest rendered entry', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   const widthOf = (field) => page
     .locator(`#spreadsheet .tabulator-col[tabulator-field="${field}"]`)
@@ -58,6 +73,7 @@ test('columns are sized to their widest rendered entry', async ({ page }) => {
 test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   const uuidHeader = page.locator('#spreadsheet .tabulator-col[tabulator-field="uuid"]');
 
@@ -75,4 +91,26 @@ test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   await expect(uuidHeader).toHaveAttribute('aria-sort', 'descending');
   await expect(uuidCellInRow(page, 0)).toHaveText('372');
   await expect(uuidCellInRow(page, 1)).toHaveText('371');
+});
+
+test('Everything view opens visitor-first and the Expert toggle reveals technical columns', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  const header = (field) => page.locator(`#spreadsheet .tabulator-col[tabulator-field="${field}"]`);
+
+  // First sight = product facts: the technical extras stay out of the way.
+  for (const field of ['uuid', 'work_id', 'legacy_tempid', 'proposed_filename', 'year_source']) {
+    await expect(header(field), `${field} must be hidden until Expert mode`).toHaveCount(0);
+  }
+  for (const field of ['record_type', 'title', 'series', 'edition', 'year_month', 'source_url_veritas', 'source_url_amazon', 'reference_url_1', 'notes']) {
+    await expect(header(field).first(), `${field} must be visible at first sight`).toBeVisible();
+  }
+
+  // The toggle reveals the technical columns and can hide them again.
+  await page.locator('#expert-toggle-btn').click();
+  await expect(header('uuid').first()).toBeVisible();
+  await expect(header('work_id').first()).toBeVisible();
+  await page.locator('#expert-toggle-btn').click();
+  await expect(header('uuid')).toHaveCount(0);
 });

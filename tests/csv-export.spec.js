@@ -6,9 +6,22 @@ async function waitForTable(page) {
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
 }
 
+// The Everything view opens visitor-first (owner directive 2026-08-07);
+// exports follow the visible columns, so specs asserting technical header
+// names (e.g. "Master ID") switch Expert columns on first.
+async function enableExpertColumns(page) {
+  const toggle = page.locator('#expert-toggle-btn');
+  await expect(toggle).toBeVisible();
+  if ((await toggle.getAttribute('aria-pressed')) !== 'true') {
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  }
+}
+
 test('CSV export downloads the whole active view even when filtered', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   await page.getByRole('searchbox', { name: /search across all columns/i }).fill('Causality');
   await expect(page.locator('#search-status')).toContainText(/Showing: \d+ of \d+/);
@@ -116,6 +129,7 @@ test('Everything view separates curated master records from candidates', async (
 test('edition model columns render on the Everything tab', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+  await enableExpertColumns(page);
 
   // Work + Edition columns exist (edition model, 2026-08-03).
   await expect(page.locator('.tabulator-col[tabulator-field="work_id"]').first()).toBeVisible();

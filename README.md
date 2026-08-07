@@ -105,6 +105,15 @@ Only `master` rows are catalogue records. Use the Record Type filter on that tab
 to isolate curated data before exporting. Counts per class are published in
 `docs/catalogue-meta.json` under `everything_record_types`.
 
+The **Everything** view opens visitor-first: product facts (title, series,
+type, edition, date, official store and streaming links, notes) are visible at
+first sight, while technical metadata (Master ID, Work grouping, proposed file
+names, provenance columns) stays hidden until the **Expert columns** toggle —
+next to the Columns menu — is switched on; the choice persists per browser.
+Clicking any row always shows every stored field, and the layout adapts to
+phone screens (dense cells, full-width row details, horizontally scrolling
+tabs).
+
 ## Review workspace
 
 The Pages spreadsheet exposes review inputs directly: **Review Overview**,
