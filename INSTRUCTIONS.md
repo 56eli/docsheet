@@ -161,7 +161,7 @@ inference, validators) are unit-tested directly.
 pip install -r requirements-dev.txt    # runtime deps + coverage
 python -m unittest discover tests      # 107 deterministic tests
 coverage run -m unittest discover tests
-coverage report                        # exits non-zero below the 80% floor (.coveragerc)
+coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-07).

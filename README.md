@@ -54,7 +54,7 @@ python -m unittest discover tests          # 107 tests, no browser/network neede
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 80` in `.coveragerc`) passes at **91%** as of
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
 2026-08-07; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;

@@ -1,10 +1,13 @@
 # Hygiene / Ledger / Complexity & Bloat — Improvement Assessment (2026-08-07)
 
-**Execution status (Batch 1, owner-picked 2026-08-07):** **A done** (9 completed
-docs moved to `archive/`, all cross-references fixed, index updated), **B done**
-(`data/year_provenance.csv` deleted, doc slimmed to policy + pointer),
-**F withdrawn** — premise was wrong, see corrected finding below.
-Batches 2 (C+D) and 3 (E) await owner pick.
+**Execution status (2026-08-07):** **Batch 1 done** — A (9 completed docs moved
+to `archive/`, cross-references fixed, index updated), B (`year_provenance.csv`
+deleted, doc slimmed to policy + pointer), F withdrawn (premise corrected below).
+**Batch 2 done** — C (coverage gate 80 → 85 in `.coveragerc`, README,
+INSTRUCTIONS), D (handoff §4 history → `archive/HANDOFF_HISTORY.md`,
+572 → 258 lines).
+**Batch 3 (E, derivable-mirrors tool) awaits owner pick**; H/I/J deferred;
+K needs the owner (CI Node 20 → 22).
 
 ---
 
