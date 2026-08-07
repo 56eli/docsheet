@@ -979,5 +979,167 @@
     "approval_date": "2026-08-04",
     "review_reason": "Official Nightingale-Conant audio program of this exact work; NC author-page roster and live product page verified 2026-08-04.",
     "evidence_source": "https://www.nightingale.com/products/the-highest-level-of-enlightenment (live official NC product page; title and author match)"
+  },
+  {
+    "raw_row_number": "260",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-David-Hawkins-Ph-D/dp/1938033248",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Stress CD, publication Jan 31 1987, outlier per Amazon ASIN 1938033248",
+    "evidence_source": "https://www.amazon.com/Office-Visit-David-Hawkins-Ph-D/dp/1938033248"
+  },
+  {
+    "raw_row_number": "277",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Death-Dying-CD/dp/1938033485",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Death and Dying CD, publication Jan 31 1983, outlier per Amazon ASIN 1938033485",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Death-Dying-CD/dp/1938033485"
+  },
+  {
+    "raw_row_number": "263",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Sexuality-CD/dp/1938033302",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Sexuality CD Apr 30 1982 per Amazon search",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Sexuality-CD/dp/1938033302"
+  },
+  {
+    "raw_row_number": "270",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Illness-Self-Healing-CD/dp/1938033442",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Illness and Self-Healing CD Nov 30 1982 per Amazon search",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Illness-Self-Healing-CD/dp/1938033442"
+  },
+  {
+    "raw_row_number": "266",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Worry-Fear-Anxiety/dp/1938033361",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Worry Fear and Anxiety CD Jul 31 1982 per Amazon search",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Worry-Fear-Anxiety/dp/1938033361"
+  },
+  {
+    "raw_row_number": "267",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Pain-Suffering-CD/dp/1938033388",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Pain and Suffering CD Aug 31 1982 per Amazon search",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Pain-Suffering-CD/dp/1938033388"
+  },
+  {
+    "raw_row_number": "265",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Office-Visit-Handling-Major-Crises/dp/1938033345",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon product link for Office Visit Series Handling Major Crises CD Jun 30 1982 per Amazon search",
+    "evidence_source": "https://www.amazon.com/Office-Visit-Handling-Major-Crises/dp/1938033345"
+  },
+  {
+    "raw_row_number": "325",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Power-Force-David-Hawkins-M-D/dp/1401945074",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Power vs Force book Amazon Hay House paperback Jan 30 2014, first pub 1995",
+    "evidence_source": "https://www.amazon.com/Power-Force-David-Hawkins-M-D/dp/1401945074"
+  },
+  {
+    "raw_row_number": "326",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Eye-Which-Nothing-Hidden/dp/140194504X",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: The Eye of the I Amazon Hay House paperback Mar 15 2016, first pub 2001",
+    "evidence_source": "https://www.amazon.com/Eye-Which-Nothing-Hidden/dp/140194504X"
+  },
+  {
+    "raw_row_number": "328",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Truth-vs-Falsehood/dp/1401963285",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Truth vs Falsehood Amazon Hay House",
+    "evidence_source": "https://www.amazon.com/Truth-vs-Falsehood/dp/1401963285"
+  },
+  {
+    "raw_row_number": "329",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Letting-Surrender-David-Hawkins-PhD/dp/193388598X",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Letting Go Amazon Veritas hardcover Oct 15 2012, first pub 2012",
+    "evidence_source": "https://www.amazon.com/Letting-Surrender-David-Hawkins-PhD/dp/193388598X"
+  },
+  {
+    "raw_row_number": "330",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Healing-Recovery-David-R-Hawkins/dp/0971500789",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Healing and Recovery Amazon Veritas May 1 2009",
+    "evidence_source": "https://www.amazon.com/Healing-Recovery-David-R-Hawkins/dp/0971500789"
+  },
+  {
+    "raw_row_number": "333",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Transcending-Levels-Consciousness-Stairway-Enlightenment/dp/B088ZQCQ5S",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Transcending Levels Amazon Audible Jul 17 2020",
+    "evidence_source": "https://www.amazon.com/Transcending-Levels-Consciousness-Stairway-Enlightenment/dp/B088ZQCQ5S"
+  },
+  {
+    "raw_row_number": "334",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Map-Consciousness-Explained-Energy-Spiritual/dp/1401961450",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Map of Consciousness Explained Amazon Hay House",
+    "evidence_source": "https://www.amazon.com/Map-Consciousness-Explained-Energy-Spiritual/dp/1401961450"
+  },
+  {
+    "raw_row_number": "327",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Reality-Subjectivity-David-R-Hawkins/dp/0971500703",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: I Reality and Subjectivity Amazon Veritas Jan 8 2003",
+    "evidence_source": "https://www.amazon.com/Reality-Subjectivity-David-R-Hawkins/dp/0971500703"
+  },
+  {
+    "raw_row_number": "331",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Discovery-Presence-God-Devotional-Nonduality/dp/1401944981",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Discovery of the Presence of God Amazon Hay House Feb 16 2021",
+    "evidence_source": "https://www.amazon.com/Discovery-Presence-God-Devotional-Nonduality/dp/1401944981"
+  },
+  {
+    "raw_row_number": "332",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Reality-Spirituality-Modern-David-Hawkins/dp/193339188X",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Reality Spirituality and Modern Man Amazon Veritas Jan 1 2008",
+    "evidence_source": "https://www.amazon.com/Reality-Spirituality-Modern-David-Hawkins/dp/193339188X"
+  },
+  {
+    "raw_row_number": "335",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Success-You-Heart-Centered-Principles-Fulfillment/dp/1401951511",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Amazon direct product link for book: Success Is for You Amazon Hay House Apr 19 2016",
+    "evidence_source": "https://www.amazon.com/Success-You-Heart-Centered-Principles-Fulfillment/dp/1401951511"
   }
 ]

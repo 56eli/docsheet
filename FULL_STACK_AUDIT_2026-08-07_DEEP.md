@@ -1,5 +1,8 @@
 # Full-Stack Deep Audit — 2026-08-07
 
+> **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 103/103 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
+
+
 **Branch:** `arena/019fdb8b-docsheet` (HEAD `0b54614`, same as `main` at PR #23 merge)
 **Date:** 2026-08-07
 **Auditor:** senior dev + data analyst pass, offline + live checks
