@@ -7,9 +7,11 @@ rules in the clearly-marked DATA TRANSFORMATION RULES section below, and
 writes the result to:
 
     docs/data.json   -> array of objects (one object per row)
-    docs/meta.json   -> build metadata (row count, timestamp, ...)
 
-The web UI in docs/ fetches these files and renders them with Tabulator.
+The web UI in docs/ fetches this file and renders it with Tabulator; the
+footer timestamp comes from the HTTP Last-Modified header (the legacy
+docs/meta.json descriptor was dropped by owner ruling 2026-08-07 — nothing
+but this script's own self-check ever read it).
 
 HOW TO ADD TRANSFORMATION RULES
 -------------------------------
@@ -33,9 +35,7 @@ No cell values are modified — the data is passed through unchanged.
 """
 
 import argparse
-import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -43,8 +43,11 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 DEFAULT_CSV = "hawkins archive clone - Sheet1.csv"  # source spreadsheet
 DATA_OUTPUT = Path("docs") / "data.json"          # array of objects
-META_OUTPUT = Path("docs") / "meta.json"          # footer metadata
 JSON_INDENT = 2                                     # pretty-print for git diffs
+
+# Owner ruling 2026-08-07: the published view trims raw columns that are empty
+# on all 374 rows; the source CSV keeps them untouched.
+VIEW_DROP_COLUMNS = ["uuid", "Unnamed: 8", "Unnamed: 9", "Unnamed: 10", "other links"]
 
 
 def apply_transformations(df):
@@ -81,24 +84,12 @@ def find_source_csv(preferred: str) -> Path:
     )
 
 
-def verify_outputs(records_json: str, meta: dict) -> None:
-    """Ensure committed pipeline outputs still represent the current CSV.
-
-    ``generated_at_utc`` is intentionally excluded from byte comparison because
-    it records build time. All other metadata and the data payload must match.
-    """
-    if not DATA_OUTPUT.is_file() or not META_OUTPUT.is_file():
-        raise FileNotFoundError("Generated docs/data.json and docs/meta.json must both exist.")
+def verify_outputs(records_json: str) -> None:
+    """Ensure the committed pipeline output still represents the current CSV."""
+    if not DATA_OUTPUT.is_file():
+        raise FileNotFoundError("Generated docs/data.json must exist.")
     if DATA_OUTPUT.read_text(encoding="utf-8") != records_json:
         raise ValueError("docs/data.json is stale; run: python process_data.py")
-    try:
-        committed_meta = json.loads(META_OUTPUT.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"docs/meta.json is not valid JSON: {exc}") from exc
-    expected = {key: value for key, value in meta.items() if key != "generated_at_utc"}
-    actual = {key: committed_meta.get(key) for key in expected}
-    if actual != expected or not isinstance(committed_meta.get("generated_at_utc"), str):
-        raise ValueError("docs/meta.json is stale or malformed; run: python process_data.py")
 
 
 def main() -> int:
@@ -119,6 +110,8 @@ def main() -> int:
         # values are kept exactly as they appear in the CSV.
         df = pd.read_csv(csv_path, header=1, dtype=str, keep_default_na=False)
         print(f"[process_data] Loaded {len(df)} rows x {len(df.columns)} columns")
+        df = df.drop(columns=[c for c in VIEW_DROP_COLUMNS if c in df.columns])
+        print(f"[process_data] View columns after empty-column trim: {len(df.columns)}")
 
         # --- 2. Apply transformation rules (see section above) ---------------
         df = apply_transformations(df)
@@ -126,27 +119,16 @@ def main() -> int:
         # --- 3. Serialize to JSON (array of objects) -------------------------
         records_json = df.to_json(orient="records", force_ascii=False, indent=JSON_INDENT)
 
-        # --- 4. Build or verify outputs -------------------------------------
-        meta = {
-            "source_file": csv_path.name,
-            "total_rows": int(len(df)),
-            "column_count": int(len(df.columns)),
-            "columns": [str(c) for c in df.columns],
-            "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        }
+        # --- 4. Build or verify output --------------------------------------
         if args.check:
-            verify_outputs(records_json, meta)
-            print("[process_data] docs/data.json and docs/meta.json match the current source.")
+            verify_outputs(records_json)
+            print("[process_data] docs/data.json matches the current source.")
             return 0
 
         DATA_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
         DATA_OUTPUT.write_text(records_json, encoding="utf-8")
         print(f"[process_data] Wrote {DATA_OUTPUT} ({len(records_json)} bytes, "
               f"{len(df)} rows)")
-        META_OUTPUT.write_text(
-            json.dumps(meta, indent=JSON_INDENT, ensure_ascii=False), encoding="utf-8"
-        )
-        print(f"[process_data] Wrote {META_OUTPUT}")
 
         return 0
 

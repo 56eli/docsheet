@@ -196,7 +196,9 @@ def build_inventory_rows(
         index.setdefault(normalized_title, []).append(row)
         if row.get("source_url_veritas"):
             source_url_index.setdefault(row["source_url_veritas"], []).append(row)
-        dated_title = row.get("title_source") or row["title"]
+        # Date keys come from the verbatim raw title (older title_source column
+        # was byte-identical to legacy_title on every date-bearing row).
+        dated_title = row.get("legacy_title") or row["title"]
         date_key = title_date_key(dated_title)
         if date_key:
             dated_index.setdefault(normalized_title, {}).setdefault(date_key, []).append(row)

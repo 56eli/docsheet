@@ -36,7 +36,7 @@ VERITAS_STREAMING = Path("data") / "veritas_streaming_urls.csv"
 FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 
 FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "source_url_amazon", "reference_url_1", "notes",
@@ -461,7 +461,8 @@ def apply_official_title_cleanup(items: list[dict[str, str]], veritas_products: 
         cleaned = _strip_title_part_noise(current)
         if cleaned != current and _normalized_title(cleaned) == _normalized_title(official):
             item["title"] = cleaned
-            item["title_source"] = f"Official listing: {official}"
+            evidence = f"Title cleaned against official listing: {official}"
+            item["notes"] = f"{item.get('notes', '')}; {evidence}".lstrip("; ")
             changed += 1
     return changed
 
@@ -1065,7 +1066,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
         row_dict = {
             "uuid": uuid, "work_id": work_id, "catalog_code": "", "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
-            "title_source": "", "item_type": item_type, "series": row["series"].strip(),
+            "item_type": item_type, "series": row["series"].strip(),
             "year": candidate["proposed_year"].strip(), "month": "",
             "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
             "owned": candidate["proposed_owned"].strip(),
@@ -1174,7 +1175,6 @@ def build_master() -> MasterBuild:
             "legacy_tempid": row["raw_tempid"],
             "title": canonical_title,
             "legacy_title": row["raw_title"],
-            "title_source": row["raw_title"] if canonical_title != row["raw_title"] else "",
             "item_type": item_type,
             "series": row["proposed_series"],
             "year": year,
@@ -1219,7 +1219,7 @@ def build_master() -> MasterBuild:
         items.append({
             "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
-            "title_source": "", "item_type": item_type, "series": candidate["series"],
+            "item_type": item_type, "series": candidate["series"],
             "year": year, "month": "", "format": candidate["proposed_format"],
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,

@@ -11,6 +11,9 @@ generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07
   hygiene checkpoint (kept for ruling rationale; not current state).
+- `SCHEMA_REDUNDANCY_REVIEW.md` — two-pass column/sheet redundancy audit
+  (2026-08-07); owner approved all three removals (title_source, meta.json,
+  Original-view empty columns); includes the documented keep-list.
 - `RULING_PREP_EMPTY_COLUMNS.md` — evidence + executed ruling (2026-08-07):
   the four always-empty master columns were dropped from the schema after
   showing no input could ever populate them.

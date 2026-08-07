@@ -243,7 +243,7 @@ Total: 104 tests, 92% coverage
 - Volume Series year blank → filename no year prefix (current: `Volume I Power vs Force [1-2].mp4`). Previous doc still mentions 1995-1999 estimated — drift, needs doc sync.
 
 ### Title Hygiene
-- 13 lecture titles cleaned where stripped form equals official Veritas title (PART1, (Part1), DVD01, -converted, .mp4 noise). Raw kept in legacy_title, title_source records official listing. Good.
+- 13 lecture titles cleaned where stripped form equals official Veritas title (PART1, (Part1), DVD01, -converted, .mp4 noise). Raw kept in legacy_title; the cleaning evidence moved to `notes` when the 97.7%-duplicate `title_source` column was dropped by owner ruling 2026-08-07. Good.
 - Further hygiene possible: Volume Series still have "Volume I-Power vs Force (Part 1)" raw -> cleaned to "Volume I-Power vs Force (Part 1)" still? Some cleaned earlier? Check: still have "Volume I-Power vs Force (Part 1)" in master? Actually list shows still includes "(Part 1)"? Year blank set shows title still has (Part 1). Title hygiene only applied to lectures where cleaned equals official. Volume official titles maybe "Volume I-Power vs Force (Part 1)" themselves, so cleaning would not match? Might need canonical mapping (owner-approved) — currently filename proposal has canonical but title still raw? That is intentional: title hygiene is evidence-based, not guess.
 
 ### Edition Model — Fully Applied

@@ -5,10 +5,10 @@ or basically useless columns to remove — ask for permission for those first."
 **Method:** fill-rate + distinct-value analysis on all 365 masters, consumer
 grep across scripts/sheet/tests, duplication checks.
 
-**Status:** awaiting owner permission on the candidates (questions at the
-end). No data changed.
-
----
+**Status:** EXECUTED 2026-08-07 — owner approved all three candidates
+(drop `title_source`, stop `docs/meta.json`, trim Original view). Master 25 →
+24 columns; suite 112 → 110; all checks green. Details in the handoff's
+2026-08-07 session entry.
 
 ## Second pass (owner pick 2026-08-07): all 20 published sheets
 

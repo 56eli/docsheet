@@ -36,7 +36,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 111 tests, offline, ~3s
+python -m unittest discover tests     # 110 tests, offline, ~3s
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -71,7 +71,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 208 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 1 row (50521 R3) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **111 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **110 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -260,6 +260,12 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 - **First-run harvest — 2 mechanical drifts fixed** (stale since the title-alignment session; tax/JSON mirrors regenerated): product 55473 cell `311` → **`225; 311`**; product 54219 cell `310` → **`226; 227; 310`**. The derived relationships already pointed this way; only mirrors were stale.
 - **2 contradictions RESOLVED (owner ruling: flip both, 2026-08-07):** products **50411**/**1542** are now plain `matched_by_primary_source` to masters **286**/**331**; their 2026-08-03 decision-overlay rows were **removed** (primary matches need no overlay row; the decisions vocabulary only covers non-primary outcomes — provenance in git history, decisions 12 → **10**). Master 202 keeps both products as `related_material`. Taxonomy: 50411 approved R4 no-op under the 2026-08-04 delegation, 1542 stays R7-rejected (Media Miscellaneous store category must not re-series 331's Books series); the 202 series conflict dissolved (queue 4 → **1**, only 50521 R3 remains); statuses 176/10 → **177 approved / 9 rejected**. New committed-state guard test locks `--check` clean.
 - Also fixed in passing: handoff §2 quick-verify block was stale (103 tests/gate 80/92% → 111 tests/gate 85/91%).
+
+### Empty-column ruling + schema redundancy execution (owner rulings, 2026-08-07)
+
+- **4 always-empty columns dropped** (`location_physical`, `location_digital`, `location_streaming`, `reference_url_2`) — owner ruling; memo `archive/RULING_PREP_EMPTY_COLUMNS.md`. Master schema 29 → 25.
+- **Redundancy review approved 3/3** (`archive/SCHEMA_REDUNDANCY_REVIEW.md`, passes 1+2): `title_source` dropped (259/265 duplicated `legacy_title`; the 6 unique "Official listing" evidence values now live in `notes` as "Title cleaned against official listing: X"; fetcher date extraction switched to `legacy_title`, provably behavior-neutral); `docs/meta.json` stopped (nothing but `process_data.py`'s self-check had ever read it; footer uses HTTP `Last-Modified`); Original view trims 5 always-empty raw columns (13 → 8; raw CSV untouched). Master schema now **24 columns**.
+- Suite 112 → **110 tests** (2 meta-specific failure-path tests retired); all 6 `--check` + node green; review sheets otherwise adjudicated keep (verbatim raw mirrors, invariant vocabulary, intake lanes).
 
 ## 7. House-keeping for every turn
 

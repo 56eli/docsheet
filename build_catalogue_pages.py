@@ -118,7 +118,7 @@ RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 # schema, which stays owned by build_research_master.py.
 # ``proposed_filename`` sits between Title and Item Type per owner request 2026-08-04.
 EVERYTHING_FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "title_source", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "source_url_amazon", "reference_url_1", "notes",

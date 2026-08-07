@@ -340,11 +340,11 @@ class VeritasMatchingTests(unittest.TestCase):
     def make_master(self) -> list[dict[str, str]]:
         return [
             {
-                "uuid": "10", "title": "Some Lecture", "title_source": "",
+                "uuid": "10", "title": "Some Lecture", "legacy_title": "Some Lecture",
                 "source_url_veritas": "https://veritaspub.com/product/some-lecture/",
             },
             {
-                "uuid": "11", "title": "Satsang Series (Jan 2007)", "title_source": "",
+                "uuid": "11", "title": "Satsang Series (Jan 2007)", "legacy_title": "Satsang Series (Jan 2007)",
                 "source_url_veritas": "",
             },
         ]
@@ -605,7 +605,7 @@ class ProcessDataFailurePathTests(unittest.TestCase):
         (self.sandbox / "docs" / "data.json").unlink()
         result = invoke_script("process_data.py", self.sandbox, "--check")
         self.assertEqual(result.returncode, 1)
-        self.assertIn("must both exist", result.stderr)
+        self.assertIn("data.json must exist", result.stderr)
 
     def test_stale_data_json_fails_check(self) -> None:
         path = self.sandbox / "docs" / "data.json"
@@ -613,21 +613,6 @@ class ProcessDataFailurePathTests(unittest.TestCase):
         result = invoke_script("process_data.py", self.sandbox, "--check")
         self.assertEqual(result.returncode, 1)
         self.assertIn("docs/data.json is stale", result.stderr)
-
-    def test_invalid_meta_json_fails_check(self) -> None:
-        (self.sandbox / "docs" / "meta.json").write_text("not json", encoding="utf-8")
-        result = invoke_script("process_data.py", self.sandbox, "--check")
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("not valid JSON", result.stderr)
-
-    def test_stale_meta_fails_check(self) -> None:
-        path = self.sandbox / "docs" / "meta.json"
-        meta = json.loads(path.read_text(encoding="utf-8"))
-        meta["total_rows"] += 1
-        path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
-        result = invoke_script("process_data.py", self.sandbox, "--check")
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("stale or malformed", result.stderr)
 
     def test_missing_source_csv_fails_loud(self) -> None:
         with tempfile.TemporaryDirectory() as empty:
@@ -1691,19 +1676,20 @@ class DocumentationCurrencyTests(unittest.TestCase):
         items = [
             # PART noise, cleaned form matches official -> cleaned
             {"item_type": "lecture", "title": "The Presence of Spiritual Awareness PART1",
-             "legacy_title": "The Presence of Spiritual Awareness PART1", "title_source": "raw",
+             "legacy_title": "The Presence of Spiritual Awareness PART1",
              "source_url_veritas": "https://veritaspub.com/product/posa/"},
             # PART noise, cleaned form does NOT match official -> kept
             {"item_type": "lecture", "title": "Volume I-Power vs Force (Part 1)",
-             "legacy_title": "Volume I-Power vs Force (Part 1)", "title_source": "raw",
+             "legacy_title": "Volume I-Power vs Force (Part 1)",
              "source_url_veritas": "https://veritaspub.com/product/vpf/"},
             # non-lecture never touched
             {"item_type": "book", "title": "Power vs Force (Part 1)", "legacy_title": "",
-             "title_source": "", "source_url_veritas": "https://veritaspub.com/product/vpf/"},
+             "source_url_veritas": "https://veritaspub.com/product/vpf/"},
         ]
         brm.apply_official_title_cleanup(items, by_url)
         self.assertEqual(items[0]["title"], "The Presence of Spiritual Awareness")
-        self.assertIn("Official listing", items[0]["title_source"])
+        self.assertIn("Title cleaned against official listing: The Presence of Spiritual Awareness",
+                      items[0]["notes"])
         self.assertEqual(items[0]["legacy_title"], "The Presence of Spiritual Awareness PART1")
         self.assertEqual(items[1]["title"], "Volume I-Power vs Force (Part 1)",
                          "a non-matching cleaned title must be left unchanged")
