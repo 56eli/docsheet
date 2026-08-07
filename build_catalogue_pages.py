@@ -117,7 +117,7 @@ RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 # ``proposed_filename`` sits between Title and Item Type per owner request 2026-08-04.
 EVERYTHING_FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "title_source", "item_type",
-    "series", "year", "month", "format", "format_detail", "owned",
+    "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "reference_url_1", "reference_url_2", "notes",

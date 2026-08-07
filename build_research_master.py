@@ -37,7 +37,7 @@ FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
 
 FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "title_source", "item_type",
-    "series", "year", "month", "format", "format_detail", "owned",
+    "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "reference_url_1", "reference_url_2", "notes",
@@ -1201,6 +1201,115 @@ def build_master() -> MasterBuild:
 
     series_approvals_applied = apply_series_approvals(items)
     work_families_applied = apply_work_families(items)
+
+    # --- Year provenance (new column next to Year-Month) ---
+    # Human-readable explanation of how `year` was derived: ledger recording /
+    # first-publication, Veritas listing backfill, manual candidate, edition
+    # inherited, academic, or blank intentional/under investigation.
+    # This powers the `year_source` column that sits next to Year-Month in the
+    # frontend (see docs/app.js COLUMN_PRESETS).
+    try:
+        ledger_by_raw = {r["raw_row_number"]: r for r in ledger if r.get("raw_row_number")}
+    except Exception:
+        ledger_by_raw = {}
+    try:
+        manual_by_key = index_csv(MANUAL_CANDIDATES, "candidate_key") if MANUAL_CANDIDATES.exists() else {}
+    except Exception:
+        manual_by_key = {}
+    try:
+        edition_by_key = index_csv(EDITION_CANDIDATES, "candidate_key") if EDITION_CANDIDATES.exists() else {}
+    except Exception:
+        edition_by_key = {}
+    try:
+        v_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
+    except Exception:
+        v_by_url = {}
+    # For edition inheritance we need matched master year lookup
+    by_uuid_for_provenance = {it["uuid"]: it for it in items}
+
+    for it in items:
+        year = it.get("year", "").strip()
+        month = it.get("month", "").strip()
+        raw = it.get("raw_row_number", "").strip()
+        ckey = it.get("candidate_key", "").strip()
+        series = it.get("series", "").strip()
+        item_type = it.get("item_type", "").strip()
+        veritas_url = it.get("source_url_veritas", "").strip()
+        src = ""
+
+        if raw and raw in ledger_by_raw:
+            lrow = ledger_by_raw[raw]
+            prop_year = (lrow.get("proposed_year") or "").strip()
+            if prop_year:
+                if item_type == "book":
+                    src = f"Ledger: first-publication {prop_year}"
+                else:
+                    # Distinguish if year came from title slug vs Audible etc – keep simple
+                    src = f"Ledger: recording date {prop_year}" if prop_year == year else f"Ledger: {prop_year} → final {year}"
+            else:
+                if series == "Volume Series":
+                    src = "Blank: intentional pre-2000 (Volume Series)"
+                elif not year:
+                    src = "Blank: under investigation"
+                else:
+                    prod = v_by_url.get(veritas_url)
+                    if prod:
+                        pd = prod.get("published_date", "")
+                        src = f"Veritas listing backfill (product {prod.get('veritas_product_id')} {pd})"
+                    else:
+                        src = f"Veritas listing backfill (year {year})"
+        elif ckey:
+            orig = ckey.replace("candidate:", "")
+            if orig.startswith("manual-"):
+                mc = manual_by_key.get(orig)
+                if mc:
+                    src_name = mc.get("source_name", "")
+                    py = (mc.get("proposed_year") or "").strip()
+                    if src_name == "academic":
+                        src = f"Academic: {year} first-publication"
+                    elif py:
+                        src = f"Manual candidate: {year} ({orig})"
+                    else:
+                        src = "Blank: manual candidate blank" if not year else f"Manual candidate blank → {year}"
+                else:
+                    src = f"Manual candidate unknown {orig}"
+            elif orig.startswith("edition-"):
+                ec = edition_by_key.get(orig)
+                if ec:
+                    py = (ec.get("proposed_year") or "").strip()
+                    matched = ec.get("matched_master_uuid", "")
+                    if py and py == year:
+                        # Inherited or explicit?
+                        # If matched master year equals py, it's inherited
+                        matched_item = by_uuid_for_provenance.get(matched, {})
+                        matched_year = matched_item.get("year", "") if matched_item else ""
+                        if matched_year and matched_year == py and orig not in {"edition-veritas-pvf-audiobook","edition-audible-pvf","edition-audible-eye","edition-audible-tvf","edition-audible-lettinggo","edition-audible-healing","edition-audible-transcending","edition-audible-itwbnoi","edition-audible-hle"}:
+                            src = f"Edition inherited from matched master {matched} ({year})"
+                        else:
+                            src = f"Edition promotion: {year}"
+                    elif not py and year:
+                        prod = v_by_url.get(veritas_url)
+                        if prod:
+                            src = f"Veritas listing backfill (edition) product {prod.get('veritas_product_id')} {prod.get('published_date')}"
+                        else:
+                            src = f"Edition inherited / backfill: {year}"
+                    elif not year:
+                        src = "Blank: edition candidate blank"
+                    else:
+                        src = f"Edition: candidate {py} → final {year}"
+                else:
+                    src = f"Edition unknown {orig}"
+            else:
+                src = f"Unknown candidate {orig}"
+        else:
+            src = "Unknown"
+
+        # Truncate to reasonable length for table cell
+        it["year_source"] = src[:200]
+    # Ensure every item has the column (for CSV header stability)
+    for it in items:
+        it.setdefault("year_source", "")
+
     validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
