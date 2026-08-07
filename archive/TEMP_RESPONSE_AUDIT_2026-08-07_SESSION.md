@@ -184,3 +184,28 @@ node --check docs/app.js && node --check tests/*.spec.js
 **Verified:** 5 `--check` modes green, **107/107 tests** (new format-inference test + relationship-count test updated 328/336 → 335/343), 91% coverage, JS OK. Docs synced: README, NEXT_AGENT_HANDOFF §3, FILENAME_PROPOSAL_V4, YEAR_COLUMN_PROVENANCE, deep-audit sync note.
 
 *Addendum 3 end — 2026-08-07.*
+
+---
+
+## Addendum — Discovery/Audible candidate dedup + unique promotions (owner ruling 4)
+
+**Directive:** "Deduplicate the discovery candidates and audible candidates and implement the unique ones as curated masters."
+
+**Dedup analysis (26 Audible + 4 NC discovery candidates, matched against the master + edition layer):**
+- **17 `matched_by_title` Audible rows** → already editions of existing masters (edition-audible-* rows) — no change.
+- **Identification & Illusion** (possible_related_match) → duplicate of edition master 338 → `matched_by_title`.
+- **El nivel más alto de iluminación / Disolver el ego** (Spanish) → Spanish book/audiobook editions of masters 301/299 → `matched_by_title` (still shown in the International lane).
+- **Healing** (NC + Audible) → **same NC program as master 328** ("Healing: Achieving Total Wellness Through Higher Levels of Consciousness", ©2010, NC URL already on 328) → `matched_by_title`.
+- **Office Visit Set III** (Audible) → 3-program bundle of existing 1982 Office Visit masters → `excluded_related_material` (compilation, not a new work).
+- **Naked** (NC + Audible) → multi-contributor best-of (Williamson, Katie, Dyer, Hawkins) → **excluded** (not a Hawkins master record; live NC page verified).
+
+**Unique → promoted as curated masters (owner ruling; live NC/Audible pages verified 2026-08-07):**
+- **369 The Discovery** — NC program (7 sessions), `lecture`, series **Nightingale-Conant**, **©2007** (Audible © line), `audiobook`, NC + Audible URLs (overrides), filename `2007 - The Discovery.m4b`.
+- **370 The Ultimate David Hawkins Library** — NC 10-volume compilation, `lecture`, series **Nightingale-Conant**, **©2016**, `audiobook`, `2016 - The Ultimate David Hawkins Library.m4b`.
+- **371 OM** — Veritas-published mantra/meditation recording (59 min, Tibetan bell), `other`, series **Media Miscellaneous**, **©2017** (P)2022, `audiobook`, `2017 - OM.m4b`.
+
+**Pipeline changes:** candidates 36 → 39, promotions 39, work families 209/342 (coverage 366/366), filename proposal 366 (unique), overrides 127 → 132, discovery queue emptied (4 → 0), audible lane 4 → 0 candidates, Everything **371** (366 master + 1 veritas + 4 hayhouse). Master item types: 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped. `decisions/NIGHTINGALE_CONANT_MAPPING.md` updated with the four rulings.
+
+**Verified:** 5 `--check` modes green, **107/107 tests**, 91% coverage. Docs synced: README, NEXT_AGENT_HANDOFF §3/§6, deep-audit sync note.
+
+*Addendum 4 end — 2026-08-07.*

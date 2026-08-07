@@ -64,13 +64,13 @@ Sandbox traps learned the hard way (all still true):
 | Layer | Count | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 363 | 307 lecture / 40 book / 8 discussion / 7 highlight / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights, owner ruling 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
-| Everything view | **376** | 363 master + 1 candidate_veritas (Map poster) + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 71 / 127 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved at that time after dedup of the Path duplicate; now 127 incl. the 18 Amazon direct links) |
+| Curated master | 366 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
+| Everything view | **371** | 366 master + 1 candidate_veritas (Map poster) + 0 candidate_pending_promotion + 0 discovery + 4 hayhouse + 0 audible (NC/Audible lanes ruled out 2026-08-07) |
+| Exclusions / source overrides | 71 / 132 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the 5 Audible/NC URLs of masters 369–371 (109 approved at that time after dedup of the Path duplicate; now 132 incl. the 18 Amazon direct links) |
 | Veritas inventory | 191 products | categories populated 191/191; 11 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07) |
 | Everything relationships | 343 product relationships, 7 series compilations | 335 derived primary + 8 related_material |
-| Candidate pool | 36 reviewed manual candidates (all 36 promoted incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, and the 7 Highlights, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 206 works / 339 members approved; work_id coverage 363/363 | `data/work_families.csv` |
+| Candidate pool | 39 reviewed manual candidates (all 39 promoted incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
+| Work families | 209 works / 342 members approved; work_id coverage 366/366 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **176 approved / 0 proposed / 10 rejected**; all proposals ruled | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 7 rejections carry documented rationale |
 | Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 89%** | `.coveragerc` enforces `fail_under = 80` |
 
@@ -462,9 +462,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
   Satsang monthlies (344–352), 6 promoted manual candidates (353–358) + 3 academic (359-361, Orthomolecular 1973, Qualitative 1998, Dialogues 1998),
   with Path duplicate 302 removed and Volume Series years stripped to blank pre-2000 per owner (catalogue codes 284→271 after the strip; **280** as of the 2026-08-07 year-provenance fixes);
-  **201 works / 334 members approved → 199 works / 332 members after the
-  2026-08-07 duplicate-pair exclusion (281/284 → masters 312/313),
-  work_id coverage 358/358 → 356/356** (D6a per-part ruling + C1 split applied + academic families + Volume canonical mapping);
+  **201 works / 334 members approved → 209 works / 342 members by
+  2026-08-07 (281/284 excluded as duplicates of 312/313; +7 Highlights;
+  +3 NC/Audible programs 369–371), work_id coverage 366/366**
+  (D6a per-part ruling + C1 split applied + academic families + Volume canonical mapping);
   overrides 127 (candidate-provenance supported, incl. 316/318 Hay House,
   the 4 Nightingale-Conant edition URLs, and 18 Amazon direct links;
   was 109 pre-PR24), 36 approved streaming URLs → 59 master rows

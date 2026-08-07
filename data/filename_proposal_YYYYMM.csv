@@ -362,3 +362,6 @@ uuid,work_id,item_type,series,year,month,format,title,clean_title,part_index,par
 366,w-highlights-2005,highlight,Lecture Highlights,2005,,streaming,Highlights of the 2005 Lectures,Highlights of the 2005 Lectures,1,1,Highlights of the 2005 Lectures.mp4,Highlights of the 2005 Lectures.mp4
 367,w-highlights-2006,highlight,Lecture Highlights,2006,,streaming,Highlights of the 2006 Lectures,Highlights of the 2006 Lectures,1,1,Highlights of the 2006 Lectures.mp4,Highlights of the 2006 Lectures.mp4
 368,w-highlights-2007,highlight,Lecture Highlights,2007,,streaming,Highlights of the 2007 Lectures,Highlights of the 2007 Lectures,1,1,Highlights of the 2007 Lectures.mp4,Highlights of the 2007 Lectures.mp4
+369,w-discovery,lecture,Nightingale-Conant,2007,,audiobook,The Discovery,The Discovery,1,1,2007 - The Discovery.m4b,2007 - The Discovery.m4b
+370,w-ultimate-library,lecture,Nightingale-Conant,2016,,audiobook,The Ultimate David Hawkins Library,The Ultimate David Hawkins Library,1,1,2016 - The Ultimate David Hawkins Library.m4b,2016 - The Ultimate David Hawkins Library.m4b
+371,w-om,other,Media Miscellaneous,2017,,audiobook,OM,OM,1,1,2017 - OM.m4b,2017 - OM.m4b

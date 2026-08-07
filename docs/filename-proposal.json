@@ -5443,5 +5443,50 @@
     "part_total": "1",
     "proposed_filename": "Highlights of the 2007 Lectures.mp4",
     "proposed_filename_display": "Highlights of the 2007 Lectures.mp4"
+  },
+  {
+    "uuid": "369",
+    "work_id": "w-discovery",
+    "item_type": "lecture",
+    "series": "Nightingale-Conant",
+    "year": "2007",
+    "month": "",
+    "format": "audiobook",
+    "title": "The Discovery",
+    "clean_title": "The Discovery",
+    "part_index": "1",
+    "part_total": "1",
+    "proposed_filename": "2007 - The Discovery.m4b",
+    "proposed_filename_display": "2007 - The Discovery.m4b"
+  },
+  {
+    "uuid": "370",
+    "work_id": "w-ultimate-library",
+    "item_type": "lecture",
+    "series": "Nightingale-Conant",
+    "year": "2016",
+    "month": "",
+    "format": "audiobook",
+    "title": "The Ultimate David Hawkins Library",
+    "clean_title": "The Ultimate David Hawkins Library",
+    "part_index": "1",
+    "part_total": "1",
+    "proposed_filename": "2016 - The Ultimate David Hawkins Library.m4b",
+    "proposed_filename_display": "2016 - The Ultimate David Hawkins Library.m4b"
+  },
+  {
+    "uuid": "371",
+    "work_id": "w-om",
+    "item_type": "other",
+    "series": "Media Miscellaneous",
+    "year": "2017",
+    "month": "",
+    "format": "audiobook",
+    "title": "OM",
+    "clean_title": "OM",
+    "part_index": "1",
+    "part_total": "1",
+    "proposed_filename": "2017 - OM.m4b",
+    "proposed_filename_display": "2017 - OM.m4b"
   }
 ]

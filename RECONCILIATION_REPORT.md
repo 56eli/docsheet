@@ -10,13 +10,13 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 363 | 363 |
-| Research-master JSON records | 363 | 363 |
+| Research-master CSV records | 366 | 366 |
+| Research-master JSON records | 366 | 366 |
 | Research-master exclusion records | 71 | 71 |
-| Draft-only CSV records without a matching ledger `item` | 60 | 0 |
+| Draft-only CSV records without a matching ledger `item` | 63 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 376 | 376 |
+| `docs/master.json` / ledger-projected Everything records | 371 | 371 |
 
 The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
 
@@ -50,6 +50,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
 | — | Live Life As A Prayer (Audio) | lecture | Promoted edition audio of work w-live-prayer from candidate edition-hh-liveprayer: Hay House audio edition of the lecture work; Hay House inventory row unreviewed_official_product. |
 | — | Mind, Heart and Service: The Pathway of Devotional Non-Duality | lecture | Promoted from official candidate manual-veritas-54219: Official page identifies a 2003 Science of Mind church lecture available through streaming video. |
+| — | OM | other | Promoted from official candidate manual-audible-om: Audible listing of the mantra recording 'OM' by Dr. Hawkins with a 300-year-old Tibetan bell (59 min, meditation; publisher Veritas Publishing; (c)2017 Institute for Spiritual Research (P)2022; live Audible page verified 2026-08-07). No existing master matches; unique recording promoted per owner ruling 2026-08-07. |
 | — | Orthomolecular Psychiatry: Treatment of Schizophrenia | book | Promoted from official candidate manual-academic-orthomolecular-1973: Co-authored with Linus Pauling (double Nobel laureate), W.H. Freeman 1973, 697 pages, ISBN 0716708981, early psychiatric academic work pre-dating spiritual corpus; listed in BookNotification, EverybodyWiki, Wellcome Collection; part of completeness audit for all Hawkins material ever produced. |
 | — | Peace is the Natural State | lecture | Promoted from official candidate manual-veritas-1814: Official page identifies an On-the-Road audio product. |
 | — | Permanent Inner Peace (2012) | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
@@ -67,6 +68,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Satsang Series (Sep 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1312: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Satsang Series (Sep 2010) | lecture | Promoted from official candidate manual-veritas-satsang-1699: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Spiritual Reality and Modern Man: God vs. Science: Limits of the Mind (Audiobook) | lecture | Promoted edition audio of work w-god-vs-science from candidate edition-audible-srmm-godvs: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
+| — | The Discovery | lecture | Promoted from official candidate manual-audible-discovery: Official Nightingale-Conant program 'The Discovery: Revealing the Presence of God in Your Life' (7 sessions, 6h58m, by David Hawkins; live NC + Audible pages verified 2026-08-07). (c)2007 David Hawkins (P)2007 Nightingale Conant. No existing master matches; unique work promoted per owner ruling 2026-08-07. |
 | — | The Ego is Not the Real You | book | Promoted from official candidate manual-veritas-47979: Official page identifies a paperback collection of selected Hawkins teachings and quotes. |
 | — | The Essence of Letting Go: A Living Transmission of Truth | lecture | Promoted from official candidate manual-veritas-55576: Official page identifies an original 12-session audio program drawing on multiple earlier teachings. |
 | — | The Eye of the I (Audiobook) | book | Promoted edition audio of work w-eye-of-the-i from candidate edition-audible-eye: Audible audiobook edition; Audible inventory row matched_by_title. |
@@ -74,6 +76,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | The Highest Level of Enlightenment – Audio | lecture | Promoted edition audio of work w-highest-level-of-enlightenment from candidate edition-veritas-hle-audio: Veritas product 1742; audio edition (Veritas sells this work audio-only); inventory status unreviewed_official_product. |
 | — | The Man Who Mapped Consciousness: Life and Legacy of Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-55425: Official page identifies a biography of Hawkins’s life and legacy. |
 | — | The Power of Love: A Transformed Heart Changes the World | book | Promoted from official candidate manual-veritas-43146: Official page identifies Fran Grace’s book dedicated to Hawkins and Susan, with interview material. |
+| — | The Ultimate David Hawkins Library | lecture | Promoted from official candidate manual-audible-ultimate-library: Official Nightingale-Conant 'The Ultimate David Hawkins Library' (10 volumes of classic segments from Hawkins' five NC programs plus bonus; 10h17m; live NC + Audible pages verified 2026-08-07). (c)2016 Dr. David Hawkins (P)2016 Nightingale-Conant. No existing master matches; unique compilation promoted per owner ruling 2026-08-07. |
 | — | The Way to God: Advaita - The Way to God Through Mind (Audiobook) | lecture | Promoted edition audio of work w-advaita from candidate edition-audible-wtg-advaita: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | The Way to God: Realizing the Root of Consciousness (Audiobook) | lecture | Promoted edition audio of work w-realizing-root from candidate edition-audible-wtg-root: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | The Way to God: The Nature of Divinity vs. Religious Fallacy (Audiobook) | lecture | Promoted edition audio of work w-nature-of-divinity from candidate edition-audible-wtg-nature: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
@@ -105,9 +108,9 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 376 | 376 |
-| `migrated_items` | 363 | 363 |
-| `implemented_unreviewed` | 15 | 15 |
+| `master_items` | 371 | 371 |
+| `migrated_items` | 366 | 366 |
+| `implemented_unreviewed` | 5 | 5 |
 
 ## Required resolution before rebuilding
 
