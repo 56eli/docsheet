@@ -26,7 +26,7 @@
 1982 - A-01 Office Series-Stress.mp4
 ...
 1995 - Power vs Force.pdf
-1995 - Power vs. Force.m4b  (was [1-2].m4b and [2-2].m4b for two audiobook editions? Now with grouping by format, two audiobook editions same title same year same format would still be [1-2],[2-2] to disambiguate. But if they are Audible vs Veritas, same format m4b, same cleaned title, same year-month, they would be [1-2],[2-2] — need disambiguation. Currently after fix, Power vs Force audiobooks: 320 and 331 both cleaned to Power vs. Force, same year 1995, same format audiobook, same year_month, so they are grouped as 2 → [1-2],[2-2]. Is that desired? They are different files, not part of series, but same extension, so need disambiguation. Could keep [1-2] or add source tag. For now kept as [1-2],[2-2] for same-format duplicates.
+1995 - Power vs. Force [1-2].m4b / [2-2].m4b (two audiobook editions 320 & 331 — same title/year/format, disambiguated)
 1998 - Dialogues on Consciousness and Spirituality.pdf
 2001 - The Eye of the I.pdf
 2001 - The Eye of the I.m4b
@@ -39,10 +39,10 @@
 2012 - Letting Go.pdf
 2012 - Letting Go.m4b (was Letting Go (Audiobook).m4b)
 ...
-1995 - Volume I Power vs Force [1-2].mp4 => display [1/2] (was 2007-03 - Volume I-Power vs Force (Part 1) etc)
-1995 - Volume I Power vs Force [2-2].mp4 => display [2/2]
-1996 - Volume II Consciousness and Addiction [1-2].mp4 => [1/2]
-1996 - Volume II Consciousness and Addiction [2-2].mp4 => [2/2]
+Volume I Power vs Force [1-2].mp4 => display [1/2] (year blank pre-2000 per owner ruling — no year prefix; was 2007-03 - Volume I-Power vs Force (Part 1) etc)
+Volume I Power vs Force [2-2].mp4 => display [2/2]
+Volume II Consciousness and Addiction [1-2].mp4 => [1/2]
+Volume II Consciousness and Addiction [2-2].mp4 => [2/2]
 ...
 ```
 

@@ -131,7 +131,7 @@ From `docs/catalogue-meta.json` and CSV profiling:
    - `"In the World But Not of It" – Audio` remains untyped/no format/no year.
 3. **Record 246 remains the sole allowed untyped record** and still needs an owner ruling.
 4. **Official/discovery queues remain real review work**: 4 NC discovery rows, 4 HayHouse unreviewed, 6 Audible unreviewed, 3 Audible possible-related matches.
-5. **Streaming coverage is still partial**: 36 approved streaming rows currently apply 55 master reference URLs; remaining Veritas lectures likely need continued batch review.
+5. **Streaming coverage is still partial**: 36 approved streaming rows currently apply **59** master reference URLs (one product can map to several masters/parts); remaining Veritas lectures likely need continued batch review.
 
 ### P2 / docs clarity
 

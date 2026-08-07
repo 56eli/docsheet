@@ -74,6 +74,8 @@ All in a clean venv (Python 3.11.2, Node 22.22.3):
 3. **`INSTRUCTIONS.md` still describes the raw pass-through pipeline** ("The pipeline is intentionally pass-through right now") without pointing to the curated-catalogue pipeline documented in README — misleading for a new reader, though the two pipelines are deliberately separate.
 4. **`FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`** still carries "1995-1999 estimated" Volume-Series prose vs the blank-pre-2000 reality (known from the deep audit; not yet synced).
 
+> **✅ All four fixed 2026-08-07 (owner-selected task):** (1) `FULL_STACK_AUDIT_2026-08-07_DEEP.md` current-state counts synced to 280 codes / 127 overrides / 336 relationships / 59 streaming refs / 18+2 blanks / 106 tests, plus a session-sync note in its header; `NEXT_AGENT_HANDOFF.md` §6 notes the 280 current count and the 59-row streaming state, with historical 2026-08-04 point-in-time numbers left intact as history. (2) `reference_url_1` corrected to 59 in the deep audit and the post-PR24 audit (55 → 59, with the "one product maps to several masters" explanation). (3) `INSTRUCTIONS.md` pass-through claim now scoped to the raw-spreadsheet pipeline with a pointer to the curated-catalogue pipeline in the README. (4) `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` "Current sample" block updated to the blank-year Volume filenames (the decision log keeps the 1995-1999 estimate as history); `YEAR_COLUMN_PROVENANCE.md` code-count note updated to 280.
+
 ### Known intentional gaps (documented; need owner rulings, not code fixes)
 - **18 blank years**: 13 intentional (Volume Series pre-2000, owner decision) + 5 under investigation (Verification of Spiritual Realities 230–232, record 246, God is Hidden 268).
 - **2 blank formats**: UUID 221 (Progressive Levels of Consciousness, Oxford 2003, has year) and record 246.
@@ -103,7 +105,7 @@ All in a clean venv (Python 3.11.2, Node 22.22.3):
 
 ## 7. Recommendations (prioritized)
 
-1. **Fix the 4 doc-drift items** (§5): sync handoff + deep-audit codes 271→280, `reference_url_1` 55/56→59, INSTRUCTIONS.md pointer to the catalogue pipeline, FILENAME_PROPOSAL_V4 Volume-year prose. Cheap, closes the only "stale" findings.
+1. ~~**Fix the 4 doc-drift items**~~ — **done 2026-08-07** (§5): codes 271→280, `reference_url_1` →59, INSTRUCTIONS.md catalogue-pipeline pointer, FILENAME_PROPOSAL_V4 Volume-year prose all synced; dated 08-04 audits left as point-in-time history.
 2. **Rule on record 246 + the 2 blank formats** (smallest high-signal catalogue holes; deep audit agrees).
 3. **Research the 5 under-investigation years** (Audible © years / product pages) via `fetch_page`, land as `proposed_year` in reviewed inputs.
 4. **Rule the discovery queues** (4 NC compilations; HayHouse/Audible unreviewed — most are likely merchandise/excluded).

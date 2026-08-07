@@ -143,7 +143,7 @@ Code fix: `build_catalogue_pages.py` `validate_series_compilations()` now filter
 3. **Fill 7 under investigation blanks**: research per-title © years: Devotion to Truth Talk (product 55473 listed 2025 but On The Road — likely 2003?), Mind Heart Service (products 54219? Actually Mind Heart Service product 54219 listed 2024-06-14 but On The Road 2003), How to Live Like Prayer (product 50491 listed 2014? Actually 2014?), Permanent Inner Peace (50485 2014), What is Real Success (50488 2014) — latter three are Discussion Series 2012 titles, should be 2012 not blank.
 4. **Discussion Series 2012**: set year 2012 for 278,281,284 from product title `(2012)`.
 5. **Document in ledger**: each year change needs `review_reason` explaining evidence (Audible ©, product title, etc.).
-6. **Regenerate filename proposal** after year fixes — catalogue codes will appear (271 → higher).
+6. **Regenerate filename proposal** after year fixes — catalogue codes will appear (now 280 after the 2026-08-07 year-provenance fixes; codes only appear once a record has a year).
 
 ## Full CSV columns
 

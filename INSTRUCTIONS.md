@@ -33,8 +33,15 @@ https://<username>.github.io/<repo-name>   (the live site)
 
 ## 2️⃣ Add data transformation rules (when you're ready)
 
-The pipeline is intentionally **pass-through right now** — it displays your CSV
-exactly as-is. No enrichment logic has been added.
+The raw-spreadsheet pipeline above is intentionally **pass-through** — it
+displays your CSV exactly as-is. No enrichment logic has been added.
+
+> ⚠️ This repository also hosts a separate **curated-catalogue pipeline**:
+> the raw CSV flows through the hand-maintained `migration_review_ledger.csv`
+> and review overlays (`data/*.csv`) into `data/research_master_draft.*` and
+> the `docs/*.json` catalogue sheets, all gated by `--check` modes and the
+> test suite. See the README's "Catalogue-data safeguard" section — do not
+> confuse the pass-through view with the curated catalogue.
 
 When you're ready to transform the data:
 
