@@ -20,8 +20,8 @@ The Hawkins archive catalogue and interactive spreadsheet pipeline is in excepti
 - **Curated Master (`data/research_master_draft.csv`):** **366 records**
   - Breakdown by `item_type`: **310 lecture** / **40 book** / **8 discussion** / **7 highlight** / **1 other**.
   - Untyped records: **0** (record 246 excluded as duplicate of master 329).
-- **Everything View (`docs/master.json`):** **367 records**
-  - Consists of **366 master** records + **1 `candidate_veritas`** record (*Map of Consciousness®* poster).
+- **Everything View (`docs/master.json`):** **366 records**
+  - Consists of **366 master** records (**0 unreviewed candidate records** remain; *Map of Consciousness®* poster ruled `excluded_related_material` as merchandise).
 - **Exclusions (`data/research_master_exclusions.csv`):** **72 records**
   - Includes legacy duplicate rows 281/284 and record 246.
 - **Source Overrides (`data/research_master_source_overrides.csv`):** **133 approved** overrides
@@ -88,7 +88,7 @@ hawkins archive clone - Sheet1.csv (Raw Source, 374 rows)
    - The 64 "draft-only CSV records without a matching ledger item" noted in `RECONCILIATION_REPORT.md` represent the 40 manual candidate promotions (`data/manual_candidate_promotions.csv`) and 24 edition promotions (`data/edition_promotions.csv`). This is intentional and validated by `build_research_master.py --check`.
    - Every master record (`UUIDs 1..372`, excluding excluded UUIDs) has a valid `work_id`, `item_type`, `series`, and `format`.
 2. **Review Queues & Candidate Inventories:**
-   - **Veritas Inventory (`data/veritas_official_products.csv`):** 191 products total. 179 matched by primary source, 6 by title, 1 by normalized title, 4 excluded related material, and **1 unreviewed candidate** (*Map of Consciousness®* poster).
+   - **Veritas Inventory (`data/veritas_official_products.csv`):** 191 products total. 179 matched by primary source, 6 by title, 1 by normalized title, 5 excluded related material, and **0 unreviewed candidates remaining** (*Map of Consciousness®* poster ruled `excluded_related_material`).
    - **HayHouse & Audible Inventories:** 24 HayHouse products and 26 Audible products — **0 unreviewed remaining**.
    - **International Discovery Queue (`data/international_discovery_queue.csv`):** 19 records (7 publisher queues awaiting full catalogue extraction and 12 unreviewed Spanish book editions from *Ediciones El Grano de Mostaza*).
 3. **Frontend Application (`docs/index.html`, `app.js`, `style.css`):**
@@ -101,20 +101,17 @@ hawkins archive clone - Sheet1.csv (Raw Source, 374 rows)
 
 When ready to continue development, we recommend the following prioritized actions:
 
-### Priority 1 (P1): Rule on the Single Remaining Veritas Candidate
-- **Item:** *Map of Consciousness®* poster (`https://veritaspub.com/product/map-of-consciousness-dr-david-hawkins/`).
-- **Action:** Decide whether to rule this as `excluded_related_material` (merchandise/poster, similar to card decks) or promote/map it as an `other` item type. Once ruled, `candidate_veritas` rows in `docs/master.json` will drop to **0**, leaving a 100% curated Master catalogue.
-
-### Priority 2 (P2): Advance International Catalogue Translation Extraction
+### Priority 1 (P1): Advance International Catalogue Translation Extraction
 - **Item:** `data/international_discovery_queue.csv`.
 - **Action:** Review the 12 Spanish translation candidates from *Ediciones El Grano de Mostaza* and begin catalogue extraction for the remaining 6 queued international publishers (Brazil, France, Germany, Italy, Spain, Canada).
 
-### Priority 3 (P3): Continue Option A Streaming Blind-Spot Mapping
+### Priority 2 (P2): Continue Option A Streaming Blind-Spot Mapping
 - **Item:** `data/veritas_streaming_urls.csv`.
 - **Action:** Batch remaining ~115 Veritas product slugs to check for active `/product/{slug}-streaming/` endpoints via `fetch_page`, adding confirmed streaming URLs as `reference_url_1`.
 
-### Priority 4 (P4): Documentation Maintenance
-- **Item:** Keep root overview documents (`FULL_STACK_AUDIT_2026-08-07_DEEP.md`, `README.md`, `NEXT_AGENT_HANDOFF.md`) synchronized with the post-PR #26 counts (366 master, 367 Everything, 0 untyped, 0 format blank, 107 tests).
+### Priority 3 (P3): Pull Request & Lifecycle Management
+- **Item:** Branch `arena/019fdd28-docsheet`.
+- **Action:** Open a pull request to `main` when ready to merge the updated audit documentation and the Veritas Map poster ruling (which achieved 100% curated master cleanliness with 0 unreviewed candidates remaining).
 
 ---
 

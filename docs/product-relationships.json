@@ -6717,7 +6717,7 @@
     "master_item_type": "lecture",
     "master_year": "1982",
     "source_product_published_date": "2007-03-16",
-    "source_product_mapping_status": "unreviewed_official_product"
+    "source_product_mapping_status": "excluded_related_material"
   },
   {
     "relationship_id": "rel-veritas-1728-289",

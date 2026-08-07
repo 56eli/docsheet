@@ -17,10 +17,10 @@
 - Pipeline deterministic, 5 `--check` modes green (pandas missing in base image is expected sandbox trap, venv run proves green)
 - Tests: **107/107 pass**, coverage **91% total, every module ≥89%** (gate 80%)
 - Current curated master: **366 records** = 310 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled duplicate of master 329 and excluded 2026-08-07)
-- Everything view: **367 rows** = 366 master + 1 candidate_veritas (*Map of Consciousness®* poster) + 0 discovery + 0 hayhouse + 0 audible
+- Everything view: **366 rows** = 366 master + 0 candidate_veritas (*Map of Consciousness®* poster ruled excluded_related_material) + 0 discovery + 0 hayhouse + 0 audible
 - Catalogue codes: **281** distinct (lecture/discussion only, books never coded)
 - Exclusions: **72**, source overrides: **133 approved** (73 veritas, 27 hayhouse, 10 audible, 5 NC, 18 Amazon)
-- Veritas inventory: **191 products** (179 matched_by_primary_source, 6 matched_by_title, 4 excluded_related_material, 1 matched_by_normalized_title, 1 unreviewed)
+- Veritas inventory: **191 products** (179 matched_by_primary_source, 6 matched_by_title, 5 excluded_related_material, 1 matched_by_normalized_title, 0 unreviewed)
 - HayHouse: **24** (22 matched_by_title, 2 excluded_related_material, 0 unreviewed), Audible: **26** (24 matched_by_title, 2 excluded_related_material, 0 unreviewed)
 - Product relationships: **343 rendered** = **335 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
 - Series compilations: **7** reviewed
@@ -339,7 +339,7 @@ RECONCILIATION_REPORT.md intentionally shows 53 draft-only records (edition rows
 |---|---|---|
 | Data pipeline determinism | A+ | 5 checks green, run-twice deterministic, tamper detection, idempotency |
 | Data governance | A+ | Reviewed inputs, approval registry, no title-based inference, derived primary |
-| Completeness | A+ | 366 master literal all-ever-produced incl. 3 academic & 7 annual Highlights, 191 Veritas inventory ruled (1 unreviewed poster candidate), 0 format blank, 17 year blank (documented exceptions), 0 untyped |
+| Completeness | A+ | 366 master literal all-ever-produced incl. 3 academic & 7 annual Highlights, 191 Veritas inventory ruled (0 unreviewed candidates remain), 0 format blank, 17 year blank (documented exceptions), 0 untyped |
 | Edition model | A+ | 209 works, 342 members, 24 editions, D3 applied, work_id coverage 100% |
 | Frontend | A | measured-width engine, numeric sort fixed, Work parked, filename column, CSP+SRI, dark mode, .nojekyll |
 | Tests | A+ | 107 deterministic, offline replay, rule matrices, doc-currency guards, 91% coverage |
@@ -376,6 +376,6 @@ node --check docs/app.js
 
 ## One-Sentence Summary
 
-The curated Hawkins archive pipeline is deterministically green post-PR #26 (366 master, 367 Everything, 107 tests, 91% coverage, all checks) with intentional review boundaries (17 year-blank, 0 format-blank, 0 untyped, 1 Veritas poster candidate unreviewed) and 100% work-family/series-taxonomy reconciliation.
+The curated Hawkins archive pipeline is deterministically green post-PR #26 (366 master, 366 Everything, 107 tests, 91% coverage, all checks) with intentional review boundaries (17 year-blank, 0 format-blank, 0 untyped, 0 unreviewed candidates) and 100% work-family/series-taxonomy reconciliation.
 
 *End of deep audit 2026-08-07.*
