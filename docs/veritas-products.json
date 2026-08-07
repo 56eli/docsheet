@@ -426,10 +426,10 @@
     "published_date": "2014-03-30",
     "official_categories": "Books Published by Dr. Hawkins",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I: Power vs. Force Muscle Testing",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "matched_master_uuids": "286",
+    "matched_master_titles": "Power vs. Force: The Hidden Determinants of Human Behavior",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50407",
@@ -1494,10 +1494,10 @@
     "published_date": "2007-03-16",
     "official_categories": "Media Miscellaneous",
     "normalized_title_match_count": "1",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I: Power vs. Force Muscle Testing",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "matched_master_uuids": "331",
+    "matched_master_titles": "Power vs. Force Audio Book",
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50801",

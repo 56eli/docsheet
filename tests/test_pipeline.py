@@ -1428,40 +1428,17 @@ class NewWorkQueueTests(unittest.TestCase):
 class SyncInventoryMirrorsTests(unittest.TestCase):
     """sync_inventory_mirrors.py re-derives the inventory's mirror columns."""
 
-    @staticmethod
-    def normalize_known_contradictions(sandbox: Path) -> None:
-        """Flip products 50411/1542 from stale title matches to URL evidence.
-
-        Their owner-approved 2026-08-03 title matches to master 202 predate the
-        2026-08-07 URL evidence on masters 286/331 (owner ruling pending), so
-        committed data intentionally carries the two contradictions. Happy-path
-        fixtures need a contradiction-free inventory; this becomes a no-op
-        once the ruling lands.
-        """
-        inv = sandbox / "data" / "veritas_official_products.csv"
-        with inv.open(newline="", encoding="utf-8") as handle:
-            rows = list(csv.DictReader(handle))
-        expected = {
-            "50411": ("286", "Power vs. Force: The Hidden Determinants of Human Behavior"),
-            "1542": ("331", "Power vs. Force Audio Book"),
-        }
-        for row in rows:
-            wanted = expected.get(row["veritas_product_id"])
-            if wanted and row["mapping_status"] != "matched_by_primary_source":
-                row["mapping_status"] = "matched_by_primary_source"
-                row["normalized_title_match_count"] = "1"
-                row["matched_master_uuids"] = wanted[0]
-                row["matched_master_titles"] = wanted[1]
-        with inv.open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()), lineterminator="\n")
-            writer.writeheader()
-            writer.writerows(rows)
+    def test_committed_inventory_mirrors_match_master(self) -> None:
+        # The 2026-08-07 owner ruling resolved the last URL-evidence
+        # contradictions (50411->286, 1542->331); committed mirrors are clean.
+        result = invoke_script("sync_inventory_mirrors.py", REPO, "--check")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("already match", result.stdout)
 
     def test_sync_fixes_drifted_mirror_cells(self) -> None:
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            self.normalize_known_contradictions(sandbox)
             inv = sandbox / "data" / "veritas_official_products.csv"
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(
@@ -1494,7 +1471,6 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            self.normalize_known_contradictions(sandbox)
             inv = sandbox / "data" / "veritas_official_products.csv"
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(",3,226; 227; 310,", ",1,310,")
@@ -1512,7 +1488,6 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            self.normalize_known_contradictions(sandbox)
             inv = sandbox / "data" / "veritas_official_products.csv"
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(",1,300,In the World But Not Of It", ",1,202,In the World But Not Of It")
@@ -1531,7 +1506,6 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
-            self.normalize_known_contradictions(sandbox)
             inv = sandbox / "data" / "veritas_official_products.csv"
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(",1,300,In the World But Not Of It", ",1,9999,In the World But Not Of It")

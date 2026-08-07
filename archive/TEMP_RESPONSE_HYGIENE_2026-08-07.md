@@ -9,8 +9,10 @@ INSTRUCTIONS), D (handoff §4 history → `archive/HANDOFF_HISTORY.md`,
 **Batch 3 done** — E built as `sync_inventory_mirrors.py` (mirrors re-derived
 from master; refuses to write on URL-evidence contradictions); first run fixed
 2 mechanical drifts (55473, 54219) and surfaced 2 true contradictions
-(50411→286, 1542→331) whose 2026-08-03 owner decisions predate the URLs —
-owner ruling asked. H/I/J deferred; K needs the owner (CI Node 20 → 22).
+(50411→286, 1542→331) — **owner ruled flip-both**: both are plain primary
+matches now (stale 2026-08-03 decision rows removed, decisions 12 → 10), the
+sync gate is fully clean and locked by a committed-state test. H/I/J deferred;
+K needs the owner (CI Node 20 → 22).
 
 ---
 

@@ -60,16 +60,6 @@
     "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
   },
   {
-    "veritas_product_id": "50411",
-    "mapping_status": "matched_by_title",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I: Power vs. Force Muscle Testing",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
     "veritas_product_id": "50398",
     "mapping_status": "matched_by_title",
     "matched_master_uuids": "289",
@@ -94,16 +84,6 @@
     "mapping_status": "matched_by_title",
     "matched_master_uuids": "247",
     "matched_master_titles": "A Map of Consciousness",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
-    "veritas_product_id": "1542",
-    "mapping_status": "matched_by_title",
-    "matched_master_uuids": "202",
-    "matched_master_titles": "Volume I: Power vs. Force Muscle Testing",
     "review_notes": "",
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
