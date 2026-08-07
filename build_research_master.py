@@ -52,6 +52,7 @@ SOURCE_OVERRIDE_FIELDS = {
     "source_url_hay_house",
     "source_url_audible",
     "source_url_nightingale_conant",
+    "source_url_amazon",
 }
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
@@ -1120,6 +1121,7 @@ def build_master() -> MasterBuild:
             "source_url_hay_house": "",
             "source_url_nightingale_conant": "",
             "source_url_audible": "",
+            "source_url_amazon": "",
             "reference_url_1": ref_1,
             "reference_url_2": ref_2,
             "notes": notes_for(row),
@@ -1315,16 +1317,12 @@ def build_master() -> MasterBuild:
     # Ensure every item has the column (for CSV header stability)
     for it in items:
         it.setdefault("year_source", "")
-        # Amazon search URL column (new, next to Year Source per user request)
-        # Deterministic search link: Amazon search for David R Hawkins + title
-        # The column will be overwritten later with curated Amazon product URLs if
-        # data/amazon_official_products.csv provides them via overrides.
-        try:
-            from urllib.parse import quote_plus
-            title_q = quote_plus(f"David R Hawkins {it.get('title','')}")
-            it["source_url_amazon"] = f"https://www.amazon.com/s?k={title_q}"
-        except Exception:
-            it["source_url_amazon"] = f"https://www.amazon.com/s?k=David+R+Hawkins+{it.get('title','')[:60]}"
+        # Amazon product column: only direct product links, blank otherwise (owner request 2026-08-07)
+        # Previously a broad Amazon search URL was generated for all rows, but owner
+        # wants only curated direct Amazon product pages. We initialize blank here;
+        # approved Amazon product URLs come from data/research_master_source_overrides.csv
+        # (target_field source_url_amazon) or from a future amazon_official_products.csv inventory.
+        it.setdefault("source_url_amazon", "")
 
 
     validate_master_items_integrity(items)
