@@ -119,12 +119,12 @@ folders.
 ## Current reviewed catalogue state
 
 The current curated master has **358** records (307 `lecture`, 40 `book`,
-10 `discussion`, 1 untyped), **271** catalogue codes, **69** retained exclusions,
+10 `discussion`, 1 untyped), **280** catalogue codes, **69** retained exclusions,
 **109** approved source overrides (including the four Nightingale-Conant audio
 editions), **29** promoted
-and **0** unpromoted official candidates, **333** item-to-product relationships,
+and **0** unpromoted official candidates, **336** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
-so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped.
+so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as Amazon search link.
 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture

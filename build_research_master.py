@@ -40,7 +40,7 @@ FIELDS = [
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "reference_url_1", "reference_url_2", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "reference_url_2", "notes",
     "raw_row_number", "candidate_key",
 ]
 EXCLUSION_FIELDS = [
@@ -1001,7 +1001,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "owned": candidate["proposed_owned"].strip(),
             "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": "", "source_url_hay_house": "",
-            "source_url_nightingale_conant": "", "source_url_audible": "",
+            "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
             "reference_url_1": "", "reference_url_2": "",
             "notes": f"Promoted edition {role} of work {work_id} from candidate "
                      f"{key}: {candidate['evidence_note']}",
@@ -1144,6 +1144,7 @@ def build_master() -> MasterBuild:
         veritas_url = ""
         hay_url = ""
         audible_url = ""
+        amazon_url = ""
         ref1 = ""
         if candidate.get("source_name", "").strip() == "veritas":
             veritas_url = candidate["official_product_url"]
@@ -1157,7 +1158,7 @@ def build_master() -> MasterBuild:
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
             "location_physical": "", "location_digital": "", "location_streaming": "",
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
-            "source_url_nightingale_conant": "", "source_url_audible": audible_url,
+            "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
             "reference_url_1": ref1, "reference_url_2": "",
             "notes": f"Promoted from official candidate {candidate['candidate_key']}: {candidate['evidence_note']}",
             "raw_row_number": "",
@@ -1213,10 +1214,6 @@ def build_master() -> MasterBuild:
 
     # --- Year provenance (new column next to Year-Month) ---
     # Human-readable explanation of how `year` was derived: ledger recording /
-    # first-publication, Veritas listing backfill, manual candidate, edition
-    # inherited, academic, or blank intentional/under investigation.
-    # This powers the `year_source` column that sits next to Year-Month in the
-    # frontend (see docs/app.js COLUMN_PRESETS).
     try:
         ledger_by_raw = {r["raw_row_number"]: r for r in ledger if r.get("raw_row_number")}
     except Exception:
@@ -1318,6 +1315,17 @@ def build_master() -> MasterBuild:
     # Ensure every item has the column (for CSV header stability)
     for it in items:
         it.setdefault("year_source", "")
+        # Amazon search URL column (new, next to Year Source per user request)
+        # Deterministic search link: Amazon search for David R Hawkins + title
+        # The column will be overwritten later with curated Amazon product URLs if
+        # data/amazon_official_products.csv provides them via overrides.
+        try:
+            from urllib.parse import quote_plus
+            title_q = quote_plus(f"David R Hawkins {it.get('title','')}")
+            it["source_url_amazon"] = f"https://www.amazon.com/s?k={title_q}"
+        except Exception:
+            it["source_url_amazon"] = f"https://www.amazon.com/s?k=David+R+Hawkins+{it.get('title','')[:60]}"
+
 
     validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)

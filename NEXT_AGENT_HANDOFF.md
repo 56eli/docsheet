@@ -68,7 +68,7 @@ Sandbox traps learned the hard way (all still true):
 | Everything view | **378** | 358 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
 | Exclusions / source overrides | 69 / 109 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved overrides after dedup of Path duplicate) |
 | Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
-| Everything relationships | 333 product relationships, 7 series compilations | |
+| Everything relationships | 336 product relationships, 7 series compilations | |
 | Candidate pool | 29 reviewed manual candidates (all 29 promoted incl. 9 Satsang monthlies and 6 manual candidates and 3 academic, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 201 works / 334 members approved; work_id coverage 358/358 | `data/work_families.csv` |
 | Series taxonomy | 179 matched products → **169 approved / 0 proposed / 10 rejected**; all proposals ruled 2026-08-04 | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 rejections carry documented rationale |

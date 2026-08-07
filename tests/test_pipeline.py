@@ -877,7 +877,8 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
 
     def test_committed_state_derives_325_primary_plus_8_related(self) -> None:
         # The committed master + inventory + CSV must assemble to exactly the
-        # published relationship count: 325 derived primary + 8 related_material.
+        # published relationship count: 328 derived primary + 8 related_material (was 325+8=333, now 328+8=336 after Devotion/Mind Heart/Spiritual Will URL fixes).
+
         tempdir = make_sandbox()
         try:
             sandbox = Path(tempdir.name)
@@ -886,10 +887,10 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             master = bcp.read_csv(bcp.MASTER)
             veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
             derived = bcp.derive_primary_relationships(master, veritas)
-            self.assertEqual(len(derived), 325)
-            self.assertEqual(len(derived) + 8, 333)  # 333 total relationships
+            self.assertEqual(len(derived), 328)
+            self.assertEqual(len(derived) + 8, 336)  # 336 total relationships (328 derived + 8 related)
             meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
-            self.assertEqual(meta["reviewed_product_relationships"], 333)
+            self.assertEqual(meta["reviewed_product_relationships"], 336)
         finally:
             tempdir.cleanup()
 

@@ -120,7 +120,7 @@ EVERYTHING_FIELDS = [
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "location_physical", "location_digital", "location_streaming",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "reference_url_1", "reference_url_2", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "reference_url_2", "notes",
     "raw_row_number",
 ]
 
