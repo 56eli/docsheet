@@ -1,7 +1,7 @@
 # Ruling Prep — Four Always-Empty Master Columns (`location_physical`, `location_digital`, `location_streaming`, `reference_url_2`)
 
 **Prepared:** 2026-08-07 (branch `arena/019fdd68-docsheet`)
-**Status:** Evidence-only — no data changed. Awaiting owner ruling (question at the end).
+**Status:** EXECUTED 2026-08-07 — owner ruled **A (drop all four)** plus a follow-up directive to audit for other redundant columns (permission-first). Outcome below.
 
 ---
 
@@ -49,3 +49,21 @@ history the day real tracking data exists).
   reserved slot (e.g., future streaming + Vimeo pair). Slightly larger sheet.
 - **C — Keep all four** because a physical/digital inventory is planned and
   the columns are its landing spots.
+
+---
+
+## Outcome (executed 2026-08-07, owner ruling A)
+
+- `build_research_master.py`: `FIELDS` list, all three row constructors
+  (ledger/manual-promotion/edition-promotion) slimmed; `reference_urls()`
+  simplified to `reference_url()` (single first-URL return; only one caller).
+- `build_catalogue_pages.py`: `EVERYTHING_FIELDS` slimmed; **25 master columns
+  remain** (was 29).
+- `docs/app.js`: `LOW_PRIORITY_FIELDS` cleaned; preset comment updated.
+- `tests/column-layout.spec.js`: the Work-column parking test now asserts
+  `work_id == legacy_tempid + 1` and the four dropped fields' **absence**
+  (silent-reappearance guard).
+- Regenerated: master CSV/JSON, all Pages sheets, reconciliation report.
+- Verified: 6/6 `--check` modes, 112/112 tests, `node --check` clean.
+- Follow-up directive: audit remaining columns for redundancy/uselessness and
+  ask permission before any further removals.

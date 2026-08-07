@@ -16,20 +16,24 @@ function uuidCellInRow(page, rowIndex) {
     .locator('.tabulator-cell[tabulator-field="uuid"]');
 }
 
-test('Everything view parks the Work column between Legacy ID and Location Physical', async ({ page }) => {
+test('Everything view parks the Work column right after Legacy ID', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
   const fields = await columnFields(page);
   const work = fields.indexOf('work_id');
   const legacy = fields.indexOf('legacy_tempid');
-  const physical = fields.indexOf('location_physical');
 
   expect(work, 'work_id column must exist').toBeGreaterThan(-1);
   expect(legacy, 'legacy_tempid column must exist').toBeGreaterThan(-1);
-  expect(physical, 'location_physical column must exist').toBeGreaterThan(-1);
   expect(work).toBe(legacy + 1);
-  expect(physical).toBe(work + 1);
+  // Dropped by owner ruling 2026-08-07 (always-empty placeholders): the Work
+  // column used to be followed by location_physical; neither it nor
+  // reference_url_2 may reappear silently.
+  expect(fields.indexOf('location_physical')).toBe(-1);
+  expect(fields.indexOf('location_digital')).toBe(-1);
+  expect(fields.indexOf('location_streaming')).toBe(-1);
+  expect(fields.indexOf('reference_url_2')).toBe(-1);
 });
 
 test('columns are sized to their widest rendered entry', async ({ page }) => {

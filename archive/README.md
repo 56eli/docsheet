@@ -11,6 +11,9 @@ generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07
   hygiene checkpoint (kept for ruling rationale; not current state).
+- `RULING_PREP_EMPTY_COLUMNS.md` — evidence + executed ruling (2026-08-07):
+  the four always-empty master columns were dropped from the schema after
+  showing no input could ever populate them.
 - `TITLE_HYGIENE_PROPOSAL.md`, `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md`,
   `VERITAS_ARTIFACT_REVIEW.md`, `VERITAS_PRODUCT_MAPPING.md`,
   `LECTURE_YEAR_INVESTIGATION.md`, `OFFICIAL_CATALOGUE_DISCOVERY.md`,

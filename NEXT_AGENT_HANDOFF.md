@@ -184,10 +184,12 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
   strings, streaming markers) stays in
   `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
-- **Four always-empty master columns** (`location_physical`,
-  `location_digital`, `location_streaming`,
-  `reference_url_2`): populate or drop. (`source_url_hay_house` is **not**
-  empty — 28 values after the 2026-08-03 Hay House backfill —
+- ~~**Four always-empty master columns**~~ — **resolved 2026-08-07 (owner
+  ruling: drop all four)**: `location_physical`, `location_digital`,
+  `location_streaming`, `reference_url_2` removed from schema, sheet, specs
+  and docs (25 master columns remain; re-adding is a git revert away).
+  Outcome memo: `archive/RULING_PREP_EMPTY_COLUMNS.md`. (`source_url_hay_house`
+  is **not** empty — 28 values after the 2026-08-03 Hay House backfill —
   and `source_url_nightingale_conant` holds **4** values after the
   2026-08-04 NC edition fills.)
 - ~~**Nightingale-Conant provenance**~~ — **resolved 2026-08-04**: the four

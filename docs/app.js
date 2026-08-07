@@ -191,16 +191,16 @@
   const LOW_PRIORITY_FIELDS = [
     "uuid", "work_id", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
     "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
-    "normalized_title_match_count", "location_physical", "location_digital",
-    "location_streaming", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
+    "normalized_title_match_count", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
     "raw_unnamed_10", "raw_unnamed_11",
   ];
   const COLUMN_PRESETS = {
     master: {
       priority: ["record_type", "uuid", "series", "title", "proposed_filename", "item_type", "edition", "year_month", "year_source", "owned", "source_url_veritas", "source_url_audible", "source_url_amazon", "notes"],
       frozen: ["record_type", "title"],
-      // Owner-directed 2026-08-04: park the Work grouping column between
-      // Legacy ID and Location Physical instead of up front.
+      // Owner-directed 2026-08-04: park the Work grouping column right after
+      // Legacy ID (the empty Location placeholders it used to precede were
+      // dropped from the schema by owner ruling 2026-08-07).
       // Owner-directed 2026-08-04 v2: proposed_filename between Title and Item Type.
       moveAfter: { work_id: "legacy_tempid" },
     },
