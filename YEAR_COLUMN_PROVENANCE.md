@@ -1,44 +1,73 @@
 # Year Column Provenance Audit — Full Inventory (358 rows)
 
-**Date:** 2026-08-07
-**Master baseline:** 358 records (307 lecture / 40 book / 10 discussion / 1 untyped)
+**Date:** 2026-08-07 (updated 2026-08-07 evening: 11 edition blank years fixed via inheritance)
+**Master baseline:** 358 records (307 lecture / 40 book / 10 discussion / 1 untyped) — after edition year inheritance fix, blank 20 (was 31)
 **Goal:** list every master row's `year` entry and explain how the number came about:
 - Recording date (lecture/discussion)
 - First-publication year (book)
 - Listing date (Veritas published_date — storefront appearance, should be avoided)
-- User input via ledger / candidate promotion
+- User input via ledger / candidate promotion / work-family inheritance
 - Blank — intentional pre-2000 (Volume Series) or under investigation
 
 Generated from `data/research_master_draft.csv` + `migration_review_ledger.csv` + `manual_master_candidates.csv` + `edition_candidates.csv` + `veritas_official_products.csv`.
 
-Detailed CSV: `data/year_provenance.csv` (358 rows, machine-readable)
+Detailed CSV: `data/year_provenance.csv` (358 rows, machine-readable) — regenerated after fix.
 
-## Summary counts
+## Summary counts (after 2026-08-07 fix: 11 lecture audiobook editions now inherit year from matched master)
 
 | Provenance | Count | Meaning |
 |---|---:|---|
 | `ledger_user_input` | 278 | Year from reviewed ledger `proposed_year` (hand-maintained after bootstrap). For books = first-publication; for lectures/discussions = recording date where known, otherwise year derived from official product slug or Audible © year research |
 | `manual_candidate_promotion` | 21 | Year from `manual_master_candidates.csv` `proposed_year` then promoted as master row (e.g., Satsang monthlies 2006-2010, Unity Church CDs 2005-2006, Devotion to Truth Talk, Mind Heart Service, etc.) |
+| `edition_candidate_promotion_year_inherited` | 20 | Edition candidate — year inherited from matched master (lecture recording year) or explicit promotion year. Includes 9 original explicit + 11 fixed Audible/HH lecture audiobooks (2002-2007) |
 | `blank_intentional_pre2000` | 13 | Volume Series (raw rows 223-235) intentionally blank pre-2000 per owner ruling 2026-08-04: “do not name any if cannot name all” — no catalogue code, filename no year prefix |
-| `edition_candidate_blank_year` | 11 | Edition candidate (audiobook/CD) with blank `proposed_year` remains blank (e.g., some Audible lecture parts) |
-| `edition_candidate_promotion_year` | 9 | Edition candidate with explicit year promoted (e.g., Veritas audio editions 1695,1728 etc where year known) |
 | `blank_under_investigation` | 7 | Ledger `proposed_year` blank remains blank — needs research: Devotion to Truth (225), Mind Heart Service PART1/2 (226-227), In the World But Not of It Audio (246 deferred), Discussion Series How to Live Like Prayer (278), Permanent Inner Peace (281), What is Real Success (284) |
 | `veritas_published_date_backfill` | 7 | Ledger blank but filled from Veritas `published_date` (listing date) via `backfill_months_from_official_source()`. These are **suspect – listing date, not recording date**: Spiritual Will 2023 (228-229, product 52945 listed 2023-02-11), Verification of Spiritual Realities 2014 (230-232, product 1830 listed 2014-01-21), Golden Word Book Signing 2007 (265, product 1552 listed 2007-03-16), God is Hidden 2014 (268, product 1810 listed 2014-01-06) |
 | `manual_candidate_blank_year` | 5 | Manual candidate promoted but `proposed_year` blank remains blank |
 | `edition_candidate_year_inherited_or_blank` | 4 | Edition candidate blank but master year present via other path (maybe work family inheritance or duplicate) |
 | `academic_publication_year` | 3 | Academic works promoted: Orthomolecular 1973, Qualitative 1998, Dialogues 1998 — first-publication year from external bibliographic evidence |
 
-Total 358, blank 31 (13 intentional + 7 under investigation + 11 edition blank).
+Total 358, blank **20** (13 intentional + 7 under investigation) — down from 31 after inheriting 11 edition years.
 
-## Year blank breakdown (31)
+Fix applied 2026-08-07: `data/edition_candidates.csv` 11 Audible/HH lecture audiobooks (edition-audible-wtg-nature/advaita/root, dni-intention/alignment, tms-id/emotions, srmm-godvs, tlc-perception, compassion, hh-liveprayer) now have `proposed_year` = matched master year (2002-2007). `build_catalogue_pages.py` excludes edition rows from series-compilation lecture count (raw_row_number filter) to prevent Highlights counts inflating from 6→8.
+
+## Year blank breakdown (20 after fix, was 31)
 
 - **13 Volume Series** — intentional blank pre-2000 (202-214)
-- **4 On The Road Talk Series** — 225 Devotion to Truth, 226-227 Mind Heart Service, plus 221 Oxford (actually has year? check) — needs recording year research
-- **3 Discussion Series 2012** — 278,281,284 — title contains (2012) but year blank in ledger; could be set to 2012 per product title
-- **1 untyped 246** — "In the World But Not of It" – Audio — deferred
-- **11 edition audiobooks** — e.g., Compassion Audiobook (333), Devotion Nonduality Intensive Alignment/Intention, Healing Audiobook, In World But Not of It Audiobook, Letting Go Audiobook, etc. These have blank proposed_year in `edition_candidates.csv` — should inherit year from matched master work (e.g., Power vs Force 1995 → audiobook 1995). Currently blank, should be backfilled.
-- **Remaining 7 ledger blank under investigation** as listed above
-- **7 backfilled listing dates** that should be investigated for true recording year (not listing)
+- **4 On The Road Talk Series** — 225 Devotion to Truth, 226-227 Mind Heart Service — needs recording year research (Audible © or product page)
+- **3 Discussion Series 2012** — 278,281,284 — title contains (2012) but year blank in ledger; should be 2012 per product title
+- **1 untyped 246** — "In the World But Not of It" – Audio — deferred, blank
+- **7 backfilled listing dates** (228-232,265,268) that should be investigated for true recording year (listing date currently)
+- **Previously 11 edition audiobooks** (333-343) — fixed 2026-08-07 by inheriting year from matched master: now all have year (2002-2007)
+
+Remaining blank = 13 intentional + 7 under investigation = 20.
+
+## Fixed 2026-08-07: edition year inheritance
+
+| Candidate | Matched master | Year inherited |
+|---|---|---:|
+| edition-audible-wtg-nature (The Way to God: Nature of Divinity…) | 19 | 2002 |
+| edition-audible-wtg-advaita | 22 | 2002 |
+| edition-audible-wtg-root | 13 | 2002 |
+| edition-audible-dni-intention | 79 | 2005 |
+| edition-audible-dni-alignment | 76 | 2005 |
+| edition-audible-tms-id | 64 | 2004 |
+| edition-audible-tms-emotions | 61 | 2004 |
+| edition-audible-srmm-godvs | 127 | 2007 |
+| edition-audible-tlc-perception | 106 | 2006 |
+| edition-audible-compassion | 267 | 2003 |
+| edition-hh-liveprayer | 121 | 2006 |
+
+Code fix: `build_catalogue_pages.py` `validate_series_compilations()` now filters `raw_row_number` non-empty, so edition audiobooks with year 2002-2007 do not inflate Highlights compilation counts (e.g., Transcending Mind 2004 expected 6, would have found 8 after year fill). This preserves official Highlights evidence (6 lectures) while keeping edition years.
+
+### Edition candidates (20 with year, 4 inherited/blank, etc)
+- Source: `data/edition_candidates.csv` `proposed_year`.
+- After fix, 20 have explicit year (9 original + 11 inherited from matched master).
+- 4 Veritas audio editions (tvf-cddvd, healing-audio, itwbnoi-audio, hle-audio) have blank proposed_year but get year via `published_date` backfill (2011,2010,2009,2012) — listing year, acceptable as audio release.
+
+### Blank (20)
+- 13 intentional pre-2000 Volume Series.
+- 7 under investigation (On The Road + Discussion + untyped).
 
 ## Detailed per-row (abbreviated — full CSV is authoritative)
 
@@ -88,10 +117,11 @@ Total 358, blank 31 (13 intentional + 7 under investigation + 11 edition blank).
 - Unity Church CDs (1546/1548 → masters 311? actually 310-311 etc): March 2005, June 2006 from product title.
 - Book candidates (38608, 47979 etc): first-publication year (e.g., Book of Slides, Ego is Not Real You).
 
-### Edition candidates (9 with year, 11 blank, 4 inherited)
+### Edition candidates (20 with year after fix, 4 with backfill year)
 - Source: `data/edition_candidates.csv` `proposed_year`.
-- Many Audible audiobook editions have blank year in candidate file (11 rows) → master remains blank, should inherit from work family (e.g., work `w-power-vs-force` year 1995).
-- 9 with year: Veritas audio editions where year known (e.g., Truth vs Falsehood Healing etc).
+- Before fix, 11 Audible/HH lecture audiobooks had blank year → master blank. Fixed 2026-08-07 by setting proposed_year = matched master year (2002-2007).
+- After fix: 20 with explicit year (9 original + 11 inherited).
+- 4 Veritas audio editions (tvf-cddvd, healing-audio, itwbnoi-audio, hle-audio) keep blank proposed_year but receive year via `published_date` backfill (2011,2010,2009,2012) — audio release year, acceptable.
 
 ### Academic (3)
 - Orthomolecular 1973 (co-authored with Linus Pauling), Qualitative 1998, Dialogues 1998 — from external bibliographic evidence.
@@ -100,16 +130,15 @@ Total 358, blank 31 (13 intentional + 7 under investigation + 11 edition blank).
 - Source: `data/veritas_official_products.csv` `published_date` (WordPress post date, listing date).
 - Code path: `backfill_months_from_official_source()` → if `item[year]` blank, set from product date.
 - For books skipped; for Volume Series skipped; for discussion/lecture with existing year only fills month if year matches.
-- Current 7 are problematic: they show listing year, not recording. Should be flagged as `listing_date` and investigated.
+- Current 7 are problematic: they show listing year, not recording. Should be flagged as `listing_date` and investigated. They are: 228-229 Spiritual Will 2023, 230-232 Verification 2014, 265 Golden Word 2007, 268 God is Hidden 2014.
 
-### Blank (31)
+### Blank (20 after fix)
 - 13 intentional pre-2000 Volume Series.
-- 7 under investigation (On The Road + Discussion + untyped).
-- 11 edition blank.
+- 7 under investigation (On The Road Devotion + Mind Heart Service + Discussion 2012 + untyped 246).
 
-## Recommendations
+## Recommendations (updated after fix)
 
-1. **Inherit year for edition blank 11**: modify `load_edition_promotions()` to inherit year from matched master `work_id` family if candidate proposed_year blank. Example: Power vs Force audiobooks 320 & 331 should be 1995. Add test.
+1. **✅ Done 2026-08-07: inherit year for edition blank 11** — 11 lecture audiobook editions now have year 2002-2007.
 2. **Fix 7 backfilled listing dates**: set their ledger `proposed_year` to true recording year via research (Audible ©, product page, etc.) and clear month if unknown, so backfill no longer leaks listing year. Or keep year blank with note "recording year under investigation".
 3. **Fill 7 under investigation blanks**: research per-title © years: Devotion to Truth Talk (product 55473 listed 2025 but On The Road — likely 2003?), Mind Heart Service (products 54219? Actually Mind Heart Service product 54219 listed 2024-06-14 but On The Road 2003), How to Live Like Prayer (product 50491 listed 2014? Actually 2014?), Permanent Inner Peace (50485 2014), What is Real Success (50488 2014) — latter three are Discussion Series 2012 titles, should be 2012 not blank.
 4. **Discussion Series 2012**: set year 2012 for 278,281,284 from product title `(2012)`.

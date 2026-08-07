@@ -457,11 +457,16 @@ def validate_series_compilations(
             raise ValueError(
                 f"{SERIES_COMPILATIONS}:{line_number} product URL/title differs from the Veritas inventory"
             )
+        # Edition promotion rows (candidate:edition-...) are audiobook/CD editions of
+        # lecture works. They carry the lecture's recording year but must not inflate
+        # the distinct-lecture count for Highlights compilations, which reference the
+        # original lecture recordings. Count only ledger-derived rows (raw_row_number).
         target_parts = [
             item for item in master_items
             if item["item_type"] == "lecture"
             and item["series"] == compilation["target_series"]
             and item["year"] == year
+            and item.get("raw_row_number", "").strip()
             and (not start or start <= item["month"] <= end)
         ]
         lecture_titles = sorted({item["title"] for item in target_parts})
