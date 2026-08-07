@@ -3675,21 +3675,6 @@
     "proposed_filename_display": "1982 - B-01 Office Series-Drug Addiction and Alcoholism....mp4"
   },
   {
-    "uuid": "246",
-    "work_id": "w-in-the-world-but-not-of-it-audio",
-    "item_type": "",
-    "series": "Media Miscellaneous",
-    "year": "",
-    "month": "",
-    "format": "",
-    "title": "\"In the World But Not of It\" – Audio",
-    "clean_title": "\"In the World But Not of It\" – Audio",
-    "part_index": "",
-    "part_total": "",
-    "proposed_filename": "In the World But Not of It – Audio.mp4",
-    "proposed_filename_display": "In the World But Not of It – Audio.mp4"
-  },
-  {
     "uuid": "247",
     "work_id": "w-b-03-office-series-a-map-of-consciousnes",
     "item_type": "lecture",
@@ -5488,5 +5473,20 @@
     "part_total": "1",
     "proposed_filename": "2017 - OM.m4b",
     "proposed_filename_display": "2017 - OM.m4b"
+  },
+  {
+    "uuid": "372",
+    "work_id": "w-how-to-surrender-to-god",
+    "item_type": "lecture",
+    "series": "Hay House",
+    "year": "2019",
+    "month": "",
+    "format": "audiobook",
+    "title": "How to Surrender to God",
+    "clean_title": "How to Surrender to God",
+    "part_index": "1",
+    "part_total": "1",
+    "proposed_filename": "2019 - How to Surrender to God.m4b",
+    "proposed_filename_display": "2019 - How to Surrender to God.m4b"
   }
 ]

@@ -209,3 +209,18 @@ node --check docs/app.js && node --check tests/*.spec.js
 **Verified:** 5 `--check` modes green, **107/107 tests**, 91% coverage. Docs synced: README, NEXT_AGENT_HANDOFF §3/§6, deep-audit sync note.
 
 *Addendum 4 end — 2026-08-07.*
+
+---
+
+## Addendum — Record 246 + HayHouse lane ruled (owner ruling 5)
+
+**Record 246 ("In the World But Not of It" – Audio, the last untyped/formatless/yearless record):** investigation showed Veritas product 1661 (the NC 6-CD audio edition, official title `"In the World But Not of It" – Audio`) is **already the primary product of master 329** (`matched_by_primary_source`), and master 329 already carries the NC URL. Record 246 is the legacy archive row (raw `26. "In the World But Not of It" – `, owned ✅, source veritas) of that same audio edition → **ruled duplicate of master 329 and excluded** (ledger row 296 → `duplicate`; exclusions 71 → 72). The master now has **zero untyped records** — the last catalogue hole of that class is closed.
+
+**HayHouse lane (4 unreviewed) ruled (live Hay House pages verified 2026-08-07):**
+- **Live Life As A Prayer** → `matched_by_title`: same audio program as master 343 (URL already on 343).
+- **The Letting Go Guided Journal / The Letting Go Deck** → `excluded_related_material`: merchandise derived from the Letting Go book (matches the Veritas deck precedent).
+- **How to Surrender to God** → **unique → promoted as master 372** (lecture, series **Hay House**, **2019** per the official page's 2019-12-19 publication date, audiobook, ISBN 9781401960506, 7 tracks; Hay House URL via override; filename `2019 - How to Surrender to God.m4b`).
+
+**Final counts (2026-08-07 day-end):** master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other / **0 untyped**), Everything **367** (only the Map poster remains as a candidate — all discovery/audible/hayhouse lanes empty), codes **281**, exclusions **72**, overrides **133**, promoted candidates **40**, works **209/342** (coverage 366/366), filename proposal 366 unique. **Verified:** 5 `--check` modes green, 107/107 tests, 91% coverage; README, NEXT_AGENT_HANDOFF, MIGRATION_REVIEW_LEDGER.md, deep-audit sync note updated.
+
+*Addendum 5 end — 2026-08-07.*

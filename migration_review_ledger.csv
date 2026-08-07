@@ -292,7 +292,7 @@ raw_row_number,disposition,review_reason,proposed_series,proposed_title,proposed
 293,blank_separator,Empty visual separator row.,,,,,,,,,,,,,,,,,,,,,,
 294,series_context,Collection/category heading.,,,,,,,,,,,,Media Miscellaneous: https://veritaspub.com/media-miscellaneous-2/,,,,,,,,,,
 295,research_note,Editorial gap/research note; item identity needs confirmation.,,,,,,,,,,,, ❌❌ MOST ARE MISSING ❌❌ NOT YET IN THE SPREADSHEET ❌❌,,,,,,,,,,
-296,item,Item candidate indicated by ownership status and/or legacy tempid.,Media Miscellaneous,"""In the World But Not of It"" – Audio",,,,,,true,,,,"26. ""In the World But Not of It"" – ",✅,veritas,,,,,,,,
+296,duplicate,"Duplicate of master 329 (""In the World But Not of It"" – Audio, the Nightingale-Conant 6-CD audio edition; Veritas product 1661 matched_by_primary_source to 329). Legacy archive row (raw ""26. In the World But Not of It –"", owned, source veritas) is the same audio edition. Owner ruling 2026-08-07: exclude from the master; provenance kept here.",Media Miscellaneous,"""In the World But Not of It"" – Audio",,,,,,true,,,,"26. ""In the World But Not of It"" – ",✅,veritas,,,,,,,,
 297,item,Item candidate indicated by ownership status and/or legacy tempid.,Media Miscellaneous,Golden Word Book Signing – Audio,lecture,2007,01,,,true,,,,Audio 27. Golden Word Book Signing – Audio,✅,veritas,,,,,,,,
 298,blank_separator,Empty visual separator row.,,,,,,,,,,,,,,,,,,,,,,
 299,research_note,Editorial gap/research note; item identity needs confirmation.,,,,,,,,,,,,Missing OTR,,,,,,,,,,

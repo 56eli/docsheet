@@ -700,5 +700,23 @@
     "reviewed_on": "2026-08-07",
     "promotion_status": "promoted",
     "promotion_notes": "Promoted to curated master as record 371 (owner ruling 2026-08-07: unique Audible candidate; series Media Miscellaneous, year 2017)."
+  },
+  {
+    "candidate_key": "manual-hayhouse-how-to-surrender",
+    "candidate_title": "How to Surrender to God",
+    "proposed_item_type": "lecture",
+    "proposed_year": "2019",
+    "proposed_format": "audiobook",
+    "proposed_format_detail": "",
+    "proposed_owned": "",
+    "source_name": "other",
+    "source_product_id": "how-to-surrender-to-god",
+    "official_product_url": "https://www.hayhouse.com/how-to-surrender-to-god-audiodownload",
+    "official_product_title": "How to Surrender to God",
+    "evidence_note": "Official Hay House audiobook 'How to Surrender to God: The Path to Enlightenment Through Letting Go' by Sir David R. Hawkins, M.D. Ph.D. (7 tracks + supplemental, 3h06m, ISBN 9781401960506, published 2019-12-19; live Hay House product page verified 2026-08-07). No existing master matches; unique program promoted per owner ruling 2026-08-07.",
+    "review_status": "reviewed_candidate",
+    "reviewed_on": "2026-08-07",
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted to curated master as record 372 (owner ruling 2026-08-07: unique Hay House program; series Hay House, year 2019)."
   }
 ]

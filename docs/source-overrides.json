@@ -1186,5 +1186,14 @@
     "approval_date": "2026-08-07",
     "review_reason": "Official Audible listing of 'OM' (promoted master 371 per owner ruling 2026-08-07); live Audible page verified 2026-08-07.",
     "evidence_source": "https://www.audible.com/ (live official Audible product page)"
+  },
+  {
+    "raw_row_number": "candidate:manual-hayhouse-how-to-surrender",
+    "target_field": "source_url_hay_house",
+    "override_value": "https://www.hayhouse.com/how-to-surrender-to-god-audiodownload",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Hay House audio program page of 'How to Surrender to God' (promoted master 372 per owner ruling 2026-08-07); live Hay House page verified 2026-08-07.",
+    "evidence_source": "https://www.hayhouse.com/ (live official Hay House product page)"
   }
 ]

@@ -143,28 +143,28 @@
     "official_title": "How to Surrender to God",
     "official_product_url": "https://www.hayhouse.com/how-to-surrender-to-god-audiodownload",
     "format": "audio",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "matched_by_title",
+    "review_notes": "Promoted to curated master 372 (owner ruling 2026-08-07); Hay House audio program."
   },
   {
     "official_title": "Live Life As A Prayer",
     "official_product_url": "https://www.hayhouse.com/live-life-as-a-prayer-audio-download",
     "format": "audio",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "matched_by_title",
+    "review_notes": "Same Hay House audio program as master 343 (Live Life As A Prayer (Audio)); Hay House URL already on 343. Deduplicated 2026-08-07."
   },
   {
     "official_title": "The Letting Go Guided Journal",
     "official_product_url": "https://www.hayhouse.com/the-letting-go-guided-journal",
     "format": "guided journal",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Hay House merchandise (guided journal) derived from the Letting Go book; not a master record. Ruled 2026-08-07."
   },
   {
     "official_title": "The Letting Go Deck",
     "official_product_url": "https://www.hayhouse.com/the-letting-go-deck-card-deck",
     "format": "card deck",
-    "mapping_status": "unreviewed_official_product",
-    "review_notes": ""
+    "mapping_status": "excluded_related_material",
+    "review_notes": "Hay House merchandise (card deck) derived from the Letting Go book; not a master record (matches the Veritas Letting Go Deck precedent). Ruled 2026-08-07."
   }
 ]

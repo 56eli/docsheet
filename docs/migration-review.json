@@ -7912,8 +7912,8 @@
   },
   {
     "raw_row_number": "296",
-    "disposition": "item",
-    "review_reason": "Item candidate indicated by ownership status and/or legacy tempid.",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of master 329 (\"In the World But Not of It\" – Audio, the Nightingale-Conant 6-CD audio edition; Veritas product 1661 matched_by_primary_source to 329). Legacy archive row (raw \"26. In the World But Not of It –\", owned, source veritas) is the same audio edition. Owner ruling 2026-08-07: exclude from the master; provenance kept here.",
     "proposed_series": "Media Miscellaneous",
     "proposed_title": "\"In the World But Not of It\" – Audio",
     "proposed_item_type": "",

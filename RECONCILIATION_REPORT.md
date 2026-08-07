@@ -12,11 +12,11 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 |---|---:|---:|
 | Research-master CSV records | 366 | 366 |
 | Research-master JSON records | 366 | 366 |
-| Research-master exclusion records | 71 | 71 |
-| Draft-only CSV records without a matching ledger `item` | 63 | 0 |
+| Research-master exclusion records | 72 | 72 |
+| Draft-only CSV records without a matching ledger `item` | 64 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 371 | 371 |
+| `docs/master.json` / ledger-projected Everything records | 367 | 367 |
 
 The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
 
@@ -45,6 +45,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Highlights of the 2005 Lectures | highlight | Promoted from official candidate manual-veritas-39238: Official Veritas product 39238 (title 'Highlights of the 2005 Lectures'); product page lists it as a streaming compilation of the 2005 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2005. |
 | — | Highlights of the 2006 Lectures | highlight | Promoted from official candidate manual-veritas-40747: Official Veritas product 40747 (title 'Highlights of the 2006 Lectures'); product page lists it as a streaming compilation of the 2006 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2006. |
 | — | Highlights of the 2007 Lectures | highlight | Promoted from official candidate manual-veritas-44429: Official Veritas product 44429 (title 'Highlights of the 2007 Lectures'); product page lists it as a streaming compilation of the 2007 lectures. Owner ruling 2026-08-07: promote to curated master, series Lecture Highlights, year 2007. |
+| — | How to Surrender to God | lecture | Promoted from official candidate manual-hayhouse-how-to-surrender: Official Hay House audiobook 'How to Surrender to God: The Path to Enlightenment Through Letting Go' by Sir David R. Hawkins, M.D. Ph.D. (7 tracks + supplemental, 3h06m, ISBN 9781401960506, published 2019-12-19; live Hay House product page verified 2026-08-07). No existing master matches; unique program promoted per owner ruling 2026-08-07. |
 | — | In The World But Not Of It (Audiobook) | book | Promoted edition audio of work w-in-the-world-but-not-of-it from candidate edition-audible-itwbnoi: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Letting Go (Audiobook) | book | Promoted edition audio of work w-letting-go from candidate edition-audible-lettinggo: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
@@ -108,9 +109,9 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 371 | 371 |
+| `master_items` | 367 | 367 |
 | `migrated_items` | 366 | 366 |
-| `implemented_unreviewed` | 5 | 5 |
+| `implemented_unreviewed` | 1 | 1 |
 
 ## Required resolution before rebuilding
 

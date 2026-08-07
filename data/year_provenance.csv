@@ -260,7 +260,6 @@ uuid,title,item_type,series,year,month,raw_row_number,candidate_key,source_url_v
 261,Satsang Series (Nov 2009),lecture,Satsang Series,2009,11,290,,https://veritaspub.com/product/satsang-november-2009-cd/,ledger_user_input,ledger raw_row 290 proposed_year=2009 proposed_month=
 262,Satsang Series (Feb 2010),lecture,Satsang Series,2010,03,291,,https://veritaspub.com/product/satsang-series-february-2010/,ledger_user_input,ledger raw_row 291 proposed_year=2010 proposed_month=
 263,Satsang Series (Nov 2010),lecture,Satsang Series,2010,11,292,,https://veritaspub.com/product/2010-11-satsang-series-nov-2010/,ledger_user_input,ledger raw_row 292 proposed_year=2010 proposed_month=
-246,"""In the World But Not of It"" – Audio",,Media Miscellaneous,,,296,,,blank_under_investigation,ledger raw 296 proposed_year blank remains blank series=Media Miscellaneous
 265,Golden Word Book Signing – Audio,lecture,Media Miscellaneous,2007,03,297,,https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/,veritas_published_date_backfill,"ledger blank, backfilled from Veritas product 1552 published_date 2007-03-16"
 266,All is Divinity,lecture,On The Road Talk Series,2004,,300,,https://veritaspub.com/product/all-is-divinity/,ledger_user_input,ledger raw_row 300 proposed_year=2004 proposed_month=
 267,Compassion: The Pathway of the Heart,lecture,On The Road Talk Series,2003,,301,,https://veritaspub.com/product/compassion-the-pathway-of-the-heart/,ledger_user_input,ledger raw_row 301 proposed_year=2003 proposed_month=
@@ -367,3 +366,4 @@ uuid,title,item_type,series,year,month,raw_row_number,candidate_key,source_url_v
 369,The Discovery,lecture,Nightingale-Conant,2007,,,candidate:manual-audible-discovery,,manual_candidate_promotion,manual candidate manual-audible-discovery proposed_year 2007 (copyright year from official listing)
 370,The Ultimate David Hawkins Library,lecture,Nightingale-Conant,2016,,,candidate:manual-audible-ultimate-library,,manual_candidate_promotion,manual candidate manual-audible-ultimate-library proposed_year 2016 (copyright year from official listing)
 371,OM,other,Media Miscellaneous,2017,,,candidate:manual-audible-om,,manual_candidate_promotion,manual candidate manual-audible-om proposed_year 2017 (copyright year from official listing)
+372,How to Surrender to God,lecture,Hay House,2019,,,candidate:manual-hayhouse-how-to-surrender,,manual_candidate_promotion,manual candidate manual-hayhouse-how-to-surrender proposed_year 2019 (publication date from official Hay House page)
