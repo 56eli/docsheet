@@ -2,7 +2,7 @@
 
 > **Post-PR #24 audit note (2026-08-07, branch `arena/019fdcc5-docsheet`):** The original deep audit below was written before the final PR #24 Amazon/year-source changes landed. A follow-up audit found one generated-output drift and fixed it by regenerating `docs/review-overview.json` and `docs/source-overrides.json` so the Pages review sheets now reflect **127 approved source overrides** and the 18 Amazon direct-link overrides. Current checks pass after that regeneration: 5 Python `--check` modes, 104/104 unit tests, 91% coverage, and JavaScript syntax checks. Local Playwright e2e remained inconclusive because Chromium download failed in the sandbox with TLS `ECONNRESET`; CI should still exercise it. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR24.md` for the current post-merge audit.
 >
-> **2026-08-07 session sync:** current-state counts below were refreshed post-PR #24/#25 — catalogue codes **280** (was 271), source overrides **127** (was 109), rendered relationships **336** (328 derived + 8 related), streaming refs **59 masters** (was 56), year blanks **18** (was 31), format blanks **2** (was 8), tests **106** (91% coverage). Later same day: legacy duplicate rows 281/284 excluded (same 2012 Discussion Series talks as promoted masters 312/313, owner ruling) → master **356**, Everything **376**, exclusions **71**, codes **278**. Final state 2026-08-07: the 7 annual Highlights products promoted to curated master (362–368, series **Lecture Highlights**, year from title, filename = title) → master **363**, Everything **376** (candidate_veritas 8 → 1), relationships **343** (335 derived + 8), taxonomy **186** (176 approved), works **206/339**, tests **107**. Day-end: discovery/Audible lanes deduplicated and the 3 unique programs promoted (**369 The Discovery ©2007, 370 The Ultimate David Hawkins Library ©2016 — series Nightingale-Conant; 371 OM ©2017, Media Miscellaneous**) → master **366** (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped), Everything **371** (discovery 0, audible 0; healing matched to 328, Naked excluded multi-contributor), overrides **132**, promoted candidates **39**, works **209/342**, codes **280** (the two lecture-typed NC programs carry codes). Day-end: **record 246 ruled a duplicate of master 329 and excluded** (no untyped records remain); HayHouse lane ruled (Live Life As A Prayer = 343, Letting Go Journal/Deck excluded as merchandise, **How to Surrender to God promoted as master 372** — Hay House series, ©2019, audiobook) → master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other), Everything **367** (only the Map poster veritas candidate remains), overrides **133**, codes **281**, exclusions **72**, candidates **40**.
+> **2026-08-07 session sync:** current-state counts below were refreshed post-PR #24/#25 — catalogue codes **280** (was 271), source overrides **127** (was 109), rendered relationships **336** (328 derived + 8 related), streaming refs **59 masters** (was 56), year blanks **18** (was 31), format blanks **2** (was 8), tests **106** (91% coverage). Later same day: legacy duplicate rows 281/284 excluded (same 2012 Discussion Series talks as promoted masters 312/313, owner ruling) → master **356**, Everything **376**, exclusions **71**, codes **278**. Final state 2026-08-07: the 7 annual Highlights products promoted to curated master (362–368, series **Lecture Highlights**, year from title, filename = title) → master **363**, Everything **376** (candidate_veritas 8 → 1), relationships **343** (335 derived + 8), taxonomy **186** (176 approved), works **206/339**, tests **107**. Day-end: discovery/Audible lanes deduplicated and the 3 unique programs promoted (**369 The Discovery ©2007, 370 The Ultimate David Hawkins Library ©2016 — series Nightingale-Conant; 371 OM ©2017, Media Miscellaneous**) → master **366** (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other / 1 untyped), Everything **371** (discovery 0, audible 0; healing matched to 328, Naked excluded multi-contributor), overrides **132**, promoted candidates **39**, works **209/342**, codes **280** (the two lecture-typed NC programs carry codes). Day-end: **record 246 ruled a duplicate of master 329 and excluded** (no untyped records remain); HayHouse lane ruled (Live Life As A Prayer = 343, Letting Go Journal/Deck excluded as merchandise, **How to Surrender to God promoted as master 372** — Hay House series, ©2019, audiobook) → master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other), Everything **367** (only the Map poster veritas candidate remains), overrides **133**, codes **281**, exclusions **72**, candidates **40**. See `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` for the complete post-PR #26 verification report.
 
 
 **Branch:** `arena/019fdb8b-docsheet` (HEAD `0b54614`, same as `main` at PR #23 merge)
@@ -15,19 +15,19 @@
 **Verdict: HEALTHY & VERIFIED, with known, documented gaps that are intentional review boundaries, not drift.**
 
 - Pipeline deterministic, 5 `--check` modes green (pandas missing in base image is expected sandbox trap, venv run proves green)
-- Tests: **106/106 pass**, coverage **91% total, every module ≥89%** (gate 80%)
-- Current curated master: **358 records** = 307 lecture / 40 book / 10 discussion / 1 untyped (246 deferred)
-- Everything view: **378 rows** = 358 master + 8 candidate_veritas + 4 discovery + 4 hayhouse + 4 audible + 0 pending
-- Catalogue codes: **280** distinct (lecture/discussion only, books never coded)
-- Exclusions: **69**, source overrides: **127 approved** (72 veritas, 26 hayhouse, 7 audible, 4 NC, 18 Amazon)
-- Veritas inventory: **191 products** (172 matched_by_primary_source, 7 compilation_or_new_edition, 6 matched_by_title, 4 excluded_related_material, 1 matched_by_normalized_title, 1 unreviewed)
-- HayHouse: **24** (20 matched_by_title, 4 unreviewed), Audible: **26** (17 matched_by_title, 6 unreviewed, 3 possible_related_match)
-- Product relationships: **336 rendered** = **328 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
+- Tests: **107/107 pass**, coverage **91% total, every module ≥89%** (gate 80%)
+- Current curated master: **366 records** = 310 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled duplicate of master 329 and excluded 2026-08-07)
+- Everything view: **367 rows** = 366 master + 1 candidate_veritas (*Map of Consciousness®* poster) + 0 discovery + 0 hayhouse + 0 audible
+- Catalogue codes: **281** distinct (lecture/discussion only, books never coded)
+- Exclusions: **72**, source overrides: **133 approved** (73 veritas, 27 hayhouse, 10 audible, 5 NC, 18 Amazon)
+- Veritas inventory: **191 products** (179 matched_by_primary_source, 6 matched_by_title, 4 excluded_related_material, 1 matched_by_normalized_title, 1 unreviewed)
+- HayHouse: **24** (22 matched_by_title, 2 excluded_related_material, 0 unreviewed), Audible: **26** (24 matched_by_title, 2 excluded_related_material, 0 unreviewed)
+- Product relationships: **343 rendered** = **335 derived primary** (auto-derived from master URL) + **8 related_material** (hand-maintained CSV)
 - Series compilations: **7** reviewed
-- Work families: **201 works / 334 members**, approved, coverage **358/358**
+- Work families: **209 works / 342 members**, approved, coverage **366/366**
 - Edition layer: **24 candidates / 24 promotions / 24 approved** (minted as master UUIDs 320-343 etc), D3 applied (audible URLs moved off book rows)
-- Series taxonomy: **179 matched** → **169 approved / 0 proposed / 10 rejected**, queue **6** (conflict evidence guardrails, all ruled but lingering for visibility)
-- Filename proposal: **358 unique**, safe `[1-3]` / display `[1/3]`, grouped by (year_month, clean_title, format), Volume Series canonicalized, Satsang month stripped, audiobook label removed
+- Series taxonomy: **186 matched** → **176 approved / 0 proposed / 10 rejected**, queue **6** (conflict evidence guardrails, all ruled but lingering for visibility)
+- Filename proposal: **366 unique**, safe `[1-3]` / display `[1/3]`, grouped by (year_month, clean_title, format), Volume Series canonicalized, Satsang month stripped, audiobook label removed
 - Frontend: Tabulator 6.5.2 pinned + SRI, CSP `sha256-u2/...` correct, measured-width engine across all rows, badges, filters, dark mode, `.nojekyll` present
 - CI: green on main, 5 checks + unittest + coverage + JS syntax + Playwright
 
@@ -339,10 +339,10 @@ RECONCILIATION_REPORT.md intentionally shows 53 draft-only records (edition rows
 |---|---|---|
 | Data pipeline determinism | A+ | 5 checks green, run-twice deterministic, tamper detection, idempotency |
 | Data governance | A+ | Reviewed inputs, approval registry, no title-based inference, derived primary |
-| Completeness | A | 358 master literal all-ever-produced incl. 3 academic, 191 Veritas exact match, but 31 year blank + 8 format blank + 4 NC pending |
-| Edition model | A | 201 works, 334 members, 24 editions, D3 applied, work_id coverage 100% |
+| Completeness | A+ | 366 master literal all-ever-produced incl. 3 academic & 7 annual Highlights, 191 Veritas inventory ruled (1 unreviewed poster candidate), 0 format blank, 17 year blank (documented exceptions), 0 untyped |
+| Edition model | A+ | 209 works, 342 members, 24 editions, D3 applied, work_id coverage 100% |
 | Frontend | A | measured-width engine, numeric sort fixed, Work parked, filename column, CSP+SRI, dark mode, .nojekyll |
-| Tests | A+ | 103 deterministic, offline replay, rule matrices, doc-currency guards, 92% coverage |
+| Tests | A+ | 107 deterministic, offline replay, rule matrices, doc-currency guards, 91% coverage |
 | CI/CD | A- | 5 checks + unittest + coverage + JS + Playwright, concurrency, but GITHUB_TOKEN Pages trigger ban still |
 | Docs | B+ | comprehensive, but FILENAME_PROPOSAL_V4 doc still mentions 1995-1999 estimated vs blank reality, reconciliation report 53 extras misleading |
 | Security | A- | CSP+SRI, no innerHTML, LF, but style-src unsafe-inline needed for Tabulator (could tighten) |
@@ -376,6 +376,6 @@ node --check docs/app.js
 
 ## One-Sentence Summary
 
-The curated Hawkins archive pipeline is deterministically green (358 master, 378 Everything, 104 tests, 92% coverage, all checks) with intentional review gaps (31 year-blank, 8 format-blank, 1 untyped 246, 36→56 streaming mapped, 4 NC discovery pending) and minor doc drift in filename proposal V4.
+The curated Hawkins archive pipeline is deterministically green post-PR #26 (366 master, 367 Everything, 107 tests, 91% coverage, all checks) with intentional review boundaries (17 year-blank, 0 format-blank, 0 untyped, 1 Veritas poster candidate unreviewed) and 100% work-family/series-taxonomy reconciliation.
 
 *End of deep audit 2026-08-07.*

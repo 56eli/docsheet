@@ -1,10 +1,7 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-03 — latest refresh: full-stack audit + documentation
-consolidation round 2 (branch `arena/019fc9b5-docsheet`, see §4 item 13).
-**Earlier branches:** `arena/019fc7fe-docsheet`, closed out via
-[PR #15](https://github.com/56eli/docsheet/pull/15) (merged to `main`);
-earlier same-day work landed via PRs #11–#14, #17, #19.
+**Prepared:** 2026-08-07 — latest refresh: full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
+**Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
 If you are the next agent: **read this file top to bottom before touching
 anything.** It is written to give you full context in five minutes.
