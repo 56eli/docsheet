@@ -288,6 +288,12 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
 
     veritas_by_url = veritas_products_by_url() if VERITAS_PRODUCTS.exists() else {}
 
+    # Raw rows whose year should stay blank for investigation (owner request).
+    # These are On The Road talks where the Veritas published_date is a listing
+    # date, not recording date. They remain blank until true recording year is
+    # found.
+    DO_NOT_BACKFILL_YEAR = {"254", "255", "256", "302"}  # Verification + God is Hidden
+
     filled = 0
     for item in items:
         item_type = item.get("item_type", "")
@@ -296,6 +302,9 @@ def backfill_months_from_official_source(items: list[dict[str, str]]) -> int:
             continue
         # Volume Series years are under investigation, believed pre-2000; product listing date 2007 is not recording date
         if item.get("series", "").strip() == "Volume Series":
+            continue
+        # Explicit blank-under-investigation rows stay blank
+        if item.get("raw_row_number", "").strip() in DO_NOT_BACKFILL_YEAR and not item.get("year", "").strip():
             continue
         url = item.get("source_url_veritas", "").strip()
 
