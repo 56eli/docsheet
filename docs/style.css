@@ -397,6 +397,9 @@ body {
   border-bottom: 1px solid var(--border);
   font-size: 13px;
 }
+/* The [hidden] attribute must win over display:flex — without this the empty
+   toolbar renders as a stray bar whenever a sheet has nothing to filter. */
+.review-toolbar[hidden] { display: none; }
 .review-toolbar label { font-weight: 500; color: var(--text); }
 #review-filter {
   min-width: 176px;

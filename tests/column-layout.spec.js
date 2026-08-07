@@ -97,20 +97,22 @@ test('Everything view opens visitor-first and the Expert toggle reveals technica
   await page.goto('/docs/');
   await waitForTable(page);
 
-  const header = (field) => page.locator(`#spreadsheet .tabulator-col[tabulator-field="${field}"]`);
+  // Tabulator keeps invisible columns' header nodes in the DOM, so hidden
+  // state is asserted with toBeHidden (visibility), never toHaveCount(0).
+  const header = (field) => page.locator(`#spreadsheet .tabulator-col[tabulator-field="${field}"]`).first();
 
   // First sight = product facts: the technical extras stay out of the way.
   for (const field of ['uuid', 'work_id', 'legacy_tempid', 'proposed_filename', 'year_source']) {
-    await expect(header(field), `${field} must be hidden until Expert mode`).toHaveCount(0);
+    await expect(header(field), `${field} must be hidden until Expert mode`).toBeHidden();
   }
   for (const field of ['record_type', 'title', 'series', 'edition', 'year_month', 'source_url_veritas', 'source_url_amazon', 'reference_url_1', 'notes']) {
-    await expect(header(field).first(), `${field} must be visible at first sight`).toBeVisible();
+    await expect(header(field), `${field} must be visible at first sight`).toBeVisible();
   }
 
   // The toggle reveals the technical columns and can hide them again.
   await page.locator('#expert-toggle-btn').click();
-  await expect(header('uuid').first()).toBeVisible();
-  await expect(header('work_id').first()).toBeVisible();
+  await expect(header('uuid')).toBeVisible();
+  await expect(header('work_id')).toBeVisible();
   await page.locator('#expert-toggle-btn').click();
-  await expect(header('uuid')).toHaveCount(0);
+  await expect(header('uuid')).toBeHidden();
 });

@@ -294,9 +294,9 @@
   function applyExpertVisibility() {
     if (!table) return;
     const on = expertColumnsOn(activeView);
-    expertHiddenFields(activeView).forEach((field) => {
+    const present = new Set(table.getColumns().map((column) => column.getField()));
+    expertHiddenFields(activeView).filter((field) => present.has(field)).forEach((field) => {
       const column = table.getColumn(field);
-      if (!column) return;
       if (on) {
         column.show();
       } else {
