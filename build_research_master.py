@@ -1396,13 +1396,6 @@ def build_master() -> MasterBuild:
 
 
     validate_master_items_integrity(items)
-    items.sort(
-        key=lambda item: (
-            item.get("series", "").strip().lower(),
-            int(item["uuid"]) if str(item.get("uuid", "")).isdigit() else 999999,
-            str(item.get("uuid", "")),
-        )
-    )
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
     exclusions = [
