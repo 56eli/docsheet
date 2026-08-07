@@ -927,15 +927,6 @@
     "evidence_source": "web_search"
   },
   {
-    "raw_row_number": "candidate:manual-veritas-43146",
-    "target_field": "source_url_hay_house",
-    "override_value": "https://www.hayhouse.com/power-of-love-hardcover",
-    "review_status": "approved",
-    "approval_date": "2026-08-03",
-    "review_reason": "Hay House hardcover edition (2020).",
-    "evidence_source": "web_search"
-  },
-  {
     "raw_row_number": "candidate:manual-veritas-55425",
     "target_field": "source_url_hay_house",
     "override_value": "https://www.hayhouse.com/shop-by-topic/self-help/the-man-who-mapped-consciousness-paperback",

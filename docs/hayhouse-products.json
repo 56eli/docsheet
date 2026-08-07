@@ -166,5 +166,40 @@
     "format": "card deck",
     "mapping_status": "excluded_related_material",
     "review_notes": "Hay House merchandise (card deck) derived from the Letting Go book; not a master record (matches the Veritas Letting Go Deck precedent). Ruled 2026-08-07."
+  },
+  {
+    "official_title": "The Path to Spiritual Advancement",
+    "official_product_url": "https://www.hayhouse.com/the-path-to-spiritual-advancement-paperback",
+    "format": "paperback",
+    "mapping_status": "matched_by_title",
+    "review_notes": "Master 303 linked page, live-verified 2026-08-07; HH page subtitle: \"How to Transcend the Ego and Experience the Presence of God\" (ISBN 9781401977061, pub 07/02/24)."
+  },
+  {
+    "official_title": "Beyond Illusion",
+    "official_product_url": "https://www.hayhouse.com/beyond-illusion-paperback",
+    "format": "paperback",
+    "mapping_status": "matched_by_title",
+    "review_notes": "Master 305 linked page, live-verified 2026-08-07; HH page subtitle: \"Exploring Perception, Ego, and Meditation on the Path to Truth\" (ISBN 9781401977108, pub 04/22/25)."
+  },
+  {
+    "official_title": "Karma and Devotion",
+    "official_product_url": "https://www.hayhouse.com/karma-and-devotion-paperback",
+    "format": "paperback",
+    "mapping_status": "matched_by_title",
+    "review_notes": "Master 307 linked page, live-verified 2026-08-07; HH page subtitle: \"The Sacred Path to God Through the Heart\" (ISBN 9781401977146, pub 10/28/25)."
+  },
+  {
+    "official_title": "The Final Doorway to Enlightenment",
+    "official_product_url": "https://www.hayhouse.com/the-final-doorway-to-enlightenment-paperback",
+    "format": "paperback",
+    "mapping_status": "matched_by_title",
+    "review_notes": "Master 308 linked page, live-verified 2026-08-07; HH page subtitle: \"Prayer, Transcendence, and Realization of the Self\" (ISBN 9781401977160, pub 01/13/26)."
+  },
+  {
+    "official_title": "The Man Who Mapped Consciousness",
+    "official_product_url": "https://www.hayhouse.com/shop-by-topic/self-help/the-man-who-mapped-consciousness-paperback",
+    "format": "paperback",
+    "mapping_status": "matched_by_title",
+    "review_notes": "Master 319 linked page, live-verified 2026-08-07; HH page lists author Susan Hawkins and subtitle \"The Life and Legacy of Dr. David R. Hawkins, The Authorized Biography\" (ISBN 9781401979577, pub 06/03/25)."
   }
 ]

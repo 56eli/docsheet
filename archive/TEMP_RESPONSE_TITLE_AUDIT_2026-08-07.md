@@ -94,7 +94,7 @@ Examples: `198X - Stress.mp4`, `2003 - Devotion to Truth Talk.mp4`, `2004 - Spir
 
 ## 8. Follow-ups suggested to the owner
 
-1. **Hay House inventory gaps (6):** masters 303/305/307/308/315/319 carry `source_url_hay_house` URLs that are not rows in `data/hayhouse_official_products.csv` (alternate `-paperback` slug forms). Extend the inventory to cover them.
+1. **Hay House inventory gaps (6):** masters 303/305/307/308/315/319 carry `source_url_hay_house` URLs that are not rows in `data/hayhouse_official_products.csv` (alternate `-paperback` slug forms). Extend the inventory to cover them. → **RESOLVED 2026-08-07 (same day, later batch):** 5 rows added from live-fetched pages (303/305/307/308/319, inventory 24 → 29). The 6th link (master 315 `power-of-love-hardcover`) proved to be **James Van Praagh's different book of the same name** on the live page — the bad `web_search`-era override was **removed** (overrides back to 133; master 315 has no Hay House edition listing on the live Hay House store).
 2. **Filename rule edge:** v4's illegal-char strip renders `Question/Answer Session` as `QuestionAnswer Session`. If preferred, extend the sanitize rule to map `/` → `-` (`Question-Answer Session`) and I will re-apply.
 3. **Master 309 vs 221 / product 53277** naming collision — needs an evidence ruling on which Progressive-Levels talk the streaming product is.
 
