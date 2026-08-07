@@ -1,4 +1,4 @@
-# Year Column Provenance Audit — Full Inventory (358 rows)
+# Year Column Provenance Audit — Full Inventory (367 rows)
 
 **Date:** 2026-08-07 (updated 2026-08-07 evening: 11 edition blank years fixed via inheritance)
 **Master baseline:** 366 records (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other) — after the 2026-08-07 rulings; blank years 17 (13 intentional + 4 under investigation), blank formats **0** (Oxford 2003 talk verified streaming-only 2026-08-07)
@@ -11,7 +11,7 @@
 
 Generated from `data/research_master_draft.csv` + `migration_review_ledger.csv` + `manual_master_candidates.csv` + `edition_candidates.csv` + `veritas_official_products.csv`.
 
-Detailed CSV: `data/year_provenance.csv` (358 rows, machine-readable) — regenerated after fix.
+Detailed CSV: `data/year_provenance.csv` (367 rows, machine-readable) — regenerated after fix.
 
 ## Summary counts (after 2026-08-07 fix: 11 lecture audiobook editions now inherit year from matched master)
 
@@ -27,7 +27,7 @@ Detailed CSV: `data/year_provenance.csv` (358 rows, machine-readable) — regene
 | `edition_candidate_year_inherited_or_blank` | 4 | Edition candidate blank but master year present via other path (maybe work family inheritance or duplicate) |
 | `academic_publication_year` | 3 | Academic works promoted: Orthomolecular 1973, Qualitative 1998, Dialogues 1998 — first-publication year from external bibliographic evidence |
 
-Total 358 → 356 → 363 → **366** (legacy duplicates 281/284 excluded; 7 Highlights promoted; NC/Audible/Hay House programs 369-372 added; record 246 excluded as duplicate of 329), blank years **17** (13 intentional + 4 under investigation), blank formats **0**.
+Total 358 → 356 → 363 → 366 → **365** (legacy duplicates 281/284 excluded; 7 Highlights promoted; NC/Audible/Hay House programs 369-372 added; record 246 excluded as duplicate of 329; record 309 excluded as duplicate of the Oxford talk already held as master 221, product link moved to 221, owner ruling 2026-08-07), blank years **17** (13 intentional + 4 under investigation), blank formats **0**.
 
 Fix applied 2026-08-07: `data/edition_candidates.csv` 11 Audible/HH lecture audiobooks (edition-audible-wtg-nature/advaita/root, dni-intention/alignment, tms-id/emotions, srmm-godvs, tlc-perception, compassion, hh-liveprayer) now have `proposed_year` = matched master year (2002-2007). `build_catalogue_pages.py` excludes edition rows from series-compilation lecture count (raw_row_number filter) to prevent Highlights counts inflating from 6→8.
 
@@ -74,7 +74,7 @@ Code fix: `build_catalogue_pages.py` `validate_series_compilations()` now filter
 | UUID | Title | Type | Series | Year | Y-Type | Detail |
 |---: |---|---|---|---:|---|---|
 
-*Full table in `data/year_provenance.csv` — 358 rows. Below is sample tail:*
+*Full table in `data/year_provenance.csv` — 367 rows. Below is sample tail:*
 
 ```
 202 Volume I-Power vs Force (Part 1) lecture Volume Series  blank_intentional_pre2000

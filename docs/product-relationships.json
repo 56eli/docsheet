@@ -4400,6 +4400,26 @@
     "source_product_mapping_status": "matched_by_primary_source"
   },
   {
+    "relationship_id": "rel-veritas-53277-221",
+    "master_uuid": "221",
+    "raw_row_number": "245",
+    "source_name": "veritas",
+    "source_product_id": "53277",
+    "official_product_url": "https://veritaspub.com/product/progressive-levels-of-consciousness/",
+    "official_product_title": "Progressive Levels of Consciousness",
+    "relationship_type": "primary_product_for_item_part",
+    "review_status": "reviewed",
+    "reviewed_on": "2026-08-03",
+    "evidence_url": "https://veritaspub.com/product/progressive-levels-of-consciousness/",
+    "evidence_note": "Master primary Veritas URL matches the official product inventory.",
+    "master_catalog_code": "LECTURE-2003-019",
+    "master_title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
+    "master_item_type": "lecture",
+    "master_year": "2003",
+    "source_product_published_date": "2023-09-17",
+    "source_product_mapping_status": "matched_by_primary_source"
+  },
+  {
     "relationship_id": "rel-veritas-42624-222",
     "master_uuid": "222",
     "raw_row_number": "246",
@@ -5957,26 +5977,6 @@
     "master_item_type": "book",
     "master_year": "2026",
     "source_product_published_date": "2026-01-13",
-    "source_product_mapping_status": "matched_by_primary_source"
-  },
-  {
-    "relationship_id": "rel-veritas-53277-309",
-    "master_uuid": "309",
-    "raw_row_number": "candidate:manual-veritas-53277",
-    "source_name": "veritas",
-    "source_product_id": "53277",
-    "official_product_url": "https://veritaspub.com/product/progressive-levels-of-consciousness/",
-    "official_product_title": "Progressive Levels of Consciousness",
-    "relationship_type": "primary_product_for_item_part",
-    "review_status": "reviewed",
-    "reviewed_on": "2026-08-03",
-    "evidence_url": "https://veritaspub.com/product/progressive-levels-of-consciousness/",
-    "evidence_note": "Owner-approved promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
-    "master_catalog_code": "",
-    "master_title": "Progressive Levels of Consciousness",
-    "master_item_type": "lecture",
-    "master_year": "2023",
-    "source_product_published_date": "2023-09-17",
     "source_product_mapping_status": "matched_by_primary_source"
   },
   {

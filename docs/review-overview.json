@@ -1,10 +1,10 @@
 [
   {
     "review_sheet": "Master Candidates",
-    "record_count": 40,
+    "record_count": 39,
     "purpose": "All reviewed official candidates have been promoted to the master.",
     "source_file": "data/manual_master_candidates.csv",
-    "current_state": "40/40 promoted"
+    "current_state": "39/39 promoted"
   },
   {
     "review_sheet": "Manual Leads",
@@ -29,7 +29,7 @@
   },
   {
     "review_sheet": "Source Overrides",
-    "record_count": 133,
+    "record_count": 134,
     "purpose": "Approved official source associations retained after the original ledger pass.",
     "source_file": "data/research_master_source_overrides.csv",
     "current_state": "approved source override"

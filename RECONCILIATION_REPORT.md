@@ -10,13 +10,13 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 366 | 366 |
-| Research-master JSON records | 366 | 366 |
+| Research-master CSV records | 365 | 365 |
+| Research-master JSON records | 365 | 365 |
 | Research-master exclusion records | 72 | 72 |
-| Draft-only CSV records without a matching ledger `item` | 64 | 0 |
+| Draft-only CSV records without a matching ledger `item` | 63 | 0 |
 | Ledger `item` records absent from CSV draft | 0 | 0 |
 | Matched CSV records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 366 | 366 |
+| `docs/master.json` / ledger-projected Everything records | 365 | 365 |
 
 The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
 
@@ -57,7 +57,6 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Permanent Inner Peace | discussion | Promoted from official candidate manual-veritas-50485: Official page identifies a 2012 discussion/interview product. |
 | — | Power vs. Force (Audiobook) | book | Promoted edition audio of work w-power-vs-force from candidate edition-audible-pvf: Audible audiobook edition of the Power vs Force work; Audible inventory row matched_by_title. |
 | — | Power vs. Force Audio Book | book | Promoted edition audio of work w-power-vs-force from candidate edition-veritas-pvf-audiobook: Veritas product 1542; audiobook edition of the Power vs Force work; currently related_material on lecture 202 - REQUIRES RULING on family placement. |
-| — | Progressive Levels of Consciousness | lecture | Promoted from official candidate manual-veritas-53277: Official page identifies an On-the-Road UK talk available through streaming video. |
 | — | Qualitative and Quantitative Analysis and Calibration of the Level of Human Consciousness | book | Promoted from official candidate manual-academic-qualitative-1998: Doctoral dissertation published by Veritas Publishing 1998-01-31, 200 pages, spiral-bound, ISBN 0964326183; defines Scale of Consciousness; evidence: Amazon, Open Library OL11707875M, BooksRun; completeness audit. |
 | — | Satsang Series (Jan 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1304: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
 | — | Satsang Series (Jul 2006) | lecture | Promoted from official candidate manual-veritas-satsang-1310: New-work candidate per SATSANG_MAPPING_DECISIONS.md Addendum (2026-08-03): missing collection month; no master overlap; ownership unknown. |
@@ -109,8 +108,8 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 366 | 366 |
-| `migrated_items` | 366 | 366 |
+| `master_items` | 365 | 365 |
+| `migrated_items` | 365 | 365 |
 | `implemented_unreviewed` | 0 | 0 |
 
 ## Required resolution before rebuilding

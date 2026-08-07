@@ -1,7 +1,7 @@
 # Ruling Prep — Product 53277 / Master 309 vs Master 221 ("Progressive Levels of Consciousness")
 
 **Prepared:** 2026-08-07 (branch `arena/019fdd68-docsheet`)
-**Status:** Evidence-only — no data changed. Awaiting owner ruling (question at the end).
+**Status:** EXECUTED 2026-08-07 — owner chose **Option A** (merge into 221, exclude 309 as duplicate). Outcome section at the end.
 
 ---
 
@@ -52,6 +52,15 @@ The store carries **exactly one** "Progressive Levels" product (full WP-API inve
 - *"309 is a different Progressive Levels talk."* — No: exactly one store listing exists, its description names Oxford explicitly, and 309's entire identity is that listing.
 - *"Keep 309, exclude 221."* — Loses the raw-derived identity, the correct 2003 recording year, and the catalogue code; the duplicate-exclusion precedent (246/281/284) kept the better-provenanced record.
 
-## Ruling needed from the owner
+## Ruling requested from the owner
 
 Execute **Option A** (merge into 221, exclude 309 as duplicate) or **Option B** (keep both unchanged). If A, I will implement it the same day with full regeneration, tests, and doc sync.
+
+---
+
+## Outcome (executed 2026-08-07, owner ruling Option A)
+
+- **Un-minted 309:** promotion-registry row and candidate row `manual-veritas-53277` removed (provenance in git history + this memo, matching the wrong-override deletion precedent); `data/work_families.csv` member row for 309 removed (that single-member work dissolved; 221 keeps `w-progressive-levels-of-consciousness-a-sp`), filename-proposal and year-provenance mirror rows for 309 removed.
+- **Links merged into 221:** new approved source override on raw row 245 sets `source_url_veritas` to the product-53277 URL; the approved streaming overlay automatically adds `https://veritaspub.com/progressive-levels-of-consciousness/` as 221's `reference_url_1`. Inventory + taxonomy mirrors retargeted 53277 → 221 (`matched_by_primary_source`, series unchanged — On The Road Talk Series).
+- **Final counts:** master 366 → **365** (310 → 309 lecture), promoted candidates 40 → **39**, overrides 133 → **134**, relationships unchanged at **343** (derived primary moved 309 → 221), work families 209/342 → **208/341** members, exclusions unchanged at 72 (candidate-minted duplicates leave provenance here, not in the raw-row exclusions register).
+- **Verified:** all 5 `--check` modes PASS, 107/107 tests PASS, `node --check` clean; README/handoff/year-provenance counts synced (doc-parity tests green).
