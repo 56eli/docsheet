@@ -73,8 +73,8 @@ Sandbox traps learned the hard way (all still true):
 | Test suite | **107 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 80` |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
-(see `FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
-`VERITAS_ARTIFACT_REVIEW.md`).
+(see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
+`archive/VERITAS_ARTIFACT_REVIEW.md`).
 
 ## 4. What happened in the 2026-08-03 sessions (in order)
 
@@ -118,10 +118,10 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
    closed the remaining status-quo drift the earlier pass had left: README/
    handoff catalogue codes 223 → **225**; `MIGRATION_REVIEW_LEDGER.md`
    disposition table (item 308 → **306**, research_note 8 → **10**);
-   `OFFICIAL_CATALOGUE_DISCOVERY.md` and `VERITAS_PRODUCT_MAPPING.md`
+   `archive/OFFICIAL_CATALOGUE_DISCOVERY.md` and `archive/VERITAS_PRODUCT_MAPPING.md`
    308-master/344-Everything → 317/363; `archive/RELATIONSHIP_EXPANSION_AUDIT.md`
    (304 URL-bearing masters, 157 distinct URLs, 293 primary / 8 related);
-   `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` marked implemented;
+   `archive/ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` marked implemented;
    `archive/README.md` UNBLOCK note resolved. Found and closed **F1**: the 11
    promoted masters (309–319) had a Veritas URL but no primary relationship
    row — 11 reviewed `primary_product_for_item_part` rows were added
@@ -150,7 +150,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     Independently re-verified the entire stack from a clean venv (all 5 `--check`
     modes, 96 tests, 92% coverage, JS syntax, and every published catalogue
     count against `docs/catalogue-meta.json`) and published the findings as
-    `FULL_STACK_AUDIT_2026-08-03.md`. Consolidated the root Markdown from
+    `archive/FULL_STACK_AUDIT_2026-08-03.md`. Consolidated the root Markdown from
     **34 → 20 files**: archived the five overlapping 2026-08-03 audits
     (`AUDIT_2026-08-03_FULL`, `COMPREHENSIVE_AUDIT`, `STATUS_QUO_AUDIT`,
     `TEMP_RESPONSE_AUDIT`, `EVERYTHING_VERIFICATION_REPORT`), the five dated
@@ -330,7 +330,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
     the manual + edition candidate lanes — deliberately deferred as the one
     higher-risk cut).
 23. **Lecture recording-year correction (2026-08-04, owner-approved):**
-    investigation (`LECTURE_YEAR_INVESTIGATION.md`) found 35 lectures showed
+    investigation (`archive/LECTURE_YEAR_INVESTIGATION.md`) found 35 lectures showed
     `year=2014` = the Veritas **storefront-listing** date, not their recording
     date. For the On-the-Road talks the Audible ©year is the reliable recording
     year, and it **varies (©2003–2005)**, not a uniform 2003. Corrected the 8
@@ -446,7 +446,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   Latest run passed 2026-08-03 (run `30834666253`). Nothing outstanding here.
 - ⚠️ **Re-run the Map Veritas Catalogue workflow on `main` after this branch
   merges** — the 2026-08-04 refresh diff was reviewed and accepted (see §4
-  item 15 and `VERITAS_ARTIFACT_REVIEW.md` Addendum 3), the reviewed
+  item 15 and `archive/VERITAS_ARTIFACT_REVIEW.md` Addendum 3), the reviewed
   inventory is LF-normalized like the fetcher output, **and the Veritas 50810
   title drift (`Vol II` → `Volume II`) was reconciled in branch
   `arena/019fcbde-docsheet`**, so the next run should print "Candidate matches
@@ -524,7 +524,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - Counts confirmed: master 356 (307 lecture/38 book/10 discussion/1 untyped), catalogue codes 271, exclusions 68, overrides 110, relationships rendered 333 (325 derived primary + 8 related_material hand-maintained), veritas 191, everything 376, taxonomy 169/0/10, work families 332.
 - CSP hash verified correct `sha256-u2/...`, SRI pinned, no innerHTML injection, LF line endings.
 - New finding: 11 lecture audiobook edition rows (UUIDs 333-343) have blank year (proposed_year empty in edition_candidates.csv) — suggestion: inherit year from matched master.
-- Reports: `FULL_STACK_AUDIT_2026-08-04_FINAL.md` (this audit) + earlier `AUDIT_REPORT_2026-08-04.md`.
+- Reports: `archive/FULL_STACK_AUDIT_2026-08-04_FINAL.md` (this audit) + earlier `archive/AUDIT_REPORT_2026-08-04.md`.
 - Proposed: `FILENAME_SCHEME_PROPOSAL.md` — year-first human filename scheme (`2004-02 TM - Thought and Ideation [DVD01].mp4`) with three profiles (canonical/human/plex) + organizer script roadmap.
 
 ## 2026-08-07 Post-PR #27 Audit (arena/019fdd68-docsheet)
@@ -552,9 +552,16 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 
 ### Duplicate ruling EXECUTED: master 309 merged into 221 (product 53277, owner ruling 2026-08-07)
 
-- Evidence + outcome memo: `RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`. Veritas product 53277's own description names **Oxford, England** — the same talk as raw-derived master **221**; minted master **309** (from candidate `manual-veritas-53277`) was a duplicate with the storefront year 2023.
+- Evidence + outcome memo: `archive/RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`. Veritas product 53277's own description names **Oxford, England** — the same talk as raw-derived master **221**; minted master **309** (from candidate `manual-veritas-53277`) was a duplicate with the storefront year 2023.
 - **Option A executed:** candidate un-minted (promotion-registry + candidate rows deleted; provenance in git history + memo — same pattern as the wrong-override deletion), 309's work-family/filename/year-provenance rows removed, approved override on raw 245 moved the product URL onto 221 (streaming overlay then auto-adds its `reference_url_1`), inventory + series-taxonomy mirrors retargeted 53277 → 221.
 - Result: master **365** (309 lecture), promoted candidates **39**, overrides **134**, relationships **343** (derived primary moved 309 → 221), work families **208 works / 341 members**; all 5 `--check` + 107 tests + doc-parity green.
+
+### Hygiene batch 1 EXECUTED (owner picks A+B from `archive/TEMP_RESPONSE_HYGIENE_2026-08-07.md`, 2026-08-07)
+
+- **A — root-doc triage:** 9 completed/executed docs moved to `archive/` (Title/Item-Type proposals, Ruling-Prep memo, FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2, Lecture-Year investigation, Veritas artifact+mapping reviews, Official-Catalogue discovery, Pages deployment analysis); every cross-reference in README/handoff/EDITION_MODEL/decisions/ fixed, stale root refs (`FULL_STACK_AUDIT_2026-08-03.md`, `…2026-08-04_FINAL.md`, `AUDIT_REPORT_2026-08-04.md`) pointed at archive. Root: 27 → 18 Markdown files.
+- **B — year mirror retired:** `data/year_provenance.csv` deleted (consumed by no script; had already drifted 358-vs-368); `YEAR_COLUMN_PROVENANCE.md` rewritten as policy + audit notes pointing at the master's authoritative `year_source` column.
+- **F — withdrawn (premise corrected in the report):** the taxonomy "queue" is *generated* from `series_category_mapping.csv` by `map_series_taxonomy.py` and all 4 rows are already ruled — a derived attention-view with 0 pending conflicts, not a second register. No change made.
+- Batches 2 (coverage-gate raise + handoff checkpoint) and 3 (derivable-mirrors tool) proposed, awaiting owner pick.
 
 ## 7. House-keeping for every turn
 
@@ -562,7 +569,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
   cite those numbers — do not hand-count).
 - Present long results via a committed Markdown report
   (`archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` is the 2026-08-03 log;
-  `FULL_STACK_AUDIT_2026-08-03.md` is the current full-project audit); the
+  `FULL_STACK_AUDIT_2026-08-07_DEEP.md` is the current full-project audit); the
   chat should stay a one-sentence summary plus the `ask_user` question for
   what is next.
 - Update this handoff at the end of each session so the next agent inherits

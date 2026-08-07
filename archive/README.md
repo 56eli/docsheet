@@ -5,9 +5,17 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-03.md](../FULL_STACK_AUDIT_2026-08-03.md), and the
+[FULL_STACK_AUDIT_2026-08-07_DEEP.md](../FULL_STACK_AUDIT_2026-08-07_DEEP.md), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
+- `TITLE_HYGIENE_PROPOSAL.md`, `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md`,
+  `VERITAS_ARTIFACT_REVIEW.md`, `VERITAS_PRODUCT_MAPPING.md`,
+  `LECTURE_YEAR_INVESTIGATION.md`, `OFFICIAL_CATALOGUE_DISCOVERY.md`,
+  `GITHUB_PAGES_DEPLOYMENT_ANALYSIS.md`, `RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`,
+  `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md` — completed/executed documents
+  moved from the root in the 2026-08-07 hygiene triage (batch 1 of
+  `TEMP_RESPONSE_HYGIENE_2026-08-07.md`); kept for provenance, their findings
+  are implemented/closed.
 - `TEMP_RESPONSE_HYGIENE_2026-08-07.md` — hygiene/ledger/complexity assessment (2026-08-07): ranked improvement proposals (root-doc triage, year-mirror retirement, derivable inventory mirrors, coverage-gate raise, handoff checkpointing), with an "already clean, do not fix" list.
 - `TEMP_RESPONSE_TITLE_AUDIT_2026-08-07.md` — distributor title-alignment session (2026-08-07): 60 live-verified title corrections to official naming, the 50491 re-link 121→278, decision rules R1–R5, and the full change table.
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md` — post-PR #27 audit (2026-08-07); re-verified all catalogue counts, root-caused the red CI run on `main` to the stale Playwright candidate assertions (fixed data-driven), and corrected the 103-test/92%-coverage doc drift.

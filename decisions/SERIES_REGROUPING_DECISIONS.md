@@ -94,7 +94,7 @@ change. `series` is not an input to compact-ID assignment or code generation.
 ### Not changed by this decision
 
 `item_type` for these records remains empty; it is handled separately in
-`ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (decision D7 → `audio`). Series membership
+`../archive/ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (decision D7 → `audio`). Series membership
 and content type are independent claims and are recorded as independent decisions.
 
 ---
@@ -104,7 +104,7 @@ and content type are independent claims and are recorded as independent decision
 **Decided:** 2026-08-03
 **Status:** applied
 **Input changed:** `migration_review_ledger.csv` (`proposed_item_type` on 84 rows)
-**Full analysis:** `ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (v3)
+**Full analysis:** `../archive/ITEM_TYPE_CLASSIFICATION_PROPOSAL.md` (v3)
 
 ### Governing rule (now enforced in code)
 

@@ -1,9 +1,10 @@
 # Hygiene / Ledger / Complexity & Bloat — Improvement Assessment (2026-08-07)
 
-**Scope:** owner question — what improvements to project hygiene, ledger/register
-handling, complexity and bloat are possible. Every finding is verified against
-the committed tree at `04ff5ba`. Ranked by value vs. risk, with concrete
-execution notes. Nothing here touches catalogue *content*.
+**Execution status (Batch 1, owner-picked 2026-08-07):** **A done** (9 completed
+docs moved to `archive/`, all cross-references fixed, index updated), **B done**
+(`data/year_provenance.csv` deleted, doc slimmed to policy + pointer),
+**F withdrawn** — premise was wrong, see corrected finding below.
+Batches 2 (C+D) and 3 (E) await owner pick.
 
 ---
 
@@ -81,12 +82,17 @@ requiring three-file manual resync. **Effort:** ~100 lines + tests.
 **Risk:** low-moderate — must preserve multi-match separator conventions;
 cover with a golden-row test.
 
-### F. Collapse the 4-row taxonomy queue
+### F. ~~Collapse the 4-row taxonomy queue~~ — WITHDRAWN (premise corrected)
 
-`data/series_taxonomy_review_queue.csv` holds 4 rows; the main mapping file
-already has a `proposed` vocabulary. Fold the queue into
-`data/series_category_mapping.csv` as proposed rows → one taxonomy register
-instead of two. Small win, zero risk.
+Original claim: fold `data/series_taxonomy_review_queue.csv` (4 rows) into the
+mapping as proposed rows. **Wrong premise, found during execution:** the queue
+is *generated* by `map_series_taxonomy.py` from the mapping (conflict rows +
+`queue_reason`) and all 4 rows already exist in
+`data/series_category_mapping.csv`, fully ruled (2 approved / 2 rejected).
+It is a derived attention-view with **0 pending conflicts**, not a second
+hand-maintained register. No action needed; keeping it costs nothing and
+preserves the reviewer attention lane. (Lesson folded into E: generated views
+are fine — the problem is only hand-maintained derivable mirrors.)
 
 ### G. Verify-and-keep (no action needed, worth stating)
 

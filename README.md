@@ -76,12 +76,12 @@ Veritas inventory refreshes use the approved product-ID overlay in
 `data/veritas_mapping_decisions.csv`; see `decisions/VERITAS_MAPPING_DECISIONS.md`. The
 inventory's `normalized_title_match_count` is derived and must always equal the
 number of IDs in `matched_master_uuids`; `build_catalogue_pages.py` fails the
-build otherwise. The latest refresh review is in `VERITAS_ARTIFACT_REVIEW.md`.
+build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIEW.md`.
 
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, `FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, `archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
@@ -133,7 +133,7 @@ so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
 months match the publisher's own dates. See
-[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
+[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
 audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
 
 ### Field semantics
