@@ -26,7 +26,7 @@
 1982 - A-01 Office Series-Stress.mp4
 ...
 1995 - Power vs Force.pdf
-1995 - Power vs. Force.m4b  (was [1-2].m4b and [2-2].m4b for two audiobook editions? Now with grouping by format, two audiobook editions same title same year same format would still be [1-2],[2-2] to disambiguate. But if they are Audible vs Veritas, same format m4b, same cleaned title, same year-month, they would be [1-2],[2-2] — need disambiguation. Currently after fix, Power vs Force audiobooks: 320 and 331 both cleaned to Power vs. Force, same year 1995, same format audiobook, same year_month, so they are grouped as 2 → [1-2],[2-2]. Is that desired? They are different files, not part of series, but same extension, so need disambiguation. Could keep [1-2] or add source tag. For now kept as [1-2],[2-2] for same-format duplicates.
+1995 - Power vs. Force [1-2].m4b / 1995 - Power vs. Force [2-2].m4b (Decision: Two audiobook editions—Audible vs Veritas—sharing the exact same cleaned title, year, and format are disambiguated with [1-2]/[2-2] to prevent filename collision on disk).
 1998 - Dialogues on Consciousness and Spirituality.pdf
 2001 - The Eye of the I.pdf
 2001 - The Eye of the I.m4b
