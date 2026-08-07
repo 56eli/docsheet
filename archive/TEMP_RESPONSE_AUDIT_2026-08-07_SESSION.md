@@ -224,3 +224,35 @@ node --check docs/app.js && node --check tests/*.spec.js
 **Final counts (2026-08-07 day-end):** master **366** (310 lecture / 40 book / 8 discussion / 7 highlight / 1 other / **0 untyped**), Everything **367** (only the Map poster remains as a candidate — all discovery/audible/hayhouse lanes empty), codes **281**, exclusions **72**, overrides **133**, promoted candidates **40**, works **209/342** (coverage 366/366), filename proposal 366 unique. **Verified:** 5 `--check` modes green, 107/107 tests, 91% coverage; README, NEXT_AGENT_HANDOFF, MIGRATION_REVIEW_LEDGER.md, deep-audit sync note updated.
 
 *Addendum 5 end — 2026-08-07.*
+
+---
+
+## Addendum — Blank years/formats research (owner ruling 6)
+
+**Task:** research the 5 blank years + 2 blank formats.
+
+**Format (resolved):** the only remaining blank format was **221 Progressive
+Levels of Consciousness – A Special Talk Presented in Oxford (2003)** — the
+official Veritas page sells it **streaming-only** ($1.00, Stream button, no
+physical SKU) → ledger `proposed_format = streaming` (verified 2026-08-07).
+**Master now has 0 blank formats.** (The second former blank, record 246, was
+resolved in the previous ruling.)
+
+**Years (researched, evidence trail documented in `LECTURE_YEAR_INVESTIGATION.md`):**
+- **230–232 Verification of Spiritual Realities** and **268 God is Hidden
+  Within the Beauty of the Music** — no reachable official source states the
+  recording year: Veritas product/streaming/series pages give none,
+  **no Audible listing exists** for either talk, Amazon shows only a
+  **2015-09-22 CD re-release** date (God is Hidden, ISBN 9781938033605), the
+  Vimeo trailer page is removed. Per the project's no-guessing rule they stay
+  **blank under investigation** (13 intentional Volume-Series blanks + these 4
+  = 17 blank years); a future fix needs physical-media © lines.
+- The other three former blanks were already resolved earlier today: record
+  246 (duplicate of 329), Devotion/Mind Heart (ledger recording years),
+  Discussion 2012 rows (product-title years).
+
+**Verified:** 5 `--check` modes green, 107/107 tests; docs synced
+(LECTURE_YEAR_INVESTIGATION.md research table, YEAR_COLUMN_PROVENANCE.md
+counts 17 blank years / 0 blank formats).
+
+*Addendum 6 end — 2026-08-07.*
