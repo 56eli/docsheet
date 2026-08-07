@@ -1,10 +1,7 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-03 — latest refresh: full-stack audit + documentation
-consolidation round 2 (branch `arena/019fc9b5-docsheet`, see §4 item 13).
-**Earlier branches:** `arena/019fc7fe-docsheet`, closed out via
-[PR #15](https://github.com/56eli/docsheet/pull/15) (merged to `main`);
-earlier same-day work landed via PRs #11–#14, #17, #19.
+**Prepared:** 2026-08-07 — latest refresh: full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
+**Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
 If you are the next agent: **read this file top to bottom before touching
 anything.** It is written to give you full context in five minutes.
@@ -65,9 +62,9 @@ Sandbox traps learned the hard way (all still true):
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 366 | 310 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
-| Everything view | **367** | 366 master + 1 candidate_veritas (Map poster) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
+| Everything view | **366** | 366 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
 | Exclusions / source overrides | 72 / 133 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (109 approved at that time after dedup of the Path duplicate; now 133 incl. the 18 Amazon direct links) |
-| Veritas inventory | 191 products | categories populated 191/191; 11 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07) |
+| Veritas inventory | 191 products | categories populated 191/191; 12 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07) |
 | Everything relationships | 343 product relationships, 7 series compilations | 335 derived primary + 8 related_material |
 | Candidate pool | 40 reviewed manual candidates (all 40 promoted incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
 | Work families | 209 works / 342 members approved; work_id coverage 366/366 | `data/work_families.csv` |

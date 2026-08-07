@@ -108,5 +108,15 @@
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
+  },
+  {
+    "veritas_product_id": "1560",
+    "mapping_status": "excluded_related_material",
+    "matched_master_uuids": "",
+    "matched_master_titles": "",
+    "review_notes": "Spin-off physical product (poster), not an original teaching record.",
+    "review_status": "approved",
+    "reviewed_on": "2026-08-07",
+    "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   }
 ]
