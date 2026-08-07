@@ -120,7 +120,7 @@ folders.
 
 The current curated master has **358** records (307 `lecture`, 40 `book`,
 10 `discussion`, 1 untyped), **280** catalogue codes, **69** retained exclusions,
-**111** approved source overrides (including the four Nightingale-Conant audio
+**116** approved source overrides (including the four Nightingale-Conant audio
 editions and two Amazon Office Series links), **29** promoted
 and **0** unpromoted official candidates, **336** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title

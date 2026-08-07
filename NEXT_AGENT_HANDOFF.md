@@ -66,7 +66,7 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 358 | 307 lecture / 40 book / 10 discussion / 1 untyped (record **246**, deferred); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) |
 | Everything view | **378** | 358 master + 8 candidate_veritas + 0 candidate_pending_promotion + 4 discovery + 4 hayhouse + 4 audible |
-| Exclusions / source overrides | 69 / 111 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved overrides after dedup of Path duplicate) |
+| Exclusions / source overrides | 69 / 116 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 (109 approved overrides after dedup of Path duplicate) |
 | Veritas inventory | 191 products | categories populated 191/191; 18 approved mapping decisions |
 | Everything relationships | 336 product relationships, 7 series compilations | |
 | Candidate pool | 29 reviewed manual candidates (all 29 promoted incl. 9 Satsang monthlies and 6 manual candidates and 3 academic, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
