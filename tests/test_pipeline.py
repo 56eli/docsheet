@@ -23,6 +23,7 @@ import inspect
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -893,10 +894,13 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             bcp.PRIMARY_RELATIONSHIP_NOTE,
         )
 
-    def test_committed_state_derives_335_primary_plus_8_related(self) -> None:
+    def test_committed_state_derives_336_primary_plus_8_related(self) -> None:
         # The committed master + inventory + CSV must assemble to exactly the
-        # published relationship count: 335 derived primary + 8 related_material
-        # (was 328+8=336 before the 2026-08-07 Highlights promotion added 7 masters).
+        # published relationship count: 336 derived primary + 7 related_material
+        # (was 335+8=343 before the 2026-08-07 distributor-naming audit: the approved
+        # primary-source override linking master 278 to Veritas product 50491 added one
+        # derived primary, and the stale related_material row for that same product
+        # (rel-veritas-50491-121, superseded by the primary link) was removed).
 
         tempdir = make_sandbox()
         try:
@@ -906,8 +910,8 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             master = bcp.read_csv(bcp.MASTER)
             veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
             derived = bcp.derive_primary_relationships(master, veritas)
-            self.assertEqual(len(derived), 335)
-            self.assertEqual(len(derived) + 8, 343)  # 343 total relationships (335 derived + 8 related)
+            self.assertEqual(len(derived), 336)
+            self.assertEqual(len(derived) + 7, 343)  # 343 total relationships (336 derived + 7 related)
             meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
             self.assertEqual(meta["reviewed_product_relationships"], 343)
         finally:
@@ -1514,19 +1518,19 @@ class DocumentationCurrencyTests(unittest.TestCase):
         with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
             rows = {row["uuid"]: row for row in csv.DictReader(handle)}
         expected = {
-            "202": ("Volume I Power vs Force", "1", "2"),
-            "203": ("Volume I Power vs Force", "2", "2"),
-            "204": ("Volume II Consciousness and Addiction", "1", "2"),
-            "205": ("Volume II Consciousness and Addiction", "2", "2"),
-            "206": ("Volume III Advanced States of Consciousness", "1", "2"),
-            "207": ("Volume III Advanced States of Consciousness", "2", "2"),
-            "208": ("Volume IV How to Tell the Truth about Anything", "1", "2"),
-            "209": ("Volume IV How to Tell the Truth about Anything", "2", "2"),
-            "210": ("Volume V Undoing the Barriers to Spiritual Progress", "1", "3"),
-            "211": ("Volume V Undoing the Barriers to Spiritual Progress", "2", "3"),
-            "212": ("Volume V Undoing the Barriers to Spiritual Progress", "3", "3"),
-            "213": ("Volume VI How to Raise Your Level of Consciousness", "1", "1"),
-            "214": ("Volume VII A Conversation with Knowingness", "1", "1"),
+            "202": ("Volume I: Power vs. Force Muscle Testing", "1", "2"),
+            "203": ("Volume I: Power vs. Force Muscle Testing", "2", "2"),
+            "204": ("Volume II: Consciousness and Addiction", "1", "2"),
+            "205": ("Volume II: Consciousness and Addiction", "2", "2"),
+            "206": ("Volume III: Advanced States of Consciousness", "1", "2"),
+            "207": ("Volume III: Advanced States of Consciousness", "2", "2"),
+            "208": ("Volume IV: Consciousness: How to Tell the Truth About Anything", "1", "2"),
+            "209": ("Volume IV: Consciousness: How to Tell the Truth About Anything", "2", "2"),
+            "210": ("Volume V: Undoing the Barriers to Spiritual Progress", "1", "3"),
+            "211": ("Volume V: Undoing the Barriers to Spiritual Progress", "2", "3"),
+            "212": ("Volume V: Undoing the Barriers to Spiritual Progress", "3", "3"),
+            "213": ("Volume VI: How to Raise Your Level of Consciousness", "1", "1"),
+            "214": ("Volume VII: A Conversation with Knowingness", "1", "1"),
         }
         for uuid, (clean_title, part_index, part_total) in expected.items():
             row = rows[uuid]
@@ -1534,8 +1538,11 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertEqual(row["clean_title"], clean_title)
             self.assertEqual(row["part_index"], part_index)
             self.assertEqual(row["part_total"], part_total)
+            # Filenames sanitize the clean title per the v4 rule (illegal
+            # chars <>:"/\|?* stripped) before adding the part suffix.
+            safe_title = re.sub(r'[<>:"/\\|?*]', "", clean_title)
             self.assertTrue(
-                row["proposed_filename"].startswith(clean_title),
+                row["proposed_filename"].startswith(safe_title),
                 f"UUID {uuid} filename must start with its own volume title",
             )
 

@@ -1195,5 +1195,14 @@
     "approval_date": "2026-08-07",
     "review_reason": "Official Hay House audio program page of 'How to Surrender to God' (promoted master 372 per owner ruling 2026-08-07); live Hay House page verified 2026-08-07.",
     "evidence_source": "https://www.hayhouse.com/ (live official Hay House product page)"
+  },
+  {
+    "raw_row_number": "315",
+    "target_field": "source_url_veritas",
+    "override_value": "https://veritaspub.com/product/how-to-live-your-life-like-a-prayer-2/",
+    "review_status": "approved",
+    "approval_date": "2026-08-07",
+    "review_reason": "Official Veritas listing (product 50491) for the 2012 Discussion Series talk \"How to Live Your Life Like A Prayer (2012)\"; replaces a stale title-match to master 121 (2006 DVD lecture) found in the 2026-08-07 distributor-naming audit",
+    "evidence_source": "https://veritaspub.com/product/how-to-live-your-life-like-a-prayer-2/"
   }
 ]

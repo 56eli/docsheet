@@ -122,7 +122,7 @@ The current curated master has **366** records (310 `lecture`, 40 `book`,
 8 `discussion`, 7 `highlight`, 1 `other` — no untyped records remain since the
 2026-08-07 ruling that record 246 was the audio edition already held as master
 329), **281** catalogue codes, **72** retained exclusions,
-**133** approved source overrides (including the four Nightingale-Conant audio
+**134** approved source overrides (including the four Nightingale-Conant audio
 editions, two Amazon Office Series links, and the Audible/NC/Hay House program URLs),
 **40** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
