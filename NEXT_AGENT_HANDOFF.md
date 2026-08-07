@@ -548,6 +548,7 @@ All catalogue data was verified against the live Veritas API on 2026-08-03
 - **5 reviewed rows added** to `data/hayhouse_official_products.csv` (24 → **29**) for masters 303/305/307/308/319, every one live-fetched from hayhouse.com (short main-title convention; HH subtitles + ISBN/pub-date in `review_notes`).
 - **Defect removed:** master 315's `source_url_hay_house` override (`power-of-love-hardcover`, approved 2026-08-03 off a bad `web_search`) points to **James Van Praagh's** *The Power of Love: Connecting to the Oneness* — a different author's book. Hay House carries no Hawkins edition at that slug (16-item live author-catalog scan checked). Override row deleted (overrides **133**; master hay_house URLs 28 → **27**); git history preserves the original ruling.
 - Counts after both today's batches: master 366, relationships **343 = 336 derived + 7 related**, overrides **133**, HH inventory **29**; all checks + 107 tests green.
+- **v4 filename rule amendment (same branch, owner pick):** `/` now maps to `-` in proposed filenames (was stripped) → masters 199–201 are `2011-01 - Question-Answer Session.mp4` etc. Rule line updated in `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`; the volume-filename test's sanitize helper mirrors the amended rule.
 
 ## 7. House-keeping for every turn
 

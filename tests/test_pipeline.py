@@ -1538,9 +1538,10 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertEqual(row["clean_title"], clean_title)
             self.assertEqual(row["part_index"], part_index)
             self.assertEqual(row["part_total"], part_total)
-            # Filenames sanitize the clean title per the v4 rule (illegal
-            # chars <>:"/\|?* stripped) before adding the part suffix.
-            safe_title = re.sub(r'[<>:"/\\|?*]', "", clean_title)
+            # Filenames sanitize the clean title per the v4 rule (`/` maps
+            # to `-`; other illegal chars <>:"\|?* stripped) before adding
+            # the part suffix.
+            safe_title = re.sub(r'[<>:"\\|?*]', "", clean_title.replace("/", "-"))
             self.assertTrue(
                 row["proposed_filename"].startswith(safe_title),
                 f"UUID {uuid} filename must start with its own volume title",

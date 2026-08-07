@@ -92,7 +92,7 @@ bracket): `Highlights of the 2002 Lectures 1-6.mp4`,
 ## Filesystem safety
 
 - Safe on-disk uses hyphen `-` in `[1-3]` because slash `/` illegal. Display uses slash `[1/3]` for human.
-- Illegal chars `<>:"/\\|?*` stripped, max 120 chars.
+- `/` maps to `-` (2026-08-07 ruling: `Question/Answer Session` → `2011-01 - Question-Answer Session.mp4`); other illegal chars `<>:"\\|?*` stripped, max 120 chars.
 
 ## 2026-08-07 Volume Series correction
 
