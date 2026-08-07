@@ -8,6 +8,7 @@ the repository root: [README.md](../README.md),
 [FULL_STACK_AUDIT_2026-08-03.md](../FULL_STACK_AUDIT_2026-08-03.md), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
+- `TEMP_RESPONSE_HYGIENE_2026-08-07.md` — hygiene/ledger/complexity assessment (2026-08-07): ranked improvement proposals (root-doc triage, year-mirror retirement, derivable inventory mirrors, coverage-gate raise, handoff checkpointing), with an "already clean, do not fix" list.
 - `TEMP_RESPONSE_TITLE_AUDIT_2026-08-07.md` — distributor title-alignment session (2026-08-07): 60 live-verified title corrections to official naming, the 50491 re-link 121→278, decision rules R1–R5, and the full change table.
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md` — post-PR #27 audit (2026-08-07); re-verified all catalogue counts, root-caused the red CI run on `main` to the stale Playwright candidate assertions (fixed data-driven), and corrected the 103-test/92%-coverage doc drift.
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md` — comprehensive post-PR #26 system audit and verification report (2026-08-07); validates 366 master items, 0 untyped, 0 format blank, and recent rulings. (Note: its "19 international queue rows" figure was stale — the queue holds 36 rows.)
