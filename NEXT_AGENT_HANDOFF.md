@@ -1,18 +1,30 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 — latest refresh: full-stack audit on branch
-`arena/019fe098-docsheet` (`FULL_STACK_AUDIT_2026-08-08.md`) + **master 265
-ruling executed** (owner approval, Option A): Veritas product 1552's mangled
-URL verified as the publisher's own canonical link (kept + documented in the
-override/ledger reasons), carrier corrected `audiobook → CD` (`three CD; 2h56m`,
-ledger row 297 + filename proposal row 265 `.m4b → .mp3`), format-inference
-rule hardened (CD markers beat "– Audio" title fallback; malformed
-`https-…` slugs return blank) with 2 new tests (**114 total**), and the
-de-listed US Audible audiobook (B00KZ1QMX8) tracked as a manual lead
-(`data/research_manual_leads.csv`). Memo:
-`archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md`. All six
-`--check` modes green; coverage 91% (floor module 89%); site served live at
-port 8000.
+**Prepared:** 2026-08-08 (final) — full-session handoff, branch
+`arena/019fe098-docsheet` → merged as **PR #30**. See
+`FULL_STACK_AUDIT_2026-08-08.md` (audit + deep passes QA-2…QA-7 + suggestions)
+and the session log at the bottom of §6. Headline results:
+- **C1/C2 master 265 ruled + applied** (Option A): publisher-verbatim URL kept
+  + documented; carrier corrected `audiobook → CD` (`three CD; 2h56m`); format
+  inference hardened (CD markers beat "– Audio"; malformed `https-…` slugs
+  blank); US Audible audiobook tracked as a manual lead.
+- **C3 198X convention applied**: documented in README; site renders
+  `c. 1980s` with a deterministic year sorter (raw value preserved).
+- **C4 owned semantics applied**: README vocabulary + `Owned`/`Not owned`
+  badges.
+- **DP-1/2/3 work-family merge applied**: 11 multi-part groups consolidated
+  (208 → **193 works**); master 202 left the `w-power-vs-force` book work;
+  26 PART-marker canonicals cleaned.
+- **QA-5 fixed**: `legacy_title` + `proposed_filename_display` restored to the
+  published Everything view; new **schema-contract test** (suite **115**).
+- **S-a…S-g**: code-order/`candidate:`-prefix docs, test-count house rule,
+  contract test, year-research memo (no authoritative dates for 230–232/268).
+- **Site redesign Phases 1–3 applied** (IA groups + stats strip + empty
+  states; a11y roving tabs/focus/reduced-motion/link labels; token theme with
+  gradient header): `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
+- **Owner actions still open**: C5 raw-CSV fixes (16 cells) per
+  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`.
+
 **Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
 **Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
@@ -302,7 +314,55 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 5. **Naming scheme:** filename v4.1 (earlier this session) — carrier suffix + global-uniqueness guard, 365 unique safe = 365 unique display.
 6. **Specs:** Playwright specs enable Expert columns before asserting technical columns; new `column-layout` spec locks the visitor-first default. CI note: watch the "Run browser smoke tests" step after merge (Chromium is CI-only here).
 
-## 7. House-keeping for every turn
+## 2026-08-08 Session (arena/019fe098-docsheet → PR #30, MERGED)
+
+Full-stack audit + deep QA + site redesign day. Report:
+`FULL_STACK_AUDIT_2026-08-08.md` (sections 1–14); memos in `archive/`.
+
+- **Audit re-verified everything** (112 tests at start, 6 `--check` green,
+  91% coverage, counts vs `docs/catalogue-meta.json`) and found 5 catalogue
+  inconsistencies + 4 setup drifts (C1–C5, S1–S5).
+- **Rulings executed (owner-approved, applied this session):**
+  - C1/C2 master 265: publisher-verbatim URL kept + documented (live WP-API
+    evidence; product 1552, no clean slug exists); `format` corrected
+    `audiobook → CD` (`three CD; 2h56m`) via ledger 297 + filename proposal
+    `.m4b → .mp3`; format-inference rule hardened + 2 tests; de-listed US
+    Audible audiobook (B00KZ1QMX8) → manual lead. Memo:
+    `archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md`.
+  - C3 198X: kept (evidence-backed decade estimate); README documents the
+    convention; site renders `c. 1980s` with a deterministic string sorter.
+    Memo: `archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md`.
+  - C4 `owned`: vocabulary documented (true/false/blank=not stated); badges
+    read `Owned`/`Not owned`.
+  - DP-1/2/3 work-family merge: 11 multi-part lecture groups (27 rows)
+    consolidated into 11 works (208 → **193**); master 202 removed from
+    `w-power-vs-force` (book work keeps 286); 26 PART-marker canonicals
+    cleaned; filename-proposal work_ids re-synced. Memo:
+    `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`.
+  - QA-5: `legacy_title` + `proposed_filename_display` restored to the
+    published Everything view (`EVERYTHING_FIELDS` + derived display from the
+    filename sheet); new schema-contract test locks the keys (suite **115**).
+- **Doc/setup:** S1/S3/S4 drifts fixed; S2 Node 20→22 applied by owner on
+  `main` (`406116f`); S-a/S-b/S-c quick wins; S-g year research (no
+  authoritative dates for masters 230–232/268 — keep "under investigation").
+- **Deep QA pass:** QA-2 relationships/mirrors clean; QA-3 refs/JSON schema
+  clean (3 broken archive links fixed); QA-4 Satsang parity clean (code-order
+  caveat documented); QA-5 (above); QA-6 editions/URLs/vocabulary clean;
+  QA-7 final gate — full pipeline re-run produces zero diffs.
+- **Site redesign Phases 1–3 applied** (owner UX brief): tab groups
+  (Catalogue / Review workspace / Sources), stats strip from
+  `catalogue-meta.json`, empty-state cards, a11y (roving tabs, focus rings,
+  reduced motion, link aria-labels, 44px mobile targets), theme (gradient
+  header, green hover/selection, themed scrollbars, footer repo link).
+  Proposal: `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
+- **CI:** green on every commit (Python checks, 115 tests, 91% coverage gate,
+  JS syntax, 9-spec Playwright suite).
+- **Owner actions still open:** C5 raw-CSV hygiene (16 cells: 3 Advaita URLs
+  lines 28–30, 13 `2cds each?` tempids lines 280–292) per
+  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; optionally supply recording dates
+  for masters 230–232/268 if known.
+
+
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
   cite those numbers — do not hand-count).
