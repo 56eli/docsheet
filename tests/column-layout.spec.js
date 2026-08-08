@@ -60,14 +60,15 @@ test('columns are sized to their widest rendered entry', async ({ page }) => {
     .evaluate((col) => col.getBoundingClientRect().width);
 
   // Measured widths must actually be applied (no collapsed or oversized columns):
-  const [title, uuid, series, notes] = await Promise.all([
-    widthOf('title'), widthOf('uuid'), widthOf('series'), widthOf('notes'),
+  const [title, uuid, series, notes, recordType] = await Promise.all([
+    widthOf('title'), widthOf('uuid'), widthOf('series'), widthOf('notes'), widthOf('record_type'),
   ]);
   expect(title).toBeGreaterThan(150);
   expect(title).toBeLessThanOrEqual(560);
   expect(notes).toBeLessThanOrEqual(560);
   expect(uuid, 'short ID column must stay narrow').toBeLessThan(title);
   expect(series, 'series column must fit the longest series name').toBeGreaterThan(180);
+  expect(recordType, 'Record Type is a compact provenance rail').toBeLessThanOrEqual(80);
 });
 
 test('Master ID column sorts numerically, not lexically', async ({ page }) => {

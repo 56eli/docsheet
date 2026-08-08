@@ -1089,12 +1089,16 @@
         ? nonEmpty.filter(looksLikeUrl).length / nonEmpty.length
         : 0;
 
+      const compactRecordType = key === "record_type";
       const col = {
         title: humanizeField(key),
         field: key,
         headerSort: true,          // click header to sort asc/desc
         resizable: true,           // drag column edge to resize
-        minWidth: 60,              // narrow floor; the measured width fits anyway
+        // Record Type is a compact provenance badge, not a content column.
+        // Keep it narrow even though the human-readable header is longer;
+        // the full meaning remains available through the badge tooltip.
+        minWidth: compactRecordType ? 54 : 60,
         // Pages publishes generated catalogue/review data. Edits must occur in
         // the declared CSV review inputs, never as misleading session-only UI edits.
         editor: false,
@@ -1110,7 +1114,14 @@
       let cap = MAX_COLUMN_WIDTH;
       if (/title|note|reason|purpose|role/i.test(key)) cap = MAX_TEXT_WIDTH;
       if (key === "proposed_filename") cap = 340;
-      col.width = Math.min(measured, cap);
+      // Do not let the long human header "Record Type" defeat the compact
+      // badge treatment. The header wraps; the CM/candidate badge truncates
+      // with its full label in the tooltip.
+      if (compactRecordType) {
+        col.width = 54;
+      } else {
+        col.width = Math.min(measured, cap);
+      }
 
       // Numeric columns count up in numeric order, never lexically. Without an
       // explicit number sorter Tabulator guesses the sorter from the FIRST
