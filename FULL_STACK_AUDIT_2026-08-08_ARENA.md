@@ -270,7 +270,7 @@ After the baseline audit, the owner-selected priority and guard work was applied
 - Added the guard and hardening regression tests. The deterministic suite is now **123/123**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
-Remaining work is the owner workflow-permission step (apply the prepared CI/update snippets), optional F-08 local frontend asset fallback, frontend coverage expansion, and repository housekeeping. Prior run `31261684679` passed all 15 Playwright tests and emitted the Node-runtime warning that the prepared action upgrades address.
+Remaining work is the owner workflow-permission step (apply the prepared CI/update snippets), optional F-08 local frontend asset fallback, frontend coverage expansion, and repository housekeeping. Final UI CI run `31263676053` passed all 16 Playwright tests; the Record Type width assertion and drawer focus/section test are green.
 
 ## 11. Reproduction commands
 
