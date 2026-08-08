@@ -1846,7 +1846,7 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(rows["331"]["proposed_filename"], "1995 - Power vs. Force (Veritas).m4b")
 
     def test_cleaned_multi_part_titles_keep_part_detail_in_master(self) -> None:
-        """Title cleanup must not hide PART1–3 from the edition/export contract."""
+        """Title cleanup must not hide Part 1–3 from the edition/export contract."""
         with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
             master = {row["uuid"]: row for row in csv.DictReader(handle)}
         expected = {
