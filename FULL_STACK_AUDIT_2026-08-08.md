@@ -297,3 +297,34 @@ still passed; only the comment was stale.
 
 No pipeline-breaking defect found; all six `--check` modes and the full test
 suite (114) are green on this branch.
+
+---
+
+## 6. Deeper data pass (2026-08-08, follow-up QA)
+
+A targeted cross-field pass beyond the headline audit — edition parity,
+taxonomy, Satsang alignment, work-family naming, code/date consistency.
+**Verified clean:** year_source↔year agreement; catalogue-code sequences
+(no gaps/duplicates per year); Veritas month backfill year-match rule;
+approved taxonomy mappings vs master series; Satsang title-month vs `month`;
+edition rows (320–343) all carry valid work_ids; no duplicate carriers within
+a work (non-part rows); zero token-overlap between family canonical titles and
+member titles; `owned=false` rows are intentionally catalogued reference
+records (raw `WE HAVE? = ❌`).
+
+**New finding DP-1 — work families split multi-part lectures into per-part
+works (27 rows, 11 groups).** README states DVD lecture parts are "grouped
+under one work", and D6a does that for e.g. Causality — but 11 multi-part
+groups (Volume I–V, Become That Which You Are, Love is a Way of Being, The
+Presence of Spiritual Awareness, Mind Heart and Service, Spiritual Will,
+Verification of Spiritual Realities) have each part in its **own** work_id,
+keyed to raw titles that embedded `(Part 1)`/`PART1` markers (the 2026-08-07
+title cleanup removed those markers from public titles but never re-keyed the
+families; the families' own evidence notes say "part rows of one lecture").
+Worst case (DP-2): master **202** (Volume I Part 1) is a member of
+`w-power-vs-force`, the **book** work (286) — its evidence note flags
+"REQUIRES RULING (see 286)" and the 2026-08-07 product rulings never
+re-adjudicated it. Proposed ruling (27 → 11 works; 208 → 192 works, 341
+memberships unchanged): `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`.
+Related minor (DP-3): 26 family canonical titles still embed raw
+`PART1`/`PART2` markers — cleaned by the same ruling.
