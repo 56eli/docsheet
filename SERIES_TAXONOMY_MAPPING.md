@@ -79,31 +79,40 @@ rows for one master ID fail the generator outright.
    the build fails if approvals reference unknown IDs, lack a series, or give
    one master ID conflicting series.
 
-## Baseline (2026-08-04, post-rulings)
+## Baseline (2026-08-04, post-rulings) and current state (2026-08-07)
 
-179 matched products: **169 approved** (143 bulk approvals at 286/286
-uuid-level agreement with the curated series, 6 individually ruled over the
-2026-08-03/08-04 sessions, and 20 bulk approvals 2026-08-04 at 313/313
-uuid-level agreement — the bulk approvals were proven no-ops),
-**0 proposed**, and
-**10 rejected** wrong-edition/carrier-shelf signals. The final 10 conflicting
-2026-08-04 proposals were **ruled 2026-08-04**: 3 approved — product 1814
-re-seriesed master 357 to **On The Road Talk Series** and products
-50485/50488 re-seriesed masters 312/313 to **Discussion Series** (build
-confirms exactly 3 series values changed; 316 approved mappings cover 316
-master IDs) — and 7 rejected with documented rationale: 1546/1548 (curated
-On The Road run stands over the publisher's carrier shelf), 1661/1695/1728/1742
-(audio/CD-DVD editions keep their work's `Books` series; precedent: the
-product-1542 rejection), 55576 (six conflicting publisher categories offer no
-dominant home; the item is an original 12-session audio program, not a
-transcription-series book). The queue's 6 rows are all ruled — 2 dual-signal
-conflicts resolved in favour of each record's own primary product, 1
+**2026-08-04 baseline:** 179 matched products — **169 approved** (143 bulk
+approvals at 286/286 uuid-level agreement with the curated series, 6 individually
+ruled over the 2026-08-03/08-04 sessions, and 20 bulk approvals 2026-08-04 at
+313/313 uuid-level agreement — the bulk approvals were proven no-ops), **0
+proposed**, and **10 rejected** wrong-edition/carrier-shelf signals. The final 10
+conflicting 2026-08-04 proposals were **ruled 2026-08-04**: 3 approved — product
+1814 re-seriesed master 357 to **On The Road Talk Series** and products
+50485/50488 re-seriesed masters 312/313 to **Discussion Series** (build confirmed
+exactly 3 series values changed) — and 7 rejected with documented rationale:
+1546/1548 (curated On The Road run stands over the publisher's carrier shelf),
+1661/1695/1728/1742 (audio/CD-DVD editions keep their work's `Books` series;
+precedent: the product-1542 rejection), 55576 (six conflicting publisher
+categories offer no dominant home; the item is an original 12-session audio
+program, not a transcription-series book). The queue's 6 rows were all ruled — 2
+dual-signal conflicts resolved in favour of each record's own primary product, 1
 multi-annual assignment resolved to the 2007 series by title evidence and
 sibling-product categorization.
 
+**Current state (2026-08-07, verified from committed files):** 186 matched
+products — **177 approved / 0 proposed / 9 rejected**; build applies **327
+approved mappings covering 327 master IDs, 3 series values changed**. The
+movement since the 2026-08-04 baseline comes from the same-day rulings: the
+seven annual Highlights products were promoted and approved to **Lecture
+Highlights** under R1; products 50411/1542 were reclassified as plain primary
+matches (their 2026-08-03 overlay rows deleted, 10 → 9 rejected), and product
+50521 R3 remains the single queued row (`approved` status, kept for transparency
+because its multi-annual category conflict is structural). The `0 proposed`
+invariant holds: every generated proposal has been ruled.
+
 The first 2026-08-03 inventory refresh (pre-mapping) dropped four stale
 primary-source matches from scope (three were relinked 2026-08-04 to their
-minted edition masters; the Map of Consciousness poster remains an unreviewed
-merchandise candidate), and relinked product 1661 from
+minted edition masters; the Map of Consciousness poster was ruled
+`excluded_related_material` on 2026-08-07), and relinked product 1661 from
 record 300 to deferred record 264 (rebuilt as 246); on 2026-08-04 product 1661
 matched its minted edition master 329 by primary URL.

@@ -18,13 +18,13 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 | Matched CSV records with one or more field differences | 0 | 0 |
 | `docs/master.json` / ledger-projected Everything records | 365 | 365 |
 
-The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.
+The committed master carries 63 expected promotion/edition rows (manual candidates, edition promotions, Satsang monthlies, academic works, and annual Highlights) that enter through reviewed promotion inputs rather than the ledger. These are intentional and do not indicate drift.
 
-The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. This report identifies the upstream master/ledger divergence that must be resolved first.
+The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and passes; this report additionally projects the master from the ledger and surfaces the promotion layer for transparency.
 
-## Draft-only CSV records requiring a provenance decision
+## Draft-only CSV records (promotion/edition layer and any provenance gaps)
 
-Each record below is present in the committed draft CSV and therefore included by the current Everything build, but is not an `item` in the current ledger projection. Retain it only by recording its approval and durable provenance in the ledger or a reviewed overrides input; otherwise it will disappear on a normal master rebuild.
+Each record below is present in the committed draft CSV and therefore included by the current Everything build, but is not an `item` in the current ledger projection. All 63 rows carry a `candidate_key`, meaning they entered the master through reviewed promotion inputs (`manual_candidate_promotions.csv`, `edition_promotions.csv`, Satsang monthlies, academic works, or annual Highlights) rather than the ledger; this is expected and the rows persist across rebuilds. Retain a non-promotion row only by recording its approval and durable provenance in the ledger or a reviewed overrides input.
 
 | Raw row | Title | Type | Notes |
 |---:|---|---|---|

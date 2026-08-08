@@ -118,6 +118,13 @@ def render_report() -> str:
         and committed_catalogue == projected_catalogue_rows
         and committed_meta == projected_meta
     )
+    # Extras that carry a candidate_key are approved manual/edition/Satsang/
+    # academic/Highlight promotions. They enter the master through reviewed
+    # promotion inputs, not the ledger, so they are *expected* ledger extras —
+    # not divergence. Only raw-sourced extras (no candidate_key) would be drift.
+    candidate_extras = [row for row in comparison.extras if row.get("candidate_key", "").strip()]
+    raw_extras = [row for row in comparison.extras if not row.get("candidate_key", "").strip()]
+    expected_promotion_extras = bool(candidate_extras) and not raw_extras
     summary_note = (
         [
             "All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.",
@@ -125,11 +132,24 @@ def render_report() -> str:
             f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides and validates {master_build.manual_candidates_validated} unpromoted manual candidates; unresolved research leads remain outside the master in their review inputs.",
         ]
         if is_reconciled
-        else [
-            "The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.",
-            "",
-            "The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. This report identifies the upstream master/ledger divergence that must be resolved first.",
-        ]
+        else (
+            [
+                f"The committed master carries {len(candidate_extras)} expected promotion/edition rows "
+                "(manual candidates, edition promotions, Satsang monthlies, academic works, and annual "
+                "Highlights) that enter through reviewed promotion inputs rather than the ledger. These "
+                "are intentional and do not indicate drift.",
+                "",
+                "The normal `python build_catalogue_pages.py --check` evaluates Pages files against the "
+                "**committed** master CSV and passes; this report additionally projects the master from "
+                "the ledger and surfaces the promotion layer for transparency.",
+            ]
+            if expected_promotion_extras
+            else [
+                "The checked outputs are not yet fully reconciled. Review the differences below before rebuilding so reviewed additions are not lost.",
+                "",
+                "The normal `python build_catalogue_pages.py --check` evaluates Pages files against the **committed** master CSV and may pass while this cascade differs. This report identifies the upstream master/ledger divergence that must be resolved first.",
+            ]
+        )
     )
     resolution_section = (
         [
@@ -169,15 +189,31 @@ def render_report() -> str:
         f"| Matched CSV records with one or more field differences | {len(comparison.changed)} | 0 |",
         f"| `docs/master.json` / ledger-projected Everything records | {len(committed_catalogue)} | {len(projected_catalogue.items)} |",
         "",
+    ]
+    expected_extras_note = (
+        f"All {len(comparison.extras)} rows carry a `candidate_key`, meaning they entered "
+        "the master through reviewed promotion inputs (`manual_candidate_promotions.csv`, "
+        "`edition_promotions.csv`, Satsang monthlies, academic works, or annual Highlights) "
+        "rather than the ledger; this is expected and the rows persist across rebuilds. "
+        if expected_promotion_extras and not raw_extras
+        else "Rows with a `candidate_key` are expected promotion/edition rows; any row "
+        "without one is a genuine provenance gap that must be recorded in the ledger or a "
+        "reviewed overrides input or it will disappear on a normal master rebuild. "
+    )
+    lines.extend([
         *summary_note,
         "",
-        "## Draft-only CSV records requiring a provenance decision",
+        "## Draft-only CSV records (promotion/edition layer and any provenance gaps)",
         "",
-        "Each record below is present in the committed draft CSV and therefore included by the current Everything build, but is not an `item` in the current ledger projection. Retain it only by recording its approval and durable provenance in the ledger or a reviewed overrides input; otherwise it will disappear on a normal master rebuild.",
+        "Each record below is present in the committed draft CSV and therefore included by the "
+        "current Everything build, but is not an `item` in the current ledger projection. "
+        + expected_extras_note
+        + "Retain a non-promotion row only by recording its approval and durable provenance in "
+        "the ledger or a reviewed overrides input.",
         "",
         "| Raw row | Title | Type | Notes |",
         "|---:|---|---|---|",
-    ]
+    ])
     for row in comparison.extras:
         lines.append(
             "| "

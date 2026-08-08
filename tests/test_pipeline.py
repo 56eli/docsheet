@@ -47,6 +47,7 @@ SCRIPTS = [
     "build_catalogue_pages.py",
     "map_series_taxonomy.py",
     "reconcile_research_master.py",
+    "sync_inventory_mirrors.py",
 ]
 INPUT_ROOT_FILES = [
     "hawkins archive clone - Sheet1.csv",
@@ -1770,6 +1771,48 @@ class DocumentationCurrencyTests(unittest.TestCase):
             if row["item_type"].strip() == "book" and row["catalog_code"].strip()
         ]
         self.assertEqual(coded_books, [], "book rows must never receive a catalogue code")
+
+    def test_csp_hash_matches_inline_dark_mode_script(self) -> None:
+        """The CSP script-src hash must match the inline no-flash dark-mode script.
+
+        Regression guard for 2026-08-08: the committed CSP hash did not match
+        the inline <script> in index.html, so CSP-compliant browsers blocked
+        the pre-paint dark-mode toggle (a flash of white for dark-mode users).
+        Recompute the SHA-256 of every inline (non-src) script and assert each
+        is whitelisted in the Content-Security-Policy meta tag.
+        """
+        import base64
+        import hashlib
+
+        html = (REPO / "docs" / "index.html").read_text(encoding="utf-8")
+
+        csp_match = re.search(
+            r'http-equiv="Content-Security-Policy"\s+content="([^"]+)"', html
+        )
+        self.assertIsNotNone(csp_match, "index.html must declare a CSP meta tag")
+        csp = csp_match.group(1)
+        script_src = next(
+            (part for part in csp.split(";") if part.strip().startswith("script-src")),
+            "",
+        )
+        whitelisted_hashes = set(re.findall(r"'(sha256-[A-Za-z0-9+/==]+)'", script_src))
+        self.assertTrue(whitelisted_hashes, "CSP script-src must whitelist at least one hash")
+
+        inline_scripts = re.findall(
+            r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", html, re.S
+        )
+        self.assertTrue(inline_scripts, "index.html must contain the inline dark-mode script")
+        for script in inline_scripts:
+            if not script.strip():
+                continue
+            digest = base64.b64encode(
+                hashlib.sha256(script.encode("utf-8")).digest()
+            ).decode()
+            self.assertIn(
+                f"sha256-{digest}", whitelisted_hashes,
+                "CSP script-src hash does not match an inline <script>; "
+                "recompute the hash from docs/index.html and update the meta tag",
+            )
 
 
 if __name__ == "__main__":

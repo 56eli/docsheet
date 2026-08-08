@@ -176,4 +176,4 @@ to be clean so the columns and filters match the new model.
 > 5. **Books grouping:** keep `series="Books"` (do not drop it).
 >    **✅ DECIDED** (no change needed).
 
-The pipeline is green (102 tests, 92% coverage, all 5 checks).
+The pipeline is green (113 tests, 91% coverage, six curated `--check` modes; this snapshot is dated — see `AUDIT_2026-08-08.md` for current state).
