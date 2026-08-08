@@ -56,11 +56,11 @@ gap (the 11 promoted candidates 309–319, whose promotion path did not mint
 relationship rows) is moot: those masters now carry their URL and therefore
 derive their primary relationship automatically.
 
-As of 2026-08-04 the relationship layer renders **333 rows = 325 derived
-primary + 8 reviewed `related_material`** across 165 distinct products. The
+As of 2026-08-08 the relationship layer renders **343 rows = 336 derived
+primary + 7 reviewed `related_material`** across 187 distinct products. The
 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture
 set, with a primary relationship for each of the master’s DVD01, DVD02, and
-DVD03 records (all three derived from the same master URL). Eight reviewed
+DVD03 records (all three derived from the same master URL). Seven reviewed
 `related_material` records preserve distinct official products without
 overwriting a primary source. The reviewed book, Satsang, and final title-match
 batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`,

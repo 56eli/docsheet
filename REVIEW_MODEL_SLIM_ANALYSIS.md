@@ -1,6 +1,7 @@
 # Review-Gated Data Model — Slimming & Dedup Analysis
 
 **Date:** 2026-08-04
+**Status:** Historical analysis snapshot; its counts describe the 2026-08-04 state and are not current.
 **Scope:** Audit every curated input and review lane in the pipeline for
 redundancy and behavior-preserving cleanup potential, per owner request
 ("do we really need product relationships and migration review? is there

@@ -2,8 +2,9 @@
 
 **Prepared:** 2026-08-08 (session 2) — current handoff for branch
 `arena/019fe11d-docsheet` (this session; to be pushed/PR'd/merged). See
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (independent full-stack audit) and
-the session log at the bottom of §6. Headline results this session:
+`FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
+session log at the bottom of §6. Headline results this session:
 - **Independent audit:** all six `--check` modes, 121/121 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
   one new live-data defect (stale Veritas decision row for

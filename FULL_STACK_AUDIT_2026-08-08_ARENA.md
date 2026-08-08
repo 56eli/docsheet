@@ -15,7 +15,7 @@ The **current generated catalogue is internally reproducible and the main CI/Pag
   1. the reconciliation report labels all 63 approved candidate/edition rows as unresolved “draft-only” records;
   2. `catalogue-meta.json.master_items` is implemented as an Everything-row count, not a curated-master count, so the public “Master records” stat will be wrong as soon as a candidate lane contains a row;
 - **6 engineering/availability guard gaps** that can allow future catalogue drift or frontend unavailability without failing the normal check suite;
-- **several stale living/proposal documents** whose counts and instructions contradict the current generated state;
+- **several stale living/proposal documents at baseline**, whose counts and instructions were corrected or explicitly labelled historical in the docs-cleanup follow-up;
 - **one workflow race** between the raw-data auto-regenerator and CI;
 - **one open, superseded pull request** and one old open issue requiring repository housekeeping.
 
@@ -207,7 +207,7 @@ SRI hashes and CSP are correctly configured, but if the CDN is unavailable or bl
 
 ## 6. Documentation and repository-state drift
 
-These are not catalogue-build failures, but they make the repository unsafe to hand to a new maintainer because root documents present obsolete counts or already-resolved work as current. The repository’s README calls root policies, schemas, proposals, and status files “living documents,” so each should either be updated or clearly marked as a historical snapshot and moved under `archive/`.
+At the baseline commit these were not catalogue-build failures, but they made the repository unsafe to hand to a new maintainer because root documents presented obsolete counts or already-resolved work as current. The repository’s README calls root policies, schemas, proposals, and status files “living documents,” so this follow-up updated normative schemas/counts and added explicit historical-snapshot labels to the proposal/audit artifacts.
 
 | File | Stale/current contradiction | Current computed state |
 |---|---|---:|

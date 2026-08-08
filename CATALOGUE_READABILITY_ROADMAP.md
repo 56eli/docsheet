@@ -1,7 +1,7 @@
 # Catalogue Readability & Consistency — Roadmap
 
 **Date:** 2026-08-04
-**Status:** Proposal for owner review — **no code/data changed yet**.
+**Status:** Historical proposal snapshot (2026-08-04). Owner decisions and later implementation supersede its counts and open-work wording; use the current generated schema and `FULL_STACK_AUDIT_2026-08-08_ARENA.md` for present state.
 **Goal:** make the sheet an easy-to-scan overview of all Hawkins material, where
 every field means one clear thing and the same thing everywhere.
 
