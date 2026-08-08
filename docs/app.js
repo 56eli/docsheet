@@ -948,21 +948,19 @@
 
   function trapRowDetailsFocus(event) {
     if (event.key !== "Tab" || rowDetails.hidden) return;
-    // Some browsers do not bubble keyboard navigation consistently from a
-    // fixed-position dialog. Direct listeners are also attached to the header
-    // controls during boot; stop the duplicate bubble path when applicable.
+    // Keep the drawer header actions in a deterministic cycle. The row body
+    // contains links, but header focus must never escape the modal shell.
     if (event.currentTarget !== rowDetails) event.stopPropagation();
-    const focusable = [...rowDetails.querySelectorAll(
-      'button:not([hidden]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )].filter((element) => element.getClientRects().length > 0);
-    if (!focusable.length) return;
-    const current = focusable.indexOf(document.activeElement);
+    const controls = [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn]
+      .filter((control) => control && !control.hidden);
+    if (!controls.length) return;
+    const current = controls.indexOf(document.activeElement);
     const delta = event.shiftKey ? -1 : 1;
     const nextIndex = current === -1
-      ? (event.shiftKey ? focusable.length - 1 : 0)
-      : (current + delta + focusable.length) % focusable.length;
+      ? (event.shiftKey ? controls.length - 1 : 0)
+      : (current + delta + controls.length) % controls.length;
     event.preventDefault();
-    focusable[nextIndex].focus();
+    controls[nextIndex].focus();
   }
 
   /* ------------------------------------------------------------------ *
