@@ -214,7 +214,7 @@ inspect the artifact before accepting any live-source update.
 | `requirements.txt` | Flexible Python runtime dependencies (pandas only, for now). |
 | `requirements-ci.txt` | Exact tested Python constraints used by CI and the raw-data updater. |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
-| `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable read-only view, whole-sheet CSV export, column resizing, horizontal access to every column, review filters, row details, footer stats, and minimalist View settings (wrap cells, compact rows, summary cards, Expand everything). |
+| `docs/app.js` | Boots the read-only catalogue UI: Tabulator sorting/columns/exports and review filters on desktop; on phones, the Everything view defaults to work-card Browse mode with Source/Stream actions, Series and Timeline discovery rails, and a persistent Spreadsheet escape hatch. It also owns row details, footer stats, and View settings (wrap cells, compact rows, summary cards, Expand everything). |
 | `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
 | `.github/workflows/update_spreadsheet.yml` | Rebuilds `docs/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
 

@@ -131,10 +131,12 @@ light/dark contrast for every badge state.
 Mobile should not be a shrunken desktop. A user must still search, switch views,
 inspect a row, open a link, copy a filename, and export.
 
-**Implementation:** keep horizontal table scrolling for comparison, use the
-full-width row-details sheet for record inspection, maintain large close and
-control targets, keep search at the top, and avoid placing critical actions in
-hover-only affordances.
+**Implementation (applied 2026-08-08):** the Everything catalogue defaults to
+a work-card **Browse mode** at `max-width: 720px`, with expandable editions and
+parts, Source/Stream actions, tap-friendly Series/Timeline rails, and a
+persistent Spreadsheet escape hatch for comparison. Keep the full-width
+row-details sheet, search at the top, and non-hover critical actions in both
+modes.
 
 ### P13 — Read-only data needs safe, explicit actions
 The published site must not imply that a browser edit is persisted. Actions
@@ -152,9 +154,11 @@ A fast table that fails when a CDN is blocked is not resilient. A slow table
 that does unnecessary work on every tab switch is not scalable.
 
 **Implementation:** keep per-view JSON splitting and no-pagination scrolling at
-this catalogue size; cancel or ignore stale fetch responses during rapid tab
-switches; avoid measuring hidden/unused columns repeatedly; consider vendoring
-Tabulator assets or providing a local fallback; keep SRI/CSP and test them.
+this catalogue size. Rapid tab switching is guarded by an `AbortController` plus
+an activation token so stale responses cannot replace the active view; retain
+its delayed-response Playwright regression test. Avoid measuring hidden/unused
+columns repeatedly; consider vendoring Tabulator assets or providing a local
+fallback; keep SRI/CSP and test them.
 
 ### P15 — Design decisions need contract tests
 The UI is a compiled projection of CSV/JSON schemas. A visual preference becomes
@@ -189,7 +193,13 @@ regression test, and keep a short changelog in the PR description.
 - Task-oriented Jump to navigation groups the 19 views by Catalogue, Review
   workspace, and Sources without removing the direct tab rail.
 - Row details now use Identity/Status/Sources/Provenance sections, copy filename
-  and copy ID actions, focus trapping, and focus return to the source row.
+  and copy ID actions, focus trapping that includes every official/evidence link,
+  and focus return to the source row.
+- Phone-first Browse mode groups the Everything view into expandable work stacks
+  with direct Source/Stream actions, plus Series and Timeline discovery rails
+  wired to the same persisted facet state as the desktop filters.
+- View activation aborts/ignores stale JSON responses; mobile browse and rapid
+  tab switching have CI-run Playwright coverage.
 
 ## 3. Project-specific implementation roadmap
 
@@ -258,9 +268,10 @@ This avoids making the user reconstruct evidence from 24 flat fields.
 - Add a visible “Keyboard shortcuts” hint for first-time users.
 - Add `e` to open the selected row and `c` to copy the filename/ID only when
   the action is available.
-- Give the drawer a focus trap and return focus to the originating row on close.
-- Add browser tests for focus order, Escape, drawer focus return, and the
-  reduced-motion setting.
+- **Applied:** the drawer traps focus across its header controls and body links,
+  then returns focus to the originating row on close; CI covers link reachability
+  and return focus.
+- Next: add browser coverage for Escape and the reduced-motion setting.
 
 ### P2 — Add explicit UI state telemetry without tracking users
 

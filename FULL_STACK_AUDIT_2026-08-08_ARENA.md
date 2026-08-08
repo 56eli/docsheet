@@ -339,7 +339,10 @@ filenames.
   work families -> `data/research_master_draft.*` -> Pages JSON views.
 - The static frontend is a single Tabulator application (`docs/app.js`) with
   per-view JSON fetches, no browser-side editing, CSP/SRI, generated exports,
-  and a 19-view navigation contract.
+  and a 19-view navigation contract. Desktop retains Tabulator; phone-sized
+  Everything now presents work stacks with Source/Stream actions plus Series
+  and Timeline discovery rails, while preserving a persistent Spreadsheet
+  escape hatch and the same facet state.
 - CI validates the complete local pipeline, coverage, syntax, and Chromium;
   the manual Veritas workflow is intentionally review-only. The raw updater is
   separately scoped to `docs/data.json`.
@@ -402,7 +405,7 @@ rapid-tab-switch behavior.
 its cycle from every visible focusable descendant of the modal, including all
 official/evidence anchors in the body. Tab and Shift+Tab remain inside the
 modal without bypassing source links; the Playwright drawer test now proves the
-first body link is reachable after the header actions.
+first body link is keyboard reachable and focus returns to Close with Shift+Tab.
 
 #### S-01 — Raw-only direct pushes can bypass the complete validation suite
 
@@ -477,12 +480,16 @@ superseded root audits to `archive/` in the next documentation-hygiene pass.
   runs passed. Branch-protection enforcement is the only GitHub setting not
   observable with this integration.
 
-### Recommended implementation order
+### Follow-up delivery and remaining order
 
-1. Decide C-01 part-field convention and C-02 filename disambiguation policy;
-   both are small reviewed-input changes once approved.
-2. Fix F-01 and F-02 together with Playwright coverage, then rerun browser CI.
-3. Correct D-01–D-03 and put historical/current banners around audit artifacts.
-4. Confirm `main` branch protection/required checks or harden the raw-updater
+The C-01/C-02 catalogue rulings, F-01/F-02 frontend hardening, D-01–D-03
+documentation corrections, Mobile Browse mode, and the Series/Timeline rails
+are now applied on PR #36. Its latest CI run passed all **18** browser tests.
+
+1. Confirm `main` branch protection/required checks or harden the raw-updater
    validation path; triage issue #18.
-5. Optionally vendor the pinned Tabulator assets or implement a local fallback.
+2. Consolidate/archive superseded root audits as the remaining D-04 hygiene
+   work, preserving the current Arena checkpoint as the live reference.
+3. Optionally vendor the pinned Tabulator assets or implement a local fallback.
+4. Consider an additional mobile polish pass (owned-state chips, work summary
+   counts, or saved quick-filter views) only after visitor feedback.
