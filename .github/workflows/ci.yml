@@ -66,7 +66,7 @@ jobs:
         run: |
           node --check docs/app.js
           node --check playwright.config.js
-          node --check tests/csv-export.spec.js
+          for spec in tests/*.spec.js; do node --check "$spec"; done
       - name: Install Node dependencies
         run: npm ci
       - name: Install Chromium for browser tests
