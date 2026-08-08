@@ -39,12 +39,12 @@ Raw:      Causality: The Ego's Foundation (Jan 2002) DVD01
 Proposed: Causality: The Ego's Foundation
 ```
 
-The part remains represented separately by `format = DVD` and `format_detail = DVD01`. No other spelling, punctuation, or wording change is proposed in this batch.
+The part remains represented separately by `format = DVD` and `format_detail = Part 1`. No other spelling, punctuation, or wording change is proposed in this batch.
 
 ## Required review points
 
 1. Confirm that the ten proposed series labels and all year/month extractions are correct.
-2. Confirm that one canonical title shared by DVD01/02/03 is desired while each disc remains a separate flat item.
+2. Confirm that one canonical title shared by Part 1/2/3 is desired while each disc remains a separate flat item.
 3. Historical note: the three duplicated-prefix August 2002 *Advaita* links (raw rows 28–30) were repaired in the source CSV and ledger on 2026-08-08; do not reintroduce the malformed prefix.
 4. Research or provide source URLs for the three February 2007 *Relativism vs Reality* parts (raw rows 144–146), which have no product link.
 5. Record approval or correction in `approval` and `review_notes` columns before any IDs are generated.

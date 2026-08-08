@@ -59,8 +59,8 @@ derive their primary relationship automatically.
 As of 2026-08-08 the relationship layer renders **343 rows = 336 derived
 primary + 7 reviewed `related_material`** across 187 distinct products. The
 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture
-set, with a primary relationship for each of the master’s DVD01, DVD02, and
-DVD03 records (all three derived from the same master URL). Seven reviewed
+set, with a primary relationship for each of the master’s Part 1, Part 2, and
+Part 3 records (all three derived from the same master URL). Seven reviewed
 `related_material` records preserve distinct official products without
 overwriting a primary source. The reviewed book, Satsang, and final title-match
 batches are documented in `decisions/BOOK_RELATIONSHIP_DECISIONS.md`,

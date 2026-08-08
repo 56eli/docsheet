@@ -26,8 +26,8 @@ Three products are now reviewed `related_material` rather than primary replaceme
 
 The matcher now preserves Month/Year whenever a normalized title has more than one dated master group. This maps:
 
-- the September 2006 product to DVD01–DVD03 for the September 2006 lecture;
-- the September 2007 product to DVD01–DVD03 for the September 2007 lecture.
+- the September 2006 product to Part 1–Part 3 for the September 2006 lecture;
+- the September 2007 product to Part 1–Part 3 for the September 2007 lecture.
 
 The prior cross-year matches are removed. This safeguard complements the date-specific Satsang matcher and does not alter either lecture set’s existing primary product URL.
 

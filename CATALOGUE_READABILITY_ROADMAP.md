@@ -42,9 +42,9 @@ So `format` is not a consistent vocabulary.
 - In the **title**: `PART1` / `PART2` (e.g. *Become That Which You Are (June
   2004) PART1*), and `(Part 1)` / `(Part 2)` (e.g. *Volume I-Power vs Force
   (Part 1)*).
-- In **`format_detail`**: `DVD01` / `DVD02` / `CD02` (239 records, e.g.
-  *Causality: The Ego's Foundation* has `format_detail=DVD01`).
-- In the **Edition column** (format · format_detail → `DVD · DVD01`).
+- In **`format_detail`**: `Part 1` / `Part 2` / `CD02` (239 records, e.g.
+  *Causality: The Ego's Foundation* has `format_detail=Part 1`).
+- In the **Edition column** (format · format_detail → `DVD · Part 1`).
 So "Part" and "DVD" appear in some titles, not others; the same info also
 lives in format_detail and the Edition column.
 
@@ -62,7 +62,7 @@ Four orthogonal concepts, each meaning one thing:
 |---|---|---|
 | **What it is** | `item_type` | content class: `lecture`, `book`, `discussion`, `interview`, … |
 | **Carrier / medium** | `format` | clean vocabulary: `DVD`, `CD`, `streaming`, `audiobook`, `paperback`, `hardcover`, `ebook` (drop `audio`, `book`) |
-| **Edition of a work** | `work_id` + `format_detail` | which edition, and the disc/part (`DVD01`, `CD02`) |
+| **Edition of a work** | `work_id` + `format_detail` | which edition, and the disc/part (`Part 1`, `CD02`) |
 | **Grouping** | `series` | the thematic/yearly series (one value per record; resolve umbrella) |
 
 **Series decision (needs owner ruling):** make `series` the **yearly** series
@@ -103,14 +103,14 @@ present) and filtered via `item_type="book"`. Optionally introduce a
 - Preserve verbatim raw text in `legacy_title` (already exists) so nothing is
   lost.
 - Canonicalize volume-series titles (e.g. *Power vs Force (Part 1)* → *Power
-  vs Force* with `series=Volume Series`, `format_detail=DVD01`).
+  vs Force* with `series=Volume Series`, `format_detail=Part 1`).
 - **Regression risk:** low–medium (display text only; `legacy_title` keeps the
   source).
 
 ### Phase 3 — Spreadsheet UI (`docs/app.js`) (~medium)
-- One consistent **Edition** column: `format` · `format_detail` (e.g.
-  `DVD · DVD01`, `Audiobook · Power vs. Force`). Never show `DVD` vs
-  `DVD · DVD01` inconsistently.
+- One consistent **Edition column**: `format` · `format_detail` (e.g.
+  `DVD · Part 1`, `Audiobook · Power vs. Force`). Never show `DVD` vs
+  `DVD · Part 1` inconsistently.
 - Make **series → work → part** the default grouping/sort (the "Series
   priority" change the owner suggested) so the sheet reads top-down: a series,
   then each work, then each disc.

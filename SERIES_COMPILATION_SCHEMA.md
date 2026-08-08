@@ -6,7 +6,7 @@
 
 ## Purpose
 
-A Highlights product can demonstrably draw clips from every lecture in an annual series while still not identifying the exact DVD01/DVD02/DVD03 part that supplied each clip. This schema records the supported **series-level** relationship without inventing per-part inclusion assertions.
+A Highlights product can demonstrably draw clips from every lecture in an annual series while still not identifying the exact Part 1/Part 2/Part 3 part that supplied each clip. This schema records the supported **series-level** relationship without inventing per-part inclusion assertions.
 
 It complements `data/product_relationships.csv`, which remains for claims about a specific master item.
 
