@@ -523,3 +523,27 @@ Prioritized, evidence-grounded suggestions for the project:
 - **C5 raw-CSV fixes** (16 cells: 3 Advaita URLs + 13 `2cds each?` tempids)
   per `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; then the ledger/mirror
   follow-up cleans the 13 `legacy_tempid` cells (masters 251–263).
+
+## 14. Site redesign — Phase 1 implemented (2026-08-08)
+
+Per the owner's UX brief, the redesign proposal is
+`archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md` (3-phase plan; no data
+changes). **Phase 1 (IA) applied on this branch:**
+
+- **Tab grouping + reorder** — three labelled groups: **Catalogue**
+  (Everything · Product Relationships · Series Compilations), **Review
+  workspace** (Review Overview · Master Candidates · Manual Leads · Master
+  Exclusions · Source Overrides · Veritas Decisions · New Work Review ·
+  Official Discovery · International Editions), **Sources** (Approved
+  Publishers · Migration Review · Original Spreadsheet). `data-view` ids
+  unchanged; `role="group"` + labels; Playwright specs are name-based and
+  order-safe; tab↔VIEWS mapping verified 15/15.
+- **Stats strip** — 5 chips (Master records 365 · Retained exclusions 72 ·
+  Source overrides 134 · Product relationships 343 · Series compilations 7)
+  read from `docs/catalogue-meta.json` at boot.
+- **Empty-state cards** — Official Discovery and New Work Review explain
+  their standing-intake-lane purpose instead of showing a blank grid.
+- **Frozen Title** already existed in the master preset (verified).
+
+`node --check` green; 115/115 tests; pushed to `origin/arena/019fe098-docsheet`
+(PR #30). Phases 2 (a11y) and 3 (theme) remain pending owner pick.
