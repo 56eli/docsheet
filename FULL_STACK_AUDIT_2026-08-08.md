@@ -471,3 +471,47 @@ record-type labels): **everything matches except one gap** —
 drifts), S2 (owner's Node 22 bump), DP-1/2/3 (work-family merge), QA-5
 (legacy_title restore); prepared: C5 (raw CSV hygiene plan). Open owner
 actions: C5 Google-Sheet edits only.
+
+## 13. Improvement suggestions (owner, 2026-08-08)
+
+Prioritized, evidence-grounded suggestions for the project:
+
+**Quick wins (doc/process, ~minutes):**
+- **S-a. Code-order semantics (one README sentence):** document that
+  catalogue-code sequence numbers follow ledger/candidate minting order, not
+  chronology (explains `LECTURE-2008-023` Sep before `-024` Jul). No data
+  change.
+- **S-b. `candidate:` prefix convention (one README sentence):** master
+  `candidate_key` stores the `candidate:` prefix; promotion registries store
+  bare keys — currently only implicit in the builder code.
+- **S-c. Test-count house rule:** README/INSTRUCTIONS hand-maintain "112
+  tests" — add a one-line note in INSTRUCTIONS to bump it whenever the suite
+  grows (it drifted 103→107→110→112 over the last week).
+
+**Engineering (would prevent today's defect classes):**
+- **S-d. Lock the Everything-schema contract with a test:** assert that
+  `docs/master.json` keys equal `EVERYTHING_FIELDS + record_type` in
+  `test_pipeline.py` (a 10-line test) — QA-5's dead Expert-toggle entries
+  would have been caught at build/test time.
+- **S-e. Format-inference carrier evidence:** the reviewed inventory carries
+  only slug/title/category; the "– Audio"→audiobook misrule (C2) is patched,
+  but a `carrier_evidence` review column (e.g. "Three Compact Disc Set" from
+  the product page) would let inference read the publisher's own carrier text
+  for future backfills/promotions.
+- **S-f. CI:** Node 22 bump done (owner, main `406116f`); optionally add the
+  S-d schema test to the CI unittest step (it rides along automatically once
+  added to the suite).
+
+**Research (low-risk data improvements):**
+- **S-g. Resolve the 4 "under investigation" years** (masters 230–232
+  Verification of Spiritual Realities, 268 God is Hidden) via live Veritas
+  product pages — removes unknown-year rows using the same evidence path as
+  the verified month backfills.
+- **S-h. Master 265 audiobook edition (Option B):** mint when a live, reviewed
+  US Audible/Amazon listing appears (tracked in `data/research_manual_leads.csv`);
+  until then the CD carrier + documented publisher-verbatim URL stand.
+
+**Owner-side data hygiene (only open item from the audit):**
+- **C5 raw-CSV fixes** (16 cells: 3 Advaita URLs + 13 `2cds each?` tempids)
+  per `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; then the ledger/mirror
+  follow-up cleans the 13 `legacy_tempid` cells (masters 251–263).
