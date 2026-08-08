@@ -1033,7 +1033,14 @@
 
   function measuredColumnWidth(key, headerTitle, rows) {
     const isBadge = STATUS_FIELDS.has(key) || FORMAT_FIELDS.has(key);
-    const font = isBadge ? BADGE_FONT : CELL_FONT;
+    // The proposed-filename column renders in a smaller monospace face, so
+    // measure it with that face — otherwise the Roboto estimate is too narrow
+    // and the frozen lead column's content overlaps the next header's click
+    // target (caught by the column-layout sort spec in CI).
+    const isMono = key === "proposed_filename";
+    const font = isMono
+      ? '12.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+      : (isBadge ? BADGE_FONT : CELL_FONT);
     const padding = isBadge ? BADGE_PADDING : CELL_PADDING;
     let maxPx = measureText(headerTitle, HEADER_FONT) + HEADER_EXTRA;
     for (const row of rows) {
@@ -1303,12 +1310,15 @@
     configureColumnChooser();
     configureExpertToggle(activeView);
     applyViewSettings();
-    restoreGridState(data);
+    restoreGridState();
     table.on("dataFiltered", updateSearchStatus);
     table.on("dataSorted", saveSortState);
-    spreadsheet.addEventListener("scroll", onTableScroll, true);
-    const tableHolder = spreadsheet.querySelector(".tabulator-tableholder");
-    if (tableHolder) tableHolder.addEventListener("scroll", onTableScroll, { passive: true });
+    // Listeners are attached once (guarded) so tab switches don't accumulate
+    // duplicate scroll handlers.
+    if (!spreadsheet._docsheetScrollBound) {
+      spreadsheet.addEventListener("scroll", onTableScroll, true);
+      spreadsheet._docsheetScrollBound = true;
+    }
     // The synchronous call below can run before Tabulator has processed its
     // initial data ("active" row pipeline is still empty), leaving the footer
     // stuck on "Showing: 0"; tableBuilt corrects the count once rows exist.

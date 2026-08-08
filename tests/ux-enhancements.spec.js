@@ -5,6 +5,18 @@ async function waitForTable(page) {
   await page.locator('.tabulator-row').first().waitFor();
 }
 
+// Tabulator virtualizes the row DOM with maxHeight:100%, so use the data
+// layer ("active" = after filters) for counts rather than .tabulator-row.
+async function activeRowCount(page) {
+  return page.evaluate(() => {
+    if (!window.Tabulator) return 0;
+    const tableEl = document.querySelector('#spreadsheet .tabulator');
+    const table = tableEl && tableEl.tabulator;
+    if (!table) return 0;
+    return table.getDataCount('active');
+  });
+}
+
 test('faceted filters narrow the Everything view and add removable chips', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
@@ -12,22 +24,23 @@ test('faceted filters narrow the Everything view and add removable chips', async
   // The facet bar is present only on the catalogue (Everything) view.
   await expect(page.locator('#facet-bar')).toBeVisible();
 
-  const totalRows = await page.locator('#spreadsheet .tabulator-row').count();
-  expect(totalRows).toBeGreaterThan(100);
+  const totalRows = await activeRowCount(page);
+  expect(totalRows).toBe(365);
 
-  // Select one series in the faceted Series dropdown.
+  // Select one series in the faceted Series dropdown (programmatic select +
+  // change event, since a native multi-select would need Ctrl/Cmd).
   const seriesSelect = page.locator('#facet-series');
-  const option = seriesSelect.locator('option', { hasText: 'Satsang Series' });
-  await option.evaluate((el) => { el.selected = true; });
+  await seriesSelect.locator('option', { hasText: 'Satsang Series' })
+    .evaluate((el) => { el.selected = true; });
   await seriesSelect.dispatchEvent('change');
 
-  // The visible rows narrow and a removable chip appears.
-  await expect.poll(async () => page.locator('#spreadsheet .tabulator-row').count()).toBeLessThan(totalRows);
+  // The active rows narrow and a removable chip appears.
+  await expect.poll(activeRowCount.bind(null, page)).toBeLessThan(totalRows);
   await expect(page.locator('#filter-chips')).toContainText('Satsang Series');
 
   // Clicking the chip removes the filter and restores the full set.
   await page.locator('.filter-chip-removable').first().click();
-  await expect.poll(async () => page.locator('#spreadsheet .tabulator-row').count()).toBe(totalRows);
+  await expect.poll(activeRowCount.bind(null, page)).toBe(totalRows);
 });
 
 test('facet bar is hidden on non-catalogue views', async ({ page }) => {

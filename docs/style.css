@@ -1247,6 +1247,9 @@ body {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
+/* The HTML `hidden` attribute must win over display:flex when the bar is
+   hidden on non-catalogue views. */
+.facet-bar[hidden] { display: none; }
 .facet {
   display: flex;
   flex-direction: column;
@@ -1310,6 +1313,8 @@ button.stat-chip:hover b { color: var(--accent); }
   font-size: 12.5px;
   letter-spacing: -0.01em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* Color the file extension as a muted suffix so carriers are scannable. */
 #spreadsheet .tabulator .tabulator-cell[tabulator-field="proposed_filename"] .ext {
