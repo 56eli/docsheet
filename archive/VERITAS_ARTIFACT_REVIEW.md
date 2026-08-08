@@ -117,7 +117,7 @@ products) plus `/wp-json/wp/v2/product_cat` (35 terms) confirms:
 - `official_categories` is now populated on all 191 products (missing values
   would have rendered as `unresolved-category-<id>`; none did), enabling the
   Category Dominance Policy mapper (`map_series_taxonomy.py`,
-  [SERIES_TAXONOMY_MAPPING.md](SERIES_TAXONOMY_MAPPING.md)).
+  [SERIES_TAXONOMY_MAPPING.md](../SERIES_TAXONOMY_MAPPING.md)).
 
 ## Addendum 2 — reviewed inventory refresh 2026-08-03 (second pass)
 

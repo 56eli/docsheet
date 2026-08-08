@@ -367,3 +367,19 @@ cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
 
 **QA-2 verdict: no new defects.** The only open data-quality items remain C5
 (owner's raw CSV hygiene) and the cosmetic `candidate:` prefix convention.
+
+## 8. Deeper data pass QA-3 (2026-08-08, docs references + JSON schema)
+
+- **JSON↔CSV schema sweep: fully consistent** — every `docs/*.json` row count
+  matches its source CSV (26/29/191/39/2/72/134/10/7; product-relationships
+  343 = 336 derived + 7 stored), and every source-CSV column is present in its
+  published JSON.
+- **Cross-reference sweep (64 flags, 61 false positives):** most flags are
+  intentional glob notation (`docs/*.json`, `data/*.csv`), historical mentions
+  of retired artifacts properly framed as stopped/deleted (`docs/meta.json`,
+  `data/year_provenance.csv`), or proposed-but-never-created files in
+  superseded archive proposals. **3 genuine 404s fixed:** two archive docs
+  linked root files without the `../` prefix
+  (`archive/VERITAS_ARTIFACT_REVIEW.md` → `SERIES_TAXONOMY_MAPPING.md`,
+  `archive/VERITAS_PRODUCT_MAPPING.md` → `decisions/…`) and one non-path
+  wording in `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md` (`docs/work`).

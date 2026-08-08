@@ -110,5 +110,5 @@ python -m unittest discover tests        # 114, must stay green
 ```
 
 Expected master diff: the `work_id` column on the 27 rows (plus
-`canonical_work_title` reflected only in the families input); `docs/work`
+`canonical_work_title` reflected only in the families input); the **Work**
 grouping in the Everything tab now shows one work per lecture.
