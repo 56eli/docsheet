@@ -242,6 +242,21 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(meta["master_items"], 362)
         self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
 
+    def test_master_rows_are_ascending_by_uuid(self) -> None:
+        """Owner rule (2026-08-08): the published master is plain ascending
+        Master-ID order — promoted edition/candidate tails must not leak
+        minting order into the CSV/JSON artifacts."""
+        result = self.run_script("build_research_master.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        rows = list(csv.DictReader((self.sandbox / "data" / "research_master_draft.csv").open(encoding="utf-8")))
+        self.assertTrue(rows)
+        ids = [int(row["uuid"]) for row in rows]
+        self.assertEqual(ids, sorted(ids), "master CSV is not ascending by uuid")
+        payload = json.loads((self.sandbox / "data" / "research_master_draft.json").read_text(encoding="utf-8"))
+        payload_rows = payload["items"] if isinstance(payload, dict) and "items" in payload else payload
+        json_ids = [int(row["uuid"]) for row in payload_rows]
+        self.assertEqual(json_ids, sorted(json_ids), "master JSON is not ascending by uuid")
+
 
 class LedgerGeneratorGuardTests(unittest.TestCase):
     """The migration ledger is hand-maintained after bootstrap; its generator

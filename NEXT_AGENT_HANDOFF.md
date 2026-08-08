@@ -38,7 +38,15 @@ this session:
   Item 3 (the app token cannot push workflow files — push was rejected, so
   the owner applies it in the web editor); README/INSTRUCTIONS/
   MIGRATION_REVIEW_LEDGER document the gate.
-- **Re-verification after the batch:** all six `--check` modes, **128/128**
+- **Master-ID ascending order applied (owner request):** `build_research_master.py`
+  now sorts `items` by numeric `uuid` before rendering, so the master CSV/JSON,
+  `docs/master.json` (and the Everything grid's default row order) run 1 → 372
+  with the promoted edition rows 320–343 interleaved instead of trailing after
+  372 in minting order. A pipeline test asserts both artifacts stay ascending
+  (suite now **129**); `docs/product-relationships.json` reorders along with
+  the master (derived view). The Raw sheet is untouched — it mirrors the
+  source spreadsheet's own row order on purpose.
+- **Re-verification after the batch:** all six `--check` modes, **129/129**
   tests, 91% coverage (floor 85%) green; regenerated catalogue artifacts
   byte-identical after the CSV line-ending normalization.
 

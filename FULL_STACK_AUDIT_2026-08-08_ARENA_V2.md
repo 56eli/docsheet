@@ -213,6 +213,11 @@ Per owner direction this session:
 - **Re-verified after the batch + guard:** all six `--check` modes PASS,
   128/128 tests PASS, coverage 91% (floor 85%), browser suite unchanged
   (18), JS syntax clean.
+- **Follow-up (owner request):** the published master is now plain ascending
+  Master-ID order — `build_research_master.py` sorts by numeric `uuid`
+  before rendering (the 24 edition rows 320–343 interleave between 319 and
+  344 instead of trailing in minting order); a pipeline test asserts the
+  CSV/JSON stay ascending (suite now **129**, all gates re-run green).
 
 Open items for owner triage: N-05 (ledger row 371 disposition), D-04
 (359–361 Amazon-in-streaming-slot), D-05/D-06/D-07 (carrier conventions),

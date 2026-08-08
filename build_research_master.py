@@ -1599,6 +1599,14 @@ def build_master() -> MasterBuild:
     validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
+
+    # Owner request (2026-08-08): publish the catalogue in plain ascending
+    # Master-ID order everywhere. Minting order appends promoted edition rows
+    # (320-343) after the candidate tail (344-372), which reads as a random
+    # block; uuid order is the durable mental model for the master CSV/JSON,
+    # mirrors, and the Everything grid's default row order.
+    items.sort(key=lambda item: int(item["uuid"]))
+
     exclusions = [
         {field: row[field] for field in EXCLUSION_FIELDS}
         for row in excluded_rows
