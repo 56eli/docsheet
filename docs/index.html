@@ -207,6 +207,20 @@
         </div>
         <button id="mobile-browse-sheet-btn" type="button">Open spreadsheet</button>
       </div>
+      <section class="mobile-discovery" aria-label="Browse catalogue by series or year">
+        <div class="mobile-discovery-heading">
+          <span>Explore by series or year</span>
+          <button id="mobile-discovery-clear" type="button" hidden>Clear</button>
+        </div>
+        <div class="mobile-discovery-group">
+          <span class="mobile-discovery-label">Series</span>
+          <div id="mobile-series-shelf" class="mobile-discovery-rail" role="group" aria-label="Filter by series"></div>
+        </div>
+        <div class="mobile-discovery-group">
+          <span class="mobile-discovery-label">Timeline</span>
+          <div id="mobile-year-rail" class="mobile-discovery-rail" role="group" aria-label="Filter by year"></div>
+        </div>
+      </section>
       <div id="mobile-browse-list" class="mobile-browse-list"></div>
     </section>
     <div id="spreadsheet" aria-live="polite" aria-busy="true">

@@ -114,7 +114,7 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. On phone screens, the Everything catalogue opens in **Browse mode**: compact work stacks that expand into editions/parts with quick Source and Streaming actions; **Spreadsheet** restores the full Tabulator grid for expert comparison. Full-width row details and horizontally scrolling tabs remain available in both modes.
+Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. On phone screens, the Everything catalogue opens in **Browse mode**: compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters; **Spreadsheet** restores the full Tabulator grid for expert comparison. Full-width row details and horizontally scrolling tabs remain available in both modes.
 
 ## Review workspace
 

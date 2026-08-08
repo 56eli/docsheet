@@ -32,6 +32,9 @@
   const mobileBrowse = $("mobile-browse");
   const mobileBrowseList = $("mobile-browse-list");
   const mobileBrowseSheetBtn = $("mobile-browse-sheet-btn");
+  const mobileSeriesShelf = $("mobile-series-shelf");
+  const mobileYearRail = $("mobile-year-rail");
+  const mobileDiscoveryClear = $("mobile-discovery-clear");
   const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
@@ -849,8 +852,90 @@
     return [...groups.values()];
   }
 
+  function syncFacetSelect(facetId) {
+    const facet = FACETS.find((item) => item.id === facetId);
+    const select = facet && facet.el();
+    if (!select) return;
+    const selected = new Set(activeFacets[facetId] || []);
+    [...select.options].forEach((option) => { option.selected = selected.has(option.value); });
+  }
+
+  function mobileFacetLabel(facet, value) {
+    if (facet.id === "year") {
+      if (!value) return "Unknown date";
+      return value === "198X" ? "c. 1980s" : value;
+    }
+    return facet.buildOptionLabel ? facet.buildOptionLabel(value) : (value || "Not stated");
+  }
+
+  function toggleMobileFacet(facet, value) {
+    const selected = new Set(activeFacets[facet.id] || []);
+    if (selected.has(value)) selected.delete(value);
+    else selected.add(value);
+    activeFacets[facet.id] = [...selected];
+    writeFacetState(activeView, activeFacets);
+    syncFacetSelect(facet.id);
+    if (facetClear) facetClear.hidden = facetsEmpty();
+    applyActiveFilters();
+  }
+
+  function mobileFacetButton(facet, value, count, label = mobileFacetLabel(facet, value)) {
+    const button = document.createElement("button");
+    const selected = (activeFacets[facet.id] || []).includes(value);
+    button.type = "button";
+    button.className = "mobile-discovery-chip";
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+    button.dataset.mobileFacet = facet.id;
+    button.dataset.mobileValue = value;
+    button.textContent = count == null ? label : `${label} (${count})`;
+    button.addEventListener("click", () => toggleMobileFacet(facet, value));
+    return button;
+  }
+
+  function renderMobileDiscovery(data) {
+    if (!mobileSeriesShelf || !mobileYearRail) return;
+    const renderRail = (container, facet, compare) => {
+      const counts = new Map();
+      data.forEach((row) => {
+        const value = String(row[facet.field] ?? "").trim();
+        counts.set(value, (counts.get(value) || 0) + 1);
+      });
+      const values = [...counts.keys()].sort(compare);
+      container.replaceChildren();
+      const clear = document.createElement("button");
+      const selected = activeFacets[facet.id] || [];
+      clear.type = "button";
+      clear.className = "mobile-discovery-chip mobile-discovery-all";
+      clear.classList.toggle("active", selected.length === 0);
+      clear.setAttribute("aria-pressed", String(selected.length === 0));
+      clear.textContent = facet.id === "year" ? "All years" : "All series";
+      clear.addEventListener("click", () => {
+        activeFacets[facet.id] = [];
+        writeFacetState(activeView, activeFacets);
+        syncFacetSelect(facet.id);
+        if (facetClear) facetClear.hidden = facetsEmpty();
+        applyActiveFilters();
+      });
+      container.append(clear);
+      values.forEach((value) => container.append(
+        mobileFacetButton(facet, value, counts.get(value))
+      ));
+    };
+    const seriesFacet = FACETS.find((facet) => facet.id === "series");
+    const yearFacet = FACETS.find((facet) => facet.id === "year");
+    renderRail(
+      mobileSeriesShelf,
+      seriesFacet,
+      (a, b) => (data.filter((row) => row.series === b).length - data.filter((row) => row.series === a).length) || a.localeCompare(b)
+    );
+    renderRail(mobileYearRail, yearFacet, yearFacet.sort);
+    if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty();
+  }
+
   function renderMobileBrowse(data = allData) {
     if (!mobileBrowseList) return;
+    renderMobileDiscovery(data);
     const rows = data.filter(rowMatchesActiveFilters);
     mobileBrowseRows = rows;
     mobileBrowseList.replaceChildren();
@@ -1985,6 +2070,7 @@
     [mobileViewToggle, mobileBrowseSheetBtn].filter(Boolean).forEach((button) => {
       button.addEventListener("click", toggleMobilePresentation);
     });
+    if (mobileDiscoveryClear) mobileDiscoveryClear.addEventListener("click", clearFacets);
     if (mobileBrowseMedia.addEventListener) {
       mobileBrowseMedia.addEventListener("change", () => {
         if (activeView === "master" && allData.length) renderLoadedView(allData, true);

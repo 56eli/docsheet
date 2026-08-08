@@ -1717,3 +1717,79 @@ button.stat-chip:hover b { color: var(--accent); }
   .mobile-browse-active #expert-toggle-btn,
   .mobile-browse-active #column-menu-btn { display: none; }
 }
+
+/* Mobile discovery shelves: the same facet state as the desktop filters, but
+   rendered as tap-friendly series and year rails rather than multi-selects. */
+@media (max-width: 720px) {
+  .mobile-discovery {
+    display: grid;
+    gap: 9px;
+    margin: 0 0 10px;
+    padding: 11px 0 2px;
+  }
+  .mobile-discovery-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 2px;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  #mobile-discovery-clear {
+    min-height: 28px;
+    padding: 4px 8px;
+    color: var(--accent);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .mobile-discovery-group {
+    display: grid;
+    gap: 5px;
+  }
+  .mobile-discovery-label {
+    padding: 0 2px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .mobile-discovery-rail {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 1px 2px 7px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-discovery-rail::-webkit-scrollbar { display: none; }
+  .mobile-discovery-chip {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 6px 9px;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .mobile-discovery-chip.active {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .mobile-discovery-chip:focus-visible,
+  #mobile-discovery-clear:focus-visible { outline-offset: 1px; }
+}

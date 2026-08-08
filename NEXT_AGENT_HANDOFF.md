@@ -592,3 +592,18 @@ Owner selected the remaining P0 frontend audit work after Mobile Browse mode.
 - **Browser coverage:** 2 further Playwright tests added; browser suite is now
   **18 tests across 3 specs**. Local browser download is sandbox-blocked, so
   rely on PR CI for Chromium execution.
+
+## 2026-08-08 Mobile discovery shelves (current)
+
+Owner selected the next mobile iteration: a browseable series/timeline layer on
+top of work stacks.
+
+- Browse mode now renders horizontal **Series** and **Timeline** rails above
+  the cards. Each chip shows a count and writes to the same persisted
+  `activeFacets` state used by the existing desktop filter panel; card results,
+  active-filter chips, clear controls, and status counts stay in sync.
+- The rails intentionally preserve multi-select behavior (tap another chip to
+  add it; tap an active chip or the rail's All option to remove it) while
+  avoiding a phone-hostile `<select multiple>` as the primary discovery UI.
+- The Mobile Browse Playwright scenario now verifies a Satsang shelf filter
+  produces `Showing: 25 of 365` and clears back to the complete catalogue.

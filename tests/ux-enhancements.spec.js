@@ -147,6 +147,16 @@ test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch
   await expect(firstStack.locator('.mobile-edition-card')).toHaveCount(3);
   await expect(firstStack.locator('.mobile-edition-link').first()).toHaveText(/Source/);
 
+  // Mobile discovery rails reuse the catalogue facet state but make series and
+  // time browsing practical without a wide multi-select control.
+  const satsang = page.locator('#mobile-series-shelf button[data-mobile-value="Satsang Series"]');
+  await expect(satsang).toBeVisible();
+  await satsang.click();
+  await expect(page.locator('#search-status')).toHaveText('Showing: 25 of 365');
+  await expect(page.locator('#mobile-discovery-clear')).toBeVisible();
+  await page.locator('#mobile-discovery-clear').click();
+  await expect(page.locator('#search-status')).toHaveText('Showing: 365');
+
   // Experts can still opt into the full responsive table, then return to cards.
   await page.locator('#mobile-browse-sheet-btn').click();
   await expect(page.locator('#spreadsheet')).toBeVisible();
