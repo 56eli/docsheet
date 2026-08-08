@@ -35,8 +35,15 @@ No cell values are modified — the data is passed through unchanged.
 """
 
 import argparse
+import csv
 import sys
 from pathlib import Path
+
+
+SOURCE_REQUIRED_HEADERS = {
+    "uuid", "tempid", "title", "WE HAVE?", "original source",
+    "format", "product link", "other links",
+}
 
 # ---------------------------------------------------------------------------
 # Configuration (edit paths here if files move)
@@ -66,21 +73,56 @@ def apply_transformations(df):
     return df
 
 
+def has_source_header(path: Path) -> bool:
+    """Return whether a CSV has the raw spreadsheet header shape.
+
+    The exported spreadsheet has a decorative first row and the real header on
+    the second row. Accept a normal one-row CSV too, but require the raw source
+    field names so a migration/review CSV can never be selected as a silent
+    fallback.
+    """
+    try:
+        with path.open(encoding="utf-8", newline="") as handle:
+            reader = csv.reader(handle)
+            for _ in range(2):
+                row = next(reader, [])
+                if SOURCE_REQUIRED_HEADERS.issubset(set(row)):
+                    return True
+    except (OSError, UnicodeDecodeError, csv.Error):
+        return False
+    return False
+
+
 def find_source_csv(preferred: str) -> Path:
-    """Locate the source CSV, falling back to any *.csv in the repo root."""
+    """Locate a raw source CSV without silently selecting an unrelated dataset."""
     preferred_path = Path(preferred)
     if preferred_path.is_file():
-        return preferred_path
+        if has_source_header(preferred_path):
+            return preferred_path
+        raise ValueError(
+            f"Source CSV '{preferred}' does not have the expected raw spreadsheet headers."
+        )
 
-    # Fallback: allow a renamed/other CSV to be picked up automatically.
-    candidates = sorted(Path(".").glob("*.csv"))
-    if candidates:
+    # Fallback: allow a renamed raw spreadsheet only when its header shape is
+    # unambiguous. Never choose the first alphabetic CSV (the repo also has
+    # review/bootstrap ledgers at its root).
+    candidates = [
+        path for path in sorted(Path(".").glob("*.csv"))
+        if has_source_header(path)
+    ]
+    if len(candidates) == 1:
         print(f"[process_data] '{preferred}' not found; using '{candidates[0]}' instead.")
         return candidates[0]
+    if len(candidates) > 1:
+        names = ", ".join(str(path) for path in candidates)
+        raise FileNotFoundError(
+            f"Source CSV '{preferred}' was not found and fallback is ambiguous "
+            f"({names}); pass the raw source path explicitly."
+        )
 
     raise FileNotFoundError(
-        f"Source CSV '{preferred}' was not found and no *.csv file exists "
-        f"in the repository root."
+        f"Source CSV '{preferred}' was not found and no raw spreadsheet CSV with "
+        f"the expected headers exists in the repository root."
     )
 
 

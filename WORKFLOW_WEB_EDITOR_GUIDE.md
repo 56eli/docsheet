@@ -8,9 +8,11 @@ edits yourself in the GitHub web editor. Each item below is self-contained:
 open the file, find the "Replace this" block, paste the "With this" block over
 it, and commit directly to `main`.
 
-Only **one** item existed and it is now applied (see Item 1). The Node 20→22
-bump was already applied (commit `406116f`); it is kept at the bottom for
-reference.
+Item 1 is applied (see below). Item 2 is prepared but requires an owner
+web-editor commit because the Arena GitHub App cannot update workflow files
+without the `workflows` permission. The Node 20→22 project-runtime bump was
+already applied (commit `406116f`); Item 2 also upgrades the action runtimes to
+current Node-24-compatible majors.
 
 ---
 
@@ -72,6 +74,81 @@ for spec in tests/*.spec.js; do node --check "$spec" || echo "FAILED: $spec"; do
 
 It should print `FAILED: tests/column-layout.spec.js` — i.e. the loop checks
 that file (revert the typo afterwards).
+
+---
+
+## Item 2 — Remove raw-output/CI race and upgrade action runtimes — ⏳ OWNER ACTION
+
+**Why:** a raw-only push to `main` currently starts CI and the raw-data updater
+at the same time. CI can inspect stale `docs/data.json` before the updater's
+bot commit lands. The same raw-output contract must remain explicit for pull
+requests. GitHub's current runner also warns that the old action majors target
+Node 20 internally; the current majors target the supported Node 24 runtime.
+
+The code-side hardening is already in this branch: `process_data.py` validates
+raw headers/fallbacks and `requirements-ci.txt` pins the tested Python set.
+Apply the following workflow edits in the GitHub web editor, then run the
+workflow and confirm CI is green.
+
+### `.github/workflows/ci.yml`
+
+1. Upgrade action majors:
+
+```yaml
+uses: actions/checkout@v7
+uses: actions/setup-python@v7
+uses: actions/setup-node@v7
+uses: actions/upload-artifact@v7
+```
+
+Keep each action's existing `with:` / `env:` / `if:` blocks.
+
+2. Replace the `push` trigger:
+
+```yaml
+  push:
+    branches: [main]
+    paths-ignore:
+      - "hawkins archive clone - Sheet1.csv"
+```
+
+The raw-only `main` push is handled by `Update Spreadsheet`; code/data-only
+pushes still run CI. Pull-request CI remains active and requires the generated
+`docs/data.json` to be included when a PR changes the raw CSV.
+
+3. Use the tested Python constraints in both install steps:
+
+```yaml
+run: pip install -r requirements.txt -c requirements-ci.txt
+```
+
+and:
+
+```yaml
+pip install -r requirements-dev.txt -c requirements-ci.txt
+```
+
+### `.github/workflows/update_spreadsheet.yml`
+
+Upgrade `actions/checkout@v7`, `actions/setup-python@v7`,
+and `stefanzweifel/git-auto-commit-action@v7`; change its install step to:
+
+```yaml
+run: pip install -r requirements.txt -c requirements-ci.txt
+```
+
+### `.github/workflows/map_veritas_catalogue.yml`
+
+Upgrade `actions/checkout@v7`, `actions/setup-python@v7`, and
+`actions/upload-artifact@v7`. This workflow has no third-party Python install;
+the fetcher uses the standard library.
+
+**Verification:** run `python -m unittest discover tests`, all six `--check`
+commands, and inspect the next CI run. The exact local constraint command is:
+
+```bash
+pip install -r requirements-dev.txt -c requirements-ci.txt
+```
 
 ---
 

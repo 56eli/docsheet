@@ -180,6 +180,7 @@ coverage report                        # exits non-zero below the 85% floor (.co
 > times (103 → 107 → 110 → 112 → 115 → 117 → 121).
 
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-08).
+For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright
 (`npm run test:e2e`), which needs Chromium and runs in CI.
@@ -210,7 +211,8 @@ inspect the artifact before accepting any live-source update.
 |---|---|
 | `hawkins archive clone - Sheet1.csv` | Your source data — never modified by the pipeline. |
 | `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 5 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
-| `requirements.txt` | Python dependencies (pandas only, for now). |
+| `requirements.txt` | Flexible Python runtime dependencies (pandas only, for now). |
+| `requirements-ci.txt` | Exact tested Python constraints used by CI and the raw-data updater. |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
 | `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable read-only view, whole-sheet CSV export, column resizing, horizontal access to every column, review filters, row details, footer stats, and minimalist View settings (wrap cells, compact rows, summary cards, Expand everything). |
 | `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
@@ -239,6 +241,12 @@ inspect the artifact before accepting any live-source update.
 
 - **Workflow fails** → open the run in **Actions**, read the log, and try
   `python process_data.py` locally. The script prints a clear error.
+- **Raw CSV workflow contract (prepared, owner workflow edit pending):** the
+  recommended CI trigger ignores a raw-only push to `main` so it cannot race
+  `Update Spreadsheet`, which regenerates `docs/data.json`. Apply the snippets
+  in `WORKFLOW_WEB_EDITOR_GUIDE.md` before relying on that trigger. A pull
+  request that changes the raw CSV must include the regenerated `docs/data.json`
+  (run `python process_data.py`) so PR CI can validate the complete change.
 - **Site shows stale data** → re-run the workflow (or push a CSV change) and
   confirm the Pages deployment finished in **Actions → Pages** / **Environments**.
 - **Table is empty / "Could not load data.json"** → you opened the file via

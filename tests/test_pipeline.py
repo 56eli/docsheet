@@ -762,6 +762,25 @@ class ProcessDataFailurePathTests(unittest.TestCase):
             check = invoke_script("process_data.py", sandbox, "renamed.csv", "--check")
             self.assertEqual(check.returncode, 0, check.stderr)
 
+    def test_fallback_rejects_unrelated_root_csv(self) -> None:
+        with tempfile.TemporaryDirectory() as bare:
+            sandbox = Path(bare)
+            (sandbox / "migration_review_ledger.csv").write_text(
+                "raw_row_number,disposition\n3,item\n", encoding="utf-8"
+            )
+            result = invoke_script("process_data.py", sandbox, "missing.csv")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("expected headers", result.stderr)
+
+    def test_fallback_rejects_ambiguous_raw_csvs(self) -> None:
+        with tempfile.TemporaryDirectory() as bare:
+            sandbox = Path(bare)
+            for name in ("one.csv", "two.csv"):
+                shutil.copy2(REPO / "hawkins archive clone - Sheet1.csv", sandbox / name)
+            result = invoke_script("process_data.py", sandbox, "missing.csv")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("fallback is ambiguous", result.stderr)
+
 
 class VeritasFetcherOfflineTests(unittest.TestCase):
     """Offline end-to-end fetcher runs against a synthetic replay of the API."""

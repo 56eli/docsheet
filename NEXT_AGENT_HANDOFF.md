@@ -5,7 +5,7 @@
 `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
 `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
 session log at the bottom of §6. Headline results this session:
-- **Independent audit:** all six `--check` modes, 121/121 tests, 91% coverage
+- **Independent audit:** all six `--check` modes, 123/123 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
   one new live-data defect (stale Veritas decision row for
   product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
@@ -510,10 +510,16 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   300, 289, 291, and 247. The rows were removed, inventory statuses restored
   to `matched_by_primary_source`, and the decision overlay is now 5 excluded
   products only. Book/edition and map-poster decision docs were updated.
-- **Regression coverage:** suite is now 121 tests, 91% total coverage (lowest
+- **Regression coverage:** suite is now 123 tests, 91% total coverage (lowest
   module 88%), all six `--check` modes and the Node syntax checks pass. The
   decision guard includes committed-state, malformed-overlay, and exact-primary
-  URL fixtures.
-- **Remaining audit work:** F-05 raw-output/CI workflow race, F-06 unsafe
-  source-CSV fallback, F-07 Python dependency constraints, F-08 external asset
-  fallback, and stale root documentation cleanup remain open.
+  URL fixtures; source fallback fixtures cover unrelated and ambiguous CSVs.
+- **CI hardening prepared:** `process_data.py` requires the raw header shape and
+  fails on ambiguous fallback files; `requirements-ci.txt` pins the tested
+  Python set. The raw-only CI trigger, constraint install wiring, and
+  Node-24-compatible action upgrades are prepared in
+  `WORKFLOW_WEB_EDITOR_GUIDE.md` but require an owner workflow-permission
+  commit; the Arena push was rejected for lacking `workflows` permission.
+- **Remaining audit work:** apply the workflow snippets, optional local frontend
+  asset fallback (F-08), frontend coverage expansion, and repository
+  housekeeping.

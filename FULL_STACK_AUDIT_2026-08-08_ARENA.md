@@ -173,7 +173,12 @@ The follow-up URL-evidence sweep found the same class of contradiction for produ
 
 The same mismatch exists on pull requests: the update workflow does not run for PRs, but PR CI still requires the generated raw payload to already be committed. The curated generators have the same general “generated output must be included in the PR” contract, but only the raw pipeline claims to auto-regenerate after merge.
 
-**Recommended fix:** choose one contract explicitly. Either require and validate generated outputs in the PR (remove the post-merge auto-commit path), or make CI generate into a temporary directory and compare without failing on expected raw-output drift, then let one ordered workflow publish the generated file. Add concurrency/dependency handling so CI and regeneration cannot race.
+**Resolution status:** the workflow change is prepared in
+`WORKFLOW_WEB_EDITOR_GUIDE.md` but cannot be pushed by the Arena GitHub App
+without `workflows` permission. The proposed `paths-ignore` raw-only `main`
+trigger leaves the raw-source updater as the sole post-merge owner; PR CI still
+requires regenerated `docs/data.json` with a raw CSV change. Code-side docs and
+constraints are already committed; the owner must apply the workflow snippet.
 
 ### F-06 — Root fallback source selection can publish the wrong CSV
 
@@ -183,9 +188,11 @@ The same mismatch exists on pull requests: the update workflow does not run for 
 
 When the preferred source CSV is absent, `find_source_csv()` selects the first alphabetically sorted `*.csv` in the repository root. The current repository has multiple root CSVs, including the raw spreadsheet, `lecture_series_review.csv`, and `migration_review_ledger.csv`. If the raw spreadsheet is renamed or removed, the fallback can silently serialize a review ledger or bootstrap CSV into `docs/data.json`.
 
-The fallback exists for convenience and the current default path is present, but it is unsafe for a published data pipeline.
+The fallback exists for convenience and the current default path is present, but it was unsafe for a published data pipeline.
 
-**Recommended fix:** fail closed unless exactly one fallback has the expected raw header shape, or require an explicit replacement path. Keep a test proving an unrelated root CSV is rejected.
+**Resolution:** `process_data.py` now validates the raw spreadsheet header shape,
+rejects unrelated root CSVs, and fails on ambiguous multiple raw candidates. Two
+regression tests cover unrelated and ambiguous fallback inputs.
 
 ### F-07 — Reproducibility is weaker than the documentation implies
 
@@ -194,7 +201,10 @@ The fallback exists for convenience and the current default path is present, but
 
 Node is locked by `package-lock.json`, but Python runtime dependencies are open-ended across major pandas 2 and 3 and all future coverage 7 releases. The current outputs are deterministic under the audited environment, but a dependency upgrade can change CSV parsing or JSON serialization without a repository diff to the dependency specification.
 
-**Recommended fix:** pin a tested pandas/coverage range (or maintain a lock/constraints file), document supported Python versions, and run the pipeline against the chosen matrix in CI.
+**Resolution status:** added `requirements-ci.txt` with the audited exact
+pandas/numpy/coverage set and documented the reproducible local command. The
+workflow install wiring is prepared in `WORKFLOW_WEB_EDITOR_GUIDE.md` and awaits
+an owner workflow-permission commit; project CI remains Python 3.12.
 
 ### F-08 — External frontend assets have no local fallback
 
@@ -217,8 +227,8 @@ At the baseline commit these were not catalogue-build failures, but they made th
 | `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 365 proposal rows; 365/365 safe/display unique. |
 | `MIGRATION_REVIEW_LEDGER.md` | Says the Advaita URL on raw rows 28–30 is quarantined and should be resolved; current raw URL and ledger mirror were fixed and are usable. | Rows 28–30 contain the corrected canonical URL and a 2026-08-08 fix note. |
 | `LECTURE_SERIES_REVIEW.md` | Calls the 198-row batch review-only, says no IDs changed, and asks the owner to resolve three Advaita links. | The batch has been incorporated into the reviewed ledger/master; links are fixed and compact IDs exist. |
-| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 121 tests, 91%, 6 checks; current format has 0 blanks and no deprecated item types. |
-| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 5 decisions, 121 tests, 91% coverage. |
+| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 123 tests, 91%, 6 checks; current format has 0 blanks and no deprecated item types. |
+| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 5 decisions, 123 tests, 91% coverage. |
 | `README.md` | The “every entry” historical verification sentence still says 195 verifiable lecture months from the 2026-08-03 snapshot; current date-bearing master/source evidence has grown since then. | Treat the sentence as a dated historical claim or refresh it with a reproducible current metric. |
 
 The old counts inside `archive/` and the superseded sections explicitly labelled as history are acceptable. The problem is that several root files are both linked from active documentation and written in present-tense “applied/current” language.
@@ -242,8 +252,8 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 
 1. **Fix F-01** — make reconciliation candidate-aware and add a zero-unclassified-extras regression test.
 2. **Fix F-02** — separate `master_items` from Everything-row count and test with a pending candidate.
-3. **F-03/F-04 are now guarded** — retain the regression tests and review the remaining F-05–F-08 hardening work.
-4. **Resolve F-05** — decide whether generated raw output is PR-owned or post-merge workflow-owned; remove the race.
+3. **F-03/F-04 are now guarded** — retain the regression tests and review F-08’s optional local asset fallback.
+4. **F-06/F-07 code-side hardening is committed; F-05/F-07 workflow wiring is pending owner action** — apply `WORKFLOW_WEB_EDITOR_GUIDE.md`, then monitor CI/update workflows.
 5. **Perform documentation hygiene** — update active schemas/proposals or add a clear `Historical snapshot — do not use for current counts` banner and move obsolete review batches to `archive/`.
 6. **Harden reproducibility/availability** — Python constraints, supported-version CI matrix, and optional vendored frontend assets.
 7. **Close/rebase PR #29 and triage issue #18.**
@@ -257,10 +267,10 @@ After the baseline audit, the owner-selected priority and guard work was applied
 - **F-02:** `catalogue-meta.json.master_items` now reports the curated master count (`migrated_items`) rather than the Everything-row count; a pending-candidate regression test keeps the “Master records” stat correct.
 - **F-03:** Pages validation now rejects any populated master Veritas URL absent from the reviewed inventory.
 - **F-04:** Pages validation now checks decision IDs/status/titles/notes against the committed inventory and rejects a decision whose product URL is an exact master primary URL. Four stale rows (53062, 50398, 50378, 50432) were removed; the overlay is now 5 excluded-related-material rows.
-- Added four guard regression tests plus the prior candidate/meta tests. The deterministic suite is now **121/121**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
+- Added the guard and hardening regression tests. The deterministic suite is now **123/123**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
-The remaining F-05–F-08 findings are the next hardening/documentation work. Final PR CI run `31261684679` passed all validation steps and all 15 Playwright tests; GitHub also emitted the action-runtime Node 20→24 warning recorded in the baseline verification notes.
+Remaining work is the owner workflow-permission step (apply the prepared CI/update snippets), optional F-08 local frontend asset fallback, frontend coverage expansion, and repository housekeeping. Prior run `31261684679` passed all 15 Playwright tests and emitted the Node-runtime warning that the prepared action upgrades address.
 
 ## 11. Reproduction commands
 
@@ -291,3 +301,4 @@ cover its matching and retry logic.
 gic.
  retry logic.
 etry logic.
+c.

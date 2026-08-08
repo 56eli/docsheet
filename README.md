@@ -56,7 +56,9 @@ coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
-2026-08-08; every pipeline module is ≥ 88%. Approved official links added after the ledger
+2026-08-08; every pipeline module is ≥ 88%. `requirements-ci.txt` records the
+exact Python dependency set prepared for CI/reproducible checks; apply the
+workflow wiring in `WORKFLOW_WEB_EDITOR_GUIDE.md` to use it in GitHub Actions. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in

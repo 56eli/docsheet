@@ -1,0 +1,8 @@
+# Reproducible CI constraints, refreshed 2026-08-08.
+# Runtime/development dependency declarations remain in requirements*.txt;
+# CI applies this tested set with pip's -c option.
+coverage==7.15.4
+numpy==2.4.6
+pandas==3.0.5
+python-dateutil==2.9.0.post0
+six==1.17.0
