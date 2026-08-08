@@ -201,10 +201,14 @@ class PipelineIntegrationTests(unittest.TestCase):
         """
         for script, output in GENERATOR_SCRIPTS_AND_OUTPUTS:
             with self.subTest(script=script):
+                # The migration-ledger generator guards its hand-maintained
+                # output behind --force; the lecture-review generator still
+                # rewrites unconditionally.
+                args = ("--force",) if script == "generate_migration_ledger.py" else ()
                 runs = []
                 for _ in range(2):
                     with make_sandbox() as sandbox:
-                        result = invoke_script(script, Path(sandbox))
+                        result = invoke_script(script, Path(sandbox), *args)
                         self.assertEqual(result.returncode, 0, f"{script} failed:\n{result.stderr}")
                         runs.append((Path(sandbox) / output).read_text(encoding="utf-8"))
                 self.assertEqual(runs[0], runs[1], f"{script} is not deterministic")
@@ -213,6 +217,7 @@ class PipelineIntegrationTests(unittest.TestCase):
         """The OS-level entrypoint (sys.exit(main())) still works end-to-end."""
         result = run_script("map_series_taxonomy.py", self.sandbox, "--check")
         self.assertEqual(result.returncode, 0, result.stderr)
+
 
     def test_reduced_pending_view_differs_from_committed(self) -> None:
         # With zero pending candidates in committed data, --no-include-pending matches.
@@ -236,6 +241,38 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(meta["master_items"], meta["migrated_items"])
         self.assertEqual(meta["master_items"], 362)
         self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
+
+
+class LedgerGeneratorGuardTests(unittest.TestCase):
+    """The migration ledger is hand-maintained after bootstrap; its generator
+    must never silently overwrite the committed ledger."""
+
+    def test_bare_run_refuses_and_never_writes(self) -> None:
+        with make_sandbox() as sandbox:
+            ledger = Path(sandbox) / "migration_review_ledger.csv"
+            before = ledger.read_text(encoding="utf-8")
+            result = invoke_script("generate_migration_ledger.py", Path(sandbox))
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn("--force", result.stderr)
+            self.assertEqual(ledger.read_text(encoding="utf-8"), before)
+
+    def test_check_reports_hand_maintained_drift_without_writing(self) -> None:
+        # The sandbox ledger is the committed, hand-maintained one, which
+        # legitimately differs from a fresh bootstrap (reviewer edits).
+        with make_sandbox() as sandbox:
+            ledger = Path(sandbox) / "migration_review_ledger.csv"
+            before = ledger.read_text(encoding="utf-8")
+            result = invoke_script("generate_migration_ledger.py", Path(sandbox), "--check")
+            self.assertEqual(result.returncode, 1, result.stderr)
+            self.assertIn("differ", result.stderr)
+            self.assertEqual(ledger.read_text(encoding="utf-8"), before)
+
+    def test_check_passes_after_forced_write(self) -> None:
+        with make_sandbox() as sandbox:
+            write = invoke_script("generate_migration_ledger.py", Path(sandbox), "--force")
+            self.assertEqual(write.returncode, 0, write.stderr)
+            check = invoke_script("generate_migration_ledger.py", Path(sandbox), "--check")
+            self.assertEqual(check.returncode, 0, check.stderr)
 
 
 class TaxonomyDominanceTests(unittest.TestCase):

@@ -8,9 +8,13 @@ metadata suggestions for human review.
 
 from __future__ import annotations
 
+import argparse
 import csv
 import re
+import sys
 from pathlib import Path
+
+from _common import render_csv
 
 SOURCE = Path("hawkins archive clone - Sheet1.csv")
 OUTPUT = Path("migration_review_ledger.csv")
@@ -139,7 +143,21 @@ def proposed_item_type(tempid: str, series: str, title: str) -> str:
     return ""
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="read-only report of drift between a fresh bootstrap and the "
+             "committed ledger; never writes (exit 1 when they differ)",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="overwrite the committed, hand-maintained ledger from the raw CSV",
+    )
+    args = parser.parse_args(argv)
+
     with SOURCE.open(encoding="utf-8-sig", newline="") as handle:
         source_rows = list(csv.reader(handle))
 
@@ -188,18 +206,54 @@ def main() -> None:
         })
 
     fields = list(output_rows[0])
-    with OUTPUT.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(output_rows)
+    rendered = render_csv(fields, output_rows)
 
     counts: dict[str, int] = {}
     for row in output_rows:
         counts[row["disposition"]] = counts.get(row["disposition"], 0) + 1
+
+    def print_counts() -> None:
+        for key in sorted(counts):
+            print(f"  {key}: {counts[key]}")
+
+    if args.check:
+        committed = OUTPUT.read_text(encoding="utf-8") if OUTPUT.exists() else None
+        if committed == rendered:
+            print(f"{OUTPUT} matches a fresh bootstrap of the raw CSV.")
+            return 0
+        differing = -1
+        if committed is not None:
+            new_lines = rendered.splitlines()
+            old_lines = committed.splitlines()
+            differing = sum(
+                1
+                for idx in range(max(len(new_lines), len(old_lines)))
+                if (new_lines[idx] if idx < len(new_lines) else None)
+                != (old_lines[idx] if idx < len(old_lines) else None)
+            )
+        print(
+            f"{OUTPUT} differs from a fresh bootstrap "
+            f"({differing if differing >= 0 else 'all'} line(s) would change). "
+            "This is expected while the ledger is hand-maintained; review the "
+            "diff with git before regenerating with --force.",
+            file=sys.stderr,
+        )
+        return 1
+
+    if not args.force:
+        print(
+            f"Refusing to overwrite {OUTPUT}: the committed ledger is a "
+            "hand-maintained review artifact. Run with --force to regenerate "
+            "it from the raw CSV, or --check for a read-only drift report.",
+            file=sys.stderr,
+        )
+        return 2
+
+    OUTPUT.write_text(rendered, encoding="utf-8")
     print(f"Wrote {OUTPUT} ({len(output_rows)} rows)")
-    for key in sorted(counts):
-        print(f"  {key}: {counts[key]}")
+    print_counts()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

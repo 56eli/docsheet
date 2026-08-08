@@ -183,3 +183,38 @@ Per owner direction this session, the `owned` vocabulary drift (N-01, option (a)
 
 Remaining open items stay as listed: N-02…N-05, D-03…D-08, B-01…B-03,
 DOC-01/DOC-02/DOC-05, and Issue #18.
+
+---
+
+## 10. Postscript 2 — N-02/N-03/DOC-01/DOC-02/DOC-05 + N-04 applied (2026-08-08)
+
+Per owner direction this session:
+
+- **Doc-drift batch (commit `042617a`):** DOC-01 (this audit's ARENA
+  baseline figures bumped to `bbe8b01` with a state-refresh note), DOC-02
+  (handoff browser counts → 9/18 in the current-state blocks), N-02
+  (colliding earlier pass renamed to
+  `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_EARLIER_PASS.md`; README/
+  archive index updated), N-03 (handoff header marks PR #39 MERGED), DOC-05
+  (`data/edition_candidates.csv` CRLF → LF). DOC-03/DOC-04 (session-log
+  precedents) were not in the batch scope and remain open.
+- **N-04 ledger-generator guard:** `generate_migration_ledger.py` now has a
+  `--check` mode (read-only drift report; exit 1 while the hand-maintained
+  ledger differs from a fresh bootstrap — currently 308 line(s), the legacy
+  cased `True`/`False` values noted in N-01) and a `--force` write gate
+  (bare runs refuse with exit 2 instead of silently rewriting the ledger).
+  Test suite grew to **128** (determinism run now passes `--force`; three
+  new guard tests cover refuse/report/round-trip). The non-blocking CI step
+  is prepared as `WORKFLOW_WEB_EDITOR_GUIDE.md` Item 3 for owner application
+  via the web editor — the app token cannot push workflow files (push
+  rejected this session), per the repository's established convention.
+  README, INSTRUCTIONS, and MIGRATION_REVIEW_LEDGER document the gate;
+  their test-count references were bumped to 128.
+- **Re-verified after the batch + guard:** all six `--check` modes PASS,
+  128/128 tests PASS, coverage 91% (floor 85%), browser suite unchanged
+  (18), JS syntax clean.
+
+Open items for owner triage: N-05 (ledger row 371 disposition), D-04
+(359–361 Amazon-in-streaming-slot), D-05/D-06/D-07 (carrier conventions),
+D-03 (unify work-family membership source), B-01…B-03, DOC-03/DOC-04, and
+GitHub Issue #18.

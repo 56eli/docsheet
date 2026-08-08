@@ -26,7 +26,19 @@ this session:
   the canonical name; README layout lists the full audit set), N-03 (this
   header: PR #39 marked MERGED), DOC-05 (`data/edition_candidates.csv`
   normalized CRLF → LF).
-- **Re-verification after the batch:** all six `--check` modes, 125/125
+- **N-04 ledger-generator guard applied:** `generate_migration_ledger.py`
+  previously rewrote the hand-maintained `migration_review_ledger.csv` on any
+  invocation (even a stray `--check`, which it ignored). It now refuses a
+  bare write (exit 2), reports drift read-only with `--check` (exit 1 while
+  the ledger carries reviewer edits — currently 308 line(s), the legacy
+  Python-cased `True`/`False` values), and regenerates only with `--force`.
+  The generator determinism test passes `--force`; three new guard tests
+  lock the refusal/report/round-trip behavior (suite now **128**). The
+  matching non-blocking CI step is prepared as `WORKFLOW_WEB_EDITOR_GUIDE.md`
+  Item 3 (the app token cannot push workflow files — push was rejected, so
+  the owner applies it in the web editor); README/INSTRUCTIONS/
+  MIGRATION_REVIEW_LEDGER document the gate.
+- **Re-verification after the batch:** all six `--check` modes, **128/128**
   tests, 91% coverage (floor 85%) green; regenerated catalogue artifacts
   byte-identical after the CSV line-ending normalization.
 

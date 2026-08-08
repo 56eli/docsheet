@@ -154,6 +154,54 @@ pip install -r requirements-dev.txt -c requirements-ci.txt
 
 ---
 
+## Item 3 — Surface ledger-generator drift as a non-blocking CI step — ⏳ PREPARED 2026-08-08
+
+**Why:** `generate_migration_ledger.py` is now guarded (bare runs refuse with
+exit 2; the committed ledger is hand-maintained after bootstrap, so
+`--check` exiting 1 on drift is *expected*, not a failure). Surfacing the
+drift report in CI logs makes the ledger's reviewer-edit distance visible on
+every run without ever breaking the build. Prepared in branch
+`arena/019fe329-docsheet` (guard commit `2695dc2`); cannot be pushed by the
+app token (workflows permission), so apply manually.
+
+**File:** `.github/workflows/ci.yml`
+(on `main`: https://github.com/56eli/docsheet/edit/main/.github/workflows/ci.yml)
+
+### Replace this
+
+```yaml
+      - name: Verify Veritas inventory mirrors match the master
+        run: python sync_inventory_mirrors.py --check
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+```
+
+### With this
+
+```yaml
+      - name: Verify Veritas inventory mirrors match the master
+        run: python sync_inventory_mirrors.py --check
+      - name: Report ledger-generator drift (informational only)
+        # The migration ledger is hand-maintained after bootstrap, so drift
+        # from a fresh regeneration is expected; this step surfaces it in CI
+        # logs without failing the build. Writes require --force by design.
+        continue-on-error: true
+        run: python generate_migration_ledger.py --check
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+```
+
+### How to verify it worked
+
+1. Open the next CI run after applying: **"Report ledger-generator drift"**
+   appears between the mirrors check and the test suite, marked non-blocking
+   (amber "neutral" annotation when drift exists; the job stays green).
+2. A failing guard would instead show as the test-suite step failing
+   (three `LedgerGeneratorGuardTests` in `tests/test_pipeline.py` cover
+   refuse/report/round-trip).
+
+---
+
 ## Full-file replacement blocks — copy/paste option
 
 If you prefer not to edit individual snippets, replace each workflow file in

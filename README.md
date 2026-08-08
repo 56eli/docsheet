@@ -48,12 +48,19 @@ python sync_inventory_mirrors.py --check
 failure indicates a ledger/draft mismatch; do not run the writing build commands
 until that review is resolved.
 
+The migration ledger itself is hand-maintained after bootstrap, so drift
+between it and a fresh regeneration is expected: `python
+generate_migration_ledger.py --check` reports that drift read-only (a
+matching non-blocking CI step is prepared as
+`WORKFLOW_WEB_EDITOR_GUIDE.md` Item 3 for owner application), and the
+generator refuses to overwrite the ledger without an explicit `--force`.
+
 `tests/test_pipeline.py` runs all of the above generators plus tamper
 detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 125 tests, no browser/network needed
+python -m unittest discover tests          # 128 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 

@@ -26,7 +26,10 @@ The ledger is the approval surface for migrating the existing spreadsheet into t
 > excluded, reclassified, or promoted), so this summary reflects the committed
 > `migration_review_ledger.csv` as of 2026-08-08, not the bootstrap output.
 > A `tests/test_pipeline.py` documentation-currency test fails if this table
-> drifts from the ledger again.
+> drifts from the ledger again. Since 2026-08-08 the generator guards this
+> hand-maintained record: a bare run refuses to write (exit 2), `--check`
+> prints a read-only drift report (exit 1 while the ledger carries reviewer
+> edits), and only `--force` regenerates from the raw CSV.
 
 ## Safe proposal rules applied
 
