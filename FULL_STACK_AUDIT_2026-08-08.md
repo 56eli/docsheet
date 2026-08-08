@@ -453,3 +453,21 @@ record-type labels): **everything matches except one gap** —
   official listing" note.
 
 **QA-6 verdict: clean — no new defects.**
+
+## 12. Deep pass QA-7 (2026-08-08, final gate)
+
+- **Slug-month rule verified end-to-end:** 202 lecture/discussion rows with a
+  dated Veritas slug — every slug month equals the master `month`
+  (0 mismatches; the "month comes from the official slug" rule holds).
+- **Full reproducibility gate:** the complete pipeline was re-run from scratch
+  in the documented order (`build_research_master` → `map_series_taxonomy` →
+  `build_research_master` → `build_catalogue_pages` → `reconcile_research_master`),
+  then all six `--check` modes, 114/114 tests, 91% coverage, and `node --check`
+  on app.js/playwright.config.js. **`git status` stayed clean after the
+  regenerate** — the committed tree is exactly reproducible.
+
+**Session end state (2026-08-08):** audit report + 4 memos; fixed: C1/C2
+(master 265), C3 (198X convention), C4 (owned semantics), S1/S3/S4 (doc
+drifts), S2 (owner's Node 22 bump), DP-1/2/3 (work-family merge), QA-5
+(legacy_title restore); prepared: C5 (raw CSV hygiene plan). Open owner
+actions: C5 Google-Sheet edits only.
