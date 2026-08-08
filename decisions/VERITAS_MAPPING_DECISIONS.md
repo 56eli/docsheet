@@ -30,16 +30,31 @@ This prevents a live refresh from resetting reviewed non-primary dispositions su
 
 ## Current seed
 
-The current overlay contains **18** approved decisions: 7 annual-Highlights
-compilation products, 4 excluded related products, and 7 non-primary master
-associations. Exact primary-source and date-aware results remain
-deterministic and do not need overlay rows.
+The current overlay contains **9** approved decisions: 5
+`excluded_related_material` rows (spin-off/physical products and the Map
+poster), 3 `matched_by_title` non-primary associations, and 1
+`matched_by_normalized_title` non-primary association. Exact primary-source
+and date-aware results remain deterministic and do not need overlay rows.
 
-**2026-08-04 reduction (35 → 18):** the 17 decisions that preserved
-pre-promotion `unique_item`/`compilation_or_new_edition` dispositions for
-products whose works were promoted to the curated master on 2026-08-03
-(masters 309–319, 353–358) were removed. Their master rows carry the exact
-Veritas primary URLs, so the deterministic primary-source matcher now links
-them — the suppression rows had become stale duplicates of curated records.
-See `../archive/VERITAS_ARTIFACT_REVIEW.md` Addendum 3 and
-`../NEXT_AGENT_HANDOFF.md` §4 item 15.
+**History:**
+- **2026-08-03 seed:** 35 decisions (7 annual-Highlights compilation products,
+  excluded related products, and non-primary master associations).
+- **2026-08-04 reduction (35 → 18):** the 17 decisions that preserved
+  pre-promotion `unique_item`/`compilation_or_new_edition` dispositions for
+  products whose works were promoted to the curated master on 2026-08-03
+  (masters 309–319, 353–358) were removed. Their master rows carry the exact
+  Veritas primary URLs, so the deterministic primary-source matcher now links
+  them — the suppression rows had become stale duplicates of curated records.
+  See `../archive/VERITAS_ARTIFACT_REVIEW.md` Addendum 3 and
+  `../NEXT_AGENT_HANDOFF.md` §4 item 15.
+- **2026-08-07 reduction (18 → 10):** the 7 Highlights suppression rows were
+  lifted when the annual Highlights were promoted to curated masters 362–368
+  (now deterministic primary matches), and the 50411/1542 overlay rows were
+  removed after the owner ruling made those products plain primary matches to
+  masters 286/331 (primary matches need no overlay row).
+- **2026-08-08 reduction (10 → 9):** the stale `50491 → matched_by_title → 121`
+  row was removed. Product 50491 (*How to Live Your Life Like A Prayer (2012)*)
+  is the primary Veritas source of master 278 — the row had been retargeted in
+  the inventory but left behind in the overlay, where it overrode the correct
+  deterministic match and contradicted the Product Relationships sheet.
+  Primary matches need no overlay row, per the established precedent above.

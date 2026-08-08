@@ -98,7 +98,7 @@ Sandbox traps learned the hard way (all still true):
 | Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
 | Everything view | **365** | 365 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
 | Exclusions / source overrides | 72 / 131 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 131 incl. the 18 Amazon direct links and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
-| Veritas inventory | 191 products | categories populated 191/191; 10 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07; 50411/1542 decision rows removed 2026-08-07 when owner ruling made them plain primary matches, which need no overlay row) |
+| Veritas inventory | 191 products | categories populated 191/191; 9 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07; 50411/1542 decision rows removed 2026-08-07 when owner ruling made them plain primary matches, which need no overlay row; stale 50491→121 row removed 2026-08-08 after it was retargeted to primary match master 278) |
 | Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
@@ -182,7 +182,14 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 **P1 — Data decisions needing a ruling:**
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  **fully applied + filename proposal v4 + Volume year strip.** Master **358 rows** (307 lecture / 40 book / 10
+  **✅ FULLY APPLIED — see §3 "Current verified state" for the authoritative
+  counts** (365 masters, 191 works / 341 memberships, 131 overrides, 343
+  relationships, 281 codes, 24 minted edition rows 320–343, filename proposal
+  v4.1). The paragraph below is the **superseded 2026-08-03/04 proposal
+  snapshot** retained for provenance; do not treat its counts (358 rows,
+  201 works, 127 overrides, 336 relationships, Everything 378) as current.
+  <!-- BEGIN SUPERSEDED 2026-08-03/04 SNAPSHOT -->
+  ~~Master **358 rows** (307 lecture / 40 book / 10
   discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
   UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
   Satsang monthlies (344–352), 6 promoted manual candidates (353–358) + 3 academic (359-361, Orthomolecular 1973, Qualitative 1998, Dialogues 1998),
@@ -199,7 +206,8 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   candidate rows 28 → 8 after the 2026-08-04 refresh linked all
   already-promoted works). Proposed filename column added between Title and Item Type (YYYY-MM - Name [1/3].mp4 safe [1-3] display [1/3], no bracket for single, audiobook label removed). Remaining model
   work: all 5 New Work Review queue rows and 6 pending manual candidates were
-  promoted 2026-08-03 as master UUIDs 353–358.
+  promoted 2026-08-03 as master UUIDs 353–358.~~
+  <!-- END SUPERSEDED SNAPSHOT -->
 - **Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
   deferred pending physical-edition confirmation; product 1661 is mapping-row
   only — do **not** add a source override yet.
@@ -242,7 +250,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   the 8 last candidate rows migrated to owner-approved types; 100 tests incl.
   4 retirement guards. Remaining: the 4 free-text `audio` values in the
   unreviewed discovery triage lane (owner ruling).
-- Widen browser tests: all 15 tabs, column chooser, drawer, dark mode
+- Widen browser tests: all 19 tabs (Catalogue · Review workspace · Sources groups), column chooser, drawer, dark mode
   (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
   measured-width assertions).
 
