@@ -1349,6 +1349,11 @@ class SourceOverrideStatusTests(unittest.TestCase):
         (sandbox / "data" / "research_master_source_overrides.csv").write_text(
             self.HEADER + "\n" + "\n".join(rows) + "\n", encoding="utf-8"
         )
+        # These focused fixtures intentionally replace the full source-override
+        # layer with a one-row test file, which makes the committed filename
+        # proposal mirrors stale for unrelated rows. Drop that optional proposal
+        # input so the fixture exercises source overrides only.
+        (sandbox / "data" / "filename_proposal_YYYYMM.csv").unlink(missing_ok=True)
 
     def row(self, status: str = "proposed") -> str:
         return (f"328,source_url_hay_house,https://www.hayhouse.com/truth-vs-falsehood-parperback/,"
@@ -1848,10 +1853,6 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(coded_books, [], "book rows must never receive a catalogue code")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class DefensiveDepthTests(unittest.TestCase):
     """Additional fail-safe tests for defensive-in-depth coverage."""
 
@@ -1871,13 +1872,20 @@ class DefensiveDepthTests(unittest.TestCase):
             with (sandbox / "data" / "research_master_draft.csv").open(newline="", encoding="utf-8") as f:
                 rows2 = {r["uuid"]: r for r in csv.DictReader(f)}
             
-            # Edition rows (candidate:*) must have identical UUIDs
-            edition_uuids1 = {uuid for uuid in rows1 if uuid.startswith("candidate:")}
-            edition_uuids2 = {uuid for uuid in rows2 if uuid.startswith("candidate:")}
-            self.assertEqual(edition_uuids1, edition_uuids2, "Edition UUIDs drifted across rebuilds")
+            # Edition rows are identified by candidate_key, while UUIDs stay compact numeric IDs.
+            edition_rows1 = {
+                uuid: row for uuid, row in rows1.items()
+                if row["candidate_key"].startswith("candidate:edition-")
+            }
+            edition_rows2 = {
+                uuid: row for uuid, row in rows2.items()
+                if row["candidate_key"].startswith("candidate:edition-")
+            }
+            self.assertTrue(edition_rows1, "fixture must include promoted edition rows")
+            self.assertEqual(set(edition_rows1), set(edition_rows2), "Edition UUIDs drifted across rebuilds")
             
             # Verify the actual edition rows are identical
-            for uuid in edition_uuids1:
+            for uuid in edition_rows1:
                 self.assertEqual(rows1[uuid], rows2[uuid], f"Edition row {uuid} changed across rebuilds")
         finally:
             tempdir.cleanup()
@@ -1893,6 +1901,10 @@ class DefensiveDepthTests(unittest.TestCase):
             (sandbox / "data" / "research_master_source_overrides.csv").write_text(
                 f"{header}\n{row}\n", encoding="utf-8"
             )
+            # This fixture intentionally replaces the full source-override
+            # layer with a one-row test file, so remove the optional filename
+            # proposal input whose metadata mirrors depend on the full layer.
+            (sandbox / "data" / "filename_proposal_YYYYMM.csv").unlink(missing_ok=True)
             
             # Build twice
             result1 = invoke_script("build_research_master.py", sandbox)
@@ -2085,3 +2097,7 @@ class RetiredVocabularyTests(unittest.TestCase):
                 invoke_script("build_research_master.py", sandbox)
         finally:
             tempdir.cleanup()
+
+
+if __name__ == "__main__":
+    unittest.main()

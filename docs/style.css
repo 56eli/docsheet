@@ -1003,3 +1003,230 @@ body {
   background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--text-muted) 55%, transparent); }
+
+/* ================================================================== *
+ *  Minimalist redesign follow-up (2026-08-08): make the Pages UI visibly
+ *  simpler and add display settings for expanded review sessions.
+ * ================================================================== */
+:root {
+  --bg: #f7f7f4;
+  --surface: #fffefa;
+  --surface-2: #f0f0eb;
+  --text: #191919;
+  --text-muted: #686862;
+  --border: #deded5;
+  --accent: #191919;
+  --accent-hover: #000000;
+  --accent-contrast: #ffffff;
+  --header-bg: #f3f3ee;
+  --header-text: #222222;
+  --zebra: #fbfbf8;
+  --row-hover: #eeeeea;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.14);
+  --ring: #111111;
+}
+:root.dark {
+  --bg: #151515;
+  --surface: #1d1d1d;
+  --surface-2: #262626;
+  --text: #f1f1ed;
+  --text-muted: #a5a59c;
+  --border: #373731;
+  --accent: #f1f1ed;
+  --accent-hover: #ffffff;
+  --accent-contrast: #151515;
+  --header-bg: #242424;
+  --header-text: #f5f5ef;
+  --zebra: #1a1a1a;
+  --row-hover: #2b2b27;
+  --ring: #f1f1ed;
+}
+
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+}
+.brand-icon { display: none; }
+.brand-text h1 { font-size: 17px; font-weight: 650; letter-spacing: -0.03em; }
+.badge {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--border);
+}
+.topbar {
+  min-height: 52px;
+  padding: 9px 14px;
+  background: var(--surface);
+  box-shadow: none;
+}
+.topbar::before { display: none; }
+.controls { gap: 8px; }
+#global-search {
+  width: min(360px, 40vw);
+  background: transparent;
+  border-color: var(--border);
+  border-radius: 999px;
+}
+#export-btn,
+#settings-btn,
+#column-menu-btn,
+#expert-toggle-btn,
+#show-all-columns,
+#expand-everything-btn,
+#reset-view-btn {
+  min-height: 32px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  box-shadow: none;
+}
+#export-btn,
+#expand-everything-btn {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+#settings-btn,
+#column-menu-btn,
+#expert-toggle-btn,
+#show-all-columns,
+#reset-view-btn {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+#settings-btn:hover,
+#column-menu-btn:hover,
+#expert-toggle-btn:hover,
+#show-all-columns:hover,
+#reset-view-btn:hover {
+  background: var(--surface-2);
+}
+.settings-tools { position: relative; }
+.settings-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 170;
+  display: grid;
+  width: min(270px, 88vw);
+  gap: 9px;
+  padding: 12px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+.settings-menu[hidden] { display: none; }
+.settings-menu-header {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.settings-menu label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.settings-menu input { accent-color: var(--accent); }
+
+.dataset-tabs {
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--surface);
+}
+.tab-group { gap: 6px; }
+.tab-group + .tab-group { margin-left: 4px; padding-left: 8px; }
+.tab-group-label { font-size: 9px; color: var(--text-muted); }
+.dataset-tab,
+.dataset-tab.review-tab {
+  min-height: 30px;
+  padding: 5px 10px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+.dataset-tab:hover,
+.dataset-tab.review-tab:hover { color: var(--text); background: var(--surface-2); }
+.dataset-tab.active {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.stats-strip,
+.view-summary,
+.review-toolbar,
+.active-filters,
+.footerbar {
+  background: var(--surface);
+  box-shadow: none;
+}
+.stats-strip { padding: 7px 14px; }
+.stat-chip {
+  padding: 3px 8px;
+  background: transparent;
+  border-color: var(--border);
+  box-shadow: none;
+}
+.view-summary { padding: 10px 14px; }
+.view-summary h2 { font-size: 15px; }
+.view-summary p { max-width: 880px; font-size: 13px; }
+.view-meta div {
+  min-width: 76px;
+  padding: 6px 8px;
+  background: transparent;
+  border-radius: 10px;
+}
+.column-menu {
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+#table-container { padding: 0 10px; }
+#spreadsheet { top: 10px; left: 10px; right: 10px; bottom: 10px; }
+#spreadsheet .tabulator {
+  border-radius: 10px;
+  box-shadow: none;
+}
+#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content { padding: 7px 8px; }
+#spreadsheet .tabulator .tabulator-cell { padding: 6px 8px; }
+.status-badge {
+  border-radius: 8px;
+  font-weight: 650;
+}
+.row-details { box-shadow: var(--shadow-md); }
+.row-details-header { background: var(--surface); }
+.footer-link { margin-left: 0; }
+
+/* View settings: expanded review mode. */
+:root.wrap-cells #spreadsheet .tabulator .tabulator-cell {
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  line-height: 1.42;
+}
+:root.wrap-cells #spreadsheet .tabulator .tabulator-cell a.url-link {
+  white-space: normal;
+}
+:root:not(.compact-density) #spreadsheet .tabulator .tabulator-cell {
+  padding: 10px 12px;
+}
+:root:not(.compact-density) #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+  padding: 10px 12px;
+}
+:root:not(.compact-density) .dataset-tab { min-height: 36px; padding: 7px 12px; }
+
+@media (max-width: 720px) {
+  #global-search { width: 100%; }
+  .settings-tools { flex: 1 1 auto; }
+  #settings-btn { width: 100%; }
+  .settings-menu { left: 0; right: auto; width: 100%; }
+  .dataset-tabs { padding: 7px 10px; }
+  .view-summary { padding: 9px 10px; }
+}

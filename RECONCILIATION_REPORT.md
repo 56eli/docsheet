@@ -30,7 +30,7 @@ Each record below is present in the committed draft CSV and therefore included b
 |---:|---|---|---|
 | — | Book of Slides (The Complete Collection) | book | Promoted from official candidate manual-veritas-38608: Official page identifies a 655-page book compendium of lecture slides from 2002–2011. |
 | — | Compassion (Audiobook) | lecture | Promoted edition audio of work w-compassion from candidate edition-audible-compassion: Audible audiobook edition of the lecture work; Audible inventory row matched_by_title. |
-| — | Devotion to Truth Talk | lecture | Promoted from official candidate manual-veritas-55473: Official page identifies a 2003 On-the-Road talk and makes the full lecture available through streaming video. |
+| — | Devotion to Truth Talk | lecture | Promoted from official candidate manual-veritas-55473: Official page identifies a 2003 On-the-Road talk; owner ruling 2026-08-08 records the streaming page as reference_url_1 for the product instead of storing streaming availability in format_detail. |
 | — | Devotional Nonduality Intensive: Alignment (Audiobook) | lecture | Promoted edition audio of work w-alignment from candidate edition-audible-dni-alignment: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Devotional Nonduality Intensive: Intention (Audiobook) | lecture | Promoted edition audio of work w-intention from candidate edition-audible-dni-intention: Audible audiobook edition of the lecture part; Audible inventory row matched_by_title. |
 | — | Dialogues on Consciousness and Spirituality | book | Promoted from official candidate manual-academic-dialogues-1998: Veritas Publishing 1998-01-01, 94 pages, spiral-bound, ISBN 0964326175; early transcript collection; evidence: Amazon, AbeBooks, Goodreads, Open Library; completeness audit. |
@@ -50,7 +50,7 @@ Each record below is present in the committed draft CSV and therefore included b
 | — | Letting Go (Audiobook) | book | Promoted edition audio of work w-letting-go from candidate edition-audible-lettinggo: Audible audiobook edition; Audible inventory row matched_by_title. |
 | — | Life with “Doc” My Husband & My Teacher, Dr. David R. Hawkins | book | Promoted from official candidate manual-veritas-53036: Official page identifies Susan Hawkins’s memoir and inside account. |
 | — | Live Life As A Prayer (Audio) | lecture | Promoted edition audio of work w-live-prayer from candidate edition-hh-liveprayer: Hay House audio edition of the lecture work; Hay House inventory row unreviewed_official_product. |
-| — | Mind, Heart and Service: The Pathway of Devotional Non-Duality | lecture | Promoted from official candidate manual-veritas-54219: Official page identifies a 2003 Science of Mind church lecture available through streaming video. |
+| — | Mind, Heart and Service: The Pathway of Devotional Non-Duality | lecture | Promoted from official candidate manual-veritas-54219: Official page identifies a 2003 Science of Mind church lecture; owner ruling 2026-08-08 records the streaming page as reference_url_1 for the product instead of storing streaming availability in format_detail. |
 | — | OM | other | Promoted from official candidate manual-audible-om: Audible listing of the mantra recording 'OM' by Dr. Hawkins with a 300-year-old Tibetan bell (59 min, meditation; publisher Veritas Publishing; (c)2017 Institute for Spiritual Research (P)2022; live Audible page verified 2026-08-07). No existing master matches; unique recording promoted per owner ruling 2026-08-07. |
 | — | Orthomolecular Psychiatry: Treatment of Schizophrenia | book | Promoted from official candidate manual-academic-orthomolecular-1973: Co-authored with Linus Pauling (double Nobel laureate), W.H. Freeman 1973, 697 pages, ISBN 0716708981, early psychiatric academic work pre-dating spiritual corpus; listed in BookNotification, EverybodyWiki, Wellcome Collection; part of completeness audit for all Hawkins material ever produced. |
 | — | Peace is the Natural State | lecture | Promoted from official candidate manual-veritas-1814: Official page identifies an On-the-Road audio product. |
@@ -125,6 +125,8 @@ No matching-record field differences were found.
 python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check
 ```
 
 `reconcile_research_master.py --check` verifies that this report still describes the current inputs. Omitting `--check` refreshes this Markdown report only; it does not change catalogue data.

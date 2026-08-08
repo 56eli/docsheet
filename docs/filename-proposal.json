@@ -3306,7 +3306,7 @@
     "series": "On The Road Talk Series",
     "year": "2003",
     "month": "",
-    "format": "",
+    "format": "streaming",
     "title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)",
     "clean_title": "Progressive Levels of Consciousness - A Special Talk Presented in Oxford",
     "part_index": "",
@@ -3361,7 +3361,7 @@
   },
   {
     "uuid": "225",
-    "work_id": "w-devotion-to-truth",
+    "work_id": "w-devotion-to-truth-talk",
     "item_type": "lecture",
     "series": "On The Road Talk Series",
     "year": "2003",
@@ -4531,7 +4531,7 @@
   },
   {
     "uuid": "310",
-    "work_id": "w-mind-heart-and-service-the-pathway-of-de",
+    "work_id": "w-mind-heart-and-service",
     "item_type": "lecture",
     "series": "On The Road Talk Series",
     "year": "2003",

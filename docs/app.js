@@ -17,6 +17,13 @@
   const searchInput = $("global-search");
   const clearSearchBtn = $("clear-search-btn");
   const exportBtn = $("export-btn");
+  const settingsBtn = $("settings-btn");
+  const settingsMenu = $("settings-menu");
+  const expandEverythingBtn = $("expand-everything-btn");
+  const wrapCellsToggle = $("wrap-cells-toggle");
+  const compactModeToggle = $("compact-mode-toggle");
+  const showSummaryToggle = $("show-summary-toggle");
+  const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
   const searchStatus = $("search-status");
@@ -27,6 +34,7 @@
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
   const reviewFilterHint = $("review-filter-hint");
+  const viewSummary = $("view-summary");
   const viewTitle = $("view-title");
   const viewDescription = $("view-description");
   const viewMeta = $("view-meta");
@@ -58,6 +66,10 @@
     seriesCompilations: { file: "series-compilations.json", label: "Series Compilations", exportName: "hawkins-series-compilations.csv" },
     internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
     publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
+    veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
+    hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
+    audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
+    filenameProposal: { file: "filename-proposal.json", label: "Filename Proposal", exportName: "hawkins-filename-proposal.csv" },
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
 
@@ -127,6 +139,22 @@
     publishers: {
       type: "Source registry",
       description: "Approved publisher/platform sources and their role in the catalogue review process.",
+    },
+    veritasProducts: {
+      type: "Official inventory",
+      description: "Reviewed Veritas Publishing product inventory with product IDs, official categories, mapping status, and matched master records.",
+    },
+    hayhouseProducts: {
+      type: "Official inventory",
+      description: "Reviewed Hay House product inventory used for book and audio-edition source matching.",
+    },
+    audibleProducts: {
+      type: "Platform inventory",
+      description: "Reviewed Audible catalogue entries and their current mapping notes, including international editions routed out of the English master.",
+    },
+    filenameProposal: {
+      type: "Filename review",
+      description: "Reviewed proposed output filenames with master metadata mirrors and display-safe part labels.",
     },
     original: {
       type: "Raw source view",
@@ -249,6 +277,10 @@
     seriesCompilations: { priority: ["official_product_title", "target_series", "target_year", "relationship_type", "included_lecture_count", "review_status", "target_lecture_titles"], frozen: ["official_product_title"] },
     internationalProducts: { priority: ["candidate_title", "publisher", "market", "language", "item_type", "match_status", "source_url", "review_notes"], frozen: ["candidate_title"] },
     publishers: { priority: ["publisher", "status", "role", "official_catalogue_url"], frozen: ["publisher"] },
+    veritasProducts: { priority: ["veritas_product_id", "official_title", "mapping_status", "matched_master_uuids", "matched_master_titles", "published_date", "official_product_url", "official_categories", "review_notes"], frozen: ["veritas_product_id", "official_title"] },
+    hayhouseProducts: { priority: ["official_title", "format", "mapping_status", "official_product_url", "review_notes"], frozen: ["official_title"] },
+    audibleProducts: { priority: ["official_title", "mapping_status", "audible_url", "review_notes"], frozen: ["official_title"] },
+    filenameProposal: { priority: ["uuid", "title", "proposed_filename_display", "proposed_filename", "work_id", "item_type", "series", "year", "month", "format", "part_index", "part_total"], frozen: ["uuid", "title"] },
   };
 
   let table = null;
@@ -324,6 +356,82 @@
     applyExpertVisibility();
     configureExpertToggle(activeView);
     configureColumnChooser();
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Minimal display settings: compact vs. expanded rows, wrapped text,
+   *  summary visibility, and one-click "Expand everything".
+   * ------------------------------------------------------------------ */
+  const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true };
+
+  function readViewSettings() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(VIEW_SETTINGS_STORAGE_KEY) || "{}");
+      return { ...DEFAULT_VIEW_SETTINGS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+    } catch (err) {
+      return { ...DEFAULT_VIEW_SETTINGS };
+    }
+  }
+
+  function writeViewSettings(settings) {
+    try {
+      localStorage.setItem(VIEW_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    } catch (err) {
+      /* storage unavailable — settings just won't persist */
+    }
+  }
+
+  function applyViewSettings(settings = readViewSettings()) {
+    document.documentElement.classList.toggle("wrap-cells", Boolean(settings.wrapCells));
+    document.documentElement.classList.toggle("compact-density", Boolean(settings.compactRows));
+    if (viewSummary) viewSummary.hidden = !settings.showSummary;
+    if (wrapCellsToggle) wrapCellsToggle.checked = Boolean(settings.wrapCells);
+    if (compactModeToggle) compactModeToggle.checked = Boolean(settings.compactRows);
+    if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
+    if (table) {
+      try {
+        table.redraw(true);
+        fitTableToContainer();
+      } catch (err) {
+        // Tabulator can still be booting when settings are first applied;
+        // the classes above are enough and the normal tableBuilt/render pass
+        // will size the table moments later.
+      }
+    }
+  }
+
+  function updateViewSetting(key, value) {
+    const settings = readViewSettings();
+    settings[key] = value;
+    writeViewSettings(settings);
+    applyViewSettings(settings);
+  }
+
+  function closeSettingsMenu() {
+    if (!settingsMenu || !settingsBtn) return;
+    settingsMenu.hidden = true;
+    settingsBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function expandEverything() {
+    const settings = { wrapCells: true, compactRows: false, showSummary: true };
+    writeViewSettings(settings);
+    setExpertColumns(activeView, true);
+    if (table) {
+      table.getColumns().forEach((column) => column.show());
+    }
+    applyViewSettings(settings);
+    configureExpertToggle(activeView);
+    configureColumnChooser();
+    closeSettingsMenu();
+  }
+
+  function resetCurrentView() {
+    writeViewSettings({ ...DEFAULT_VIEW_SETTINGS });
+    setExpertColumns(activeView, false);
+    closeSettingsMenu();
+    activateView(activeView);
   }
 
   /* ------------------------------------------------------------------ *
@@ -889,14 +997,15 @@
       resizableColumns: true,
       movableColumns: true,        // drag headers to reorder (bonus)
       responsiveLayout: false,     // keep every column visible; scroll horizontally when needed
-      /* editing */
-      editTriggerEvent: "dblclick", // double-click any cell to edit
+      /* editing disabled in column definitions; double-click is reserved for any future explicit editor */
+      editTriggerEvent: "dblclick",
       selectableRows: false,
     });
 
-      configureReviewFilter(data);
+    configureReviewFilter(data);
     configureColumnChooser();
     configureExpertToggle(activeView);
+    applyViewSettings();
     table.on("dataFiltered", updateSearchStatus);
     // The synchronous call below can run before Tabulator has processed its
     // initial data ("active" row pipeline is still empty), leaving the footer
@@ -1070,6 +1179,28 @@
     });
     clearAllFiltersBtn.addEventListener("click", clearAllFilters);
     exportBtn.addEventListener("click", exportCsv);
+    applyViewSettings();
+    if (settingsBtn && settingsMenu) {
+      settingsBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const willOpen = settingsMenu.hidden;
+        settingsMenu.hidden = !willOpen;
+        settingsBtn.setAttribute("aria-expanded", String(willOpen));
+        closeColumnMenu();
+      });
+      settingsMenu.addEventListener("click", (event) => event.stopPropagation());
+    }
+    if (expandEverythingBtn) expandEverythingBtn.addEventListener("click", expandEverything);
+    if (resetViewBtn) resetViewBtn.addEventListener("click", resetCurrentView);
+    if (wrapCellsToggle) {
+      wrapCellsToggle.addEventListener("change", () => updateViewSetting("wrapCells", wrapCellsToggle.checked));
+    }
+    if (compactModeToggle) {
+      compactModeToggle.addEventListener("change", () => updateViewSetting("compactRows", compactModeToggle.checked));
+    }
+    if (showSummaryToggle) {
+      showSummaryToggle.addEventListener("change", () => updateViewSetting("showSummary", showSummaryToggle.checked));
+    }
     reviewFilter.addEventListener("change", () => {
       const field = reviewFilter.dataset.field;
       activeReviewFilter = reviewFilter.value && field
@@ -1082,6 +1213,7 @@
       const willOpen = columnMenu.hidden;
       columnMenu.hidden = !willOpen;
       columnMenuBtn.setAttribute("aria-expanded", String(willOpen));
+      closeSettingsMenu();
     });
     columnMenu.addEventListener("click", (event) => event.stopPropagation());
     if (expertToggleBtn) {
@@ -1089,10 +1221,14 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
-    document.addEventListener("click", closeColumnMenu);
+    document.addEventListener("click", () => {
+      closeColumnMenu();
+      closeSettingsMenu();
+    });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeColumnMenu();
+        closeSettingsMenu();
         closeRowDetails();
       }
     });

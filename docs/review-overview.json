@@ -29,7 +29,7 @@
   },
   {
     "review_sheet": "Source Overrides",
-    "record_count": 134,
+    "record_count": 131,
     "purpose": "Approved official source associations retained after the original ledger pass.",
     "source_file": "data/research_master_source_overrides.csv",
     "current_state": "approved source override"
@@ -54,6 +54,34 @@
     "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
     "source_file": "data/veritas_mapping_decisions.csv",
     "current_state": "approved mapping decision"
+  },
+  {
+    "review_sheet": "Veritas Products",
+    "record_count": 191,
+    "purpose": "Reviewed Veritas official-product inventory used for source matching, taxonomy mapping, and refresh diffs.",
+    "source_file": "data/veritas_official_products.csv",
+    "current_state": "reviewed official inventory"
+  },
+  {
+    "review_sheet": "Hay House Products",
+    "record_count": 29,
+    "purpose": "Reviewed Hay House official-product inventory used for book and audio-edition links.",
+    "source_file": "data/hayhouse_official_products.csv",
+    "current_state": "reviewed official inventory"
+  },
+  {
+    "review_sheet": "Audible Products",
+    "record_count": 26,
+    "purpose": "Reviewed Audible platform inventory used for audiobook editions and international leads.",
+    "source_file": "data/audible_official_products.csv",
+    "current_state": "reviewed platform inventory"
+  },
+  {
+    "review_sheet": "Filename Proposal",
+    "record_count": 365,
+    "purpose": "Reviewed proposed filenames plus derived master metadata mirrors used by the filename guard.",
+    "source_file": "data/filename_proposal_YYYYMM.csv",
+    "current_state": "reviewed filename proposal"
   },
   {
     "review_sheet": "Product Relationships",

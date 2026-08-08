@@ -179,7 +179,7 @@ coverage report                        # exits non-zero below the 85% floor (.co
 > in the README's quick-start line in the same change — it has drifted three
 > times (103 → 107 → 110 → 112 → 115).
 
-Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-07).
+Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-08).
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright
 (`npm run test:e2e`), which needs Chromium and runs in CI.
@@ -212,7 +212,7 @@ inspect the artifact before accepting any live-source update.
 | `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 5 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Python dependencies (pandas only, for now). |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
-| `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable view, inline editing, CSV export, column resizing, horizontal access to every column, and footer stats. |
+| `docs/app.js` | Boots Tabulator with sorting, all rows in one scrollable read-only view, whole-sheet CSV export, column resizing, horizontal access to every column, review filters, row details, footer stats, and minimalist View settings (wrap cells, compact rows, summary cards, Expand everything). |
 | `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
 | `.github/workflows/update_spreadsheet.yml` | Rebuilds `docs/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
 
@@ -231,7 +231,7 @@ inspect the artifact before accepting any live-source update.
   in their declared input file, regenerate the derived outputs, and run the
   checks before publishing.
 - **Search:** the search box filters **all** columns live as you type.
-- **Export CSV:** downloads the currently filtered/sorted view.
+- **Export CSV:** downloads all rows of the active sheet (filters/search affect the on-screen view, not the exported dataset).
 - **Dark mode:** toggle in the top-right; your choice is remembered
   (localStorage) and respects your OS preference the first time.
 
