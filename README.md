@@ -51,7 +51,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 123 tests, no browser/network needed
+python -m unittest discover tests          # 125 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -114,7 +114,7 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The layout adapts to phone screens (dense cells, full-width row details, horizontally scrolling tabs).
+Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. On phone screens, the Everything catalogue opens in **Browse mode**: compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters; **Spreadsheet** restores the full Tabulator grid for expert comparison. Full-width row details and horizontally scrolling tabs remain available in both modes.
 
 ## Review workspace
 
@@ -143,7 +143,7 @@ editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
 and the official Veritas product link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed),
 **39** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
-so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
+so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates) except an explicit publisher suffix when two same-work audiobook editions would otherwise collide, Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
 At the 2026-08-03 live-source checkpoint, every entry was verified field-by-field
 against the Veritas Publishing API: 191/191 products reconciled exactly and all

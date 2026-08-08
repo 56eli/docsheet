@@ -4,6 +4,10 @@
 **Scope:** entire repo — 9 Python modules, 24 data/*.csv, 20 docs/*.json,
 frontend (`docs/index.html` / `app.js` / `style.css`), 3 GitHub Actions
 workflows, test suite, and every living root Markdown document.
+> **Historical/session snapshot:** this report records the earlier 2026-08-08
+> audit sequence. For the current checkpoint, use
+> `FULL_STACK_AUDIT_2026-08-08_ARENA.md` §12 and the generated outputs.
+
 **Method:** fresh venv install, all checks re-run live, catalogue cross-checked
 field-by-field against the committed data + live Veritas API (via page-fetch),
 and every count in the living docs verified against

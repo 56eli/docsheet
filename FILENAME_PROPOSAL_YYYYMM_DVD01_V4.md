@@ -1,11 +1,11 @@
-# Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, audiobook label removed, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
+# Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, label-free audiobooks with publisher suffixes for collisions, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
 
 **Date:** 2026-08-07 (v4 updated, per owner feedback on v3 + blank-year ruling 2026-08-04)  
 **Current master baseline:** 365 records (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other) with 365 reviewed filename rows. The earlier 363/356 totals below are historical intermediate snapshots from before the final NC/Hay House promotions and duplicate rulings.
 **Pattern v4:**  
 - Single part: `YYYY-MM - Name.ext` — no bracket; if year blank, `Name.ext` (no prefix)
 - Multi-part (same Year-Month, same cleaned title, same format, same product): `YYYY-MM - Name [1/3].mp4` safe on-disk `[1-3]`, display `[1/3]`; if Year-Month blank, `Name [1-3].mp4` safe / `Name [1/3].mp4` display
-- Audiobook label removed from name (`.m4b` indicates), file type distinguishes
+- Audiobook label removed from name (`.m4b` indicates); when two same-work/same-year audiobook editions would collide, use a publisher suffix (`(Audible)` / `(Veritas)`) rather than the generic audiobook label
 - Volume Series: year blank pre-2000 per owner ruling “do not name any if cannot name all” (2026-08-04), so filename has no year prefix, grouped by (clean_title, format) only → `Volume I Power vs Force [1-2].mp4` display `[1/2]`
 
 ## Owner feedback addressed
@@ -23,10 +23,10 @@
 
 ```
 1973 - Orthomolecular Psychiatry Treatment of Schizophrenia.pdf
-1982 - A-01 Office Series-Stress.mp4
+198X - Stress.mp4 (Office Series decade placeholder)
 ...
 1995 - Power vs Force.pdf
-1995 - Power vs. Force [1-2].m4b / [2-2].m4b (two audiobook editions 320 & 331 — same title/year/format, disambiguated)
+1995 - Power vs. Force (Audible).m4b / 1995 - Power vs. Force (Veritas).m4b (two same-work audiobook editions disambiguated by publisher)
 1998 - Dialogues on Consciousness and Spirituality.pdf
 2001 - The Eye of the I.pdf
 2001 - The Eye of the I.m4b
@@ -51,7 +51,7 @@ Sample after blank-year fix (2026-08-07 verified from `data/filename_proposal_YY
 1973 - Orthomolecular Psychiatry Treatment of Schizophrenia.pdf
 ...
 1995 - Power vs Force.pdf
-1995 - Power vs. Force [1-2].m4b / [2-2].m4b (two audiobook editions 320 & 331 same title/year/format → [1-2][2-2])
+1995 - Power vs. Force (Audible).m4b / 1995 - Power vs. Force (Veritas).m4b (two same-work audiobook editions use publisher suffixes, not part brackets)
 1998 - Dialogues...
 2001 - The Eye of the I.pdf (book, no bracket)
 2001 - The Eye of the I.m4b (audiobook, no bracket — different format group)
@@ -73,7 +73,7 @@ Volume VII A Conversation with Knowingness.mp4
 
 Current counts: 365 total; all 365 safe names and all 365 display names are unique, with 0 collisions (verified). The earlier 363/356 totals are historical intermediate snapshots.
 
-**v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — is resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get ` (streaming)`/` (DVD)` appended so every file stays uniquely named. Current counts: **365 rows, 365 unique safe, 365 unique display** (2026-08-07).
+**v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — is resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get an explicit carrier suffix (`(streaming)` / `(DVD)`) or, when carrier is the same, a publisher suffix (`(Audible)` / `(Veritas)`), so every file stays uniquely named. Current counts: **365 rows, 365 unique safe, 365 unique display** (2026-08-07).
 
 ## 2026-08-07 Highlights promotion (owner ruling)
 
@@ -119,7 +119,7 @@ reviewed `data/filename_proposal_YYYYMM.csv` (clean_title + filenames):
 - `Become That Which You Are (June 2004)` → `2004-06 - Become That Which You Are [1-3].mp4` (3 parts)
 - `Love is a Way of Being (January 2004)` → `2004-01 - Love is a Way of Being [1-3].mp4` (3 parts)
 - `Progressive Levels of Consciousness - A Special Talk Presented in Oxford (2003)` → `2003 - ...Oxford.mp4`
-- `Live Life As A Prayer (Audio)` → `2006 - Live Life As A Prayer.m4b` (audiobook label stripped; `.m4b` indicates — extends the v4 audiobook-label rule to `(Audio)`)
+- `Live Life As A Prayer (Audio)` → `2006 - Live Life As A Prayer.m4b` (audiobook label stripped; `.m4b` indicates — except where a documented publisher suffix is needed for a same-work collision)
 - `Unity Church of Sedona 2005 March (CD)` → `2005-03 - Unity Church of Sedona (CD).mp3` (date words moved to the prefix; month title-derived, same evidence as the June/January rows)
 - `Unity Church of Sedona 2006 June (CD)` → `2006-06 - Unity Church of Sedona (CD).mp3`
 

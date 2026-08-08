@@ -28,6 +28,13 @@
   const showFiltersToggle = $("show-filters-toggle");
   const descToggleBtn = $("desc-toggle-btn");
   const facetToggleBtn = $("facet-toggle-btn");
+  const mobileViewToggle = $("mobile-view-toggle");
+  const mobileBrowse = $("mobile-browse");
+  const mobileBrowseList = $("mobile-browse-list");
+  const mobileBrowseSheetBtn = $("mobile-browse-sheet-btn");
+  const mobileSeriesShelf = $("mobile-series-shelf");
+  const mobileYearRail = $("mobile-year-rail");
+  const mobileDiscoveryClear = $("mobile-discovery-clear");
   const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
@@ -106,7 +113,7 @@
 
   const VIEW_DETAILS = {    master: {
       type: "Complete curated catalogue",
-      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
+      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. On phones it opens in Browse mode: compact work stacks with source and streaming actions; use Spreadsheet for the full grid. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
     },
     reviewOverview: {
       type: "Review index",
@@ -339,6 +346,14 @@
   // Faceted (multi-select) filters for the catalogue view. Each maps a field
   // to a Set of selected raw values. Persisted per view in localStorage.
   let activeFacets = {};
+  let mobileBrowseRows = [];
+  let renderedAsMobileBrowse = false;
+  let viewActivation = 0;
+  let activeDataRequest = null;
+  const MOBILE_BROWSE_STORAGE_KEY = "docsheet-mobile-master-mode";
+  const mobileBrowseMedia = window.matchMedia
+    ? window.matchMedia("(max-width: 720px)")
+    : { matches: false };
 
   /* ------------------------------------------------------------------ *
    *  Per-view UI state persistence (sort, scroll, column widths) on top
@@ -642,9 +657,10 @@
   }
 
   function updateSearchStatus() {
-    if (!table) return;
-    const visibleRows = table.getData("active").length;
-    const isFiltering = Boolean(activeSearchQuery || activeReviewFilter);
+    const visibleRows = table
+      ? table.getData("active").length
+      : (renderedAsMobileBrowse ? mobileBrowseRows.length : allData.length);
+    const isFiltering = Boolean(activeSearchQuery || activeReviewFilter || !facetsEmpty());
     searchStatus.textContent = isFiltering
       ? `Showing: ${visibleRows} of ${allData.length}`
       : `Showing: ${visibleRows}`;
@@ -717,8 +733,292 @@
       });
       facetClear.hidden = true;
     }
-    if (table) table.clearFilter();
+    applyActiveFilters();
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Mobile catalogue browse mode
+   *
+   *  A phone is a poor spreadsheet viewport, so the Everything view becomes
+   *  a work-first catalogue on narrow screens. The full Tabulator sheet
+   *  remains one tap away for expert comparison/export work. Cards are built
+   *  only from the same generated master.json rows; no separate mobile data
+   *  contract or browser-side editing exists.
+   * ------------------------------------------------------------------ */
+  function mobileMasterMode() {
+    try {
+      return localStorage.getItem(MOBILE_BROWSE_STORAGE_KEY) || "browse";
+    } catch (err) {
+      return "browse";
+    }
+  }
+
+  function setMobileMasterMode(mode) {
+    try {
+      localStorage.setItem(MOBILE_BROWSE_STORAGE_KEY, mode);
+    } catch (err) {
+      /* Storage is optional; browse remains the safe default. */
+    }
+  }
+
+  function mobileBrowseIsActive() {
+    return activeView === "master" && mobileBrowseMedia.matches && mobileMasterMode() !== "spreadsheet";
+  }
+
+  function updateMobileViewToggle() {
+    const isMobileMaster = activeView === "master" && mobileBrowseMedia.matches;
+    const browsing = mobileBrowseIsActive();
+    if (mobileViewToggle) {
+      mobileViewToggle.hidden = !isMobileMaster;
+      mobileViewToggle.textContent = browsing ? "Spreadsheet" : "Browse cards";
+      mobileViewToggle.setAttribute("aria-pressed", String(browsing));
+      mobileViewToggle.title = browsing
+        ? "Switch to the full spreadsheet"
+        : "Switch to the mobile work-card browser";
+    }
+    if (mobileBrowseSheetBtn) {
+      mobileBrowseSheetBtn.hidden = !browsing;
+    }
+  }
+
+  function displayMobileDate(row) {
+    if (!row.year) return "Date unknown";
+    const year = row.year === "198X" ? "c. 1980s" : row.year;
+    return row.month ? `${year} · ${row.month}` : year;
+  }
+
+  function displayMobileEdition(row) {
+    return [row.format, row.format_detail].filter(Boolean).join(" · ") || "Edition not stated";
+  }
+
+  function mobilePrimaryUrl(row) {
+    return row.source_url_veritas || row.source_url_hay_house ||
+      row.source_url_audible || row.source_url_nightingale_conant ||
+      row.source_url_amazon || "";
+  }
+
+  function mobileSourceLink(row, url, label) {
+    if (!url) return null;
+    const anchor = document.createElement("a");
+    anchor.className = "mobile-edition-link";
+    anchor.href = url;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    anchor.textContent = label;
+    anchor.setAttribute("aria-label", `${label} for ${rowTitle(row)} (opens in new tab)`);
+    return anchor;
+  }
+
+  function mobileEditionCard(row) {
+    const article = document.createElement("article");
+    article.className = "mobile-edition-card";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "mobile-edition-main";
+    button.setAttribute("aria-label", `Inspect ${rowTitle(row)}`);
+
+    const filename = document.createElement("span");
+    filename.className = "mobile-edition-filename";
+    filename.textContent = row.proposed_filename || rowTitle(row);
+    const title = document.createElement("strong");
+    title.className = "mobile-edition-title";
+    title.textContent = rowTitle(row);
+    const meta = document.createElement("span");
+    meta.className = "mobile-edition-meta";
+    meta.textContent = `${displayMobileDate(row)} · ${displayMobileEdition(row)}`;
+    button.append(filename, title, meta);
+    button.addEventListener("click", () => openRowDetails(row, button));
+    article.append(button);
+
+    const actions = document.createElement("div");
+    actions.className = "mobile-edition-actions";
+    const source = mobileSourceLink(row, mobilePrimaryUrl(row), "Source");
+    const streaming = row.reference_url_1 && row.reference_url_1 !== mobilePrimaryUrl(row)
+      ? mobileSourceLink(row, row.reference_url_1, "Stream")
+      : null;
+    if (source) actions.append(source);
+    if (streaming) actions.append(streaming);
+    if (actions.childElementCount) article.append(actions);
+    return article;
+  }
+
+  function mobileWorkGroups(rows) {
+    const groups = new Map();
+    rows.forEach((row, index) => {
+      const key = row.work_id || row.uuid || row.candidate_key || `record-${index}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(row);
+    });
+    return [...groups.values()];
+  }
+
+  function syncFacetSelect(facetId) {
+    const facet = FACETS.find((item) => item.id === facetId);
+    const select = facet && facet.el();
+    if (!select) return;
+    const selected = new Set(activeFacets[facetId] || []);
+    [...select.options].forEach((option) => { option.selected = selected.has(option.value); });
+  }
+
+  function mobileFacetLabel(facet, value) {
+    if (facet.id === "year") {
+      if (!value) return "Unknown date";
+      return value === "198X" ? "c. 1980s" : value;
+    }
+    return facet.buildOptionLabel ? facet.buildOptionLabel(value) : (value || "Not stated");
+  }
+
+  function toggleMobileFacet(facet, value) {
+    const selected = new Set(activeFacets[facet.id] || []);
+    if (selected.has(value)) selected.delete(value);
+    else selected.add(value);
+    activeFacets[facet.id] = [...selected];
+    writeFacetState(activeView, activeFacets);
+    syncFacetSelect(facet.id);
+    if (facetClear) facetClear.hidden = facetsEmpty();
+    applyActiveFilters();
+  }
+
+  function mobileFacetButton(facet, value, count, label = mobileFacetLabel(facet, value)) {
+    const button = document.createElement("button");
+    const selected = (activeFacets[facet.id] || []).includes(value);
+    button.type = "button";
+    button.className = "mobile-discovery-chip";
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+    button.dataset.mobileFacet = facet.id;
+    button.dataset.mobileValue = value;
+    button.textContent = count == null ? label : `${label} (${count})`;
+    button.addEventListener("click", () => toggleMobileFacet(facet, value));
+    return button;
+  }
+
+  function renderMobileDiscovery(data) {
+    if (!mobileSeriesShelf || !mobileYearRail) return;
+    const renderRail = (container, facet, compare) => {
+      const counts = new Map();
+      data.forEach((row) => {
+        const value = String(row[facet.field] ?? "").trim();
+        counts.set(value, (counts.get(value) || 0) + 1);
+      });
+      const values = [...counts.keys()].sort(compare);
+      container.replaceChildren();
+      const clear = document.createElement("button");
+      const selected = activeFacets[facet.id] || [];
+      clear.type = "button";
+      clear.className = "mobile-discovery-chip mobile-discovery-all";
+      clear.classList.toggle("active", selected.length === 0);
+      clear.setAttribute("aria-pressed", String(selected.length === 0));
+      clear.textContent = facet.id === "year" ? "All years" : "All series";
+      clear.addEventListener("click", () => {
+        activeFacets[facet.id] = [];
+        writeFacetState(activeView, activeFacets);
+        syncFacetSelect(facet.id);
+        if (facetClear) facetClear.hidden = facetsEmpty();
+        applyActiveFilters();
+      });
+      container.append(clear);
+      values.forEach((value) => container.append(
+        mobileFacetButton(facet, value, counts.get(value))
+      ));
+    };
+    const seriesFacet = FACETS.find((facet) => facet.id === "series");
+    const yearFacet = FACETS.find((facet) => facet.id === "year");
+    renderRail(
+      mobileSeriesShelf,
+      seriesFacet,
+      (a, b) => (data.filter((row) => row.series === b).length - data.filter((row) => row.series === a).length) || a.localeCompare(b)
+    );
+    renderRail(mobileYearRail, yearFacet, yearFacet.sort);
+    if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty();
+  }
+
+  function renderMobileBrowse(data = allData) {
+    if (!mobileBrowseList) return;
+    renderMobileDiscovery(data);
+    const rows = data.filter(rowMatchesActiveFilters);
+    mobileBrowseRows = rows;
+    mobileBrowseList.replaceChildren();
+    if (!rows.length) {
+      const message = document.createElement("p");
+      message.className = "mobile-browse-empty";
+      message.textContent = "No works match the current search and filters.";
+      mobileBrowseList.append(message);
+      updateSearchStatus();
+      return;
+    }
+
+    mobileWorkGroups(rows).forEach((group) => {
+      const first = group[0];
+      if (group.length === 1) {
+        const single = document.createElement("section");
+        single.className = "mobile-work-card mobile-work-card-single";
+        single.append(mobileEditionCard(first));
+        mobileBrowseList.append(single);
+        return;
+      }
+
+      const card = document.createElement("details");
+      card.className = "mobile-work-card";
+      const summary = document.createElement("summary");
+      const eyebrow = document.createElement("span");
+      eyebrow.className = "mobile-work-eyebrow";
+      const formats = [...new Set(group.map((row) => row.format).filter(Boolean))];
+      eyebrow.textContent = `${group.length} editions / parts${formats.length ? ` · ${formats.join(", ")}` : ""}`;
+      const title = document.createElement("strong");
+      title.className = "mobile-work-title";
+      title.textContent = rowTitle(first);
+      const hint = document.createElement("span");
+      hint.className = "mobile-work-hint";
+      hint.textContent = "Show editions";
+      summary.append(eyebrow, title, hint);
+      card.append(summary);
+
+      const editions = document.createElement("div");
+      editions.className = "mobile-work-editions";
+      group.forEach((row) => editions.append(mobileEditionCard(row)));
+      card.append(editions);
+      mobileBrowseList.append(card);
+    });
     updateSearchStatus();
+  }
+
+  function renderLoadedView(data, force = false) {
+    const useMobileBrowse = mobileBrowseIsActive();
+    updateMobileViewToggle();
+    if (!force && useMobileBrowse === renderedAsMobileBrowse) {
+      if (useMobileBrowse) renderMobileBrowse(data);
+      return;
+    }
+    if (table) {
+      table.destroy();
+      table = null;
+    }
+    renderedAsMobileBrowse = useMobileBrowse;
+    document.documentElement.classList.toggle("mobile-browse-active", useMobileBrowse);
+
+    if (useMobileBrowse) {
+      spreadsheet.hidden = true;
+      mobileBrowse.hidden = false;
+      configureReviewFilter(data);
+      configureFacetBar(data);
+      configureExpertToggle(activeView);
+      configureColumnChooser();
+      renderMobileBrowse(data);
+      spreadsheet.setAttribute("aria-busy", "false");
+      return;
+    }
+
+    mobileBrowse.hidden = true;
+    spreadsheet.hidden = false;
+    initTable(data);
+  }
+
+  function toggleMobilePresentation() {
+    if (activeView !== "master" || !mobileBrowseMedia.matches) return;
+    setMobileMasterMode(mobileBrowseIsActive() ? "spreadsheet" : "browse");
+    closeRowDetails();
+    renderLoadedView(allData, true);
   }
 
   function updateViewSummary(viewName, rowCount = null) {
@@ -933,6 +1233,7 @@
     const additional = entries.filter(([field]) => !rendered.has(field));
     appendDetailSection(rowDetailsBody, "Additional fields", additional);
     rowDetails.hidden = false;
+    bindDrawerFocusTrap();
     requestAnimationFrame(() => closeRowDetailsBtn.focus({ preventScroll: true }));
   }
 
@@ -946,13 +1247,21 @@
     }
   }
 
+  function drawerFocusableControls() {
+    // The drawer is a true modal: its official/evidence links are as important
+    // as header buttons. Include every visible focusable descendant so Tab
+    // cycles through the entire detail sheet rather than trapping keyboard
+    // users above the source links.
+    return [...rowDetails.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+      'textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((control) => !control.hidden && control.getClientRects().length > 0);
+  }
+
   function trapRowDetailsFocus(event) {
     if (event.key !== "Tab" || rowDetails.hidden) return;
-    // Keep the drawer header actions in a deterministic cycle. The row body
-    // contains links, but header focus must never escape the modal shell.
     if (event.currentTarget !== rowDetails) event.stopPropagation();
-    const controls = [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn]
-      .filter((control) => control && !control.hidden);
+    const controls = drawerFocusableControls();
     if (!controls.length) return;
     const current = controls.indexOf(document.activeElement);
     const delta = event.shiftKey ? -1 : 1;
@@ -963,21 +1272,31 @@
     controls[nextIndex].focus();
   }
 
+  function bindDrawerFocusTrap() {
+    // Header controls persist between openings while body links are rebuilt.
+    // Mark each element so a repeated row inspection never stacks handlers.
+    drawerFocusableControls().forEach((control) => {
+      if (control._docsheetFocusTrapBound) return;
+      control.addEventListener("keydown", trapRowDetailsFocus);
+      control._docsheetFocusTrapBound = true;
+    });
+  }
+
   /* ------------------------------------------------------------------ *
    *  Data loading
    * ------------------------------------------------------------------ */
-  async function loadData(viewName) {
+  async function loadData(viewName, signal) {
     const view = VIEWS[viewName];
-    const res = await fetch(view.file, { cache: "no-store" });
+    const res = await fetch(view.file, { cache: "no-store", signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    allData = await res.json();
+    const data = await res.json();
 
     // Merge separate Year/Month fields into one "Year-Month" display column
     // ("YYYY-MM"). Applies to any view whose rows carry both fields (today:
     // Everything). The raw year/month keys stay on each row object for the
     // global search, but buildColumns, the row drawer, and CSV exports show
     // only the merged column.
-    allData.forEach((row) => {
+    data.forEach((row) => {
       if ("year" in row && "month" in row) {
         row.year_month = row.year ? (row.month ? `${row.year}-${row.month}` : row.year) : "";
       }
@@ -993,8 +1312,12 @@
         row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
+    return { data, lastModified: res.headers.get("Last-Modified") };
+  }
 
-    const lastModified = res.headers.get("Last-Modified");
+  function applyLoadedViewMeta(viewName, data, lastModified) {
+    const view = VIEWS[viewName];
+    allData = data;
     footerUpdated.replaceChildren();
     if (lastModified) {
       const stamp = document.createElement("span");
@@ -1004,8 +1327,7 @@
     } else {
       footerUpdated.textContent = "Last Updated: Unknown";
     }
-    footerStats.textContent = `${view.label}: ${allData.length} rows`;
-    return allData;
+    footerStats.textContent = `${view.label}: ${data.length} rows`;
   }
 
   /* ------------------------------------------------------------------ *
@@ -1378,23 +1700,28 @@
     reviewFilter.dataset.field = field;
   }
 
+  function rowMatchesActiveFilters(data) {
+    const searchMatches = !activeSearchQuery || Object.values(data).some(
+      (value) => value !== null && value !== undefined &&
+        String(value).toLowerCase().includes(activeSearchQuery)
+    );
+    const reviewMatches = !activeReviewFilter ||
+      String(data[activeReviewFilter.field] ?? "") === activeReviewFilter.value;
+    return searchMatches && reviewMatches && rowMatchesFacets(data);
+  }
+
   function applyActiveFilters() {
+    if (renderedAsMobileBrowse) {
+      renderMobileBrowse(allData);
+      return;
+    }
     if (!table) return;
     if (!activeSearchQuery && !activeReviewFilter && facetsEmpty()) {
       table.clearFilter();
       updateSearchStatus();
       return;
     }
-    table.setFilter((data) => {
-      const searchMatches = !activeSearchQuery || Object.values(data).some(
-        (value) => value !== null && value !== undefined &&
-          String(value).toLowerCase().includes(activeSearchQuery)
-      );
-      const reviewMatches = !activeReviewFilter ||
-        String(data[activeReviewFilter.field] ?? "") === activeReviewFilter.value;
-      const facetMatches = rowMatchesFacets(data);
-      return searchMatches && reviewMatches && facetMatches;
-    });
+    table.setFilter(rowMatchesActiveFilters);
     updateSearchStatus();
   }
 
@@ -1554,11 +1881,26 @@
    *  Export CSV (whole active view — filters never shrink downloads)
    * ------------------------------------------------------------------ */
   function exportCsv() {
-    if (!table) return;
-    // Export the whole active sheet ("all" rows) even when a search filter
-    // narrows the on-screen rows; the on-screen subset stays visible via the
-    // search box, while downloads are always the complete view.
-    table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true }, "all");
+    // Export the whole active sheet (not the filtered/card subset) so mobile
+    // Browse mode keeps the same export contract as the Tabulator spreadsheet.
+    if (table) {
+      table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true }, "all");
+      return;
+    }
+    if (!allData.length) return;
+    const fields = Object.keys(allData[0]);
+    const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+    const csv = [fields.map(quote).join(","), ...allData.map((row) =>
+      fields.map((field) => quote(row[field])).join(",")
+    )].join("\n");
+    const href = URL.createObjectURL(new Blob([`\uFEFF${csv}\n`], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = href;
+    anchor.download = VIEWS[activeView].exportName;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(href);
   }
 
   /* ------------------------------------------------------------------ *
@@ -1594,6 +1936,13 @@
    *  Boot
    * ------------------------------------------------------------------ */
   async function activateView(viewName) {
+    // A tab change may arrive before its predecessor's JSON fetch resolves.
+    // Abort the old request where supported and retain a monotonic token as a
+    // second guard: stale responses must never mutate global data/footer/UI.
+    const activation = ++viewActivation;
+    if (activeDataRequest) activeDataRequest.abort();
+    const request = new AbortController();
+    activeDataRequest = request;
     activeView = viewName;
     if (viewJump) viewJump.value = viewName;
     const view = VIEWS[viewName];
@@ -1613,6 +1962,11 @@
       table.destroy();
       table = null;
     }
+    renderedAsMobileBrowse = false;
+    mobileBrowseRows = [];
+    document.documentElement.classList.remove("mobile-browse-active");
+    if (mobileBrowse) mobileBrowse.hidden = true;
+    spreadsheet.hidden = false;
     spreadsheet.innerHTML = `<div class="table-loading">Loading ${view.label.toLowerCase()}…</div>`;
     document.querySelectorAll(".dataset-tab").forEach((tab) => {
       const selected = tab.dataset.view === viewName;
@@ -1624,7 +1978,10 @@
     });
 
     try {
-      const data = await loadData(viewName);
+      const { data, lastModified } = await loadData(viewName, request.signal);
+      if (activation !== viewActivation) return;
+      if (activeDataRequest === request) activeDataRequest = null;
+      applyLoadedViewMeta(viewName, data, lastModified);
       updateViewSummary(viewName, data.length);
       if (data.length === 0) {
         // Standing intake lanes (and any future empty view) get an
@@ -1640,10 +1997,13 @@
         return;
       }
       emptyState.hidden = true;
-      spreadsheet.hidden = false;
-      initTable(data);
+      renderLoadedView(data, true);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
+      // A replacement tab activation owns the surface. AbortError is expected
+      // during normal rapid navigation and should never flash a load failure.
+      if (activation !== viewActivation || (err && err.name === "AbortError")) return;
+      if (activeDataRequest === request) activeDataRequest = null;
       console.error(`[docsheet] Failed to load ${view.file}:`, err);
       spreadsheet.innerHTML =
         `<div class="load-error">Could not load ${view.file} — make sure the site is served over HTTP ` +
@@ -1707,6 +2067,15 @@
     }
     if (expandEverythingBtn) expandEverythingBtn.addEventListener("click", expandEverything);
     if (resetViewBtn) resetViewBtn.addEventListener("click", resetCurrentView);
+    [mobileViewToggle, mobileBrowseSheetBtn].filter(Boolean).forEach((button) => {
+      button.addEventListener("click", toggleMobilePresentation);
+    });
+    if (mobileDiscoveryClear) mobileDiscoveryClear.addEventListener("click", clearFacets);
+    if (mobileBrowseMedia.addEventListener) {
+      mobileBrowseMedia.addEventListener("change", () => {
+        if (activeView === "master" && allData.length) renderLoadedView(allData, true);
+      });
+    }
     if (wrapCellsToggle) {
       wrapCellsToggle.addEventListener("change", () => updateViewSetting("wrapCells", wrapCellsToggle.checked));
     }
@@ -1757,10 +2126,6 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
-    rowDetails.addEventListener("keydown", trapRowDetailsFocus);
-    [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn].filter(Boolean).forEach((control) => {
-      control.addEventListener("keydown", trapRowDetailsFocus);
-    });
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
     }

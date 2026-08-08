@@ -17,7 +17,7 @@ PR remains the change record for that configuration.
 
 ---
 
-## Item 1 — Cover both Playwright specs in the JS-syntax check — ✅ APPLIED 2026-08-08
+## Item 1 — Cover every Playwright spec in the JS-syntax check — ✅ APPLIED 2026-08-08
 
 **Why:** `.github/workflows/ci.yml` syntax-checks only
 `tests/csv-export.spec.js`. A syntax error in
@@ -66,7 +66,7 @@ catches every spec early.
 ### How to verify it worked
 
 After CI runs, the **"Check JavaScript syntax"** step log should show no output
-and exit 0. To confirm the glob actually covers both specs, you can temporarily
+and exit 0. To confirm the glob actually covers every spec, you can temporarily
 introduce a typo in `tests/column-layout.spec.js` locally and run:
 
 ```bash
@@ -372,7 +372,7 @@ to confirm, open `.github/workflows/ci.yml` and check the step reads:
 
 ```yaml
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
@@ -388,7 +388,6 @@ to confirm, open `.github/workflows/ci.yml` and check the step reads:
 - If you would rather go through a branch/PR, choose **"Create a new branch"**
   in the commit dialog instead — but then merge it before the change takes
   effect on `main`.
-- The data fixes from this session (the stale 50491 Veritas decision row and
-  the doc cleanups) are already committed on `arena/019fe11d-docsheet`; push
-  and open a PR for that branch separately to ship them — they do **not**
-  require any workflow edit.
+- Historical note: the stale-50491 and related documentation fixes from
+  `arena/019fe11d-docsheet` have since merged to `main`; no owner workflow
+  edit or follow-up PR is required for that completed batch.

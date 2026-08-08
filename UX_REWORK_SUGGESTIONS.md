@@ -12,6 +12,14 @@ Two owner directives are already applied in this session:
 - **Curated-master badges read "CM"** (full phrase stays in the tooltip,
   column header, filter dropdown, and active-filter chip).
 
+> **Implementation update — 2026-08-08:** the former P0 facets/stats work and
+> the mobile browse proposal are now shipped. Phone-sized Everything opens as
+> expandable work cards with direct Source/Stream actions, a persistent
+> Spreadsheet escape hatch, and horizontal Series/Timeline discovery rails that
+> share the desktop facet state. The browser suite is now **18** tests; the
+> earlier 115-test figure below is historical (the deterministic Python suite is
+> now **125** tests at 91% coverage).
+
 ---
 
 ## 1. Information architecture
@@ -88,10 +96,9 @@ rows today:
 - **Subtle row-striping per work:** when consecutive rows share a `work_id`,
   give them a faint shared left border or alternating band so parts/editions
   read as a family at a glance.
-- **A "collapse parts" toggle** in View settings that rolls a work's parts
-  into one row (count badge "3 parts") and expands on click — useful for a
-  high-level browse mode, with the current one-row-per-edition as the default
-  "expanded" review mode.
+- **Applied on phones:** Browse mode rolls rows into work stacks and expands
+  editions/parts on tap. A desktop View-settings equivalent remains optional;
+  the full one-row-per-edition Tabulator table is still the desktop default.
 
 ### 2d. Linkify more cells consistently
 URL columns already render links. Extend linkification to:
@@ -211,4 +218,6 @@ etc. Cheap navigation win.
 
 None of these require catalogue-data changes; they are all frontend
 (`docs/index.html`, `docs/app.js`, `docs/style.css`) plus optional Playwright
-coverage. The 115 Python tests and six `--check` modes are unaffected.
+coverage. The current deterministic suite has **125 Python tests**, the browser
+suite has **18 Playwright tests**, and all six generator `--check` modes remain
+the data guardrails.

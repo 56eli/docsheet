@@ -98,15 +98,72 @@ test('row details use sections and return focus to the source row', async ({ pag
   await expect(page.locator('#row-details')).toBeVisible();
   await expect(page.locator('#close-row-details')).toBeFocused();
   await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Ownership & status', 'Sources', 'Provenance']);
+  // The detail sheet's official/evidence URLs are part of the keyboard
+  // cycle; the old header-only trap made these links unreachable with Tab.
   await page.keyboard.press('Tab');
-  await expect(page.locator('#copy-filename-btn')).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(page.locator('#copy-id-btn')).toBeFocused();
-  await page.keyboard.press('Tab');
+  await expect(page.locator('#row-details-body a').first()).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
   await expect(page.locator('#close-row-details')).toBeFocused();
   await page.locator('#close-row-details').click();
   await expect(page.locator('#row-details')).toBeHidden();
   await expect(row).toBeFocused();
+});
+
+test('rapid tab changes never let a stale JSON response replace the active view', async ({ page }) => {
+  await page.route('**/manual-leads.json', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 350));
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify([{ title: 'Stale manual lead', lead_status: 'open' }]),
+    });
+  });
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  await page.getByRole('tab', { name: 'Manual Leads' }).click();
+  await page.getByRole('tab', { name: 'Everything' }).click();
+  await waitForTable(page);
+  await page.waitForTimeout(450); // allow the deliberately slow request to settle
+
+  await expect(page.locator('#view-title')).toHaveText('Everything');
+  await expect(page.getByRole('tab', { name: 'Everything' })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('.tabulator-row').first()).toContainText('Causality');
+});
+
+test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/docs/');
+
+  const browse = page.locator('#mobile-browse');
+  await expect(browse).toBeVisible();
+  await expect(page.locator('#spreadsheet')).toBeHidden();
+  await expect(page.locator('.mobile-work-card')).not.toHaveCount(0);
+
+  // The first catalogue work is a three-part DVD lecture. The card presents a
+  // compact work stack, then exposes its distinct parts only on demand.
+  const firstStack = page.locator('.mobile-work-card').first();
+  await expect(firstStack.locator('.mobile-work-title')).toContainText('Causality');
+  await firstStack.locator('summary').click();
+  await expect(firstStack.locator('.mobile-edition-card')).toHaveCount(3);
+  await expect(firstStack.locator('.mobile-edition-link').first()).toHaveText(/Source/);
+
+  // Mobile discovery rails reuse the catalogue facet state but make series and
+  // time browsing practical without a wide multi-select control.
+  const satsang = page.locator('#mobile-series-shelf button[data-mobile-value="Satsang Series"]');
+  await expect(satsang).toBeVisible();
+  await satsang.click();
+  await expect(page.locator('#search-status')).toHaveText('Showing: 25 of 365');
+  await expect(page.locator('#mobile-discovery-clear')).toBeVisible();
+  await page.locator('#mobile-discovery-clear').click();
+  await expect(page.locator('#search-status')).toHaveText('Showing: 365');
+
+  // Experts can still opt into the full responsive table, then return to cards.
+  await page.locator('#mobile-browse-sheet-btn').click();
+  await expect(page.locator('#spreadsheet')).toBeVisible();
+  await page.locator('.tabulator-row').first().waitFor();
+  await expect(page.locator('#mobile-view-toggle')).toHaveText('Browse cards');
+  await page.locator('#mobile-view-toggle').click();
+  await expect(browse).toBeVisible();
 });
 
 test('keyboard slash focuses search', async ({ page }) => {

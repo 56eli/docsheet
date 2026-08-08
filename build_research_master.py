@@ -629,8 +629,8 @@ def validate_filename_proposal_groups() -> None:
                 raise ValueError(
                     f"{FILENAME_PROPOSAL}: {column} {name!r} is used by both "
                     f"UUID {other} and UUID {row['uuid'].strip()} — filenames must be "
-                    "globally unique (v4.1: same-work carrier variants that differ "
-                    "only by carrier carry a (streaming)/(DVD) suffix)"
+                    "globally unique (v4.1: same-work non-part variants carry an explicit "
+                    "carrier or publisher suffix)"
                 )
             seen_names[f"{column}::{name}"] = row["uuid"].strip()
     groups: dict[tuple[str, str, str, str], list[dict[str, str]]] = {}
