@@ -222,7 +222,20 @@
   ];
   // Human-readable Everything-view provenance labels. Curated master records and
   // official candidates share the sheet, so the difference must be explicit.
+  // Record-type badges are intentionally compact (owner directive 2026-08-08):
+  // curated master rows read "CM" to keep the first column narrow. The full
+  // phrase stays in the badge's `title` tooltip (see statusFormatter) and in
+  // the column header / filter chips. Candidate lanes are empty today but
+  // their labels stay descriptive for when a refresh surfaces new products.
   const RECORD_TYPE_LABELS = {
+    master: "CM",
+    candidate_discovery: "Candidate · discovery",
+    candidate_veritas: "Candidate · Veritas",
+    candidate_hayhouse: "Candidate · Hay House",
+    candidate_audible: "Candidate · Audible",
+    candidate_pending_promotion: "Candidate · pending promotion",
+  };
+  const RECORD_TYPE_TITLES = {
     master: "Curated master",
     candidate_discovery: "Candidate · discovery",
     candidate_veritas: "Candidate · Veritas",
@@ -246,15 +259,19 @@
   ];
   const COLUMN_PRESETS = {
     master: {
-      // Visitor-first (owner directive 2026-08-07 PM): a first-time visitor sees
-      // the product-relevant facts — what it is, when, which edition, where to
-      // buy/listen — before any technical metadata comes into view.
-      priority: ["record_type", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
-      frozen: ["record_type", "title"],
-      // Expert columns: internal IDs, file-naming proposes, and provenance
-      // fields. Hidden by default so the catalogue opens on product info;
-      // the "Expert columns" toggle (or the Columns menu) reveals them.
-      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
+      // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08): a
+      // first-time visitor sees the proposed output file name (the most
+      // important column) immediately after the Record Type badge, then the
+      // product facts — title, series, type, edition, date, where to buy/
+      // listen — before any technical metadata comes into view.
+      priority: ["record_type", "proposed_filename", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
+      frozen: ["record_type", "proposed_filename", "title"],
+      // Expert columns: internal IDs and provenance fields. Hidden by default
+      // so the catalogue opens on the file name + product info; the "Expert
+      // columns" toggle (or the Columns menu) reveals them. proposed_filename
+      // is intentionally NOT here anymore — it is visible by default (owner
+      // directive 2026-08-08).
+      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
       // Owner-directed 2026-08-04: park the Work grouping column right after
       // Legacy ID (the empty Location placeholders it used to precede were
       // dropped from the schema by owner ruling 2026-08-07).
@@ -471,10 +488,14 @@
       chips.push(["Search", activeSearchQuery]);
     }
     if (activeReviewFilter) {
-      chips.push([
-        humanizeField(activeReviewFilter.field),
-        statusLabel(activeReviewFilter.field, activeReviewFilter.value),
-      ]);
+      const field = activeReviewFilter.field;
+      const raw = activeReviewFilter.value;
+      // Filter chips spell out the full record-type label (e.g. "Curated
+      // master") even though the in-cell badge is the compact "CM".
+      const full = field === "record_type" && RECORD_TYPE_TITLES[raw]
+        ? RECORD_TYPE_TITLES[raw]
+        : statusLabel(field, raw);
+      chips.push([humanizeField(field), full]);
     }
 
     activeFilters.hidden = chips.length === 0;
@@ -751,10 +772,13 @@
   function statusFormatter(cell) {
     const value = String(cell.getValue() ?? "");
     if (!value) return "";
+    const field = cell.getColumn().getField();
     const badge = document.createElement("span");
     badge.className = `status-badge ${statusClass(value)}`;
-    badge.textContent = statusLabel(cell.getColumn().getField(), value);
-    badge.title = value;
+    badge.textContent = statusLabel(field, value);
+    // Compact record-type badges (e.g. "CM") carry their full label in the
+    // tooltip; everything else shows the raw status value on hover.
+    badge.title = (field === "record_type" && RECORD_TYPE_TITLES[value]) || value;
     return badge;
   }
 
@@ -951,7 +975,14 @@
     )].sort((a, b) => a.localeCompare(b));
     const allOption = new Option(`All ${humanizeField(field)} values`, "");
     reviewFilter.add(allOption);
-    values.forEach((value) => reviewFilter.add(new Option(statusLabel(field, value), value)));
+    values.forEach((value) => {
+      // Dropdown options spell out the full record-type label (e.g. "Curated
+      // master") even though the in-cell badge is the compact "CM".
+      const label = field === "record_type" && RECORD_TYPE_TITLES[value]
+        ? RECORD_TYPE_TITLES[value]
+        : statusLabel(field, value);
+      reviewFilter.add(new Option(label, value));
+    });
     reviewToolbar.hidden = false;
     reviewFilterHint.textContent = `${values.length} ${humanizeField(field).toLowerCase()} values`;
     reviewFilter.dataset.field = field;

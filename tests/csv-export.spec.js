@@ -80,9 +80,11 @@ test('Everything view separates curated master records from candidates', async (
   await waitForTable(page);
 
   // The provenance column must exist and be frozen at the front of the sheet.
+  // Curated master badges read "CM" (compact label; full phrase is in the
+  // tooltip) per owner directive 2026-08-08.
   await expect(page.locator('.tabulator-col[tabulator-field="record_type"]')).toBeVisible();
   await expect(page.locator('.tabulator-cell[tabulator-field="record_type"]').first())
-    .toContainText(/Curated master|Candidate/);
+    .toContainText(/CM|Candidate/);
 
   // Derive the expected provenance state from the committed data: after the
   // 2026-08-07 rulings the Everything view holds 365 curated masters and 0
@@ -122,8 +124,11 @@ test('Everything view separates curated master records from candidates', async (
   const badges = page.locator('.tabulator-cell[tabulator-field="record_type"] .status-badge');
   expect(await badges.count()).toBeGreaterThan(0);
   for (const text of await badges.allTextContents()) {
-    expect(text).toBe('Curated master');
+    // In-cell badge is the compact "CM"; the full "Curated master" phrase
+    // lives in its tooltip (title attribute).
+    expect(text).toBe('CM');
   }
+  await expect(badges.first()).toHaveAttribute('title', 'Curated master');
 });
 
 test('edition model columns render on the Everything tab', async ({ page }) => {
