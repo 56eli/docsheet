@@ -1230,3 +1230,190 @@ body {
   .dataset-tabs { padding: 7px 10px; }
   .view-summary { padding: 9px 10px; }
 }
+
+/* ==========================================================================
+   2026-08-08 UX pass: faceted filters, clickable stats, monospace filename,
+   copy-file-name action, work-group row striping, carrier color dots.
+   ========================================================================== */
+
+/* ---- Faceted filter bar (catalogue view only) ---- */
+.facet-bar {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  padding: 8px 16px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.facet {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.facet-label { font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+.facet select {
+  min-width: 130px;
+  max-width: 220px;
+  padding: 4px 6px;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.facet select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.facet-clear {
+  padding: 6px 10px;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-radius: 6px;
+  cursor: pointer;
+}
+.facet-clear:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+
+/* ---- Removable filter chips ---- */
+.filter-chip.filter-chip-removable { cursor: pointer; }
+.filter-chip.filter-chip-removable:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.filter-chip.filter-chip-removable::after {
+  content: "×";
+  margin-left: 6px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* ---- Stats chips are now buttons ---- */
+button.stat-chip {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+button.stat-chip:hover b { color: var(--accent); }
+
+/* ---- Proposed file name: the lead column reads like a file explorer ---- */
+#spreadsheet .tabulator .tabulator-cell[tabulator-field="proposed_filename"] {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 12.5px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+/* Color the file extension as a muted suffix so carriers are scannable. */
+#spreadsheet .tabulator .tabulator-cell[tabulator-field="proposed_filename"] .ext {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ---- Row details: copy file name action ---- */
+.row-details-actions { display: flex; gap: 8px; align-items: center; }
+.row-details-copy {
+  padding: 6px 10px;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-radius: 6px;
+  cursor: pointer;
+}
+.row-details-copy:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+
+/* ---- Carrier color dots in the Edition column ---- */
+#spreadsheet .tabulator .tabulator-cell[tabulator-field="edition"] .carrier-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.carrier-dot.dot-DVD { background: #1a73e8; }
+.carrier-dot.dot-CD { background: #188038; }
+.carrier-dot.dot-audiobook { background: #e8710a; }
+.carrier-dot.dot-streaming { background: #9334e6; }
+.carrier-dot.dot-book { background: #5f6368; }
+:root.dark .carrier-dot.dot-DVD { background: #7aa7ff; }
+:root.dark .carrier-dot.dot-CD { background: #6fd38a; }
+:root.dark .carrier-dot.dot-audiobook { background: #f5a25d; }
+:root.dark .carrier-dot.dot-streaming { background: #c79af0; }
+:root.dark .carrier-dot.dot-book { background: #b6b9bd; }
+
+/* ---- Work-group striping: consecutive rows sharing a work_id get a faint
+   left accent so parts/editions read as a family. ---- */
+#spreadsheet .tabulator .tabulator-row.work-group-start {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* ---- Keyboard row focus + shortcuts overlay ---- */
+#spreadsheet .tabulator .tabulator-row.row-keyboard-focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: color-mix(in srgb, #000 45%, transparent);
+}
+.shortcuts-card {
+  width: min(440px, 100%);
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+.shortcuts-card h2 { margin: 0 0 12px; font-size: 16px; }
+.shortcuts-card dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  margin: 0 0 16px;
+}
+.shortcuts-card kbd {
+  display: inline-block;
+  min-width: 22px;
+  padding: 2px 7px;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 12px;
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+}
+.shortcuts-close {
+  padding: 7px 14px;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+/* ---- Facet bar mobile wrap ---- */
+@media (max-width: 720px) {
+  .facet-bar { padding: 8px 10px; gap: 8px; }
+  .facet select { min-width: 120px; max-width: 160px; }
+  .row-details-actions { flex-direction: column; align-items: flex-end; }
+}
