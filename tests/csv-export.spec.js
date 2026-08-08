@@ -87,8 +87,8 @@ test('Everything view separates curated master records from candidates', async (
     .toContainText(/CM|Candidate/);
 
   // Derive the expected provenance state from the committed data: after the
-  // 2026-08-07 rulings the Everything view holds 365 curated masters and 0
-  // unreviewed candidates, but a future candidate lane may reopen it.
+  // 2026-08-08 D-01 collapse the Everything view holds 362 curated masters
+  // and 0 unreviewed candidates, but a future candidate lane may reopen it.
   const { expectedMasterCount, expectedTotalCount, recordTypes } = await page.evaluate(async () => {
     const rows = await fetch('/docs/master.json').then((response) => response.json());
     return {

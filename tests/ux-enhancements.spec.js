@@ -25,7 +25,7 @@ test('faceted filters narrow the Everything view and add removable chips', async
   await expect(page.locator('#facet-bar')).toBeVisible();
 
   const totalRows = await activeRowCount(page);
-  expect(totalRows).toBe(365);
+  expect(totalRows).toBe(362);
 
   // Select one series in the faceted Series dropdown (programmatic select +
   // change event, since a native multi-select would need Ctrl/Cmd).
@@ -152,10 +152,10 @@ test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch
   const satsang = page.locator('#mobile-series-shelf button[data-mobile-value="Satsang Series"]');
   await expect(satsang).toBeVisible();
   await satsang.click();
-  await expect(page.locator('#search-status')).toHaveText('Showing: 25 of 365');
+  await expect(page.locator('#search-status')).toHaveText('Showing: 25 of 362');
   await expect(page.locator('#mobile-discovery-clear')).toBeVisible();
   await page.locator('#mobile-discovery-clear').click();
-  await expect(page.locator('#search-status')).toHaveText('Showing: 365');
+  await expect(page.locator('#search-status')).toHaveText('Showing: 362');
 
   // Experts can still opt into the full responsive table, then return to cards.
   await page.locator('#mobile-browse-sheet-btn').click();

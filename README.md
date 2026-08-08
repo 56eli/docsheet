@@ -102,7 +102,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (365) |
+| `master` | A curated master catalogue record (362) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -137,16 +137,19 @@ refresh lands its unmatched products there instead of in the curated views.
 
 ## Current reviewed catalogue state
 
-The current curated master has **365** records (309 `lecture`, 40 `book`,
+The current curated master has **362** records (306 `lecture`, 40 `book`,
 8 `discussion`, 7 `highlight`, 1 `other` — no untyped records remain since the
 2026-08-07 rulings that record 246 was the audio edition already held as master
-329 and that record 309 duplicated the Oxford talk already held as master 221),
-**281** catalogue codes, **72** retained exclusions,
+329 and that record 309 duplicated the Oxford talk already held as master 221;
+the 2026-08-08 D-01 collapse retired duplicate streaming masters 225/226/227,
+which shared their primary Veritas URL with the promoted DVD masters 311/310
+per the owner's "one DVD/CD master with streaming in `reference_url_1`" ruling),
+**278** catalogue codes, **75** retained exclusions,
 **134** approved source overrides (including the four Nightingale-Conant audio
 editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
 the three academic-book Amazon links moved onto the curated column on 2026-08-08,
 and the official Veritas product link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed),
-**39** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
+**39** promoted and **0** unpromoted official candidates, **340** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates) except an explicit publisher suffix when two same-work audiobook editions would otherwise collide, Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
@@ -154,8 +157,8 @@ At the 2026-08-03 live-source checkpoint (historical snapshot), every entry was
 verified field-by-field against the Veritas Publishing API: 191/191 products
 reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
-additions are reflected in the current generated inventory (365 master records,
-191 Veritas products, 343 relationships). See
+additions are reflected in the current generated inventory (362 master records,
+191 Veritas products, 340 relationships). See
 [FULL_STACK_AUDIT_2026-08-08_ARENA.md](FULL_STACK_AUDIT_2026-08-08_ARENA.md)
 for the current full-stack audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; the archive reports preserve earlier checkpoints.
@@ -226,8 +229,9 @@ stores the `candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while
 the promotion registries (`data/manual_candidate_promotions.csv`,
 `data/edition_promotions.csv`) store the bare key. A third convention: despite
 its name, the master `uuid` is a **stable compact integer id**, not a UUID —
-values run 1–372 with gaps where duplicate records were retired (246, 249,
-264, 281, 284, 302, 309); ids are never reissued or renumbered.
+values run 1–372 with gaps where duplicate records were retired (225, 226,
+227, 246, 249, 264, 281, 284, 302, 309); ids are never reissued or
+renumbered.
 
 ### Edition model (work × carrier)
 

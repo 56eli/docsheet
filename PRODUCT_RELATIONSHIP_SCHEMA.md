@@ -56,8 +56,10 @@ gap (the 11 promoted candidates 309–319, whose promotion path did not mint
 relationship rows) is moot: those masters now carry their URL and therefore
 derive their primary relationship automatically.
 
-As of 2026-08-08 the relationship layer renders **343 rows = 336 derived
-primary + 7 reviewed `related_material`** across 187 distinct products. The
+As of 2026-08-08 the relationship layer renders **340 rows = 333 derived
+primary + 7 reviewed `related_material`** across 187 distinct products (the
+2026-08-08 D-01 collapse retired duplicate streaming masters 225/226/227,
+which had shared primary Veritas URLs with promoted DVD masters 311/310). The
 2006 *Live Your Life Like a Prayer* product is one such three-disc lecture
 set, with a primary relationship for each of the master’s Part 1, Part 2, and
 Part 3 records (all three derived from the same master URL). Seven reviewed

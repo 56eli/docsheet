@@ -136,7 +136,7 @@ Reviewers need to know *why* a row exists:
   referenced.
 - For product relationships, show the **derived-vs-stored distinction**
   visually (a "primary (auto)" vs "related (reviewed)" badge) so reviewers
-  trust the 336 derived rows and focus on the 7 hand-curated ones.
+  trust the 333 derived rows and focus on the 7 hand-curated ones.
 
 ### 3c. Keyboard-driven review
 For someone processing a queue:
@@ -181,7 +181,7 @@ them do something:
 ## 5. Performance and data
 
 ### 5a. Virtualization is fine; keep payloads lean
-365 master rows is small. The 378 KB `master.json` and 326 KB
+362 master rows is small. The 366 KB `master.json` and 316 KB
 `product-relationships.json` are fine over broadband but heavy on mobile.
 
 - The current per-fetch JSON is already split per tab, which is good.
@@ -189,14 +189,14 @@ them do something:
   supports this automatically if the file is compressed at build time, or rely
   on Pages' transparent compression — verify).
 - Keep the full row object for the drawer, but the initial table columns
-  don't need every field on every row. Not worth the complexity at 365 rows.
+  don't need every field on every row. Not worth the complexity at 362 rows.
 
 ### 5b. Make the stats strip interactive
-The five chips (365 records, 72 exclusions, 131 overrides, 343 relationships,
+The five chips (362 records, 75 exclusions, 134 overrides, 340 relationships,
 7 compilations) are currently display-only. Clicking a chip could:
-- "365 records" → switch to Everything
-- "72 exclusions" → switch to Master Exclusions
-- "343 relationships" → switch to Product Relationships
+- "362 records" → switch to Everything
+- "75 exclusions" → switch to Master Exclusions
+- "340 relationships" → switch to Product Relationships
 etc. Cheap navigation win.
 
 ---

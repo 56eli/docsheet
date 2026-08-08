@@ -8,10 +8,10 @@ retired `data/year_provenance.csv` drifted twice (its doc claimed "358 rows"
 while the file held 368), and duplicated what the master already exposes.
 Current per-source counts are derivable from `year_source` on demand.
 
-**Master baseline at last audit:** 365 records (309 lecture) after the
-2026-08-07 rulings; blank years **17** (13 intentional pre-2000 Volume Series
-+ 4 under investigation where no recording-year evidence is reachable),
-blank formats **0**.
+**Master baseline at last audit:** 362 records (306 lecture) after the
+2026-08-08 D-01 duplicate-row collapse (365 → 362); blank years **17** (13
+intentional pre-2000 Volume Series + 4 under investigation where no
+recording-year evidence is reachable), blank formats **0**.
 
 ## What `year` means per item type
 

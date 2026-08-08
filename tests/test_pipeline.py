@@ -234,7 +234,7 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result_full.returncode, 0, result_full.stderr)
         meta = json.loads((self.sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
         self.assertEqual(meta["master_items"], meta["migrated_items"])
-        self.assertEqual(meta["master_items"], 365)
+        self.assertEqual(meta["master_items"], 362)
         self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
 
 
@@ -1055,11 +1055,10 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
 
     def test_committed_state_derives_336_primary_plus_8_related(self) -> None:
         # The committed master + inventory + CSV must assemble to exactly the
-        # published relationship count: 336 derived primary + 7 related_material
-        # (was 335+8=343 before the 2026-08-07 distributor-naming audit: the approved
-        # primary-source override linking master 278 to Veritas product 50491 added one
-        # derived primary, and the stale related_material row for that same product
-        # (rel-veritas-50491-121, superseded by the primary link) was removed).
+        # published relationship count: 333 derived primary + 7 related_material
+        # = 340 total. (Was 336 + 7 = 343 before the 2026-08-08 D-01 collapse
+        # retired the duplicate streaming masters 225/226/227, which had shared
+        # Veritas primary URLs with promoted DVD masters 311/310.)
 
         tempdir = make_sandbox()
         try:
@@ -1069,10 +1068,10 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             master = bcp.read_csv(bcp.MASTER)
             veritas = bcp.read_csv(bcp.VERITAS_PRODUCTS)
             derived = bcp.derive_primary_relationships(master, veritas)
-            self.assertEqual(len(derived), 336)
-            self.assertEqual(len(derived) + 7, 343)  # 343 total relationships (336 derived + 7 related)
+            self.assertEqual(len(derived), 333)
+            self.assertEqual(len(derived) + 7, 340)  # 340 total relationships (333 derived + 7 related)
             meta = json.loads((sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
-            self.assertEqual(meta["reviewed_product_relationships"], 343)
+            self.assertEqual(meta["reviewed_product_relationships"], 340)
         finally:
             tempdir.cleanup()
 
@@ -1620,6 +1619,14 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
                 ",2,225; 311,Devotion to Truth Talk | Devotion to Truth Talk,",
                 ",1,311,Devotion to Truth Talk,",
             )
+            # After the 2026-08-08 D-01 collapse the committed inventory is
+            # already a single-ID row; seed the drift in the opposite direction
+            # (311 -> "225; 311") to prove sync re-derives it back to 311.
+            if drifted == text:
+                drifted = text.replace(
+                    ",1,311,Devotion to Truth Talk,",
+                    ",2,225; 311,Devotion to Truth Talk | Devotion to Truth Talk,",
+                )
             self.assertNotEqual(drifted, text)  # fixture actually drifted the row
             inv.write_text(drifted, encoding="utf-8")
 
@@ -1627,11 +1634,11 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             with inv.open(newline="", encoding="utf-8") as handle:
                 row = next(r for r in csv.DictReader(handle) if r["veritas_product_id"] == "55473")
-            self.assertEqual(row["normalized_title_match_count"], "2")
-            self.assertEqual(row["matched_master_uuids"], "225; 311")
+            self.assertEqual(row["normalized_title_match_count"], "1")
+            self.assertEqual(row["matched_master_uuids"], "311")
             self.assertEqual(
                 row["matched_master_titles"],
-                "Devotion to Truth Talk | Devotion to Truth Talk",
+                "Devotion to Truth Talk",
             )
             # reviewed columns are never rewritten
             self.assertEqual(row["mapping_status"], "matched_by_primary_source")
@@ -1648,7 +1655,15 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
             sandbox = Path(tempdir.name)
             inv = sandbox / "data" / "veritas_official_products.csv"
             text = inv.read_text(encoding="utf-8")
+            # After the 2026-08-08 D-01 collapse the committed inventory is
+            # already a single-ID row (54219 -> 310); seed drift by re-introducing
+            # the retired multi-ID form and assert --check refuses it.
             drifted = text.replace(",3,226; 227; 310,", ",1,310,")
+            if drifted == text:
+                drifted = text.replace(
+                    ",1,310,",
+                    ",3,226; 227; 310,",
+                )
             self.assertNotEqual(drifted, text)
             inv.write_text(drifted, encoding="utf-8")
 
@@ -1816,22 +1831,28 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertIn("all", row["purpose"].lower())
 
     def test_filename_proposal_filenames_are_globally_unique(self) -> None:
-        # v4.1 guard (2026-08-07): the pipeline validator re-checks this on
-        # every build; this committed-state test pins the known-clean set and
-        # the carrier-suffix resolution of the 225/311 collision.
+        # v4.1 guard (2026-08-07): the pipeline validator re-checks global
+        # uniqueness on every build. The 2026-08-08 D-01 collapse retired the
+        # 225/226/227 streaming duplicates in favour of the single promoted
+        # DVD masters 311/310, so the proposal now holds exactly one filename
+        # per current master with no carrier-suffix collision to resolve.
         with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
             rows = list(csv.DictReader(handle))
         for column in ("proposed_filename", "proposed_filename_display"):
             names = [row[column].strip() for row in rows]
             self.assertEqual(len(names), len(set(names)), f"duplicate {column} values")
         by_uuid = {row["uuid"]: row for row in rows}
-        self.assertEqual(
-            by_uuid["225"]["proposed_filename"],
-            "2003 - Devotion to Truth Talk (streaming).mp4",
-        )
+        # Retired UUIDs must be gone from the proposal.
+        for retired in ("225", "226", "227"):
+            self.assertNotIn(retired, by_uuid)
+        # The surviving single-DVD masters use plain names.
         self.assertEqual(
             by_uuid["311"]["proposed_filename"],
-            "2003 - Devotion to Truth Talk (DVD).mp4",
+            "2003 - Devotion to Truth Talk.mp4",
+        )
+        self.assertEqual(
+            by_uuid["310"]["proposed_filename"],
+            "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
         )
 
     def test_same_work_audiobooks_use_source_suffixes_not_audiobook_labels(self) -> None:
@@ -1863,8 +1884,14 @@ class DocumentationCurrencyTests(unittest.TestCase):
             sandbox = Path(tempdir.name)
             proposal = sandbox / "data/filename_proposal_YYYYMM.csv"
             text = proposal.read_text(encoding="utf-8")
+            # Introduce a deliberate duplicate: rename master 310's proposed
+            # filename onto master 311's. The exact 225/311 carrier-suffix
+            # collision was retired by the 2026-08-08 D-01 collapse, so seed
+            # the duplicate from the current clean set.
             seeded = text.replace(
-                "2003 - Devotion to Truth Talk (DVD).mp4", "2003 - Devotion to Truth Talk (streaming).mp4"
+                "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
+                "2003 - Devotion to Truth Talk.mp4",
+                1,
             )
             self.assertNotEqual(seeded, text)
             proposal.write_text(seeded, encoding="utf-8")

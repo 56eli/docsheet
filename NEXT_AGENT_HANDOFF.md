@@ -1,10 +1,77 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 (post-merge verification) — current handoff for branch
-`arena/019fe244-docsheet` (PR #37, merged). See
-`FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
-`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
-session log at the bottom of §6. Headline results this session:
+**Prepared:** 2026-08-08 (post-D-01-collapse verification) — current handoff for
+branch `arena/019fe2db-docsheet` (PR #39, open). See
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (current independent audit +
+§10 postscript with before/after counts) and the session log at the bottom of
+§6. The declared-current Arena audit
+(`FULL_STACK_AUDIT_2026-08-08_ARENA.md`) and the fresh-eyes pass
+(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) remain at root; earlier
+2026-08-08 audits are in `archive/`. Headline results this session:
+- **Independent full-stack audit (`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`):**
+  all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
+  Python 3.11 venv (pandas 3.0.5 / coverage 7.15.4); independent pandas probes
+  bypassing the project's own validators surfaced 8 catalogue findings
+  (D-01…D-08), 3 build/code findings (B-01…B-03), and 5 doc/handoff drifts
+  (DOC-01…DOC-05). No critical/data-loss issues.
+- **D-01 duplicate-row collapse (owner-selected "collapse"):** two work
+  families contained both a raw `format=streaming` row and a promoted
+  `format=DVD` row sharing the same primary Veritas URL
+  (`w-devotion-to-truth-talk` = 225/311; `w-mind-heart-and-service` =
+  226/227/310). Retired the duplicate streaming masters 225/226/227 and kept
+  311/310 as the single DVD masters with the streaming page in
+  `reference_url_1` (matching the 278–285 precedent). Net counts: 365 →
+  **362 masters**, 281 → **278 codes**, 72 → **75 exclusions**, 341 → **338
+  work-family memberships**, 336 → **333 derived primary relationships**,
+  343 → **340 total relationships**, 365 → **362 filename rows**. 134
+  overrides, 39 promotions, 7 compilations, 191 works, and 5 mapping
+  decisions unchanged. UUID gaps are now `{225, 226, 227, 246, 249, 264,
+  281, 284, 302, 309}`.
+- **Touches for the collapse:** ledger raw rows 249/250/251 `item` →
+  `duplicate`; promoted candidates 54219/55473 now carry `proposed_owned=true`
+  (ownership re-homed from the retired raw rows); `work_families.csv`
+  memberships 225/226/227 removed and the 310/311 evidence notes rewritten;
+  `series_category_mapping.csv` 54219 → 310 and 55473 → 311;
+  `veritas_official_products.csv` mirrors re-derived by
+  `sync_inventory_mirrors.py`; `filename_proposal_YYYYMM.csv` retired rows
+  removed and master 311's `(DVD)` carrier suffix reverted to plain
+  `2003 - Devotion to Truth Talk.mp4`.
+- **Ledger `proposed_month` normalisation:** fixed a pre-existing pandas
+  float-formatting regression (`"1.0"…"12.0"`) back to zero-padded
+  `"01"…"12"`. The broken values were breaking the series-compilation
+  validator's month-range string comparison (exposed mid-fix).
+- **Tests:** 125/125 deterministic (4 fixtures updated for the new mirror
+  state: `DerivedPrimaryRelationships` 336 → 333, the two
+  `SyncInventoryMirrors` drift fixtures, `reduced_pending_view` 365 → 362,
+  and the filename-uniqueness guard reseeded onto the current clean set);
+  coverage remains 91% (lowest module 88%, floor 85%); `node --check` clean;
+  `npm audit` 0 vulns.
+- **Docs refreshed:** README, NEXT_AGENT_HANDOFF (this file),
+  MIGRATION_REVIEW_LEDGER, EDITION_MODEL_PROPOSAL,
+  FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
+  UX_REWORK_SUGGESTIONS, YEAR_COLUMN_PROVENANCE.
+- **Left open for owner triage (no code/data changes in PR #39):**
+  - **D-04 (Low/Med):** Amazon paperback URLs for masters 359–361 still sit
+    in both `source_url_amazon` and `reference_url_1`; the UI labels
+    `reference_url_1` "Streaming" and renders a "Stream" action that opens a
+    paperback page. The 369–372 precedent cited in the earlier D-4
+    resolution does not actually duplicate the URL.
+  - **B-01 (Med):** two Spanish Audible titles are hardcoded into
+    `build_catalogue_pages.py:797–815` (CSV 36 → JSON 38), bypassing the
+    "generated from committed CSV inputs" invariant.
+  - **B-02/B-03, D-02 (moot after retirement), D-03, D-05–D-08,
+    DOC-01–DOC-05** — described in the independent audit.
+  - Open Issue #18 (ownership cross-check vs lak.nz Drive) still needs
+    triage; `main` branch-protection / required-status-checks could not be
+    observed with this token (403).
+
+**Previous (2026-08-08 follow-up, branch `arena/019fe244-docsheet`, PR #37
+merged):** independent full-stack audit
+(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
+and doc fixes (D-01…D-05 from that audit, S-1…S-8 hygiene). The
+fresh-eyes baseline is preserved in
+`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
+session:
 - **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
   one new live-data defect (stale Veritas decision row for
@@ -130,13 +197,13 @@ Sandbox traps learned the hard way (all still true):
 | Layer | Count | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
-| Everything view | **365** | 365 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
-| Exclusions / source overrides | 72 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 134 incl. the 18 Amazon direct links, the 3 academic-book Amazon links moved onto the curated `source_url_amazon` column on 2026-08-08, and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
-| Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence) |
-| Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
+| Curated master | 362 | 306 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); duplicate streaming masters 225/226/227 retired 2026-08-08 (D-01 collapse into promoted DVD masters 311/310 per the one-DVD/CD-master-with-streaming-reference ruling); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
+| Everything view | **362** | 362 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
+| Exclusions / source overrides | 75 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 134 incl. the 18 Amazon direct links, the 3 academic-book Amazon links moved onto the curated `source_url_amazon` column on 2026-08-08, and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08); the 3 D-01 duplicate raw rows (249/250/251) were moved from `item` to `duplicate` on 2026-08-08 |
+| Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence); the D-01 collapse re-derived 54219 / 55473 to single master IDs (310 / 311) |
+| Everything relationships | 340 product relationships, 7 series compilations | 333 derived primary + 7 related_material |
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
-| Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
+| Work families | 191 works / 338 members approved; work_id coverage 362/362 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
 | Test suite | **125 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
@@ -219,8 +286,9 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
   **✅ FULLY APPLIED — see §3 "Current verified state" for the authoritative
-  counts** (365 masters, 191 works / 341 memberships, 134 overrides, 343
-  relationships, 281 codes, 24 minted edition rows 320–343, filename proposal
+  counts** (362 masters, 191 works / 338 memberships in `work_families.csv`
+  plus 24 edition-promotion work_ids covering 362/362, 134 overrides, 340
+  relationships, 278 codes, 24 minted edition rows 320–343, filename proposal
   v4.1). The paragraph below is the **superseded 2026-08-03/04 proposal
   snapshot** retained for provenance; do not treat its counts (358 rows,
   201 works, 127 overrides, 336 relationships, Everything 378) as current.
@@ -562,7 +630,7 @@ Owner requested a phone-first catalogue experience rather than forcing the
 spreadsheet grid into a narrow viewport. The Everything view now defaults to
 **Browse mode** at `max-width: 720px`:
 
-- Groups the 365 master rows into compact `work_id` stacks; expand a stack to
+- Groups the 362 master rows into compact `work_id` stacks; expand a stack to
   inspect its editions/parts, use **Source** / **Stream** quick links, or open
   the existing full detail drawer.
 - Keeps filtering/search state and the whole-view CSV export working from card

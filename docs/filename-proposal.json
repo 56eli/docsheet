@@ -3360,51 +3360,6 @@
     "proposed_filename_display": "2004 - The Presence of Spiritual Awareness [3/3].mp4"
   },
   {
-    "uuid": "225",
-    "work_id": "w-devotion-to-truth-talk",
-    "item_type": "lecture",
-    "series": "On The Road Talk Series",
-    "year": "2003",
-    "month": "",
-    "format": "streaming",
-    "title": "Devotion to Truth Talk",
-    "clean_title": "Devotion to Truth Talk",
-    "part_index": "",
-    "part_total": "",
-    "proposed_filename": "2003 - Devotion to Truth Talk (streaming).mp4",
-    "proposed_filename_display": "2003 - Devotion to Truth Talk (streaming).mp4"
-  },
-  {
-    "uuid": "226",
-    "work_id": "w-mind-heart-and-service",
-    "item_type": "lecture",
-    "series": "On The Road Talk Series",
-    "year": "2003",
-    "month": "",
-    "format": "streaming",
-    "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
-    "clean_title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
-    "part_index": "1",
-    "part_total": "2",
-    "proposed_filename": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [1-2].mp4",
-    "proposed_filename_display": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [1/2].mp4"
-  },
-  {
-    "uuid": "227",
-    "work_id": "w-mind-heart-and-service",
-    "item_type": "lecture",
-    "series": "On The Road Talk Series",
-    "year": "2003",
-    "month": "",
-    "format": "streaming",
-    "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
-    "clean_title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
-    "part_index": "2",
-    "part_total": "2",
-    "proposed_filename": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [2-2].mp4",
-    "proposed_filename_display": "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality [2/2].mp4"
-  },
-  {
     "uuid": "228",
     "work_id": "w-spiritual-will",
     "item_type": "lecture",
@@ -4556,8 +4511,8 @@
     "clean_title": "Devotion to Truth Talk",
     "part_index": "",
     "part_total": "",
-    "proposed_filename": "2003 - Devotion to Truth Talk (DVD).mp4",
-    "proposed_filename_display": "2003 - Devotion to Truth Talk (DVD).mp4"
+    "proposed_filename": "2003 - Devotion to Truth Talk.mp4",
+    "proposed_filename_display": "2003 - Devotion to Truth Talk.mp4"
   },
   {
     "uuid": "312",
