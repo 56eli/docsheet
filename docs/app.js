@@ -50,22 +50,30 @@
   const activeFilters = $("active-filters");
   const filterChips = $("filter-chips");
   const clearAllFiltersBtn = $("clear-all-filters");
+  const facetBar = $("facet-bar");
+  const facetSeries = $("facet-series");
+  const facetYear = $("facet-year");
+  const facetItemType = $("facet-item-type");
+  const facetFormat = $("facet-format");
+  const facetOwned = $("facet-owned");
+  const facetClear = $("facet-clear");
+  const copyFilenameBtn = $("copy-filename-btn");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
     reviewOverview: { file: "review-overview.json", label: "Review Overview", exportName: "hawkins-review-overview.csv" },
-    manualCandidates: { file: "manual-candidates.json", label: "Master Candidates", exportName: "hawkins-master-candidates.csv" },
+    manualCandidates: { file: "manual-candidates.json", label: "Candidates", exportName: "hawkins-master-candidates.csv" },
     manualLeads: { file: "manual-leads.json", label: "Manual Leads", exportName: "hawkins-manual-leads.csv" },
-    masterExclusions: { file: "master-exclusions.json", label: "Master Exclusions", exportName: "hawkins-master-exclusions.csv" },
+    masterExclusions: { file: "master-exclusions.json", label: "Exclusions", exportName: "hawkins-master-exclusions.csv" },
     migrationReview: { file: "migration-review.json", label: "Migration Review", exportName: "hawkins-migration-review.csv" },
     sourceOverrides: { file: "source-overrides.json", label: "Source Overrides", exportName: "hawkins-source-overrides.csv" },
     officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
     newWorkReview: { file: "new-work-review.json", label: "New Work Review", exportName: "hawkins-new-work-review.csv" },
-    veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Veritas Decisions", exportName: "hawkins-veritas-decisions.csv" },
+    veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Decisions", exportName: "hawkins-veritas-decisions.csv" },
     productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
-    seriesCompilations: { file: "series-compilations.json", label: "Series Compilations", exportName: "hawkins-series-compilations.csv" },
+    seriesCompilations: { file: "series-compilations.json", label: "Compilations", exportName: "hawkins-series-compilations.csv" },
     internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
-    publishers: { file: "publishers.json", label: "Approved Publishers", exportName: "hawkins-approved-publishers.csv" },
+    publishers: { file: "publishers.json", label: "Publishers", exportName: "hawkins-approved-publishers.csv" },
     veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
     hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
     audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
@@ -222,7 +230,20 @@
   ];
   // Human-readable Everything-view provenance labels. Curated master records and
   // official candidates share the sheet, so the difference must be explicit.
+  // Record-type badges are intentionally compact (owner directive 2026-08-08):
+  // curated master rows read "CM" to keep the first column narrow. The full
+  // phrase stays in the badge's `title` tooltip (see statusFormatter) and in
+  // the column header / filter chips. Candidate lanes are empty today but
+  // their labels stay descriptive for when a refresh surfaces new products.
   const RECORD_TYPE_LABELS = {
+    master: "CM",
+    candidate_discovery: "Candidate · discovery",
+    candidate_veritas: "Candidate · Veritas",
+    candidate_hayhouse: "Candidate · Hay House",
+    candidate_audible: "Candidate · Audible",
+    candidate_pending_promotion: "Candidate · pending promotion",
+  };
+  const RECORD_TYPE_TITLES = {
     master: "Curated master",
     candidate_discovery: "Candidate · discovery",
     candidate_veritas: "Candidate · Veritas",
@@ -246,15 +267,19 @@
   ];
   const COLUMN_PRESETS = {
     master: {
-      // Visitor-first (owner directive 2026-08-07 PM): a first-time visitor sees
-      // the product-relevant facts — what it is, when, which edition, where to
-      // buy/listen — before any technical metadata comes into view.
-      priority: ["record_type", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
-      frozen: ["record_type", "title"],
-      // Expert columns: internal IDs, file-naming proposes, and provenance
-      // fields. Hidden by default so the catalogue opens on product info;
-      // the "Expert columns" toggle (or the Columns menu) reveals them.
-      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
+      // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08): a
+      // first-time visitor sees the proposed output file name (the most
+      // important column) immediately after the Record Type badge, then the
+      // product facts — title, series, type, edition, date, where to buy/
+      // listen — before any technical metadata comes into view.
+      priority: ["record_type", "proposed_filename", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
+      frozen: ["record_type", "proposed_filename", "title"],
+      // Expert columns: internal IDs and provenance fields. Hidden by default
+      // so the catalogue opens on the file name + product info; the "Expert
+      // columns" toggle (or the Columns menu) reveals them. proposed_filename
+      // is intentionally NOT here anymore — it is visible by default (owner
+      // directive 2026-08-08).
+      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
       // Owner-directed 2026-08-04: park the Work grouping column right after
       // Legacy ID (the empty Location placeholders it used to precede were
       // dropped from the schema by owner ruling 2026-08-07).
@@ -288,6 +313,136 @@
   let activeView = "master";
   let activeSearchQuery = "";
   let activeReviewFilter = null;
+  // Faceted (multi-select) filters for the catalogue view. Each maps a field
+  // to a Set of selected raw values. Persisted per view in localStorage.
+  let activeFacets = {};
+
+  /* ------------------------------------------------------------------ *
+   *  Per-view UI state persistence (sort, scroll, column widths) on top
+   *  of the existing view-settings/expert persistence. Lets a reviewer
+   *  return to a tab without losing their place.
+   * ------------------------------------------------------------------ */
+  const GRID_STATE_KEY = "docsheet-grid-state";
+
+  function readGridState() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(GRID_STATE_KEY) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function writeGridState(viewName, patch) {
+    const state = readGridState();
+    state[viewName] = { ...(state[viewName] || {}), ...patch };
+    try {
+      localStorage.setItem(GRID_STATE_KEY, JSON.stringify(state));
+    } catch (err) {
+      /* storage unavailable — ignore */
+    }
+  }
+
+  function FACET_STORAGE_KEY(viewName) {
+    return `docsheet-facets-${viewName}`;
+  }
+
+  function readFacetState(viewName) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(FACET_STORAGE_KEY(viewName)) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function writeFacetState(viewName, state) {
+    try {
+      localStorage.setItem(FACET_STORAGE_KEY(viewName), JSON.stringify(state));
+    } catch (err) {
+      /* storage unavailable */
+    }
+  }
+
+  // Facet configuration: which Everything-view fields become faceted filters.
+  // `buildOptionLabel` lets us map raw values (e.g. "" for not-owned) to a
+  // human-readable option; `matchValue` extracts the comparable value(s).
+  const FACETS = [
+    { id: "series", el: () => facetSeries, field: "series" },
+    {
+      id: "year",
+      el: () => facetYear,
+      field: "year",
+      // 198X renders as "c. 1980s" but is filtered by its raw value.
+      buildOptionLabel: (value) => (value === "198X" ? "c. 1980s (198X)" : value),
+      sort: (a, b) => {
+        const na = parseInt(a, 10);
+        const nb = parseInt(b, 10);
+        if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+        return a.localeCompare(b);
+      },
+    },
+    { id: "itemType", el: () => facetItemType, field: "item_type", label: humanizeField.bind(null, "item_type") },
+    { id: "format", el: () => facetFormat, field: "format" },
+    {
+      id: "owned",
+      el: () => facetOwned,
+      field: "owned",
+      buildOptionLabel: (value) => (value === "true" ? "Owned" : value === "false" ? "Not owned" : "Not stated"),
+    },
+  ];
+
+  function populateFacets(data) {
+    if (!facetBar) return;
+    activeFacets = readFacetState(activeView);
+    FACETS.forEach((facet) => {
+      const select = facet.el();
+      if (!select) return;
+      const counts = new Map();
+      data.forEach((row) => {
+        const value = String(row[facet.field] ?? "").trim();
+        counts.set(value, (counts.get(value) || 0) + 1);
+      });
+      let values = [...counts.keys()];
+      if (facet.sort) values.sort(facet.sort);
+      else values.sort((a, b) => a.localeCompare(b));
+      // Keep the blank ("not stated"/"unknown") option last.
+      values = values.filter((v) => v !== "").concat(values.includes("") ? [""] : []);
+      const selected = new Set(activeFacets[facet.id] || []);
+      select.replaceChildren();
+      values.forEach((value) => {
+        const count = counts.get(value);
+        const label = facet.buildOptionLabel ? facet.buildOptionLabel(value) : value || "(blank)";
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = `${label} (${count})`;
+        option.selected = selected.has(value);
+        select.add(option);
+      });
+      select.size = Math.min(6, Math.max(3, values.length));
+    });
+    facetClear.hidden = Object.values(activeFacets).every((list) => !list || list.length === 0);
+  }
+
+  function clearFacets() {
+    activeFacets = {};
+    writeFacetState(activeView, {});
+    FACETS.forEach((facet) => {
+      const select = facet.el();
+      if (select) [...select.options].forEach((option) => { option.selected = false; });
+    });
+    if (facetClear) facetClear.hidden = true;
+    applyActiveFilters();
+  }
+
+  function rowMatchesFacets(row) {
+    return FACETS.every((facet) => {
+      const selected = activeFacets[facet.id];
+      if (!selected || selected.length === 0) return true;
+      const value = String(row[facet.field] ?? "").trim();
+      return selected.includes(value);
+    });
+  }
 
   /* ------------------------------------------------------------------ *
    *  Expert columns (per-view, persisted): views whose preset declares a
@@ -471,17 +626,46 @@
       chips.push(["Search", activeSearchQuery]);
     }
     if (activeReviewFilter) {
-      chips.push([
-        humanizeField(activeReviewFilter.field),
-        statusLabel(activeReviewFilter.field, activeReviewFilter.value),
-      ]);
+      const field = activeReviewFilter.field;
+      const raw = activeReviewFilter.value;
+      // Filter chips spell out the full record-type label (e.g. "Curated
+      // master") even though the in-cell badge is the compact "CM".
+      const full = field === "record_type" && RECORD_TYPE_TITLES[raw]
+        ? RECORD_TYPE_TITLES[raw]
+        : statusLabel(field, raw);
+      chips.push([humanizeField(field), full]);
     }
+    // Facet selections become chips (e.g. "Series: Satsang Series ×").
+    FACETS.forEach((facet) => {
+      const selected = activeFacets[facet.id];
+      if (!selected) return;
+      selected.forEach((value) => {
+        const label = facet.buildOptionLabel ? facet.buildOptionLabel(value) : (value || "(blank)");
+        chips.push([COLUMN_LABELS[facet.field] || humanizeField(facet.field), label, { facet: facet.id, value }]);
+      });
+    });
 
     activeFilters.hidden = chips.length === 0;
-    chips.forEach(([label, value]) => {
+    chips.forEach(([label, value, data]) => {
       const chip = document.createElement("span");
       chip.className = "filter-chip";
-      chip.textContent = `${label}: ${value}`;
+      if (data && data.facet) {
+        chip.classList.add("filter-chip-removable");
+        chip.title = "Remove this filter";
+        chip.addEventListener("click", () => {
+          activeFacets[data.facet] = (activeFacets[data.facet] || []).filter((v) => v !== data.value);
+          writeFacetState(activeView, activeFacets);
+          const select = (FACETS.find((f) => f.id === data.facet) || {}).el?.();
+          if (select) [...select.options].forEach((option) => {
+            if (option.value === data.value) option.selected = false;
+          });
+          if (facetClear) facetClear.hidden = Object.values(activeFacets).every((list) => !list || list.length === 0);
+          applyActiveFilters();
+        });
+      }
+      chip.append(
+        document.createTextNode(`${label}: ${value}`),
+      );
       filterChips.append(chip);
     });
   }
@@ -489,9 +673,18 @@
   function clearAllFilters() {
     activeSearchQuery = "";
     activeReviewFilter = null;
+    activeFacets = {};
+    writeFacetState(activeView, {});
     searchInput.value = "";
     clearSearchBtn.hidden = true;
     reviewFilter.value = "";
+    if (facetBar) {
+      FACETS.forEach((facet) => {
+        const select = facet.el();
+        if (select) [...select.options].forEach((option) => { option.selected = false; });
+      });
+      facetClear.hidden = true;
+    }
     if (table) table.clearFilter();
     updateSearchStatus();
   }
@@ -593,8 +786,26 @@
     return document.createTextNode(text);
   }
 
+  function copyFilename(data) {
+    const filename = String(data?.proposed_filename || "").trim();
+    if (!filename || !navigator.clipboard) return;
+    navigator.clipboard.writeText(filename).then(() => {
+      if (!copyFilenameBtn) return;
+      const original = copyFilenameBtn.textContent;
+      copyFilenameBtn.textContent = "Copied!";
+      setTimeout(() => { copyFilenameBtn.textContent = original; }, 1500);
+    }).catch(() => { /* clipboard blocked — no-op */ });
+  }
+
+  let currentRowData = null;
+
   function openRowDetails(data) {
+    currentRowData = data;
     rowDetailsTitle.textContent = rowTitle(data);
+    if (copyFilenameBtn) {
+      const hasFilename = Boolean(String(data.proposed_filename || "").trim());
+      copyFilenameBtn.hidden = !hasFilename;
+    }
     rowDetailsBody.replaceChildren();
     Object.entries(data).forEach(([field, value]) => {
       // Year/Month are shown merged as "Year-Month" (see loadData).
@@ -751,10 +962,13 @@
   function statusFormatter(cell) {
     const value = String(cell.getValue() ?? "");
     if (!value) return "";
+    const field = cell.getColumn().getField();
     const badge = document.createElement("span");
     badge.className = `status-badge ${statusClass(value)}`;
-    badge.textContent = statusLabel(cell.getColumn().getField(), value);
-    badge.title = value;
+    badge.textContent = statusLabel(field, value);
+    // Compact record-type badges (e.g. "CM") carry their full label in the
+    // tooltip; everything else shows the raw status value on hover.
+    badge.title = (field === "record_type" && RECORD_TYPE_TITLES[value]) || value;
     return badge;
   }
 
@@ -819,7 +1033,14 @@
 
   function measuredColumnWidth(key, headerTitle, rows) {
     const isBadge = STATUS_FIELDS.has(key) || FORMAT_FIELDS.has(key);
-    const font = isBadge ? BADGE_FONT : CELL_FONT;
+    // The proposed-filename column renders in a smaller monospace face, so
+    // measure it with that face — otherwise the Roboto estimate is too narrow
+    // and the frozen lead column's content overlaps the next header's click
+    // target (caught by the column-layout sort spec in CI).
+    const isMono = key === "proposed_filename";
+    const font = isMono
+      ? '12.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+      : (isBadge ? BADGE_FONT : CELL_FONT);
     const padding = isBadge ? BADGE_PADDING : CELL_PADDING;
     let maxPx = measureText(headerTitle, HEADER_FONT) + HEADER_EXTRA;
     for (const row of rows) {
@@ -869,8 +1090,13 @@
 
       // Size the column to its widest rendered entry (see width engine above);
       // long free-text columns are capped so one verbose note cannot dominate.
+      // The frozen proposed-file-name column is capped tighter still: it is a
+      // lead column, and an over-wide frozen block overlaps the non-frozen
+      // columns' click targets (caught by the column-layout sort spec).
       const measured = measuredColumnWidth(key, col.title, data);
-      const cap = /title|note|reason|purpose|role/i.test(key) ? MAX_TEXT_WIDTH : MAX_COLUMN_WIDTH;
+      let cap = MAX_COLUMN_WIDTH;
+      if (/title|note|reason|purpose|role/i.test(key)) cap = MAX_TEXT_WIDTH;
+      if (key === "proposed_filename") cap = 340;
       col.width = Math.min(measured, cap);
 
       // Numeric columns count up in numeric order, never lexically. Without an
@@ -908,7 +1134,44 @@
       if (STATUS_FIELDS.has(key)) {
         col.formatter = statusFormatter;
       }
-      if (FORMAT_FIELDS.has(key)) {
+      if (key === "proposed_filename") {
+        // The lead column renders like a file explorer: monospace (CSS) with
+        // the extension shown in a muted color so the carrier is scannable.
+        col.formatter = (cell) => {
+          const value = String(cell.getValue() ?? "");
+          if (!value) return "";
+          const match = value.match(/^(.*?)(\.[A-Za-z0-9]+)$/);
+          if (!match) return document.createTextNode(value);
+          const frag = document.createDocumentFragment();
+          frag.append(document.createTextNode(match[1]));
+          const ext = document.createElement("span");
+          ext.className = "ext";
+          ext.textContent = match[2];
+          frag.append(ext);
+          return frag;
+        };
+      } else if (key === "edition") {
+        // Edition cell: a small color dot by carrier (DVD/CD/audiobook/
+        // streaming/book), then the merged "format · detail" label.
+        col.formatter = (cell) => {
+          const value = String(cell.getValue() ?? "");
+          if (!value) return "";
+          const row = cell.getRow().getData();
+          const carrier = (row.format || value.split(" · ")[0] || "").trim();
+          const dotClass = ["DVD", "CD", "audiobook", "streaming", "book"].includes(carrier)
+            ? `dot-${carrier}`
+            : "";
+          const frag = document.createDocumentFragment();
+          if (dotClass) {
+            const dot = document.createElement("span");
+            dot.className = `carrier-dot ${dotClass}`;
+            dot.title = carrier;
+            frag.append(dot);
+          }
+          frag.append(document.createTextNode(value));
+          return frag;
+        };
+      } else if (FORMAT_FIELDS.has(key)) {
         col.formatter = (cell) => {
           const value = String(cell.getValue() ?? "");
           if (!value) return "";
@@ -931,6 +1194,17 @@
     });
   }
 
+  function configureFacetBar(data) {
+    if (!facetBar) return;
+    // Faceted filtering applies to the curated catalogue (Everything) only.
+    if (activeView !== "master") {
+      facetBar.hidden = true;
+      return;
+    }
+    facetBar.hidden = false;
+    populateFacets(data);
+  }
+
   function configureReviewFilter(data) {
     activeReviewFilter = null;
     reviewFilter.replaceChildren();
@@ -951,7 +1225,14 @@
     )].sort((a, b) => a.localeCompare(b));
     const allOption = new Option(`All ${humanizeField(field)} values`, "");
     reviewFilter.add(allOption);
-    values.forEach((value) => reviewFilter.add(new Option(statusLabel(field, value), value)));
+    values.forEach((value) => {
+      // Dropdown options spell out the full record-type label (e.g. "Curated
+      // master") even though the in-cell badge is the compact "CM".
+      const label = field === "record_type" && RECORD_TYPE_TITLES[value]
+        ? RECORD_TYPE_TITLES[value]
+        : statusLabel(field, value);
+      reviewFilter.add(new Option(label, value));
+    });
     reviewToolbar.hidden = false;
     reviewFilterHint.textContent = `${values.length} ${humanizeField(field).toLowerCase()} values`;
     reviewFilter.dataset.field = field;
@@ -959,7 +1240,7 @@
 
   function applyActiveFilters() {
     if (!table) return;
-    if (!activeSearchQuery && !activeReviewFilter) {
+    if (!activeSearchQuery && !activeReviewFilter && facetsEmpty()) {
       table.clearFilter();
       updateSearchStatus();
       return;
@@ -971,9 +1252,17 @@
       );
       const reviewMatches = !activeReviewFilter ||
         String(data[activeReviewFilter.field] ?? "") === activeReviewFilter.value;
-      return searchMatches && reviewMatches;
+      const facetMatches = rowMatchesFacets(data);
+      return searchMatches && reviewMatches && facetMatches;
     });
     updateSearchStatus();
+  }
+
+  function facetsEmpty() {
+    return FACETS.every((facet) => {
+      const selected = activeFacets[facet.id];
+      return !selected || selected.length === 0;
+    });
   }
 
   /* ------------------------------------------------------------------ *
@@ -1000,13 +1289,41 @@
       /* editing disabled in column definitions; double-click is reserved for any future explicit editor */
       editTriggerEvent: "dblclick",
       selectableRows: false,
+      // Work-group striping: mark the first row in each run of consecutive
+      // rows sharing a work_id so a left accent visually groups parts/
+      // editions of a work. Runs after the data is sorted/filtered.
+      rowFormatter: (row) => {
+        const data = row.getData();
+        const element = row.getElement();
+        if (!data.work_id) {
+          element.classList.remove("work-group-start");
+          return;
+        }
+        const siblings = table.getRows();
+        const position = siblings.findIndex((r) => r === row);
+        const prev = position > 0 ? siblings[position - 1].getData() : null;
+        if (!prev || prev.work_id !== data.work_id) {
+          element.classList.add("work-group-start");
+        } else {
+          element.classList.remove("work-group-start");
+        }
+      },
     });
 
     configureReviewFilter(data);
+    configureFacetBar(data);
     configureColumnChooser();
     configureExpertToggle(activeView);
     applyViewSettings();
+    restoreGridState();
     table.on("dataFiltered", updateSearchStatus);
+    table.on("dataSorted", saveSortState);
+    // Listeners are attached once (guarded) so tab switches don't accumulate
+    // duplicate scroll handlers.
+    if (!spreadsheet._docsheetScrollBound) {
+      spreadsheet.addEventListener("scroll", onTableScroll, true);
+      spreadsheet._docsheetScrollBound = true;
+    }
     // The synchronous call below can run before Tabulator has processed its
     // initial data ("active" row pipeline is still empty), leaving the footer
     // stuck on "Showing: 0"; tableBuilt corrects the count once rows exist.
@@ -1017,6 +1334,48 @@
     });
     spreadsheet.setAttribute("aria-busy", "false");
     updateSearchStatus();
+  }
+
+  /* Persist and restore per-view sort + horizontal scroll so a reviewer
+     returns to a tab without losing their place. Column widths are left
+     to the measured-width engine for now (they are deterministic). */
+  function saveSortState() {
+    if (!table) return;
+    try {
+      const sorters = table.getSorters().map((sorter) => ({
+        field: sorter.field,
+        dir: sorter.dir,
+      }));
+      writeGridState(activeView, { sorters });
+    } catch (err) { /* table tearing down — ignore */ }
+  }
+
+  let scrollPersistTimer = null;
+  function onTableScroll() {
+    const element = spreadsheet.querySelector(".tabulator-tableholder");
+    if (!element) return;
+    clearTimeout(scrollPersistTimer);
+    scrollPersistTimer = setTimeout(() => {
+      writeGridState(activeView, { scrollLeft: element.scrollLeft });
+    }, 150);
+  }
+
+  function restoreGridState() {
+    if (!table) return;
+    const state = readGridState()[activeView];
+    if (!state) return;
+    if (Array.isArray(state.sorters) && state.sorters.length) {
+      try {
+        table.setSort(state.sorters);
+      } catch (err) { /* a field may have been renamed — ignore */ }
+    }
+    if (Number.isFinite(state.scrollLeft)) {
+      const element = spreadsheet.querySelector(".tabulator-tableholder");
+      if (element) {
+        // Defer until Tabulator has laid out its columns.
+        requestAnimationFrame(() => { element.scrollLeft = state.scrollLeft; });
+      }
+    }
   }
 
   /* Keep the table filling its container (frozen header + internal scroll).
@@ -1126,6 +1485,7 @@
         spreadsheet.hidden = true;
         spreadsheet.setAttribute("aria-busy", "false");
         searchStatus.textContent = "Showing: 0";
+        if (facetBar) facetBar.hidden = true;
         return;
       }
       emptyState.hidden = true;
@@ -1221,6 +1581,26 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
+    if (copyFilenameBtn) {
+      copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
+    }
+    if (facetClear) facetClear.addEventListener("click", clearFacets);
+    FACETS.forEach((facet) => {
+      const select = facet.el();
+      if (!select) return;
+      select.addEventListener("change", () => {
+        activeFacets[facet.id] = [...select.selectedOptions].map((option) => option.value);
+        writeFacetState(activeView, activeFacets);
+        if (facetClear) {
+          facetClear.hidden = facetsEmpty();
+        }
+        applyActiveFilters();
+      });
+    });
+    // Stats chips navigate to their corresponding sheet (P0 UX).
+    document.querySelectorAll(".stat-chip[data-jump]").forEach((chip) => {
+      chip.addEventListener("click", () => activateView(chip.dataset.jump));
+    });
     document.addEventListener("click", () => {
       closeColumnMenu();
       closeSettingsMenu();
@@ -1258,6 +1638,90 @@
       });
     }
     await activateView(activeView);
+    document.addEventListener("keydown", handleGlobalShortcuts);
+  }
+
+  /* Power-user keyboard shortcuts:
+       /  focus search
+       j  next row / k previous row (opens details)
+       y  copy the proposed filename of the focused/last row
+       ?  toggle a shortcut help overlay
+     Ignored while typing in a field/select/textarea. */
+  let focusedRowIndex = -1;
+  function isTypingTarget(event) {
+    const tag = (event.target && event.target.tagName) || "";
+    return ["INPUT", "SELECT", "TEXTAREA"].includes(tag) ||
+      (event.target && event.target.isContentEditable);
+  }
+  function moveRowFocus(delta) {
+    if (!table) return;
+    const rows = [...table.getRows()];
+    if (rows.length === 0) return;
+    focusedRowIndex = Math.max(0, Math.min(rows.length - 1, focusedRowIndex + delta));
+    const row = rows[focusedRowIndex];
+    const element = row.getElement();
+    element.scrollIntoView({ block: "nearest" });
+    element.classList.add("row-keyboard-focus");
+    rows.forEach((r, i) => { if (i !== focusedRowIndex) r.getElement().classList.remove("row-keyboard-focus"); });
+    openRowDetails(row.getData());
+  }
+  function handleGlobalShortcuts(event) {
+    if (isTypingTarget(event)) {
+      if (event.key === "Escape" && event.target === searchInput) {
+        searchInput.value = "";
+        applySearch("");
+      }
+      return;
+    }
+    if (event.key === "/") {
+      event.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    } else if (event.key === "j") {
+      event.preventDefault();
+      moveRowFocus(1);
+    } else if (event.key === "k") {
+      event.preventDefault();
+      moveRowFocus(-1);
+    } else if (event.key === "y") {
+      event.preventDefault();
+      if (currentRowData) copyFilename(currentRowData);
+    } else if (event.key === "?") {
+      event.preventDefault();
+      toggleShortcutsHelp();
+    }
+  }
+
+  function toggleShortcutsHelp() {
+    let overlay = document.getElementById("shortcuts-help");
+    if (overlay) {
+      overlay.remove();
+      return;
+    }
+    overlay = document.createElement("div");
+    overlay.id = "shortcuts-help";
+    overlay.className = "shortcuts-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-label", "Keyboard shortcuts");
+    overlay.innerHTML = `
+      <div class="shortcuts-card">
+        <h2>Keyboard shortcuts</h2>
+        <dl>
+          <dt><kbd>/</kbd></dt><dd>Focus search</dd>
+          <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>Next / previous row (opens details)</dd>
+          <dt><kbd>y</kbd></dt><dd>Copy the proposed file name of the open row</dd>
+          <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Switch tabs</dd>
+          <dt><kbd>Esc</kbd></dt><dd>Close dialogs / menus / clear search</dd>
+          <dt><kbd>?</kbd></dt><dd>Toggle this help</dd>
+        </dl>
+        <button type="button" class="shortcuts-close">Close</button>
+      </div>`;
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay || event.target.classList.contains("shortcuts-close")) {
+        overlay.remove();
+      }
+    });
+    document.body.append(overlay);
   }
 
   if (document.readyState === "loading") {

@@ -114,3 +114,35 @@ The repository code is already Node-22-compatible: local sandbox runs Node 22,
 and the Playwright version (`@playwright/test` 1.62.1) supports Node 22.
 After committing, re-run **CI** from the Actions tab and confirm the
 "Set up Node" + "Run browser smoke tests" steps pass.
+
+## Cover both Playwright specs in the JS-syntax step — ✅ APPLIED 2026-08-08
+
+> **Applied by the owner in the GitHub web editor (2026-08-08).** The "Check
+> JavaScript syntax" step now loops over `tests/*.spec.js`, so both
+> `csv-export.spec.js` and `column-layout.spec.js` are syntax-checked before the
+> Chromium step. Drop-in retained below for reference.
+
+The "Check JavaScript syntax" step currently runs `node --check` against only
+`tests/csv-export.spec.js`; `tests/column-layout.spec.js` is not syntax-checked
+until the (Chromium-only, slower) browser-smoke step. In the web editor, open
+[`main/.github/workflows/ci.yml`](https://github.com/56eli/docsheet/edit/main/.github/workflows/ci.yml)
+and replace the three explicit `node --check` lines with a glob so every spec
+is covered:
+
+```yaml
+      - name: Check JavaScript syntax
+        run: |
+          node --check docs/app.js
+          node --check playwright.config.js
+          for spec in tests/*.spec.js; do node --check "$spec"; done
+```
+
+Commit directly to `main` with the message:
+
+```
+ci: syntax-check every Playwright spec
+```
+
+This mirrors the local verification command already documented in
+`NEXT_AGENT_HANDOFF.md` §2; a syntax error in `column-layout.spec.js` would
+then fail fast instead of only at the browser step.

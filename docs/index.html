@@ -86,23 +86,23 @@
       <span class="tab-group-label">Catalogue</span>
       <button class="dataset-tab active" id="tab-master" type="button" role="tab" aria-selected="true" aria-controls="spreadsheet" data-view="master">Everything</button>
       <button class="dataset-tab" id="tab-product-relationships" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="productRelationships">Product Relationships</button>
-      <button class="dataset-tab review-tab" id="tab-series-compilations" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="seriesCompilations">Series Compilations</button>
+      <button class="dataset-tab review-tab" id="tab-series-compilations" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="seriesCompilations">Compilations</button>
     </div>
     <div class="tab-group" role="group" aria-label="Review workspace">
       <span class="tab-group-label">Review workspace</span>
       <button class="dataset-tab review-tab review-tab-start" id="tab-review-overview" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="reviewOverview">Review Overview</button>
-      <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Master Candidates</button>
+      <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Candidates</button>
       <button class="dataset-tab review-tab" id="tab-manual-leads" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualLeads">Manual Leads</button>
-      <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Master Exclusions</button>
+      <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Exclusions</button>
       <button class="dataset-tab review-tab" id="tab-source-overrides" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="sourceOverrides">Source Overrides</button>
-      <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Veritas Decisions</button>
+      <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Decisions</button>
       <button class="dataset-tab review-tab" id="tab-new-work-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="newWorkReview">New Work Review</button>
       <button class="dataset-tab review-tab" id="tab-official-discovery" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="officialDiscovery">Official Discovery</button>
       <button class="dataset-tab review-tab" id="tab-international" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="internationalProducts">International Editions</button>
     </div>
     <div class="tab-group" role="group" aria-label="Sources and provenance">
       <span class="tab-group-label">Sources</span>
-      <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Approved Publishers</button>
+      <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Publishers</button>
       <button class="dataset-tab" id="tab-veritas-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasProducts">Veritas Products</button>
       <button class="dataset-tab" id="tab-hayhouse-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="hayhouseProducts">Hay House Products</button>
       <button class="dataset-tab" id="tab-audible-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="audibleProducts">Audible Products</button>
@@ -113,11 +113,11 @@
   </nav>
 
   <div id="stats-strip" class="stats-strip" hidden aria-label="Catalogue overview">
-    <span class="stat-chip"><b id="stat-master-items">—</b><span class="stat-label">Master records</span></span>
-    <span class="stat-chip"><b id="stat-exclusions">—</b><span class="stat-label">Retained exclusions</span></span>
-    <span class="stat-chip"><b id="stat-overrides">—</b><span class="stat-label">Source overrides</span></span>
-    <span class="stat-chip"><b id="stat-relationships">—</b><span class="stat-label">Product relationships</span></span>
-    <span class="stat-chip"><b id="stat-compilations">—</b><span class="stat-label">Series compilations</span></span>
+    <button type="button" class="stat-chip" data-jump="master" title="Open Everything catalogue"><b id="stat-master-items">—</b><span class="stat-label">Master records</span></button>
+    <button type="button" class="stat-chip" data-jump="masterExclusions" title="Open Master Exclusions"><b id="stat-exclusions">—</b><span class="stat-label">Retained exclusions</span></button>
+    <button type="button" class="stat-chip" data-jump="sourceOverrides" title="Open Source Overrides"><b id="stat-overrides">—</b><span class="stat-label">Source overrides</span></button>
+    <button type="button" class="stat-chip" data-jump="productRelationships" title="Open Product Relationships"><b id="stat-relationships">—</b><span class="stat-label">Product relationships</span></button>
+    <button type="button" class="stat-chip" data-jump="seriesCompilations" title="Open Series Compilations"><b id="stat-compilations">—</b><span class="stat-label">Series compilations</span></button>
   </div>
 
   <section id="view-summary" class="view-summary" aria-live="polite">
@@ -151,6 +151,34 @@
     <span id="review-filter-hint" class="review-filter-hint"></span>
   </section>
 
+  <!-- Faceted filters for the catalogue (Everything) view: Series, Year,
+       Item type, Format, Owned. Multi-select dropdowns populated from the
+       loaded data; selections feed the same active-filter chip system and
+       are persisted per view. -->
+  <section id="facet-bar" class="facet-bar" aria-label="Catalogue filters" hidden>
+    <label class="facet">
+      <span class="facet-label">Series</span>
+      <select id="facet-series" multiple aria-label="Filter by series"></select>
+    </label>
+    <label class="facet">
+      <span class="facet-label">Year</span>
+      <select id="facet-year" multiple aria-label="Filter by year"></select>
+    </label>
+    <label class="facet">
+      <span class="facet-label">Type</span>
+      <select id="facet-item-type" multiple aria-label="Filter by item type"></select>
+    </label>
+    <label class="facet">
+      <span class="facet-label">Format</span>
+      <select id="facet-format" multiple aria-label="Filter by format"></select>
+    </label>
+    <label class="facet">
+      <span class="facet-label">Owned</span>
+      <select id="facet-owned" multiple aria-label="Filter by owned status"></select>
+    </label>
+    <button id="facet-clear" type="button" class="facet-clear" hidden>Clear filters</button>
+  </section>
+
   <section id="active-filters" class="active-filters" aria-live="polite" hidden>
     <span class="active-filters-label">Active filters</span>
     <div id="filter-chips" class="filter-chips"></div>
@@ -171,7 +199,10 @@
         <span class="row-details-kicker">Row details</span>
         <h2 id="row-details-title">Selected row</h2>
       </div>
-      <button id="close-row-details" type="button" aria-label="Close row details">×</button>
+      <div class="row-details-actions">
+        <button id="copy-filename-btn" type="button" class="row-details-copy" hidden title="Copy proposed file name to clipboard">Copy file name</button>
+        <button id="close-row-details" type="button" aria-label="Close row details">×</button>
+      </div>
     </header>
     <div id="row-details-body" class="row-details-body"></div>
   </aside>

@@ -173,7 +173,19 @@ with a `published_date` of 2014-03-30 — e.g. *Power vs. Force* was first
 published in **1995**, *The Eye of the I* in **2001**, *The Ego is Not the Real
 You* in **2021**). Book years come only from the reviewed ledger / candidate
 inputs, so they are never overwritten from an official inventory listing date,
-and books never receive a catalogue code (codes are lecture/discussion only).
+and books never receive a catalogue code.
+
+Catalogue codes are assigned to **`lecture`/`discussion` rows whose year was
+already verified at minting time** (a readable `LECTURE-YYYY-###` /
+`DISCUSSION-YYYY-###` is issued only when both the content type and a year are
+proposed in the reviewed ledger or promotion registry). They are therefore
+*lecture/discussion-only*, but not *every* lecture/discussion has one: pre-2000
+rows with an intentional blank/`198X` year (the 13 Volume Series and 16 Office
+Series rows), and candidate/edition rows whose `proposed_year` was blank at
+minting (e.g. the four CD/audio manual candidates 353/356/357/358 and the
+edition rows 327–343, whose years were later backfilled from the official
+listing), correctly carry no code. Codes are stable identifiers and are never
+retroactively assigned or renumbered.
 
 Pre-2000 lectures whose exact recording date is unconfirmed but whose decade
 is established carry the placeholder year `198X` (the 16 Office Series rows;
@@ -192,10 +204,12 @@ empty; exports keep the raw `true`/`false`/empty values.
 Two identifier conventions worth knowing: catalogue-code sequence numbers
 (`LECTURE-2008-023`) follow **ledger/candidate minting order, not
 chronology** (a candidate-promoted July talk can carry a higher sequence than
-a raw-ledger September talk of the same year — codes are stable identifiers
-and are never renumbered); and the master's `candidate_key` stores the
-`candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while the
-promotion registries (`data/manual_candidate_promotions.csv`,
+a raw-ledger September talk of the same year — codes are stable identifiers,
+and codes are only minted when a year is known at promotion time, so some
+lecture/discussion rows intentionally have none; see the field-semantics note
+above and codes are never renumbered); and the master's `candidate_key`
+stores the `candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while
+the promotion registries (`data/manual_candidate_promotions.csv`,
 `data/edition_promotions.csv`) store the bare key.
 
 ### Edition model (work × carrier)
