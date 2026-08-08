@@ -20,10 +20,10 @@ and every count in the living docs verified against
 
 | Check | Result |
 |---|---:|
-| `python -m unittest discover tests` | **112/112 pass** (README/INSTRUCTIONS still say 110 — see S1) |
-| Coverage total / floor module / gate | **91% / 88%** (`build_catalogue_pages.py`) / 85% gate — matches docs |
+| `python -m unittest discover tests` | **115/115 pass** |
+| Coverage total / floor module / gate | **90% / 88%** (`build_catalogue_pages.py`) / 85% gate — matches docs |
 | `process_data.py --check` | pass (374 raw rows; 8-column trimmed view) |
-| `build_research_master.py --check` | pass (365 master; 72 exclusions; 134 overrides; 39 candidates) |
+| `build_research_master.py --check` | pass (365 master; 72 exclusions; 131 overrides; 39 candidates) |
 | `build_catalogue_pages.py --check` | pass (365 Everything rows) |
 | `reconcile_research_master.py --check` | pass (report current) |
 | `map_series_taxonomy.py --check` | pass (186 mappings: 177 approved / 9 rejected / 0 proposed) |
@@ -33,7 +33,7 @@ and every count in the living docs verified against
 | Live site (local http server) | index + data + master.json serve 200 |
 | Master shape | 365 rows × 24 cols; 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other; no untyped |
 | Codes | 281 distinct (lecture/discussion only) |
-| Work families | 208 works / 341 approved memberships; work_id coverage 365/365 |
+| Work families | 191 works / 341 approved memberships; work_id coverage 365/365 |
 | Relationships | 343 rendered = 336 derived primary + 7 related; 7 series compilations |
 | Filename proposal | 365 rows = 365 unique safe = 365 unique display (v4.1 guard) |
 | Ledger dispositions | 302 item / 31 blank_separator / 21 series_context / 10 research_note / 5 source_context / 4 duplicate / 1 needs_review (= 374) |
@@ -163,13 +163,12 @@ explicit "false" rows to a visitor.
 
 ### C5 — Raw-source defects mirrored verbatim into the published view
 
-> 📋 **PLAN PREPARED 2026-08-08:** `archive/RULING_PREP_RAW_CSV_HYGIENE.md`
-> lists the exact 16 cells (3 broken Advaita URLs on lines 28–30, 13
-> `2cds each?` tempid annotations on lines 280–292), what NOT to change (the
-> `where is B-02?` rows are excluded provenance, `SAT/VOL/OFF` tempids are
-> legitimate schemes, line 1 is needed for header=1), and the post-edit
-> follow-up (ledger mirrors + master `legacy_tempid` cleanup on 13 rows).
-> Owner applies the Google-Sheet edits; recommendation: fix all 16.
+> ✅ **APPLIED 2026-08-08 follow-up (`arena/019fe0ef-docsheet`):** `archive/RULING_PREP_RAW_CSV_HYGIENE.md`
+> now records the completed 16-cell raw fix (3 Advaita URLs on lines 28–30,
+> 13 cleared `2cds each?` tempid annotations on lines 280–292), the ledger
+> mirror updates, regenerated `docs/data.json`, and the curated master cleanup
+> where masters 251–263 now have blank `legacy_tempid`. The three redundant
+> Advaita source overrides were retired, bringing approved overrides 134 → 131.
 
 The source spreadsheet (and the pass-through **Original Spreadsheet** tab +
 `docs/migration-review.json` raw mirrors) still contains:
@@ -255,7 +254,7 @@ still passed; only the comment was stale.
 - Review inputs are internally consistent: 39/39 manual candidates promoted,
   24/24 edition promotions, 341/341 work-family memberships approved, 7/7
   related-material relationships, 7/7 compilations, 10/10 Veritas decisions,
-  134/134 overrides approved, 72/72 exclusions with documented dispositions.
+  131/131 overrides approved, 72/72 exclusions with documented dispositions.
 - No duplicate catalogue codes, no duplicate UUIDs, no duplicate
   `proposed_filename`s, no invalid months (all `01`–`12`), no deprecated
   `audio`/`video` item types in the master, all rows have `legacy_title`,
@@ -285,18 +284,10 @@ still passed; only the comment was stale.
    document `true`/`false`/blank; UI badges now read `Owned` / `Not owned`.
 5. **S2 (Node 20 → 22):** ✅ snippet prepared 2026-08-08 in
    `archive/UNBLOCK_INSTRUCTIONS.md` — owner applies it in the web editor.
-6. **C5 (raw CSV hygiene):** 📋 plan prepared 2026-08-08 in
-   `archive/RULING_PREP_RAW_CSV_HYGIENE.md` — owner applies the 16 cell
-   fixes in the Google Sheet; agent follow-up then cleans the ledger mirrors
-   and the 13 `legacy_tempid` cells.
-4. **C4:** document `owned` semantics in README (and optionally badge it).
-5. **S2 (Node 20 → 22):** owner applies the workflow snippet
-   (`archive/UNBLOCK_INSTRUCTIONS.md`); I can prepare an updated snippet.
-6. **C5:** optionally clean the raw CSV (Advaita URLs, `2cds each?` tempid)
-   in the owner's Google Sheet; the curated layer is already clean.
+6. ✅ **C5 (raw CSV hygiene) — APPLIED 2026-08-08 follow-up:** raw Advaita URLs fixed, repeated `2cds each?` tempids cleared, ledger mirrors updated, 13 curated `legacy_tempid` cells blanked, and three redundant source overrides retired (134 → 131).
 
 No pipeline-breaking defect found; all six `--check` modes and the full test
-suite (114) are green on this branch.
+suite (115) are green on this branch.
 
 ---
 
@@ -330,7 +321,7 @@ coverage 365/365; 202 moved into `w-volume-i-power-vs-force-muscle-testing`,
 `w-power-vs-force` keeps only the book 286; 26 PART-marker canonical titles
 cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
 `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`; all six `--check` modes,
-114 tests, and node checks green after regenerating.
+115 tests, and node checks green after regenerating.
 
 ## 7. Deeper data pass QA-2 (2026-08-08, relationships / mirrors / provenance)
 
@@ -366,12 +357,12 @@ cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
   columns intact.
 
 **QA-2 verdict: no new defects.** The only open data-quality items remain C5
-(owner's raw CSV hygiene) and the cosmetic `candidate:` prefix convention.
+the cosmetic `candidate:` prefix convention (raw CSV hygiene is now applied).
 
 ## 8. Deeper data pass QA-3 (2026-08-08, docs references + JSON schema)
 
 - **JSON↔CSV schema sweep: fully consistent** — every `docs/*.json` row count
-  matches its source CSV (26/29/191/39/2/72/134/10/7; product-relationships
+  matches its source CSV (26/29/191/39/2/72/131/10/7; product-relationships
   343 = 336 derived + 7 stored), and every source-CSV column is present in its
   published JSON.
 - **Cross-reference sweep (64 flags, 61 false positives):** most flags are
@@ -430,7 +421,7 @@ record-type labels): **everything matches except one gap** —
   carrying both, e.g. 265 legacy `Audio 27. Golden Word Book Signing – Audio`
   and display `… [1/3].mp4`); the README's "verbatim raw text always
   exportable" claim now holds from the Everything tab and the Expert toggle
-  entries are live. All six `--check` modes, 114 tests, 91% coverage, and
+  entries are live. All six `--check` modes, 115 tests, 90% coverage, and
   node checks green.
 
 ## 11. Deeper data pass QA-6 (2026-08-08, editions / URLs / vocabulary / keys)
@@ -462,7 +453,7 @@ record-type labels): **everything matches except one gap** —
 - **Full reproducibility gate:** the complete pipeline was re-run from scratch
   in the documented order (`build_research_master` → `map_series_taxonomy` →
   `build_research_master` → `build_catalogue_pages` → `reconcile_research_master`),
-  then all six `--check` modes, 114/114 tests, 91% coverage, and `node --check`
+  then all six `--check` modes, 115/115 tests, 90% coverage, and `node --check`
   on app.js/playwright.config.js. **`git status` stayed clean after the
   regenerate** — the committed tree is exactly reproducible.
 
@@ -470,8 +461,7 @@ record-type labels): **everything matches except one gap** —
 (master 265), C3 (198X convention), C4 (owned semantics), S1/S3/S4 (doc
 drifts), S2 (owner's Node 22 bump), DP-1/2/3 (work-family merge), QA-5
 (legacy_title restore), S-a/S-b/S-c (quick wins), S-d (schema contract
-test, suite now 115); prepared: C5 (raw CSV hygiene plan). Open owner
-actions: C5 Google-Sheet edits only.
+test, suite now 115); applied: C5 raw CSV hygiene + minimalist page redesign follow-up. Open owner actions: optionally supply recording dates for masters 230–232/268 if known.
 
 ## 13. Improvement suggestions (owner, 2026-08-08)
 
@@ -519,10 +509,8 @@ Prioritized, evidence-grounded suggestions for the project:
   US Audible/Amazon listing appears (tracked in `data/research_manual_leads.csv`);
   until then the CD carrier + documented publisher-verbatim URL stand.
 
-**Owner-side data hygiene (only open item from the audit):**
-- **C5 raw-CSV fixes** (16 cells: 3 Advaita URLs + 13 `2cds each?` tempids)
-  per `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; then the ledger/mirror
-  follow-up cleans the 13 `legacy_tempid` cells (masters 251–263).
+**Owner-side data hygiene:**
+- ✅ **C5 raw-CSV fixes applied 2026-08-08 follow-up:** 3 Advaita URLs fixed, 13 `2cds each?` tempids cleared, ledger/mirror follow-up complete, and masters 251–263 now have blank `legacy_tempid`.
 
 ## 14. Site redesign — Phase 1 implemented (2026-08-08)
 
@@ -535,18 +523,16 @@ changes). **Phase 1 (IA) applied on this branch:**
   workspace** (Review Overview · Master Candidates · Manual Leads · Master
   Exclusions · Source Overrides · Veritas Decisions · New Work Review ·
   Official Discovery · International Editions), **Sources** (Approved
-  Publishers · Migration Review · Original Spreadsheet). `data-view` ids
-  unchanged; `role="group"` + labels; Playwright specs are name-based and
-  order-safe; tab↔VIEWS mapping verified 15/15.
+  Publishers · Veritas Products · Hay House Products · Audible Products ·
+  Filename Proposal · Migration Review · Original Spreadsheet). `role="group"` + labels; tab↔VIEWS mapping verified 19/19.
 - **Stats strip** — 5 chips (Master records 365 · Retained exclusions 72 ·
-  Source overrides 134 · Product relationships 343 · Series compilations 7)
+  Source overrides 131 · Product relationships 343 · Series compilations 7)
   read from `docs/catalogue-meta.json` at boot.
 - **Empty-state cards** — Official Discovery and New Work Review explain
   their standing-intake-lane purpose instead of showing a blank grid.
 - **Frozen Title** already existed in the master preset (verified).
 
-`node --check` green; 115/115 tests; pushed to `origin/arena/019fe098-docsheet`
-(PR #30). **Phase 2 (a11y) also applied:** arrow-key roving tabs with roving tabindex, global
+`node --check` green; 115/115 tests. Follow-up branch `arena/019fe0ef-docsheet` adds the minimalist settings pass before PR/merge. **Phase 2 (a11y) also applied:** arrow-key roving tabs with roving tabindex, global
 :focus-visible rings (tab override preserved), broad prefers-reduced-motion kill-switch,
 external-link aria-labels ("… (opens in new tab)"), 44px mobile tab hit targets, mobile stats
 strip/empty-state polish; badge contrast computed AA (pending 6.0:1, excluded 6.9:1 — no color

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hawkins Archive — Live Spreadsheet</title>
-  <meta name="description" content="Live, searchable spreadsheet rendered from the Hawkins Archive CSV. Search, filter, and export — no data has been modified.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-u2/u4gxax738T0FZixKekRcJpSj2LbWauC5THe95guI='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:;">
+  <meta name="description" content="Live, searchable Hawkins Archive catalogue and review workspace. Search, filter, inspect official inventories, and export curated or raw spreadsheet views.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-qULmN/IfgO0KcdvNpANXyfZHBIgYfm4o368jeDomJJY='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:;">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,6 +63,17 @@
         </svg>
         Export CSV
       </button>
+      <div class="settings-tools">
+        <button id="settings-btn" type="button" aria-expanded="false" aria-controls="settings-menu">View settings</button>
+        <div id="settings-menu" class="settings-menu" hidden>
+          <div class="settings-menu-header">Display</div>
+          <button id="expand-everything-btn" type="button">Expand everything</button>
+          <label><input type="checkbox" id="wrap-cells-toggle"> Wrap long cell text</label>
+          <label><input type="checkbox" id="compact-mode-toggle"> Compact rows</label>
+          <label><input type="checkbox" id="show-summary-toggle"> Show summary cards</label>
+          <button id="reset-view-btn" type="button">Reset current view</button>
+        </div>
+      </div>
       <label class="switch" title="Toggle dark mode">
         <input type="checkbox" id="dark-toggle" aria-label="Toggle dark mode">
         <span class="slider"></span>
@@ -92,6 +103,10 @@
     <div class="tab-group" role="group" aria-label="Sources and provenance">
       <span class="tab-group-label">Sources</span>
       <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Approved Publishers</button>
+      <button class="dataset-tab" id="tab-veritas-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasProducts">Veritas Products</button>
+      <button class="dataset-tab" id="tab-hayhouse-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="hayhouseProducts">Hay House Products</button>
+      <button class="dataset-tab" id="tab-audible-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="audibleProducts">Audible Products</button>
+      <button class="dataset-tab review-tab" id="tab-filename-proposal" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="filenameProposal">Filename Proposal</button>
       <button class="dataset-tab review-tab" id="tab-migration-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="migrationReview">Migration Review</button>
       <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
     </div>

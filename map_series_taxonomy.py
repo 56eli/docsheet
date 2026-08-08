@@ -288,7 +288,7 @@ def build_rows() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
                 ]
                 if part
             )
-        if reason:
+        if reason and row["review_status"] not in REVIEWED_STATUSES:
             if row["review_status"] == "proposed":
                 row["review_status"] = "needs_review"
             queue.append({**row, "queue_reason": reason})

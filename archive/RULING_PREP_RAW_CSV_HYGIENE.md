@@ -1,12 +1,11 @@
 # Ruling Prep — Raw Spreadsheet Hygiene (`hawkins archive clone - Sheet1.csv`)
 
-**Prepared:** 2026-08-08 · **Status:** awaiting owner action (Google Sheet) · **Branch:** `arena/019fe098-docsheet`
+**Prepared:** 2026-08-08 · **Status:** applied on branch `arena/019fe0ef-docsheet`
 **Audit reference:** `FULL_STACK_AUDIT_2026-08-08.md`, finding **C5**.
 **Rule of thumb:** the raw CSV is the owner's source of truth ("you edit
 this"); the curated master and the pass-through view (`docs/data.json`) are
-derived. Fixing the raw removes the defects from the public **Original
-Spreadsheet** tab; a follow-up ledger/mirror edit cleans the curated
-`legacy_tempid` for the 13 affected masters.
+derived. The 2026-08-08 follow-up fixed the raw CSV, refreshed `docs/data.json`,
+and cleaned the curated `legacy_tempid` mirror for the 13 affected masters.
 
 ---
 
@@ -56,26 +55,19 @@ These are valid rows (owned `❌`, source `veritas/only sold via audible`) whose
 
 ---
 
-## 3. After the raw edit (owner) → follow-up (agent, on request)
+## 3. Applied follow-up
 
-1. **Owner:** fix the 16 cells in Google Sheets, re-export the CSV over
-   `hawkins archive clone - Sheet1.csv`, commit. The "Update Spreadsheet"
-   workflow (or `python process_data.py`) regenerates `docs/data.json` — the
-   Original Spreadsheet tab then shows the clean URLs and blank tempid cells.
-2. **Agent follow-up (only after the raw change is committed):**
-   - `migration_review_ledger.csv`: clear `raw_tempid` on rows 280–292;
-     correct `raw_product_link` on rows 28–30; update the two
-     `review_reason` markers (quarantined-URL / repeated-placeholder) to note
-     "raw fixed 2026-08-08".
-   - `python build_research_master.py` → masters **251–263** regenerate with
-     `legacy_tempid` **blank** (the only master diff).
-   - Re-run `build_catalogue_pages.py`, `reconcile_research_master.py`, all
-     six `--check` modes, and the test suite.
-3. **Verification:** master count stays 365; codes stay 281; the only master
-   diff is 13 `legacy_tempid` cells going blank; `docs/data.json` (374 rows)
-   shows corrected URLs and no `2cds each?`.
+Applied 2026-08-08 on `arena/019fe0ef-docsheet`:
 
-**Decision needed:** (a) apply all 16 raw fixes, or (b) fix only the 3 URLs
-(minimal — the broken link is the visible defect; the junk tempid is
-cosmetic in the curated `legacy_tempid` mirror). Recommendation: **(a)** —
-both are trivial cell edits and 1b also cleans the curated layer.
+1. Fixed all 16 raw cells in `hawkins archive clone - Sheet1.csv`.
+2. Refreshed `docs/data.json`, so the Original Spreadsheet tab now shows the
+   corrected Advaita URL and blank Satsang tempid cells.
+3. Updated `migration_review_ledger.csv`: rows 28–30 now carry the corrected
+   `raw_product_link` / `proposed_source_url_veritas`, rows 280–292 have blank
+   `raw_tempid`, and the relevant `review_reason` cells document the raw fix.
+4. Retired the three now-redundant Advaita `source_url_veritas` overrides
+   (approved source overrides **134 → 131**) because the ledger now carries the
+   corrected source URL directly.
+5. Rebuilt the curated master and Pages outputs. Master count stays **365**;
+   catalogue-code count stays **281**; masters **251–263** now have blank
+   `legacy_tempid` instead of the repeated `2cds each?` annotation.

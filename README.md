@@ -39,6 +39,7 @@ python reconcile_research_master.py --check
 python build_research_master.py --check
 python build_catalogue_pages.py --check
 python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check
 ```
 
 `RECONCILIATION_REPORT.md` is the read-only review artifact. A master-check
@@ -54,8 +55,8 @@ python -m unittest discover tests          # 115 tests, no browser/network neede
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
-2026-08-07; every pipeline module is ≥ 88%. Approved official links added after the ledger
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
+2026-08-08; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
@@ -110,9 +111,7 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Clicking any row always shows every stored field, and the layout adapts to
-phone screens (dense cells, full-width row details, horizontally scrolling
-tabs).
+Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The layout adapts to phone screens (dense cells, full-width row details, horizontally scrolling tabs).
 
 ## Review workspace
 
@@ -120,10 +119,11 @@ The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
 Review**, **Source Overrides**, **Official Discovery**, **New Work Review**
 (unmatched Veritas products awaiting a new-work ruling), **Series
-Compilations**, and **Veritas Decisions** are separate sheets alongside the
-catalogue and official-product views. Reviewers can search, sort, export, and
-filter sheets with multiple review-status values without opening repository
-folders. Two of these sheets (**Official Discovery** and **New Work Review**)
+Compilations**, **Veritas Decisions**, the official inventories (**Veritas
+Products**, **Hay House Products**, **Audible Products**), and **Filename
+Proposal** are separate sheets alongside the catalogue. Reviewers can search,
+sort, export, and filter sheets with multiple review-status values without
+opening repository folders. Two of these sheets (**Official Discovery** and **New Work Review**)
 are intentionally empty right now: every queued item has been ruled, and the
 sheets remain as standing **intake lanes** so any future Veritas catalogue
 refresh lands its unmatched products there instead of in the curated views.
@@ -135,12 +135,12 @@ The current curated master has **365** records (309 `lecture`, 40 `book`,
 2026-08-07 rulings that record 246 was the audio edition already held as master
 329 and that record 309 duplicated the Oxford talk already held as master 221),
 **281** catalogue codes, **72** retained exclusions,
-**134** approved source overrides (including the four Nightingale-Conant audio
+**131** approved source overrides (including the four Nightingale-Conant audio
 editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
-and the official Veritas product link moved from retired duplicate 309 onto master 221),
+and the official Veritas product link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed),
 **39** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
-so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as Amazon search link.
+so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
 Every entry was verified field-by-field against the live Veritas Publishing API
 on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
@@ -153,7 +153,10 @@ audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
 `item_type` records **what a record is** (its content class: `lecture`, `book`,
 `discussion`, …). `format` records **the carrier it arrives on** (`DVD`, `CD`, …).
 DVD lecture recordings are therefore `item_type=lecture` with `format=DVD`, never
-`item_type=video`. The deprecated medium values `audio`/`video` were **retired
+`item_type=video`. Per the 2026-08-08 owner ruling, products represented only by
+a streaming source/reference may stand as `format=streaming`, while streaming
+availability for an item that has a DVD/CD carrier is stored as `reference_url_1`
+on that item, not as a competing `format_detail`. The deprecated medium values `audio`/`video` were **retired
 from the controlled vocabulary on 2026-08-03**: every pipeline validator now
 rejects them — use the content class and record the carrier in `format`.
 

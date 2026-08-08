@@ -135,7 +135,7 @@ def render_report() -> str:
         [
             "## Current verification result",
             "",
-            "The reconciliation is complete. For future approved changes, update the ledger, reviewed source overrides, or manual-lead input as appropriate; rebuild the master and Pages outputs; then run all three checks below.",
+            "The reconciliation is complete. For future approved changes, update the ledger, reviewed source overrides, or manual-lead input as appropriate; rebuild the master and Pages outputs; then run the checks below.",
         ]
         if is_reconciled
         else [
@@ -246,6 +246,8 @@ def render_report() -> str:
         "python reconcile_research_master.py --check",
         "python build_research_master.py --check",
         "python build_catalogue_pages.py --check",
+        "python map_series_taxonomy.py --check",
+        "python sync_inventory_mirrors.py --check",
         "```",
         "",
         "`reconcile_research_master.py --check` verifies that this report still describes the current inputs. Omitting `--check` refreshes this Markdown report only; it does not change catalogue data.",

@@ -1,9 +1,10 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 (final) — full-session handoff, branch
-`arena/019fe098-docsheet` → merged as **PR #30**. See
-`FULL_STACK_AUDIT_2026-08-08.md` (audit + deep passes QA-2…QA-7 + suggestions)
+**Prepared:** 2026-08-08 (follow-up) — current handoff for branch
+`arena/019fe0ef-docsheet` (to be pushed/PR'd/merged from this session). See
+`FULL_STACK_AUDIT_2026-08-08.md` (audit + deep passes QA-2…QA-7 + follow-up notes)
 and the session log at the bottom of §6. Headline results:
+- **2026-08-08 follow-up (arena/019fe0ef):** owner streaming-reference ruling applied — raw streaming rows may stand alone, while DVD/CD products carry streaming pages in `reference_url_1`; work families 225/311 and 226/227/310 merged, DVD rows 310/311 no longer store `streaming video` as `format_detail`, Unity Church title months backfilled, filename metadata mirrors are now guarded, the series-taxonomy queue now hides already-approved conflicts, raw CSV hygiene was applied end-to-end, and the site was reworked into a minimalist table-first UI with View settings / Expand everything.
 - **C1/C2 master 265 ruled + applied** (Option A): publisher-verbatim URL kept
   + documented; carrier corrected `audiobook → CD` (`three CD; 2h56m`); format
   inference hardened (CD markers beat "– Audio"; malformed `https-…` slugs
@@ -13,17 +14,19 @@ and the session log at the bottom of §6. Headline results:
 - **C4 owned semantics applied**: README vocabulary + `Owned`/`Not owned`
   badges.
 - **DP-1/2/3 work-family merge applied**: 11 multi-part groups consolidated
-  (208 → **193 works**); master 202 left the `w-power-vs-force` book work;
+  (208 → **193 works**, now **191** after the 225/311 and 226/227/310 follow-up merges); master 202 left the `w-power-vs-force` book work;
   26 PART-marker canonicals cleaned.
 - **QA-5 fixed**: `legacy_title` + `proposed_filename_display` restored to the
   published Everything view; new **schema-contract test** (suite **115**).
 - **S-a…S-g**: code-order/`candidate:`-prefix docs, test-count house rule,
   contract test, year-research memo (no authoritative dates for 230–232/268).
-- **Site redesign Phases 1–3 applied** (IA groups + stats strip + empty
-  states; a11y roving tabs/focus/reduced-motion/link labels; token theme with
-  gradient header): `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
-- **Owner actions still open**: C5 raw-CSV fixes (16 cells) per
-  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`.
+- **Site redesign applied + simplified** (IA groups + stats strip + empty
+  states; a11y roving tabs/focus/reduced-motion/link labels; official inventory tabs;
+  minimalist neutral theme; View settings with wrap cells / density / summary toggle /
+  **Expand everything**): `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
+- **Raw CSV hygiene applied**: 3 broken Advaita URLs fixed; 13 repeated
+  `2cds each?` tempids cleared; ledger mirrors and generated views refreshed;
+  approved source overrides now 131.
 
 **Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
 **Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
@@ -62,8 +65,8 @@ python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
 python -m unittest discover tests     # 115 tests, offline, ~3s
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
-node --check docs/app.js && node --check tests/csv-export.spec.js
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
+node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
 Sandbox traps learned the hard way (all still true):
@@ -80,7 +83,7 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  tests (5 specs); don't burn time installing locally.
+  suite (2 spec files / 9 tests); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -94,13 +97,13 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
 | Everything view | **365** | 365 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
-| Exclusions / source overrides | 72 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (109 approved at that time after dedup of the Path duplicate; now 134 incl. the 18 Amazon direct links and the product-53277 link moved from retired duplicate 309 onto master 221, owner ruling 2026-08-07) |
+| Exclusions / source overrides | 72 / 131 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 131 incl. the 18 Amazon direct links and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
 | Veritas inventory | 191 products | categories populated 191/191; 10 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07; 50411/1542 decision rows removed 2026-08-07 when owner ruling made them plain primary matches, which need no overlay row) |
 | Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
-| Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 193 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
-| Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 1 row (50521 R3) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **115 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
+| Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
+| Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
+| Test suite | **115 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -271,7 +274,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 - Evidence + outcome memo: `archive/RULING_PREP_PROGRESSIVE_LEVELS_309_221.md`. Veritas product 53277's own description names **Oxford, England** — the same talk as raw-derived master **221**; minted master **309** (from candidate `manual-veritas-53277`) was a duplicate with the storefront year 2023.
 - **Option A executed:** candidate un-minted (promotion-registry + candidate rows deleted; provenance in git history + memo — same pattern as the wrong-override deletion), 309's work-family/filename/year-provenance rows removed, approved override on raw 245 moved the product URL onto 221 (streaming overlay then auto-adds its `reference_url_1`), inventory + series-taxonomy mirrors retargeted 53277 → 221.
-- Result: master **365** (309 lecture), promoted candidates **39**, overrides **134**, relationships **343** (derived primary moved 309 → 221), work families **208 works / 341 members**; all 5 `--check` + 107 tests + doc-parity green.
+- Result at that point: master **365** (309 lecture), promoted candidates **39**, overrides **134** (now **131** after the 2026-08-08 raw Advaita URL fix retired three redundant overlays), relationships **343** (derived primary moved 309 → 221), work families **208 works / 341 members**; all 5 `--check` + 107 tests + doc-parity green.
 
 ### Hygiene batch 1 EXECUTED (owner picks A+B from `archive/TEMP_RESPONSE_HYGIENE_2026-08-07.md`, 2026-08-07)
 
@@ -300,8 +303,8 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 ### Filename proposal v4.1: collision fix + global uniqueness guard (owner directive 6-part, item 6; 2026-08-07)
 
-- **Defect found in the naming-consistency pass:** master **225** (DVD carrier, promoted) and master **311** (streaming, raw row 245) both generate `2003 - Devotion to Truth Talk.mp4` — the *same talk* carried on two media, neither part-indexed, so the per-group rules could not separate them. (Contrast the `226;227;310` family: its raw parts carry `[1-2]`/`[2-2]` part brackets, so no collision there.)
-- **v4.1 carrier-suffix rule:** when the same proposed filename would serve two master rows with different carriers, append ` (DVD)` / ` (streaming)` after the title and before the extension: raw 226's csv row → 225 = `2003 - Devotion to Truth Talk (DVD).mp4`, 311 = `2003 - Devotion to Truth Talk (streaming).mp4`.
+- **Defect found in the naming-consistency pass:** master **225** (raw owned streaming row) and master **311** (promoted DVD/product row) both generate `2003 - Devotion to Truth Talk.mp4` — the *same talk* carried on two media, neither part-indexed, so the per-group rules could not separate them. (Contrast the `226;227;310` family: its raw parts carry `[1-2]`/`[2-2]` part brackets, so no collision there.)
+- **v4.1 carrier-suffix rule:** when the same proposed filename would serve two master rows with different carriers, append ` (DVD)` / ` (streaming)` after the title and before the extension: 225 = `2003 - Devotion to Truth Talk (streaming).mp4`, 311 = `2003 - Devotion to Truth Talk (DVD).mp4`.
 - **New guard in `validate_filename_proposal_groups`:** *global* uniqueness of `proposed_filename` and `proposed_filename_display` (not just within work families) — a ValueError citing the v4.1 rule fails the build on any seeded duplicate. 2 new tests (`test_filename_proposal_filenames_are_globally_unique`, `test_filename_uniqueness_guard_fails_on_seeded_duplicate`), suite 110 → **112**.
 - Filename sheet: **365 rows = 365 unique safe = 365 unique display**; `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` carries the v4.1 amendment. All 6 `--check` + 112 tests + node green.
 
@@ -320,7 +323,7 @@ Full-stack audit + deep QA + site redesign day. Report:
 `FULL_STACK_AUDIT_2026-08-08.md` (sections 1–14); memos in `archive/`.
 
 - **Audit re-verified everything** (112 tests at start, 6 `--check` green,
-  91% coverage, counts vs `docs/catalogue-meta.json`) and found 5 catalogue
+  90% coverage, counts vs `docs/catalogue-meta.json`) and found 5 catalogue
   inconsistencies + 4 setup drifts (C1–C5, S1–S5).
 - **Rulings executed (owner-approved, applied this session):**
   - C1/C2 master 265: publisher-verbatim URL kept + documented (live WP-API
@@ -355,12 +358,11 @@ Full-stack audit + deep QA + site redesign day. Report:
   reduced motion, link aria-labels, 44px mobile targets), theme (gradient
   header, green hover/selection, themed scrollbars, footer repo link).
   Proposal: `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
-- **CI:** green on every commit (Python checks, 115 tests, 91% coverage gate,
-  JS syntax, 9-spec Playwright suite).
-- **Owner actions still open:** C5 raw-CSV hygiene (16 cells: 3 Advaita URLs
-  lines 28–30, 13 `2cds each?` tempids lines 280–292) per
-  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; optionally supply recording dates
-  for masters 230–232/268 if known.
+- **CI:** green on every commit (Python checks, 115 tests, 90% coverage against the 85% gate,
+  JS syntax, 9-test Playwright suite).
+- **Owner actions still open:** optionally supply recording dates for masters
+  230–232/268 if known; C5 raw-CSV hygiene is now applied in the follow-up
+  session below.
 
 
 
@@ -373,3 +375,17 @@ Full-stack audit + deep QA + site redesign day. Report:
   what is next.
 - Update this handoff at the end of each session so the next agent inherits
   your context verbatim.
+
+## 2026-08-08 Follow-up Session (arena/019fe0ef-docsheet)
+
+Requested by owner after the audit: "start fixing everything", then "redo the whole page, minimalistic, with extra settings to expand everything," then update docs / push / PR / merge.
+
+- **Catalogue consistency fixed:** work-family rows 225/311 (`Devotion to Truth Talk`) now share `w-devotion-to-truth-talk`; rows 226/227/310 (`Mind, Heart and Service`) now share `w-mind-heart-and-service`; guard added so same Veritas URL + normalized title + type + series + year cannot split across work IDs again.
+- **Streaming-reference ruling applied:** raw streaming-only rows can stand as `format=streaming`; DVD/CD rows keep their carrier and put streaming availability in `reference_url_1`. Manual candidates 54219/55473 now declare `proposed_format=DVD`, blank `format_detail`; generated masters 310/311 no longer say `DVD · streaming video`.
+- **Filename proposal guard:** `validate_filename_proposal_mirrors()` now checks proposal metadata mirrors against the final master when the full proposal set is present; fixed stale mirrors for UUID 221 (format), 225/310 (work_id), and title-month-backed Unity Church rows 354/355 (month 03/06 via `month_from_title`).
+- **Series taxonomy queue clarified:** `map_series_taxonomy.py` no longer emits already-reviewed approved/rejected conflicts into `data/series_taxonomy_review_queue.csv`; current queue = 0.
+- **Official inventory tabs exposed:** Veritas Products, Hay House Products, Audible Products, and Filename Proposal are now first-class Pages tabs; Review Overview includes them.
+- **Raw CSV hygiene applied end-to-end:** fixed 3 Advaita raw product URLs, cleared 13 `2cds each?` tempids, updated `migration_review_ledger.csv`, regenerated `docs/data.json`, blanked masters 251–263 `legacy_tempid`, and retired three now-redundant Advaita source overrides (approved overrides 134 → 131).
+- **Minimalist UI pass:** neutral table-first theme in `docs/style.css`; `View settings` menu in `docs/index.html`/`docs/app.js`; settings persist in `localStorage`; controls include Wrap long cell text, Compact rows, Show summary cards, Reset current view, and **Expand everything** (all columns + Expert columns + wrapped roomy rows).
+- **Setup/docs fixes:** CSP inline-script hash updated, export/read-only docs corrected, local JS syntax verification now covers every `tests/*.spec.js` (workflow edit requires GitHub App workflow permission and was not included in the pushed commit), direct-file unittest ordering fixed, vacuous edition UUID stability test fixed, current coverage docs updated to 90%.
+- **Verification:** `process_data.py --check`, `build_research_master.py --check`, `build_catalogue_pages.py --check`, `reconcile_research_master.py --check`, `map_series_taxonomy.py --check`, `sync_inventory_mirrors.py --check`, `python -m unittest discover tests` (115), `coverage report` (90%, gate 85), and all node syntax checks pass locally. Local Playwright browser execution remains blocked by sandbox Chromium download/TLS issues; CI should run the 9 browser tests.

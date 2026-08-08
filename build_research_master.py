@@ -213,6 +213,40 @@ def notes_for(row: dict[str, str]) -> str:
     return " | ".join(notes)
 
 
+MONTH_ALIASES = {
+    "jan": "01", "january": "01",
+    "feb": "02", "february": "02",
+    "mar": "03", "march": "03",
+    "apr": "04", "april": "04",
+    "may": "05",
+    "jun": "06", "june": "06",
+    "jul": "07", "july": "07",
+    "aug": "08", "august": "08",
+    "sep": "09", "sept": "09", "september": "09",
+    "oct": "10", "october": "10",
+    "nov": "11", "november": "11",
+    "dec": "12", "december": "12",
+}
+
+
+def month_from_title(title: str, year: str = "") -> str:
+    """Extract a month named in an official title when it clearly belongs to that year.
+
+    Manual promotions such as ``Unity Church of Sedona 2005 March (CD)`` carry
+    the recording month in the official title while the storefront
+    ``published_date`` is only a later listing date. Preserve that title-level
+    evidence instead of leaving master ``month`` blank or backfilling the false
+    listing month.
+    """
+    if year and year not in title:
+        return ""
+    tokens = re.findall(r"[A-Za-z]+", title.lower())
+    for token in tokens:
+        if token in MONTH_ALIASES:
+            return MONTH_ALIASES[token]
+    return ""
+
+
 def reference_url(row: dict[str, str]) -> str:
     urls = [
         value
@@ -880,14 +914,81 @@ def apply_work_families(items: list[dict[str, str]]) -> int:
     return applied
 
 
+def validate_filename_proposal_mirrors(items: list[dict[str, str]]) -> None:
+    """Ensure filename-proposal metadata mirrors the final master rows.
+
+    ``data/filename_proposal_YYYYMM.csv`` is applied by UUID, but it also
+    carries review-facing metadata columns (work_id, type, series, date,
+    format, title). Those columns must stay exact mirrors of the built master;
+    otherwise a reviewer can make filename decisions from stale carrier/work
+    evidence while the build still passes. The filename text itself remains the
+    reviewed input, but its surrounding context is derived and therefore
+    validated here.
+    """
+    if not FILENAME_PROPOSAL.exists():
+        return
+    mirror_fields = ["work_id", "item_type", "series", "year", "month", "format", "title"]
+    require_columns(FILENAME_PROPOSAL, {"uuid", *mirror_fields})
+    proposals = read_csv(FILENAME_PROPOSAL)
+    proposal_by_uuid: dict[str, dict[str, str]] = {}
+    for line_number, row in enumerate(proposals, start=2):
+        uuid = row["uuid"].strip()
+        if not uuid:
+            raise ValueError(f"{FILENAME_PROPOSAL}:{line_number} has a blank uuid")
+        if uuid in proposal_by_uuid:
+            raise ValueError(f"{FILENAME_PROPOSAL}:{line_number} duplicates UUID {uuid}")
+        proposal_by_uuid[uuid] = row
+
+    master_by_uuid = {item["uuid"]: item for item in items}
+    sort_uuid = lambda value: (0, int(value)) if value.isdigit() else (1, value)
+    # Extra proposal rows are ignored here so fixture builds that deliberately
+    # clear a promotion layer can still exercise the generator. Any current
+    # master row, however, must have a proposal row.
+    missing = sorted(set(master_by_uuid) - set(proposal_by_uuid), key=sort_uuid)
+    if missing:
+        raise ValueError(
+            f"{FILENAME_PROPOSAL} is missing filename proposal row(s) for master UUID(s): "
+            f"{', '.join(missing)}"
+        )
+
+    if set(proposal_by_uuid) != set(master_by_uuid):
+        return
+
+    fields_to_compare = list(mirror_fields)
+    if any(not item.get("work_id", "").strip() for item in items):
+        # Unit-test fixtures sometimes validate partial work-family files before
+        # catalogue-level coverage is enforced. In that mode the filename sheet's
+        # committed work_id mirrors are expected to differ, so only compare them
+        # in full catalogue builds where every current item has a work_id.
+        fields_to_compare.remove("work_id")
+
+    mismatches: list[str] = []
+    for uuid, item in master_by_uuid.items():
+        proposal = proposal_by_uuid[uuid]
+        for field in fields_to_compare:
+            if proposal[field].strip() != item.get(field, "").strip():
+                mismatches.append(
+                    f"UUID {uuid} field {field}: proposal {proposal[field]!r} "
+                    f"!= master {item.get(field, '')!r}"
+                )
+    if mismatches:
+        raise ValueError(
+            f"{FILENAME_PROPOSAL} metadata mirrors are stale:\n  - "
+            + "\n  - ".join(mismatches)
+        )
+
+
 def validate_master_items_integrity(items: list[dict[str, str]]) -> None:
     """Enforce structural invariants across all assembled master records."""
     seen_uuids: set[str] = set()
+    same_product_groups: dict[tuple[str, str, str, str, str], list[dict[str, str]]] = {}
     for item in items:
         uuid = item.get("uuid", "").strip()
         title = item.get("title", "").strip()
         item_type = item.get("item_type", "").strip()
         work_id = item.get("work_id", "").strip()
+        media_format = item.get("format", "").strip()
+        format_detail = item.get("format_detail", "").strip()
 
         if not uuid or not uuid.isdigit():
             raise ValueError(f"Master record has invalid or missing uuid: {uuid!r} (title: {title!r})")
@@ -904,10 +1005,42 @@ def validate_master_items_integrity(items: list[dict[str, str]]) -> None:
                 "work_ids must start with 'w-'"
             )
 
+        if media_format in {"DVD", "CD"} and "stream" in format_detail.lower():
+            raise ValueError(
+                f"Master record {uuid} ({title!r}) mixes carrier {media_format!r} "
+                f"with streaming format_detail {format_detail!r}; per the 2026-08-08 "
+                "owner ruling, streaming availability for DVD/CD items belongs in "
+                "reference_url_1, not in the carrier detail"
+            )
+
         if not item_type and uuid != "246":
             raise ValueError(
                 f"Master record {uuid} ({title!r}) has an empty item_type; "
                 "only UUID 246 is permitted as a deferred untyped record"
+            )
+
+        url = item.get("source_url_veritas", "").strip()
+        if url and title and item_type:
+            key = (
+                url,
+                _normalized_title(title),
+                item_type,
+                item.get("series", "").strip(),
+                item.get("year", "").strip(),
+            )
+            same_product_groups.setdefault(key, []).append(item)
+
+    for (url, _title_key, item_type, series, year), group in same_product_groups.items():
+        work_ids = {row.get("work_id", "").strip() for row in group if row.get("work_id", "").strip()}
+        if len(work_ids) > 1:
+            details = "; ".join(
+                f"UUID {row['uuid']} work_id={row.get('work_id', '')!r} format={row.get('format', '')!r}"
+                for row in group
+            )
+            raise ValueError(
+                "Master rows with the same Veritas URL, normalized title, type, "
+                f"series, and year must share one work_id ({url}, {item_type}, "
+                f"{series}, {year}): {details}"
             )
 
 
@@ -1255,7 +1388,8 @@ def build_master() -> MasterBuild:
             "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],
             "item_type": item_type, "series": candidate["series"],
-            "year": year, "month": "", "format": candidate["proposed_format"],
+            "year": year, "month": month_from_title(candidate["candidate_title"], year),
+            "format": candidate["proposed_format"],
             "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
             "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
@@ -1423,6 +1557,7 @@ def build_master() -> MasterBuild:
         it.setdefault("source_url_amazon", "")
 
 
+    validate_filename_proposal_mirrors(items)
     validate_master_items_integrity(items)
     edition_candidates_validated = validate_edition_candidates(items)
     manual_candidates_validated = validate_manual_candidates()
