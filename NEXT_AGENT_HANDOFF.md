@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-08 (post-merge verification) — current handoff for branch
 `arena/019fe211-docsheet`. See
 `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
+`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
 session log at the bottom of §6. Headline results this session:
 - **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
@@ -63,7 +63,7 @@ minimalist table-first UI with View settings / Expand everything.
   approved source overrides now 131.
 
 **Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
-**Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
+**Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `archive/FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
 If you are the next agent: **read this file top to bottom before touching
@@ -75,14 +75,14 @@ anything.** It is written to give you full context in five minutes.
 
 DocSheet is a static GitHub Pages catalogue of David R. Hawkins material:
 `_hawkins archive clone - Sheet1.csv_` (374 raw rows) flows through a
-hand-maintained `migration_review_ledger.csv` into generators that emit 20
+hand-maintained `migration_review_ledger.csv` into generators that emit 19
 `docs/*.json` sheets rendered by Tabulator (`docs/index.html`, `docs/app.js`).
 
 | Generator | Input → Output (committed artifacts; never hand-edit) |
 |---|---|
 | `process_data.py` | raw CSV → `docs/data.json` (`docs/meta.json` was stopped 2026-08-07 — never consumed; footer reads HTTP `Last-Modified`) |
 | `build_research_master.py` | raw CSV + ledger + review overlays → `data/research_master_draft.{csv,json}`, `data/research_master_exclusions.csv` |
-| `build_catalogue_pages.py` | master + all review CSVs → the 20 `docs/*.json` sheets + `docs/catalogue-meta.json` |
+| `build_catalogue_pages.py` | master + all review CSVs → the 19 `docs/*.json` sheets + `docs/catalogue-meta.json` (20 JSON files total) |
 | `map_series_taxonomy.py` | Veritas inventory + mapping review input → `data/series_category_mapping.csv`, `data/series_taxonomy_review_queue.csv` |
 | `fetch_veritas_catalogue.py` | live Veritas API (review-only; never auto-commit) → candidate inventory |
 | `reconcile_research_master.py` | everything → `RECONCILIATION_REPORT.md` |
@@ -98,7 +98,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 123 tests, offline, ~3s
+python -m unittest discover tests     # 125 tests, offline, ~3s
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
@@ -132,13 +132,13 @@ Sandbox traps learned the hard way (all still true):
 | Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
 | Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
 | Everything view | **365** | 365 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
-| Exclusions / source overrides | 72 / 131 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 131 incl. the 18 Amazon direct links and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
+| Exclusions / source overrides | 72 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 134 incl. the 18 Amazon direct links, the 3 academic-book Amazon links moved onto the curated `source_url_amazon` column on 2026-08-08, and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
 | Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence) |
 | Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **123 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **125 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -171,9 +171,10 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   master identity.** Four records once linked to the wrong edition because of
   title matching.
 - **Compact master IDs are stable once issued.**
-- **`work_id` comes only from approved `data/work_families.csv` rows.**
-  Never infer work identity from titles alone (C2 lesson); `proposed` rows
-  are validated but never applied.
+- **`work_id` comes only from approved `data/work_families.csv` rows** — for
+  minted edition rows (masters 320–343) it comes from the approved `work_id`
+  column of `data/edition_promotions.csv` instead. Never infer work identity
+  from titles alone (C2 lesson); `proposed` rows are validated but never applied.
 - **A book's `year` is its first-publication year, never the storefront
   listing date.** `backfill_months_from_official_source()` skips `book` rows;
   book years come only from the reviewed ledger / candidate `proposed_year`.
@@ -218,7 +219,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 - **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
   **✅ FULLY APPLIED — see §3 "Current verified state" for the authoritative
-  counts** (365 masters, 191 works / 341 memberships, 131 overrides, 343
+  counts** (365 masters, 191 works / 341 memberships, 134 overrides, 343
   relationships, 281 codes, 24 minted edition rows 320–343, filename proposal
   v4.1). The paragraph below is the **superseded 2026-08-03/04 proposal
   snapshot** retained for provenance; do not treat its counts (358 rows,
@@ -243,9 +244,11 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   work: all 5 New Work Review queue rows and 6 pending manual candidates were
   promoted 2026-08-03 as master UUIDs 353–358.~~
   <!-- END SUPERSEDED SNAPSHOT -->
-- **Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
-  deferred pending physical-edition confirmation; product 1661 is mapping-row
-  only — do **not** add a source override yet.
+- ~~**Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
+  deferred pending physical-edition confirmation~~ — **RULED 2026-08-07**:
+  duplicate of the audio edition already held as master 329; record 246
+  excluded and its uuid un-minted (uuid 246 no longer exists in the master).
+  Product 1661 is mapping-row only — do **not** add a source override.
 - **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
 - ~~**10 conflicting series-taxonomy proposals**~~ — **RULED 2026-08-04**:
   **3 approved** (1814 → master 357 re-seriesed to On The Road Talk Series;
@@ -266,9 +269,10 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   `location_streaming`, `reference_url_2` removed from schema, sheet, specs
   and docs (25 master columns remain; re-adding is a git revert away).
   Outcome memo: `archive/RULING_PREP_EMPTY_COLUMNS.md`. (`source_url_hay_house`
-  is **not** empty — 28 values after the 2026-08-03 Hay House backfill —
-  and `source_url_nightingale_conant` holds **4** values after the
-  2026-08-04 NC edition fills.)
+  is **not** empty — **27** values after the 2026-08-03 Hay House backfill
+  and later corrections — and `source_url_nightingale_conant` holds **6**
+  values: the four 2026-08-04 NC edition fills plus the NC/Audible program
+  masters 369–370.)
 - ~~**Nightingale-Conant provenance**~~ — **resolved 2026-08-04**: the four
   NC-published audio editions (masters 327–330) now carry their official
   NC product URLs via candidate-keyed overrides (110 total). The remaining
@@ -283,8 +287,11 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 - ~~Remove deprecated `audio`/`video` item types~~ — **done 2026-08-03**
   (branch `arena/019fc9b5-docsheet`): `DEPRECATED_MEDIUM_ITEM_TYPES` removed;
   the 8 last candidate rows migrated to owner-approved types; 100 tests incl.
-  4 retirement guards. Remaining: the 4 free-text `audio` values in the
-  unreviewed discovery triage lane (owner ruling).
+  4 retirement guards. ~~Remaining: the 4 free-text `audio` values in the
+  unreviewed discovery triage lane (owner ruling)~~ — **resolved 2026-08-07**:
+  the discovery triage lane was ruled empty (3 NC programs promoted to
+  masters 369–371, Map poster 1560 excluded), so no free-text `audio`
+  remains anywhere.
 - Widen browser tests: all 19 tabs (Catalogue · Review workspace · Sources groups), column chooser, drawer, dark mode
   (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
   measured-width assertions).
@@ -353,7 +360,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 ### Owner 6-part directive EXECUTED (documentation, re-audit, hygiene, UX, mobile, naming — 2026-08-07 PM)
 
-1. **Docs updated + project re-audited:** `FULL_STACK_AUDIT_2026-08-07_DEEP.md` got a PM refresh — exec summary, repo layout, *Current Verified State* table, pipeline deep-dive (all module line/stmt/coverage numbers; `sync_inventory_mirrors.py` added) and reproduction commands re-executed live, plus a PM Session Changelog section itemizing all 8 same-day rulings. Handoff stale bits fixed (meta.json removed from generator table, 112 tests, codes 281).
+1. **Docs updated + project re-audited:** `archive/FULL_STACK_AUDIT_2026-08-07_DEEP.md` got a PM refresh — exec summary, repo layout, *Current Verified State* table, pipeline deep-dive (all module line/stmt/coverage numbers; `sync_inventory_mirrors.py` added) and reproduction commands re-executed live, plus a PM Session Changelog section itemizing all 8 same-day rulings. Handoff stale bits fixed (meta.json removed from generator table, 112 tests, codes 281).
 2. **Hygiene leftovers:** README now documents the two intentionally-empty sheets (Official Discovery, New Work Review) as standing **intake lanes**; CI **item K** documented — Node 20 EOL 2026-04, owner must bump the workflow to 22 (app can't push `.github/workflows/*`).
 3. **Visitor-first UX:** Everything view reordered to product facts first (Title · Series · Item Type · Edition · Year-Month · Catalogue Code · Owned · Veritas/Hay House/Audible/Amazon/Nightingale-Conant links · Streaming · Notes); technical columns (uuid, work_id, legacy_tempid, proposed_filename(_display), year_source, raw_row_number, legacy_title) hidden behind a persisted **Expert columns** toggle; friendly labels (`Veritas (Official Store)`, `Streaming`) and linkified cells (`Amazon page`, `Streaming link`); view description rewritten.
 4. **Mobile:** dense cells (13px, 5×8 padding), full-width row-details sheet with 44px close target, touch-height scrolling tabs, stacked view-tools; expert toggle flex-fills.
@@ -363,7 +370,7 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 ## 2026-08-08 Session (arena/019fe098-docsheet → PR #30, MERGED)
 
 Full-stack audit + deep QA + site redesign day. Report:
-`FULL_STACK_AUDIT_2026-08-08.md` (sections 1–14); memos in `archive/`.
+`archive/FULL_STACK_AUDIT_2026-08-08.md` (sections 1–14); memos in `archive/`.
 
 - **Audit re-verified everything** (112 tests at start, 6 `--check` green,
   90% coverage, counts vs `docs/catalogue-meta.json`) and found 5 catalogue
@@ -413,7 +420,7 @@ Full-stack audit + deep QA + site redesign day. Report:
   cite those numbers — do not hand-count).
 - Present long results via a committed Markdown report
   (`archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` is the 2026-08-03 log;
-  `FULL_STACK_AUDIT_2026-08-07_DEEP.md` is the current full-project audit); the
+  `archive/FULL_STACK_AUDIT_2026-08-07_DEEP.md` is the current full-project audit); the
   chat should stay a one-sentence summary plus the `ask_user` question for
   what is next.
 - Update this handoff at the end of each session so the next agent inherits
@@ -436,7 +443,7 @@ Requested by owner after the audit: "start fixing everything", then "redo the wh
 ## 2026-08-08 Session 2 (arena/019fe11d-docsheet)
 
 Independent full-stack audit + catalogue fix + UX rework. Report:
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`; UX backlog:
+`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`; UX backlog:
 `UX_REWORK_SUGGESTIONS.md`; web-editor workflow guide:
 `WORKFLOW_WEB_EDITOR_GUIDE.md`.
 

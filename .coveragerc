@@ -3,7 +3,7 @@
 #   coverage run -m unittest discover tests
 #   coverage report            # exits non-zero when total < 85%
 #
-# The suite itself is excluded from the denominator; all eight pipeline
+# The suite itself is excluded from the denominator; all ten pipeline
 # modules are measured. One subprocess CLI smoke test (map_series_taxonomy
 # --check) intentionally cannot be traced by coverage.
 [run]
