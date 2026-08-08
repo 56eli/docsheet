@@ -3,7 +3,8 @@
 #
 # Runs the deterministic checks that already exist in the repository:
 #   - Python syntax compilation
-#   - the three generator --check modes (master, Pages, reconciliation)
+#   - the six generator --check modes (raw payload, master, Pages,
+#     reconciliation, series-taxonomy, and inventory mirrors)
 #   - JavaScript syntax checks
 #   - Playwright browser smoke tests
 #
@@ -47,9 +48,11 @@ jobs:
         run: python reconcile_research_master.py --check
       - name: Verify series-taxonomy mapping matches its inputs
         run: python map_series_taxonomy.py --check
+      - name: Verify Veritas inventory mirrors match the master
+        run: python sync_inventory_mirrors.py --check
       - name: Run deterministic pipeline test suite
         run: python -m unittest discover tests
-      - name: Enforce the coverage floor (80%)
+      - name: Enforce the coverage floor (85%)
         run: |
           pip install -r requirements-dev.txt
           coverage run -m unittest discover tests
