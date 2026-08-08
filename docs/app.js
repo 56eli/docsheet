@@ -62,7 +62,7 @@
   const VIEW_DETAILS = {
     master: {
       type: "Complete curated catalogue",
-      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
+      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. The Proposed File Name (this project's primary deliverable) appears right after the title. Product facts — series, type, edition, date, official store and streaming links, notes — follow. Internal IDs and provenance columns (Master ID, Work, year source) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
     },
     reviewOverview: {
       type: "Review index",
@@ -209,17 +209,22 @@
       // Visitor-first (owner directive 2026-08-07 PM): a first-time visitor sees
       // the product-relevant facts — what it is, when, which edition, where to
       // buy/listen — before any technical metadata comes into view.
-      priority: ["record_type", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
+      // Owner directive 2026-08-08: the Proposed File Name is the PRIMARY
+      // purpose of this project, so it is visible by default, immediately
+      // after the title — not parked behind the Expert columns toggle.
+      priority: ["record_type", "title", "proposed_filename", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
       frozen: ["record_type", "title"],
-      // Expert columns: internal IDs, file-naming proposes, and provenance
-      // fields. Hidden by default so the catalogue opens on product info;
-      // the "Expert columns" toggle (or the Columns menu) reveals them.
-      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
+      // Expert columns: internal IDs and provenance fields. Hidden by default
+      // so the catalogue opens on product info; the "Expert columns" toggle
+      // (or the Columns menu) reveals them. The proposed file-name column is
+      // deliberately NOT hidden (see note above).
+      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
       // Owner-directed 2026-08-04: park the Work grouping column right after
       // Legacy ID (the empty Location placeholders it used to precede were
       // dropped from the schema by owner ruling 2026-08-07).
-      // Owner-directed 2026-08-04 v2: proposed_filename between Title and Item Type.
-      moveAfter: { work_id: "legacy_tempid" },
+      // Owner-directed 2026-08-08: proposed_filename sits between Title and
+      // Item Type (the project's primary deliverable).
+      moveAfter: { work_id: "legacy_tempid", proposed_filename: "title" },
     },
     original: {
       priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
