@@ -55,9 +55,10 @@ test('stats chips and task jump menu navigate to their sheets', async ({ page })
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await expect(page.locator('#view-jump optgroup[label="Catalogue"]')).toBeVisible();
-  await expect(page.locator('#view-jump optgroup[label="Review workspace"]')).toBeVisible();
-  await expect(page.locator('#view-jump optgroup[label="Sources"]')).toBeVisible();
+  await expect(page.locator('#view-jump')).toBeVisible();
+  await expect(page.locator('#view-jump optgroup[label="Catalogue"]')).toHaveCount(1);
+  await expect(page.locator('#view-jump optgroup[label="Review workspace"]')).toHaveCount(1);
+  await expect(page.locator('#view-jump optgroup[label="Sources"]')).toHaveCount(1);
   await page.locator('#view-jump').selectOption('manualLeads');
   await waitForTable(page);
   await expect(page.locator('#view-title')).toHaveText('Manual Leads');

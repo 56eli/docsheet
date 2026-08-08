@@ -950,7 +950,7 @@
     if (event.key !== "Tab" || rowDetails.hidden) return;
     const focusable = [...rowDetails.querySelectorAll(
       'button:not([hidden]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )].filter((element) => element.offsetParent !== null);
+    )].filter((element) => element.getClientRects().length > 0);
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
