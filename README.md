@@ -150,11 +150,13 @@ and the official Veritas product link moved from retired duplicate 309 onto mast
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates) except an explicit publisher suffix when two same-work audiobook editions would otherwise collide, Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
-At the 2026-08-03 live-source checkpoint, every entry was verified field-by-field
-against the Veritas Publishing API: 191/191 products reconciled exactly and all
-195 verifiable lecture months matched the publisher's own dates. Subsequent
-reviewed promotions and source corrections are covered by the current generated
-inventory. See [FULL_STACK_AUDIT_2026-08-08_ARENA.md](FULL_STACK_AUDIT_2026-08-08_ARENA.md)
+At the 2026-08-03 live-source checkpoint (historical snapshot), every entry was
+verified field-by-field against the Veritas Publishing API: 191/191 products
+reconciled exactly and all 195 verifiable lecture months matched the publisher's
+own dates. Subsequent reviewed promotions, source corrections, and new-work
+additions are reflected in the current generated inventory (365 master records,
+191 Veritas products, 343 relationships). See
+[FULL_STACK_AUDIT_2026-08-08_ARENA.md](FULL_STACK_AUDIT_2026-08-08_ARENA.md)
 for the current full-stack audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; the archive reports preserve earlier checkpoints.
 
