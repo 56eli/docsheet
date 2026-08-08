@@ -952,15 +952,13 @@
       'button:not([hidden]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
     )].filter((element) => element.getClientRects().length > 0);
     if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+    const current = focusable.indexOf(document.activeElement);
+    const delta = event.shiftKey ? -1 : 1;
+    const nextIndex = current === -1
+      ? (event.shiftKey ? focusable.length - 1 : 0)
+      : (current + delta + focusable.length) % focusable.length;
+    event.preventDefault();
+    focusable[nextIndex].focus();
   }
 
   /* ------------------------------------------------------------------ *
