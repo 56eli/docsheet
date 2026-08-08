@@ -1,7 +1,8 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
-**Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
+**Prepared:** 2026-08-08 — full audit + streaming-URL backfill + Proposed File Name restored to default visibility (branch `arena/019fe01c-docsheet`; see `archive/AUDIT_2026-08-08.md`). **State:** all six `--check` modes green, **113/113 tests** pass, 91% coverage (85% gate), the two workflow snippets have been applied to `main` by the owner and CI passes there too. The 2002–2011 annual lecture series are fully covered with verified streaming links (97 rows in `data/veritas_streaming_urls.csv` → 243 masters carry `reference_url_1`).
+**Previous (2026-08-07):** full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). That PR's Playwright data-driven fix landed on `main`.
+**Earlier same-day (2026-08-07):** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
 If you are the next agent: **read this file top to bottom before touching
@@ -282,6 +283,75 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 4. **Mobile:** dense cells (13px, 5×8 padding), full-width row-details sheet with 44px close target, touch-height scrolling tabs, stacked view-tools; expert toggle flex-fills.
 5. **Naming scheme:** filename v4.1 (earlier this session) — carrier suffix + global-uniqueness guard, 365 unique safe = 365 unique display.
 6. **Specs:** Playwright specs enable Expert columns before asserting technical columns; new `column-layout` spec locks the visitor-first default. CI note: watch the "Run browser smoke tests" step after merge (Chromium is CI-only here).
+
+## 2026-08-08 Full audit + streaming backfill + filename visibility (arena/019fe01c-docsheet)
+
+Read the full report at `archive/AUDIT_2026-08-08.md`. Summary of what
+landed (all on this branch; the two workflow snippets were applied to `main`
+by the owner and CI passes there):
+
+**Audit fixes:**
+- **CSP hash corrected** in `docs/index.html` (was `sha256-u2/u4...`, now
+  `sha256-qULmN...`) so the inline dark-mode pre-paint script actually runs;
+  new `test_csp_hash_matches_inline_dark_mode_script` guards against
+  regression.
+- **Inventory-mirror gate wired in:** `sync_inventory_mirrors.py --check`
+  added to the test `SCRIPTS` list and (via owner) to `ci.yml`. The six
+  curated `--check` modes are now all exercised in CI.
+- **UUID 221 format drift fixed:** `data/filename_proposal_YYYYMM.csv` had
+  `format` blank while the master had `streaming`; corrected and
+  `docs/filename-proposal.json` rebuilt.
+- **Doc counts synced:** README/INSTRUCTIONS/handoff test count 110 → **113**
+  (112 + the new CSP test); `SERIES_TAXONOMY_MAPPING.md` baseline refreshed
+  to 186/177/9 (was the stale 179/169/10 narrative); reconciliation
+  report reworded so the 63 draft-only rows are correctly described as
+  *expected promotion/edition layer* records rather than alarming drift.
+- **Retired `docs/meta.json`** removed from `update_spreadsheet.yml`'s
+  `file_pattern` (file stopped 2026-08-07).
+
+**Streaming-URL backfill — the annual lecture series are now complete:**
+- Added **69 verified streaming URLs** to `data/veritas_streaming_urls.csv`
+  (36 → 97 rows; streaming applications 56 → **235**), covering every
+  annual lecture DVD set from 2002 through 2011:
+  - 2002 The Way to God (10 talks, incl. the Karma page whose streaming
+    slug differs from its product slug)
+  - 2003 Devotional Nonduality (6)
+  - 2004 Transcending the Mind (6)
+  - 2005 Nonduality Intensive (10)
+  - 2006 Transcending Levels of Consciousness (8)
+  - 2007 Spiritual Reality & Modern Man (8)
+  - 2008 Advanced Spiritual Awareness (7)
+  - 2009 In the World but Not of It (Feb/Apr; Success Oct was already mapped)
+  - 2010 Practical Spirituality (2) and 2011 Love & Spiritual Seeker (2),
+    including Dr. Hawkins' last public lecture *Love* (Sep 2011).
+- Masters carrying `reference_url_1`: **64 → 243**. Every link was
+  page-fetched live and confirmed to point at a real "Video streaming
+  available to paid subscribers only" page with the Stream icon.
+- Methodology note for the next agent: urllib/curl from the sandbox is
+  TLS-blocked (`_ssl.c:992` EOF), but the `fetch_page` tool works and
+  exposes the `Stream.png` anchor; product slugs do not always equal
+  streaming slugs (e.g. Karma's product URL 404s at the `-streaming`
+  path but the stream lives at `/karma-and-the-afterlife-oct-2002/`).
+  Each row was added as `approved` with an evidence note naming the
+  source product page.
+
+**Proposed File Name restored to default visibility:**
+- The project's primary deliverable — the `proposed_filename` column —
+  had been parked behind the Expert-columns toggle by the 2026-08-07 PM
+  visitor-first change. Owner directive 2026-08-08: it must be visible
+  by default. `docs/app.js` master preset now lists it immediately after
+  `title` in `priority`, adds a `moveAfter` anchor, removes it from
+  `hidden` (`proposed_filename_display` stays hidden), and the view
+  description + README are updated accordingly. The data itself was
+  always populated (365/365); only the UI was hiding it.
+
+**Remaining streaming work (not done this session):**
+- ~73 primary products still lack a streaming URL — the **On-The-Road
+  Talk Series** (12 products: God is the Infinite Field, The Power of
+  Devotion, Compassion, Transcending the Ego, Virtues, You Are the
+  Light, etc.), the **7-Volume Series**, the **Satsang monthlies**
+  (already partially mapped), and a handful of special editions.
+  Same fetch_page technique applies; verify each stream page resolves.
 
 ## 7. House-keeping for every turn
 
