@@ -296,8 +296,206 @@ npm run test:e2e
 ```
 
 `npm run test:e2e` requires the Chromium browser bundle. `fetch_veritas_catalogue.py --check` additionally requires live access to `veritaspub.com`; the sandbox currently returns a TLS EOF, while the committed offline replay tests cover its matching and retry logic.
-cover its matching and retry logic.
-gic.
- retry logic.
-etry logic.
-c.
+
+## 12. Fresh current-checkout follow-up — `f0653fbd` (2026-08-08)
+
+**Scope:** a new full-stack/data-engineering pass over the merged `main` state
+at `f0653fbd86362eb2209164679d7793d7c31e7b4d` (the sandbox branch starts at
+that commit). This section is the newest checkpoint in this document. It
+preserves the baseline/follow-up history above and separates current facts from
+those historical measurements.
+
+### Verification rerun
+
+| Check | Result |
+|---|---:|
+| Python compile plus all six generated-output `--check` modes | **PASS** |
+| Deterministic Python suite | **123/123 PASS** |
+| Coverage | **91%** (2,056 statements; every module >= 88%; 85% enforced floor) |
+| JavaScript syntax (`app.js`, Playwright config, all 3 specs) | **PASS** |
+| `npm ci` / production `npm audit` | **PASS** / **0 vulnerabilities** |
+| Raw CSV ↔ ledger provenance mirrors | **374/374 rows, 0 mismatches** |
+| Published JSON/CSV count parity | **14 direct pairs, all match** |
+| Local HTTP smoke (`index`, `master.json`, `catalogue-meta.json`, `data.json`) | **200 / served correctly** |
+| Inline CSP script hash and all three Tabulator SRI attributes | **PASS** |
+| Latest GitHub `main` CI and Pages deployment | **PASS** — runs `31265700227` / `31265699591` |
+| GitHub Pages configuration | **PASS** — HTTPS, `main` `/docs`, status `built` |
+| Local Playwright browser execution | **BLOCKED** — Chromium bundle is absent in this sandbox; all 16 tests stop before assertion/launch. GitHub CI remains the browser authority. |
+| Live Veritas refresh and direct Pages curl | **BLOCKED in sandbox** by TLS handshake failure; this is an environment limitation, not a failed data check. |
+
+The catalogue remains internally consistent: 365 curated records (309 lecture,
+40 book, 8 discussion, 7 highlight, 1 other), 281 unique codes, 191 reviewed
+Veritas products, 336 derived primary + 7 reviewed related relationships, 191
+works/341 approved memberships, 365 unique safe/display filenames, and zero
+orphaned master Veritas URLs, duplicate UUIDs, duplicate codes, or duplicate
+filenames.
+
+### Architecture reviewed
+
+- The raw view is deliberately pass-through: source CSV -> `process_data.py`
+  -> `docs/data.json`; the five raw empty columns are a display-only trim.
+- The curated master is a review-gated projection: ledger + source overrides +
+  candidate/edition promotion registries + official inventories + taxonomy +
+  work families -> `data/research_master_draft.*` -> Pages JSON views.
+- The static frontend is a single Tabulator application (`docs/app.js`) with
+  per-view JSON fetches, no browser-side editing, CSP/SRI, generated exports,
+  and a 19-view navigation contract.
+- CI validates the complete local pipeline, coverage, syntax, and Chromium;
+  the manual Veritas workflow is intentionally review-only. The raw updater is
+  separately scoped to `docs/data.json`.
+
+### Current findings
+
+#### C-01 — Six public DVD part rows have no part metadata in `format_detail`
+
+**Severity:** Medium — catalogue/UX semantic inconsistency, no data loss.
+
+Masters **222–224** (*The Presence of Spiritual Awareness*) and **230–232**
+(*Verification of Spiritual Realities*) were title-cleaned against their
+official listings. They now have the same visible title, `format=DVD`,
+`format_detail` blank, and the same Veritas URL within each three-row group.
+Their raw `legacy_title` values still prove `PART1`/`PART2`/`PART3`, and
+`data/filename_proposal_YYYYMM.csv` correctly carries `part_index` 1–3 and
+unique `[1/3]`-style filenames. The default table's filename rail keeps them
+usable, but its Edition column reduces all three parts to indistinguishable
+`DVD` rows. Other cleaned multi-part rows retain part information in
+`format_detail`.
+
+**Direction needed:** either restore `PART1`/`PART2`/`PART3` (or a normalized
+`Part 1`/`Part 2`/`Part 3`) through the six ledger `proposed_format_detail`
+cells, then regenerate; or formally declare filename proposal metadata as the
+canonical part field and amend the field-semantics documentation. The former is
+recommended because it keeps Edition, exports, and row details self-describing.
+
+#### C-02 — The filename policy and two current filenames disagree
+
+**Severity:** Low/Medium — documented naming rule inconsistency.
+
+README and the active v4 filename policy say audiobook labels are removed from
+proposed names because `.m4b` already conveys the carrier. However masters
+**320** and **331** currently publish:
+
+- `1995 - Power vs. Force (Audiobook).m4b`
+- `1995 - Power vs. Force Audio Book.m4b`
+
+This is an understandable uniqueness workaround for two same-year audiobook
+editions of one work, and names remain globally unique, but it is an
+undocumented exception to the rule. Choose one policy: (a) retain these labels
+and document a same-work/same-carrier exception, or (b) restore label-free
+names with an explicit source suffix such as `(Audible)` / `(Veritas)`.
+
+#### F-01 — Rapid tab switches can render stale data into the active view
+
+**Severity:** Medium — intermittent frontend correctness risk.
+
+`activateView()` awaits `loadData(viewName)` without an activation token or an
+`AbortController`. A slow request for view A can resolve after view B was
+selected and then still call `initTable(data)`, mutate global `allData`, the
+footer, and facet state while `activeView` already says B. Static files make
+this uncommon, but browser caching/throttling or a mobile network makes it
+real. Add a monotonically increasing request token (ignore any response that is
+not current) or abort the previous fetch; cover it with an intercepted,
+delayed Playwright request test.
+
+#### F-02 — The row-details modal traps Tab away from its own source links
+
+**Severity:** Medium — keyboard accessibility defect.
+
+`valueNode()` intentionally renders URL values as focusable anchors inside the
+row-details drawer, but `trapRowDetailsFocus()` cycles only Copy filename, Copy
+ID, and Close. Pressing Tab from Close loops to the header; pressing Tab while
+focused on a body link is also redirected to header controls. Keyboard-only
+users therefore cannot navigate to or open official/evidence links in the
+modal, despite the dialog being the primary mobile/detail source surface.
+Build the trap from all visible focusable descendants (or do not trap a
+non-modal drawer) and add a focus-order/browser regression test.
+
+#### S-01 — Raw-only direct pushes can bypass the complete validation suite
+
+**Severity:** Medium, conditional on branch protection.
+
+`ci.yml` intentionally ignores a raw-CSV-only `main` push to avoid racing
+`Update Spreadsheet`. The updater then runs only `process_data.py` and
+commits `docs/data.json`; it does not run the ledger/master/catalogue/mirror
+checks or the test suite. PR CI provides the intended protection, but branch
+protection could not be inspected with this GitHub integration (the API returns
+403). If direct pushes to `main` are allowed, a raw-source change can publish a
+new raw view without proving raw-to-ledger consistency or the whole pipeline.
+Require PRs/required checks on `main`, or add a post-regeneration verification
+job that fails loudly before publishing. This is a governance/control gap, not
+a present output mismatch.
+
+#### D-01 — Active filename documentation contains outdated current examples
+
+**Severity:** Medium documentation drift.
+
+`FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` is marked as the 365-record current
+policy but its "Current sample v4" and later sample still show the old
+`1982 - A-01 Office Series-Stress.mp4` plus Power-vs-Force `[1-2]`/`[2-2]`
+audiobook examples. Current generated data is `198X - Stress.mp4` and the two
+single filenames described in C-02. Correct the examples or clearly mark them
+as historical.
+
+#### D-02 — Year-provenance documentation does not match current `year_source`
+
+**Severity:** Medium documentation/provenance drift.
+
+`YEAR_COLUMN_PROVENANCE.md` says seven records 228–232, 265, and 268 carry
+Veritas listing-date backfills. Current master evidence says 228/229 are ledger
+recording year 2004; 230–232 and 268 are blank under investigation; 265 is
+ledger recording year 2007. The only current `Veritas listing backfill
+(edition)` rows are masters 327–330 (four promoted audio/CD/DVD editions). The
+policy should distinguish edition release dates from recording dates and align
+its open-work list with the actual `year_source` column.
+
+#### D-03 — Workflow guide includes an incorrect verification snippet
+
+**Severity:** Low documentation drift.
+
+`WORKFLOW_WEB_EDITOR_GUIDE.md` correctly records current action major upgrades
+elsewhere, but its "Node 20 -> 22" confirmation snippet still tells the owner
+to expect `actions/setup-node@v4`; the live workflow uses `@v7`. It also says
+"both Playwright specs" although three specs now exist. Update that historical
+snippet/wording so a maintainer does not revert a correct configuration.
+
+#### D-04 — Current audit/report authority needs consolidation
+
+**Severity:** Low maintainability risk.
+
+Several root audits share the same date and overlapping claims. Most older
+reports now carry useful historical banners, but the linked current Arena audit
+contained trailing corrupted text before this follow-up section, and
+`FULL_STACK_AUDIT_2026-08-08.md` still interleaves resolved and open state
+without a top-level historical/current marker. Keep this report as the current
+checkpoint, add an explicit historical banner to superseded root audits, and
+move them to `archive/` at the next documentation-hygiene pass. The stray tail
+was removed in this update.
+
+### Observations that remain clean or intentionally bounded
+
+- The verified publisher-verbatim malformed Veritas URL for master 265 remains
+  an upstream canonical slug and is documented; it is not a local URL
+  corruption.
+- The owner-approved `198X` Office Series convention, 17 blank years, and
+  four current edition listing-date backfills are explicit evidence boundaries,
+  not test failures.
+- URL, schema, candidate-promotion, source-override, relationship, taxonomy,
+  ownership, and filename uniqueness invariants are clean in the committed
+  state. No secret-like values were found in tracked source/configuration.
+- External Tabulator/Google Fonts assets remain an availability dependency;
+  SRI/CSP are correct, but a local fallback is still a sensible low-priority
+  resilience improvement.
+- Repository hygiene is otherwise healthy: no open pull requests, one stale
+  unassigned issue (#18, ownership cross-check), and current GitHub Pages/CI
+  runs passed. Branch-protection enforcement is the only GitHub setting not
+  observable with this integration.
+
+### Recommended implementation order
+
+1. Decide C-01 part-field convention and C-02 filename disambiguation policy;
+   both are small reviewed-input changes once approved.
+2. Fix F-01 and F-02 together with Playwright coverage, then rerun browser CI.
+3. Correct D-01–D-03 and put historical/current banners around audit artifacts.
+4. Confirm `main` branch protection/required checks or harden the raw-updater
+   validation path; triage issue #18.
+5. Optionally vendor the pinned Tabulator assets or implement a local fallback.
