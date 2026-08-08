@@ -1148,6 +1148,7 @@
     const additional = entries.filter(([field]) => !rendered.has(field));
     appendDetailSection(rowDetailsBody, "Additional fields", additional);
     rowDetails.hidden = false;
+    bindDrawerFocusTrap();
     requestAnimationFrame(() => closeRowDetailsBtn.focus({ preventScroll: true }));
   }
 
@@ -1184,6 +1185,16 @@
       : (current + delta + controls.length) % controls.length;
     event.preventDefault();
     controls[nextIndex].focus();
+  }
+
+  function bindDrawerFocusTrap() {
+    // Header controls persist between openings while body links are rebuilt.
+    // Mark each element so a repeated row inspection never stacks handlers.
+    drawerFocusableControls().forEach((control) => {
+      if (control._docsheetFocusTrapBound) return;
+      control.addEventListener("keydown", trapRowDetailsFocus);
+      control._docsheetFocusTrapBound = true;
+    });
   }
 
   /* ------------------------------------------------------------------ *
@@ -2029,10 +2040,6 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
-    // One delegated capture listener avoids double-handling Tab on header
-    // controls while reliably receiving key events from every link/button in
-    // the drawer before browser focus advances outside the modal.
-    rowDetails.addEventListener("keydown", trapRowDetailsFocus, true);
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
     }
