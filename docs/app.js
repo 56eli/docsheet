@@ -2029,9 +2029,10 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
-    // One delegated listener avoids double-handling Tab on header controls
-    // while still receiving key events from every link/button in the drawer.
-    rowDetails.addEventListener("keydown", trapRowDetailsFocus);
+    // One delegated capture listener avoids double-handling Tab on header
+    // controls while reliably receiving key events from every link/button in
+    // the drawer before browser focus advances outside the modal.
+    rowDetails.addEventListener("keydown", trapRowDetailsFocus, true);
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
     }
