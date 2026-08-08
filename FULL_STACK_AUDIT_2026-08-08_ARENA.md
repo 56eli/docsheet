@@ -255,6 +255,7 @@ After the baseline audit, the two priority fixes selected by the owner were appl
 - **F-02:** `catalogue-meta.json.master_items` now reports the curated master count (`migrated_items`) rather than the Everything-row count; a pending-candidate regression test keeps the “Master records” stat correct.
 - Added two regression tests for candidate provenance and the committed reconciliation state. The deterministic suite is now **117/117**, coverage is **91%**, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md` from the corrected comparison logic. No catalogue rows or review decisions were changed.
+- PR #34 CI run `31261129064` passed all validation steps and all 15 Playwright tests. GitHub emitted an action-runtime warning that `actions/checkout@v4`, `actions/setup-node@v4`, and `actions/setup-python@v5` still target Node 20 internally and are being forced to Node 24; this is separate from the project’s Node 22 runtime pin and should be tracked when newer action majors are available.
 
 The remaining F-03–F-08 findings are unchanged and are the next hardening/documentation work.
 
