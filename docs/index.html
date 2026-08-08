@@ -71,6 +71,8 @@
           <label><input type="checkbox" id="wrap-cells-toggle"> Wrap long cell text</label>
           <label><input type="checkbox" id="compact-mode-toggle"> Compact rows</label>
           <label><input type="checkbox" id="show-summary-toggle"> Show summary cards</label>
+          <label><input type="checkbox" id="show-stats-toggle"> Show overview stats</label>
+          <label><input type="checkbox" id="show-filters-toggle"> Show filters panel</label>
           <button id="reset-view-btn" type="button">Reset current view</button>
         </div>
       </div>
@@ -122,8 +124,11 @@
 
   <section id="view-summary" class="view-summary" aria-live="polite">
     <div class="view-summary-copy">
-      <h2 id="view-title">Everything</h2>
-      <p id="view-description">Loading catalogue view details…</p>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <h2 id="view-title">Everything</h2>
+        <button id="desc-toggle-btn" type="button" class="desc-toggle-btn" aria-expanded="false" title="Show/hide view description">i</button>
+      </div>
+      <p id="view-description" hidden>Loading catalogue view details…</p>
     </div>
     <div class="view-summary-side">
       <dl id="view-meta" class="view-meta" aria-label="Current view details">
@@ -131,6 +136,7 @@
         <div><dt>Type</dt><dd>—</dd></div>
       </dl>
       <div class="column-tools">
+        <button id="facet-toggle-btn" type="button" aria-pressed="false" title="Show or hide filters panel">Filters</button>
         <button id="expert-toggle-btn" type="button" aria-pressed="false" title="Show or hide technical columns (Master ID, Work grouping, proposed file names, provenance). Product facts stay visible either way." hidden>Expert columns</button>
         <button id="column-menu-btn" type="button" aria-expanded="false" aria-controls="column-menu">Columns</button>
         <div id="column-menu" class="column-menu" hidden>

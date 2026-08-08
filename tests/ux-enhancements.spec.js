@@ -18,6 +18,9 @@ test('faceted filters narrow the Everything view and add removable chips', async
   await page.goto('/docs/');
   await waitForTable(page);
 
+  // Filters are now hidden by default to save space. Turn them on.
+  await page.locator('#facet-toggle-btn').click();
+
   // The facet bar is present only on the catalogue (Everything) view.
   await expect(page.locator('#facet-bar')).toBeVisible();
 
@@ -51,6 +54,12 @@ test('facet bar is hidden on non-catalogue views', async ({ page }) => {
 test('stats chips navigate to their sheets', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
+
+  // Stats are hidden by default now to save space. Turn them on.
+  await page.locator('#settings-btn').click();
+  await page.locator('#show-stats-toggle').check();
+  await page.locator('#settings-btn').click(); // close settings menu
+
   await page.locator('.stat-chip[data-jump="productRelationships"]').click();
   await waitForTable(page);
   await expect(page.locator('#view-title')).toHaveText('Product Relationships');

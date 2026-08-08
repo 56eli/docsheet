@@ -23,6 +23,10 @@
   const wrapCellsToggle = $("wrap-cells-toggle");
   const compactModeToggle = $("compact-mode-toggle");
   const showSummaryToggle = $("show-summary-toggle");
+  const showStatsToggle = $("show-stats-toggle");
+  const showFiltersToggle = $("show-filters-toggle");
+  const descToggleBtn = $("desc-toggle-btn");
+  const facetToggleBtn = $("facet-toggle-btn");
   const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
@@ -518,7 +522,7 @@
    *  summary visibility, and one-click "Expand everything".
    * ------------------------------------------------------------------ */
   const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
-  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true };
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showStats: false, showFilters: false };
 
   function readViewSettings() {
     try {
@@ -541,9 +545,18 @@
     document.documentElement.classList.toggle("wrap-cells", Boolean(settings.wrapCells));
     document.documentElement.classList.toggle("compact-density", Boolean(settings.compactRows));
     if (viewSummary) viewSummary.hidden = !settings.showSummary;
+    if (statsStrip) statsStrip.hidden = !settings.showStats;
+    if (facetToggleBtn) {
+      facetToggleBtn.setAttribute("aria-pressed", String(settings.showFilters));
+    }
+    if (facetBar) {
+      facetBar.hidden = !(activeView === "master" && settings.showFilters);
+    }
     if (wrapCellsToggle) wrapCellsToggle.checked = Boolean(settings.wrapCells);
     if (compactModeToggle) compactModeToggle.checked = Boolean(settings.compactRows);
     if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
+    if (showStatsToggle) showStatsToggle.checked = Boolean(settings.showStats);
+    if (showFiltersToggle) showFiltersToggle.checked = Boolean(settings.showFilters);
     if (table) {
       try {
         table.redraw(true);
@@ -1201,7 +1214,8 @@
       facetBar.hidden = true;
       return;
     }
-    facetBar.hidden = false;
+    const settings = readViewSettings();
+    facetBar.hidden = !settings.showFilters;
     populateFacets(data);
   }
 
@@ -1449,6 +1463,9 @@
   async function activateView(viewName) {
     activeView = viewName;
     const view = VIEWS[viewName];
+    if (facetToggleBtn) {
+      facetToggleBtn.hidden = (viewName !== "master");
+    }
     activeSearchQuery = "";
     activeReviewFilter = null;
     searchInput.value = "";
@@ -1522,7 +1539,7 @@
         const el = document.getElementById(id);
         if (el && Number.isFinite(value)) el.textContent = String(value);
       }
-      statsStrip.hidden = false;
+      applyViewSettings();
     } catch (err) {
       /* meta unavailable — the strip simply stays hidden */
     }
@@ -1560,6 +1577,27 @@
     }
     if (showSummaryToggle) {
       showSummaryToggle.addEventListener("change", () => updateViewSetting("showSummary", showSummaryToggle.checked));
+    }
+    if (showStatsToggle) {
+      showStatsToggle.addEventListener("change", () => updateViewSetting("showStats", showStatsToggle.checked));
+    }
+    if (showFiltersToggle) {
+      showFiltersToggle.addEventListener("change", () => updateViewSetting("showFilters", showFiltersToggle.checked));
+    }
+    if (facetToggleBtn) {
+      facetToggleBtn.addEventListener("click", () => {
+        const settings = readViewSettings();
+        const nextShow = !settings.showFilters;
+        updateViewSetting("showFilters", nextShow);
+      });
+    }
+    if (descToggleBtn && viewDescription) {
+      descToggleBtn.addEventListener("click", () => {
+        const isHidden = viewDescription.hidden;
+        viewDescription.hidden = !isHidden;
+        descToggleBtn.setAttribute("aria-expanded", isHidden ? "true" : "false");
+        descToggleBtn.classList.toggle("active", isHidden);
+      });
     }
     reviewFilter.addEventListener("change", () => {
       const field = reviewFilter.dataset.field;
