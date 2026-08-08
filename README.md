@@ -50,7 +50,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 110 tests, no browser/network needed
+python -m unittest discover tests          # 115 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -171,6 +171,29 @@ published in **1995**, *The Eye of the I* in **2001**, *The Ego is Not the Real
 You* in **2021**). Book years come only from the reviewed ledger / candidate
 inputs, so they are never overwritten from an official inventory listing date,
 and books never receive a catalogue code (codes are lecture/discussion only).
+
+Pre-2000 lectures whose exact recording date is unconfirmed but whose decade
+is established carry the placeholder year `198X` (the 16 Office Series rows;
+ledger evidence — most believed 1982 — is in `year_source`, and the site
+displays `c. 1980s` while exports keep the raw value). Rows whose decade is
+also unknown carry a **blank** `year` with a labelled `year_source` instead
+(e.g. `Blank: intentional pre-2000 (Volume Series)`, `Blank: under
+investigation`).
+
+`owned` records collection status with three values: `true` (owned), `false`
+(explicitly not owned), and **blank** (not stated — e.g. minted edition rows
+and NC/Hay House programs that have no raw spreadsheet ownership marker). The
+site renders it as a badge (`Owned` / `Not owned`) and leaves blank cells
+empty; exports keep the raw `true`/`false`/empty values.
+
+Two identifier conventions worth knowing: catalogue-code sequence numbers
+(`LECTURE-2008-023`) follow **ledger/candidate minting order, not
+chronology** (a candidate-promoted July talk can carry a higher sequence than
+a raw-ledger September talk of the same year — codes are stable identifiers
+and are never renumbered); and the master's `candidate_key` stores the
+`candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while the
+promotion registries (`data/manual_candidate_promotions.csv`,
+`data/edition_promotions.csv`) store the bare key.
 
 ### Edition model (work × carrier)
 

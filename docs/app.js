@@ -22,6 +22,8 @@
   const searchStatus = $("search-status");
   const footerUpdated = $("footer-updated");
   const spreadsheet = $("spreadsheet");
+  const emptyState = $("empty-state");
+  const statsStrip = $("stats-strip");
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
   const reviewFilterHint = $("review-filter-hint");
@@ -59,8 +61,18 @@
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
 
-  const VIEW_DETAILS = {
-    master: {
+  // Standing intake lanes show a friendly explanation instead of an empty
+  // grid (2026-08-08 IA redesign, Phase 1).
+  const EMPTY_STATE_MESSAGES = {
+    officialDiscovery:
+      "Standing intake lane — every queued item has been ruled out or promoted. " +
+      "If a Veritas catalogue refresh surfaces unmatched products, they will land here for review.",
+    newWorkReview:
+      "Standing intake lane — no unmatched Veritas products are awaiting a new-work ruling right now.",
+  };
+  const DEFAULT_EMPTY_MESSAGE = "No rows in this view.";
+
+  const VIEW_DETAILS = {    master: {
       type: "Complete curated catalogue",
       description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
     },
@@ -460,6 +472,7 @@
       anchor.rel = "noopener noreferrer";
       anchor.title = text;
       anchor.textContent = urlLabelFor(field, text);
+      anchor.setAttribute("aria-label", `${anchor.textContent} (opens in new tab)`);
       return anchor;
     }
     if (STATUS_FIELDS.has(field)) {
@@ -582,6 +595,7 @@
     anchor.rel = "noopener noreferrer";
     anchor.title = value;
     anchor.textContent = urlLabelFor(cell.getColumn().getField(), value);
+    anchor.setAttribute("aria-label", `${anchor.textContent} (opens in new tab)`);
     return anchor;
   }
 
@@ -616,6 +630,12 @@
   function statusLabel(field, value) {
     if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
       return RECORD_TYPE_LABELS[value];
+    }
+    // Owned vocabulary: true = owned, false = explicitly not owned, empty =
+    // not stated (minted editions/programs without a raw ownership marker).
+    if ((field === "owned" || field === "proposed_owned") &&
+        (value === "true" || value === "false")) {
+      return value === "true" ? "Owned" : "Not owned";
     }
     return value.replace(/_/g, " ");
   }
@@ -755,6 +775,22 @@
       if (nonEmpty.length > 0 &&
           nonEmpty.every((v) => /^-?\d+(\.\d+)?$/.test(String(v).trim()))) {
         col.sorter = "number";
+        col.sorterParams = { alignEmptyValues: "bottom" };
+      }
+
+      // Pre-2000 Office Series lectures carry the evidence-backed decade
+      // placeholder "198X" in year / year_month / proposed_year (ledger:
+      // "most are believed 1982"; see README field semantics and
+      // archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md). Display it as
+      // "c. 1980s" while the raw value stays in the data (search, CSV export,
+      // row details), and force a deterministic string sort — a number sorter
+      // would turn the placeholder into NaN and place the 16 rows arbitrarily.
+      if (key === "year" || key === "year_month" || key === "proposed_year") {
+        col.formatter = (cell) => {
+          const value = String(cell.getValue() ?? "");
+          return value === "198X" ? "c. 1980s" : value;
+        };
+        col.sorter = "string";
         col.sorterParams = { alignEmptyValues: "bottom" };
       }
 
@@ -963,11 +999,28 @@
       const selected = tab.dataset.view === viewName;
       tab.classList.toggle("active", selected);
       tab.setAttribute("aria-selected", String(selected));
+      // Roving tabindex: only the active tab stays in the Tab order
+      // (Phase 2 a11y, 2026-08-08).
+      tab.setAttribute("tabindex", selected ? "0" : "-1");
     });
 
     try {
       const data = await loadData(viewName);
       updateViewSummary(viewName, data.length);
+      if (data.length === 0) {
+        // Standing intake lanes (and any future empty view) get an
+        // explanatory card instead of a blank grid (IA redesign 2026-08-08).
+        emptyState.replaceChildren(
+          document.createTextNode(EMPTY_STATE_MESSAGES[viewName] || DEFAULT_EMPTY_MESSAGE),
+        );
+        emptyState.hidden = false;
+        spreadsheet.hidden = true;
+        spreadsheet.setAttribute("aria-busy", "false");
+        searchStatus.textContent = "Showing: 0";
+        return;
+      }
+      emptyState.hidden = true;
+      spreadsheet.hidden = false;
       initTable(data);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
@@ -982,8 +1035,33 @@
     }
   }
 
+  async function loadStatsStrip() {
+    // Catalogue overview chips, read from the generated catalogue-meta.json
+    // (single source of truth — never hand-counted here).
+    try {
+      const res = await fetch("catalogue-meta.json", { cache: "no-store" });
+      if (!res.ok) return;
+      const meta = await res.json();
+      const chips = [
+        ["stat-master-items", meta.master_items],
+        ["stat-exclusions", meta.master_exclusion_rows],
+        ["stat-overrides", meta.approved_source_overrides],
+        ["stat-relationships", meta.reviewed_product_relationships],
+        ["stat-compilations", meta.reviewed_series_compilations],
+      ];
+      for (const [id, value] of chips) {
+        const el = document.getElementById(id);
+        if (el && Number.isFinite(value)) el.textContent = String(value);
+      }
+      statsStrip.hidden = false;
+    } catch (err) {
+      /* meta unavailable — the strip simply stays hidden */
+    }
+  }
+
   async function boot() {
     initDarkMode();
+    loadStatsStrip();
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
     clearSearchBtn.addEventListener("click", () => {
       searchInput.value = "";
@@ -1024,6 +1102,25 @@
     document.querySelectorAll(".dataset-tab").forEach((tab) => {
       tab.addEventListener("click", () => activateView(tab.dataset.view));
     });
+    // Arrow-key roving navigation across the grouped tab bar (Phase 2 a11y).
+    const tabsNav = document.querySelector(".dataset-tabs");
+    if (tabsNav) {
+      tabsNav.addEventListener("keydown", (e) => {
+        const list = [...document.querySelectorAll(".dataset-tab")];
+        if (list.length === 0) return;
+        const current = list.findIndex((tab) => tab.dataset.view === activeView);
+        let target = -1;
+        if (e.key === "ArrowRight") target = (current + 1) % list.length;
+        else if (e.key === "ArrowLeft") target = (current - 1 + list.length) % list.length;
+        else if (e.key === "Home") target = 0;
+        else if (e.key === "End") target = list.length - 1;
+        else return;
+        e.preventDefault();
+        const tab = list[target];
+        tab.focus();
+        activateView(tab.dataset.view);
+      });
+    }
     await activateView(activeView);
   }
 

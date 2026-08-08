@@ -80,3 +80,37 @@ returns a TLS EOF in the Arena sandbox, so review the uploaded
 `veritas-inventory-review-30813523859` artifact in GitHub before accepting any
 inventory change. Do not replace `data/veritas_official_products.csv` without
 that review.
+
+## Bump the CI Node runtime 20 → 22 (2026-08-08 addition — ✅ APPLIED)
+
+> **Applied by the owner as commit `406116f` on `main` (2026-08-08);
+> `origin/main` ci.yml now pins `node-version: "22"`. The instructions below
+> are kept for reference.**
+
+Node 20 reached EOL on 2026-04-30; Node 22 is the active LTS line
+(supported until 2027-04). In the web editor, open
+[`main/.github/workflows/ci.yml`](https://github.com/56eli/docsheet/edit/main/.github/workflows/ci.yml)
+and change the **Set up Node** step:
+
+```yaml
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+```
+
+i.e. replace `node-version: "20"` with `node-version: "22"` (one line; keep
+`actions/setup-node@v4` and `cache: npm`).
+
+Commit directly to `main` with the message:
+
+```
+ci: bump Node 20 -> 22 (Node 20 EOL 2026-04)
+```
+
+The repository code is already Node-22-compatible: local sandbox runs Node 22,
+`node --check` passes on `docs/app.js`, `playwright.config.js` and both specs,
+and the Playwright version (`@playwright/test` 1.62.1) supports Node 22.
+After committing, re-run **CI** from the Actions tab and confirm the
+"Set up Node" + "Run browser smoke tests" steps pass.

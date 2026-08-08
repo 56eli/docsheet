@@ -391,6 +391,20 @@ def infer_format_from_official_source(
             return "CD"
         if any(k in slug for k in ("question-answer", "question-and-answer", "q&a")):
             return "streaming"
+        # Malformed/verbatim publisher slugs (e.g. product 1552's
+        # "https-veritaspub-com-product-..." link) carry no carrier signal —
+        # never guess from them; leave the format blank for manual review
+        # (2026-08-08 master 265 ruling, see archive/RULING_PREP_MASTER_265_...).
+        if "https-" in slug or "https" == slug[:5]:
+            return ""
+        # CD markers in the slug or official title beat the generic "– Audio"
+        # title fallback: Veritas titles many 3-CD audio programs "… – Audio"
+        # (master 265 = Golden Word Book Signing – Audio, a 3-CD set).
+        cd_tokens = {"cd", "cds", "cd-set", "cdset"}
+        if any(seg in cd_tokens for seg in slug.split("-")) or re.search(
+            r"\bcd set\b|\bcds\b|compact disc|disc set", ot
+        ):
+            return "CD"
         if "audio" in slug or "– audio" in ot or " audio" in ot:
             return "audiobook"
         if "book" in slug or "(book)" in ot:

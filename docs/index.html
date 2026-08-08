@@ -70,23 +70,40 @@
     </div>
   </header>
 
-  <nav class="dataset-tabs" aria-label="Catalogue views" role="tablist">
-    <button class="dataset-tab active" id="tab-master" type="button" role="tab" aria-selected="true" aria-controls="spreadsheet" data-view="master">Everything</button>
-    <button class="dataset-tab review-tab review-tab-start" id="tab-review-overview" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="reviewOverview">Review Overview</button>
-    <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Master Candidates</button>
-    <button class="dataset-tab review-tab" id="tab-manual-leads" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualLeads">Manual Leads</button>
-    <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Master Exclusions</button>
-    <button class="dataset-tab review-tab" id="tab-migration-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="migrationReview">Migration Review</button>
-    <button class="dataset-tab review-tab" id="tab-source-overrides" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="sourceOverrides">Source Overrides</button>
-    <button class="dataset-tab review-tab" id="tab-official-discovery" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="officialDiscovery">Official Discovery</button>
-    <button class="dataset-tab review-tab" id="tab-new-work-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="newWorkReview">New Work Review</button>
-    <button class="dataset-tab review-tab" id="tab-series-compilations" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="seriesCompilations">Series Compilations</button>
-    <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Veritas Decisions</button>
-    <button class="dataset-tab" id="tab-product-relationships" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="productRelationships">Product Relationships</button>
-    <button class="dataset-tab" id="tab-international" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="internationalProducts">International Editions</button>
-    <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Approved Publishers</button>
-    <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
+  <nav class="dataset-tabs" aria-label="Catalogue views">
+    <div class="tab-group" role="group" aria-label="Catalogue">
+      <span class="tab-group-label">Catalogue</span>
+      <button class="dataset-tab active" id="tab-master" type="button" role="tab" aria-selected="true" aria-controls="spreadsheet" data-view="master">Everything</button>
+      <button class="dataset-tab" id="tab-product-relationships" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="productRelationships">Product Relationships</button>
+      <button class="dataset-tab review-tab" id="tab-series-compilations" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="seriesCompilations">Series Compilations</button>
+    </div>
+    <div class="tab-group" role="group" aria-label="Review workspace">
+      <span class="tab-group-label">Review workspace</span>
+      <button class="dataset-tab review-tab review-tab-start" id="tab-review-overview" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="reviewOverview">Review Overview</button>
+      <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Master Candidates</button>
+      <button class="dataset-tab review-tab" id="tab-manual-leads" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualLeads">Manual Leads</button>
+      <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Master Exclusions</button>
+      <button class="dataset-tab review-tab" id="tab-source-overrides" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="sourceOverrides">Source Overrides</button>
+      <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Veritas Decisions</button>
+      <button class="dataset-tab review-tab" id="tab-new-work-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="newWorkReview">New Work Review</button>
+      <button class="dataset-tab review-tab" id="tab-official-discovery" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="officialDiscovery">Official Discovery</button>
+      <button class="dataset-tab review-tab" id="tab-international" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="internationalProducts">International Editions</button>
+    </div>
+    <div class="tab-group" role="group" aria-label="Sources and provenance">
+      <span class="tab-group-label">Sources</span>
+      <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Approved Publishers</button>
+      <button class="dataset-tab review-tab" id="tab-migration-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="migrationReview">Migration Review</button>
+      <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
+    </div>
   </nav>
+
+  <div id="stats-strip" class="stats-strip" hidden aria-label="Catalogue overview">
+    <span class="stat-chip"><b id="stat-master-items">—</b><span class="stat-label">Master records</span></span>
+    <span class="stat-chip"><b id="stat-exclusions">—</b><span class="stat-label">Retained exclusions</span></span>
+    <span class="stat-chip"><b id="stat-overrides">—</b><span class="stat-label">Source overrides</span></span>
+    <span class="stat-chip"><b id="stat-relationships">—</b><span class="stat-label">Product relationships</span></span>
+    <span class="stat-chip"><b id="stat-compilations">—</b><span class="stat-label">Series compilations</span></span>
+  </div>
 
   <section id="view-summary" class="view-summary" aria-live="polite">
     <div class="view-summary-copy">
@@ -127,6 +144,7 @@
 
   <!-- ===== Spreadsheet ===== -->
   <main id="table-container" aria-label="Hawkins Archive spreadsheet">
+    <div id="empty-state" class="empty-state" hidden></div>
     <div id="spreadsheet" aria-live="polite" aria-busy="true">
       <div class="table-loading">Loading research master…</div>
     </div>
@@ -149,6 +167,7 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
+    <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->

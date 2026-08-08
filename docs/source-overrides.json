@@ -320,8 +320,12 @@
     "override_value": "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
-    "review_reason": "Preserve current master association verified against the official inventory during reconciliation.",
-    "evidence_source": "data/veritas_official_products.csv"
+    "review_reason": "Preserve current master association verified against the official inventory during reconciliation. 2026-08-08: publisher-verbatim slug for product 1552 confirmed via live WP-API (no clean-slug equivalent exists); keep as-is",
+    "evidence_source": " do not \"fix\" (see archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md).",
+    "null": [
+      "data/veritas_official_products.csv; live WP-API product search + product page",
+      " 2026-08-08"
+    ]
   },
   {
     "raw_row_number": "300",

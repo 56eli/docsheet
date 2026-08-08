@@ -1,6 +1,31 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
+**Prepared:** 2026-08-08 (final) — full-session handoff, branch
+`arena/019fe098-docsheet` → merged as **PR #30**. See
+`FULL_STACK_AUDIT_2026-08-08.md` (audit + deep passes QA-2…QA-7 + suggestions)
+and the session log at the bottom of §6. Headline results:
+- **C1/C2 master 265 ruled + applied** (Option A): publisher-verbatim URL kept
+  + documented; carrier corrected `audiobook → CD` (`three CD; 2h56m`); format
+  inference hardened (CD markers beat "– Audio"; malformed `https-…` slugs
+  blank); US Audible audiobook tracked as a manual lead.
+- **C3 198X convention applied**: documented in README; site renders
+  `c. 1980s` with a deterministic year sorter (raw value preserved).
+- **C4 owned semantics applied**: README vocabulary + `Owned`/`Not owned`
+  badges.
+- **DP-1/2/3 work-family merge applied**: 11 multi-part groups consolidated
+  (208 → **193 works**); master 202 left the `w-power-vs-force` book work;
+  26 PART-marker canonicals cleaned.
+- **QA-5 fixed**: `legacy_title` + `proposed_filename_display` restored to the
+  published Everything view; new **schema-contract test** (suite **115**).
+- **S-a…S-g**: code-order/`candidate:`-prefix docs, test-count house rule,
+  contract test, year-research memo (no authoritative dates for 230–232/268).
+- **Site redesign Phases 1–3 applied** (IA groups + stats strip + empty
+  states; a11y roving tabs/focus/reduced-motion/link labels; token theme with
+  gradient header): `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
+- **Owner actions still open**: C5 raw-CSV fixes (16 cells) per
+  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`.
+
+**Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
 **Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 
@@ -36,7 +61,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 112 tests, offline, ~3s
+python -m unittest discover tests     # 115 tests, offline, ~3s
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check tests/csv-export.spec.js
 ```
@@ -56,7 +81,11 @@ Sandbox traps learned the hard way (all still true):
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
   tests (5 specs); don't burn time installing locally.
-- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / Node 20 — keep code compatible. **Owner action pending (item K):** Node 20 reached EOL 2026-04 — bump the CI workflow's `node-version` to 22 (workflows are owner-managed; the Arena app cannot push `.github/workflows/*`, snippet pattern in `archive/UNBLOCK_INSTRUCTIONS.md`).
+- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
+  the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
+  2026-08-08 — item K ✅ DONE; snippet remains in
+  `archive/UNBLOCK_INSTRUCTIONS.md` for reference). Workflows are
+  owner-managed; the Arena app cannot push `.github/workflows/*`.
 
 ## 3. Current verified state (committed, checked)
 
@@ -69,9 +98,9 @@ Sandbox traps learned the hard way (all still true):
 | Veritas inventory | 191 products | categories populated 191/191; 10 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07; 50411/1542 decision rows removed 2026-08-07 when owner ruling made them plain primary matches, which need no overlay row) |
 | Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 1 manual lead; 24 edition candidates all promoted | |
-| Work families | 208 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
+| Work families | 193 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 1 row (50521 R3) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **112 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **115 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -95,9 +124,11 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   ""; that is normal, not damage.
 - **`item_type` = what a record IS; `format` = its carrier.** DVD lectures are
   `lecture`+`DVD`. The `audio`/`video` medium values were **retired from the
-  `item_type` vocabulary 2026-08-03** — validators reject them; only the
-  unreviewed discovery-triage lane (`data/official_discovery_queue.csv`, 4 NC
-  rows) still carries free-text `audio` pending an owner ruling.
+  `item_type` vocabulary 2026-08-03** — validators reject them everywhere;
+  the last unreviewed discovery-triage lane
+  (`data/official_discovery_queue.csv`) was ruled empty on 2026-08-07 (the 3
+  NC programs promoted to masters 369–371, Map poster 1560 excluded), so no
+  free-text `audio` remains anywhere.
 - **No title-based inference for `series`, and a commercial listing is not
   master identity.** Four records once linked to the wrong edition because of
   title matching.
@@ -283,7 +314,55 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 5. **Naming scheme:** filename v4.1 (earlier this session) — carrier suffix + global-uniqueness guard, 365 unique safe = 365 unique display.
 6. **Specs:** Playwright specs enable Expert columns before asserting technical columns; new `column-layout` spec locks the visitor-first default. CI note: watch the "Run browser smoke tests" step after merge (Chromium is CI-only here).
 
-## 7. House-keeping for every turn
+## 2026-08-08 Session (arena/019fe098-docsheet → PR #30, MERGED)
+
+Full-stack audit + deep QA + site redesign day. Report:
+`FULL_STACK_AUDIT_2026-08-08.md` (sections 1–14); memos in `archive/`.
+
+- **Audit re-verified everything** (112 tests at start, 6 `--check` green,
+  91% coverage, counts vs `docs/catalogue-meta.json`) and found 5 catalogue
+  inconsistencies + 4 setup drifts (C1–C5, S1–S5).
+- **Rulings executed (owner-approved, applied this session):**
+  - C1/C2 master 265: publisher-verbatim URL kept + documented (live WP-API
+    evidence; product 1552, no clean slug exists); `format` corrected
+    `audiobook → CD` (`three CD; 2h56m`) via ledger 297 + filename proposal
+    `.m4b → .mp3`; format-inference rule hardened + 2 tests; de-listed US
+    Audible audiobook (B00KZ1QMX8) → manual lead. Memo:
+    `archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md`.
+  - C3 198X: kept (evidence-backed decade estimate); README documents the
+    convention; site renders `c. 1980s` with a deterministic string sorter.
+    Memo: `archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md`.
+  - C4 `owned`: vocabulary documented (true/false/blank=not stated); badges
+    read `Owned`/`Not owned`.
+  - DP-1/2/3 work-family merge: 11 multi-part lecture groups (27 rows)
+    consolidated into 11 works (208 → **193**); master 202 removed from
+    `w-power-vs-force` (book work keeps 286); 26 PART-marker canonicals
+    cleaned; filename-proposal work_ids re-synced. Memo:
+    `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`.
+  - QA-5: `legacy_title` + `proposed_filename_display` restored to the
+    published Everything view (`EVERYTHING_FIELDS` + derived display from the
+    filename sheet); new schema-contract test locks the keys (suite **115**).
+- **Doc/setup:** S1/S3/S4 drifts fixed; S2 Node 20→22 applied by owner on
+  `main` (`406116f`); S-a/S-b/S-c quick wins; S-g year research (no
+  authoritative dates for masters 230–232/268 — keep "under investigation").
+- **Deep QA pass:** QA-2 relationships/mirrors clean; QA-3 refs/JSON schema
+  clean (3 broken archive links fixed); QA-4 Satsang parity clean (code-order
+  caveat documented); QA-5 (above); QA-6 editions/URLs/vocabulary clean;
+  QA-7 final gate — full pipeline re-run produces zero diffs.
+- **Site redesign Phases 1–3 applied** (owner UX brief): tab groups
+  (Catalogue / Review workspace / Sources), stats strip from
+  `catalogue-meta.json`, empty-state cards, a11y (roving tabs, focus rings,
+  reduced motion, link aria-labels, 44px mobile targets), theme (gradient
+  header, green hover/selection, themed scrollbars, footer repo link).
+  Proposal: `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
+- **CI:** green on every commit (Python checks, 115 tests, 91% coverage gate,
+  JS syntax, 9-spec Playwright suite).
+- **Owner actions still open:** C5 raw-CSV hygiene (16 cells: 3 Advaita URLs
+  lines 28–30, 13 `2cds each?` tempids lines 280–292) per
+  `archive/RULING_PREP_RAW_CSV_HYGIENE.md`; optionally supply recording dates
+  for masters 230–232/268 if known.
+
+
 
 - Keep docs accurate with each push (counts live in `docs/catalogue-meta.json`;
   cite those numbers — do not hand-count).

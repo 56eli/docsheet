@@ -573,6 +573,49 @@ class FormatInferenceTests(unittest.TestCase):
                 "source_url_veritas": "https://veritaspub.com/product/1824-highlights-of-the-lectures-of-2003/"}
         self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
 
+    def test_format_inference_cd_markers_beat_audio_title(self) -> None:
+        """A '– Audio' official title does not imply audiobook when the slug or
+        title carries a CD marker (master 265: product 1552 is a 3-CD set sold
+        under the title 'Golden Word Book Signing – Audio')."""
+        product = {
+            "veritas_product_id": "1552",
+            "official_product_url": "https://veritaspub.com/product/golden-word-book-signing-cd/",
+            "official_title": "Golden Word Book Signing – Audio",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {"format": "", "title": "", "source_url_veritas": product["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "CD")
+        # slug token alone (no URL map) also resolves
+        item = {"format": "", "title": "", "source_url_veritas": "https://veritaspub.com/product/golden-word-book-signing-cd/"}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "CD")
+        # title-level disc-set evidence resolves even without a cd slug token
+        product2 = {
+            "veritas_product_id": "9999",
+            "official_product_url": "https://veritaspub.com/product/golden-word-book-signing/",
+            "official_title": "Golden Word Book Signing – Audio (Three Compact Disc Set)",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url2 = {product2["official_product_url"]: product2}
+        item = {"format": "", "title": "", "source_url_veritas": product2["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url2), "CD")
+
+    def test_format_inference_malformed_slug_returns_blank(self) -> None:
+        """Publisher-verbatim malformed slugs (product 1552's
+        'https-veritaspub-com-product-...' link) carry no carrier signal: the
+        inference must not guess (master 265 ruling 2026-08-08)."""
+        url = "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/"
+        product = {
+            "veritas_product_id": "1552",
+            "official_product_url": url,
+            "official_title": "Golden Word Book Signing – Audio",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url = {url: product}
+        item = {"format": "", "title": "", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
+
     def test_compact_id_recognition(self) -> None:
         self.assertTrue(brm.is_compact_id("317"))
         self.assertFalse(brm.is_compact_id("019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091"))
@@ -1534,6 +1577,39 @@ class DocumentationCurrencyTests(unittest.TestCase):
             "compilations": meta["reviewed_series_compilations"],
             "everything rows": sum(meta["everything_record_types"].values()),
         }
+
+    def test_everything_schema_matches_everything_fields_contract(self) -> None:
+        """Published Everything rows must expose exactly ``record_type`` +
+        EVERYTHING_FIELDS, and every field the app.js master preset references
+        (including the Expert-hidden ones) must exist on those rows.
+
+        QA-5 regression guard (2026-08-08): legacy_title and
+        proposed_filename_display were missing from docs/master.json while the
+        README promised them and the Expert toggle listed them.
+        """
+        rows = json.loads((REPO / "docs/master.json").read_text(encoding="utf-8"))
+        self.assertTrue(rows)
+        expected = ["record_type"] + list(bcp.EVERYTHING_FIELDS)
+        for row in rows:
+            self.assertEqual(list(row.keys()), expected)
+        # The master CSV must be able to source every non-derived field.
+        with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+            csv_fields = set(csv.DictReader(handle).fieldnames or [])
+        self.assertLessEqual(
+            set(bcp.EVERYTHING_FIELDS) - {"proposed_filename_display"},
+            csv_fields,
+        )
+        # app.js master preset: every hidden (Expert) field must exist.
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        preset = re.search(r"master: \{.*?hidden: \[([^\]]*)\]", app_js, re.S)
+        self.assertIsNotNone(preset, "app.js master preset hidden list not found")
+        hidden = re.findall(r'"([a-z_0-9]+)"', preset.group(1))
+        self.assertTrue(hidden, "app.js master preset hidden list is empty")
+        for field in hidden:
+            self.assertIn(
+                field, expected,
+                f"app.js Expert-column field {field!r} missing from published master.json",
+            )
 
     def test_readme_current_state_matches_generated_data(self) -> None:
         readme = (REPO / "README.md").read_text(encoding="utf-8")

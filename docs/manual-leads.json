@@ -8,5 +8,15 @@
     "lead_status": "manual_edition_lead",
     "review_reason": "No verified content difference supports a separate master item; retain as a lead until an edition/content review is complete.",
     "provenance_note": "Extracted from an explicit research request; the former CSV-only draft record had no raw-row provenance."
+  },
+  {
+    "manual_lead_id": "manual-golden-word-book-signing-audiobook",
+    "title": "Golden Word Book Signing – Audiobook (Audible)",
+    "proposed_item_type": "lecture",
+    "proposed_year": "2007",
+    "proposed_owned": "",
+    "lead_status": "manual_edition_lead",
+    "review_reason": "US Audible ASIN B00KZ1QMX8 de-listed on audible.com 2026-08-08 (Amazon.com listing still present; Audible.in B07JGMY5W4 active). Mint an audiobook edition row only after a reviewed, live US listing exists.",
+    "provenance_note": "Veritas product 1552 page Also available button + audible.com de-listing check, 2026-08-08; see archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md."
   }
 ]

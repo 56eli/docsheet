@@ -28,7 +28,7 @@
 - HayHouse: **29** reviewed rows, Audible: **26** reviewed rows
 - Product relationships: **343 rendered** = **336 derived primary** (auto-derived from master URL) + **7 related_material** (hand-maintained CSV)
 - Series compilations: **7** reviewed
-- Work families: **208 works / 341 approved memberships**, `work_id` coverage **365/365**
+- Work families: **193 works / 341 approved memberships** (parts merged 2026-08-08), `work_id` coverage **365/365**
 - Edition layer: **24/24 promoted** (minted master UUIDs 320-343 etc), D3 applied
 - Series taxonomy: **177 approved / 0 proposed / 9 rejected**, queue **1** (product 50521 R3, last standing item)
 - Filename proposal **v4.1**: **365 rows = 365 unique safe = 365 unique display**, carrier-suffix rule (`(DVD)`/`(streaming)`) resolves same-talk-two-carriers collisions; **global-uniqueness guard** in the builder fails on any seeded duplicate
@@ -54,7 +54,7 @@ data/
   manual_master_candidates.csv      (39, all promoted)
   manual_candidate_promotions.csv   (39 approvals -> UUIDs 353-372 etc)
   edition_candidates/promotions     (24/24)
-  work_families.csv                 (341 memberships, 208 works)
+  work_families.csv                 (341 memberships, 193 works)
   veritas_official_products.csv     (191)
   veritas_mapping_decisions.csv     (10 overlay rows — non-primary outcomes only)
   veritas_streaming_urls.csv        (36 approved -> 64 masters ref1)
@@ -95,7 +95,7 @@ Shared: `_common.py` (read_csv, render_csv, json_text, ISO_DATE)
 | Year blank | 17 | 13 Volume Series (blank per owner, pre-2000 unknown) + 4 under investigation (Verification of Spiritual Realities 230–232, God is Hidden 268) |
 | Format blank | 0 | fully populated (221 received its format during the 2026-08-07 Oxford rulings) |
 | Proposed filename coverage | 365/365 | **365 unique safe, 365 unique display** (v4.1 carrier suffix + global-uniqueness guard, 2026-08-07 PM) |
-| Work_id coverage | 365/365 | 208 works, 341 approved memberships |
+| Work_id coverage | 365/365 | 193 works, 341 approved memberships |
 | Catalogue codes | 281 | distinct, lecture/discussion only, Volume stripped -> no codes |
 | Master exclusions | 72 | |
 | Source overrides | 134 approved | 74 veritas, 26 hayhouse, 18 Amazon, 10 audible, 6 NC |
