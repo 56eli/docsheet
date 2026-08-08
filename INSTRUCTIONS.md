@@ -170,14 +170,14 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 121 deterministic tests
+python -m unittest discover tests      # 123 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123).
 
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-08).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
@@ -244,8 +244,8 @@ inspect the artifact before accepting any live-source update.
 - **Raw CSV workflow contract (owner-applied, PR merge prerequisite):** CI on
   `main` now ignores a raw-only push so it cannot race `Update Spreadsheet`,
   which regenerates `docs/data.json`. The workflow also uses the pinned
-  `requirements-ci.txt`; merge PR #34 before relying on the new main CI because
-  that file is supplied by the PR. A pull request that changes the raw CSV must
+  `requirements-ci.txt`; PR #34 merged this configuration to `main` and the
+  subsequent main CI run passed. A pull request that changes the raw CSV must
   include regenerated `docs/data.json` (run `python process_data.py`).
 - **Site shows stale data** → re-run the workflow (or push a CSV change) and
   confirm the Pages deployment finished in **Actions → Pages** / **Environments**.

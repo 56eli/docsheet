@@ -51,15 +51,15 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 121 tests, no browser/network needed
+python -m unittest discover tests          # 123 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
 2026-08-08; every pipeline module is ≥ 88%. `requirements-ci.txt` records the
-exact Python dependency set used by the owner-applied workflows; merge PR #34
-before relying on main CI because the constraint file is supplied by that PR.
-The full replacement record is in `WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
+exact Python dependency set used by the owner-applied workflows. PR #34 merged
+the constraint file to `main`, and the subsequent main CI run passed. The full
+replacement record is in `WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in

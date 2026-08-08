@@ -12,8 +12,8 @@ Item 1 and Item 2 are now applied on `main` by the owner (the full-file
 blocks below are retained as a copy/paste record). The Node 20→22 project-runtime
 bump was already applied (commit `406116f`); Item 2 upgraded the action runtimes
 to current Node-24-compatible majors. **Important ordering:** the workflow
-changes reference `requirements-ci.txt`, which is supplied by PR #34; merge the
-PR before treating the new main CI as healthy.
+changes reference `requirements-ci.txt`, which was merged through PR #34; the subsequent main CI run passed. The
+PR remains the change record for that configuration.
 
 ---
 
@@ -89,7 +89,7 @@ Node 20 internally; the current majors target the supported Node 24 runtime.
 The code-side hardening is in this branch: `process_data.py` validates raw
 headers/fallbacks and `requirements-ci.txt` pins the tested Python set. The
 owner applied the workflow edits on `main`; use the full blocks below as the
-canonical replacement record and verify CI again after PR #34 merges the
+canonical replacement record. Verify CI after any future workflow change that alters the
 constraint file.
 
 ### `.github/workflows/ci.yml`
