@@ -132,3 +132,117 @@ to:
 
 `docs/meta.json` was retired on 2026-08-07 (never consumed); the file no longer
 exists, so the pattern references a path that is never written.
+
+---
+
+## 2026-08-08 — Drop-in replacement guide (GitHub web editor)
+
+The Arena GitHub App cannot push changes to `.github/workflows/`. Two workflow
+edits are prepared on branch `arena/019fe01c-docsheet` (commit `3f8e6e1` and
+follow-ups) and need to be applied by you, the repository owner. Both are
+**text replacements** — you can paste them in the GitHub web editor without
+touching anything else. The branch already contains the code/data/docs these
+workflows validate; once applied, CI will exercise the new mirror check.
+
+### File 1 of 2: `.github/workflows/ci.yml`
+
+1. Open
+   <https://github.com/56eli/docsheet/edit/main/.github/workflows/ci.yml>
+   (or navigate to the file on `main` and click the pencil **Edit** icon).
+2. Make these **three** small replacements:
+
+**(a) Header comment** — find these three lines near the top:
+
+```yaml
+# Runs the deterministic checks that already exist in the repository:
+#   - Python syntax compilation
+#   - the three generator --check modes (master, Pages, reconciliation)
+```
+
+Replace them with:
+
+```yaml
+# Runs the deterministic checks that already exist in the repository:
+#   - Python syntax compilation
+#   - the six generator --check modes (raw payload, master, Pages,
+#     reconciliation, series-taxonomy, and inventory mirrors)
+```
+
+**(b) Add the mirror check step** — find this block:
+
+```yaml
+      - name: Verify series-taxonomy mapping matches its inputs
+        run: python map_series_taxonomy.py --check
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+```
+
+Replace it with:
+
+```yaml
+      - name: Verify series-taxonomy mapping matches its inputs
+        run: python map_series_taxonomy.py --check
+      - name: Verify Veritas inventory mirrors match the master
+        run: python sync_inventory_mirrors.py --check
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+```
+
+**(c) Coverage-floor step label** — find:
+
+```yaml
+      - name: Enforce the coverage floor (80%)
+```
+
+Replace with:
+
+```yaml
+      - name: Enforce the coverage floor (85%)
+```
+
+(Only the label changes; `coverage report` still reads `fail_under = 85`
+from `.coveragerc`, so enforcement was already correct — the step name was
+the stale part.)
+
+3. Scroll to **Commit changes**, leave "Commit directly to `main`" selected,
+   and click **Commit changes**.
+
+---
+
+### File 2 of 2: `.github/workflows/update_spreadsheet.yml`
+
+1. Open
+   <https://github.com/56eli/docsheet/edit/main/.github/workflows/update_spreadsheet.yml>
+2. Find the `file_pattern` line near the bottom:
+
+```yaml
+          file_pattern: docs/data.json docs/meta.json
+```
+
+Replace it with:
+
+```yaml
+          file_pattern: docs/data.json
+```
+
+`docs/meta.json` was retired on 2026-08-07 (the file no longer exists); the
+auto-commit action warned but did not fail. Dropping it keeps the pattern
+honest.
+
+3. Commit directly to `main`.
+
+---
+
+### Verify
+
+After both commits land on `main`, open the **Actions** tab and watch the next
+**CI** run (the push itself will trigger it). It should pass with:
+
+- six `--check` steps (including the new *Verify Veritas inventory mirrors
+  match the master* step),
+- the deterministic test suite reporting **113 tests**,
+- coverage at **91%** against the 85% floor,
+- the Playwright browser smoke tests.
+
+If any step fails, the error message will name the script; the corresponding
+fix is already on the `arena/019fe01c-docsheet` branch.
