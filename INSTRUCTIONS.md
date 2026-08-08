@@ -175,6 +175,10 @@ coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
+> House rule: when the suite grows or shrinks, update the test count here and
+> in the README's quick-start line in the same change — it has drifted three
+> times (103 → 107 → 110 → 112).
+
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-07).
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright

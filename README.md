@@ -186,6 +186,15 @@ and NC/Hay House programs that have no raw spreadsheet ownership marker). The
 site renders it as a badge (`Owned` / `Not owned`) and leaves blank cells
 empty; exports keep the raw `true`/`false`/empty values.
 
+Two identifier conventions worth knowing: catalogue-code sequence numbers
+(`LECTURE-2008-023`) follow **ledger/candidate minting order, not
+chronology** (a candidate-promoted July talk can carry a higher sequence than
+a raw-ledger September talk of the same year — codes are stable identifiers
+and are never renumbered); and the master's `candidate_key` stores the
+`candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while the
+promotion registries (`data/manual_candidate_promotions.csv`,
+`data/edition_promotions.csv`) store the bare key.
+
 ### Edition model (work × carrier)
 
 Since 2026-08-03 the master models **one row per edition** of a work: a work

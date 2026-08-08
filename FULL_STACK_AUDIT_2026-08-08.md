@@ -477,16 +477,15 @@ actions: C5 Google-Sheet edits only.
 Prioritized, evidence-grounded suggestions for the project:
 
 **Quick wins (doc/process, ~minutes):**
-- **S-a. Code-order semantics (one README sentence):** document that
-  catalogue-code sequence numbers follow ledger/candidate minting order, not
-  chronology (explains `LECTURE-2008-023` Sep before `-024` Jul). No data
-  change.
-- **S-b. `candidate:` prefix convention (one README sentence):** master
-  `candidate_key` stores the `candidate:` prefix; promotion registries store
-  bare keys — currently only implicit in the builder code.
-- **S-c. Test-count house rule:** README/INSTRUCTIONS hand-maintain "112
-  tests" — add a one-line note in INSTRUCTIONS to bump it whenever the suite
-  grows (it drifted 103→107→110→112 over the last week).
+- ✅ **S-a. Code-order semantics — APPLIED 2026-08-08:** README field
+  semantics now state that code sequence numbers follow ledger/candidate
+  minting order, not chronology (codes stay stable).
+- ✅ **S-b. `candidate:` prefix convention — APPLIED 2026-08-08:** README
+  documents that the master's `candidate_key` stores the `candidate:` prefix
+  while promotion registries store bare keys.
+- ✅ **S-c. Test-count house rule — APPLIED 2026-08-08:** INSTRUCTIONS now
+  carries a note to bump the count in the same change whenever the suite
+  grows/shrinks (it drifted 103→107→110→112).
 
 **Engineering (would prevent today's defect classes):**
 - **S-d. Lock the Everything-schema contract with a test:** assert that
