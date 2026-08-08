@@ -115,7 +115,12 @@ and the Playwright version (`@playwright/test` 1.62.1) supports Node 22.
 After committing, re-run **CI** from the Actions tab and confirm the
 "Set up Node" + "Run browser smoke tests" steps pass.
 
-## Cover both Playwright specs in the JS-syntax step (2026-08-08 addition)
+## Cover both Playwright specs in the JS-syntax step — ✅ APPLIED 2026-08-08
+
+> **Applied by the owner in the GitHub web editor (2026-08-08).** The "Check
+> JavaScript syntax" step now loops over `tests/*.spec.js`, so both
+> `csv-export.spec.js` and `column-layout.spec.js` are syntax-checked before the
+> Chromium step. Drop-in retained below for reference.
 
 The "Check JavaScript syntax" step currently runs `node --check` against only
 `tests/csv-export.spec.js`; `tests/column-layout.spec.js` is not syntax-checked

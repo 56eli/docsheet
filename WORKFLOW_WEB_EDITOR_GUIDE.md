@@ -8,12 +8,13 @@ edits yourself in the GitHub web editor. Each item below is self-contained:
 open the file, find the "Replace this" block, paste the "With this" block over
 it, and commit directly to `main`.
 
-Only **one** item is currently open. The Node 20→22 bump is already applied
-(commit `406116f`); it is kept at the bottom for reference.
+Only **one** item existed and it is now applied (see Item 1). The Node 20→22
+bump was already applied (commit `406116f`); it is kept at the bottom for
+reference.
 
 ---
 
-## Item 1 — Cover both Playwright specs in the JS-syntax check
+## Item 1 — Cover both Playwright specs in the JS-syntax check — ✅ APPLIED 2026-08-08
 
 **Why:** `.github/workflows/ci.yml` syntax-checks only
 `tests/csv-export.spec.js`. A syntax error in
