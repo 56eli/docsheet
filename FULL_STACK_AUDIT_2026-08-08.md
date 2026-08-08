@@ -432,3 +432,24 @@ record-type labels): **everything matches except one gap** —
   exportable" claim now holds from the Everything tab and the Expert toggle
   entries are live. All six `--check` modes, 114 tests, 91% coverage, and
   node checks green.
+
+## 11. Deeper data pass QA-6 (2026-08-08, editions / URLs / vocabulary / keys)
+
+- **Edition carriers: no unexpected duplication.** Every multi-row carrier
+  group is a part-indexed lecture (DVD x2–3, Mind Heart Service + Spiritual
+  Will streaming x2, Volume parts) — no work holds two same-title rows of the
+  same carrier that aren't parts.
+- **Audible URLs: 21 masters with `source_url_audible`, all present in the
+  reviewed Audible inventory (0 orphans).**
+- **Retired vocabulary: 0 `audio`/`video` item_type values anywhere in
+  `data/*.csv`** (the 2026-08-03 retirement holds everywhere).
+- **Filename-proposal keys: all 48 `clean_title` ≠ master-title differences
+  are the intentional part-group keys** (carrier/date labels stripped for
+  grouping, e.g. `Satsang Series` clean for month-scoped masters,
+  `(Audiobook)`/`– Audio` stripped) — not drift; `title` column matches the
+  master on all 365 rows.
+- **Title-cleanup evidence:** the 6 cleaned rows are the Presence (222–224)
+  and Verification (230–232) parts, each with the "Title cleaned against
+  official listing" note.
+
+**QA-6 verdict: clean — no new defects.**
