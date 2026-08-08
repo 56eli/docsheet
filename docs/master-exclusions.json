@@ -220,6 +220,36 @@
     "raw_product_link": ""
   },
   {
+    "raw_row_number": "249",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 311 (Devotion to Truth Talk); raw streaming row and promoted product row share Veritas product 55473. Owner ruling 2026-08-08: collapse to one DVD master (311) with streaming availability in reference_url_1; raw row excluded from master; UUID 225 retired.",
+    "raw_tempid": "",
+    "raw_title": "Devotion to Truth.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "250",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 310 (Mind, Heart and Service Part 1); raw streaming PART1 row and promoted product row share Veritas product 54219. Owner ruling 2026-08-08: collapse to one DVD master (310) with streaming availability in reference_url_1; raw row excluded from master; UUID 226 retired.",
+    "raw_tempid": "",
+    "raw_title": "Mind, Heart, and Service PART1.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
+    "raw_row_number": "251",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 310 (Mind, Heart and Service Part 2); raw streaming PART2 row and promoted product row share Veritas product 54219. Owner ruling 2026-08-08: collapse to one DVD master (310) with streaming availability in reference_url_1; raw row excluded from master; UUID 227 retired.",
+    "raw_tempid": "",
+    "raw_title": "Mind, Heart, and Service PART2.mp4",
+    "raw_we_have": "✅",
+    "raw_original_source": "veritas",
+    "raw_product_link": ""
+  },
+  {
     "raw_row_number": "257",
     "disposition": "blank_separator",
     "review_reason": "Empty visual separator row.",

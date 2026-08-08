@@ -1,7 +1,7 @@
 # Filename Proposal v4 — `YYYY-MM - Name [1/3].mp4` (multi) / no bracket single, label-free audiobooks with publisher suffixes for collisions, Volume Series blank pre-2000, Satsang month stripped, Part standardized via []
 
 **Date:** 2026-08-07 (v4 updated, per owner feedback on v3 + blank-year ruling 2026-08-04)  
-**Current master baseline:** 365 records (309 lecture / 40 book / 8 discussion / 7 highlight / 1 other) with 365 reviewed filename rows. The earlier 363/356 totals below are historical intermediate snapshots from before the final NC/Hay House promotions and duplicate rulings.
+**Current master baseline:** 362 records (306 lecture / 40 book / 8 discussion / 7 highlight / 1 other) with 362 reviewed filename rows. The 2026-08-08 D-01 collapse retired duplicate streaming masters 225/226/227 in favour of promoted DVD masters 311/310 per the one-DVD/CD-master-with-streaming-reference ruling (365 → 362). The earlier 365/363/356 totals below are historical intermediate snapshots from before the final promotions and duplicate rulings.
 **Pattern v4:**  
 - Single part: `YYYY-MM - Name.ext` — no bracket; if year blank, `Name.ext` (no prefix)
 - Multi-part (same Year-Month, same cleaned title, same format, same product): `YYYY-MM - Name [1/3].mp4` safe on-disk `[1-3]`, display `[1/3]`; if Year-Month blank, `Name [1-3].mp4` safe / `Name [1/3].mp4` display
@@ -73,7 +73,8 @@ Volume VII A Conversation with Knowingness.mp4
 
 Current counts: 365 total; all 365 safe names and all 365 display names are unique, with 0 collisions (verified). The earlier 363/356 totals are historical intermediate snapshots.
 
-**v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — is resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get an explicit carrier suffix (`(streaming)` / `(DVD)`) or, when carrier is the same, a publisher suffix (`(Audible)` / `(Veritas)`), so every file stays uniquely named. Current counts: **365 rows, 365 unique safe, 365 unique display** (2026-08-07).
+**v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — was resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get an explicit carrier suffix (`(streaming)` / `(DVD)`) or, when carrier is the same, a publisher suffix (`(Audible)` / `(Veritas)`), so every file stays uniquely named.
+**2026-08-08 D-01 follow-up:** the streaming master 225 and its DVD twin 311 were collapsed into the single DVD master 311 (streaming demoted to `reference_url_1`); master 311's filename reverted to the plain `2003 - Devotion to Truth Talk.mp4`. The carrier-suffix rule remains available for any genuine two-carrier work, but no current master uses it. Current counts: **362 rows, 362 unique safe, 362 unique display** (2026-08-08).
 
 ## 2026-08-07 Highlights promotion (owner ruling)
 
@@ -87,7 +88,7 @@ bracket): `Highlights of the 2002 Lectures 1-6.mp4`,
 
 ## Files
 
-- `data/filename_proposal_YYYYMM.csv` — **365 rows**, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
+- `data/filename_proposal_YYYYMM.csv` — **362 rows**, columns uuid, year, month, format, title, clean_title, part_index, part_total, proposed_filename safe [1-3], proposed_filename_display [1/3]
 - `docs/filename-proposal.json` — same for frontend
 - This doc v4 (updated 2026-08-07)
 
@@ -142,4 +143,4 @@ would collide with another row's filename (then it is the disambiguator).
 - Exact recording years for Volume Series pre-2000 need verification via Veritas archives or VHS tape dates. Owner ruling 2026-08-04: “do not name any if cannot name all” → master year blank, no catalogue codes, filename no year prefix (`Volume I Power vs Force [1-2].mp4`). Better than incorrect 2007 listing date or partial 1995-1999 estimates.
 - Future: if all Volume years become known, restore YYYY-MM prefix and catalogue codes.
 
-*Updated 2026-08-08 from 365 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313); 7 annual Highlights and the final NC/Hay House programs are represented with unique reviewed filenames.*
+*Updated 2026-08-08 from 362 master rows — Volume Series year blank pre-2000, not estimated; legacy duplicate rows 281/284 excluded (same talks as 312/313); the D-01 collapse retired 225/226/227 (kept 310/311 as DVD masters with streaming in reference_url_1); 7 annual Highlights and the final NC/Hay House programs are represented with unique reviewed filenames.*
