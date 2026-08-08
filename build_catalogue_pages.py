@@ -117,8 +117,13 @@ RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 # view-level provenance label and is intentionally not part of the master CSV
 # schema, which stays owned by build_research_master.py.
 # ``proposed_filename`` sits between Title and Item Type per owner request 2026-08-04.
+# ``proposed_filename_display`` (the ``[1/3]`` rendering) is derived from the
+# reviewed filename-proposal sheet and ``legacy_title`` (the verbatim raw
+# spreadsheet text) rides along so the Expert-columns toggle can expose both —
+# see the 2026-08-08 audit (QA-5) and the 2026-08-07 visitor-first directive.
 EVERYTHING_FIELDS = [
-    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "item_type",
+    "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename",
+    "proposed_filename_display", "legacy_title", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "source_url_amazon", "reference_url_1", "notes",
@@ -537,10 +542,20 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     """
     master_records = list(master_items) if master_items is not None else read_csv(MASTER)
     migrated_items = len(master_records)
+    filename_proposal = read_csv(FILENAME_PROPOSAL)
+    display_by_uuid = {
+        row["uuid"].strip(): row["proposed_filename_display"].strip()
+        for row in filename_proposal
+    }
     items = [
         everything_record(
             RECORD_TYPE_MASTER,
-            **{field: record.get(field, "") for field in EVERYTHING_FIELDS},
+            **{
+                field: record.get(field, "")
+                for field in EVERYTHING_FIELDS
+                if field != "proposed_filename_display"
+            },
+            proposed_filename_display=display_by_uuid.get(record["uuid"].strip(), ""),
         )
         for record in master_records
     ]
@@ -562,7 +577,6 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     intl_queue = read_csv(INTL_QUEUE)
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
-    filename_proposal = read_csv(FILENAME_PROPOSAL)
 
     # Pending-promotion candidates are surfaced for owner review by default
     # (opt out locally with --no-include-pending).

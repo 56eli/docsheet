@@ -422,8 +422,13 @@ record-type labels): **everything matches except one gap** —
   (`legacy_title`, `proposed_filename_display`) and the Everything CSV export
   cannot include the verbatim raw title — the README's "always exportable"
   claim holds only via the separate Original Spreadsheet tab.
-  Options: (a) restore the two fields to the Everything view (add
-  `legacy_title` to `EVERYTHING_FIELDS` and derive `proposed_filename_display`
-  from the filename proposal sheet — matches the owner directive, makes the
-  Expert toggle live); or (b) declare them unpublished and remove them from
-  the README/expert list. **(a) is recommended.**
+  Options: (a) restore the two fields to the Everything view; or
+  (b) declare them unpublished. **RESOLVED 2026-08-08 (owner approval, option
+  (a))**: `legacy_title` added to `EVERYTHING_FIELDS` and
+  `proposed_filename_display` derived from the filename-proposal sheet in
+  `build_catalogue_pages.py`; `docs/master.json` regenerated (365 rows, now
+  carrying both, e.g. 265 legacy `Audio 27. Golden Word Book Signing – Audio`
+  and display `… [1/3].mp4`); the README's "verbatim raw text always
+  exportable" claim now holds from the Everything tab and the Expert toggle
+  entries are live. All six `--check` modes, 114 tests, 91% coverage, and
+  node checks green.
