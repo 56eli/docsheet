@@ -22,11 +22,13 @@ blank formats **0**.
 - **Volume Series (pre-2000):** intentionally blank per owner ruling
   2026-08-04 ("do not name any if cannot name all") — no catalogue code, no
   year prefix in filenames; backfill explicitly skips the series.
-- **Listing dates are not recording dates:** 7 rows still carry Veritas
-  `published_date` backfills (Spiritual Will 228-229 listed 2023; Verification
-  of Spiritual Realities 230-232 listed 2014; Golden Word Book Signing 265
-  listed 2007; God is Hidden 268 listed 2014) — flagged
-  `listing_date`-suspect, awaiting physical-media evidence.
+- **Edition release dates are not lecture recording dates:** four promoted
+  carrier rows (327–330) use reviewed Veritas `published_date` backfills as
+  their edition release year (`year_source = Veritas listing backfill (edition)`).
+  They must not be read as recording dates for their related lecture work.
+- **Rows 228–232, 265, and 268 do not currently use listing-date backfills:**
+  228/229 retain ledger recording year 2004; 230–232 and 268 remain blank under
+  investigation; 265 retains ledger recording year 2007.
 
 ## How each number is derived (method per source)
 
@@ -59,9 +61,9 @@ official evidence = 6; unfiltered counting would have found 8).
 
 ## Open work
 
-1. **7 backfilled listing dates (228-232, 265, 268):** replace with true
-   recording years once physical-media/Audible © evidence surfaces, or keep
-   blank per the no-guessing rule.
+1. **Four edition release dates (327–330):** retain them as carrier-release
+   dates unless better edition evidence surfaces; do not promote them to a
+   lecture recording date. The distinct blank-year work remains item 2 below.
 2. **4 under-investigation blanks (230-232, 268):** Veritas product/streaming/
    series pages state no recording year; no Audible listing exists; Amazon
    shows only a 2015 CD re-release (God is Hidden); Vimeo trailer removed.

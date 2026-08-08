@@ -5,7 +5,7 @@
 `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
 `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
 session log at the bottom of §6. Headline results this session:
-- **Independent audit:** all six `--check` modes, 123/123 tests, 91% coverage
+- **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
   one new live-data defect (stale Veritas decision row for
   product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
@@ -510,7 +510,7 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   300, 289, 291, and 247. The rows were removed, inventory statuses restored
   to `matched_by_primary_source`, and the decision overlay is now 5 excluded
   products only. Book/edition and map-poster decision docs were updated.
-- **Regression coverage:** suite is now 123 tests, 91% total coverage (lowest
+- **Regression coverage:** the preceding guard checkpoint reached 123 tests, 91% total coverage (lowest
   module 88%), all six `--check` modes and the Node syntax checks pass. The
   decision guard includes committed-state, malformed-overlay, and exact-primary
   URL fixtures; source fallback fixtures cover unrelated and ambiguous CSVs.
@@ -521,3 +521,33 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   through merged PR #34; main CI run `31265148365` passed after the merge.
 - **Remaining audit work:** optional local frontend asset fallback (F-08) and
   repository housekeeping.
+
+## 2026-08-08 Audit-policy and documentation follow-up (current)
+
+Owner selected both audit policy recommendations and documentation/governance
+cleanup after reviewing the fresh checkpoint in
+`FULL_STACK_AUDIT_2026-08-08_ARENA.md` §12.
+
+- **Part metadata restored:** ledger raw rows 246–248 and 254–256 now set
+  `proposed_format_detail` to `Part 1`/`Part 2`/`Part 3`. Generated masters
+  222–224 and 230–232 retain their official cleaned public titles while their
+  Edition column, exports, and drawer now distinguish the three DVD parts.
+- **Same-carrier filename rule clarified:** masters 320/331 now use
+  `1995 - Power vs. Force (Audible).m4b` and
+  `1995 - Power vs. Force (Veritas).m4b`. The generic audiobook label remains
+  removed; a publisher suffix is the reviewed exception only when same-work,
+  same-year, same-carrier editions would otherwise collide. Their proposal
+  `clean_title` is `Power vs. Force`, with no artificial part indexes.
+- **Regression coverage:** two deterministic guards lock the six part details
+  and the two publisher-suffixed filenames. Suite: **125 tests**.
+- **Documentation governance applied:** corrected the active v4 filename
+  samples/rules (including `198X` Office Series), updated year provenance to
+  distinguish the four edition-release backfills (327–330) from lecture
+  recording dates, corrected the workflow guide's stale `setup-node@v4` /
+  "both specs" references, and labelled the older 2026-08-08 audit narrative
+  historical. The current Arena audit was cleaned of corrupted trailing text.
+- **Still open implementation work:** frontend stale-fetch/race hardening,
+  keyboard-accessible row-detail source links, confirmation of `main` branch
+  protection/required checks, issue #18 triage, and optional local Tabulator
+  fallback. These are documented in the current Arena audit rather than fixed
+  in this data/documentation follow-up.

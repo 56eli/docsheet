@@ -1834,6 +1834,29 @@ class DocumentationCurrencyTests(unittest.TestCase):
             "2003 - Devotion to Truth Talk (DVD).mp4",
         )
 
+    def test_same_work_audiobooks_use_source_suffixes_not_audiobook_labels(self) -> None:
+        """Same-carrier editions remain unique without violating the label-free rule."""
+        with (REPO / "data/filename_proposal_YYYYMM.csv").open(newline="", encoding="utf-8") as handle:
+            rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+        self.assertEqual(rows["320"]["clean_title"], "Power vs. Force")
+        self.assertEqual(rows["331"]["clean_title"], "Power vs. Force")
+        self.assertEqual(rows["320"]["part_index"], "")
+        self.assertEqual(rows["331"]["part_total"], "")
+        self.assertEqual(rows["320"]["proposed_filename"], "1995 - Power vs. Force (Audible).m4b")
+        self.assertEqual(rows["331"]["proposed_filename"], "1995 - Power vs. Force (Veritas).m4b")
+
+    def test_cleaned_multi_part_titles_keep_part_detail_in_master(self) -> None:
+        """Title cleanup must not hide PART1–3 from the edition/export contract."""
+        with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+            master = {row["uuid"]: row for row in csv.DictReader(handle)}
+        expected = {
+            "222": "Part 1", "223": "Part 2", "224": "Part 3",
+            "230": "Part 1", "231": "Part 2", "232": "Part 3",
+        }
+        for uuid, part in expected.items():
+            self.assertEqual(master[uuid]["format"], "DVD")
+            self.assertEqual(master[uuid]["format_detail"], part)
+
     def test_filename_uniqueness_guard_fails_on_seeded_duplicate(self) -> None:
         tempdir = make_sandbox()
         try:

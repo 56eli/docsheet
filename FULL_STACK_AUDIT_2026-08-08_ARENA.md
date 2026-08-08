@@ -310,7 +310,7 @@ those historical measurements.
 | Check | Result |
 |---|---:|
 | Python compile plus all six generated-output `--check` modes | **PASS** |
-| Deterministic Python suite | **123/123 PASS** |
+| Deterministic Python suite | **125/125 PASS** |
 | Coverage | **91%** (2,056 statements; every module >= 88%; 85% enforced floor) |
 | JavaScript syntax (`app.js`, Playwright config, all 3 specs) | **PASS** |
 | `npm ci` / production `npm audit` | **PASS** / **0 vulnerabilities** |
@@ -361,11 +361,10 @@ usable, but its Edition column reduces all three parts to indistinguishable
 `DVD` rows. Other cleaned multi-part rows retain part information in
 `format_detail`.
 
-**Direction needed:** either restore `PART1`/`PART2`/`PART3` (or a normalized
-`Part 1`/`Part 2`/`Part 3`) through the six ledger `proposed_format_detail`
-cells, then regenerate; or formally declare filename proposal metadata as the
-canonical part field and amend the field-semantics documentation. The former is
-recommended because it keeps Edition, exports, and row details self-describing.
+**Resolved in the audit-policy follow-up:** the six reviewed ledger cells now
+carry normalized `Part 1`/`Part 2`/`Part 3` values; master, Pages, and
+Migration Review outputs were regenerated. A deterministic regression test
+locks this self-describing Edition/export contract.
 
 #### C-02 — The filename policy and two current filenames disagree
 
@@ -378,11 +377,11 @@ proposed names because `.m4b` already conveys the carrier. However masters
 - `1995 - Power vs. Force (Audiobook).m4b`
 - `1995 - Power vs. Force Audio Book.m4b`
 
-This is an understandable uniqueness workaround for two same-year audiobook
-editions of one work, and names remain globally unique, but it is an
-undocumented exception to the rule. Choose one policy: (a) retain these labels
-and document a same-work/same-carrier exception, or (b) restore label-free
-names with an explicit source suffix such as `(Audible)` / `(Veritas)`.
+**Resolved in the audit-policy follow-up:** the reviewed filenames are now
+`1995 - Power vs. Force (Audible).m4b` and
+`1995 - Power vs. Force (Veritas).m4b`. This preserves the label-free carrier
+rule while using a documented publisher suffix for a same-work/same-year/
+same-carrier collision; a deterministic regression test locks both names.
 
 #### F-01 — Rapid tab switches can render stale data into the active view
 
@@ -429,34 +428,27 @@ a present output mismatch.
 
 **Severity:** Medium documentation drift.
 
-`FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` is marked as the 365-record current
-policy but its "Current sample v4" and later sample still show the old
-`1982 - A-01 Office Series-Stress.mp4` plus Power-vs-Force `[1-2]`/`[2-2]`
-audiobook examples. Current generated data is `198X - Stress.mp4` and the two
-single filenames described in C-02. Correct the examples or clearly mark them
-as historical.
+**Resolved in the audit-policy follow-up:** the v4 policy now shows the current
+`198X - Stress.mp4` Office Series convention and the two publisher-suffixed
+Power-vs-Force audiobook names; the global-uniqueness rule now explicitly
+covers source suffixes as well as carrier suffixes.
 
 #### D-02 — Year-provenance documentation does not match current `year_source`
 
 **Severity:** Medium documentation/provenance drift.
 
-`YEAR_COLUMN_PROVENANCE.md` says seven records 228–232, 265, and 268 carry
-Veritas listing-date backfills. Current master evidence says 228/229 are ledger
-recording year 2004; 230–232 and 268 are blank under investigation; 265 is
-ledger recording year 2007. The only current `Veritas listing backfill
-(edition)` rows are masters 327–330 (four promoted audio/CD/DVD editions). The
-policy should distinguish edition release dates from recording dates and align
-its open-work list with the actual `year_source` column.
+**Resolved in the audit-policy follow-up:** the policy now identifies the four
+current edition-release backfills (327–330) and explicitly distinguishes them
+from lecture recording dates. It also states the actual current provenance of
+228–232, 265, and 268.
 
 #### D-03 — Workflow guide includes an incorrect verification snippet
 
 **Severity:** Low documentation drift.
 
-`WORKFLOW_WEB_EDITOR_GUIDE.md` correctly records current action major upgrades
-elsewhere, but its "Node 20 -> 22" confirmation snippet still tells the owner
-to expect `actions/setup-node@v4`; the live workflow uses `@v7`. It also says
-"both Playwright specs" although three specs now exist. Update that historical
-snippet/wording so a maintainer does not revert a correct configuration.
+**Resolved in the audit-policy follow-up:** the guide now names
+`actions/setup-node@v7`, refers to every Playwright spec, and labels the old
+branch-shipping note as historical so it cannot instruct a redundant PR.
 
 #### D-04 — Current audit/report authority needs consolidation
 
@@ -465,11 +457,11 @@ snippet/wording so a maintainer does not revert a correct configuration.
 Several root audits share the same date and overlapping claims. Most older
 reports now carry useful historical banners, but the linked current Arena audit
 contained trailing corrupted text before this follow-up section, and
-`FULL_STACK_AUDIT_2026-08-08.md` still interleaves resolved and open state
-without a top-level historical/current marker. Keep this report as the current
-checkpoint, add an explicit historical banner to superseded root audits, and
-move them to `archive/` at the next documentation-hygiene pass. The stray tail
-was removed in this update.
+`FULL_STACK_AUDIT_2026-08-08.md` interleaved resolved and open state without a
+top-level historical/current marker. **Partially resolved in the follow-up:**
+the corrupt tail was removed and that earlier audit now carries a historical
+banner. Keep this report as the current checkpoint and move remaining
+superseded root audits to `archive/` in the next documentation-hygiene pass.
 
 ### Observations that remain clean or intentionally bounded
 
