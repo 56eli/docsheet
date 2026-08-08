@@ -535,10 +535,7 @@ Owner selected both audit policy recommendations and documentation/governance
 cleanup after reviewing the fresh checkpoint in
 `FULL_STACK_AUDIT_2026-08-08_ARENA.md` §12.
 
-- **Part metadata restored:** ledger raw rows 246–248 and 254–256 now set
-  `proposed_format_detail` to `Part 1`/`Part 2`/`Part 3`. Generated masters
-  222–224 and 230–232 retain their official cleaned public titles while their
-  Edition column, exports, and drawer now distinguish the three DVD parts.
+- **Edition column standardized:** all `format_detail` values normalized to `Part 1`/`Part 2`/`Part 3` format (was `DVD01`/`DVD02`/`DVD03` and `PART1`/`PART2`/`PART3`); 19 redundant `Audiobook` values cleared; 223 rows standardized. Documentation updated across CATALOGUE_READABILITY_ROADMAP.md, LECTURE_SERIES_REVIEW.md, PRODUCT_RELATIONSHIP_SCHEMA.md, SERIES_COMPILATION_SCHEMA.md, decisions/FINAL_TITLE_MATCH_DECISIONS.md, decisions/RECONCILIATION_DECISIONS.md. Tests updated.
 - **Same-carrier filename rule clarified:** masters 320/331 now use
   `1995 - Power vs. Force (Audible).m4b` and
   `1995 - Power vs. Force (Veritas).m4b`. The generic audiobook label remains
