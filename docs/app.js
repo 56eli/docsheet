@@ -345,6 +345,8 @@
   let activeFacets = {};
   let mobileBrowseRows = [];
   let renderedAsMobileBrowse = false;
+  let viewActivation = 0;
+  let activeDataRequest = null;
   const MOBILE_BROWSE_STORAGE_KEY = "docsheet-mobile-master-mode";
   const mobileBrowseMedia = window.matchMedia
     ? window.matchMedia("(max-width: 720px)")
@@ -1159,13 +1161,21 @@
     }
   }
 
+  function drawerFocusableControls() {
+    // The drawer is a true modal: its official/evidence links are as important
+    // as header buttons. Include every visible focusable descendant so Tab
+    // cycles through the entire detail sheet rather than trapping keyboard
+    // users above the source links.
+    return [...rowDetails.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+      'textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((control) => !control.hidden && control.getClientRects().length > 0);
+  }
+
   function trapRowDetailsFocus(event) {
     if (event.key !== "Tab" || rowDetails.hidden) return;
-    // Keep the drawer header actions in a deterministic cycle. The row body
-    // contains links, but header focus must never escape the modal shell.
     if (event.currentTarget !== rowDetails) event.stopPropagation();
-    const controls = [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn]
-      .filter((control) => control && !control.hidden);
+    const controls = drawerFocusableControls();
     if (!controls.length) return;
     const current = controls.indexOf(document.activeElement);
     const delta = event.shiftKey ? -1 : 1;
@@ -1179,18 +1189,18 @@
   /* ------------------------------------------------------------------ *
    *  Data loading
    * ------------------------------------------------------------------ */
-  async function loadData(viewName) {
+  async function loadData(viewName, signal) {
     const view = VIEWS[viewName];
-    const res = await fetch(view.file, { cache: "no-store" });
+    const res = await fetch(view.file, { cache: "no-store", signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    allData = await res.json();
+    const data = await res.json();
 
     // Merge separate Year/Month fields into one "Year-Month" display column
     // ("YYYY-MM"). Applies to any view whose rows carry both fields (today:
     // Everything). The raw year/month keys stay on each row object for the
     // global search, but buildColumns, the row drawer, and CSV exports show
     // only the merged column.
-    allData.forEach((row) => {
+    data.forEach((row) => {
       if ("year" in row && "month" in row) {
         row.year_month = row.year ? (row.month ? `${row.year}-${row.month}` : row.year) : "";
       }
@@ -1206,8 +1216,12 @@
         row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
+    return { data, lastModified: res.headers.get("Last-Modified") };
+  }
 
-    const lastModified = res.headers.get("Last-Modified");
+  function applyLoadedViewMeta(viewName, data, lastModified) {
+    const view = VIEWS[viewName];
+    allData = data;
     footerUpdated.replaceChildren();
     if (lastModified) {
       const stamp = document.createElement("span");
@@ -1217,8 +1231,7 @@
     } else {
       footerUpdated.textContent = "Last Updated: Unknown";
     }
-    footerStats.textContent = `${view.label}: ${allData.length} rows`;
-    return allData;
+    footerStats.textContent = `${view.label}: ${data.length} rows`;
   }
 
   /* ------------------------------------------------------------------ *
@@ -1827,6 +1840,13 @@
    *  Boot
    * ------------------------------------------------------------------ */
   async function activateView(viewName) {
+    // A tab change may arrive before its predecessor's JSON fetch resolves.
+    // Abort the old request where supported and retain a monotonic token as a
+    // second guard: stale responses must never mutate global data/footer/UI.
+    const activation = ++viewActivation;
+    if (activeDataRequest) activeDataRequest.abort();
+    const request = new AbortController();
+    activeDataRequest = request;
     activeView = viewName;
     if (viewJump) viewJump.value = viewName;
     const view = VIEWS[viewName];
@@ -1862,7 +1882,10 @@
     });
 
     try {
-      const data = await loadData(viewName);
+      const { data, lastModified } = await loadData(viewName, request.signal);
+      if (activation !== viewActivation) return;
+      if (activeDataRequest === request) activeDataRequest = null;
+      applyLoadedViewMeta(viewName, data, lastModified);
       updateViewSummary(viewName, data.length);
       if (data.length === 0) {
         // Standing intake lanes (and any future empty view) get an
@@ -1881,6 +1904,10 @@
       renderLoadedView(data, true);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
+      // A replacement tab activation owns the surface. AbortError is expected
+      // during normal rapid navigation and should never flash a load failure.
+      if (activation !== viewActivation || (err && err.name === "AbortError")) return;
+      if (activeDataRequest === request) activeDataRequest = null;
       console.error(`[docsheet] Failed to load ${view.file}:`, err);
       spreadsheet.innerHTML =
         `<div class="load-error">Could not load ${view.file} — make sure the site is served over HTTP ` +

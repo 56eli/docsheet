@@ -104,9 +104,34 @@ test('row details use sections and return focus to the source row', async ({ pag
   await expect(page.locator('#copy-id-btn')).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(page.locator('#close-row-details')).toBeFocused();
+  // The detail sheet's official/evidence URLs are part of the modal's keyboard
+  // cycle; the old header-only trap made these links unreachable with Tab.
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#row-details-body a').first()).toBeFocused();
   await page.locator('#close-row-details').click();
   await expect(page.locator('#row-details')).toBeHidden();
   await expect(row).toBeFocused();
+});
+
+test('rapid tab changes never let a stale JSON response replace the active view', async ({ page }) => {
+  await page.route('**/manual-leads.json', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 350));
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify([{ title: 'Stale manual lead', lead_status: 'open' }]),
+    });
+  });
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  await page.getByRole('tab', { name: 'Manual Leads' }).click();
+  await page.getByRole('tab', { name: 'Everything' }).click();
+  await waitForTable(page);
+  await page.waitForTimeout(450); // allow the deliberately slow request to settle
+
+  await expect(page.locator('#view-title')).toHaveText('Everything');
+  await expect(page.getByRole('tab', { name: 'Everything' })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('.tabulator-row').first()).toContainText('Causality');
 });
 
 test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch', async ({ page }) => {

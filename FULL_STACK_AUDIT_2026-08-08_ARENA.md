@@ -320,7 +320,7 @@ those historical measurements.
 | Inline CSP script hash and all three Tabulator SRI attributes | **PASS** |
 | Latest GitHub `main` CI and Pages deployment | **PASS** — runs `31265700227` / `31265699591` |
 | GitHub Pages configuration | **PASS** — HTTPS, `main` `/docs`, status `built` |
-| Local Playwright browser execution | **BLOCKED** — Chromium bundle is absent in this sandbox; all 16 tests stop before assertion/launch. GitHub CI remains the browser authority. |
+| Local Playwright browser execution | **BLOCKED** — Chromium bundle is absent in this sandbox; all 18 tests stop before assertion/launch. GitHub CI remains the browser authority. |
 | Live Veritas refresh and direct Pages curl | **BLOCKED in sandbox** by TLS handshake failure; this is an environment limitation, not a failed data check. |
 
 The catalogue remains internally consistent: 365 curated records (309 lecture,
@@ -387,27 +387,22 @@ same-carrier collision; a deterministic regression test locks both names.
 
 **Severity:** Medium — intermittent frontend correctness risk.
 
-`activateView()` awaits `loadData(viewName)` without an activation token or an
-`AbortController`. A slow request for view A can resolve after view B was
-selected and then still call `initTable(data)`, mutate global `allData`, the
-footer, and facet state while `activeView` already says B. Static files make
-this uncommon, but browser caching/throttling or a mobile network makes it
-real. Add a monotonically increasing request token (ignore any response that is
-not current) or abort the previous fetch; cover it with an intercepted,
-delayed Playwright request test.
+**Resolved in the frontend-hardening follow-up:** `activateView()` now creates
+an `AbortController` per activation and increments a monotonic token. The loader
+is side-effect-free until the current token commits data/footer metadata, so a
+slow prior response cannot overwrite the selected view even if an abort races
+with its response. A delayed/intercepted Playwright regression test locks the
+rapid-tab-switch behavior.
 
 #### F-02 — The row-details modal traps Tab away from its own source links
 
 **Severity:** Medium — keyboard accessibility defect.
 
-`valueNode()` intentionally renders URL values as focusable anchors inside the
-row-details drawer, but `trapRowDetailsFocus()` cycles only Copy filename, Copy
-ID, and Close. Pressing Tab from Close loops to the header; pressing Tab while
-focused on a body link is also redirected to header controls. Keyboard-only
-users therefore cannot navigate to or open official/evidence links in the
-modal, despite the dialog being the primary mobile/detail source surface.
-Build the trap from all visible focusable descendants (or do not trap a
-non-modal drawer) and add a focus-order/browser regression test.
+**Resolved in the frontend-hardening follow-up:** the focus trap now derives
+its cycle from every visible focusable descendant of the modal, including all
+official/evidence anchors in the body. Tab and Shift+Tab remain inside the
+modal without bypassing source links; the Playwright drawer test now proves the
+first body link is reachable after the header actions.
 
 #### S-01 — Raw-only direct pushes can bypass the complete validation suite
 

@@ -575,3 +575,20 @@ spreadsheet grid into a narrow viewport. The Everything view now defaults to
 A local visual review can be served with `python -m http.server 8000 --bind
 0.0.0.0`. Remaining frontend audit items are the stale-fetch response guard and
 row-detail keyboard focus trap.
+
+## 2026-08-08 Frontend correctness + accessibility hardening (current)
+
+Owner selected the remaining P0 frontend audit work after Mobile Browse mode.
+
+- **Race-safe tab loading:** `activateView()` now aborts the preceding fetch and
+  uses a monotonic activation token. `loadData()` no longer writes global UI
+  state itself; only the still-current activation commits rows, timestamp, and
+  footer metadata. A delayed `manual-leads.json` Playwright route proves an old
+  response cannot replace the newly selected Everything view.
+- **Accessible detail-modal links:** the focus trap now cycles every visible
+  focusable descendant, including official/evidence links in the drawer body,
+  rather than only the three header controls. The browser test asserts Tab
+  reaches the first source link after Copy filename, Copy ID, and Close.
+- **Browser coverage:** 2 further Playwright tests added; browser suite is now
+  **18 tests across 3 specs**. Local browser download is sandbox-blocked, so
+  rely on PR CI for Chromium execution.
