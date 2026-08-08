@@ -828,3 +828,73 @@ body {
   .row-details-body { padding: 12px 14px; }
   #close-row-details { min-width: 44px; min-height: 44px; }
 }
+
+/* ================================================================== *
+ *  2026-08-08 IA redesign (Phase 1): tab groups, stats strip,
+ *  empty-state card. Keeps the existing token variables.
+ * ================================================================== */
+
+/* --- grouped tab bar ------------------------------------------------- */
+.tab-group {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+.tab-group + .tab-group {
+  margin-left: 8px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+}
+.tab-group-label {
+  align-self: center;
+  margin-right: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .tab-group-label { display: none; }
+  .tab-group + .tab-group { margin-left: 4px; padding-left: 6px; }
+}
+
+/* --- catalogue overview chips ---------------------------------------- */
+.stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.stat-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.stat-chip b {
+  font-size: 13px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- empty-state card (standing intake lanes) ------------------------ */
+.empty-state {
+  margin: 24px 16px;
+  padding: 28px 24px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}

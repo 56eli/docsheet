@@ -22,6 +22,8 @@
   const searchStatus = $("search-status");
   const footerUpdated = $("footer-updated");
   const spreadsheet = $("spreadsheet");
+  const emptyState = $("empty-state");
+  const statsStrip = $("stats-strip");
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
   const reviewFilterHint = $("review-filter-hint");
@@ -59,8 +61,18 @@
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
 
-  const VIEW_DETAILS = {
-    master: {
+  // Standing intake lanes show a friendly explanation instead of an empty
+  // grid (2026-08-08 IA redesign, Phase 1).
+  const EMPTY_STATE_MESSAGES = {
+    officialDiscovery:
+      "Standing intake lane — every queued item has been ruled out or promoted. " +
+      "If a Veritas catalogue refresh surfaces unmatched products, they will land here for review.",
+    newWorkReview:
+      "Standing intake lane — no unmatched Veritas products are awaiting a new-work ruling right now.",
+  };
+  const DEFAULT_EMPTY_MESSAGE = "No rows in this view.";
+
+  const VIEW_DETAILS = {    master: {
       type: "Complete curated catalogue",
       description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
     },
@@ -990,6 +1002,20 @@
     try {
       const data = await loadData(viewName);
       updateViewSummary(viewName, data.length);
+      if (data.length === 0) {
+        // Standing intake lanes (and any future empty view) get an
+        // explanatory card instead of a blank grid (IA redesign 2026-08-08).
+        emptyState.replaceChildren(
+          document.createTextNode(EMPTY_STATE_MESSAGES[viewName] || DEFAULT_EMPTY_MESSAGE),
+        );
+        emptyState.hidden = false;
+        spreadsheet.hidden = true;
+        spreadsheet.setAttribute("aria-busy", "false");
+        searchStatus.textContent = "Showing: 0";
+        return;
+      }
+      emptyState.hidden = true;
+      spreadsheet.hidden = false;
       initTable(data);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
@@ -1004,8 +1030,33 @@
     }
   }
 
+  async function loadStatsStrip() {
+    // Catalogue overview chips, read from the generated catalogue-meta.json
+    // (single source of truth — never hand-counted here).
+    try {
+      const res = await fetch("catalogue-meta.json", { cache: "no-store" });
+      if (!res.ok) return;
+      const meta = await res.json();
+      const chips = [
+        ["stat-master-items", meta.master_items],
+        ["stat-exclusions", meta.master_exclusion_rows],
+        ["stat-overrides", meta.approved_source_overrides],
+        ["stat-relationships", meta.reviewed_product_relationships],
+        ["stat-compilations", meta.reviewed_series_compilations],
+      ];
+      for (const [id, value] of chips) {
+        const el = document.getElementById(id);
+        if (el && Number.isFinite(value)) el.textContent = String(value);
+      }
+      statsStrip.hidden = false;
+    } catch (err) {
+      /* meta unavailable — the strip simply stays hidden */
+    }
+  }
+
   async function boot() {
     initDarkMode();
+    loadStatsStrip();
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
     clearSearchBtn.addEventListener("click", () => {
       searchInput.value = "";
