@@ -172,6 +172,14 @@ You* in **2021**). Book years come only from the reviewed ledger / candidate
 inputs, so they are never overwritten from an official inventory listing date,
 and books never receive a catalogue code (codes are lecture/discussion only).
 
+Pre-2000 lectures whose exact recording date is unconfirmed but whose decade
+is established carry the placeholder year `198X` (the 16 Office Series rows;
+ledger evidence — most believed 1982 — is in `year_source`, and the site
+displays `c. 1980s` while exports keep the raw value). Rows whose decade is
+also unknown carry a **blank** `year` with a labelled `year_source` instead
+(e.g. `Blank: intentional pre-2000 (Volume Series)`, `Blank: under
+investigation`).
+
 ### Edition model (work × carrier)
 
 Since 2026-08-03 the master models **one row per edition** of a work: a work

@@ -758,6 +758,22 @@
         col.sorterParams = { alignEmptyValues: "bottom" };
       }
 
+      // Pre-2000 Office Series lectures carry the evidence-backed decade
+      // placeholder "198X" in year / year_month / proposed_year (ledger:
+      // "most are believed 1982"; see README field semantics and
+      // archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md). Display it as
+      // "c. 1980s" while the raw value stays in the data (search, CSV export,
+      // row details), and force a deterministic string sort — a number sorter
+      // would turn the placeholder into NaN and place the 16 rows arbitrarily.
+      if (key === "year" || key === "year_month" || key === "proposed_year") {
+        col.formatter = (cell) => {
+          const value = String(cell.getValue() ?? "");
+          return value === "198X" ? "c. 1980s" : value;
+        };
+        col.sorter = "string";
+        col.sorterParams = { alignEmptyValues: "bottom" };
+      }
+
       if ((preset.frozen || []).includes(key)) {
         col.frozen = true;
       }
