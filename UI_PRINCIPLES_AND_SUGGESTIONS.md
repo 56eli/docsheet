@@ -186,6 +186,10 @@ regression test, and keep a short changelog in the PR description.
   deterministic Python pipeline.
 - Current Record Type fix: a **54px** width budget keeps the first rail compact;
   the full meaning remains in the header/tooltip.
+- Task-oriented Jump to navigation groups the 19 views by Catalogue, Review
+  workspace, and Sources without removing the direct tab rail.
+- Row details now use Identity/Status/Sources/Provenance sections, copy filename
+  and copy ID actions, focus trapping, and focus return to the source row.
 
 ## 3. Project-specific implementation roadmap
 

@@ -51,8 +51,17 @@ test('facet bar is hidden on non-catalogue views', async ({ page }) => {
   await expect(page.locator('#facet-bar')).toBeHidden();
 });
 
-test('stats chips navigate to their sheets', async ({ page }) => {
+test('stats chips and task jump menu navigate to their sheets', async ({ page }) => {
   await page.goto('/docs/');
+  await waitForTable(page);
+
+  await expect(page.locator('#view-jump optgroup[label="Catalogue"]')).toBeVisible();
+  await expect(page.locator('#view-jump optgroup[label="Review workspace"]')).toBeVisible();
+  await expect(page.locator('#view-jump optgroup[label="Sources"]')).toBeVisible();
+  await page.locator('#view-jump').selectOption('manualLeads');
+  await waitForTable(page);
+  await expect(page.locator('#view-title')).toHaveText('Manual Leads');
+  await page.locator('#view-jump').selectOption('master');
   await waitForTable(page);
 
   // Stats are hidden by default now to save space. Turn them on.
@@ -88,6 +97,12 @@ test('row details use sections and return focus to the source row', async ({ pag
   await expect(page.locator('#row-details')).toBeVisible();
   await expect(page.locator('#close-row-details')).toBeFocused();
   await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Ownership & status', 'Sources', 'Provenance']);
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#copy-filename-btn')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#copy-id-btn')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#close-row-details')).toBeFocused();
   await page.locator('#close-row-details').click();
   await expect(page.locator('#row-details')).toBeHidden();
   await expect(row).toBeFocused();

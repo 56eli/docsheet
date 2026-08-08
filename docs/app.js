@@ -16,6 +16,7 @@
   const $ = (id) => document.getElementById(id);
   const searchInput = $("global-search");
   const clearSearchBtn = $("clear-search-btn");
+  const viewJump = $("view-jump");
   const exportBtn = $("export-btn");
   const settingsBtn = $("settings-btn");
   const settingsMenu = $("settings-menu");
@@ -62,6 +63,7 @@
   const facetOwned = $("facet-owned");
   const facetClear = $("facet-clear");
   const copyFilenameBtn = $("copy-filename-btn");
+  const copyIdBtn = $("copy-id-btn");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -84,6 +86,12 @@
     filenameProposal: { file: "filename-proposal.json", label: "Filename Proposal", exportName: "hawkins-filename-proposal.csv" },
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
+
+  const VIEW_GROUPS = [
+    { label: "Catalogue", views: ["master", "productRelationships", "seriesCompilations"] },
+    { label: "Review workspace", views: ["reviewOverview", "manualCandidates", "manualLeads", "masterExclusions", "sourceOverrides", "veritasMappingDecisions", "newWorkReview", "officialDiscovery", "internationalProducts"] },
+    { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview", "original"] },
+  ];
 
   // Standing intake lanes show a friendly explanation instead of an empty
   // grid (2026-08-08 IA redesign, Phase 1).
@@ -736,6 +744,21 @@
     });
   }
 
+  function configureViewJump() {
+    if (!viewJump) return;
+    viewJump.replaceChildren();
+    VIEW_GROUPS.forEach((group) => {
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = group.label;
+      group.views.forEach((viewName) => {
+        const option = new Option(VIEWS[viewName].label, viewName);
+        optgroup.append(option);
+      });
+      viewJump.append(optgroup);
+    });
+    viewJump.value = activeView;
+  }
+
   function closeColumnMenu() {
     columnMenu.hidden = true;
     columnMenuBtn.setAttribute("aria-expanded", "false");
@@ -810,15 +833,27 @@
     return document.createTextNode(text);
   }
 
-  function copyFilename(data) {
-    const filename = String(data?.proposed_filename || "").trim();
-    if (!filename || !navigator.clipboard) return;
-    navigator.clipboard.writeText(filename).then(() => {
-      if (!copyFilenameBtn) return;
-      const original = copyFilenameBtn.textContent;
-      copyFilenameBtn.textContent = "Copied!";
-      setTimeout(() => { copyFilenameBtn.textContent = original; }, 1500);
+  function copyValue(value, button) {
+    const text = String(value || "").trim();
+    if (!text || !navigator.clipboard || !button) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const original = button.textContent;
+      button.textContent = "Copied!";
+      setTimeout(() => { button.textContent = original; }, 1500);
     }).catch(() => { /* clipboard blocked — no-op */ });
+  }
+
+  function copyFilename(data) {
+    copyValue(data?.proposed_filename, copyFilenameBtn);
+  }
+
+  function primaryIdentifier(data) {
+    return data?.uuid || data?.master_uuid || data?.veritas_product_id ||
+      data?.source_product_id || data?.candidate_key || "";
+  }
+
+  function copyIdentifier(data) {
+    copyValue(primaryIdentifier(data), copyIdBtn);
   }
 
   const DETAIL_SECTIONS = [
@@ -877,6 +912,9 @@
       const hasFilename = Boolean(String(data.proposed_filename || "").trim());
       copyFilenameBtn.hidden = !hasFilename;
     }
+    if (copyIdBtn) {
+      copyIdBtn.hidden = !Boolean(primaryIdentifier(data));
+    }
     const entries = Object.entries(data).filter(([field]) => {
       // Year/Month and Format/Format Detail are shown through merged columns.
       if ("year_month" in data && (field === "year" || field === "month")) return false;
@@ -905,6 +943,23 @@
     lastRowTrigger = null;
     if (trigger && document.contains(trigger)) {
       requestAnimationFrame(() => trigger.focus({ preventScroll: true }));
+    }
+  }
+
+  function trapRowDetailsFocus(event) {
+    if (event.key !== "Tab" || rowDetails.hidden) return;
+    const focusable = [...rowDetails.querySelectorAll(
+      'button:not([hidden]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    )].filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
   }
 
@@ -1540,6 +1595,7 @@
    * ------------------------------------------------------------------ */
   async function activateView(viewName) {
     activeView = viewName;
+    if (viewJump) viewJump.value = viewName;
     const view = VIEWS[viewName];
     if (facetToggleBtn) {
       facetToggleBtn.hidden = (viewName !== "master");
@@ -1626,6 +1682,10 @@
   async function boot() {
     initDarkMode();
     loadStatsStrip();
+    configureViewJump();
+    if (viewJump) {
+      viewJump.addEventListener("change", () => activateView(viewJump.value));
+    }
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
     clearSearchBtn.addEventListener("click", () => {
       searchInput.value = "";
@@ -1697,8 +1757,12 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
+    rowDetails.addEventListener("keydown", trapRowDetailsFocus);
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
+    }
+    if (copyIdBtn) {
+      copyIdBtn.addEventListener("click", () => currentRowData && copyIdentifier(currentRowData));
     }
     if (facetClear) facetClear.addEventListener("click", clearFacets);
     FACETS.forEach((facet) => {
