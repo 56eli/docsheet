@@ -383,3 +383,21 @@ cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
   (`archive/VERITAS_ARTIFACT_REVIEW.md` → `SERIES_TAXONOMY_MAPPING.md`,
   `archive/VERITAS_PRODUCT_MAPPING.md` → `decisions/…`) and one non-path
   wording in `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md` (`docs/work`).
+
+## 9. Deeper data pass QA-4 (2026-08-08, Satsang/CD parity + edge classes)
+
+- **Satsang series: no duplicates.** All 25 Satsang/2011 Q&A rows occupy
+  distinct year-month slots (2006 set 344–349, raw-ledger set 251–263,
+  promoted monthlies 350 Jul-2008 / 351 Jun-2010 / 352 Sep-2010); 25 distinct
+  Veritas slugs; every CD row carries a code; the promoted monthlies' blank
+  `owned` vs the raw rows' `false` matches the documented C4 semantics.
+- **Cosmetic caveat (documented, no change proposed):** catalogue codes are
+  minted in ledger/candidate order, not chronologically — e.g. Satsang
+  Sep-2008 = `LECTURE-2008-023` sorts before Jul-2008 = `-024`, and Nov-2010 =
+  `-008` before Jun/Sep-2010 = `-009/-010`. Codes are stable identifiers
+  (never renumber); re-sorting would only matter if the owner wants
+  chronological codes, which would churn 4 rows for pure cosmetics.
+- **Edge classes consistent:** the single `other` row is master 371 (OM —
+  mantra recording, `Media Miscellaneous`, audiobook, documented promotion
+  note); all 8 `discussion` rows are `streaming` in `Discussion Series`;
+  highlights are 7 streaming rows in `Lecture Highlights`.
