@@ -507,9 +507,14 @@ Prioritized, evidence-grounded suggestions for the project:
 
 **Research (low-risk data improvements):**
 - **S-g. Resolve the 4 "under investigation" years** (masters 230–232
-  Verification of Spiritual Realities, 268 God is Hidden) via live Veritas
-  product pages — removes unknown-year rows using the same evidence path as
-  the verified month backfills.
+  Verification of Spiritual Realities, 268 God is Hidden) — **RESEARCHED
+  2026-08-08: no authoritative recording date is published** (product pages,
+  On the Road series index, web/ISBN searches, raw rows all checked; the
+  2014 published_dates are archive releases). Outcome memo:
+  `archive/RULING_PREP_YEAR_RESEARCH_230_232_268.md` — keep `Blank: under
+  investigation` (evidence-backed) unless the owner supplies dates from the
+  physical collection (then ledger `proposed_year` adopts them; rows gain
+  codes + year-prefixed filenames).
 - **S-h. Master 265 audiobook edition (Option B):** mint when a live, reviewed
   US Audible/Amazon listing appears (tracked in `data/research_manual_leads.csv`);
   until then the CD carrier + documented publisher-verbatim URL stand.
