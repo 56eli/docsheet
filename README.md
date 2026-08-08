@@ -1,5 +1,7 @@
 # DocSheet — Live Spreadsheet
 
+[![CI](https://github.com/56eli/docsheet/actions/workflows/ci.yml/badge.svg)](https://github.com/56eli/docsheet/actions/workflows/ci.yml)
+
 Renders the repository CSV as an interactive, searchable web table on
 GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 
@@ -220,7 +222,10 @@ lecture/discussion rows intentionally have none; see the field-semantics note
 above and codes are never renumbered); and the master's `candidate_key`
 stores the `candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while
 the promotion registries (`data/manual_candidate_promotions.csv`,
-`data/edition_promotions.csv`) store the bare key.
+`data/edition_promotions.csv`) store the bare key. A third convention: despite
+its name, the master `uuid` is a **stable compact integer id**, not a UUID —
+values run 1–372 with gaps where duplicate records were retired (246, 249,
+264, 281, 284, 302, 309); ids are never reissued or renumbered.
 
 ### Edition model (work × carrier)
 

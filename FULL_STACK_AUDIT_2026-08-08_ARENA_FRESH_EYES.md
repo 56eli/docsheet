@@ -68,9 +68,10 @@ documentation-vs-data drift and repo hygiene** — 0 critical, 0 data-loss risks
 
 ## 5. Remaining (all low priority — everything above them was executed in §6)
 
-1. **D6 note**: document that `uuid` is a stable compact integer id despite the name.
-2. **CI badge** in README for the main workflow.
+1. ~~**D6 note**~~ — done (README identifier-conventions paragraph now documents uuid as a stable compact integer id).
+2. ~~**CI badge**~~ — done (`ci.yml` badge at the top of README).
 3. **S9/S10**: informational only (squashed clone history; standing raw-CSV fragility).
+4. **Dedupe watch**: `reference_url_1` == curated source column on candidate-minted rows (359–361/369–372) is consistent-by-precedent; first candidate if the schema ever tightens.
 
 ## 6. Resolution log (this branch, owner-directed via chat)
 

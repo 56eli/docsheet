@@ -1,7 +1,7 @@
 # Next-Agent Handoff
 
 **Prepared:** 2026-08-08 (post-merge verification) — current handoff for branch
-`arena/019fe211-docsheet`. See
+`arena/019fe244-docsheet` (PR #37, merged). See
 `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
 `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
 session log at the bottom of §6. Headline results this session:
@@ -614,3 +614,38 @@ top of work stacks.
   avoiding a phone-hostile `<select multiple>` as the primary discovery UI.
 - The Mobile Browse Playwright scenario now verifies a Satsang shelf filter
   produces `Showing: 25 of 365` and clears back to the complete catalogue.
+
+## 2026-08-08 Arena fresh-eyes audit + owner-approved fixes (PR #37, current)
+
+Branch `arena/019fe244-docsheet`. Independent full-stack audit
+(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus all owner-approved
+resolutions, delivered as PR #37 (CI green, merged).
+
+- **Fresh-eyes audit:** all six `--check` modes re-run in a clean venv, 125/125
+  tests, 91% coverage, plus standalone pandas probes (bypassing the pipeline's
+  own validators): raw-row accounting airtight (374 raw → 302 adopted + 72
+  excluded), no duplicate uuid/catalog_code/filename, retired vocabulary fully
+  purged, CSP + SRI-pinned frontend. **No critical findings** — all drift.
+- **D5 (owner ruling):** unofficial archive.org mirror removed from master 94
+  `reference_url_1` at the source (raw CSV row 106 + ledger); all artifacts
+  regenerated in documented order; raw/ledger diffs = 1 cell each.
+- **D4 (owner ruling):** 3 academic-book Amazon links (masters 359–361) moved
+  onto the curated `source_url_amazon` column via candidate-keyed approved
+  overrides — overrides **131 → 134** (README + this handoff §3/§6 bumped).
+- **Doc drift fixed:** README 198X-code clause (16 Office Series rows DO carry
+  `LECTURE-198X-001…-016`), `work_id` provenance (approved
+  `edition_promotions.csv` for minted editions 320–343), handoff 123 → 125
+  tests, record-246/free-text-audio/NC-HayHouse-count stale P-bullets,
+  19 sheets + meta (not "20 + meta"), README documents International
+  Editions + Publishers sheets, INSTRUCTIONS archive pointer,
+  `.coveragerc` eight → ten modules, `[streaming]` log wording, plus a CI
+  badge and a uuid-is-a-compact-integer note in the README.
+- **Audit noise reduced:** root full-stack audits 6 → 2 (declared-current
+  `…_ARENA.md` + the fresh-eyes pass); the 4 superseded ones moved to
+  `archive/` via `git mv`; `archive/README.md` stale root pointer repaired;
+  all cross-references repathed (two dangling ones were inside the
+  declared-current audit itself).
+- **Left intentionally:** nothing requiring code/data action. Watch items:
+  duplicate URL storage pattern (`reference_url_1` == curated source column on
+  the candidate-minted rows 359–361/369–372) is now consistent by precedent
+  but is the first dedupe candidate if the schema ever tightens.
