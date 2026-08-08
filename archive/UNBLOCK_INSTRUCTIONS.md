@@ -81,7 +81,11 @@ returns a TLS EOF in the Arena sandbox, so review the uploaded
 inventory change. Do not replace `data/veritas_official_products.csv` without
 that review.
 
-## Bump the CI Node runtime 20 → 22 (2026-08-08 addition)
+## Bump the CI Node runtime 20 → 22 (2026-08-08 addition — ✅ APPLIED)
+
+> **Applied by the owner as commit `406116f` on `main` (2026-08-08);
+> `origin/main` ci.yml now pins `node-version: "22"`. The instructions below
+> are kept for reference.**
 
 Node 20 reached EOL on 2026-04-30; Node 22 is the active LTS line
 (supported until 2027-04). In the web editor, open

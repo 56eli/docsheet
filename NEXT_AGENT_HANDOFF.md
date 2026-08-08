@@ -69,7 +69,11 @@ Sandbox traps learned the hard way (all still true):
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
   tests (5 specs); don't burn time installing locally.
-- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / Node 20 — keep code compatible. **Owner action pending (item K):** Node 20 reached EOL 2026-04 — bump the CI workflow's `node-version` to 22; the exact web-editor snippet (replace `"20"` with `"22"`, one line) is in `archive/UNBLOCK_INSTRUCTIONS.md` ("Bump the CI Node runtime 20 → 22", 2026-08-08 addition). Workflows are owner-managed; the Arena app cannot push `.github/workflows/*`.
+- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
+  the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
+  2026-08-08 — item K ✅ DONE; snippet remains in
+  `archive/UNBLOCK_INSTRUCTIONS.md` for reference). Workflows are
+  owner-managed; the Arena app cannot push `.github/workflows/*`.
 
 ## 3. Current verified state (committed, checked)
 
