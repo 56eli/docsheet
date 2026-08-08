@@ -1,8 +1,7 @@
 # Series-Level Work Regrouping — Ruling Evidence
 
 **Prepared:** 2026-08-03
-**Status:** ⏳ Evidence review — no data changed. Owner asked for the ruling
-evidence on regrouping per-part works into series-level works.
+**Status:** Historical evidence snapshot (2026-08-03). The work-family rulings were subsequently applied; use `data/work_families.csv`, the current master, and `NEXT_AGENT_HANDOFF.md` for present state.
 **Related:** `EDITION_MODEL_PROPOSAL.md` (work × carrier model),
 `data/work_families.csv` (21 approved works).
 

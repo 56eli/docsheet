@@ -20,7 +20,7 @@ Three products are now reviewed `related_material` rather than primary replaceme
 | Master record | Official product(s) | Decision |
 |---|---|---|
 | *Volume I Power vs Force* muscle-testing video | Product 50411 book; product 1542 audiobook | Keep the official video as primary; record both book/audio products as related. |
-| *A Map of Consciousness* office-series video | Product 50432, *A Map of Consciousness* | Keep the office-series video as primary; record the related-title product separately. |
+| *A Map of Consciousness* office-series video (master 247) | Product 50432, *A Map of Consciousness* | Exact primary source of the office-series video; product 1560 is the separately excluded wall-chart merchandise item. |
 
 ## Date-aware *A Review of the Work* mapping
 

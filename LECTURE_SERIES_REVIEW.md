@@ -1,6 +1,6 @@
 # Lecture Series — Migration Review Batch
 
-**Status:** Review-only proposal; no item records, IDs, catalogue codes, or source data have been changed.
+**Status:** Historical bootstrap review artifact (2026-08-04); its batch was incorporated into the reviewed ledger/master. Current publication state is generated from `migration_review_ledger.csv` and downstream review inputs.
 **Review CSV:** `lecture_series_review.csv`
 **Generator:** `generate_lecture_review.py`
 
@@ -12,7 +12,7 @@
 | Distinct proposed canonical lecture titles | 65 |
 | Ownership proposal | 198 `true` (all current `LS` rows are marked ✅) |
 | Valid proposed Veritas URLs | 192 |
-| Quarantined malformed Veritas URLs | 3 |
+| Quarantined malformed Veritas URLs in this historical CSV | 3 (repaired in the source/ledger on 2026-08-08) |
 | Missing product URLs | 3 |
 
 ### Candidate parts by year
@@ -45,7 +45,7 @@ The part remains represented separately by `format = DVD` and `format_detail = D
 
 1. Confirm that the ten proposed series labels and all year/month extractions are correct.
 2. Confirm that one canonical title shared by DVD01/02/03 is desired while each disc remains a separate flat item.
-3. Resolve the three quarantined August 2002 *Advaita* product links (raw rows 28–30); the source contains a duplicated URL prefix.
+3. Historical note: the three duplicated-prefix August 2002 *Advaita* links (raw rows 28–30) were repaired in the source CSV and ledger on 2026-08-08; do not reintroduce the malformed prefix.
 4. Research or provide source URLs for the three February 2007 *Relativism vs Reality* parts (raw rows 144–146), which have no product link.
 5. Record approval or correction in `approval` and `review_notes` columns before any IDs are generated.
 

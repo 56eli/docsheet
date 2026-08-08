@@ -1,14 +1,15 @@
 # Edition Model Proposal — one row per work × carrier (book / audio / video)
 
 **Prepared:** 2026-08-03
-**Status:** ✅ **Applied 2026-08-03.** Owner approved all drafted batches
-("approve everything and apply"): 21 work families (43 members) approved,
-24 edition candidates reviewed + promoted, 18 source overrides approved.
-Master is now **341 rows** (24 minted edition rows 320–343, each with
-`work_id`), Everything **387**, relationships **318**; D3 (audiobook URLs
-moved into their edition rows) applied. See `archive/AUDIT_2026-08-03_FULL.md`
-§12.9. Remaining: new-work review lane, candidate-provenance overrides,
-series-level regrouping (P1).
+**Status:** ✅ **Applied and current (2026-08-08).** The edition model is
+implemented through the reviewed work-family and promotion inputs: **365
+master rows**, **191 works / 341 approved memberships**, **24 promoted edition
+rows (320–343)**, **365 Everything rows**, and **343 rendered relationships**.
+D3 (audiobook URLs moved into their edition rows) remains applied. The older
+341/387/318 counts below are a historical 2026-08-03 proposal snapshot, not
+current state. Current machine truth lives in `data/work_families.csv`,
+`data/edition_candidates.csv`, `data/edition_promotions.csv`, and the generated
+master/Pages files.
 
 **History — owner rulings received (D1–D5), Phases 1–3 built:**
 D1 = keep one row per DVD part; D2 = reviewed `edition_candidates.csv`
@@ -39,6 +40,10 @@ the `work_id` plumbing first.
   §11i (Spanish editions, platform compilations, Highlights, merchandise,
   unmatched new-work products, and 18 same-carrier Hay House links that are
   source-override candidates rather than edition rows).
+
+> **Historical proposal snapshot (2026-08-03):** the following design narrative
+> describes the pre-approval state. It is retained for provenance; do not use
+> its “No families/editions approved yet” wording or counts as current.
 
 No families/editions approved yet — master stays at 317 rows with empty
 `work_id` until the owner approves rows in `data/work_families.csv` and

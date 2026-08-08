@@ -2,10 +2,12 @@
 
 **Prepared:** 2026-08-08 (session 2) — current handoff for branch
 `arena/019fe11d-docsheet` (this session; to be pushed/PR'd/merged). See
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (independent full-stack audit) and
-the session log at the bottom of §6. Headline results this session:
-- **Independent audit:** all six `--check` modes, 115/115 tests, 90% coverage
-  green; found one new live-data defect (stale Veritas decision row for
+`FULL_STACK_AUDIT_2026-08-08_ARENA.md` (current full-stack audit),
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (historical baseline), and the
+session log at the bottom of §6. Headline results this session:
+- **Independent audit:** all six `--check` modes, 123/123 tests, 91% coverage
+  green after the F-01/F-02 follow-up fixes; the original 115-test audit found
+  one new live-data defect (stale Veritas decision row for
   product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
   row (`matched_by_title→121`) contradicted the inventory/master (primary
   source of master 278) and would have caused a false Map-Veritas diff;
@@ -22,7 +24,7 @@ the session log at the bottom of §6. Headline results this session:
   filename with muted extension; carrier-color dots in Edition; "Copy file
   name" drawer action; work-group row striping; per-view sort/scroll
   persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
-  New `tests/ux-enhancements.spec.js` (6 browser tests; suite now 15 browser
+  New `tests/ux-enhancements.spec.js` (7 browser tests; suite now 16 browser
   tests).
 - **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
   now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
@@ -96,8 +98,8 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 115 tests, offline, ~3s
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
+python -m unittest discover tests     # 121 tests, offline, ~3s
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
@@ -115,8 +117,8 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 15 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 6); don't burn time installing locally.
+  suite (3 spec files / 16 tests: `column-layout` 4, `csv-export` 5,
+  `ux-enhancements` 7); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -131,12 +133,12 @@ Sandbox traps learned the hard way (all still true):
 | Curated master | 365 | 309 lecture / 40 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
 | Everything view | **365** | 365 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
 | Exclusions / source overrides | 72 / 131 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 131 incl. the 18 Amazon direct links and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08) |
-| Veritas inventory | 191 products | categories populated 191/191; 9 approved mapping decisions (7 Highlights suppression rows lifted 2026-08-07; Map poster 1560 ruled excluded_related_material 2026-08-07; 50411/1542 decision rows removed 2026-08-07 when owner ruling made them plain primary matches, which need no overlay row; stale 50491→121 row removed 2026-08-08 after it was retargeted to primary match master 278) |
+| Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence) |
 | Everything relationships | 343 product relationships, 7 series compilations | 336 derived primary + 7 related_material |
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **115 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **121 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -482,18 +484,40 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   persistence of sort + horizontal scroll; keyboard shortcuts (`/` search,
   `j`/`k` move rows + open details, `y` copy filename, `?` shortcuts overlay,
   ignored while typing). CSS for all of the above + mobile wrapping.
-- **Tests:** new `tests/ux-enhancements.spec.js` (6 browser tests) covering
+- **Tests:** new `tests/ux-enhancements.spec.js` (7 browser tests) covering
   facet narrowing/removal, facet-bar visibility, stats navigation, the CM
   tooltip, the muted filename extension, and `/`. Existing
   `column-layout.spec.js` / `csv-export.spec.js` updated for the
-  proposed_filename-default and CM-badge changes. Python suite stays 115;
-  browser suite is now 15 tests (3 spec files) — CI runs them.
+  proposed_filename-default and CM-badge changes. Python suite is now 117;
+  browser suite is now 16 tests (3 spec files) — CI runs them.
 - **Verification:** all six `--check` modes, 115/115 Python tests, 90%
   coverage, `node --check` on app.js + all 3 specs, and `py_compile *.py`
   pass locally. The local Playwright run is blocked by the sandbox Chromium
-  download; CI must run the 15 browser tests.
+  download; CI must run the 16 browser tests.
 - **Open / future (see `UX_REWORK_SUGGESTIONS.md`):** a "Needs your decision"
   cross-sheet inbox was proposed but skipped while all queues are 0 (it would
   be empty today); nested column groups and a review-lanes dropdown are
   documented P1–P2 options. The 198X Office Series convention and the 4
   "under investigation" years remain owner-ruled as-is.
+
+## 2026-08-08 Guard follow-up (current)
+
+- **F-03/F-04 implemented:** Pages build now fails offline when a populated
+  master Veritas URL is absent from the reviewed inventory or when a mapping
+  decision disagrees with the committed inventory/master evidence.
+- **Four additional stale overlays corrected:** products 53062, 50398, 50378,
+  and 50432 were marked non-primary despite being exact primary URLs of masters
+  300, 289, 291, and 247. The rows were removed, inventory statuses restored
+  to `matched_by_primary_source`, and the decision overlay is now 5 excluded
+  products only. Book/edition and map-poster decision docs were updated.
+- **Regression coverage:** suite is now 123 tests, 91% total coverage (lowest
+  module 88%), all six `--check` modes and the Node syntax checks pass. The
+  decision guard includes committed-state, malformed-overlay, and exact-primary
+  URL fixtures; source fallback fixtures cover unrelated and ambiguous CSVs.
+- **CI hardening owner-applied:** `process_data.py` requires the raw header shape
+  and fails on ambiguous fallback files; `requirements-ci.txt` pins the tested
+  Python set; main now has the raw-only trigger, constraint install wiring, and
+  Node-24-compatible action majors. Main CI currently fails only because
+  `requirements-ci.txt` is not on main until PR #34 merges; rerun CI after merge.
+- **Remaining audit work:** merge PR #34, optional local frontend asset fallback
+  (F-08), and repository housekeeping.

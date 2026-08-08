@@ -118,6 +118,33 @@ body {
   margin-left: auto;
 }
 
+/* ---- Task navigation ---- */
+.view-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.view-jump select {
+  min-height: 32px;
+  max-width: 190px;
+  padding: 5px 24px 5px 9px;
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.view-jump select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* ---- Search ---- */
 .search-wrap {
   position: relative;
@@ -622,6 +649,15 @@ body {
 
 /* Everything-view provenance: curated master records must never be mistaken
    for official candidates that are only shown for review. */
+/* Record Type is a compact badge rail. Keep the header/content narrow so it
+   does not consume the space needed by the filename and title columns. */
+#spreadsheet .tabulator-col[tabulator-field="record_type"],
+#spreadsheet .tabulator-cell[tabulator-field="record_type"] {
+  max-width: 54px;
+}
+#spreadsheet .tabulator-col[tabulator-field="record_type"] .tabulator-col-title {
+  overflow-wrap: anywhere;
+}
 .status-badge.status-master { color: #123a6b; background: #e3edfb; border-color: #a9c6ea; }
 .status-badge.status-candidate {
   color: #6b3a00;
@@ -732,9 +768,23 @@ body {
 #close-row-details:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .row-details-body {
   display: grid;
-  gap: 10px;
+  gap: 16px;
   padding: 14px 16px 24px;
   overflow: auto;
+}
+.row-detail-section {
+  display: grid;
+  gap: 10px;
+}
+.row-details-section-title {
+  margin: 0;
+  padding-bottom: 6px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .row-detail-field {
   display: grid;

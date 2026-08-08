@@ -1,5 +1,7 @@
 # DocSheet Full-Stack & Data-Engineering Deep-Dive Audit
 
+> **Historical narrative snapshot:** this report is a prior 2026-08-08 audit narrative. It intentionally preserves its point-in-time claims; use `FULL_STACK_AUDIT_2026-08-08_ARENA.md` for the current audited state.
+
 **Date:** 2026-08-08  
 **Auditor:** Expert Full-Stack Developer & Data Engineer  
 **Scope:** Whole-repository audit — including the 9 Python modules, 22 database CSV datasets, 20 generated JSON browser-facing sheets, the static frontend application (`docs/index.html`, `docs/app.js`, `docs/style.css`), testing infrastructure (115 Python unittests, Playwright browser specs), and documentation.

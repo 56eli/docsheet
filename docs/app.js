@@ -16,6 +16,7 @@
   const $ = (id) => document.getElementById(id);
   const searchInput = $("global-search");
   const clearSearchBtn = $("clear-search-btn");
+  const viewJump = $("view-jump");
   const exportBtn = $("export-btn");
   const settingsBtn = $("settings-btn");
   const settingsMenu = $("settings-menu");
@@ -62,6 +63,7 @@
   const facetOwned = $("facet-owned");
   const facetClear = $("facet-clear");
   const copyFilenameBtn = $("copy-filename-btn");
+  const copyIdBtn = $("copy-id-btn");
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
@@ -84,6 +86,12 @@
     filenameProposal: { file: "filename-proposal.json", label: "Filename Proposal", exportName: "hawkins-filename-proposal.csv" },
     original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
   };
+
+  const VIEW_GROUPS = [
+    { label: "Catalogue", views: ["master", "productRelationships", "seriesCompilations"] },
+    { label: "Review workspace", views: ["reviewOverview", "manualCandidates", "manualLeads", "masterExclusions", "sourceOverrides", "veritasMappingDecisions", "newWorkReview", "officialDiscovery", "internationalProducts"] },
+    { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview", "original"] },
+  ];
 
   // Standing intake lanes show a friendly explanation instead of an empty
   // grid (2026-08-08 IA redesign, Phase 1).
@@ -269,6 +277,17 @@
     "normalized_title_match_count", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
     "raw_unnamed_10", "raw_unnamed_11",
   ];
+  // Width budgets are a presentation contract: content columns may use the
+  // measured-width engine, but compact controls and the frozen identity rail
+  // must never grow just because a label is long.
+  const COLUMN_BUDGETS = {
+    record_type: { width: 54, minWidth: 54, maxWidth: 54 },
+    proposed_filename: { maxWidth: 340 },
+    title: { minWidth: 150, maxWidth: 560 },
+    series: { minWidth: 180 },
+    notes: { maxWidth: 560 },
+  };
+
   const COLUMN_PRESETS = {
     master: {
       // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08): a
@@ -725,6 +744,21 @@
     });
   }
 
+  function configureViewJump() {
+    if (!viewJump) return;
+    viewJump.replaceChildren();
+    VIEW_GROUPS.forEach((group) => {
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = group.label;
+      group.views.forEach((viewName) => {
+        const option = new Option(VIEWS[viewName].label, viewName);
+        optgroup.append(option);
+      });
+      viewJump.append(optgroup);
+    });
+    viewJump.value = activeView;
+  }
+
   function closeColumnMenu() {
     columnMenu.hidden = true;
     columnMenuBtn.setAttribute("aria-expanded", "false");
@@ -799,46 +833,134 @@
     return document.createTextNode(text);
   }
 
-  function copyFilename(data) {
-    const filename = String(data?.proposed_filename || "").trim();
-    if (!filename || !navigator.clipboard) return;
-    navigator.clipboard.writeText(filename).then(() => {
-      if (!copyFilenameBtn) return;
-      const original = copyFilenameBtn.textContent;
-      copyFilenameBtn.textContent = "Copied!";
-      setTimeout(() => { copyFilenameBtn.textContent = original; }, 1500);
+  function copyValue(value, button) {
+    const text = String(value || "").trim();
+    if (!text || !navigator.clipboard || !button) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const original = button.textContent;
+      button.textContent = "Copied!";
+      setTimeout(() => { button.textContent = original; }, 1500);
     }).catch(() => { /* clipboard blocked — no-op */ });
   }
 
-  let currentRowData = null;
+  function copyFilename(data) {
+    copyValue(data?.proposed_filename, copyFilenameBtn);
+  }
 
-  function openRowDetails(data) {
+  function primaryIdentifier(data) {
+    return data?.uuid || data?.master_uuid || data?.veritas_product_id ||
+      data?.source_product_id || data?.candidate_key || "";
+  }
+
+  function copyIdentifier(data) {
+    copyValue(primaryIdentifier(data), copyIdBtn);
+  }
+
+  const DETAIL_SECTIONS = [
+    {
+      title: "Identity",
+      fields: ["record_type", "proposed_filename", "title", "series", "item_type", "edition", "year_month", "catalog_code"],
+    },
+    {
+      title: "Ownership & status",
+      fields: ["owned", "review_status", "promotion_status", "mapping_status", "match_status", "disposition", "approval", "relationship_type"],
+    },
+    {
+      title: "Sources",
+      fields: ["source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant", "source_url_audible", "source_url_amazon", "reference_url_1", "official_product_url", "evidence_url", "source_url"],
+    },
+    {
+      title: "Provenance",
+      fields: ["uuid", "work_id", "master_uuid", "legacy_tempid", "raw_tempid", "raw_row_number", "candidate_key", "source_product_id", "veritas_product_id", "year_source", "legacy_title", "notes", "evidence_note", "review_reason", "decision_reason", "provenance_note", "source_file"],
+    },
+  ];
+
+  let currentRowData = null;
+  let lastRowTrigger = null;
+
+  function appendDetailField(container, field, value) {
+    const item = document.createElement("div");
+    item.className = "row-detail-field";
+    const term = document.createElement("dt");
+    const description = document.createElement("dd");
+    term.textContent = humanizeField(field);
+    description.append(valueNode(field, value));
+    item.append(term, description);
+    container.append(item);
+  }
+
+  function appendDetailSection(container, title, entries) {
+    if (!entries.length) return;
+    const section = document.createElement("section");
+    section.className = "row-detail-section";
+    const heading = document.createElement("h3");
+    heading.className = "row-details-section-title";
+    heading.textContent = title;
+    section.append(heading);
+    entries.forEach(([field, value]) => appendDetailField(section, field, value));
+    container.append(section);
+  }
+
+  function openRowDetails(data, trigger = null) {
     currentRowData = data;
+    if (trigger && trigger instanceof HTMLElement) {
+      trigger.tabIndex = 0;
+      lastRowTrigger = trigger;
+    }
     rowDetailsTitle.textContent = rowTitle(data);
     if (copyFilenameBtn) {
       const hasFilename = Boolean(String(data.proposed_filename || "").trim());
       copyFilenameBtn.hidden = !hasFilename;
     }
-    rowDetailsBody.replaceChildren();
-    Object.entries(data).forEach(([field, value]) => {
-      // Year/Month are shown merged as "Year-Month" (see loadData).
-      if ("year_month" in data && (field === "year" || field === "month")) return;
-      // Format/Format Detail are shown merged as "Edition" (see loadData).
-      if ("edition" in data && (field === "format" || field === "format_detail")) return;
-      const item = document.createElement("div");
-      item.className = "row-detail-field";
-      const term = document.createElement("dt");
-      const description = document.createElement("dd");
-      term.textContent = humanizeField(field);
-      description.append(valueNode(field, value));
-      item.append(term, description);
-      rowDetailsBody.append(item);
+    if (copyIdBtn) {
+      copyIdBtn.hidden = !Boolean(primaryIdentifier(data));
+    }
+    const entries = Object.entries(data).filter(([field]) => {
+      // Year/Month and Format/Format Detail are shown through merged columns.
+      if ("year_month" in data && (field === "year" || field === "month")) return false;
+      if ("edition" in data && (field === "format" || field === "format_detail")) return false;
+      return true;
     });
+    const rendered = new Set();
+    rowDetailsBody.replaceChildren();
+    DETAIL_SECTIONS.forEach((section) => {
+      const sectionEntries = entries.filter(([field]) => section.fields.includes(field));
+      if (sectionEntries.length) {
+        appendDetailSection(rowDetailsBody, section.title, sectionEntries);
+        sectionEntries.forEach(([field]) => rendered.add(field));
+      }
+    });
+    const additional = entries.filter(([field]) => !rendered.has(field));
+    appendDetailSection(rowDetailsBody, "Additional fields", additional);
     rowDetails.hidden = false;
+    requestAnimationFrame(() => closeRowDetailsBtn.focus({ preventScroll: true }));
   }
 
   function closeRowDetails() {
+    if (rowDetails.hidden) return;
     rowDetails.hidden = true;
+    const trigger = lastRowTrigger;
+    lastRowTrigger = null;
+    if (trigger && document.contains(trigger)) {
+      requestAnimationFrame(() => trigger.focus({ preventScroll: true }));
+    }
+  }
+
+  function trapRowDetailsFocus(event) {
+    if (event.key !== "Tab" || rowDetails.hidden) return;
+    // Keep the drawer header actions in a deterministic cycle. The row body
+    // contains links, but header focus must never escape the modal shell.
+    if (event.currentTarget !== rowDetails) event.stopPropagation();
+    const controls = [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn]
+      .filter((control) => control && !control.hidden);
+    if (!controls.length) return;
+    const current = controls.indexOf(document.activeElement);
+    const delta = event.shiftKey ? -1 : 1;
+    const nextIndex = current === -1
+      ? (event.shiftKey ? controls.length - 1 : 0)
+      : (current + delta + controls.length) % controls.length;
+    event.preventDefault();
+    controls[nextIndex].focus();
   }
 
   /* ------------------------------------------------------------------ *
@@ -1089,12 +1211,15 @@
         ? nonEmpty.filter(looksLikeUrl).length / nonEmpty.length
         : 0;
 
+      const budget = COLUMN_BUDGETS[key] || {};
+      const compactRecordType = key === "record_type";
       const col = {
         title: humanizeField(key),
         field: key,
         headerSort: true,          // click header to sort asc/desc
         resizable: true,           // drag column edge to resize
-        minWidth: 60,              // narrow floor; the measured width fits anyway
+        minWidth: budget.minWidth ?? 60,
+        maxWidth: budget.maxWidth,
         // Pages publishes generated catalogue/review data. Edits must occur in
         // the declared CSV review inputs, never as misleading session-only UI edits.
         editor: false,
@@ -1102,15 +1227,16 @@
       };
 
       // Size the column to its widest rendered entry (see width engine above);
-      // long free-text columns are capped so one verbose note cannot dominate.
-      // The frozen proposed-file-name column is capped tighter still: it is a
-      // lead column, and an over-wide frozen block overlaps the non-frozen
-      // columns' click targets (caught by the column-layout sort spec).
+      // explicit budgets override the measurement for identity/control fields.
       const measured = measuredColumnWidth(key, col.title, data);
-      let cap = MAX_COLUMN_WIDTH;
-      if (/title|note|reason|purpose|role/i.test(key)) cap = MAX_TEXT_WIDTH;
-      if (key === "proposed_filename") cap = 340;
-      col.width = Math.min(measured, cap);
+      let cap = budget.maxWidth ?? MAX_COLUMN_WIDTH;
+      if (/title|note|reason|purpose|role/i.test(key)) cap = Math.min(cap, MAX_TEXT_WIDTH);
+      if (key === "proposed_filename") cap = Math.min(cap, 340);
+      if (budget.width != null) {
+        col.width = budget.width;
+      } else {
+        col.width = Math.min(measured, cap);
+      }
 
       // Numeric columns count up in numeric order, never lexically. Without an
       // explicit number sorter Tabulator guesses the sorter from the FIRST
@@ -1309,6 +1435,11 @@
       rowFormatter: (row) => {
         const data = row.getData();
         const element = row.getElement();
+        // Make rows a keyboard-focusable source for the details drawer. Focus
+        // returns here after close, so keyboard review does not lose context.
+        // Programmatically focusable, but not 365 extra Tab stops in the page.
+        element.tabIndex = -1;
+        element.setAttribute("aria-label", rowTitle(data));
         if (!data.work_id) {
           element.classList.remove("work-group-start");
           return;
@@ -1344,7 +1475,9 @@
     table.on("tableBuilt", updateSearchStatus);
     table.on("rowClick", (event, row) => {
       if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
-      openRowDetails(row.getData());
+      const element = row.getElement();
+      element.focus({ preventScroll: true });
+      openRowDetails(row.getData(), element);
     });
     spreadsheet.setAttribute("aria-busy", "false");
     updateSearchStatus();
@@ -1462,6 +1595,7 @@
    * ------------------------------------------------------------------ */
   async function activateView(viewName) {
     activeView = viewName;
+    if (viewJump) viewJump.value = viewName;
     const view = VIEWS[viewName];
     if (facetToggleBtn) {
       facetToggleBtn.hidden = (viewName !== "master");
@@ -1548,6 +1682,10 @@
   async function boot() {
     initDarkMode();
     loadStatsStrip();
+    configureViewJump();
+    if (viewJump) {
+      viewJump.addEventListener("change", () => activateView(viewJump.value));
+    }
     searchInput.addEventListener("input", debounce((e) => applySearch(e.target.value), 250));
     clearSearchBtn.addEventListener("click", () => {
       searchInput.value = "";
@@ -1619,8 +1757,15 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
+    rowDetails.addEventListener("keydown", trapRowDetailsFocus);
+    [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn].filter(Boolean).forEach((control) => {
+      control.addEventListener("keydown", trapRowDetailsFocus);
+    });
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
+    }
+    if (copyIdBtn) {
+      copyIdBtn.addEventListener("click", () => currentRowData && copyIdentifier(currentRowData));
     }
     if (facetClear) facetClear.addEventListener("click", clearFacets);
     FACETS.forEach((facet) => {
@@ -1700,8 +1845,9 @@
     const element = row.getElement();
     element.scrollIntoView({ block: "nearest" });
     element.classList.add("row-keyboard-focus");
+    element.focus({ preventScroll: true });
     rows.forEach((r, i) => { if (i !== focusedRowIndex) r.getElement().classList.remove("row-keyboard-focus"); });
-    openRowDetails(row.getData());
+    openRowDetails(row.getData(), element);
   }
   function handleGlobalShortcuts(event) {
     if (isTypingTarget(event)) {

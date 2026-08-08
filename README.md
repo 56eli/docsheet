@@ -51,12 +51,15 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 115 tests, no browser/network needed
+python -m unittest discover tests          # 121 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-08; every pipeline module is ≥ 88%. Approved official links added after the ledger
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
+2026-08-08; every pipeline module is ≥ 88%. `requirements-ci.txt` records the
+exact Python dependency set used by the owner-applied workflows; merge PR #34
+before relying on main CI because the constraint file is supplied by that PR.
+The full replacement record is in `WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
@@ -142,11 +145,13 @@ and the official Veritas product link moved from retired duplicate 309 onto mast
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates), Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
-Every entry was verified field-by-field against the live Veritas Publishing API
-on 2026-08-03: 191/191 products reconcile exactly and all 195 verifiable lecture
-months match the publisher's own dates. See
-[FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md](archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md) for the full
-audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md) for open work.
+At the 2026-08-03 live-source checkpoint, every entry was verified field-by-field
+against the Veritas Publishing API: 191/191 products reconciled exactly and all
+195 verifiable lecture months matched the publisher's own dates. Subsequent
+reviewed promotions and source corrections are covered by the current generated
+inventory. See [FULL_STACK_AUDIT_2026-08-08_ARENA.md](FULL_STACK_AUDIT_2026-08-08_ARENA.md)
+for the current full-stack audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
+for open work; the archive reports preserve earlier checkpoints.
 
 ### Field semantics
 

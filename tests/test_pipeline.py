@@ -228,6 +228,15 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result_pending.returncode, 1)
         self.assertIn("stale", result_pending.stdout)
 
+        # The overview's Master records stat must remain the curated count,
+        # even while the Everything view includes one pending candidate.
+        result_full = self.run_script("build_catalogue_pages.py")
+        self.assertEqual(result_full.returncode, 0, result_full.stderr)
+        meta = json.loads((self.sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
+        self.assertEqual(meta["master_items"], meta["migrated_items"])
+        self.assertEqual(meta["master_items"], 365)
+        self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
+
 
 class TaxonomyDominanceTests(unittest.TestCase):
     """Rule matrix for the Category Dominance Policy engine."""
@@ -467,6 +476,85 @@ class InventoryValidationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             bcp.validate_veritas_inventory([self.row(matched_master_titles="Stale Title")], self.master())
 
+    def test_orphan_master_source_url_fails(self) -> None:
+        product = self.row(official_product_url="https://veritaspub.com/product/known/")
+        master = [{"uuid": "10", "title": "Some Lecture", "source_url_veritas": "https://veritaspub.com/product/missing/"}]
+        with self.assertRaisesRegex(ValueError, "absent from the official inventory"):
+            bcp.validate_veritas_inventory([product], master)
+
+    def test_mapping_decisions_match_committed_inventory(self) -> None:
+        bcp.validate_veritas_mapping_decisions(
+            bcp.read_csv(bcp.VERITAS_PRODUCTS),
+            bcp.read_csv(bcp.MASTER),
+        )
+
+    def test_mapping_decision_rejects_malformed_overlay_fields(self) -> None:
+        fields = [
+            "veritas_product_id", "mapping_status", "matched_master_uuids",
+            "matched_master_titles", "review_notes", "review_status", "reviewed_on",
+            "decision_reason",
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "decisions.csv"
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow({
+                    "veritas_product_id": "54838",
+                    "mapping_status": "not-a-status",
+                    "matched_master_uuids": "999",
+                    "matched_master_titles": "Wrong title",
+                    "review_notes": "Wrong note",
+                    "review_status": "pending",
+                    "reviewed_on": "",
+                    "decision_reason": "",
+                })
+            original = bcp.VERITAS_MAPPING_DECISIONS
+            bcp.VERITAS_MAPPING_DECISIONS = path
+            self.addCleanup(setattr, bcp, "VERITAS_MAPPING_DECISIONS", original)
+            with self.assertRaisesRegex(ValueError, "unsupported mapping_status"):
+                bcp.validate_veritas_mapping_decisions(
+                    bcp.read_csv(bcp.VERITAS_PRODUCTS),
+                    bcp.read_csv(bcp.MASTER),
+                )
+
+    def test_mapping_decision_rejects_exact_primary_url_overlay(self) -> None:
+        fields = [
+            "veritas_product_id", "mapping_status", "matched_master_uuids",
+            "matched_master_titles", "review_notes", "review_status", "reviewed_on",
+            "decision_reason",
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "decisions.csv"
+            with path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow({
+                    "veritas_product_id": "7",
+                    "mapping_status": "matched_by_title",
+                    "matched_master_uuids": "10",
+                    "matched_master_titles": "Some Lecture",
+                    "review_notes": "",
+                    "review_status": "approved",
+                    "reviewed_on": "2026-08-08",
+                    "decision_reason": "legacy review",
+                })
+            original = bcp.VERITAS_MAPPING_DECISIONS
+            bcp.VERITAS_MAPPING_DECISIONS = path
+            self.addCleanup(setattr, bcp, "VERITAS_MAPPING_DECISIONS", original)
+            url = "https://veritaspub.com/product/some-lecture/"
+            product = {
+                "veritas_product_id": "7",
+                "official_product_url": url,
+                "mapping_status": "matched_by_primary_source",
+                "matched_master_uuids": "10",
+                "matched_master_titles": "Some Lecture",
+                "review_notes": "Exact master primary Veritas URL match.",
+            }
+            master = [{"uuid": "10", "title": "Some Lecture", "source_url_veritas": url}]
+            with self.assertRaisesRegex(ValueError, "exact primary URL"):
+                bcp.validate_veritas_mapping_decisions([product], master)
+
     def test_everything_record_defaults(self) -> None:
         record = bcp.everything_record("master", title="X")
         self.assertEqual(record["record_type"], "master")
@@ -674,6 +762,25 @@ class ProcessDataFailurePathTests(unittest.TestCase):
             check = invoke_script("process_data.py", sandbox, "renamed.csv", "--check")
             self.assertEqual(check.returncode, 0, check.stderr)
 
+    def test_fallback_rejects_unrelated_root_csv(self) -> None:
+        with tempfile.TemporaryDirectory() as bare:
+            sandbox = Path(bare)
+            (sandbox / "migration_review_ledger.csv").write_text(
+                "raw_row_number,disposition\n3,item\n", encoding="utf-8"
+            )
+            result = invoke_script("process_data.py", sandbox, "missing.csv")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("expected headers", result.stderr)
+
+    def test_fallback_rejects_ambiguous_raw_csvs(self) -> None:
+        with tempfile.TemporaryDirectory() as bare:
+            sandbox = Path(bare)
+            for name in ("one.csv", "two.csv"):
+                shutil.copy2(REPO / "hawkins archive clone - Sheet1.csv", sandbox / name)
+            result = invoke_script("process_data.py", sandbox, "missing.csv")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("fallback is ambiguous", result.stderr)
+
 
 class VeritasFetcherOfflineTests(unittest.TestCase):
     """Offline end-to-end fetcher runs against a synthetic replay of the API."""
@@ -842,6 +949,29 @@ class ReconcileDriftTests(unittest.TestCase):
         self.assertEqual(len(comparison.changed), 1)
         current, projected, fields = comparison.changed[0]
         self.assertEqual((current["title"], projected["title"], fields), ("Old", "New", ["title"]))
+
+    def test_compare_drafts_matches_promoted_candidate_provenance(self) -> None:
+        """Candidate/edition rows have no raw row but are still durable master rows."""
+        candidate = {
+            "raw_row_number": "",
+            "candidate_key": "candidate:manual-veritas-example",
+            "title": "Promoted candidate",
+            "item_type": "lecture",
+        }
+        comparison = rrm.compare_drafts([candidate], [dict(candidate)])
+        self.assertEqual(comparison.extras, [])
+        self.assertEqual(comparison.missing, [])
+        self.assertEqual(comparison.changed, [])
+
+    def test_committed_candidate_rows_are_not_reconciliation_extras(self) -> None:
+        """The real 39 manual + 24 edition promotions reconcile by candidate key."""
+        with working_directory(REPO):
+            committed = rrm.read_csv(rrm.CURRENT_MASTER)
+            expected = brm.build_master().items
+        comparison = rrm.compare_drafts(committed, expected)
+        self.assertEqual(comparison.extras, [])
+        self.assertEqual(comparison.missing, [])
+        self.assertEqual(comparison.changed, [])
 
     def test_report_renders_drift_sections_and_stale_check(self) -> None:
         drift = rrm.DraftComparison(
@@ -1461,6 +1591,18 @@ class NewWorkQueueTests(unittest.TestCase):
 class SyncInventoryMirrorsTests(unittest.TestCase):
     """sync_inventory_mirrors.py re-derives the inventory's mirror columns."""
 
+    def make_legacy_non_primary_53062(self, path: Path) -> None:
+        """Seed a sandbox-only legacy overlay for contradiction tests."""
+        with path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        target = next(row for row in rows if row["veritas_product_id"] == "53062")
+        target["mapping_status"] = "matched_by_title"
+        target["review_notes"] = "legacy review"
+        with path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=rows[0].keys(), lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(rows)
+
     def test_committed_inventory_mirrors_match_master(self) -> None:
         # The 2026-08-07 owner ruling resolved the last URL-evidence
         # contradictions (50411->286, 1542->331); committed mirrors are clean.
@@ -1522,6 +1664,7 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             inv = sandbox / "data" / "veritas_official_products.csv"
+            self.make_legacy_non_primary_53062(inv)
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(",1,300,In the World But Not Of It", ",1,202,In the World But Not Of It")
             self.assertNotEqual(drifted, text)
@@ -1540,6 +1683,7 @@ class SyncInventoryMirrorsTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             inv = sandbox / "data" / "veritas_official_products.csv"
+            self.make_legacy_non_primary_53062(inv)
             text = inv.read_text(encoding="utf-8")
             drifted = text.replace(",1,300,In the World But Not Of It", ",1,9999,In the World But Not Of It")
             self.assertNotEqual(drifted, text)
