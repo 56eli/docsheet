@@ -331,3 +331,39 @@ coverage 365/365; 202 moved into `w-volume-i-power-vs-force-muscle-testing`,
 cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
 `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`; all six `--check` modes,
 114 tests, and node checks green after regenerating.
+
+## 7. Deeper data pass QA-2 (2026-08-08, relationships / mirrors / provenance)
+
+- **Product relationships: clean.** 336 masters carry `source_url_veritas`, and
+  every URL exists in the reviewed inventory (exact-match validation); 182
+  inventory products cover the 336 rows (multi-part lectures share product
+  URLs — expected). 7 `related_material` rows: no unknown masters, no
+  duplicate (master, product) pairs, and none duplicates a master's primary
+  product. 343 rendered relationships consistent with the docs.
+- **Inventory mirror columns: 0 errors** (`normalized_title_match_count` == ID
+  count; `| `-joined titles match master titles; excluded rows carry no
+  matches) — `sync_inventory_mirrors.py` state is exact.
+- **Series compilations: by design.** All 7 are series-level
+  (`compilation_draws_from_series` per the binding rule "series-level for
+  annual Highlights"); `included_lecture_count` reflects the official product
+  description (e.g. "Highlights of the 2002 Lectures 1-6" = 6), not the total
+  master rows in that series+year — no defect.
+- **Candidate provenance: clean (cosmetic note).** All 53 candidate-origin
+  masters resolve against the promotion registries; the master stores the
+  `candidate:` prefix while `manual_candidate_promotions.csv` /
+  `edition_promotions.csv` store bare keys — a documented, 100%-resolvable
+  representational difference (the builder strips the prefix). Cosmetic only;
+  no change proposed.
+- **Titles vs legacy_titles:** 265/365 rows differ — expected, since curated
+  titles strip raw date/part noise ("(Jan 2002) DVD01") while `legacy_title`
+  always preserves the verbatim raw text.
+- **Masters 369–372** (NC/Hay House programs): series/format/URLs consistent
+  (Nightingale-Conant series + `nightingale.com` URLs for 369/370, Hay House
+  for 372, audiobook carriers, `owned` blank per the documented C4 semantics).
+- **Live-site spot check:** `docs/master.json` serves 365 rows with the merged
+  work_ids live (215/217 → `w-become-that-which-you-are-june-2004`, 202 →
+  `w-volume-i-power-vs-force-muscle-testing`); `docs/data.json` 374 rows × 8
+  columns intact.
+
+**QA-2 verdict: no new defects.** The only open data-quality items remain C5
+(owner's raw CSV hygiene) and the cosmetic `candidate:` prefix convention.
