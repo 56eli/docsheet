@@ -1,5 +1,7 @@
 # DocSheet — Live Spreadsheet
 
+[![CI](https://github.com/56eli/docsheet/actions/workflows/ci.yml/badge.svg)](https://github.com/56eli/docsheet/actions/workflows/ci.yml)
+
 Renders the repository CSV as an interactive, searchable web table on
 GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 
@@ -85,7 +87,7 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, `archive/FULL_STACK_AUDIT_2026-08-04_FINAL_358_V2.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, the audit pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (declared current) and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
@@ -122,8 +124,10 @@ The Pages spreadsheet exposes review inputs directly: **Review Overview**,
 **Master Candidates**, **Manual Leads**, **Master Exclusions**, **Migration
 Review**, **Source Overrides**, **Official Discovery**, **New Work Review**
 (unmatched Veritas products awaiting a new-work ruling), **Series
-Compilations**, **Veritas Decisions**, the official inventories (**Veritas
-Products**, **Hay House Products**, **Audible Products**), and **Filename
+Compilations**, **Veritas Decisions**, **International Editions** (official
+non-English publishers queued for catalogue extraction), the official
+inventories (**Veritas Products**, **Hay House Products**, **Audible
+Products**), the approved-source **Publishers** registry, and **Filename
 Proposal** are separate sheets alongside the catalogue. Reviewers can search,
 sort, export, and filter sheets with multiple review-status values without
 opening repository folders. Two of these sheets (**Official Discovery** and **New Work Review**)
@@ -138,8 +142,9 @@ The current curated master has **365** records (309 `lecture`, 40 `book`,
 2026-08-07 rulings that record 246 was the audio edition already held as master
 329 and that record 309 duplicated the Oxford talk already held as master 221),
 **281** catalogue codes, **72** retained exclusions,
-**131** approved source overrides (including the four Nightingale-Conant audio
+**134** approved source overrides (including the four Nightingale-Conant audio
 editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
+the three academic-book Amazon links moved onto the curated column on 2026-08-08,
 and the official Veritas product link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed),
 **39** promoted and **0** unpromoted official candidates, **343** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
@@ -185,12 +190,14 @@ already verified at minting time** (a readable `LECTURE-YYYY-###` /
 `DISCUSSION-YYYY-###` is issued only when both the content type and a year are
 proposed in the reviewed ledger or promotion registry). They are therefore
 *lecture/discussion-only*, but not *every* lecture/discussion has one: pre-2000
-rows with an intentional blank/`198X` year (the 13 Volume Series and 16 Office
-Series rows), and candidate/edition rows whose `proposed_year` was blank at
-minting (e.g. the four CD/audio manual candidates 353/356/357/358 and the
-edition rows 327–343, whose years were later backfilled from the official
-listing), correctly carry no code. Codes are stable identifiers and are never
-retroactively assigned or renumbered.
+rows with an intentional **blank** year (the 13 Volume Series rows), and
+candidate/edition rows whose `proposed_year` was blank at minting (e.g. the
+four CD/audio manual candidates 353/356/357/358 and the edition rows 327–343,
+whose years were later backfilled from the official listing), correctly carry
+no code. The 16 Office Series rows, whose ledger-proposed year is the decade
+placeholder `198X`, **were** minted with codes (`LECTURE-198X-001 … -016`) —
+`198X` counted as a proposed year at minting time. Codes are stable
+identifiers and are never retroactively assigned or renumbered.
 
 Pre-2000 lectures whose exact recording date is unconfirmed but whose decade
 is established carry the placeholder year `198X` (the 16 Office Series rows;
@@ -215,15 +222,20 @@ lecture/discussion rows intentionally have none; see the field-semantics note
 above and codes are never renumbered); and the master's `candidate_key`
 stores the `candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while
 the promotion registries (`data/manual_candidate_promotions.csv`,
-`data/edition_promotions.csv`) store the bare key.
+`data/edition_promotions.csv`) store the bare key. A third convention: despite
+its name, the master `uuid` is a **stable compact integer id**, not a UUID —
+values run 1–372 with gaps where duplicate records were retired (246, 249,
+264, 281, 284, 302, 309); ids are never reissued or renumbered.
 
 ### Edition model (work × carrier)
 
 Since 2026-08-03 the master models **one row per edition** of a work: a work
 that exists as book, audiobook, and video has separate rows (DVD lecture
 parts each keep their own row, grouped under one work). `work_id` groups the
-rows of a work and is assigned **only** from approved rows of the reviewed
-`data/work_families.csv` input — never inferred from titles. Audio/CD/DVD
+rows of a work and is assigned from approved rows of the reviewed
+`data/work_families.csv` input — for minted edition rows (masters 320–343),
+from the approved `work_id` column of `data/edition_promotions.csv` — never
+inferred from titles. Audio/CD/DVD
 edition rows are minted from approved rows of `data/edition_promotions.csv`
 (reviewed candidates in `data/edition_candidates.csv`); the audiobook URLs
 moved off the book rows into their audiobook rows (D3). See

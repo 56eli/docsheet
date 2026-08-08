@@ -1177,5 +1177,32 @@
     "approval_date": "2026-08-07",
     "review_reason": "Official Veritas listing (product 53277) for the Oxford England talk; the listing description names Oxford — the same work as raw-derived master 221; link moved from duplicate minted record 309 (excluded per owner ruling 2026-08-07; precedent 246/281/284)",
     "evidence_source": "https://veritaspub.com/product/progressive-levels-of-consciousness/"
+  },
+  {
+    "raw_row_number": "candidate:manual-academic-orthomolecular-1973",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Orthomolecular-Psychiatry-Schizophrenia-David-Hawkins/dp/0716708981",
+    "review_status": "approved",
+    "approval_date": "2026-08-08",
+    "review_reason": "Curated Amazon product link for the 1973 Orthomolecular Psychiatry hardcover (W.H. Freeman ISBN 0716708981); moves the minted candidate reference into the dedicated curated column per 2026-08-08 ruling (audit D4)",
+    "evidence_source": "https://www.amazon.com/Orthomolecular-Psychiatry-Schizophrenia-David-Hawkins/dp/0716708981"
+  },
+  {
+    "raw_row_number": "candidate:manual-academic-qualitative-1998",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Qualitative-Quantitative-analysis-calibration-consciousness/dp/0964326183",
+    "review_status": "approved",
+    "approval_date": "2026-08-08",
+    "review_reason": "Curated Amazon product link for the 1998 Qualitative and Quantitative Analysis spiral-bound (Veritas Pub ISBN 0964326183); moves the minted candidate reference into the dedicated curated column per 2026-08-08 ruling (audit D4)",
+    "evidence_source": "https://www.amazon.com/Qualitative-Quantitative-analysis-calibration-consciousness/dp/0964326183"
+  },
+  {
+    "raw_row_number": "candidate:manual-academic-dialogues-1998",
+    "target_field": "source_url_amazon",
+    "override_value": "https://www.amazon.com/Dialogues-Consciousness-Spirituality-David-Hawkins/dp/0964326175",
+    "review_status": "approved",
+    "approval_date": "2026-08-08",
+    "review_reason": "Curated Amazon product link for the 1998 Dialogues on Consciousness and Spirituality spiral-bound (Veritas Publishing ISBN 0964326175); moves the minted candidate reference into the dedicated curated column per 2026-08-08 ruling (audit D4)",
+    "evidence_source": "https://www.amazon.com/Dialogues-Consciousness-Spirituality-David-Hawkins/dp/0964326175"
   }
 ]

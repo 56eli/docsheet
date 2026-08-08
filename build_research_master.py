@@ -552,7 +552,10 @@ def apply_veritas_streaming_urls(items: list[dict[str, str]]) -> int:
             item["reference_url_1"] = s_url
             applied += 1
     if applied:
-        print(f"[streaming] Applied {applied} approved Veritas streaming URLs as reference_url_1")
+        print(
+            f"[streaming] Filled reference_url_1 on {applied} master rows "
+            f"from {len(streaming)} approved Veritas streaming products"
+        )
     return applied
 
 

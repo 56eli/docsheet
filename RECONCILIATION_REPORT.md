@@ -20,7 +20,7 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.
 
-The reviewed build applies 131 approved official-source overrides and validates 39 reviewed manual candidates; unresolved research leads remain outside the master in their review inputs.
+The reviewed build applies 134 approved official-source overrides and validates 39 reviewed manual candidates; unresolved research leads remain outside the master in their review inputs.
 
 ## Committed draft records without matching provenance
 

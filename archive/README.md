@@ -5,8 +5,21 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-07_DEEP.md](../FULL_STACK_AUDIT_2026-08-07_DEEP.md), and the
+[FULL_STACK_AUDIT_2026-08-08_ARENA.md](../FULL_STACK_AUDIT_2026-08-08_ARENA.md) (declared-current audit; the
+2026-08-08 ARENA_FRESH_EYES pass sits beside it), and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
+
+Root-level full-stack audits superseded by `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
+and moved here in the 2026-08-08 audit-noise cleanup:
+
+- `FULL_STACK_AUDIT_2026-08-07_DEEP.md` — the 2026-08-07 end-of-day deep audit
+  (was the root "current audit" until 2026-08-08; cross-referenced from
+  historical session logs).
+- `FULL_STACK_AUDIT_2026-08-08.md` — 2026-08-08 base audit (sections 1–14).
+- `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md` — 2026-08-08 deep-dive companion.
+- `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` — 2026-08-08 independent
+  baseline audit (still the historical-baseline reference in
+  `NEXT_AGENT_HANDOFF.md`).
 
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07

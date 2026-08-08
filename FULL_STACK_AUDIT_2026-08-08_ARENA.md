@@ -236,7 +236,7 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 
 - The 19-tab mapping is correct, and the current CI run before this drawer test proves the 15 existing browser specs pass in GitHub’s Chromium environment; the new drawer/focus spec is now included in the next CI run.
 - Local browser tests cannot be independently reproduced in this sandbox until `npx playwright install --with-deps chromium` succeeds; the local run produced 15 launch failures, not 15 assertion failures.
-- The current browser suite does **not** actually exercise every claim made by `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md`: it does not cover all 19 tabs, dark-mode persistence, the row-details drawer/copy action, or every failure/empty state. The report’s statement that browser coverage verifies the “entire 19-tab layout, view states, expert toggle, and keyboard accessibility” is broader than the test files.
+- The current browser suite does **not** actually exercise every claim made by `archive/FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md`: it does not cover all 19 tabs, dark-mode persistence, the row-details drawer/copy action, or every failure/empty state. The report’s statement that browser coverage verifies the “entire 19-tab layout, view states, expert toggle, and keyboard accessibility” is broader than the test files.
 - `app.js` is a large single IIFE (~1,770 lines) with no browser unit tests and several persistence/race-sensitive paths. Rapid tab switching can allow an earlier `fetch()` response to render after a later view activation; static Pages makes this uncommon, but an activation token/request cancellation would make the behavior deterministic.
 - The frontend correctly avoids `innerHTML` for row values and only turns `http(s)` values into links. No secret or credential was found in tracked files.
 
@@ -455,7 +455,7 @@ branch-shipping note as historical so it cannot instruct a redundant PR.
 Several root audits share the same date and overlapping claims. Most older
 reports now carry useful historical banners, but the linked current Arena audit
 contained trailing corrupted text before this follow-up section, and
-`FULL_STACK_AUDIT_2026-08-08.md` interleaved resolved and open state without a
+`archive/FULL_STACK_AUDIT_2026-08-08.md` interleaved resolved and open state without a
 top-level historical/current marker. **Partially resolved in the follow-up:**
 the corrupt tail was removed and that earlier audit now carries a historical
 banner. Keep this report as the current checkpoint and move remaining
