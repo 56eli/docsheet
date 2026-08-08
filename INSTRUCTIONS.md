@@ -170,14 +170,14 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 117 deterministic tests
+python -m unittest discover tests      # 121 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121).
 
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-08).
 The remaining misses are `if __name__ == "__main__"` guards and rare

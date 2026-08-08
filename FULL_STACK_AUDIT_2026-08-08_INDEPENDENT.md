@@ -8,6 +8,11 @@
 every CSV/JSON and the living docs. Nothing was taken on trust from the prior
 audits — every count below was recomputed from the committed data.
 
+> **Historical baseline notice:** this report captures the state before the
+> follow-up fixes in `FULL_STACK_AUDIT_2026-08-08_ARENA.md`. Its 115-test/90%
+> figures and D-1/D-2 recommendations are not the current machine state; use
+> the Arena audit and generated CSV/JSON outputs as the current authority.
+
 ---
 
 ## 1. Re-verification (re-run live)
@@ -91,10 +96,11 @@ via `build_catalogue_pages.py`, then re-run all checks. Overlay count moves
 10 → 9 and `approved_veritas_mapping_decisions` in `catalogue-meta.json`
 follows.
 
-I verified no other decision row is stale: the other four `matched_by_title` /
-`matched_by_normalized_title` rows (53062→300, 50398→289, 50378→291,
-50432→247) are genuinely non-primary (the master's primary URL is a different
-product), and all five `excluded_related_material` rows are consistent.
+The baseline conclusion that no other decision row was stale is superseded by
+the follow-up URL-evidence pass: products 53062→300, 50398→289, 50378→291,
+and 50432→247 also had exact master primary URLs. Those four stale overlay rows
+were removed in the follow-up; the five excluded-related-material rows remain
+consistent. See `FULL_STACK_AUDIT_2026-08-08_ARENA.md` §10.
 
 ---
 

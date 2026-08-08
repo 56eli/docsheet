@@ -20,16 +20,6 @@
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
   },
   {
-    "veritas_product_id": "53062",
-    "mapping_status": "matched_by_title",
-    "matched_master_uuids": "300",
-    "matched_master_titles": "In the World But Not Of It: Transforming Everyday Experience into a Spiritual Path",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
     "veritas_product_id": "54226",
     "mapping_status": "excluded_related_material",
     "matched_master_uuids": "",
@@ -48,36 +38,6 @@
     "review_status": "approved",
     "reviewed_on": "2026-08-03",
     "decision_reason": "Reviewed official inventory disposition; preserve this non-primary classification on refresh."
-  },
-  {
-    "veritas_product_id": "50398",
-    "mapping_status": "matched_by_title",
-    "matched_master_uuids": "289",
-    "matched_master_titles": "Truth vs. Falsehood: How to Tell the Difference",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
-    "veritas_product_id": "50378",
-    "mapping_status": "matched_by_normalized_title",
-    "matched_master_uuids": "291",
-    "matched_master_titles": "Healing and Recovery",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
-  },
-  {
-    "veritas_product_id": "50432",
-    "mapping_status": "matched_by_title",
-    "matched_master_uuids": "247",
-    "matched_master_titles": "A Map of Consciousness",
-    "review_notes": "",
-    "review_status": "approved",
-    "reviewed_on": "2026-08-03",
-    "decision_reason": "Reviewed non-primary product relationship; preserve the approved master association."
   },
   {
     "veritas_product_id": "1560",

@@ -164,8 +164,8 @@
     "normalized_title_match_count": "1",
     "matched_master_uuids": "300",
     "matched_master_titles": "In the World But Not Of It: Transforming Everyday Experience into a Spiritual Path",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "53058",
@@ -452,8 +452,8 @@
     "normalized_title_match_count": "1",
     "matched_master_uuids": "289",
     "matched_master_titles": "Truth vs. Falsehood: How to Tell the Difference",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50393",
@@ -500,8 +500,8 @@
     "normalized_title_match_count": "1",
     "matched_master_uuids": "291",
     "matched_master_titles": "Healing and Recovery",
-    "mapping_status": "matched_by_normalized_title",
-    "review_notes": ""
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50370",
@@ -548,8 +548,8 @@
     "normalized_title_match_count": "1",
     "matched_master_uuids": "247",
     "matched_master_titles": "A Map of Consciousness",
-    "mapping_status": "matched_by_title",
-    "review_notes": ""
+    "mapping_status": "matched_by_primary_source",
+    "review_notes": "Exact master primary Veritas URL match."
   },
   {
     "veritas_product_id": "50453",

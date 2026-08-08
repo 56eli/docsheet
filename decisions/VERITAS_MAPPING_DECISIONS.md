@@ -30,11 +30,12 @@ This prevents a live refresh from resetting reviewed non-primary dispositions su
 
 ## Current seed
 
-The current overlay contains **9** approved decisions: 5
+The current overlay contains **5** approved decisions, all
 `excluded_related_material` rows (spin-off/physical products and the Map
-poster), 3 `matched_by_title` non-primary associations, and 1
-`matched_by_normalized_title` non-primary association. Exact primary-source
-and date-aware results remain deterministic and do not need overlay rows.
+poster). Exact primary-source and date-aware results remain deterministic and
+do not need overlay rows. Cross-format editions are represented by their own
+reviewed edition rows or by the related-material layer; a book/source URL that
+is exact on a master must not remain in this non-primary overlay.
 
 **History:**
 - **2026-08-03 seed:** 35 decisions (7 annual-Highlights compilation products,
@@ -58,3 +59,11 @@ and date-aware results remain deterministic and do not need overlay rows.
   the inventory but left behind in the overlay, where it overrode the correct
   deterministic match and contradicted the Product Relationships sheet.
   Primary matches need no overlay row, per the established precedent above.
+- **2026-08-08 correction (9 → 5):** products 53062, 50398, 50378, and 50432
+  were found to have exact URLs on current master records 300, 289, 291, and
+  247 respectively, despite stale non-primary overlay rows. The four rows
+  were removed; their inventory rows now carry deterministic
+  `matched_by_primary_source` status. The book/CD/DVD and map-poster evidence
+  remains represented by the current edition/exclusion inputs. The Pages build
+  now rejects any future decision row whose product URL is an exact master
+  primary URL or whose committed inventory mirror disagrees.

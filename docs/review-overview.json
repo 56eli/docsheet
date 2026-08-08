@@ -50,7 +50,7 @@
   },
   {
     "review_sheet": "Veritas Decisions",
-    "record_count": 9,
+    "record_count": 5,
     "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
     "source_file": "data/veritas_mapping_decisions.csv",
     "current_state": "approved mapping decision"

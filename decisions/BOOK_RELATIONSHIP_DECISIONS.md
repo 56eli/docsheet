@@ -19,14 +19,20 @@ Nine exact-title book products are now approved primary Veritas sources through 
 
 Each product page identifies a matching book/transcription product. The master build now retains the official URL as the primary source and creates the corresponding exact primary item/product relationship.
 
-## Cross-format related material recorded
+## Cross-format edition records
 
-The following official book products are recorded as reviewed `related_material` without replacing the master’s existing audio/CD/DVD primary source URL:
+The edition model now gives each reviewed carrier its own master row. The
+following exact book products are therefore the **primary sources of the book
+masters**, not non-primary overlay decisions; their separate audio/CD/DVD
+products remain separate edition rows:
 
-| Master record | Official book product | Basis |
+| Book master | Primary book product | Separate carrier record |
 |---|---|---|
-| *In the World, But Not of It* | Product 53062 | The official book page says it is based on the popular audio program. |
-| *Truth vs Falsehood* | Product 50398 | The print book is a separate 496-page commercial product; the master primary source remains the CD/DVD set. |
-| *Healing and Recovery* | Product 50378 | The official book page calls the print book a companion to the lectures; the master primary source remains audio. |
+| *In the World, But Not of It* (300) | Product 53062 | Product 1661 → edition master 329 (Nightingale-Conant CD) |
+| *Truth vs Falsehood* (289) | Product 50398 | Product 1728 → edition master 327 (CD/DVD set) |
+| *Healing and Recovery* (291) | Product 50378 | Product 1695 → edition master 328 (audio program) |
 
-No title-only candidate was bulk-promoted. The remaining candidate pool remains subject to the evidence and controlled-type requirements in `PRODUCT_RELATIONSHIP_SCHEMA.md`.
+The four stale non-primary overlay rows for these exact primary URLs were
+removed on 2026-08-08. No title-only candidate was bulk-promoted; the current
+candidate/edition registries and `PRODUCT_RELATIONSHIP_SCHEMA.md` define the
+remaining review boundary.

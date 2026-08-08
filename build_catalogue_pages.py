@@ -185,6 +185,21 @@ def validate_veritas_inventory(
     """
     inconsistent = []
     title_by_uuid = {record["uuid"]: record["title"] for record in master_records}
+    inventory_urls = {
+        product.get("official_product_url", "").strip()
+        for product in veritas_products
+        if product.get("official_product_url", "").strip()
+    }
+    orphaned_master_urls = sorted({
+        record.get("source_url_veritas", "").strip()
+        for record in master_records
+        if record.get("source_url_veritas", "").strip()
+        and record.get("source_url_veritas", "").strip() not in inventory_urls
+    })
+    for url in orphaned_master_urls:
+        inconsistent.append(
+            f"master source_url_veritas {url!r} is absent from the official inventory"
+        )
     for product in veritas_products:
         uuids = [
             item.strip()
@@ -528,6 +543,136 @@ def validate_new_work_queue(
             )
 
 
+VERITAS_DECISION_STATUSES = {
+    "unique_item", "compilation_or_new_edition", "excluded_related_material",
+    "matched_by_title", "matched_by_normalized_title",
+}
+VERITAS_DECISION_REQUIRED_COLUMNS = {
+    "veritas_product_id", "mapping_status", "matched_master_uuids",
+    "matched_master_titles", "review_notes", "review_status", "reviewed_on",
+    "decision_reason",
+}
+
+
+def validate_veritas_mapping_decisions(
+    veritas_products: list[dict[str, str]],
+    master_records: list[dict[str, str]],
+) -> None:
+    """Validate the committed mapping overlay against current URL evidence.
+
+    The live fetcher reapplies this overlay after deterministic matching, but
+    the Pages build must also reject a stale overlay offline. In particular, a
+    product whose URL is the exact primary URL of a master may not remain in
+    the non-primary decision file: that contradiction would make the review
+    sheet and the next live refresh disagree with the master relationships.
+    """
+    with VERITAS_MAPPING_DECISIONS.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = VERITAS_DECISION_REQUIRED_COLUMNS - columns
+        if missing:
+            raise ValueError(
+                f"{VERITAS_MAPPING_DECISIONS} is missing required columns: "
+                f"{', '.join(sorted(missing))}"
+            )
+        decisions = list(reader)
+
+    inventory_by_id = {row["veritas_product_id"].strip(): row for row in veritas_products}
+    master_by_uuid = {row["uuid"].strip(): row for row in master_records}
+    primary_ids_by_url: dict[str, list[str]] = {}
+    for master in master_records:
+        url = master.get("source_url_veritas", "").strip()
+        if url:
+            primary_ids_by_url.setdefault(url, []).append(master["uuid"].strip())
+
+    errors: list[str] = []
+    seen_ids: set[str] = set()
+    for line_number, decision in enumerate(decisions, start=2):
+        product_id = decision["veritas_product_id"].strip()
+        status = decision["mapping_status"].strip()
+        matched_ids = [
+            value.strip()
+            for value in decision["matched_master_uuids"].split(";")
+            if value.strip()
+        ]
+        product = inventory_by_id.get(product_id)
+
+        if not product_id or product_id in seen_ids or product is None:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} must reference one unique current product ID"
+            )
+            continue
+        seen_ids.add(product_id)
+        if status not in VERITAS_DECISION_STATUSES:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} uses unsupported mapping_status {status!r}"
+            )
+        if decision["review_status"].strip() != "approved" or not ISO_DATE.fullmatch(decision["reviewed_on"].strip()):
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} needs approved review_status and an ISO reviewed_on date"
+            )
+        if not decision["decision_reason"].strip():
+            errors.append(f"{VERITAS_MAPPING_DECISIONS}:{line_number} needs a decision_reason")
+
+        unknown = [value for value in matched_ids if value not in master_by_uuid]
+        if unknown:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} references unknown master ID(s) {unknown}"
+            )
+        expected_titles = " | ".join(master_by_uuid[value]["title"] for value in matched_ids if value in master_by_uuid)
+        if decision["matched_master_titles"] != expected_titles:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_titles drift from matched_master_uuids"
+            )
+        if status in {"matched_by_title", "matched_by_normalized_title"} and not matched_ids:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} match status requires master IDs"
+            )
+        if status not in {"matched_by_title", "matched_by_normalized_title"} and matched_ids:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} non-match status cannot contain master IDs"
+            )
+
+        if product["mapping_status"] != status:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} status {status!r} disagrees with "
+                f"the committed inventory status {product['mapping_status']!r}"
+            )
+        if product["matched_master_uuids"] != decision["matched_master_uuids"]:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_uuids disagrees with the inventory"
+            )
+        if product["matched_master_titles"] != decision["matched_master_titles"]:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_titles disagrees with the inventory"
+            )
+        if product["review_notes"] != decision["review_notes"]:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} review_notes disagrees with the inventory"
+            )
+
+        primary_ids = primary_ids_by_url.get(product["official_product_url"].strip(), [])
+        if primary_ids:
+            errors.append(
+                f"{VERITAS_MAPPING_DECISIONS}:{line_number} product {product_id} is the exact "
+                f"primary URL of master ID(s) {primary_ids}; remove the stale non-primary overlay"
+            )
+
+    for product in veritas_products:
+        product_id = product["veritas_product_id"].strip()
+        if product["mapping_status"].strip() in VERITAS_DECISION_STATUSES and product_id not in seen_ids:
+            errors.append(
+                f"inventory product {product_id} has reviewed non-primary status "
+                f"{product['mapping_status']!r} but no decision row"
+            )
+
+    if errors:
+        raise ValueError(
+            f"{VERITAS_MAPPING_DECISIONS} contradicts the current inventory/master evidence:\n"
+            + "\n".join(f"  - {error}" for error in errors)
+        )
+
+
 def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:
     """Prepare catalogue Pages files in memory.
 
@@ -566,6 +711,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     validate_veritas_inventory(veritas_products, master_records)
     validate_new_work_queue(new_work_queue, veritas_products)
     veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
+    validate_veritas_mapping_decisions(veritas_products, master_records)
     # Primary item→product links are derived from each master's own
     # ``source_url_veritas``; the CSV holds only the distinct non-primary
     # relationships (e.g. ``related_material``). See derive_primary_relationships.

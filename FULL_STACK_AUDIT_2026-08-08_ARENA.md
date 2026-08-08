@@ -34,8 +34,8 @@ All commands below were run from the repository root after installing the declar
 | `reconcile_research_master.py --check` | PASS* | The report is byte-current, but its status is semantically misleading; see F-01. |
 | `map_series_taxonomy.py --check` | PASS | 186 mappings; 177 approved, 9 rejected, 0 queued. |
 | `sync_inventory_mirrors.py --check` | PASS | Derived Veritas mirror fields match the master. |
-| `python -m unittest discover tests` | **117/117 PASS** | Offline deterministic suite after the F-01/F-02 follow-up fixes. |
-| Coverage | **91% PASS** | 1,972 statements; lowest module coverage 88%; configured floor 85%. |
+| `python -m unittest discover tests` | **121/121 PASS** | Offline deterministic suite after the F-01–F-04 follow-up fixes. |
+| Coverage | **91% PASS** | 2,038 statements; lowest module coverage 88%; configured floor 85%. |
 | Node syntax checks | PASS | `app.js`, Playwright config, and all 3 specs. |
 | `npm ci` / npm audit | PASS | Playwright 1.62.1; 0 reported vulnerabilities. |
 | Local Playwright execution | BLOCKED | All 15 tests stopped before launch because Chromium is not installed in the sandbox. This is environmental, not a test assertion failure. |
@@ -55,7 +55,7 @@ All commands below were run from the repository root after installing the declar
 | Catalogue codes | Lecture/discussion only; 0 duplicates; 19 year-known lecture/discussion rows intentionally have no code because their year was blank when minted |
 | Exclusions | 72 retained raw rows |
 | Work families | 191 works, 341 approved memberships, 365/365 master coverage |
-| Veritas inventory | 191 products: 182 primary-source matches, 3 title matches, 1 normalized-title match, 5 excluded related-material decisions |
+| Veritas inventory | 191 products: 186 primary-source matches, 0 title matches, 0 normalized-title matches, 5 excluded related-material decisions |
 | Veritas source URLs | 336 master rows, all 336 URLs present in the 191-row reviewed inventory; 78 repeated URLs are expected multi-part products |
 | Relationships | 343 rendered rows = 336 derived primary + 7 reviewed related-material rows |
 | Series compilations | 7 reviewed rows |
@@ -140,21 +140,23 @@ The public “Master records” stat would then count a review candidate as a cu
 
 `derive_primary_relationships()` skips a master row when `source_url_veritas` is non-empty but absent from the reviewed Veritas inventory. The master build does not require every populated Veritas URL to exist in the inventory, and the Pages build does not turn a skipped URL into an error. A typo or stale URL can therefore leave a clickable master source in `docs/master.json` while silently removing its primary relationship and relationship evidence.
 
-The current data is clean: 336/336 populated master Veritas URLs resolve. The problem is the missing invariant, not a present orphan.
+The baseline data was clean: 336/336 populated master Veritas URLs resolved. The problem was the missing invariant, not a present orphan.
 
-**Recommended fix:** fail closed on `master.source_url_veritas - inventory.official_product_url`, or emit an explicit unresolved relationship and a review queue row. Add a test for one orphan URL.
+**Resolution:** `validate_veritas_inventory()` now fails closed on
+`master.source_url_veritas - inventory.official_product_url`, and a regression
+fixture proves an orphan URL cannot pass the Pages build.
 
-### F-04 — Veritas mapping decisions are not contract-checked by the Pages build
+### F-04 — Veritas mapping decisions were not contract-checked by the Pages build
 
 **Severity:** Medium review-integrity risk  
-**Current visibility:** Current decision file is clean; stale overlays can reappear without breaking the six local checks  
-**Evidence:** `build_catalogue_pages.py` reads `data/veritas_mapping_decisions.csv` for display but does not replay/validate it against the inventory; `fetch_veritas_catalogue.py:204-302` owns the validation only
+**Baseline visibility:** Four stale rows were present in the 9-row overlay; the normal six checks did not detect them.
+**Evidence:** Before this follow-up, `build_catalogue_pages.py` only read `data/veritas_mapping_decisions.csv` for display while `fetch_veritas_catalogue.py:204-302` owned the validation.
 
 The previous product-50491 incident is a concrete precedent: a stale overlay row mapped the product to master 121 while the inventory/master had correctly moved it to primary master 278. The stale row was visible in the Veritas Decisions sheet and would have overridden deterministic matching on the next live refresh, yet the ordinary catalogue build checks did not detect it.
 
-The current 9 decisions are valid, and `sync_inventory_mirrors.py --check` is green. However, the invariant is still split across a live-network refresh script rather than enforced offline against committed inventory/master inputs.
+The follow-up URL-evidence sweep found the same class of contradiction for products 53062, 50398, 50378, and 50432, whose exact URLs were already primary on masters 300, 289, 291, and 247.
 
-**Recommended fix:** extract the decision-overlay validator into shared code and run it during the Pages/catalogue check (or add a committed-inventory replay test that proves every decision is non-primary and title/UUID-valid). A stale decision must fail before it reaches the published review sheet.
+**Resolution:** the four stale rows were removed, their inventory rows restored to deterministic `matched_by_primary_source`, and the overlay is now 5 excluded-related-material rows. `build_catalogue_pages.py` now validates decision IDs/status/titles/notes against the committed inventory and fails if a decision product URL is an exact master primary URL. Regression tests cover the committed clean overlay, malformed rows, and exact-primary contradictions.
 
 ### F-05 — Raw spreadsheet auto-regeneration and CI have a race / PR contract mismatch
 
@@ -215,8 +217,8 @@ These are not catalogue-build failures, but they make the repository unsafe to h
 | `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 365 proposal rows; 365/365 safe/display unique. |
 | `MIGRATION_REVIEW_LEDGER.md` | Says the Advaita URL on raw rows 28–30 is quarantined and should be resolved; current raw URL and ledger mirror were fixed and are usable. | Rows 28–30 contain the corrected canonical URL and a 2026-08-08 fix note. |
 | `LECTURE_SERIES_REVIEW.md` | Calls the 198-row batch review-only, says no IDs changed, and asks the owner to resolve three Advaita links. | The batch has been incorporated into the reviewed ledger/master; links are fixed and compact IDs exist. |
-| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 117 tests, 90%, 6 checks; current format has 0 blanks and no deprecated item types. |
-| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 9 decisions, 117 tests. |
+| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 121 tests, 91%, 6 checks; current format has 0 blanks and no deprecated item types. |
+| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 5 decisions, 121 tests, 91% coverage. |
 | `README.md` | The “every entry” historical verification sentence still says 195 verifiable lecture months from the 2026-08-03 snapshot; current date-bearing master/source evidence has grown since then. | Treat the sentence as a dated historical claim or refresh it with a reproducible current metric. |
 
 The old counts inside `archive/` and the superseded sections explicitly labelled as history are acceptable. The problem is that several root files are both linked from active documentation and written in present-tense “applied/current” language.
@@ -240,7 +242,7 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 
 1. **Fix F-01** — make reconciliation candidate-aware and add a zero-unclassified-extras regression test.
 2. **Fix F-02** — separate `master_items` from Everything-row count and test with a pending candidate.
-3. **Add F-03/F-04 contract guards** — orphaned master URLs and stale Veritas decision overlays must fail offline before Pages publication.
+3. **F-03/F-04 are now guarded** — retain the regression tests and review the remaining F-05–F-08 hardening work.
 4. **Resolve F-05** — decide whether generated raw output is PR-owned or post-merge workflow-owned; remove the race.
 5. **Perform documentation hygiene** — update active schemas/proposals or add a clear `Historical snapshot — do not use for current counts` banner and move obsolete review batches to `archive/`.
 6. **Harden reproducibility/availability** — Python constraints, supported-version CI matrix, and optional vendored frontend assets.
@@ -249,15 +251,16 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 
 ## 10. Follow-up fixes applied after the baseline audit
 
-After the baseline audit, the two priority fixes selected by the owner were applied:
+After the baseline audit, the owner-selected priority and guard work was applied:
 
 - **F-01:** reconciliation now matches raw rows by `raw_row_number` and promoted manual/edition rows by `candidate_key`; the committed reconciliation report now shows 0 unexplained extras and a complete verification result.
 - **F-02:** `catalogue-meta.json.master_items` now reports the curated master count (`migrated_items`) rather than the Everything-row count; a pending-candidate regression test keeps the “Master records” stat correct.
-- Added two regression tests for candidate provenance and the committed reconciliation state. The deterministic suite is now **117/117**, coverage is **91%**, and all six generator checks plus Node syntax checks remain green.
-- Regenerated `RECONCILIATION_REPORT.md` from the corrected comparison logic. No catalogue rows or review decisions were changed.
-- PR #34 CI run `31261129064` passed all validation steps and all 15 Playwright tests. GitHub emitted an action-runtime warning that `actions/checkout@v4`, `actions/setup-node@v4`, and `actions/setup-python@v5` still target Node 20 internally and are being forced to Node 24; this is separate from the project’s Node 22 runtime pin and should be tracked when newer action majors are available.
+- **F-03:** Pages validation now rejects any populated master Veritas URL absent from the reviewed inventory.
+- **F-04:** Pages validation now checks decision IDs/status/titles/notes against the committed inventory and rejects a decision whose product URL is an exact master primary URL. Four stale rows (53062, 50398, 50378, 50432) were removed; the overlay is now 5 excluded-related-material rows.
+- Added four guard regression tests plus the prior candidate/meta tests. The deterministic suite is now **121/121**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
+- Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
-The remaining F-03–F-08 findings are unchanged and are the next hardening/documentation work.
+The remaining F-05–F-08 findings are the next hardening/documentation work. The most recent PR CI run before this guard follow-up passed all validation steps and all 15 Playwright tests; GitHub also emitted the action-runtime Node 20→24 warning recorded in the baseline verification notes.
 
 ## 11. Reproduction commands
 
@@ -287,3 +290,4 @@ npm run test:e2e
 cover its matching and retry logic.
 gic.
  retry logic.
+etry logic.
