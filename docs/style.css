@@ -1521,3 +1521,199 @@ button.stat-chip:hover b { color: var(--accent); }
   .stat-chip { padding: 1px 5px; font-size: 10px; border-radius: 4px; }
   .stat-chip b { font-size: 10px; }
 }
+
+/* ================================================================== *
+ *  Mobile Browse mode — a work-first catalogue for small screens.
+ *  The Tabulator grid remains available through the Spreadsheet toggle;
+ *  this layer is a responsive presentation of the same master.json rows.
+ * ================================================================== */
+.mobile-view-toggle,
+.mobile-browse { display: none; }
+.mobile-browse[hidden] { display: none !important; }
+
+@media (max-width: 720px) {
+  .mobile-view-toggle:not([hidden]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 7px 10px;
+    color: var(--accent-contrast);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .mobile-browse:not([hidden]) {
+    position: absolute;
+    inset: 8px 6px;
+    display: block;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 0 0 24px;
+  }
+  .mobile-browse-intro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 10px;
+    padding: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .mobile-browse-eyebrow,
+  .mobile-work-eyebrow {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .mobile-browse-intro p {
+    max-width: 270px;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  #mobile-browse-sheet-btn {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 7px 9px;
+    color: var(--accent);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .mobile-browse-list {
+    display: grid;
+    gap: 8px;
+  }
+  .mobile-work-card {
+    overflow: clip;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+  .mobile-work-card > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 10px;
+    padding: 13px 12px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .mobile-work-card > summary::-webkit-details-marker { display: none; }
+  .mobile-work-title {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-work-hint {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .mobile-work-hint::after { content: " ▾"; }
+  .mobile-work-card[open] .mobile-work-hint::after { content: " ▴"; }
+  .mobile-work-editions {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+  .mobile-edition-card {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+    padding: 8px;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  }
+  .mobile-edition-card:last-child { border-bottom: 0; }
+  .mobile-edition-main {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 3px;
+    padding: 3px 4px;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .mobile-edition-main:active { background: var(--surface-2); }
+  .mobile-edition-filename {
+    overflow: hidden;
+    color: var(--text-muted);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-edition-title {
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-edition-meta {
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+  .mobile-edition-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+  .mobile-edition-link {
+    min-width: 52px;
+    min-height: 30px;
+    padding: 6px 7px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: none;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .mobile-edition-link::after { content: " ↗"; opacity: 0.65; }
+  .mobile-browse-empty {
+    margin: 0;
+    padding: 22px 14px;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    background: var(--surface-2);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+  }
+  .mobile-browse-active #expert-toggle-btn,
+  .mobile-browse-active #column-menu-btn { display: none; }
+}

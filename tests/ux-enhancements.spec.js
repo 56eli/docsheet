@@ -109,6 +109,32 @@ test('row details use sections and return focus to the source row', async ({ pag
   await expect(row).toBeFocused();
 });
 
+test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/docs/');
+
+  const browse = page.locator('#mobile-browse');
+  await expect(browse).toBeVisible();
+  await expect(page.locator('#spreadsheet')).toBeHidden();
+  await expect(page.locator('.mobile-work-card')).not.toHaveCount(0);
+
+  // The first catalogue work is a three-part DVD lecture. The card presents a
+  // compact work stack, then exposes its distinct parts only on demand.
+  const firstStack = page.locator('.mobile-work-card').first();
+  await expect(firstStack.locator('.mobile-work-title')).toContainText('Causality');
+  await firstStack.locator('summary').click();
+  await expect(firstStack.locator('.mobile-edition-card')).toHaveCount(3);
+  await expect(firstStack.locator('.mobile-edition-link').first()).toHaveText(/Source/);
+
+  // Experts can still opt into the full responsive table, then return to cards.
+  await page.locator('#mobile-browse-sheet-btn').click();
+  await expect(page.locator('#spreadsheet')).toBeVisible();
+  await page.locator('.tabulator-row').first().waitFor();
+  await expect(page.locator('#mobile-view-toggle')).toHaveText('Browse cards');
+  await page.locator('#mobile-view-toggle').click();
+  await expect(browse).toBeVisible();
+});
+
 test('keyboard slash focuses search', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);

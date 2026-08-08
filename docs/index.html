@@ -140,6 +140,7 @@
         <div><dt>Type</dt><dd>—</dd></div>
       </dl>
       <div class="column-tools">
+        <button id="mobile-view-toggle" class="mobile-view-toggle" type="button" aria-pressed="true" hidden>Spreadsheet</button>
         <button id="facet-toggle-btn" type="button" aria-pressed="false" title="Show or hide filters panel">Filters</button>
         <button id="expert-toggle-btn" type="button" aria-pressed="false" title="Show or hide technical columns (Master ID, Work grouping, proposed file names, provenance). Product facts stay visible either way." hidden>Expert columns</button>
         <button id="column-menu-btn" type="button" aria-expanded="false" aria-controls="column-menu">Columns</button>
@@ -196,8 +197,18 @@
   </section>
 
   <!-- ===== Spreadsheet ===== -->
-  <main id="table-container" aria-label="Hawkins Archive spreadsheet">
+  <main id="table-container" aria-label="Hawkins Archive catalogue">
     <div id="empty-state" class="empty-state" hidden></div>
+    <section id="mobile-browse" class="mobile-browse" aria-label="Mobile catalogue browse mode" hidden>
+      <div class="mobile-browse-intro">
+        <div>
+          <span class="mobile-browse-eyebrow">Browse mode</span>
+          <p>Explore works as compact stacks. Expand a work to inspect its editions and parts.</p>
+        </div>
+        <button id="mobile-browse-sheet-btn" type="button">Open spreadsheet</button>
+      </div>
+      <div id="mobile-browse-list" class="mobile-browse-list"></div>
+    </section>
     <div id="spreadsheet" aria-live="polite" aria-busy="true">
       <div class="table-loading">Loading research master…</div>
     </div>

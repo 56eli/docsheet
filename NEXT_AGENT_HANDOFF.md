@@ -551,3 +551,27 @@ cleanup after reviewing the fresh checkpoint in
   protection/required checks, issue #18 triage, and optional local Tabulator
   fallback. These are documented in the current Arena audit rather than fixed
   in this data/documentation follow-up.
+
+## 2026-08-08 Mobile Browse mode (current)
+
+Owner requested a phone-first catalogue experience rather than forcing the
+spreadsheet grid into a narrow viewport. The Everything view now defaults to
+**Browse mode** at `max-width: 720px`:
+
+- Groups the 365 master rows into compact `work_id` stacks; expand a stack to
+  inspect its editions/parts, use **Source** / **Stream** quick links, or open
+  the existing full detail drawer.
+- Keeps filtering/search state and the whole-view CSV export working from card
+  mode; cards are a client-side presentation of the existing `master.json`, not
+  a second data source.
+- Provides a persistent **Spreadsheet** / **Browse cards** switch. The full
+  Tabulator grid remains available for expert comparison and the browser stores
+  that preference. Resizing back to desktop restores the normal grid.
+- Adds a Playwright mobile-viewport regression test for default work stacks,
+  Source CTA, and the Spreadsheet escape hatch. Browser suite: **17 tests**
+  across 3 specs (local Chromium download remains sandbox-blocked; CI must run
+  it).
+
+A local visual review can be served with `python -m http.server 8000 --bind
+0.0.0.0`. Remaining frontend audit items are the stale-fetch response guard and
+row-detail keyboard focus trap.
