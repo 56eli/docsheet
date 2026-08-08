@@ -550,5 +550,7 @@ changes). **Phase 1 (IA) applied on this branch:**
 :focus-visible rings (tab override preserved), broad prefers-reduced-motion kill-switch,
 external-link aria-labels ("… (opens in new tab)"), 44px mobile tab hit targets, mobile stats
 strip/empty-state polish; badge contrast computed AA (pending 6.0:1, excluded 6.9:1 — no color
-change needed); Esc-to-clear and the spinner reduced-motion rule already existed. Phase 3 (theme)
-remains pending owner pick.
+change needed); Esc-to-clear and the spinner reduced-motion rule already existed. **Phase 3
+(theme) also applied:** gradient header strip + soft shadows, green-tinted row hover/selection,
+themed thin scrollbars, url-link '↗' affordance, footer repo link, `--ring` focus token — all
+token-driven and additive; suite still 115, CI green.
