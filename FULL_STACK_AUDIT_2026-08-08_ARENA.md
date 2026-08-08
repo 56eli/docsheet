@@ -173,12 +173,11 @@ The follow-up URL-evidence sweep found the same class of contradiction for produ
 
 The same mismatch exists on pull requests: the update workflow does not run for PRs, but PR CI still requires the generated raw payload to already be committed. The curated generators have the same general “generated output must be included in the PR” contract, but only the raw pipeline claims to auto-regenerate after merge.
 
-**Resolution status:** the workflow change is prepared in
-`WORKFLOW_WEB_EDITOR_GUIDE.md` but cannot be pushed by the Arena GitHub App
-without `workflows` permission. The proposed `paths-ignore` raw-only `main`
-trigger leaves the raw-source updater as the sole post-merge owner; PR CI still
-requires regenerated `docs/data.json` with a raw CSV change. Code-side docs and
-constraints are already committed; the owner must apply the workflow snippet.
+**Resolution status:** the owner has applied the `paths-ignore` raw-only `main`
+trigger on main, leaving the raw-source updater as the sole post-merge owner;
+PR CI still requires regenerated `docs/data.json` with a raw CSV change. The
+first main CI run after the workflow edit fails because `requirements-ci.txt`
+is supplied by PR #34 and has not reached main yet; merge the PR and rerun CI.
 
 ### F-06 — Root fallback source selection can publish the wrong CSV
 
@@ -202,9 +201,9 @@ regression tests cover unrelated and ambiguous fallback inputs.
 Node is locked by `package-lock.json`, but Python runtime dependencies are open-ended across major pandas 2 and 3 and all future coverage 7 releases. The current outputs are deterministic under the audited environment, but a dependency upgrade can change CSV parsing or JSON serialization without a repository diff to the dependency specification.
 
 **Resolution status:** added `requirements-ci.txt` with the audited exact
-pandas/numpy/coverage set and documented the reproducible local command. The
-workflow install wiring is prepared in `WORKFLOW_WEB_EDITOR_GUIDE.md` and awaits
-an owner workflow-permission commit; project CI remains Python 3.12.
+pandas/numpy/coverage set; owner-applied workflow wiring now installs through
+it on main. The current main CI failure is the expected missing-file ordering
+issue until PR #34 merges this constraint file; project CI remains Python 3.12.
 
 ### F-08 — External frontend assets have no local fallback
 
@@ -253,7 +252,7 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 1. **Fix F-01** — make reconciliation candidate-aware and add a zero-unclassified-extras regression test.
 2. **Fix F-02** — separate `master_items` from Everything-row count and test with a pending candidate.
 3. **F-03/F-04 are now guarded** — retain the regression tests and review F-08’s optional local asset fallback.
-4. **F-06/F-07 code-side hardening is committed; F-05/F-07 workflow wiring is pending owner action** — apply `WORKFLOW_WEB_EDITOR_GUIDE.md`, then monitor CI/update workflows.
+4. **F-05/F-06/F-07 workflow sequence:** merge PR #34 so `requirements-ci.txt` reaches main, rerun CI, and confirm the owner-applied workflow changes stay green.
 5. **Perform documentation hygiene** — update active schemas/proposals or add a clear `Historical snapshot — do not use for current counts` banner and move obsolete review batches to `archive/`.
 6. **Harden reproducibility/availability** — Python constraints, supported-version CI matrix, and optional vendored frontend assets.
 7. **Close/rebase PR #29 and triage issue #18.**
@@ -270,7 +269,7 @@ After the baseline audit, the owner-selected priority and guard work was applied
 - Added the guard and hardening regression tests. The deterministic suite is now **123/123**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
-Remaining work is the owner workflow-permission step (apply the prepared CI/update snippets), optional F-08 local frontend asset fallback, frontend coverage expansion, and repository housekeeping. Final UI CI run `31263676053` passed all 16 Playwright tests; the Record Type width assertion and drawer focus/section test are green.
+Remaining immediate work is to merge PR #34 so main CI can find `requirements-ci.txt`, then rerun main CI; optional F-08 local frontend asset fallback and repository housekeeping remain. Final UI CI run `31263676053` passed all 16 Playwright tests; the Record Type width assertion and drawer focus/section test are green.
 
 ## 11. Reproduction commands
 

@@ -514,12 +514,10 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   module 88%), all six `--check` modes and the Node syntax checks pass. The
   decision guard includes committed-state, malformed-overlay, and exact-primary
   URL fixtures; source fallback fixtures cover unrelated and ambiguous CSVs.
-- **CI hardening prepared:** `process_data.py` requires the raw header shape and
-  fails on ambiguous fallback files; `requirements-ci.txt` pins the tested
-  Python set. The raw-only CI trigger, constraint install wiring, and
-  Node-24-compatible action upgrades are prepared in
-  `WORKFLOW_WEB_EDITOR_GUIDE.md` but require an owner workflow-permission
-  commit; the Arena push was rejected for lacking `workflows` permission.
-- **Remaining audit work:** apply the workflow snippets, optional local frontend
-  asset fallback (F-08), frontend coverage expansion, and repository
-  housekeeping.
+- **CI hardening owner-applied:** `process_data.py` requires the raw header shape
+  and fails on ambiguous fallback files; `requirements-ci.txt` pins the tested
+  Python set; main now has the raw-only trigger, constraint install wiring, and
+  Node-24-compatible action majors. Main CI currently fails only because
+  `requirements-ci.txt` is not on main until PR #34 merges; rerun CI after merge.
+- **Remaining audit work:** merge PR #34, optional local frontend asset fallback
+  (F-08), and repository housekeeping.

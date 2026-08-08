@@ -241,12 +241,12 @@ inspect the artifact before accepting any live-source update.
 
 - **Workflow fails** → open the run in **Actions**, read the log, and try
   `python process_data.py` locally. The script prints a clear error.
-- **Raw CSV workflow contract (prepared, owner workflow edit pending):** the
-  recommended CI trigger ignores a raw-only push to `main` so it cannot race
-  `Update Spreadsheet`, which regenerates `docs/data.json`. Apply the snippets
-  in `WORKFLOW_WEB_EDITOR_GUIDE.md` before relying on that trigger. A pull
-  request that changes the raw CSV must include the regenerated `docs/data.json`
-  (run `python process_data.py`) so PR CI can validate the complete change.
+- **Raw CSV workflow contract (owner-applied, PR merge prerequisite):** CI on
+  `main` now ignores a raw-only push so it cannot race `Update Spreadsheet`,
+  which regenerates `docs/data.json`. The workflow also uses the pinned
+  `requirements-ci.txt`; merge PR #34 before relying on the new main CI because
+  that file is supplied by the PR. A pull request that changes the raw CSV must
+  include regenerated `docs/data.json` (run `python process_data.py`).
 - **Site shows stale data** → re-run the workflow (or push a CSV change) and
   confirm the Pages deployment finished in **Actions → Pages** / **Environments**.
 - **Table is empty / "Could not load data.json"** → you opened the file via

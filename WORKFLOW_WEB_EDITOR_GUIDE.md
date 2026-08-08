@@ -8,11 +8,12 @@ edits yourself in the GitHub web editor. Each item below is self-contained:
 open the file, find the "Replace this" block, paste the "With this" block over
 it, and commit directly to `main`.
 
-Item 1 is applied (see below). Item 2 is prepared but requires an owner
-web-editor commit because the Arena GitHub App cannot update workflow files
-without the `workflows` permission. The Node 20→22 project-runtime bump was
-already applied (commit `406116f`); Item 2 also upgrades the action runtimes to
-current Node-24-compatible majors.
+Item 1 and Item 2 are now applied on `main` by the owner (the full-file
+blocks below are retained as a copy/paste record). The Node 20→22 project-runtime
+bump was already applied (commit `406116f`); Item 2 upgraded the action runtimes
+to current Node-24-compatible majors. **Important ordering:** the workflow
+changes reference `requirements-ci.txt`, which is supplied by PR #34; merge the
+PR before treating the new main CI as healthy.
 
 ---
 
@@ -77,7 +78,7 @@ that file (revert the typo afterwards).
 
 ---
 
-## Item 2 — Remove raw-output/CI race and upgrade action runtimes — ⏳ OWNER ACTION
+## Item 2 — Remove raw-output/CI race and upgrade action runtimes — ✅ APPLIED ON MAIN
 
 **Why:** a raw-only push to `main` currently starts CI and the raw-data updater
 at the same time. CI can inspect stale `docs/data.json` before the updater's
@@ -85,10 +86,11 @@ bot commit lands. The same raw-output contract must remain explicit for pull
 requests. GitHub's current runner also warns that the old action majors target
 Node 20 internally; the current majors target the supported Node 24 runtime.
 
-The code-side hardening is already in this branch: `process_data.py` validates
-raw headers/fallbacks and `requirements-ci.txt` pins the tested Python set.
-Apply the following workflow edits in the GitHub web editor, then run the
-workflow and confirm CI is green.
+The code-side hardening is in this branch: `process_data.py` validates raw
+headers/fallbacks and `requirements-ci.txt` pins the tested Python set. The
+owner applied the workflow edits on `main`; use the full blocks below as the
+canonical replacement record and verify CI again after PR #34 merges the
+constraint file.
 
 ### `.github/workflows/ci.yml`
 
