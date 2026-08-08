@@ -1,6 +1,19 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
+**Prepared:** 2026-08-08 — latest refresh: full-stack audit on branch
+`arena/019fe098-docsheet` (`FULL_STACK_AUDIT_2026-08-08.md`) + **master 265
+ruling executed** (owner approval, Option A): Veritas product 1552's mangled
+URL verified as the publisher's own canonical link (kept + documented in the
+override/ledger reasons), carrier corrected `audiobook → CD` (`three CD; 2h56m`,
+ledger row 297 + filename proposal row 265 `.m4b → .mp3`), format-inference
+rule hardened (CD markers beat "– Audio" title fallback; malformed
+`https-…` slugs return blank) with 2 new tests (**114 total**), and the
+de-listed US Audible audiobook (B00KZ1QMX8) tracked as a manual lead
+(`data/research_manual_leads.csv`). Memo:
+`archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md`. All six
+`--check` modes green; coverage 91% (floor module 89%); site served live at
+port 8000.
+**Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
 **Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
 **Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
 

@@ -6796,8 +6796,8 @@
     "series": "Media Miscellaneous",
     "year": "2007",
     "month": "01",
-    "format": "audiobook",
-    "format_detail": "",
+    "format": "CD",
+    "format_detail": "three CD; 2h56m",
     "owned": "true",
     "source_url_veritas": "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/",
     "source_url_hay_house": "",
@@ -6808,7 +6808,7 @@
     "notes": "",
     "raw_row_number": "297",
     "candidate_key": "",
-    "proposed_filename": "2007-01 - Golden Word Book Signing.m4b",
+    "proposed_filename": "2007-01 - Golden Word Book Signing.mp3",
     "year_source": "Ledger: recording date 2007"
   },
   {

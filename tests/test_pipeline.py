@@ -573,6 +573,49 @@ class FormatInferenceTests(unittest.TestCase):
                 "source_url_veritas": "https://veritaspub.com/product/1824-highlights-of-the-lectures-of-2003/"}
         self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
 
+    def test_format_inference_cd_markers_beat_audio_title(self) -> None:
+        """A '– Audio' official title does not imply audiobook when the slug or
+        title carries a CD marker (master 265: product 1552 is a 3-CD set sold
+        under the title 'Golden Word Book Signing – Audio')."""
+        product = {
+            "veritas_product_id": "1552",
+            "official_product_url": "https://veritaspub.com/product/golden-word-book-signing-cd/",
+            "official_title": "Golden Word Book Signing – Audio",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url = {product["official_product_url"]: product}
+        item = {"format": "", "title": "", "source_url_veritas": product["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "CD")
+        # slug token alone (no URL map) also resolves
+        item = {"format": "", "title": "", "source_url_veritas": "https://veritaspub.com/product/golden-word-book-signing-cd/"}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "CD")
+        # title-level disc-set evidence resolves even without a cd slug token
+        product2 = {
+            "veritas_product_id": "9999",
+            "official_product_url": "https://veritaspub.com/product/golden-word-book-signing/",
+            "official_title": "Golden Word Book Signing – Audio (Three Compact Disc Set)",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url2 = {product2["official_product_url"]: product2}
+        item = {"format": "", "title": "", "source_url_veritas": product2["official_product_url"]}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url2), "CD")
+
+    def test_format_inference_malformed_slug_returns_blank(self) -> None:
+        """Publisher-verbatim malformed slugs (product 1552's
+        'https-veritaspub-com-product-...' link) carry no carrier signal: the
+        inference must not guess (master 265 ruling 2026-08-08)."""
+        url = "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/"
+        product = {
+            "veritas_product_id": "1552",
+            "official_product_url": url,
+            "official_title": "Golden Word Book Signing – Audio",
+            "official_categories": "Media Miscellaneous",
+        }
+        by_url = {url: product}
+        item = {"format": "", "title": "", "source_url_veritas": url}
+        self.assertEqual(brm.infer_format_from_official_source(item, {}, by_url), "")
+        self.assertEqual(brm.infer_format_from_official_source(item, {}), "")
+
     def test_compact_id_recognition(self) -> None:
         self.assertTrue(brm.is_compact_id("317"))
         self.assertFalse(brm.is_compact_id("019fc4e7-d1e7-7d0b-a52e-a0e4cdf23091"))

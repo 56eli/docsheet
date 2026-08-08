@@ -8,7 +8,7 @@
   },
   {
     "review_sheet": "Manual Leads",
-    "record_count": 1,
+    "record_count": 2,
     "purpose": "Manual edition/copy or research leads outside the master.",
     "source_file": "data/research_manual_leads.csv",
     "current_state": "research lead"
