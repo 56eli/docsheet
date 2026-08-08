@@ -180,12 +180,14 @@ correctly passes them through unchanged by design).
 
 ### S1 — README / INSTRUCTIONS test-count drift (110 vs 112)
 
-- `README.md` line 53: "110 tests, no browser/network needed"
-- `INSTRUCTIONS.md` line 173: "110 deterministic tests"
-- Actual: **112 tests** (handoff §2/§3 and the deep audit already say 112; the
-  two extra tests were the filename-uniqueness guard added 2026-08-07).
+> ✅ **FIXED 2026-08-08:** both files now say **112** (`README.md`:
+> "112 tests, no browser/network needed"; `INSTRUCTIONS.md`:
+> "112 deterministic tests").
 
-One-line fix: update both files to "112".
+- Originally: `README.md` line 53 "110 tests", `INSTRUCTIONS.md` line 173
+  "110 deterministic tests" vs the actual **112 tests** (handoff §2/§3 and the
+  deep audit already said 112; the two extra tests are the filename-uniqueness
+  guard added 2026-08-07).
 
 ### S2 — CI pins Node 20 (EOL 2026-04)
 
@@ -198,18 +200,23 @@ and they match the scripts; the wording is fine, but `fetch_veritas_catalogue
 
 ### S3 — Handoff §5 binding-rules text is stale on the discovery lane
 
-`NEXT_AGENT_HANDOFF.md` §5 still says "only the unreviewed discovery-triage
-lane (`data/official_discovery_queue.csv`, 4 NC rows) still carries free-text
-`audio` pending an owner ruling." The queue is now **0 rows** (all ruled
-2026-08-07; meta `official_discovery_candidates: 0`). The §6 session log
-records the rulings, but the binding-rules section should be corrected so the
-next agent doesn't chase 4 phantom rows.
+> ✅ **FIXED 2026-08-08:** §5 now states the discovery-triage lane was ruled
+> empty on 2026-08-07 (3 NC programs promoted to masters 369–371, Map poster
+> 1560 excluded) and that no free-text `audio` remains anywhere.
+
+Originally: §5 said "the unreviewed discovery-triage lane
+(`data/official_discovery_queue.csv`, 4 NC rows) still carries free-text
+`audio` pending an owner ruling" while the queue is **0 rows** (meta
+`official_discovery_candidates: 0`).
 
 ### S4 — Stale comment in the browser spec
 
-`tests/csv-export.spec.js` line 88: "the Everything view holds 366 curated
-masters" — the master is **365** (309 merged into 221; 246 excluded). The test
-is data-driven so it still passes; only the comment is stale.
+> ✅ **FIXED 2026-08-08:** `tests/csv-export.spec.js` comment now says
+> "365 curated masters".
+
+Originally: "the Everything view holds 366 curated masters" — the master is
+**365** (309 merged into 221; 246 excluded). The test is data-driven so it
+still passed; only the comment was stale.
 
 ### S5 — Sandbox/environment notes (not repo defects, confirmed again)
 
@@ -252,8 +259,10 @@ is data-driven so it still passes; only the comment is stale.
    the full suite green. See `archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md`.
 2. **Owner ruling on C3:** one convention for pre-2000 unknown years (blank vs
    "198X"), then update codes/filenames consistently.
-3. **Quick doc fixes (S1, S3, S4):** 112 tests, empty discovery lane,
-   "365 masters" comment — 5-minute edits I can do on request.
+3. ✅ **Doc drifts (S1, S3, S4) — FIXED 2026-08-08:** README/INSTRUCTIONS
+   "110 tests" → 112, handoff §5 discovery-lane rule corrected, spec comment
+   "366" → "365". Remaining: C4 (`owned` semantics), S2 (Node 22 workflow
+   snippet, owner action), C5 (raw CSV hygiene in the owner's Google Sheet).
 4. **C4:** document `owned` semantics in README (and optionally badge it).
 5. **S2 (Node 20 → 22):** owner applies the workflow snippet
    (`archive/UNBLOCK_INSTRUCTIONS.md`); I can prepare an updated snippet.

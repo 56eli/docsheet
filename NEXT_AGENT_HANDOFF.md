@@ -108,9 +108,11 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   ""; that is normal, not damage.
 - **`item_type` = what a record IS; `format` = its carrier.** DVD lectures are
   `lecture`+`DVD`. The `audio`/`video` medium values were **retired from the
-  `item_type` vocabulary 2026-08-03** — validators reject them; only the
-  unreviewed discovery-triage lane (`data/official_discovery_queue.csv`, 4 NC
-  rows) still carries free-text `audio` pending an owner ruling.
+  `item_type` vocabulary 2026-08-03** — validators reject them everywhere;
+  the last unreviewed discovery-triage lane
+  (`data/official_discovery_queue.csv`) was ruled empty on 2026-08-07 (the 3
+  NC programs promoted to masters 369–371, Map poster 1560 excluded), so no
+  free-text `audio` remains anywhere.
 - **No title-based inference for `series`, and a commercial listing is not
   master identity.** Four records once linked to the wrong edition because of
   title matching.
