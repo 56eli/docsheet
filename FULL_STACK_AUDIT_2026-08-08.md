@@ -163,6 +163,14 @@ explicit "false" rows to a visitor.
 
 ### C5 — Raw-source defects mirrored verbatim into the published view
 
+> 📋 **PLAN PREPARED 2026-08-08:** `archive/RULING_PREP_RAW_CSV_HYGIENE.md`
+> lists the exact 16 cells (3 broken Advaita URLs on lines 28–30, 13
+> `2cds each?` tempid annotations on lines 280–292), what NOT to change (the
+> `where is B-02?` rows are excluded provenance, `SAT/VOL/OFF` tempids are
+> legitimate schemes, line 1 is needed for header=1), and the post-edit
+> follow-up (ledger mirrors + master `legacy_tempid` cleanup on 13 rows).
+> Owner applies the Google-Sheet edits; recommendation: fix all 16.
+
 The source spreadsheet (and the pass-through **Original Spreadsheet** tab +
 `docs/migration-review.json` raw mirrors) still contains:
 
@@ -276,8 +284,12 @@ still passed; only the comment was stale.
    "366" → "365".
 4. ✅ **C4 (`owned` semantics) — FIXED 2026-08-08:** README field semantics
    document `true`/`false`/blank; UI badges now read `Owned` / `Not owned`.
-   Remaining: S2 (Node 22 workflow snippet, owner action), C5 (raw CSV hygiene
-   in the owner's Google Sheet).
+5. **S2 (Node 20 → 22):** ✅ snippet prepared 2026-08-08 in
+   `archive/UNBLOCK_INSTRUCTIONS.md` — owner applies it in the web editor.
+6. **C5 (raw CSV hygiene):** 📋 plan prepared 2026-08-08 in
+   `archive/RULING_PREP_RAW_CSV_HYGIENE.md` — owner applies the 16 cell
+   fixes in the Google Sheet; agent follow-up then cleans the ledger mirrors
+   and the 13 `legacy_tempid` cells.
 4. **C4:** document `owned` semantics in README (and optionally badge it).
 5. **S2 (Node 20 → 22):** owner applies the workflow snippet
    (`archive/UNBLOCK_INSTRUCTIONS.md`); I can prepare an updated snippet.
