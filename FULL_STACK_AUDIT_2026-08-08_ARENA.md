@@ -1,0 +1,274 @@
+# DocSheet Full-Stack & Catalogue Audit — 2026-08-08
+
+**Auditor:** Arena.ai helpful agent — Full-Stack Development / Data Engineering pass  
+**Repository:** `56eli/docsheet`  
+**Commit audited:** `6c96a00e086e37ef8af148c24b1436625899e01f` (`main`, session branch `arena/019fe1a1-docsheet`)  
+**Scope:** raw spreadsheet, review ledger, curated master, official inventories, candidate and edition registries, relationships, taxonomy, generated Pages JSON, frontend, tests, CI/CD, GitHub Pages configuration, and living documentation.
+
+> This is an independent checkpoint audit. It does not replace the historical audit logs already in the repository, and it intentionally does not change catalogue data or implementation code.
+
+## 1. Executive verdict
+
+The **current generated catalogue is internally reproducible and the main CI/Pages deployment is green**, but the repository is not fully audit-clean. I found:
+
+- **2 current operational inconsistencies** that are hidden while all review queues are empty:
+  1. the reconciliation report labels all 63 approved candidate/edition rows as unresolved “draft-only” records;
+  2. `catalogue-meta.json.master_items` is implemented as an Everything-row count, not a curated-master count, so the public “Master records” stat will be wrong as soon as a candidate lane contains a row;
+- **6 engineering/availability guard gaps** that can allow future catalogue drift or frontend unavailability without failing the normal check suite;
+- **several stale living/proposal documents** whose counts and instructions contradict the current generated state;
+- **one workflow race** between the raw-data auto-regenerator and CI;
+- **one open, superseded pull request** and one old open issue requiring repository housekeeping.
+
+The current data itself has no duplicate UUIDs, catalogue codes, filenames, or orphaned Veritas URLs. The two owner-accepted anomalies — the publisher-verbatim malformed URL on master 265 and the `198X` year convention — remain documented and were not reclassified as defects in this audit.
+
+## 2. Verification matrix
+
+All commands below were run from the repository root after installing the declared dependencies in an isolated Python 3.11 virtual environment (`/tmp/docsheet-audit-venv`).
+
+| Check | Result | Notes |
+|---|---:|---|
+| `python -m py_compile *.py` | PASS | All root Python modules compile. |
+| `process_data.py --check` | PASS | 374 raw data rows; 8 published source columns. |
+| `build_research_master.py --check` | PASS | 365 master rows; 72 exclusions; 131 approved overrides; 39 manual candidates validated. |
+| `build_catalogue_pages.py --check` | PASS | 365 Everything rows. |
+| `reconcile_research_master.py --check` | PASS* | The report is byte-current, but its status is semantically misleading; see F-01. |
+| `map_series_taxonomy.py --check` | PASS | 186 mappings; 177 approved, 9 rejected, 0 queued. |
+| `sync_inventory_mirrors.py --check` | PASS | Derived Veritas mirror fields match the master. |
+| `python -m unittest discover tests` | **115/115 PASS** | Offline deterministic suite. |
+| Coverage | **90% PASS** | 1,964 statements; lowest module coverage 88%; configured floor 85%. |
+| Node syntax checks | PASS | `app.js`, Playwright config, and all 3 specs. |
+| `npm ci` / npm audit | PASS | Playwright 1.62.1; 0 reported vulnerabilities. |
+| Local Playwright execution | BLOCKED | All 15 tests stopped before launch because Chromium is not installed in the sandbox. This is environmental, not a test assertion failure. |
+| GitHub CI on audited main commit | PASS | Run `31260234470`: CI success; Pages build/deployment also succeeded. |
+| `fetch_veritas_catalogue.py --check` | BLOCKED | Sandbox TLS EOF when connecting to `veritaspub.com`; offline API replay tests pass and the failure is documented in project instructions. |
+| GitHub Pages configuration | PASS | Source is `main` / `/docs`; status `built`; `.nojekyll` is present. |
+| Markdown links | PASS | 0 broken local Markdown links across 103 Markdown files. |
+| CSP inline script hash | PASS | Computed SHA-256 matches `docs/index.html`. |
+
+## 3. Recomputed current catalogue state
+
+| Area | Current result |
+|---|---:|
+| Raw spreadsheet / ledger | 374 / 374 rows; ledger raw provenance mirrors the CSV with 0 mismatches |
+| Curated master | 365 rows: 309 lecture, 40 book, 8 discussion, 7 highlight, 1 other |
+| Master identifiers | 365 unique UUIDs; 281 unique catalogue codes |
+| Catalogue codes | Lecture/discussion only; 0 duplicates; 19 year-known lecture/discussion rows intentionally have no code because their year was blank when minted |
+| Exclusions | 72 retained raw rows |
+| Work families | 191 works, 341 approved memberships, 365/365 master coverage |
+| Veritas inventory | 191 products: 182 primary-source matches, 3 title matches, 1 normalized-title match, 5 excluded related-material decisions |
+| Veritas source URLs | 336 master rows, all 336 URLs present in the 191-row reviewed inventory; 78 repeated URLs are expected multi-part products |
+| Relationships | 343 rendered rows = 336 derived primary + 7 reviewed related-material rows |
+| Series compilations | 7 reviewed rows |
+| Taxonomy | 186 matched products = 177 approved + 9 rejected + 0 pending |
+| Source overrides | 131/131 approved |
+| Manual candidates | 39/39 promoted; 0 pending |
+| Edition candidates | 24/24 promoted |
+| Filename proposal | 365 rows; 365 unique safe names and 365 unique display names |
+| Ownership | 296 `true`, 25 `false`, 44 blank/not stated; semantics are documented |
+| Year edge cases | 17 blank years: 13 intentional pre-2000 Volume Series + 4 under investigation; 16 Office Series rows use owner-approved `198X` |
+| Published frontend contract | 19 HTML tabs ↔ 19 `app.js` views ↔ 19 JSON view files |
+
+## 4. Verified clean invariants
+
+The following were independently checked and do not need corrective work in this pass:
+
+- Generated CSV/JSON outputs are reproducible from their declared inputs and all six local check modes pass.
+- Raw CSV values mirrored into `migration_review_ledger.csv` match the source by physical raw-row provenance exactly.
+- UUIDs, catalogue codes, proposed filenames, review IDs, promotion keys, mapping IDs, and relationship IDs are unique within their declared tables.
+- All master rows have a valid `work_id`, non-empty title, non-empty `legacy_title`, non-empty `year_source`, non-empty `format`, and a filename proposal.
+- No `audio` or `video` value appears in a controlled `item_type` field; the remaining `audio` strings in Hay House inventory are carrier metadata, not item types.
+- No master has a month without a year, invalid month, book month, or invalid year shape.
+- All 131 source overrides point to existing master/candidate provenance and use HTTPS values.
+- All 7 stored relationship rows point to current inventory URLs/titles and current masters; all 336 derived primary relationships resolve to current Veritas products.
+- Veritas inventory mirror counts and title mirrors are exact; excluded products do not carry accidental master matches.
+- Filename metadata mirrors exactly match the final master; part indexes agree with the reviewed `format_detail` markers.
+- The frontend CSP hash, tab/view/file mapping, Everything schema, Expert-column fields, and CDN SRI hashes are internally consistent.
+- The latest main-branch GitHub CI and Pages deployment completed successfully.
+
+## 5. Findings requiring attention
+
+### F-01 — Reconciliation report misclassifies every promoted non-raw row as unresolved drift
+
+**Severity:** High process/integrity risk  
+**Current visibility:** Internal report and CI artifact; not currently visible in the public table  
+**Evidence:** `RECONCILIATION_REPORT.md`, `reconcile_research_master.py:56-92`
+
+The current report says there are **63 “draft-only CSV records requiring a provenance decision”** and that the outputs are “not yet fully reconciled.” Those 63 rows are not accidental or unreviewed:
+
+- 39 rows are present in the approved manual-candidate promotion registry;
+- 24 rows are present in the approved edition-promotion registry;
+- all 63 have a durable `candidate_key`, and all resolve to current promoted master rows;
+- the normal master build intentionally mints these rows from the promotion layers.
+
+`compare_drafts()` matches rows only by non-empty `raw_row_number`. Candidate/edition rows have no raw row number, so the function unconditionally puts them in `extras`. The report therefore creates a false “resolve before rebuild” state even though `build_research_master.py --check` and `build_catalogue_pages.py --check` pass.
+
+This is more than wording: `reconcile_research_master.py --check` only verifies that the report text is current; it does not fail when `is_reconciled` is false. A future genuine ledger drift can be hidden in the same noisy section, and maintainers may either ignore a real warning or stop a safe build unnecessarily.
+
+**Recommended fix:** compare raw rows by `raw_row_number` and candidate rows by `candidate_key` against the explicit promotion registries, or split the report into “ledger-backed rows” and “approved candidate-backed rows.” Add a regression test asserting the committed state has zero unclassified extras and that all 63 candidate-backed rows are classified as approved provenance.
+
+### F-02 — `catalogue-meta.json.master_items` has the wrong semantic count
+
+**Severity:** Medium runtime/data-contract risk  
+**Current visibility:** Latent; current queues are empty so both counts happen to be 365  
+**Evidence:** `build_catalogue_pages.py:834-837`, `docs/app.js:1590-1610`
+
+The builder sets:
+
+```python
+"master_items": len(items),          # Everything rows, including candidates
+"migrated_items": migrated_items,    # curated master rows only
+```
+
+The frontend uses `master_items` for the chip labelled **“Master records.”** With the current all-master state, both values are 365 and the defect is hidden. A sandbox build with one pending candidate produces:
+
+```text
+master_items = 366
+migrated_items = 365
+record_type master = 365
+record_type candidate_pending_promotion = 1
+```
+
+The public “Master records” stat would then count a review candidate as a curated master. This directly contradicts the repository’s explicit `record_type` boundary.
+
+**Recommended fix:** use `migrated_items` for the master-record stat, rename the current `master_items` field to `everything_items`, or publish both names with unambiguous semantics. Add a test with one pending candidate.
+
+### F-03 — Source-URL relationship coverage silently drops orphaned master links
+
+**Severity:** Medium integrity risk  
+**Current visibility:** No current orphan; future drift can pass normal checks  
+**Evidence:** `build_catalogue_pages.py:257-263`, `build_research_master.py` master assembly
+
+`derive_primary_relationships()` skips a master row when `source_url_veritas` is non-empty but absent from the reviewed Veritas inventory. The master build does not require every populated Veritas URL to exist in the inventory, and the Pages build does not turn a skipped URL into an error. A typo or stale URL can therefore leave a clickable master source in `docs/master.json` while silently removing its primary relationship and relationship evidence.
+
+The current data is clean: 336/336 populated master Veritas URLs resolve. The problem is the missing invariant, not a present orphan.
+
+**Recommended fix:** fail closed on `master.source_url_veritas - inventory.official_product_url`, or emit an explicit unresolved relationship and a review queue row. Add a test for one orphan URL.
+
+### F-04 — Veritas mapping decisions are not contract-checked by the Pages build
+
+**Severity:** Medium review-integrity risk  
+**Current visibility:** Current decision file is clean; stale overlays can reappear without breaking the six local checks  
+**Evidence:** `build_catalogue_pages.py` reads `data/veritas_mapping_decisions.csv` for display but does not replay/validate it against the inventory; `fetch_veritas_catalogue.py:204-302` owns the validation only
+
+The previous product-50491 incident is a concrete precedent: a stale overlay row mapped the product to master 121 while the inventory/master had correctly moved it to primary master 278. The stale row was visible in the Veritas Decisions sheet and would have overridden deterministic matching on the next live refresh, yet the ordinary catalogue build checks did not detect it.
+
+The current 9 decisions are valid, and `sync_inventory_mirrors.py --check` is green. However, the invariant is still split across a live-network refresh script rather than enforced offline against committed inventory/master inputs.
+
+**Recommended fix:** extract the decision-overlay validator into shared code and run it during the Pages/catalogue check (or add a committed-inventory replay test that proves every decision is non-primary and title/UUID-valid). A stale decision must fail before it reaches the published review sheet.
+
+### F-05 — Raw spreadsheet auto-regeneration and CI have a race / PR contract mismatch
+
+**Severity:** Medium CI reliability risk  
+**Current visibility:** Latent until a raw CSV-only change is merged  
+**Evidence:** `.github/workflows/update_spreadsheet.yml:11-42`, `.github/workflows/ci.yml:27-54`
+
+`Update Spreadsheet` runs only on a **push to `main`** when the raw CSV changes and then auto-commits `docs/data.json`. CI runs independently on the same push and requires `python process_data.py --check` before that auto-commit exists. A raw-data change can therefore produce this sequence:
+
+1. push raw CSV change;
+2. CI sees stale `docs/data.json` and fails;
+3. update workflow regenerates and auto-commits `docs/data.json`;
+4. the generated commit may not receive a new CI run because it is made by `GITHUB_TOKEN`.
+
+The same mismatch exists on pull requests: the update workflow does not run for PRs, but PR CI still requires the generated raw payload to already be committed. The curated generators have the same general “generated output must be included in the PR” contract, but only the raw pipeline claims to auto-regenerate after merge.
+
+**Recommended fix:** choose one contract explicitly. Either require and validate generated outputs in the PR (remove the post-merge auto-commit path), or make CI generate into a temporary directory and compare without failing on expected raw-output drift, then let one ordered workflow publish the generated file. Add concurrency/dependency handling so CI and regeneration cannot race.
+
+### F-06 — Root fallback source selection can publish the wrong CSV
+
+**Severity:** Low/Medium data-integrity risk  
+**Current visibility:** Latent when the preferred filename is missing  
+**Evidence:** `process_data.py:69-79`
+
+When the preferred source CSV is absent, `find_source_csv()` selects the first alphabetically sorted `*.csv` in the repository root. The current repository has multiple root CSVs, including the raw spreadsheet, `lecture_series_review.csv`, and `migration_review_ledger.csv`. If the raw spreadsheet is renamed or removed, the fallback can silently serialize a review ledger or bootstrap CSV into `docs/data.json`.
+
+The fallback exists for convenience and the current default path is present, but it is unsafe for a published data pipeline.
+
+**Recommended fix:** fail closed unless exactly one fallback has the expected raw header shape, or require an explicit replacement path. Keep a test proving an unrelated root CSV is rejected.
+
+### F-07 — Reproducibility is weaker than the documentation implies
+
+**Severity:** Low engineering risk  
+**Evidence:** `requirements.txt` uses `pandas>=2.0,<4`; `requirements-dev.txt` uses `coverage>=7.0`; there is no Python lockfile or supported-version matrix.
+
+Node is locked by `package-lock.json`, but Python runtime dependencies are open-ended across major pandas 2 and 3 and all future coverage 7 releases. The current outputs are deterministic under the audited environment, but a dependency upgrade can change CSV parsing or JSON serialization without a repository diff to the dependency specification.
+
+**Recommended fix:** pin a tested pandas/coverage range (or maintain a lock/constraints file), document supported Python versions, and run the pipeline against the chosen matrix in CI.
+
+### F-08 — External frontend assets have no local fallback
+
+**Severity:** Low availability risk  
+**Evidence:** `docs/index.html` loads Tabulator CSS/JS from `cdn.jsdelivr.net` and fonts from Google Fonts.
+
+SRI hashes and CSP are correctly configured, but if the CDN is unavailable or blocked, `app.js` cannot create a Tabulator table and the published catalogue becomes unusable. This is a deployment resilience issue rather than a current failure; GitHub Pages and the latest CI browser run are healthy.
+
+**Recommended fix:** vendor the pinned Tabulator assets under `docs/vendor/` or provide a local fallback while retaining SRI for remote assets.
+
+## 6. Documentation and repository-state drift
+
+These are not catalogue-build failures, but they make the repository unsafe to hand to a new maintainer because root documents present obsolete counts or already-resolved work as current. The repository’s README calls root policies, schemas, proposals, and status files “living documents,” so each should either be updated or clearly marked as a historical snapshot and moved under `archive/`.
+
+| File | Stale/current contradiction | Current computed state |
+|---|---|---:|
+| `EDITION_MODEL_PROPOSAL.md` | Header says applied but reports 341 master / 387 Everything / 318 relationships and later says no families/editions are approved. | 365 master / 365 Everything / 343 relationships / 191 works / 341 memberships; 24 editions promoted. |
+| `PRODUCT_RELATIONSHIP_SCHEMA.md` | “As of 2026-08-04” says 333 = 325 derived + 8 related across 165 products. | 343 = 336 derived + 7 related across 187 products. |
+| `SERIES_TAXONOMY_MAPPING.md` | Baseline says 179 matched, 169 approved, 10 rejected and references a 6-row queue. | 186 matched, 177 approved, 9 rejected, 0 queue. |
+| `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 365 proposal rows; 365/365 safe/display unique. |
+| `MIGRATION_REVIEW_LEDGER.md` | Says the Advaita URL on raw rows 28–30 is quarantined and should be resolved; current raw URL and ledger mirror were fixed and are usable. | Rows 28–30 contain the corrected canonical URL and a 2026-08-08 fix note. |
+| `LECTURE_SERIES_REVIEW.md` | Calls the 198-row batch review-only, says no IDs changed, and asks the owner to resolve three Advaita links. | The batch has been incorporated into the reviewed ledger/master; links are fixed and compact IDs exist. |
+| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 115 tests, 90%, 6 checks; current format has 0 blanks and no deprecated item types. |
+| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 9 decisions, 115 tests. |
+| `README.md` | The “every entry” historical verification sentence still says 195 verifiable lecture months from the 2026-08-03 snapshot; current date-bearing master/source evidence has grown since then. | Treat the sentence as a dated historical claim or refresh it with a reproducible current metric. |
+
+The old counts inside `archive/` and the superseded sections explicitly labelled as history are acceptable. The problem is that several root files are both linked from active documentation and written in present-tense “applied/current” language.
+
+## 7. Frontend and test coverage observations
+
+- The 19-tab mapping is correct, and the current CI run proves the 15 browser specs pass in GitHub’s Chromium environment.
+- Local browser tests cannot be independently reproduced in this sandbox until `npx playwright install --with-deps chromium` succeeds; the local run produced 15 launch failures, not 15 assertion failures.
+- The current browser suite does **not** actually exercise every claim made by `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md`: it does not cover all 19 tabs, dark-mode persistence, the row-details drawer/copy action, or every failure/empty state. The report’s statement that browser coverage verifies the “entire 19-tab layout, view states, expert toggle, and keyboard accessibility” is broader than the test files.
+- `app.js` is a large single IIFE (~1,770 lines) with no browser unit tests and several persistence/race-sensitive paths. Rapid tab switching can allow an earlier `fetch()` response to render after a later view activation; static Pages makes this uncommon, but an activation token/request cancellation would make the behavior deterministic.
+- The frontend correctly avoids `innerHTML` for row values and only turns `http(s)` values into links. No secret or credential was found in tracked files.
+
+## 8. GitHub/project hygiene
+
+- Current `main` is healthy: latest CI and Pages runs passed at audited commit `6c96a00`.
+- PR [#29](https://github.com/56eli/docsheet/pull/29) remains open with an older `arena/019fe01c-docsheet` head and a failed historical CI run. Its description contains superseded 113-test/243-streaming counts and work that was later replaced by merged PRs #30–#33. It should be closed or rebased so maintainers do not mistake it for the active delivery path.
+- Issue [#18](https://github.com/56eli/docsheet/issues/18) remains open from 2026-08-03 for an ownership cross-check; it should be either assigned a current owner/next action or explicitly deferred.
+- The local checkout is shallow/grafted, which is a sandbox property rather than a repository defect; GitHub retains the full PR history.
+
+## 9. Recommended order of work
+
+1. **Fix F-01** — make reconciliation candidate-aware and add a zero-unclassified-extras regression test.
+2. **Fix F-02** — separate `master_items` from Everything-row count and test with a pending candidate.
+3. **Add F-03/F-04 contract guards** — orphaned master URLs and stale Veritas decision overlays must fail offline before Pages publication.
+4. **Resolve F-05** — decide whether generated raw output is PR-owned or post-merge workflow-owned; remove the race.
+5. **Perform documentation hygiene** — update active schemas/proposals or add a clear `Historical snapshot — do not use for current counts` banner and move obsolete review batches to `archive/`.
+6. **Harden reproducibility/availability** — Python constraints, supported-version CI matrix, and optional vendored frontend assets.
+7. **Close/rebase PR #29 and triage issue #18.**
+8. **Expand browser coverage** for the remaining tabs, empty states, drawer, dark mode, settings persistence, and rapid tab switching.
+
+## 10. Reproduction commands
+
+```bash
+python3 -m venv /tmp/docsheet-audit-venv
+/tmp/docsheet-audit-venv/bin/pip install -r requirements-dev.txt
+
+/tmp/docsheet-audit-venv/bin/python -m py_compile *.py
+/tmp/docsheet-audit-venv/bin/python process_data.py --check
+/tmp/docsheet-audit-venv/bin/python build_research_master.py --check
+/tmp/docsheet-audit-venv/bin/python build_catalogue_pages.py --check
+/tmp/docsheet-audit-venv/bin/python reconcile_research_master.py --check
+/tmp/docsheet-audit-venv/bin/python map_series_taxonomy.py --check
+/tmp/docsheet-audit-venv/bin/python sync_inventory_mirrors.py --check
+/tmp/docsheet-audit-venv/bin/python -m unittest discover tests
+/tmp/docsheet-audit-venv/bin/coverage run -m unittest discover tests
+/tmp/docsheet-audit-venv/bin/coverage report
+
+node --check docs/app.js
+node --check playwright.config.js
+for spec in tests/*.spec.js; do node --check "$spec"; done
+npm ci
+npm run test:e2e
+```
+
+`npm run test:e2e` requires the Chromium browser bundle. `fetch_veritas_catalogue.py --check` additionally requires live access to `veritaspub.com`; the sandbox currently returns a TLS EOF, while the committed offline replay tests cover its matching and retry logic.
