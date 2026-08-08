@@ -5027,7 +5027,7 @@
   {
     "record_type": "master",
     "uuid": "202",
-    "work_id": "w-power-vs-force",
+    "work_id": "w-volume-i-power-vs-force-muscle-testing",
     "catalog_code": "",
     "legacy_tempid": "VOL101",
     "title": "Volume I: Power vs. Force Muscle Testing",
@@ -5052,7 +5052,7 @@
   {
     "record_type": "master",
     "uuid": "203",
-    "work_id": "w-volume-i-david-hawkins-applied-kinesiolo",
+    "work_id": "w-volume-i-power-vs-force-muscle-testing",
     "catalog_code": "",
     "legacy_tempid": "VOL102",
     "title": "Volume I: Power vs. Force Muscle Testing",
@@ -5077,7 +5077,7 @@
   {
     "record_type": "master",
     "uuid": "204",
-    "work_id": "w-volume-ii-consciousness-and-addiction-pa",
+    "work_id": "w-volume-ii-consciousness-and-addiction",
     "catalog_code": "",
     "legacy_tempid": "VOL201",
     "title": "Volume II: Consciousness and Addiction",
@@ -5102,7 +5102,7 @@
   {
     "record_type": "master",
     "uuid": "205",
-    "work_id": "w-volume-ii-consciousness-and-addiction-pa-1",
+    "work_id": "w-volume-ii-consciousness-and-addiction",
     "catalog_code": "",
     "legacy_tempid": "VOL202",
     "title": "Volume II: Consciousness and Addiction",
@@ -5127,7 +5127,7 @@
   {
     "record_type": "master",
     "uuid": "206",
-    "work_id": "w-volume-iii-advanced-states-of-consciousn",
+    "work_id": "w-volume-iii-advanced-states-of-consciousness",
     "catalog_code": "",
     "legacy_tempid": "VOL301",
     "title": "Volume III: Advanced States of Consciousness",
@@ -5152,7 +5152,7 @@
   {
     "record_type": "master",
     "uuid": "207",
-    "work_id": "w-volume-iii-advanced-states-of-consciousn-1",
+    "work_id": "w-volume-iii-advanced-states-of-consciousness",
     "catalog_code": "",
     "legacy_tempid": "VOL302",
     "title": "Volume III: Advanced States of Consciousness",
@@ -5177,7 +5177,7 @@
   {
     "record_type": "master",
     "uuid": "208",
-    "work_id": "w-volume-iv-how-to-tell-the-truth-about-an",
+    "work_id": "w-volume-iv-consciousness-how-to-tell-the-truth",
     "catalog_code": "",
     "legacy_tempid": "VOL401",
     "title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
@@ -5202,7 +5202,7 @@
   {
     "record_type": "master",
     "uuid": "209",
-    "work_id": "w-volume-iv-how-to-tell-the-truth-about-an-1",
+    "work_id": "w-volume-iv-consciousness-how-to-tell-the-truth",
     "catalog_code": "",
     "legacy_tempid": "VOL402",
     "title": "Volume IV: Consciousness: How to Tell the Truth About Anything",
@@ -5227,7 +5227,7 @@
   {
     "record_type": "master",
     "uuid": "210",
-    "work_id": "w-volume-v-undoing-the-barriers-to-spiritu",
+    "work_id": "w-volume-v-undoing-the-barriers-to-spiritual-progress",
     "catalog_code": "",
     "legacy_tempid": "VOL501",
     "title": "Volume V: Undoing the Barriers to Spiritual Progress",
@@ -5252,7 +5252,7 @@
   {
     "record_type": "master",
     "uuid": "211",
-    "work_id": "w-volume-v-undoing-the-barriers-to-spiritu-1",
+    "work_id": "w-volume-v-undoing-the-barriers-to-spiritual-progress",
     "catalog_code": "",
     "legacy_tempid": "VOL502",
     "title": "Volume V: Undoing the Barriers to Spiritual Progress",
@@ -5277,7 +5277,7 @@
   {
     "record_type": "master",
     "uuid": "212",
-    "work_id": "w-volume-v-undoing-the-barriers-to-spiritu-2",
+    "work_id": "w-volume-v-undoing-the-barriers-to-spiritual-progress",
     "catalog_code": "",
     "legacy_tempid": "VOL503",
     "title": "Volume V: Undoing the Barriers to Spiritual Progress",
@@ -5352,7 +5352,7 @@
   {
     "record_type": "master",
     "uuid": "215",
-    "work_id": "w-become-that-which-you-are-june-2004-part",
+    "work_id": "w-become-that-which-you-are-june-2004",
     "catalog_code": "LECTURE-2004-019",
     "legacy_tempid": "",
     "title": "Become That Which You Are",
@@ -5377,7 +5377,7 @@
   {
     "record_type": "master",
     "uuid": "216",
-    "work_id": "w-become-that-which-you-are-june-2004-part-1",
+    "work_id": "w-become-that-which-you-are-june-2004",
     "catalog_code": "LECTURE-2004-020",
     "legacy_tempid": "",
     "title": "Become That Which You Are",
@@ -5402,7 +5402,7 @@
   {
     "record_type": "master",
     "uuid": "217",
-    "work_id": "w-become-that-which-you-are-june-2004-part-2",
+    "work_id": "w-become-that-which-you-are-june-2004",
     "catalog_code": "LECTURE-2004-021",
     "legacy_tempid": "",
     "title": "Become That Which You Are",
@@ -5427,7 +5427,7 @@
   {
     "record_type": "master",
     "uuid": "218",
-    "work_id": "w-love-is-a-way-of-being-january-2004-part",
+    "work_id": "w-love-is-a-way-of-being-january-2004",
     "catalog_code": "LECTURE-2004-022",
     "legacy_tempid": "",
     "title": "Love is a Way of Being",
@@ -5452,7 +5452,7 @@
   {
     "record_type": "master",
     "uuid": "219",
-    "work_id": "w-love-is-a-way-of-being-january-2004-part-1",
+    "work_id": "w-love-is-a-way-of-being-january-2004",
     "catalog_code": "LECTURE-2004-023",
     "legacy_tempid": "",
     "title": "Love is a Way of Being",
@@ -5477,7 +5477,7 @@
   {
     "record_type": "master",
     "uuid": "220",
-    "work_id": "w-love-is-a-way-of-being-january-2004-part-2",
+    "work_id": "w-love-is-a-way-of-being-january-2004",
     "catalog_code": "LECTURE-2004-024",
     "legacy_tempid": "",
     "title": "Love is a Way of Being",
@@ -5527,7 +5527,7 @@
   {
     "record_type": "master",
     "uuid": "222",
-    "work_id": "w-the-presence-of-spiritual-awareness-part",
+    "work_id": "w-the-presence-of-spiritual-awareness",
     "catalog_code": "LECTURE-2004-025",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness",
@@ -5552,7 +5552,7 @@
   {
     "record_type": "master",
     "uuid": "223",
-    "work_id": "w-the-presence-of-spiritual-awareness-part-1",
+    "work_id": "w-the-presence-of-spiritual-awareness",
     "catalog_code": "LECTURE-2004-026",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness",
@@ -5577,7 +5577,7 @@
   {
     "record_type": "master",
     "uuid": "224",
-    "work_id": "w-the-presence-of-spiritual-awareness-part-2",
+    "work_id": "w-the-presence-of-spiritual-awareness",
     "catalog_code": "LECTURE-2004-027",
     "legacy_tempid": "",
     "title": "The Presence of Spiritual Awareness",
@@ -5627,7 +5627,7 @@
   {
     "record_type": "master",
     "uuid": "226",
-    "work_id": "w-mind-heart-and-service-part1",
+    "work_id": "w-mind-heart-and-service",
     "catalog_code": "LECTURE-2003-021",
     "legacy_tempid": "",
     "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
@@ -5652,7 +5652,7 @@
   {
     "record_type": "master",
     "uuid": "227",
-    "work_id": "w-mind-heart-and-service-part2",
+    "work_id": "w-mind-heart-and-service",
     "catalog_code": "LECTURE-2003-022",
     "legacy_tempid": "",
     "title": "Mind, Heart and Service: The Pathway of Devotional Non-Duality",
@@ -5677,7 +5677,7 @@
   {
     "record_type": "master",
     "uuid": "228",
-    "work_id": "w-spiritual-will-part1",
+    "work_id": "w-spiritual-will",
     "catalog_code": "LECTURE-2004-028",
     "legacy_tempid": "",
     "title": "Spiritual Will Inspiring Q & A",
@@ -5702,7 +5702,7 @@
   {
     "record_type": "master",
     "uuid": "229",
-    "work_id": "w-spiritual-will-part2",
+    "work_id": "w-spiritual-will",
     "catalog_code": "LECTURE-2004-029",
     "legacy_tempid": "",
     "title": "Spiritual Will Inspiring Q & A",
@@ -5727,7 +5727,7 @@
   {
     "record_type": "master",
     "uuid": "230",
-    "work_id": "w-verification-of-spiritual-realities-part",
+    "work_id": "w-verification-of-spiritual-realities",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities",
@@ -5752,7 +5752,7 @@
   {
     "record_type": "master",
     "uuid": "231",
-    "work_id": "w-verification-of-spiritual-realities-part-1",
+    "work_id": "w-verification-of-spiritual-realities",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities",
@@ -5777,7 +5777,7 @@
   {
     "record_type": "master",
     "uuid": "232",
-    "work_id": "w-verification-of-spiritual-realities-part-2",
+    "work_id": "w-verification-of-spiritual-realities",
     "catalog_code": "",
     "legacy_tempid": "",
     "title": "Verification of Spiritual Realities",

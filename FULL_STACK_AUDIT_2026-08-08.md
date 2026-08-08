@@ -324,7 +324,10 @@ families; the families' own evidence notes say "part rows of one lecture").
 Worst case (DP-2): master **202** (Volume I Part 1) is a member of
 `w-power-vs-force`, the **book** work (286) — its evidence note flags
 "REQUIRES RULING (see 286)" and the 2026-08-07 product rulings never
-re-adjudicated it. Proposed ruling (27 → 11 works; 208 → 192 works, 341
-memberships unchanged): `archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`.
-Related minor (DP-3): 26 family canonical titles still embed raw
-`PART1`/`PART2` markers — cleaned by the same ruling.
+re-adjudicated it. **RULED 2026-08-08 (owner approval): merged** — the 11 part
+groups now share 11 works (208 → **193** works, 341 memberships unchanged,
+coverage 365/365; 202 moved into `w-volume-i-power-vs-force-muscle-testing`,
+`w-power-vs-force` keeps only the book 286; 26 PART-marker canonical titles
+cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
+`archive/RULING_PREP_WORK_FAMILY_PART_MERGE.md`; all six `--check` modes,
+114 tests, and node checks green after regenerating.

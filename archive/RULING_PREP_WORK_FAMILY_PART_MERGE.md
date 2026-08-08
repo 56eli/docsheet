@@ -31,8 +31,9 @@ the filename proposal groups them as one `[1/3]…[3/3]` part-set.
 | Spiritual Will Inspiring Q & A | 228, 229 | `…-part1`, `…-part2` |
 | Verification of Spiritual Realities | 230, 231, 232 | `…-part`, `…-part-1`, `…-part-2` |
 
-Totals: **27 rows across 27 works**; work count **208**, memberships **341**
-(unchanged by the fix), coverage 365/365.
+Totals: **27 rows** (26 solo per-part works + row 202 inside the book work);
+work count **208**, memberships **341** (unchanged by the fix), coverage
+365/365.
 
 **Why it happened:** the D6a bulk grouping (owner-approved 2026-08-03) keyed
 works by **exact normalized raw title** — and the raw titles of these parts
@@ -55,8 +56,8 @@ Enlightenment rows.
 
 ## 2. Proposed fix (single ruling)
 
-Merge the 11 part groups into **11 works** (27 → 11 works; work count
-**208 → 192**; memberships stay 341; coverage stays 365/365):
+Merge the 11 part groups into **11 works** (26 solo works + 202 → 11 works;
+work count **208 → 193**; memberships stay 341; coverage stays 365/365):
 
 | New `work_id` | Members | New `canonical_work_title` (cleaned, = master title) |
 |---|---|---|
