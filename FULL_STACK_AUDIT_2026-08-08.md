@@ -401,3 +401,29 @@ cleaned; 27 `work_id` cells re-synced in the filename proposal). Memo:
   mantra recording, `Media Miscellaneous`, audiobook, documented promotion
   note); all 8 `discussion` rows are `streaming` in `Discussion Series`;
   highlights are 7 streaming rows in `Lecture Highlights`.
+
+## 10. Deeper data pass QA-5 (2026-08-08, frontend↔data contract)
+
+Frontend↔data contract sweep (tabs ↔ VIEWS map, view files, column presets,
+record-type labels): **everything matches except one gap** —
+
+- Tabs (15) ↔ VIEWS keys (15) ↔ JSON files: all present, all files exist.
+- Master column preset: every priority field exists in `master.json`
+  (`edition`/`year_month` are derived merges).
+- **Finding (contract gap):** the README promises *"the master exposes
+  `legacy_title` … so the verbatim raw spreadsheet text is always
+  exportable"* and the owner's 2026-08-07 visitor-first directive hid
+  `legacy_title` and `proposed_filename(_display)` behind the **Expert
+  columns** toggle — but the published Everything sheet
+  (`docs/master.json`, built from `EVERYTHING_FIELDS` in
+  `build_catalogue_pages.py`) **does not carry `legacy_title`,
+  `proposed_filename_display`, or `candidate_key`** (only the master CSV
+  does). Net effect: the Expert toggle has two dead entries
+  (`legacy_title`, `proposed_filename_display`) and the Everything CSV export
+  cannot include the verbatim raw title — the README's "always exportable"
+  claim holds only via the separate Original Spreadsheet tab.
+  Options: (a) restore the two fields to the Everything view (add
+  `legacy_title` to `EVERYTHING_FIELDS` and derive `proposed_filename_display`
+  from the filename proposal sheet — matches the owner directive, makes the
+  Expert toggle live); or (b) declare them unpublished and remove them from
+  the README/expert list. **(a) is recommended.**
