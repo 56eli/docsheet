@@ -472,6 +472,7 @@
       anchor.rel = "noopener noreferrer";
       anchor.title = text;
       anchor.textContent = urlLabelFor(field, text);
+      anchor.setAttribute("aria-label", `${anchor.textContent} (opens in new tab)`);
       return anchor;
     }
     if (STATUS_FIELDS.has(field)) {
@@ -594,6 +595,7 @@
     anchor.rel = "noopener noreferrer";
     anchor.title = value;
     anchor.textContent = urlLabelFor(cell.getColumn().getField(), value);
+    anchor.setAttribute("aria-label", `${anchor.textContent} (opens in new tab)`);
     return anchor;
   }
 
@@ -997,6 +999,9 @@
       const selected = tab.dataset.view === viewName;
       tab.classList.toggle("active", selected);
       tab.setAttribute("aria-selected", String(selected));
+      // Roving tabindex: only the active tab stays in the Tab order
+      // (Phase 2 a11y, 2026-08-08).
+      tab.setAttribute("tabindex", selected ? "0" : "-1");
     });
 
     try {
@@ -1097,6 +1102,25 @@
     document.querySelectorAll(".dataset-tab").forEach((tab) => {
       tab.addEventListener("click", () => activateView(tab.dataset.view));
     });
+    // Arrow-key roving navigation across the grouped tab bar (Phase 2 a11y).
+    const tabsNav = document.querySelector(".dataset-tabs");
+    if (tabsNav) {
+      tabsNav.addEventListener("keydown", (e) => {
+        const list = [...document.querySelectorAll(".dataset-tab")];
+        if (list.length === 0) return;
+        const current = list.findIndex((tab) => tab.dataset.view === activeView);
+        let target = -1;
+        if (e.key === "ArrowRight") target = (current + 1) % list.length;
+        else if (e.key === "ArrowLeft") target = (current - 1 + list.length) % list.length;
+        else if (e.key === "Home") target = 0;
+        else if (e.key === "End") target = list.length - 1;
+        else return;
+        e.preventDefault();
+        const tab = list[target];
+        tab.focus();
+        activateView(tab.dataset.view);
+      });
+    }
     await activateView(activeView);
   }
 

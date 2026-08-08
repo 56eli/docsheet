@@ -898,3 +898,39 @@ body {
   line-height: 1.5;
   text-align: center;
 }
+
+/* ================================================================== *
+ *  2026-08-08 redesign Phase 2 (accessibility) + mobile polish
+ * ================================================================== */
+
+/* Consistent visible focus ring for every interactive control (keyboard
+   users); taps do not trigger :focus-visible, so touch stays clean. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.dataset-tab:focus-visible { outline-offset: -2px; border-radius: 0; }
+.url-link:focus-visible { outline-offset: 1px; }
+
+/* Respect reduced-motion: kill transitions/animations broadly (the loading
+   spinner is already covered above). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile: touch-friendly tabs and tighter Phase-1 components. */
+@media (max-width: 720px) {
+  .dataset-tab { min-height: 44px; }            /* WCAG-friendly hit target */
+  .stats-strip { padding: 6px 10px; gap: 6px; }
+  .stat-chip { padding: 3px 8px; font-size: 11px; }
+  .stat-chip b { font-size: 12px; }
+  .empty-state { margin: 16px 8px; padding: 20px 14px; font-size: 13px; }
+}

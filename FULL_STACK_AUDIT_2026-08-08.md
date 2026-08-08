@@ -546,4 +546,9 @@ changes). **Phase 1 (IA) applied on this branch:**
 - **Frozen Title** already existed in the master preset (verified).
 
 `node --check` green; 115/115 tests; pushed to `origin/arena/019fe098-docsheet`
-(PR #30). Phases 2 (a11y) and 3 (theme) remain pending owner pick.
+(PR #30). **Phase 2 (a11y) also applied:** arrow-key roving tabs with roving tabindex, global
+:focus-visible rings (tab override preserved), broad prefers-reduced-motion kill-switch,
+external-link aria-labels ("… (opens in new tab)"), 44px mobile tab hit targets, mobile stats
+strip/empty-state polish; badge contrast computed AA (pending 6.0:1, excluded 6.9:1 — no color
+change needed); Esc-to-clear and the spinner reduced-motion rule already existed. Phase 3 (theme)
+remains pending owner pick.

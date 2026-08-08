@@ -1,6 +1,6 @@
 # Site UX / IA Redesign Proposal — 2026-08-08
 
-**Prepared:** 2026-08-08 · **Status:** ✅ **Phase 1 APPLIED** (owner pick, same day) — tab grouping/reorder, stats strip, empty-state cards implemented in `docs/` (Title was already frozen); Phases 2–3 pending · **Branch:** `arena/019fe098-docsheet`
+**Prepared:** 2026-08-08 · **Status:** ✅ **Phases 1–2 APPLIED** (owner pick, same day) — tab grouping/reorder + stats strip + empty-state cards (Phase 1) and arrow-key roving tabs, focus rings, reduced-motion, external-link aria-labels, mobile hit targets (Phase 2); badge contrast verified AA (no change needed); Esc-to-clear and Title-frozen already existed. Phase 3 (theme) pending · **Branch:** `arena/019fe098-docsheet`
 **Applies to:** `docs/index.html`, `docs/app.js`, `docs/style.css`, Playwright specs. **No data changes.**
 **Grounding:** current implementation reviewed line-by-line (15 flat tabs, Tabulator 6.5.2 + midnight dark theme, CSS custom properties + `color-mix`, badge classes `status-*`, aria-live footer, persisted Expert-columns toggle, 44px drawer close target).
 
