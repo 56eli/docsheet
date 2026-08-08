@@ -1,6 +1,6 @@
 # Ruling Prep — Master 265 (Golden Word Book Signing – Audio)
 
-**Prepared:** 2026-08-08 · **Status:** awaiting owner ruling · **Branch:** `arena/019fe098-docsheet`
+**Prepared:** 2026-08-08 · **Status:** ✅ **EXECUTED** (owner approval, Option A + audiobook lead, 2026-08-08) · **Branch:** `arena/019fe098-docsheet`
 **Audit reference:** `FULL_STACK_AUDIT_2026-08-08.md`, findings **C1** and **C2**.
 **Rule of thumb applied:** edit reviewed inputs only (`migration_review_ledger.csv`,
 `data/filename_proposal_YYYYMM.csv`, `data/research_master_source_overrides.csv`,
