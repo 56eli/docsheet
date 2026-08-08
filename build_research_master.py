@@ -1016,10 +1016,10 @@ def validate_master_items_integrity(items: list[dict[str, str]]) -> None:
                 "reference_url_1, not in the carrier detail"
             )
 
-        if not item_type and uuid != "246":
+        if not item_type:
             raise ValueError(
                 f"Master record {uuid} ({title!r}) has an empty item_type; "
-                "only UUID 246 is permitted as a deferred untyped record"
+                "every master record must have a content class"
             )
 
         url = item.get("source_url_veritas", "").strip()
@@ -1383,10 +1383,20 @@ def build_master() -> MasterBuild:
         audible_url = ""
         amazon_url = ""
         ref1 = ""
-        if candidate.get("source_name", "").strip() == "veritas":
-            veritas_url = candidate["official_product_url"]
+        source_name = candidate.get("source_name", "").strip()
+        official_url = candidate.get("official_product_url", "").strip()
+        if source_name == "veritas":
+            veritas_url = official_url
+        elif source_name in ("audible", "hayhouse"):
+            # These have dedicated source columns; don't duplicate in reference_url_1
+            # (source overrides will populate the dedicated column after promotions)
+            pass
+        elif official_url.startswith("https://www.audible.com/") or official_url.startswith("https://www.hayhouse.com/"):
+            # URL is for a dedicated source column; don't duplicate in reference_url_1
+            # (source overrides will populate the dedicated column after promotions)
+            pass
         else:
-            ref1 = candidate["official_product_url"]
+            ref1 = official_url
         items.append({
             "uuid": candidate["uuid"], "work_id": "", "catalog_code": code, "legacy_tempid": "",
             "title": candidate["candidate_title"], "legacy_title": candidate["candidate_title"],

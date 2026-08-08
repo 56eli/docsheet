@@ -1846,7 +1846,7 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(rows["331"]["proposed_filename"], "1995 - Power vs. Force (Veritas).m4b")
 
     def test_cleaned_multi_part_titles_keep_part_detail_in_master(self) -> None:
-        """Title cleanup must not hide PART1–3 from the edition/export contract."""
+        """Title cleanup must not hide Part 1–3 from the edition/export contract."""
         with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
             master = {row["uuid"]: row for row in csv.DictReader(handle)}
         expected = {
@@ -2110,18 +2110,11 @@ class DefensiveDepthTests(unittest.TestCase):
         finally:
             tempdir.cleanup()
 
-    def test_untyped_master_record_allowlist(self) -> None:
-        """Only UUID 246 is allowed to have an empty item_type."""
+    def test_untyped_master_record_not_allowed(self) -> None:
+        """Every master record must have a content class — no untyped exceptions."""
         item = {"uuid": "999", "title": "Some Title", "item_type": "", "work_id": "w-test"}
-        with self.assertRaisesRegex(ValueError, "only UUID 246 is permitted"):
+        with self.assertRaisesRegex(ValueError, "every master record must have a content class"):
             brm.validate_master_items_integrity([item])
-        valid_untyped = {
-            "uuid": "246",
-            "title": "In the World But Not of It – Audio",
-            "item_type": "",
-            "work_id": "w-in-the-world-but-not-of-it-audio",
-        }
-        brm.validate_master_items_integrity([valid_untyped])
 
     def test_malformed_work_id_fails_integrity(self) -> None:
         """A work_id not starting with 'w-' must fail integrity validation."""
