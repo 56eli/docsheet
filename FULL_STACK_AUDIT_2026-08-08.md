@@ -136,6 +136,10 @@ contain `X`).
   — blank + `year_source` note (Volume-Series style, keeps codes from carrying
   a fake year), or a documented display convention (e.g. "c. 1980s") that is
   still kept out of the code/filename. Needs an owner ruling; both are valid.
+  **Ruling-prep memo drafted: `archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md`
+  (recommends Option 2: keep `198X`, document the convention in README, and
+  polish the UI — `c. 1980s` display + deterministic year sorter; Option 1 =
+  blank the year, which removes 16 codes and is fully specified there too).**
 
 ### C4 — `owned` column mixes three states with no documented semantics
 
