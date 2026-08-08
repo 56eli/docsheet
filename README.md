@@ -102,7 +102,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (365) |
+| `master` | A curated master catalogue record (362) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -229,8 +229,9 @@ stores the `candidate:` prefix (e.g. `candidate:manual-veritas-54219`) while
 the promotion registries (`data/manual_candidate_promotions.csv`,
 `data/edition_promotions.csv`) store the bare key. A third convention: despite
 its name, the master `uuid` is a **stable compact integer id**, not a UUID —
-values run 1–372 with gaps where duplicate records were retired (246, 249,
-264, 281, 284, 302, 309); ids are never reissued or renumbered.
+values run 1–372 with gaps where duplicate records were retired (225, 226,
+227, 246, 249, 264, 281, 284, 302, 309); ids are never reissued or
+renumbered.
 
 ### Edition model (work × carrier)
 
