@@ -260,7 +260,7 @@ After the baseline audit, the owner-selected priority and guard work was applied
 - Added four guard regression tests plus the prior candidate/meta tests. The deterministic suite is now **121/121**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
-The remaining F-05–F-08 findings are the next hardening/documentation work. The most recent PR CI run before this guard follow-up passed all validation steps and all 15 Playwright tests; GitHub also emitted the action-runtime Node 20→24 warning recorded in the baseline verification notes.
+The remaining F-05–F-08 findings are the next hardening/documentation work. Final PR CI run `31261684679` passed all validation steps and all 15 Playwright tests; GitHub also emitted the action-runtime Node 20→24 warning recorded in the baseline verification notes.
 
 ## 11. Reproduction commands
 
