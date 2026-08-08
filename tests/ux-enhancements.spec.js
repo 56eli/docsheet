@@ -5,16 +5,13 @@ async function waitForTable(page) {
   await page.locator('.tabulator-row').first().waitFor();
 }
 
-// Tabulator virtualizes the row DOM with maxHeight:100%, so use the data
-// layer ("active" = after filters) for counts rather than .tabulator-row.
+// Tabulator virtualizes the row DOM with maxHeight:100%, so read the active
+// (post-filter) row count from the footer status that updateSearchStatus
+// keeps in sync ("Showing: N" or "Showing: N of M").
 async function activeRowCount(page) {
-  return page.evaluate(() => {
-    if (!window.Tabulator) return 0;
-    const tableEl = document.querySelector('#spreadsheet .tabulator');
-    const table = tableEl && tableEl.tabulator;
-    if (!table) return 0;
-    return table.getDataCount('active');
-  });
+  const text = await page.locator('#search-status').textContent();
+  const match = /Showing:\s*(\d+)/.exec(text || '');
+  return match ? parseInt(match[1], 10) : 0;
 }
 
 test('faceted filters narrow the Everything view and add removable chips', async ({ page }) => {

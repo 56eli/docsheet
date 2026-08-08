@@ -1090,8 +1090,13 @@
 
       // Size the column to its widest rendered entry (see width engine above);
       // long free-text columns are capped so one verbose note cannot dominate.
+      // The frozen proposed-file-name column is capped tighter still: it is a
+      // lead column, and an over-wide frozen block overlaps the non-frozen
+      // columns' click targets (caught by the column-layout sort spec).
       const measured = measuredColumnWidth(key, col.title, data);
-      const cap = /title|note|reason|purpose|role/i.test(key) ? MAX_TEXT_WIDTH : MAX_COLUMN_WIDTH;
+      let cap = MAX_COLUMN_WIDTH;
+      if (/title|note|reason|purpose|role/i.test(key)) cap = MAX_TEXT_WIDTH;
+      if (key === "proposed_filename") cap = 340;
       col.width = Math.min(measured, cap);
 
       // Numeric columns count up in numeric order, never lexically. Without an
