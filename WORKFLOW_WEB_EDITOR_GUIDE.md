@@ -152,6 +152,214 @@ pip install -r requirements-dev.txt -c requirements-ci.txt
 
 ---
 
+## Full-file replacement blocks — copy/paste option
+
+If you prefer not to edit individual snippets, replace each workflow file in
+full. The blocks below are the complete intended files for the current branch.
+They contain no secrets or repository-specific tokens.
+
+### Full `.github/workflows/ci.yml`
+
+```yaml
+# ============================================================================
+# CI — read-only validation for pull requests and main.
+# ============================================================================
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+    # The raw-source updater owns docs/data.json regeneration after a raw-only
+    # main push. Do not race it with a second CI check against stale output.
+    paths-ignore:
+      - "hawkins archive clone - Sheet1.csv"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    name: Validate data pipeline and site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt -c requirements-ci.txt
+      - name: Compile all Python scripts
+        run: python -m py_compile *.py
+      - name: Verify raw spreadsheet Pages payload matches its source
+        run: python process_data.py --check
+      - name: Verify research master matches the review ledger
+        run: python build_research_master.py --check
+      - name: Verify Pages catalogue matches its inputs
+        run: python build_catalogue_pages.py --check
+      - name: Verify reconciliation report is current
+        run: python reconcile_research_master.py --check
+      - name: Verify series-taxonomy mapping matches its inputs
+        run: python map_series_taxonomy.py --check
+      - name: Verify Veritas inventory mirrors match the master
+        run: python sync_inventory_mirrors.py --check
+      - name: Run deterministic pipeline test suite
+        run: python -m unittest discover tests
+      - name: Enforce the coverage floor (85%)
+        run: |
+          pip install -r requirements-dev.txt -c requirements-ci.txt
+          coverage run -m unittest discover tests
+          coverage report
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Check JavaScript syntax
+        run: |
+          node --check docs/app.js
+          node --check playwright.config.js
+          for spec in tests/*.spec.js; do node --check "$spec"; done
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+      - name: Run browser smoke tests
+        run: npm run test:e2e
+        env:
+          CI: "true"
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
+```
+
+### Full `.github/workflows/update_spreadsheet.yml`
+
+```yaml
+# ============================================================================
+# Update Spreadsheet — regenerates docs/data.json from the source CSV.
+# ============================================================================
+name: Update Spreadsheet
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "hawkins archive clone - Sheet1.csv"
+permissions:
+  contents: write
+concurrency:
+  group: update-spreadsheet
+  cancel-in-progress: true
+jobs:
+  update-data:
+    name: Regenerate docs/data.json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt -c requirements-ci.txt
+      - name: Run the pipeline
+        run: python process_data.py
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Update docs data via Live Spreadsheet pipeline"
+          file_pattern: docs/data.json
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+```
+
+### Full `.github/workflows/map_veritas_catalogue.yml`
+
+```yaml
+name: Map Veritas Catalogue
+
+on:
+  workflow_dispatch:
+
+# A refresh is intentionally review-only. The workflow writes a candidate
+# inventory and diff artifact; a reviewer applies approved mapping decisions
+# and commits the reviewed inventory through a normal branch change.
+permissions:
+  contents: read
+
+concurrency:
+  group: map-veritas-catalogue-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  map-catalogue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref }}
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Fetch reviewed inventory candidate
+        run: >
+          python fetch_veritas_catalogue.py
+          --output data/veritas_official_products_candidate.csv
+      - name: Compare candidate with reviewed inventory
+        id: inventory-diff
+        shell: bash
+        run: |
+          set +e
+          git diff --no-index -- \
+            data/veritas_official_products.csv \
+            data/veritas_official_products_candidate.csv \
+            > data/veritas_inventory_diff.patch
+          status=$?
+          if [ "$status" -gt 1 ]; then
+            exit "$status"
+          fi
+          if [ "$status" -eq 1 ]; then
+            echo "A reviewed inventory update is required; inspect the artifact diff." >&2
+            exit 1
+          fi
+          echo "Candidate matches the reviewed inventory."
+      - name: Upload candidate and diff for review
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: veritas-inventory-review-${{ github.run_id }}
+          path: |
+            data/veritas_official_products_candidate.csv
+            data/veritas_inventory_diff.patch
+          if-no-files-found: warn
+```
+
+### Web-editor apply checklist
+
+1. Open each workflow on `main` in GitHub and select **Edit this file**.
+2. Replace the entire file with the matching block above.
+3. Commit directly to `main` (workflow files need the owner/workflows permission).
+4. Confirm the next CI run is green and its action-runtime warning is gone.
+5. For a raw CSV change, run `python process_data.py` locally in the PR so
+   `docs/data.json` is included before merging; after merge, the updater owns
+   the raw-only `main` regeneration path.
+
+---
+
 ## Already applied (no action needed)
 
 ### Node 20 → 22 — ✅ applied as commit `406116f`
