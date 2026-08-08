@@ -143,6 +143,12 @@ contain `X`).
 
 ### C4 — `owned` column mixes three states with no documented semantics
 
+> ✅ **FIXED 2026-08-08:** README "Field semantics" now documents the
+> vocabulary — `true` = owned, `false` = explicitly not owned, blank = not
+> stated (minted editions/programs without a raw ownership marker); the site
+> badges render `Owned` / `Not owned` (blank cells stay empty), while exports
+> keep the raw `true`/`false`/empty values.
+
 `owned` values across the master: `true` 296, `false` 25, **empty 44**
 (highlights, NC/Hay House programs, Veritas edition rows 327–331, etc.).
 Empty is used both for "unknown" and (via candidates with blank
@@ -261,8 +267,11 @@ still passed; only the comment was stale.
    "198X"), then update codes/filenames consistently.
 3. ✅ **Doc drifts (S1, S3, S4) — FIXED 2026-08-08:** README/INSTRUCTIONS
    "110 tests" → 112, handoff §5 discovery-lane rule corrected, spec comment
-   "366" → "365". Remaining: C4 (`owned` semantics), S2 (Node 22 workflow
-   snippet, owner action), C5 (raw CSV hygiene in the owner's Google Sheet).
+   "366" → "365".
+4. ✅ **C4 (`owned` semantics) — FIXED 2026-08-08:** README field semantics
+   document `true`/`false`/blank; UI badges now read `Owned` / `Not owned`.
+   Remaining: S2 (Node 22 workflow snippet, owner action), C5 (raw CSV hygiene
+   in the owner's Google Sheet).
 4. **C4:** document `owned` semantics in README (and optionally badge it).
 5. **S2 (Node 20 → 22):** owner applies the workflow snippet
    (`archive/UNBLOCK_INSTRUCTIONS.md`); I can prepare an updated snippet.

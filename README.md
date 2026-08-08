@@ -180,6 +180,12 @@ also unknown carry a **blank** `year` with a labelled `year_source` instead
 (e.g. `Blank: intentional pre-2000 (Volume Series)`, `Blank: under
 investigation`).
 
+`owned` records collection status with three values: `true` (owned), `false`
+(explicitly not owned), and **blank** (not stated — e.g. minted edition rows
+and NC/Hay House programs that have no raw spreadsheet ownership marker). The
+site renders it as a badge (`Owned` / `Not owned`) and leaves blank cells
+empty; exports keep the raw `true`/`false`/empty values.
+
 ### Edition model (work × carrier)
 
 Since 2026-08-03 the master models **one row per edition** of a work: a work

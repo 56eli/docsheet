@@ -617,6 +617,12 @@
     if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
       return RECORD_TYPE_LABELS[value];
     }
+    // Owned vocabulary: true = owned, false = explicitly not owned, empty =
+    // not stated (minted editions/programs without a raw ownership marker).
+    if ((field === "owned" || field === "proposed_owned") &&
+        (value === "true" || value === "false")) {
+      return value === "true" ? "Owned" : "Not owned";
+    }
     return value.replace(/_/g, " ");
   }
 
