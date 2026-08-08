@@ -2029,10 +2029,9 @@
     }
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
+    // One delegated listener avoids double-handling Tab on header controls
+    // while still receiving key events from every link/button in the drawer.
     rowDetails.addEventListener("keydown", trapRowDetailsFocus);
-    [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn].filter(Boolean).forEach((control) => {
-      control.addEventListener("keydown", trapRowDetailsFocus);
-    });
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
     }
