@@ -1,13 +1,44 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 (post-D-01-collapse verification) — current handoff for
-branch `arena/019fe2db-docsheet` (PR #39, open). See
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (current independent audit +
+**Prepared:** 2026-08-08 (post-PR-#39 session #2: fresh audit + N-01
+owned-vocabulary fix + doc-drift batch) — current handoff for branch
+`arena/019fe329-docsheet`. See `FULL_STACK_AUDIT_2026-08-08_ARENA_V2.md` (this
+session's full-stack audit; applied-fix postscript in §9). Headline results
+this session:
+- **Fresh full-stack audit (`FULL_STACK_AUDIT_2026-08-08_ARENA_V2.md`):** all
+  six `--check` modes, 125/125 tests, 91% coverage re-verified on `bbe8b01`;
+  every README count recomputed exactly from committed data; 5 new findings
+  (N-01…N-05) reported and all previously open items (D-03…D-08, B-01…B-03,
+  DOC-01/DOC-02/DOC-05) re-verified as still present at audit time.
+- **N-01 owned-vocabulary fix applied (owner-selected "normalize at build"):**
+  `build_research_master.py` `normalize_owned()` emits canonical lowercase
+  `true`/`false`/blank from all three write sites and hard-fails with a named
+  source on anything else; master CSV/JSON + `docs/master.json` regenerated
+  (**295 `true`, 25 `false`, 42 blank**, uniform everywhere). The site Owned
+  facet/badge now counts all 295 owned records (previously 21 — the 274
+  raw-derived `True` rows rendered as "Not stated"/literal "True"). The
+  hand-maintained `migration_review_ledger.csv` was not rewritten.
+- **Doc-drift batch applied:** DOC-01 (declared-current ARENA audit figures
+  bumped to the `bbe8b01` state with a state-refresh note), DOC-02 (top
+  summary + §2 sandbox block now say 9 `ux-enhancements` tests / 18 browser
+  tests), N-02 (earlier duplicate audit renamed to
+  `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_EARLIER_PASS.md`; root keeps
+  the canonical name; README layout lists the full audit set), N-03 (this
+  header: PR #39 marked MERGED), DOC-05 (`data/edition_candidates.csv`
+  normalized CRLF → LF).
+- **Re-verification after the batch:** all six `--check` modes, 125/125
+  tests, 91% coverage (floor 85%) green; regenerated catalogue artifacts
+  byte-identical after the CSV line-ending normalization.
+
+**Previous (2026-08-08 post-D-01-collapse session, branch
+`arena/019fe2db-docsheet`, PR #39 — since MERGED into `main` as `bbe8b01`).**
+See
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (that session's independent audit +
 §10 postscript with before/after counts) and the session log at the bottom of
 §6. The declared-current Arena audit
 (`FULL_STACK_AUDIT_2026-08-08_ARENA.md`) and the fresh-eyes pass
 (`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) remain at root; earlier
-2026-08-08 audits are in `archive/`. Headline results this session:
+2026-08-08 audits are in `archive/`. Headline results that session:
 - **Independent full-stack audit (`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`):**
   all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
   Python 3.11 venv (pandas 3.0.5 / coverage 7.15.4); independent pandas probes
@@ -91,8 +122,8 @@ session:
   filename with muted extension; carrier-color dots in Edition; "Copy file
   name" drawer action; work-group row striping; per-view sort/scroll
   persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
-  New `tests/ux-enhancements.spec.js` (7 browser tests; suite now 16 browser
-  tests).
+  New `tests/ux-enhancements.spec.js` (now 9 browser tests; suite now 18
+  browser tests).
 - **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
   now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
   `archive/UNBLOCK_INSTRUCTIONS.md` record it applied.
@@ -184,8 +215,8 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 16 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 7); don't burn time installing locally.
+  suite (3 spec files / 18 tests: `column-layout` 4, `csv-export` 5,
+  `ux-enhancements` 9); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -511,7 +542,7 @@ Requested by owner after the audit: "start fixing everything", then "redo the wh
 ## 2026-08-08 Session 2 (arena/019fe11d-docsheet)
 
 Independent full-stack audit + catalogue fix + UX rework. Report:
-`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`; UX backlog:
+`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_EARLIER_PASS.md`; UX backlog:
 `UX_REWORK_SUGGESTIONS.md`; web-editor workflow guide:
 `WORKFLOW_WEB_EDITOR_GUIDE.md`.
 

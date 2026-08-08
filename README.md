@@ -87,7 +87,7 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the audit pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (declared current) and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, the audit set `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (declared current), `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (current independent pass), and `FULL_STACK_AUDIT_2026-08-08_ARENA_V2.md` (post-PR-#39 pass, incl. the N-01 owned-vocabulary fix record), `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,

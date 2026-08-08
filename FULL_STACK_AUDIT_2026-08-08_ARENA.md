@@ -6,6 +6,8 @@
 **Scope:** raw spreadsheet, review ledger, curated master, official inventories, candidate and edition registries, relationships, taxonomy, generated Pages JSON, frontend, tests, CI/CD, GitHub Pages configuration, and living documentation.
 
 > This is an independent checkpoint audit. It does not replace the historical audit logs already in the repository, and it intentionally does not change catalogue data or implementation code.
+>
+> **State refresh 2026-08-08 (post-PR-#39):** the D-01 duplicate-row collapse (365 → 362 masters) was applied after the runs below; all baseline figures in this document that moved because of it have been bumped to the `bbe8b01` state (**362 masters / 75 exclusions / 134 overrides / 278 codes / 340 = 333+7 relationships / 338 memberships / 362 filename rows / 125 tests / 18 browser tests**). Structural findings (F-01/F-02 and successors) are unaffected.
 
 ## 1. Executive verdict
 
@@ -29,8 +31,8 @@ All commands below were run from the repository root after installing the declar
 |---|---:|---|
 | `python -m py_compile *.py` | PASS | All root Python modules compile. |
 | `process_data.py --check` | PASS | 374 raw data rows; 8 published source columns. |
-| `build_research_master.py --check` | PASS | 365 master rows; 72 exclusions; 131 approved overrides; 39 manual candidates validated. |
-| `build_catalogue_pages.py --check` | PASS | 365 Everything rows. |
+| `build_research_master.py --check` | PASS | 362 master rows; 75 exclusions; 134 approved overrides; 39 manual candidates validated. |
+| `build_catalogue_pages.py --check` | PASS | 362 Everything rows. |
 | `reconcile_research_master.py --check` | PASS* | The report is byte-current, but its status is semantically misleading; see F-01. |
 | `map_series_taxonomy.py --check` | PASS | 186 mappings; 177 approved, 9 rejected, 0 queued. |
 | `sync_inventory_mirrors.py --check` | PASS | Derived Veritas mirror fields match the master. |
@@ -50,20 +52,20 @@ All commands below were run from the repository root after installing the declar
 | Area | Current result |
 |---|---:|
 | Raw spreadsheet / ledger | 374 / 374 rows; ledger raw provenance mirrors the CSV with 0 mismatches |
-| Curated master | 365 rows: 309 lecture, 40 book, 8 discussion, 7 highlight, 1 other |
-| Master identifiers | 365 unique UUIDs; 281 unique catalogue codes |
+| Curated master | 362 rows: 306 lecture, 40 book, 8 discussion, 7 highlight, 1 other |
+| Master identifiers | 362 unique UUIDs; 278 unique catalogue codes |
 | Catalogue codes | Lecture/discussion only; 0 duplicates; 19 year-known lecture/discussion rows intentionally have no code because their year was blank when minted |
 | Exclusions | 72 retained raw rows |
-| Work families | 191 works, 341 approved memberships, 365/365 master coverage |
+| Work families | 191 works, 338 approved memberships, 362/362 master coverage |
 | Veritas inventory | 191 products: 186 primary-source matches, 0 title matches, 0 normalized-title matches, 5 excluded related-material decisions |
 | Veritas source URLs | 336 master rows, all 336 URLs present in the 191-row reviewed inventory; 78 repeated URLs are expected multi-part products |
-| Relationships | 343 rendered rows = 336 derived primary + 7 reviewed related-material rows |
+| Relationships | 340 rendered rows = 333 derived primary + 7 reviewed related-material rows |
 | Series compilations | 7 reviewed rows |
 | Taxonomy | 186 matched products = 177 approved + 9 rejected + 0 pending |
-| Source overrides | 131/131 approved |
+| Source overrides | 134/134 approved |
 | Manual candidates | 39/39 promoted; 0 pending |
 | Edition candidates | 24/24 promoted |
-| Filename proposal | 365 rows; 365 unique safe names and 365 unique display names |
+| Filename proposal | 362 rows; 362 unique safe names and 362 unique display names |
 | Ownership | 296 `true`, 25 `false`, 44 blank/not stated; semantics are documented |
 | Year edge cases | 17 blank years: 13 intentional pre-2000 Volume Series + 4 under investigation; 16 Office Series rows use owner-approved `198X` |
 | Published frontend contract | 19 HTML tabs ↔ 19 `app.js` views ↔ 19 JSON view files |
@@ -78,7 +80,7 @@ The following were independently checked and do not need corrective work in this
 - All master rows have a valid `work_id`, non-empty title, non-empty `legacy_title`, non-empty `year_source`, non-empty `format`, and a filename proposal.
 - No `audio` or `video` value appears in a controlled `item_type` field; the remaining `audio` strings in Hay House inventory are carrier metadata, not item types.
 - No master has a month without a year, invalid month, book month, or invalid year shape.
-- All 131 source overrides point to existing master/candidate provenance and use HTTPS values.
+- All 134 source overrides point to existing master/candidate provenance and use HTTPS values.
 - All 7 stored relationship rows point to current inventory URLs/titles and current masters; all 336 derived primary relationships resolve to current Veritas products.
 - Veritas inventory mirror counts and title mirrors are exact; excluded products do not carry accidental master matches.
 - Filename metadata mirrors exactly match the final master; part indexes agree with the reviewed `format_detail` markers.
@@ -109,7 +111,7 @@ This is more than wording: `reconcile_research_master.py --check` only verifies 
 ### F-02 — `catalogue-meta.json.master_items` has the wrong semantic count
 
 **Severity:** Medium runtime/data-contract risk  
-**Current visibility:** Latent; current queues are empty so both counts happen to be 365  
+**Current visibility:** Latent; current queues are empty so both counts happen to be 362  
 **Evidence:** `build_catalogue_pages.py:834-837`, `docs/app.js:1590-1610`
 
 The builder sets:
@@ -119,12 +121,12 @@ The builder sets:
 "migrated_items": migrated_items,    # curated master rows only
 ```
 
-The frontend uses `master_items` for the chip labelled **“Master records.”** With the current all-master state, both values are 365 and the defect is hidden. A sandbox build with one pending candidate produces:
+The frontend uses `master_items` for the chip labelled **“Master records.”** With the current all-master state, both values are 362 and the defect is hidden. A sandbox build with one pending candidate produces:
 
 ```text
-master_items = 366
-migrated_items = 365
-record_type master = 365
+master_items = 363
+migrated_items = 362
+record_type master = 362
 record_type candidate_pending_promotion = 1
 ```
 
@@ -220,14 +222,14 @@ At the baseline commit these were not catalogue-build failures, but they made th
 
 | File | Stale/current contradiction | Current computed state |
 |---|---|---:|
-| `EDITION_MODEL_PROPOSAL.md` | Header says applied but reports 341 master / 387 Everything / 318 relationships and later says no families/editions are approved. | 365 master / 365 Everything / 343 relationships / 191 works / 341 memberships; 24 editions promoted. |
-| `PRODUCT_RELATIONSHIP_SCHEMA.md` | “As of 2026-08-04” says 333 = 325 derived + 8 related across 165 products. | 343 = 336 derived + 7 related across 187 products. |
+| `EDITION_MODEL_PROPOSAL.md` | Header says applied but reports 341 master / 387 Everything / 318 relationships and later says no families/editions are approved. | 362 master / 362 Everything / 340 relationships / 191 works / 338 memberships; 24 editions promoted. |
+| `PRODUCT_RELATIONSHIP_SCHEMA.md` | “As of 2026-08-04” says 333 = 325 derived + 8 related across 165 products. | 340 = 333 derived + 7 related across 186 products. |
 | `SERIES_TAXONOMY_MAPPING.md` | Baseline says 179 matched, 169 approved, 10 rejected and references a 6-row queue. | 186 matched, 177 approved, 9 rejected, 0 queue. |
-| `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 365 proposal rows; 365/365 safe/display unique. |
+| `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 362 proposal rows; 362/362 safe/display unique. |
 | `MIGRATION_REVIEW_LEDGER.md` | Says the Advaita URL on raw rows 28–30 is quarantined and should be resolved; current raw URL and ledger mirror were fixed and are usable. | Rows 28–30 contain the corrected canonical URL and a 2026-08-08 fix note. |
 | `LECTURE_SERIES_REVIEW.md` | Calls the 198-row batch review-only, says no IDs changed, and asks the owner to resolve three Advaita links. | The batch has been incorporated into the reviewed ledger/master; links are fixed and compact IDs exist. |
-| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 123 tests, 91%, 6 checks; current format has 0 blanks and no deprecated item types. |
-| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 5 decisions, 123 tests, 91% coverage. |
+| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 125 tests, 91%, 6 checks; current format has 0 blanks and no deprecated item types. |
+| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 362 master rows, 340 relationships, 5 decisions, 125 tests, 91% coverage. |
 | `README.md` | The “every entry” historical verification sentence still says 195 verifiable lecture months from the 2026-08-03 snapshot; current date-bearing master/source evidence has grown since then. | Treat the sentence as a dated historical claim or refresh it with a reproducible current metric. |
 
 The old counts inside `archive/` and the superseded sections explicitly labelled as history are acceptable. The problem is that several root files are both linked from active documentation and written in present-tense “applied/current” language.
@@ -266,7 +268,7 @@ After the baseline audit, the owner-selected priority and guard work was applied
 - **F-02:** `catalogue-meta.json.master_items` now reports the curated master count (`migrated_items`) rather than the Everything-row count; a pending-candidate regression test keeps the “Master records” stat correct.
 - **F-03:** Pages validation now rejects any populated master Veritas URL absent from the reviewed inventory.
 - **F-04:** Pages validation now checks decision IDs/status/titles/notes against the committed inventory and rejects a decision whose product URL is an exact master primary URL. Four stale rows (53062, 50398, 50378, 50432) were removed; the overlay is now 5 excluded-related-material rows.
-- Added the guard and hardening regression tests. The deterministic suite is now **123/123**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
+- Added the guard and hardening regression tests. The deterministic suite is now **125/125**, coverage is **91%**, the lowest module is 88%, and all six generator checks plus Node syntax checks remain green.
 - Regenerated `RECONCILIATION_REPORT.md`, inventory/decision Pages mirrors, and the affected decision documents. No raw/master rows changed; four stale mapping decisions were intentionally removed under the owner-selected primary-source ruling.
 
 Remaining immediate work is to merge PR #34 so main CI can find `requirements-ci.txt`, then rerun main CI; optional F-08 local frontend asset fallback and repository housekeeping remain. Final UI CI run `31263676053` passed all 16 Playwright tests; the Record Type width assertion and drawer focus/section test are green.
@@ -323,10 +325,10 @@ those historical measurements.
 | Local Playwright browser execution | **BLOCKED** — Chromium bundle is absent in this sandbox; all 18 tests stop before assertion/launch. GitHub CI remains the browser authority. |
 | Live Veritas refresh and direct Pages curl | **BLOCKED in sandbox** by TLS handshake failure; this is an environment limitation, not a failed data check. |
 
-The catalogue remains internally consistent: 365 curated records (309 lecture,
-40 book, 8 discussion, 7 highlight, 1 other), 281 unique codes, 191 reviewed
-Veritas products, 336 derived primary + 7 reviewed related relationships, 191
-works/341 approved memberships, 365 unique safe/display filenames, and zero
+The catalogue remains internally consistent: 362 curated records (306 lecture,
+40 book, 8 discussion, 7 highlight, 1 other), 278 unique codes, 191 reviewed
+Veritas products, 333 derived primary + 7 reviewed related relationships, 191
+works/338 approved memberships, 362 unique safe/display filenames, and zero
 orphaned master Veritas URLs, duplicate UUIDs, duplicate codes, or duplicate
 filenames.
 

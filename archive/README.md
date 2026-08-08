@@ -17,9 +17,11 @@ and moved here in the 2026-08-08 audit-noise cleanup:
   historical session logs).
 - `FULL_STACK_AUDIT_2026-08-08.md` — 2026-08-08 base audit (sections 1–14).
 - `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md` — 2026-08-08 deep-dive companion.
-- `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` — 2026-08-08 independent
-  baseline audit (still the historical-baseline reference in
-  `NEXT_AGENT_HANDOFF.md`).
+- `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_EARLIER_PASS.md` — 2026-08-08
+  independent baseline audit (115-test state; self-marked historical). Renamed
+  2026-08-08 to un-collide with the later, **current** independent pass
+  (`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`, 125-test state) now at the
+  repository root.
 
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07
