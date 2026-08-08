@@ -9,7 +9,7 @@
 
 ## 1. Executive verdict
 
-The **current generated catalogue is internally reproducible and the main CI/Pages deployment is green**, but the repository is not fully audit-clean. I found:
+The **current generated catalogue is internally reproducible and the main CI/Pages deployment is green**, but the repository is not fully audit-clean. At the baseline commit I found the following; the two priority operational findings (F-01/F-02) were fixed in the follow-up recorded in §10:
 
 - **2 current operational inconsistencies** that are hidden while all review queues are empty:
   1. the reconciliation report labels all 63 approved candidate/edition rows as unresolved “draft-only” records;
@@ -34,8 +34,8 @@ All commands below were run from the repository root after installing the declar
 | `reconcile_research_master.py --check` | PASS* | The report is byte-current, but its status is semantically misleading; see F-01. |
 | `map_series_taxonomy.py --check` | PASS | 186 mappings; 177 approved, 9 rejected, 0 queued. |
 | `sync_inventory_mirrors.py --check` | PASS | Derived Veritas mirror fields match the master. |
-| `python -m unittest discover tests` | **115/115 PASS** | Offline deterministic suite. |
-| Coverage | **90% PASS** | 1,964 statements; lowest module coverage 88%; configured floor 85%. |
+| `python -m unittest discover tests` | **117/117 PASS** | Offline deterministic suite after the F-01/F-02 follow-up fixes. |
+| Coverage | **91% PASS** | 1,972 statements; lowest module coverage 88%; configured floor 85%. |
 | Node syntax checks | PASS | `app.js`, Playwright config, and all 3 specs. |
 | `npm ci` / npm audit | PASS | Playwright 1.62.1; 0 reported vulnerabilities. |
 | Local Playwright execution | BLOCKED | All 15 tests stopped before launch because Chromium is not installed in the sandbox. This is environmental, not a test assertion failure. |
@@ -215,8 +215,8 @@ These are not catalogue-build failures, but they make the repository unsafe to h
 | `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` | Baseline/files section still says 363 rows and contains 356/363 historical intermediate counts while the same document later says 365. | 365 proposal rows; 365/365 safe/display unique. |
 | `MIGRATION_REVIEW_LEDGER.md` | Says the Advaita URL on raw rows 28–30 is quarantined and should be resolved; current raw URL and ledger mirror were fixed and are usable. | Rows 28–30 contain the corrected canonical URL and a 2026-08-08 fix note. |
 | `LECTURE_SERIES_REVIEW.md` | Calls the 198-row batch review-only, says no IDs changed, and asks the owner to resolve three Advaita links. | The batch has been incorporated into the reviewed ledger/master; links are fixed and compact IDs exist. |
-| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 115 tests, 90%, 6 checks; current format has 0 blanks and no deprecated item types. |
-| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 9 decisions, 115 tests. |
+| `CATALOGUE_READABILITY_ROADMAP.md` | Historical proposal ends with “102 tests, 92%, all 5 checks,” and describes old format counts. | 117 tests, 90%, 6 checks; current format has 0 blanks and no deprecated item types. |
+| `REVIEW_MODEL_SLIM_ANALYSIS.md` | Dated analysis still presents 356 master rows, 333 relationships, 18 decisions, and 100 tests as the project state. | 365 master rows, 343 relationships, 9 decisions, 117 tests. |
 | `README.md` | The “every entry” historical verification sentence still says 195 verifiable lecture months from the 2026-08-03 snapshot; current date-bearing master/source evidence has grown since then. | Treat the sentence as a dated historical claim or refresh it with a reproducible current metric. |
 
 The old counts inside `archive/` and the superseded sections explicitly labelled as history are acceptable. The problem is that several root files are both linked from active documentation and written in present-tense “applied/current” language.
@@ -247,7 +247,18 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 7. **Close/rebase PR #29 and triage issue #18.**
 8. **Expand browser coverage** for the remaining tabs, empty states, drawer, dark mode, settings persistence, and rapid tab switching.
 
-## 10. Reproduction commands
+## 10. Follow-up fixes applied after the baseline audit
+
+After the baseline audit, the two priority fixes selected by the owner were applied:
+
+- **F-01:** reconciliation now matches raw rows by `raw_row_number` and promoted manual/edition rows by `candidate_key`; the committed reconciliation report now shows 0 unexplained extras and a complete verification result.
+- **F-02:** `catalogue-meta.json.master_items` now reports the curated master count (`migrated_items`) rather than the Everything-row count; a pending-candidate regression test keeps the “Master records” stat correct.
+- Added two regression tests for candidate provenance and the committed reconciliation state. The deterministic suite is now **117/117**, coverage is **91%**, and all six generator checks plus Node syntax checks remain green.
+- Regenerated `RECONCILIATION_REPORT.md` from the corrected comparison logic. No catalogue rows or review decisions were changed.
+
+The remaining F-03–F-08 findings are unchanged and are the next hardening/documentation work.
+
+## 11. Reproduction commands
 
 ```bash
 python3 -m venv /tmp/docsheet-audit-venv
@@ -272,3 +283,6 @@ npm run test:e2e
 ```
 
 `npm run test:e2e` requires the Chromium browser bundle. `fetch_veritas_catalogue.py --check` additionally requires live access to `veritaspub.com`; the sandbox currently returns a TLS EOF, while the committed offline replay tests cover its matching and retry logic.
+cover its matching and retry logic.
+gic.
+ retry logic.

@@ -51,11 +51,11 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 115 tests, no browser/network needed
+python -m unittest discover tests          # 117 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
 2026-08-08; every pipeline module is ≥ 88%. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;

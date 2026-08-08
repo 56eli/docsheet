@@ -832,7 +832,11 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         OUT_FILENAME_PROPOSAL: json_text(filename_proposal),
         OUT_PUBLISHERS: json_text(PUBLISHERS),
         OUT_META: json_text({
-            "master_items": len(items),
+            # ``master_items`` is the curated master count, not the Everything
+            # row count. Everything may also contain pending/discovered
+            # candidates, so the frontend must not label those rows as master
+            # records in its overview stat.
+            "master_items": migrated_items,
             "migrated_items": migrated_items,
             "everything_record_types": everything_record_types,
             "reviewed_manual_candidates": len(manual_candidates),

@@ -228,6 +228,15 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result_pending.returncode, 1)
         self.assertIn("stale", result_pending.stdout)
 
+        # The overview's Master records stat must remain the curated count,
+        # even while the Everything view includes one pending candidate.
+        result_full = self.run_script("build_catalogue_pages.py")
+        self.assertEqual(result_full.returncode, 0, result_full.stderr)
+        meta = json.loads((self.sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
+        self.assertEqual(meta["master_items"], meta["migrated_items"])
+        self.assertEqual(meta["master_items"], 365)
+        self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
+
 
 class TaxonomyDominanceTests(unittest.TestCase):
     """Rule matrix for the Category Dominance Policy engine."""
@@ -842,6 +851,29 @@ class ReconcileDriftTests(unittest.TestCase):
         self.assertEqual(len(comparison.changed), 1)
         current, projected, fields = comparison.changed[0]
         self.assertEqual((current["title"], projected["title"], fields), ("Old", "New", ["title"]))
+
+    def test_compare_drafts_matches_promoted_candidate_provenance(self) -> None:
+        """Candidate/edition rows have no raw row but are still durable master rows."""
+        candidate = {
+            "raw_row_number": "",
+            "candidate_key": "candidate:manual-veritas-example",
+            "title": "Promoted candidate",
+            "item_type": "lecture",
+        }
+        comparison = rrm.compare_drafts([candidate], [dict(candidate)])
+        self.assertEqual(comparison.extras, [])
+        self.assertEqual(comparison.missing, [])
+        self.assertEqual(comparison.changed, [])
+
+    def test_committed_candidate_rows_are_not_reconciliation_extras(self) -> None:
+        """The real 39 manual + 24 edition promotions reconcile by candidate key."""
+        with working_directory(REPO):
+            committed = rrm.read_csv(rrm.CURRENT_MASTER)
+            expected = brm.build_master().items
+        comparison = rrm.compare_drafts(committed, expected)
+        self.assertEqual(comparison.extras, [])
+        self.assertEqual(comparison.missing, [])
+        self.assertEqual(comparison.changed, [])
 
     def test_report_renders_drift_sections_and_stale_check(self) -> None:
         drift = rrm.DraftComparison(

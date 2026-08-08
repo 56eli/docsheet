@@ -53,22 +53,40 @@ def raw_sort_key(row: dict[str, str]) -> tuple[int, int | str, str]:
     return (0, int(raw), row.get("title", "")) if raw.isdigit() else (1, raw, row.get("title", ""))
 
 
+def provenance_key(row: dict[str, str]) -> tuple[str, str] | None:
+    """Return the durable identity used to compare one master row.
+
+    Raw-ledger rows are keyed by their physical ``raw_row_number``. Promoted
+    manual/edition rows have no raw row and are keyed by their durable
+    ``candidate_key`` instead. Treating both lanes as first-class provenance
+    prevents approved candidate rows from being reported as unexplained draft
+    extras.
+    """
+    raw = row.get("raw_row_number", "").strip()
+    if raw:
+        return ("raw", raw)
+    candidate = row.get("candidate_key", "").strip()
+    if candidate:
+        return ("candidate", candidate)
+    return None
+
+
 def compare_drafts(
     committed: list[dict[str, str]], expected: list[dict[str, str]]
 ) -> DraftComparison:
-    """Match rows by non-empty raw provenance key and surface all divergence."""
-    expected_by_raw: dict[str, deque[dict[str, str]]] = defaultdict(deque)
+    """Match rows by raw or candidate provenance and surface all divergence."""
+    expected_by_provenance: dict[tuple[str, str], deque[dict[str, str]]] = defaultdict(deque)
     for row in expected:
-        raw = row.get("raw_row_number", "")
-        if raw:
-            expected_by_raw[raw].append(row)
+        key = provenance_key(row)
+        if key is not None:
+            expected_by_provenance[key].append(row)
 
     extras: list[dict[str, str]] = []
     changed: list[tuple[dict[str, str], dict[str, str], list[str]]] = []
     for current in committed:
-        raw = current.get("raw_row_number", "")
-        candidates = expected_by_raw.get(raw)
-        if not raw or not candidates:
+        key = provenance_key(current)
+        candidates = expected_by_provenance.get(key) if key is not None else None
+        if candidates is None or not candidates:
             extras.append(current)
             continue
         projected = candidates.popleft()
@@ -82,7 +100,7 @@ def compare_drafts(
 
     missing = [
         row
-        for candidates in expected_by_raw.values()
+        for candidates in expected_by_provenance.values()
         for row in candidates
     ]
     return DraftComparison(
@@ -122,7 +140,7 @@ def render_report() -> str:
         [
             "All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.",
             "",
-            f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides and validates {master_build.manual_candidates_validated} unpromoted manual candidates; unresolved research leads remain outside the master in their review inputs.",
+            f"The reviewed build applies {master_build.source_overrides_applied} approved official-source overrides and validates {master_build.manual_candidates_validated} reviewed manual candidates; unresolved research leads remain outside the master in their review inputs.",
         ]
         if is_reconciled
         else [
@@ -164,24 +182,24 @@ def render_report() -> str:
         f"| Research-master CSV records | {len(committed_master)} | {len(master_build.items)} |",
         f"| Research-master JSON records | {len(committed_master_json)} | {len(projected_json)} |",
         f"| Research-master exclusion records | {len(committed_exclusions)} | {len(master_build.exclusions)} |",
-        f"| Draft-only CSV records without a matching ledger `item` | {len(comparison.extras)} | 0 |",
-        f"| Ledger `item` records absent from CSV draft | 0 | {len(comparison.missing)} |",
-        f"| Matched CSV records with one or more field differences | {len(comparison.changed)} | 0 |",
+        f"| Committed draft records without matching raw/candidate provenance | {len(comparison.extras)} | 0 |",
+        f"| Projected records absent from committed draft | 0 | {len(comparison.missing)} |",
+        f"| Matched records with one or more field differences | {len(comparison.changed)} | 0 |",
         f"| `docs/master.json` / ledger-projected Everything records | {len(committed_catalogue)} | {len(projected_catalogue.items)} |",
         "",
         *summary_note,
         "",
-        "## Draft-only CSV records requiring a provenance decision",
+        "## Committed draft records without matching provenance",
         "",
-        "Each record below is present in the committed draft CSV and therefore included by the current Everything build, but is not an `item` in the current ledger projection. Retain it only by recording its approval and durable provenance in the ledger or a reviewed overrides input; otherwise it will disappear on a normal master rebuild.",
+        "Each record below is present in the committed draft but cannot be matched to either a raw-ledger `raw_row_number` or an approved candidate `candidate_key` in the current projection. It requires a provenance decision before rebuilding.",
         "",
-        "| Raw row | Title | Type | Notes |",
-        "|---:|---|---|---|",
+        "| Provenance | Title | Type | Notes |",
+        "|---|---|---|---|",
     ]
     for row in comparison.extras:
         lines.append(
             "| "
-            f"{markdown_cell(row['raw_row_number'])} | "
+            f"{markdown_cell(row.get('raw_row_number') or row.get('candidate_key', ''))} | "
             f"{markdown_cell(row['title'])} | "
             f"{markdown_cell(row['item_type'])} | "
             f"{markdown_cell(row['notes'])} |"
@@ -191,14 +209,14 @@ def render_report() -> str:
 
     lines.extend([
         "",
-        "## Ledger items absent from the committed draft",
+        "## Projected records absent from the committed draft",
         "",
-        "| Raw row | Title | Type |",
-        "|---:|---|---|",
+        "| Provenance | Title | Type |",
+        "|---|---|---|",
     ])
     for row in comparison.missing:
         lines.append(
-            f"| {markdown_cell(row['raw_row_number'])} | {markdown_cell(row['title'])} | {markdown_cell(row['item_type'])} |"
+            f"| {markdown_cell(row.get('raw_row_number') or row.get('candidate_key', ''))} | {markdown_cell(row['title'])} | {markdown_cell(row['item_type'])} |"
         )
     if not comparison.missing:
         lines.append("| — | — |")

@@ -4,8 +4,9 @@
 `arena/019fe11d-docsheet` (this session; to be pushed/PR'd/merged). See
 `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (independent full-stack audit) and
 the session log at the bottom of §6. Headline results this session:
-- **Independent audit:** all six `--check` modes, 115/115 tests, 90% coverage
-  green; found one new live-data defect (stale Veritas decision row for
+- **Independent audit:** all six `--check` modes, 117/117 tests, 91% coverage
+  green after the F-01/F-02 follow-up fixes; the original 115-test audit found
+  one new live-data defect (stale Veritas decision row for
   product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
   row (`matched_by_title→121`) contradicted the inventory/master (primary
   source of master 278) and would have caused a false Map-Veritas diff;
@@ -96,8 +97,8 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 115 tests, offline, ~3s
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
+python -m unittest discover tests     # 117 tests, offline, ~3s
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
@@ -136,7 +137,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 341 members approved; work_id coverage 365/365 | `data/work_families.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **115 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **117 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -486,7 +487,7 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   facet narrowing/removal, facet-bar visibility, stats navigation, the CM
   tooltip, the muted filename extension, and `/`. Existing
   `column-layout.spec.js` / `csv-export.spec.js` updated for the
-  proposed_filename-default and CM-badge changes. Python suite stays 115;
+  proposed_filename-default and CM-badge changes. Python suite is now 117;
   browser suite is now 15 tests (3 spec files) — CI runs them.
 - **Verification:** all six `--check` modes, 115/115 Python tests, 90%
   coverage, `node --check` on app.js + all 3 specs, and `py_compile *.py`
