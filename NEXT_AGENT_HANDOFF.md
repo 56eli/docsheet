@@ -24,7 +24,7 @@ session log at the bottom of §6. Headline results this session:
   filename with muted extension; carrier-color dots in Edition; "Copy file
   name" drawer action; work-group row striping; per-view sort/scroll
   persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
-  New `tests/ux-enhancements.spec.js` (6 browser tests; suite now 15 browser
+  New `tests/ux-enhancements.spec.js` (7 browser tests; suite now 16 browser
   tests).
 - **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
   now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
@@ -117,8 +117,8 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 15 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 6); don't burn time installing locally.
+  suite (3 spec files / 16 tests: `column-layout` 4, `csv-export` 5,
+  `ux-enhancements` 7); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -484,16 +484,16 @@ Independent full-stack audit + catalogue fix + UX rework. Report:
   persistence of sort + horizontal scroll; keyboard shortcuts (`/` search,
   `j`/`k` move rows + open details, `y` copy filename, `?` shortcuts overlay,
   ignored while typing). CSS for all of the above + mobile wrapping.
-- **Tests:** new `tests/ux-enhancements.spec.js` (6 browser tests) covering
+- **Tests:** new `tests/ux-enhancements.spec.js` (7 browser tests) covering
   facet narrowing/removal, facet-bar visibility, stats navigation, the CM
   tooltip, the muted filename extension, and `/`. Existing
   `column-layout.spec.js` / `csv-export.spec.js` updated for the
   proposed_filename-default and CM-badge changes. Python suite is now 117;
-  browser suite is now 15 tests (3 spec files) — CI runs them.
+  browser suite is now 16 tests (3 spec files) — CI runs them.
 - **Verification:** all six `--check` modes, 115/115 Python tests, 90%
   coverage, `node --check` on app.js + all 3 specs, and `py_compile *.py`
   pass locally. The local Playwright run is blocked by the sandbox Chromium
-  download; CI must run the 15 browser tests.
+  download; CI must run the 16 browser tests.
 - **Open / future (see `UX_REWORK_SUGGESTIONS.md`):** a "Needs your decision"
   cross-sheet inbox was proposed but skipped while all queues are 0 (it would
   be empty today); nested column groups and a review-lanes dropdown are

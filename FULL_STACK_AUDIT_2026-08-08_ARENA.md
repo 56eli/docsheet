@@ -38,7 +38,7 @@ All commands below were run from the repository root after installing the declar
 | Coverage | **91% PASS** | 2,038 statements; lowest module coverage 88%; configured floor 85%. |
 | Node syntax checks | PASS | `app.js`, Playwright config, and all 3 specs. |
 | `npm ci` / npm audit | PASS | Playwright 1.62.1; 0 reported vulnerabilities. |
-| Local Playwright execution | BLOCKED | All 15 tests stopped before launch because Chromium is not installed in the sandbox. This is environmental, not a test assertion failure. |
+| Local Playwright execution | BLOCKED | All 16 tests stop before launch because Chromium is not installed in the sandbox. This is environmental, not a test assertion failure. |
 | GitHub CI on audited main commit | PASS | Run `31260234470`: CI success; Pages build/deployment also succeeded. |
 | `fetch_veritas_catalogue.py --check` | BLOCKED | Sandbox TLS EOF when connecting to `veritaspub.com`; offline API replay tests pass and the failure is documented in project instructions. |
 | GitHub Pages configuration | PASS | Source is `main` / `/docs`; status `built`; `.nojekyll` is present. |
@@ -235,7 +235,7 @@ The old counts inside `archive/` and the superseded sections explicitly labelled
 
 ## 7. Frontend and test coverage observations
 
-- The 19-tab mapping is correct, and the current CI run proves the 15 browser specs pass in GitHub’s Chromium environment.
+- The 19-tab mapping is correct, and the current CI run before this drawer test proves the 15 existing browser specs pass in GitHub’s Chromium environment; the new drawer/focus spec is now included in the next CI run.
 - Local browser tests cannot be independently reproduced in this sandbox until `npx playwright install --with-deps chromium` succeeds; the local run produced 15 launch failures, not 15 assertion failures.
 - The current browser suite does **not** actually exercise every claim made by `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md`: it does not cover all 19 tabs, dark-mode persistence, the row-details drawer/copy action, or every failure/empty state. The report’s statement that browser coverage verifies the “entire 19-tab layout, view states, expert toggle, and keyboard accessibility” is broader than the test files.
 - `app.js` is a large single IIFE (~1,770 lines) with no browser unit tests and several persistence/race-sensitive paths. Rapid tab switching can allow an earlier `fetch()` response to render after a later view activation; static Pages makes this uncommon, but an activation token/request cancellation would make the behavior deterministic.

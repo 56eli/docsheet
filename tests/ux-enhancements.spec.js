@@ -80,6 +80,19 @@ test('proposed filename renders with a muted extension', async ({ page }) => {
   await expect(cell.locator('.ext')).toContainText('.mp4');
 });
 
+test('row details use sections and return focus to the source row', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+  const row = page.locator('#spreadsheet .tabulator-row').first();
+  await row.click();
+  await expect(page.locator('#row-details')).toBeVisible();
+  await expect(page.locator('#close-row-details')).toBeFocused();
+  await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Ownership & status', 'Sources', 'Provenance']);
+  await page.locator('#close-row-details').click();
+  await expect(page.locator('#row-details')).toBeHidden();
+  await expect(row).toBeFocused();
+});
+
 test('keyboard slash focuses search', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
