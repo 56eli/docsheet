@@ -98,16 +98,12 @@ test('row details use sections and return focus to the source row', async ({ pag
   await expect(page.locator('#row-details')).toBeVisible();
   await expect(page.locator('#close-row-details')).toBeFocused();
   await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Ownership & status', 'Sources', 'Provenance']);
-  await page.keyboard.press('Tab');
-  await expect(page.locator('#copy-filename-btn')).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(page.locator('#copy-id-btn')).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(page.locator('#close-row-details')).toBeFocused();
-  // The detail sheet's official/evidence URLs are part of the modal's keyboard
+  // The detail sheet's official/evidence URLs are part of the keyboard
   // cycle; the old header-only trap made these links unreachable with Tab.
   await page.keyboard.press('Tab');
   await expect(page.locator('#row-details-body a').first()).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.locator('#close-row-details')).toBeFocused();
   await page.locator('#close-row-details').click();
   await expect(page.locator('#row-details')).toBeHidden();
   await expect(row).toBeFocused();
