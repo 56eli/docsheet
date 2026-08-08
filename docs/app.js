@@ -948,6 +948,10 @@
 
   function trapRowDetailsFocus(event) {
     if (event.key !== "Tab" || rowDetails.hidden) return;
+    // Some browsers do not bubble keyboard navigation consistently from a
+    // fixed-position dialog. Direct listeners are also attached to the header
+    // controls during boot; stop the duplicate bubble path when applicable.
+    if (event.currentTarget !== rowDetails) event.stopPropagation();
     const focusable = [...rowDetails.querySelectorAll(
       'button:not([hidden]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
     )].filter((element) => element.getClientRects().length > 0);
@@ -1756,6 +1760,9 @@
     showAllColumnsBtn.addEventListener("click", showAllColumns);
     closeRowDetailsBtn.addEventListener("click", closeRowDetails);
     rowDetails.addEventListener("keydown", trapRowDetailsFocus);
+    [copyFilenameBtn, copyIdBtn, closeRowDetailsBtn].filter(Boolean).forEach((control) => {
+      control.addEventListener("keydown", trapRowDetailsFocus);
+    });
     if (copyFilenameBtn) {
       copyFilenameBtn.addEventListener("click", () => currentRowData && copyFilename(currentRowData));
     }
