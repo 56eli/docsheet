@@ -469,7 +469,8 @@ record-type labels): **everything matches except one gap** —
 **Session end state (2026-08-08):** audit report + 4 memos; fixed: C1/C2
 (master 265), C3 (198X convention), C4 (owned semantics), S1/S3/S4 (doc
 drifts), S2 (owner's Node 22 bump), DP-1/2/3 (work-family merge), QA-5
-(legacy_title restore); prepared: C5 (raw CSV hygiene plan). Open owner
+(legacy_title restore), S-a/S-b/S-c (quick wins), S-d (schema contract
+test, suite now 115); prepared: C5 (raw CSV hygiene plan). Open owner
 actions: C5 Google-Sheet edits only.
 
 ## 13. Improvement suggestions (owner, 2026-08-08)
@@ -488,10 +489,13 @@ Prioritized, evidence-grounded suggestions for the project:
   grows/shrinks (it drifted 103→107→110→112).
 
 **Engineering (would prevent today's defect classes):**
-- **S-d. Lock the Everything-schema contract with a test:** assert that
-  `docs/master.json` keys equal `EVERYTHING_FIELDS + record_type` in
-  `test_pipeline.py` (a 10-line test) — QA-5's dead Expert-toggle entries
-  would have been caught at build/test time.
+- ✅ **S-d. Everything-schema contract test — APPLIED 2026-08-08:**
+  `test_everything_schema_matches_everything_fields_contract` in
+  `test_pipeline.py` locks `docs/master.json` keys to `record_type +
+  EVERYTHING_FIELDS` (in order), checks every master-CSV field is sourceable,
+  and asserts every app.js Expert-hidden field exists on the published rows —
+  QA-5's dead Expert-toggle entries are now a test failure. Suite 112 → **115**
+  (README/INSTRUCTIONS/handoff counts bumped per S-c).
 - **S-e. Format-inference carrier evidence:** the reviewed inventory carries
   only slug/title/category; the "– Audio"→audiobook misrule (C2) is patched,
   but a `carrier_evidence` review column (e.g. "Three Compact Disc Set" from

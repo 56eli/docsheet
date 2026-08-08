@@ -1578,6 +1578,39 @@ class DocumentationCurrencyTests(unittest.TestCase):
             "everything rows": sum(meta["everything_record_types"].values()),
         }
 
+    def test_everything_schema_matches_everything_fields_contract(self) -> None:
+        """Published Everything rows must expose exactly ``record_type`` +
+        EVERYTHING_FIELDS, and every field the app.js master preset references
+        (including the Expert-hidden ones) must exist on those rows.
+
+        QA-5 regression guard (2026-08-08): legacy_title and
+        proposed_filename_display were missing from docs/master.json while the
+        README promised them and the Expert toggle listed them.
+        """
+        rows = json.loads((REPO / "docs/master.json").read_text(encoding="utf-8"))
+        self.assertTrue(rows)
+        expected = ["record_type"] + list(bcp.EVERYTHING_FIELDS)
+        for row in rows:
+            self.assertEqual(list(row.keys()), expected)
+        # The master CSV must be able to source every non-derived field.
+        with (REPO / "data/research_master_draft.csv").open(newline="", encoding="utf-8") as handle:
+            csv_fields = set(csv.DictReader(handle).fieldnames or [])
+        self.assertLessEqual(
+            set(bcp.EVERYTHING_FIELDS) - {"proposed_filename_display"},
+            csv_fields,
+        )
+        # app.js master preset: every hidden (Expert) field must exist.
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        preset = re.search(r"master: \{.*?hidden: \[([^\]]*)\]", app_js, re.S)
+        self.assertIsNotNone(preset, "app.js master preset hidden list not found")
+        hidden = re.findall(r'"([a-z_0-9]+)"', preset.group(1))
+        self.assertTrue(hidden, "app.js master preset hidden list is empty")
+        for field in hidden:
+            self.assertIn(
+                field, expected,
+                f"app.js Expert-column field {field!r} missing from published master.json",
+            )
+
     def test_readme_current_state_matches_generated_data(self) -> None:
         readme = (REPO / "README.md").read_text(encoding="utf-8")
         section = readme.split("## Current reviewed catalogue state", 1)[1].split("## ", 1)[0]
