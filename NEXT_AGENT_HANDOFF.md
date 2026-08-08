@@ -1,10 +1,42 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 (follow-up) — current handoff for branch
-`arena/019fe0ef-docsheet` (to be pushed/PR'd/merged from this session). See
-`FULL_STACK_AUDIT_2026-08-08.md` (audit + deep passes QA-2…QA-7 + follow-up notes)
-and the session log at the bottom of §6. Headline results:
-- **2026-08-08 follow-up (arena/019fe0ef):** owner streaming-reference ruling applied — raw streaming rows may stand alone, while DVD/CD products carry streaming pages in `reference_url_1`; work families 225/311 and 226/227/310 merged, DVD rows 310/311 no longer store `streaming video` as `format_detail`, Unity Church title months backfilled, filename metadata mirrors are now guarded, the series-taxonomy queue now hides already-approved conflicts, raw CSV hygiene was applied end-to-end, and the site was reworked into a minimalist table-first UI with View settings / Expand everything.
+**Prepared:** 2026-08-08 (session 2) — current handoff for branch
+`arena/019fe11d-docsheet` (this session; to be pushed/PR'd/merged). See
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (independent full-stack audit) and
+the session log at the bottom of §6. Headline results this session:
+- **Independent audit:** all six `--check` modes, 115/115 tests, 90% coverage
+  green; found one new live-data defect (stale Veritas decision row for
+  product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
+  row (`matched_by_title→121`) contradicted the inventory/master (primary
+  source of master 278) and would have caused a false Map-Veritas diff;
+  removed, overlay 10→9, decisions doc + handoff updated.
+- **Catalogue-code minting rule documented (D-5):** codes go only to
+  `lecture`/`discussion` rows with a verified year at minting time, explaining
+  why pre-2000 and blank-year candidate/edition rows correctly have none.
+- **Filename-first UX:** **Proposed File Name** is now a visible, frozen lead
+  column right after a compact **CM** record-type badge (full phrase in the
+  tooltip/filter); the curated master reads like a file explorer.
+- **Full UX rework:** faceted filters (Series/Year/Type/Format/Owned) with
+  removable chips + per-view persistence; clickable stats chips; shorter tab
+  labels (Candidates/Exclusions/Decisions/Compilations/Publishers); monospace
+  filename with muted extension; carrier-color dots in Edition; "Copy file
+  name" drawer action; work-group row striping; per-view sort/scroll
+  persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
+  New `tests/ux-enhancements.spec.js` (6 browser tests; suite now 15 browser
+  tests).
+- **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
+  now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
+  `archive/UNBLOCK_INSTRUCTIONS.md` record it applied.
+- `UX_REWORK_SUGGESTIONS.md` documents the prioritized backlog.
+
+**Previous (2026-08-08 follow-up, branch `arena/019fe0ef-docsheet`, merged):**
+owner streaming-reference ruling applied — raw streaming rows may stand alone,
+while DVD/CD products carry streaming pages in `reference_url_1`; work families
+225/311 and 226/227/310 merged, DVD rows 310/311 no longer store
+`streaming video` as `format_detail`, Unity Church title months backfilled,
+filename metadata mirrors guarded, series-taxonomy queue hides approved
+conflicts, raw CSV hygiene applied, and the site was reworked into a
+minimalist table-first UI with View settings / Expand everything.
 - **C1/C2 master 265 ruled + applied** (Option A): publisher-verbatim URL kept
   + documented; carrier corrected `audiobook → CD` (`three CD; 2h56m`); format
   inference hardened (CD markers beat "– Audio"; malformed `https-…` slugs
@@ -83,7 +115,8 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (2 spec files / 9 tests); don't burn time installing locally.
+  suite (3 spec files / 15 tests: `column-layout` 4, `csv-export` 5,
+  `ux-enhancements` 6); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -397,3 +430,70 @@ Requested by owner after the audit: "start fixing everything", then "redo the wh
 - **Minimalist UI pass:** neutral table-first theme in `docs/style.css`; `View settings` menu in `docs/index.html`/`docs/app.js`; settings persist in `localStorage`; controls include Wrap long cell text, Compact rows, Show summary cards, Reset current view, and **Expand everything** (all columns + Expert columns + wrapped roomy rows).
 - **Setup/docs fixes:** CSP inline-script hash updated, export/read-only docs corrected, local JS syntax verification now covers every `tests/*.spec.js` (workflow edit requires GitHub App workflow permission and was not included in the pushed commit), direct-file unittest ordering fixed, vacuous edition UUID stability test fixed, current coverage docs updated to 90%.
 - **Verification:** `process_data.py --check`, `build_research_master.py --check`, `build_catalogue_pages.py --check`, `reconcile_research_master.py --check`, `map_series_taxonomy.py --check`, `sync_inventory_mirrors.py --check`, `python -m unittest discover tests` (115), `coverage report` (90%, gate 85), and all node syntax checks pass locally. Local Playwright browser execution remains blocked by sandbox Chromium download/TLS issues; CI should run the 9 browser tests.
+
+## 2026-08-08 Session 2 (arena/019fe11d-docsheet)
+
+Independent full-stack audit + catalogue fix + UX rework. Report:
+`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`; UX backlog:
+`UX_REWORK_SUGGESTIONS.md`; web-editor workflow guide:
+`WORKFLOW_WEB_EDITOR_GUIDE.md`.
+
+- **Audit (all checks re-run live):** six `--check` modes, 115/115 tests, 90%
+  coverage, JS syntax green; independent cross-field sweeps over every
+  CSV/JSON and the living docs.
+- **D-1 stale Veritas decision 50491 (FIXED):** `data/veritas_mapping_decisions.csv`
+  still had `50491, matched_by_title, 121` while the inventory, master, and
+  Product Relationships sheet correctly treat 50491 as the **primary source of
+  master 278**. `apply_mapping_decisions()` overrides deterministic matching,
+  so the stale row would (a) make the Veritas Decisions sheet tell reviewers
+  the wrong master and (b) cause `fetch_veritas_catalogue.py --check` / the
+  Map Veritas workflow to report a false diff. Removed the row (overlay
+  10→9); regenerated `docs/veritas-mapping-decisions.json`,
+  `docs/review-overview.json`, `docs/catalogue-meta.json`. Verified the
+  deterministic overlay now matches the committed inventory with 0 mismatches.
+- **D-2 decisions doc updated:** `decisions/VERITAS_MAPPING_DECISIONS.md`
+  "Current seed" rewritten from stale "18" to 9 (5 excluded + 4 non-primary)
+  with the 2026-08-07 Highlights lift, 50411/1542 removal, and this 50491 fix.
+- **D-3 handoff drift:** "all 15 tabs" → "all 19 tabs" backlog bullet; Veritas
+  decision count in §3 updated 10→9.
+- **D-4 CI coverage of both specs:** owner applied the `for spec in
+  tests/*.spec.js` JS-syntax block in the web editor (documented applied in
+  `WORKFLOW_WEB_EDITOR_GUIDE.md` / `archive/UNBLOCK_INSTRUCTIONS.md`). The
+  Arena app can't push `.github/workflows/*`.
+- **D-5 catalogue-code rule:** README field semantics now state codes are
+  assigned to lecture/discussion rows with a verified year at minting time,
+  so pre-2000 blank/198X rows and blank-`proposed_year` candidates/editions
+  correctly carry no code (281 total); codes are never retrofitted.
+- **Filename-first UI (owner directive):** `proposed_filename` moved out of
+  the Expert-hidden list to a visible, **frozen** column immediately after
+  `record_type`; `proposed_filename_display` stays Expert-only. Record-type
+  badges now read **CM** (compact); the full "Curated master" phrase remains
+  in the tooltip, column header, review-filter option, and active-filter chip.
+- **Full UX rework (P0–P3, no data changes):** faceted multi-select filter
+  bar on Everything (Series/Year/Type/Format/Owned) with per-value counts,
+  removable chips, and `localStorage` persistence per view; stats chips are
+  now buttons that jump to their sheets; shorter tab labels (Candidates,
+  Exclusions, Decisions, Compilations, Publishers — full names stay in the
+  Review Overview data and export filenames); monospace Proposed File Name
+  with a muted `.mp4`/`.mp3`/`.m4b` extension suffix; carrier-color dots in
+  the Edition column (DVD/CD/audiobook/streaming/book, AA dark-mode); a
+  "Copy file name" button in the row-details drawer; work-group row striping
+  (left accent on the first row of each consecutive `work_id` run); per-view
+  persistence of sort + horizontal scroll; keyboard shortcuts (`/` search,
+  `j`/`k` move rows + open details, `y` copy filename, `?` shortcuts overlay,
+  ignored while typing). CSS for all of the above + mobile wrapping.
+- **Tests:** new `tests/ux-enhancements.spec.js` (6 browser tests) covering
+  facet narrowing/removal, facet-bar visibility, stats navigation, the CM
+  tooltip, the muted filename extension, and `/`. Existing
+  `column-layout.spec.js` / `csv-export.spec.js` updated for the
+  proposed_filename-default and CM-badge changes. Python suite stays 115;
+  browser suite is now 15 tests (3 spec files) — CI runs them.
+- **Verification:** all six `--check` modes, 115/115 Python tests, 90%
+  coverage, `node --check` on app.js + all 3 specs, and `py_compile *.py`
+  pass locally. The local Playwright run is blocked by the sandbox Chromium
+  download; CI must run the 15 browser tests.
+- **Open / future (see `UX_REWORK_SUGGESTIONS.md`):** a "Needs your decision"
+  cross-sheet inbox was proposed but skipped while all queues are 0 (it would
+  be empty today); nested column groups and a review-lanes dropdown are
+  documented P1–P2 options. The 198X Office Series convention and the 4
+  "under investigation" years remain owner-ruled as-is.
