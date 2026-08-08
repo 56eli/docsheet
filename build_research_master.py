@@ -56,6 +56,29 @@ SOURCE_OVERRIDE_FIELDS = {
 SOURCE_OVERRIDE_REQUIRED_COLUMNS = {
     "raw_row_number", "target_field", "override_value", "review_status",
 }
+
+OWNED_VOCABULARY = {"", "true", "false"}
+
+
+def normalize_owned(value: str, source: str) -> str:
+    """Return the canonical `owned` value: blank, ``true``, or ``false``.
+
+    The hand-maintained review ledger historically recorded Python-cased
+    booleans (``True``/``False``); candidate registries are already
+    validator-gated to lowercase. Accept any casing of the known boolean
+    spellings but always emit one canonical lowercase vocabulary so the
+    master CSV/JSON, the Pages payloads, and the frontend (which maps only
+    exact ``true``/``false``) agree. Anything outside the vocabulary is a
+    hard error with the source named, so drift cannot pass the build.
+    """
+    canonical = value.strip().lower()
+    if canonical in OWNED_VOCABULARY:
+        return canonical
+    raise ValueError(
+        f"{source}: owned must be blank, true, or false (got {value!r})"
+    )
+
+
 MANUAL_CANDIDATE_REQUIRED_COLUMNS = {
     "candidate_key", "candidate_title", "proposed_item_type", "proposed_year",
     "proposed_format", "proposed_format_detail", "proposed_owned", "source_name",
@@ -1240,7 +1263,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "item_type": item_type, "series": row["series"].strip(),
             "year": candidate["proposed_year"].strip(), "month": "",
             "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
-            "owned": candidate["proposed_owned"].strip(),
+            "owned": normalize_owned(candidate["proposed_owned"], EDITION_CANDIDATES),
             "source_url_veritas": "", "source_url_hay_house": "",
             "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
             "reference_url_1": "",
@@ -1352,7 +1375,9 @@ def build_master() -> MasterBuild:
             "month": row["proposed_month"],
             "format": row["proposed_format"],
             "format_detail": row["proposed_format_detail"],
-            "owned": row["proposed_owned"],
+            "owned": normalize_owned(
+                row["proposed_owned"], f"{LEDGER} raw row {row['raw_row_number']}"
+            ),
             "source_url_veritas": row["proposed_source_url_veritas"],
             "source_url_hay_house": "",
             "source_url_nightingale_conant": "",
@@ -1403,7 +1428,7 @@ def build_master() -> MasterBuild:
             "item_type": item_type, "series": candidate["series"],
             "year": year, "month": month_from_title(candidate["candidate_title"], year),
             "format": candidate["proposed_format"],
-            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
+            "format_detail": candidate["proposed_format_detail"], "owned": normalize_owned(candidate["proposed_owned"], MANUAL_CANDIDATES),
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
             "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
             "reference_url_1": ref1,
