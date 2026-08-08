@@ -197,12 +197,18 @@ correctly passes them through unchanged by design).
 
 ### S2 — CI pins Node 20 (EOL 2026-04)
 
+> ✅ **SNIPPET PREPARED 2026-08-08:** the one-line web-editor change
+> (`node-version: "20"` → `"22"`) is documented in
+> `archive/UNBLOCK_INSTRUCTIONS.md` ("Bump the CI Node runtime 20 → 22",
+> 2026-08-08 addition) with commit-message and re-run instructions. Owner
+> applies it (the Arena app cannot push `.github/workflows/*`). Code is
+> already Node-22-compatible (sandbox runs Node 22; all `node --check` pass).
+
 `.github/workflows/ci.yml` uses `node-version: "20"`. Handoff documents this
-as owner action item K (the Arena app cannot push workflow-file changes;
-prepared snippet lives in `archive/UNBLOCK_INSTRUCTIONS.md`). Also note the CI
-comment says "the six generator --check modes" — there are six in the workflow
-and they match the scripts; the wording is fine, but `fetch_veritas_catalogue
---check` is intentionally not run in CI (needs live network).
+as owner action item K. Also note the CI comment says "the six generator
+--check modes" — there are six in the workflow and they match the scripts; the
+wording is fine, but `fetch_veritas_catalogue --check` is intentionally not
+run in CI (needs live network).
 
 ### S3 — Handoff §5 binding-rules text is stale on the discovery lane
 
