@@ -15,8 +15,8 @@
   --accent-contrast: #ffffff;
   --header-bg: #fafafa;
   --header-text: #3f3f46;
-  --zebra: #f7f7f8;
-  --row-hover: #eeeeef;
+  --zebra: #f0f0f2;
+  --row-hover: #e8e8eb;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
@@ -29,29 +29,29 @@
   --scrollbar-thumb-hover: #a1a1aa;
   --scrollbar-track: #f5f5f7;
 
-  /* Group block color tokens (neutral chrome + chromatic accents; washes at 6-7% light so they tint without flattening zebra) */
+  /* Group block color tokens (neutral chrome + chromatic accents; washes at 10-11% light so they tint without flattening zebra) */
   --block-lectures: #059669;
-  --block-lectures-bg: rgba(5, 150, 105, 0.07);
+  --block-lectures-bg: rgba(5, 150, 105, 0.11);
   --block-discussion: #e11d48;
-  --block-discussion-bg: rgba(225, 29, 72, 0.07);
+  --block-discussion-bg: rgba(225, 29, 72, 0.11);
   --block-satsang: #d97706;
-  --block-satsang-bg: rgba(217, 119, 6, 0.07);
+  --block-satsang-bg: rgba(217, 119, 6, 0.11);
   --block-on-the-road: #0d9488;
-  --block-on-the-road-bg: rgba(13, 148, 136, 0.07);
+  --block-on-the-road-bg: rgba(13, 148, 136, 0.11);
   --block-volume-series: #6366f1;
-  --block-volume-series-bg: rgba(99, 102, 241, 0.06);
+  --block-volume-series-bg: rgba(99, 102, 241, 0.10);
   --block-office-series: #0284c7;
-  --block-office-series-bg: rgba(2, 132, 199, 0.07);
+  --block-office-series-bg: rgba(2, 132, 199, 0.11);
   --block-books: #7c3aed;
-  --block-books-bg: rgba(124, 58, 237, 0.06);
+  --block-books-bg: rgba(124, 58, 237, 0.10);
   --block-transcription-books: #c026d3;
-  --block-transcription-books-bg: rgba(192, 38, 211, 0.06);
+  --block-transcription-books-bg: rgba(192, 38, 211, 0.10);
   --block-media-misc: #475569;
-  --block-media-misc-bg: rgba(71, 85, 105, 0.05);
+  --block-media-misc-bg: rgba(71, 85, 105, 0.09);
   --block-undecided: #ea580c;
-  --block-undecided-bg: rgba(234, 88, 12, 0.05);
+  --block-undecided-bg: rgba(234, 88, 12, 0.09);
   --block-fran-grace: #be123c;
-  --block-fran-grace-bg: rgba(190, 18, 60, 0.07);
+  --block-fran-grace-bg: rgba(190, 18, 60, 0.11);
 }
 
 /* ---- Design tokens (dark mode) ----
@@ -69,8 +69,8 @@
   --accent-contrast: #0f0f0f;
   --header-bg: #1e1e1e;
   --header-text: #e4e4e7;
-  --zebra: #202020;
-  --row-hover: #2e2e2e;
+  --zebra: #232323;
+  --row-hover: #303030;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
@@ -81,29 +81,29 @@
   --scrollbar-thumb-hover: #52525b;
   --scrollbar-track: #0f0f0f;
 
-  /* Group block color tokens (dark mode) — raised to 12-14% to be visible on #1a1a1a/#202020 */
+  /* Group block color tokens (dark mode) — raised to 15-16% to be visible on #1a1a1a/#232323 */
   --block-lectures: #34d399;
-  --block-lectures-bg: rgba(52, 211, 153, 0.13);
+  --block-lectures-bg: rgba(52, 211, 153, 0.16);
   --block-discussion: #fb7185;
-  --block-discussion-bg: rgba(251, 113, 133, 0.13);
+  --block-discussion-bg: rgba(251, 113, 133, 0.16);
   --block-satsang: #fbbf24;
-  --block-satsang-bg: rgba(251, 191, 36, 0.13);
+  --block-satsang-bg: rgba(251, 191, 36, 0.16);
   --block-on-the-road: #2dd4bf;
-  --block-on-the-road-bg: rgba(45, 212, 191, 0.13);
+  --block-on-the-road-bg: rgba(45, 212, 191, 0.16);
   --block-volume-series: #818cf8;
-  --block-volume-series-bg: rgba(129, 140, 248, 0.12);
+  --block-volume-series-bg: rgba(129, 140, 248, 0.15);
   --block-office-series: #38bdf8;
-  --block-office-series-bg: rgba(56, 189, 248, 0.13);
+  --block-office-series-bg: rgba(56, 189, 248, 0.16);
   --block-books: #a78bfa;
-  --block-books-bg: rgba(167, 139, 250, 0.12);
+  --block-books-bg: rgba(167, 139, 250, 0.15);
   --block-transcription-books: #e879f9;
-  --block-transcription-books-bg: rgba(232, 121, 249, 0.12);
+  --block-transcription-books-bg: rgba(232, 121, 249, 0.15);
   --block-media-misc: #a1a1aa;
-  --block-media-misc-bg: rgba(161, 161, 170, 0.10);
+  --block-media-misc-bg: rgba(161, 161, 170, 0.14);
   --block-undecided: #fb923c;
-  --block-undecided-bg: rgba(251, 146, 60, 0.10);
+  --block-undecided-bg: rgba(251, 146, 60, 0.14);
   --block-fran-grace: #f43f5e;
-  --block-fran-grace-bg: rgba(244, 63, 94, 0.13);
+  --block-fran-grace-bg: rgba(244, 63, 94, 0.16);
 }
 
 /* ---- Base ---- */
@@ -657,28 +657,28 @@ body {
 /* Group block color coding: sleek neutral zebra + left accent (REVISION1 blocks).
    Odd rows tint over --surface, even rows tint over --zebra so the alternating
    grey remains visible (fixes R-01 flat-grey regression). */
-#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 7%, var(--surface)); border-left: 4px solid var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 7%, var(--zebra)); border-left: 4px solid var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 7%, var(--surface)); border-left: 4px solid var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 7%, var(--zebra)); border-left: 4px solid var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 7%, var(--surface)); border-left: 4px solid var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 7%, var(--zebra)); border-left: 4px solid var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 7%, var(--surface)); border-left: 4px solid var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 7%, var(--zebra)); border-left: 4px solid var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 6%, var(--surface)); border-left: 4px solid var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 6%, var(--zebra)); border-left: 4px solid var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 7%, var(--surface)); border-left: 4px solid var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 7%, var(--zebra)); border-left: 4px solid var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 6%, var(--surface)); border-left: 4px solid var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 6%, var(--zebra)); border-left: 4px solid var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 6%, var(--surface)); border-left: 4px solid var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 6%, var(--zebra)); border-left: 4px solid var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 5%, var(--surface)); border-left: 4px solid var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 5%, var(--zebra)); border-left: 4px solid var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 5%, var(--surface)); border-left: 4px solid var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 5%, var(--zebra)); border-left: 4px solid var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 7%, var(--surface)); border-left: 4px solid var(--block-fran-grace); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 7%, var(--zebra)); border-left: 4px solid var(--block-fran-grace); }
+#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 11%, var(--surface)); border-left: 4px solid var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 11%, var(--zebra)); border-left: 4px solid var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 11%, var(--surface)); border-left: 4px solid var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 11%, var(--zebra)); border-left: 4px solid var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 11%, var(--surface)); border-left: 4px solid var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 11%, var(--zebra)); border-left: 4px solid var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 11%, var(--surface)); border-left: 4px solid var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 11%, var(--zebra)); border-left: 4px solid var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 10%, var(--surface)); border-left: 4px solid var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 10%, var(--zebra)); border-left: 4px solid var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 11%, var(--surface)); border-left: 4px solid var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 11%, var(--zebra)); border-left: 4px solid var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 10%, var(--surface)); border-left: 4px solid var(--block-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 10%, var(--zebra)); border-left: 4px solid var(--block-books); }
+#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 10%, var(--surface)); border-left: 4px solid var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 10%, var(--zebra)); border-left: 4px solid var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 9%, var(--surface)); border-left: 4px solid var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 9%, var(--zebra)); border-left: 4px solid var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 9%, var(--surface)); border-left: 4px solid var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 9%, var(--zebra)); border-left: 4px solid var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 11%, var(--surface)); border-left: 4px solid var(--block-fran-grace); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 11%, var(--zebra)); border-left: 4px solid var(--block-fran-grace); }
 
 #spreadsheet .tabulator .tabulator-cell {
   border-right: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
@@ -1097,14 +1097,14 @@ body {
   --ring: color-mix(in srgb, var(--accent) 55%, var(--text));
   --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.14);
   --shadow-md: 0 4px 14px rgba(60, 64, 67, 0.16);
-  --row-hover: #e3f3ea;           /* green-tinted hover (was blue) */
+  --row-hover: #e0e0e4;           /* green-tinted hover (was blue) */
 }
 :root.dark {
   --accent-2: #4fd1c5;
   --ring: color-mix(in srgb, var(--accent) 65%, var(--text));
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
-  --row-hover: #2f4a41;
+  --row-hover: #353535;
 }
 
 /* Header: subtle accent gradient strip + softer elevation. */
