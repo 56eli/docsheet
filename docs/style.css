@@ -1184,6 +1184,8 @@ body {
   font-size: 13px;
 }
 .settings-menu input { accent-color: var(--accent); }
+/* The [hidden] attribute must beat the settings-menu label display rule. */
+#blank-rows-toggle-wrap[hidden] { display: none !important; }
 
 .dataset-tabs {
   gap: 8px;
