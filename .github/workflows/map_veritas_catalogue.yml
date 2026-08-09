@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout selected branch
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Fetch reviewed inventory candidate
@@ -49,7 +49,7 @@ jobs:
           echo "Candidate matches the reviewed inventory."
       - name: Upload candidate and diff for review
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: veritas-inventory-review-${{ github.run_id }}
           path: |
