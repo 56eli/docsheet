@@ -38,26 +38,13 @@ The scoreboard was created as part of the persistent-memory protocol:
 - **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
   priorities 15/12 remain open.
 
-## 2026-08-09 fresh audit + fixes + repo-organization pass (this branch)
+## 2026-08-09 Desktop Table Modernization & REVISION1 Group Color-Coding (this branch, current)
 
-- **Fresh full-stack audit** (`docs/audits/2026-08-09-arena-full-audit.md`,
-  uncommitted on `arena/019fe6c1-docsheet`): all six `--check` modes, 126/126
-  tests, 91% coverage, ~30 independent probes — catalogue data clean, every
-  documented count reproduced. New findings (all low):
-  - F-01 `market='Spanish'` on two international-queue Audible rows → fixed
-    to `United States` (`data/international_discovery_queue.csv` +
-    regenerated `docs/international-products.json`).
-  - F-02 `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` stale "365" → 362.
-  - F-03 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` "8 view columns" → 7.
-  - F-04 `.scoreboard/history.md` + `.scoreboard/manual-workflow-edits.md` +
-    `docs/audits/2026-08-09-baseline.md` "19 browser specs" → 26.
-- **Repo-organization pass (owner-approved):** archived 4 root docs with
-  banners — `FULL_STACK_AUDIT_2026-08-08_ARENA.md`,
-  `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `EXTERNAL_AUDIT.md`,
-  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` (implemented). README
-  "Documentation layout", INSTRUCTIONS (was still pointing at the 08-08
-  audit as current!), NEXT_AGENT_HANDOFF, archive/README.md, and the
-  declared-current audits updated accordingly. Root now has 18 .md files.
+- **Desktop table modernized:** replaced harsh borders and barebones alternating zebra styling with a sleek modern Linear/Stripe design system.
+  - Added subtle left-border color accents and group styling mapped directly to the 11 REVISION1 ODS block groups (`lectures-2002-2011`, `discussion`, `satsang`, `on-the-road`, `volume-series`, `office-series`, `books`, `transcription-books`, `media-misc`, `undecided`, `fran-grace`) in both light and dark themes.
+  - Refined table typography, cell padding (8px 10px), header weights and uppercase tracking, hover transitions, and pill badges for status, carrier, and type.
+- **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage (floor 85%).
+- **Verification:** all 132 tests pass, all 6 `--check` modes green, `node --check` clean.
 - **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
   priorities 15/12 remain open.
 - Nothing committed yet on this branch — review `git status`/`git diff`.
@@ -72,7 +59,7 @@ The scoreboard was created as part of the persistent-memory protocol:
 3. `maintainability` (priority 8): owner scored 6/10; split the two large
    generators (`build_research_master.py` ~1660 lines,
    `build_catalogue_pages.py` ~1078 lines) into focused modules; the
-   126-test suite is the safety net.
+   132-test suite is the safety net.
 4. `code_hygiene` (priority 4): same refactor workstream.
 5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
    expectations (e.g. raw placeholder rows still visible in the original
@@ -141,8 +128,8 @@ re-audit changes effective scores. Re-evaluate after the next audit.
 - `python reconcile_research_master.py --check` ✅
 - `python map_series_taxonomy.py --check` ✅ (186 mappings; 0 queued)
 - `python sync_inventory_mirrors.py --check` ✅
-- `python -m unittest discover tests` ✅ Ran 126, OK
-- `coverage run -m unittest discover tests && coverage report` ✅ 91%
+- `python -m unittest discover tests` ✅ Ran 132, OK
+- `coverage run -m unittest discover tests && coverage report` ✅ 90%
 - `node --check docs/app.js` + all `tests/*.spec.js` (26 browser specs) ✅
 - `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only;
   the 26 specs run in CI)

@@ -1,14 +1,17 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (REVISION1 ODS owner revision applied — see below) — current handoff for
-branch `arena/019fe6c1-docsheet`.
+**Prepared:** 2026-08-09 (Desktop Table Modernization + REVISION1 Group Color-Coding + Doc Sweep) — current handoff for
+branch `arena/019fe720-docsheet`.
 **Scoreboard:** this repo now has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
 sessions may expire after PR merge).
 
-## Headline results (2026-08-09 REVISION1 ODS pass, current)
+## Headline results (2026-08-09 Desktop Table Modernization + REVISION1 ODS pass, current)
 
+- **Desktop table modernized:** replaced harsh borders and barebones alternating zebra styling with a sleek modern Linear/Stripe design system.
+  - Added subtle left-border color accents and group styling mapped directly to the 11 REVISION1 ODS block groups (`lectures-2002-2011`, `discussion`, `satsang`, `on-the-road`, `volume-series`, `office-series`, `books`, `transcription-books`, `media-misc`, `undecided`, `fran-grace`) in both light and dark themes.
+  - Refined table typography, cell padding (8px 10px), header weights and uppercase tracking, hover transitions, and pill badges for status, carrier, and type.
 - **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
   `fa51f67`): a colour-coded expert-columns export of the Everything view.
   Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
@@ -37,9 +40,7 @@ sessions may expire after PR merge).
 - **Tests 126 → 132** (new `OwnerOverrideAndDisplayOrderTests` class);
   coverage 91% → 90% (floor 85; both generator modules still 88%).
   All six `--check` modes pass; README documents the new inputs.
-- **Fresh audit** (`docs/audits/2026-08-09-arena-full-audit.md`) plus
-  F-01..F-04 fixes and the repo-organization archival are in this branch's
-  earlier commit `18295b6` — see the section below.
+- **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage.
 
 The declared-current audits are
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
@@ -258,8 +259,8 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 126 tests, offline, ~3s
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
+python -m unittest discover tests     # 132 tests, offline, ~3s
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
@@ -298,7 +299,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 338 members approved; work_id coverage 362/362 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **126 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **132 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 88%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,

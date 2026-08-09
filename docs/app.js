@@ -1672,6 +1672,38 @@
     return "status-neutral";
   }
 
+  function getRowBlockId(data) {
+    if (!data) return "undecided";
+    const series = String(data.series || "").trim();
+    const type = String(data.item_type || "").trim();
+    const uuid = Number(data.uuid);
+    const notes = String(data.notes || "").trim();
+
+    if (uuid === 315 || notes.includes("FRAN GRACE")) return "fran-grace";
+    if (uuid === 265 || (uuid >= 320 && uuid <= 372 && (data.record_type !== "master" || type === "highlight" || ["Academic", "Hay House", "Nightingale-Conant", "Media Miscellaneous"].includes(series)))) {
+      return "undecided";
+    }
+    if (uuid > 0 && uuid <= 201) return "lectures-2002-2011";
+    if (series === "Discussion Series" || type === "discussion") return "discussion";
+    if (series === "Satsang Series") return "satsang";
+    if (series === "On The Road Talk Series") return "on-the-road";
+    if (series === "Volume Series") return "volume-series";
+    if (series === "Office Series") return "office-series";
+    if (series === "Transcription Series Books") return "transcription-books";
+    if (series === "Books" || type === "book") return "books";
+    if (series === "Media Miscellaneous") return "media-misc";
+    if ([
+      "The Way to God", "Devotional Nonduality", "Transcending the Mind",
+      "Nonduality Intensive", "Transcending Levels of Consciousness",
+      "Spiritual Reality & Modern Man", "Love & Spiritual Seeker Qualities",
+      "Advanced Spiritual Awareness", "In the World but Not of It",
+      "Practical Spirituality"
+    ].includes(series)) {
+      return "lectures-2002-2011";
+    }
+    return "undecided";
+  }
+
   function statusLabel(field, value) {
     if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
       return RECORD_TYPE_LABELS[value];
@@ -2038,6 +2070,12 @@
         // Programmatically focusable, but not 365 extra Tab stops in the page.
         element.tabIndex = -1;
         element.setAttribute("aria-label", rowTitle(data));
+
+        // Group block styling for sleek modern visual hierarchy & color coding
+        const blockId = getRowBlockId(data);
+        element.dataset.block = blockId;
+        element.classList.add("row-block-styled", `row-block-${blockId}`);
+
         if (!data.work_id) {
           element.classList.remove("work-group-start");
           return;
