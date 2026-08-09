@@ -79,9 +79,9 @@ test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   const uuidHeader = page.locator('#spreadsheet .tabulator-col[tabulator-field="uuid"]');
 
   // Ascending: 1, 2, 3 … — a lexical string sort would show 1, 10, 100.
-  // The uuid column sits behind the frozen title/filename rail; force the click
-  // so the frozen subtitle does not intercept pointer events.
-  await uuidHeader.click({ force: true });
+  // The uuid column sits behind the frozen title/filename rail; dispatch the
+  // click via JS so the frozen subtitle cannot intercept pointer events.
+  await uuidHeader.evaluate((el) => el.click());
   await expect(uuidHeader).toHaveAttribute('aria-sort', 'ascending');
   await expect(uuidCellInRow(page, 0)).toHaveText('1');
   await expect(uuidCellInRow(page, 1)).toHaveText('2');
@@ -91,7 +91,7 @@ test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   // 264/281/284/302/309 are retired, so max is 372 after the 2026-08-07
   // promotions 362-372 and the 2026-08-08 D-01 collapse).
   // Empty candidate IDs must stay pinned to the bottom, not jump to the top.
-  await uuidHeader.click({ force: true });
+  await uuidHeader.evaluate((el) => el.click());
   await expect(uuidHeader).toHaveAttribute('aria-sort', 'descending');
   await expect(uuidCellInRow(page, 0)).toHaveText('372');
   await expect(uuidCellInRow(page, 1)).toHaveText('371');
