@@ -94,7 +94,7 @@ test('row details use sections and return focus to the source row', async ({ pag
   await row.click();
   await expect(page.locator('#row-details')).toBeVisible();
   await expect(page.locator('#close-row-details')).toBeFocused();
-  await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Ownership & status', 'Sources', 'Provenance']);
+  await expect(page.locator('.row-details-section-title')).toContainText(['Identity', 'Content', 'Ownership', 'Official sources', 'Notes', 'Research']);
   // The detail sheet's official/evidence URLs are part of the keyboard
   // cycle; the old header-only trap made these links unreachable with Tab.
   await page.keyboard.press('Tab');

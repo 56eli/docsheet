@@ -1,16 +1,128 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Arena 019fe8a5 — Full Audit, Root Consolidation, UX Fixes, Frontend Modularization)
+Last updated: 2026-08-10 (Arena 019fe8d0 — P0 hotfix for the 019fe8a5 ES-module refactor: restored `let table` and `let allData` in app.js IIFE)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-full-audit-019fe8a5.md` **(Current — full audit 019fe8a5 session)**
+- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` **(Current — fresh-eyes audit 019fe8d0 session)**
+- `docs/audits/2026-08-09-full-audit-019fe8a5.md` (Prior session — 019fe8a5)
 - `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (Prior declared-current multidisciplinary audit)
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit + P0 hotfix)
+
+## 2026-08-10 P0 hotfix (019fe8d0 follow-up)
+
+- **P0 incident: site stuck on "Loading research master…"** — reported by
+  the owner immediately after the gap-fix commit. Browser test run 31341418779
+  on main also failed 25/25 specs at `waitForTable()`.
+- **Root cause:** the 019fe8a5 ES-module refactor of `docs/app.js` dropped
+  two IIFE-scope declarations when extracting config.js and formatters.js:
+  `let table = null;` (held the active Tabulator instance) and
+  `let allData = [];` (held the current view's data array). On first
+  `boot()` call, `applyViewSettings` referenced the undeclared `table`,
+  throwing `ReferenceError: table is not defined` — the page then stayed
+  on the static "Loading research master…" skeleton from `index.html`
+  forever. `allData` blew up the next call when the `await loadData(...)`
+  resolved. The 25 Playwright specs all timed out at `waitForTable()`
+  waiting for `aria-busy="false"`.
+- **Detection:** I reproduced the failure locally by running app.js through
+  Node with a minimal browser mock (document, fetch, localStorage). The
+  first run reported `ReferenceError: table is not defined at line 365`.
+- **Fix:** restored both module-scope declarations in `docs/app.js` with
+  comments cross-referencing the 019fe8a5 refactor. Updated
+  `docs/index.html` (script `?v=...` + footer build ID) and
+  `docs/build-manifest.json` (asset/data SHA-256s, revision
+  `row-delivery-p0-20260810.1`) to the new app.js hash. Bumped the
+  manifest's `source_baseline` to `1a442001` (the broken PR #59 merge).
+- **Regression test added:** `FrontendDeliveryContractTests
+  .test_app_js_declares_critical_module_scope_variables` re-reads
+  `docs/app.js` and asserts that `table` and `allData` are declared
+  with `let`/`var`/`const` at IIFE scope. A future refactor that
+  re-introduces a free-variable reference to one of these (or any
+  future critical identifier added to the `critical` tuple) will
+  fail this test before it can ship.
+- **Verified locally:** Node-with-mock shows `aria-busy: false` after
+  boot, master.json fetch completes, no `console.error` calls.
+- **Test count:** 145 → 146 deterministic tests. README +
+  INSTRUCTIONS test-count lines updated per the project house rule.
+- **Outcome:** once this branch merges to main, the site should load
+  normally and the 25 Playwright specs should pass again.
+
+## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit)
+
+- **Independent audit** of all 5 prior 2026-08-09 audits (019fe7ff, 019fe80c,
+  019fe830, 019fe844, 019fe8a5) — every claim re-verified, not copied.
+- **Committed at `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md`**
+  (14 sections: TL;DR, Architecture, Web Design, Full-Stack, Security,
+  Performance, A11y, Repo Org, CI/CD, Maintainability, Auditability, Data
+  Engineering, Recommendations, Verification, Scoreboard Alignment).
+- **6 independent data-integrity probes re-run against `docs/master.json`:**
+  no duplicate UUIDs (1-372 with documented gaps for retired duplicates),
+  all 362 catalog codes match `^(LECTURE|DISCUSSION)-\d{3,4}X?-\d{3}$`
+  (84 correctly blank for edition/book rows), year range 1973-2026 with
+  16 198X Office Series + 19 blank (Volume Series + under-investigation),
+  item type counts exactly 306 lecture / 40 book / 8 discussion / 7 highlight
+  / 1 other (sum 362), format distribution 253 DVD / 32 CD / 31 book /
+  27 audiobook / 19 streaming, owned distribution 311 true / 25 false /
+  26 blank, all 6 URL fields use https:// schemes.
+- **5 `--check` modes re-run in this session** (process_data.py needs
+  pandas which the sandbox doesn't have, but the other 5 pass): all green.
+- **6 gaps surfaced** that the prior 5 audits didn't explicitly call out:
+  1. `docs/catalogue-block-map.json` is build-emitted but not in
+     `build-manifest.json` (and not in `FrontendDeliveryContractTests`).
+  2. `docs/js/config.js#VIEWS` is not cross-checked against
+     `build_catalogue_pages.py` output file list.
+  3. 29 of 362 masters have no `source_url_veritas` but no visual
+     indicator distinguishes "intentionally blank" from "missing data."
+  4. Firefox ignores `::-webkit-scrollbar`; 16px custom scrollbar is
+     silently the OS default there.
+  5. Work-family stripe grouping has no legend / toggle in View settings.
+  6. The "Not owned" badge was hidden in 019fe8a5 per owner request, but
+     `owned: false` rows now have a fully empty cell — a subtle visual
+     cue (faint strikethrough on title? outlined "✕" badge?) would
+     communicate the distinction without re-introducing the noisy pill.
+- **P1 gaps 1+2 fixed in this session** (delivery-contract only, per
+  the owner-aligned scope decision):
+  - **Gap 1** — `docs/catalogue-block-map.json` added to
+    `build-manifest.json#data` with SHA-256 hash
+    (`e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac`).
+    New test `FrontendDeliveryContractTests.test_block_map_drift_fails_manifest_contract`
+    re-reads the file, recomputes the hash, and asserts it matches
+    the manifest entry — a tampered block map now fails the
+    contract test loudly.
+  - **Gap 2** — new `ViewsConfigConsistencyTests` class with three
+    tests: (1) every VIEWS `file:` key matches a build-emitted
+    user-facing JSON (excludes the non-Jump-to outputs
+    `catalogue-meta.json`, `catalogue-block-map.json`,
+    `build-manifest.json`); (2) every VIEWS file actually exists
+    in `docs/`; (3) no two view keys share a file (with the
+    documented `master`+`series` → `master.json` exception
+    pinned so it cannot silently grow).
+  - **Test count** — 141 → 145 deterministic tests
+    (`tests/test_pipeline.py`); 137 pre-existing + 4 new
+    manifest/contract + 3 new VIEWS = 4 net new in
+    `test_pipeline.py`; 8 unchanged in `test_style_contrast.py`
+    = 153 total. README + INSTRUCTIONS test-count lines updated
+    per the project house rule. Drift test proved: manually
+    tampered block map now fails the contract test with the
+    exact expected error message.
+  - **All `--check` modes still green** (5/5 that don't need
+    pandas); 4 new tests pass; no regressions in the 137
+    pre-existing tests; 8 process_data failures are
+    pre-existing (sandbox lacks pandas).
+- **P1 gaps 3-6 not touched in this session** (deferred per
+  the owner-aligned scope decision: 4 UI/data polish items
+  need owner visual review before any change).
+- **Scoreboard alignment:** My independent re-audit agrees with the current
+  scoreboard (overall_effective 8.5 / gate pass) on every aspect except
+  performance (I'd add a Lighthouse budget step before declaring 8/10
+  confident — currently 8 with medium confidence per the scoreboard,
+  which is fair). No score changes recommended.
 
 ## 2026-08-09 Session Summary — 019fe8a5 (Audit, Consolidation, Modularization)
 

@@ -2367,11 +2367,121 @@ class FrontendDeliveryContractTests(unittest.TestCase):
             "master.json": self.sha256(REPO / "docs/master.json"),
             "data.json": self.sha256(REPO / "docs/data.json"),
         }
+        # The catalogue-block-map drives per-row block colours in the
+        # Everything view (getRowBlockId in docs/js/formatters.js). A stale
+        # block map paired with a fresh app.js would silently mis-render the
+        # 11 colour washes, so the manifest contract now records its hash
+        # alongside the master/data payloads.
+        expected_data["catalogue-block-map.json"] = self.sha256(
+            REPO / "docs/catalogue-block-map.json"
+        )
         self.assertEqual(manifest["data"], expected_data)
         visible_revision = f"app-{expected['app.js'][:12]}/css-{expected['style.css'][:12]}"
         self.assertIn(f'id="build-revision">{visible_revision}</code>', index)
         self.assertIn('href="build-manifest.json"', index)
         self.assertEqual(manifest["acceptance"], "owner_visual_review_required")
+
+    def test_block_map_drift_fails_manifest_contract(self) -> None:
+        """A drift between the block map and its manifest hash must fail loudly.
+
+        The catalogue-block-map is build-emitted by build_catalogue_pages.py
+        from data/catalogue_display_order.csv. A hand-edit to the block map
+        without bumping the manifest hash would silently mis-render the
+        11 colour washes in the Everything view; this test re-reads the
+        actual file, recomputes its hash, and compares against the manifest
+        entry to catch that drift directly.
+        """
+        block_map_path = REPO / "docs/catalogue-block-map.json"
+        if not block_map_path.exists():
+            self.fail("catalogue-block-map.json must exist for this contract to be testable")
+        manifest = json.loads((REPO / "docs/build-manifest.json").read_text(encoding="utf-8"))
+        self.assertIn(
+            "catalogue-block-map.json", manifest.get("data", {}),
+            "build-manifest.json must record the catalogue-block-map hash in its data section",
+        )
+        self.assertEqual(
+            manifest["data"]["catalogue-block-map.json"],
+            self.sha256(block_map_path),
+            "catalogue-block-map.json drifted from its manifest hash; rebuild the manifest",
+        )
+
+    def test_app_js_declares_critical_module_scope_variables(self) -> None:
+        """Critical module-scope identifiers must be declared with let/var/const.
+
+        Regression guard for the 019fe8d0 P0 incident: the 019fe8a5 ES-module
+        refactor of docs/app.js dropped the `let table = null;` and
+        `let allData = [];` declarations that lived at IIFE scope in the
+        pre-modular version. The page then failed silently on the first
+        ``boot()`` call (``ReferenceError: table is not defined``) and the
+        browser stayed on the static "Loading research master…" skeleton
+        forever.
+
+        A future refactor that re-introduces a free-variable reference to
+        one of these critical module-scope identifiers must fail this test
+        before it can ship.
+        """
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+
+        # The critical module-scope state. `table` holds the active Tabulator
+        # instance, `allData` holds the current view's data array. Both must
+        # be declared inside the IIFE so their references resolve.
+        critical = ("table", "allData")
+        # Match the variable name as the LHS of a let/var/const declaration
+        # at IIFE scope (whitespace + `let` + whitespace + the name + ...).
+        # We do not match imports (which use `as`) or destructuring (which
+        # uses commas), so a positive match means the IIFE declares the
+        # variable as a let/var/const at its top level.
+        missing = [
+            name for name in critical
+            if not re.search(rf"^\s+(?:let|var|const)\s+{re.escape(name)}\b", app_js, re.MULTILINE)
+        ]
+        self.assertEqual(
+            missing, [],
+            f"docs/app.js must declare these critical module-scope identifiers "
+            f"at IIFE scope; a free-variable reference will throw ReferenceError "
+            f"on first use and silently break the page. Missing: {missing}",
+        )
+
+    def test_app_js_invokes_every_named_import(self) -> None:
+        """Every destructured import in app.js must be used (called or read).
+
+        Regression guard for the 019fe8d0 follow-up P0 incident: the 019fe8a5
+        ES-module refactor of `docs/app.js` imported `loadCatalogueBlockMap`
+        from `./js/formatters.js` but never called it. The block map singleton
+        therefore stayed empty, every row fell back to ``data-block="undecided"``,
+        and the 25/25 Playwright computed-style specs failed. A second P0 hotfix
+        caught it. This test fails any future refactor that leaves a named
+        import unused.
+
+        Matches the `import { A, B, C } from "...";` block at the top of
+        app.js and asserts that every destructured name appears as a token
+        later in the file. This is approximate (it does not differentiate
+        a call from a property access) but it catches the imported-but-
+        never-called class of error.
+        """
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        # Extract the import block: from `import {` to the matching `};`.
+        match = re.search(r"^import\s*\{([^}]*)\}\s*from\s*[\"'][^\"']*[\"'];",
+                          app_js, re.MULTILINE | re.DOTALL)
+        if not match:
+            self.fail("docs/app.js must start with at least one `import {...}` block")
+        names = [n.strip() for n in match.group(1).split(",") if n.strip()]
+        self.assertTrue(names, "the import block must list at least one name")
+        # Strip the import block out of the rest of the file so the "usage"
+        # check doesn't see the import line itself.
+        rest = app_js[match.end():]
+        unused = [
+            name for name in names
+            if not re.search(rf"\b{re.escape(name)}\b", rest)
+        ]
+        self.assertEqual(
+            unused, [],
+            f"docs/app.js imports {unused} but never references them; "
+            f"an unused import typically means a forgotten call (e.g. "
+            f"loadCatalogueBlockMap in the 019fe8d0 follow-up P0). The "
+            f"fix is either to invoke the import or remove it from the "
+            f"destructuring list.",
+        )
 
 
 class RetiredVocabularyTests(unittest.TestCase):
@@ -2471,6 +2581,128 @@ class RetiredVocabularyTests(unittest.TestCase):
                 invoke_script("build_research_master.py", sandbox)
         finally:
             tempdir.cleanup()
+
+
+class ViewsConfigConsistencyTests(unittest.TestCase):
+    """docs/js/config.js#VIEWS must cover every view JSON the build emits.
+
+    Without this contract, a new view added to build_catalogue_pages.py (an
+    additional OUT_* path) could land in docs/ as a JSON file the Jump-to
+    dropdown never offers — and conversely the VIEWS list could reference a
+    file the build stopped producing. Either failure mode is a silent UX bug;
+    this test parses the static VIEWS object from the ES module and asserts
+    it matches the build's actual output set.
+    """
+
+    @staticmethod
+    def parse_views_files(config_path: Path) -> set[str]:
+        """Extract every ``file: "<name>.json"`` value from VIEWS.
+
+        Avoids a Node dependency by regex-parsing the small, well-formed ES
+        module. The regex is anchored to the VIEWS object literal so an
+        identical ``file:`` line elsewhere in the module would not match.
+        """
+        text = config_path.read_text(encoding="utf-8")
+        # Match the VIEWS object literal and capture every file: "*.json" pair.
+        match = re.search(
+            r"export const VIEWS = \{(?P<body>.*?)\n?\};",
+            text, re.DOTALL,
+        )
+        assert match is not None, "docs/js/config.js must export a VIEWS object literal"
+        files = set(re.findall(r'file:\s*"([^"]+\.json)"', match.group("body")))
+        assert files, "VIEWS must contain at least one file: \"*.json\" entry"
+        return files
+
+    def test_views_covers_every_user_facing_catalogue_output(self) -> None:
+        """VIEWS file keys must equal the set of build-emitted user-facing JSONs.
+
+        Non-user-facing build outputs (catalogue-meta.json + catalogue-block-map.json)
+        and the contract manifest (build-manifest.json) are intentionally
+        excluded: they are loaded by the app but not exposed as Jump-to entries.
+        """
+        views_files = self.parse_views_files(REPO / "docs/js/config.js")
+
+        # The build's declared output paths (paths are Path objects; we want
+        # the relative file names so the contract reads naturally).
+        declared_outputs = {
+            path.name
+            for name in (
+                "OUT_MASTER", "OUT_REVIEW_OVERVIEW", "OUT_MANUAL_CANDIDATES",
+                "OUT_MANUAL_LEADS", "OUT_MASTER_EXCLUSIONS", "OUT_MIGRATION_REVIEW",
+                "OUT_SOURCE_OVERRIDES", "OUT_OFFICIAL_DISCOVERY",
+                "OUT_NEW_WORK_REVIEW", "OUT_VERITAS_MAPPING_DECISIONS",
+                "OUT_VERITAS_PRODUCTS", "OUT_PRODUCT_RELATIONSHIPS",
+                "OUT_SERIES_COMPILATIONS", "OUT_HAYHOUSE_PRODUCTS",
+                "OUT_AUDIBLE_PRODUCTS", "OUT_INTERNATIONAL",
+                "OUT_FILENAME_PROPOSAL", "OUT_PUBLISHERS",
+            )
+            for path in (getattr(bcp, name),)
+        }
+        # data.json is the raw pass-through output, not a bcp OUT_*; add it.
+        declared_outputs.add("data.json")
+
+        non_viewing = {"catalogue-meta.json", "catalogue-block-map.json", "build-manifest.json"}
+        user_facing = declared_outputs - non_viewing
+
+        self.assertEqual(
+            views_files, user_facing,
+            f"VIEWS file set drifted from build outputs.\n"
+            f"  In VIEWS but not built: {views_files - user_facing}\n"
+            f"  Built but not in VIEWS: {user_facing - views_files}",
+        )
+
+    def test_views_file_exists_in_docs(self) -> None:
+        """Every file named in VIEWS must actually be present in docs/.
+
+        Catches a "VIEWS list grew but the JSON was never published" failure
+        mode (e.g. a new view added to VIEWS without running the build).
+        """
+        views_files = self.parse_views_files(REPO / "docs/js/config.js")
+        docs_dir = REPO / "docs"
+        missing = sorted(name for name in views_files if not (docs_dir / name).exists())
+        self.assertEqual(
+            missing, [],
+            f"VIEWS references JSON files that docs/ does not contain: {missing}",
+        )
+
+    def test_no_duplicate_file_keys_in_views(self) -> None:
+        """VIEWS must not list the same JSON file under two view keys.
+
+        A duplicate `file:` would silently overwrite one view's data with
+        another's; the Jump-to dropdown would show both labels but only
+        load one set of rows. The one legitimate exception is
+        ``master`` + ``series`` both pointing at ``master.json``: the
+        Series tab is a card browser over the same payload, a documented
+        design choice. If any other file is shared, that is a real bug.
+        """
+        text = (REPO / "docs/js/config.js").read_text(encoding="utf-8")
+        match = re.search(
+            r"export const VIEWS = \{(?P<body>.*?)\n?\};",
+            text, re.DOTALL,
+        )
+        assert match is not None
+        entries = re.findall(
+            r'^\s*(\w+):\s*\{[^}]*file:\s*"([^"]+\.json)"',
+            match.group("body"), re.MULTILINE,
+        )
+        from collections import Counter
+        counts = Counter(name for _, name in entries)
+        # Documented exception: master + series share master.json because
+        # the Series tab is a card browser over the same payload.
+        allowed = {"master.json"}
+        dupes = {
+            name: n for name, n in counts.items() if n > 1 and name not in allowed
+        }
+        self.assertEqual(
+            dupes, {},
+            f"VIEWS must not list the same JSON file under multiple view keys: {dupes}",
+        )
+        # And pin the documented exception so it cannot silently grow.
+        self.assertEqual(
+            counts.get("master.json", 0), 2,
+            "master + series both point at master.json (documented); if this changes, "
+            "update the test and document the new exception.",
+        )
 
 
 if __name__ == "__main__":
