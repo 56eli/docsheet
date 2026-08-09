@@ -1,16 +1,57 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Arena 019fe8a5 — Full Audit, Root Consolidation, UX Fixes, Frontend Modularization)
+Last updated: 2026-08-09 (Arena 019fe8d0 — Fresh-eyes Multidisciplinary Audit, branch 1a442001 / main HEAD)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-full-audit-019fe8a5.md` **(Current — full audit 019fe8a5 session)**
+- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` **(Current — fresh-eyes audit 019fe8d0 session)**
+- `docs/audits/2026-08-09-full-audit-019fe8a5.md` (Prior session — 019fe8a5)
 - `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (Prior declared-current multidisciplinary audit)
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit)
+
+- **Independent audit** of all 5 prior 2026-08-09 audits (019fe7ff, 019fe80c,
+  019fe830, 019fe844, 019fe8a5) — every claim re-verified, not copied.
+- **Committed at `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md`**
+  (14 sections: TL;DR, Architecture, Web Design, Full-Stack, Security,
+  Performance, A11y, Repo Org, CI/CD, Maintainability, Auditability, Data
+  Engineering, Recommendations, Verification, Scoreboard Alignment).
+- **6 independent data-integrity probes re-run against `docs/master.json`:**
+  no duplicate UUIDs (1-372 with documented gaps for retired duplicates),
+  all 362 catalog codes match `^(LECTURE|DISCUSSION)-\d{3,4}X?-\d{3}$`
+  (84 correctly blank for edition/book rows), year range 1973-2026 with
+  16 198X Office Series + 19 blank (Volume Series + under-investigation),
+  item type counts exactly 306 lecture / 40 book / 8 discussion / 7 highlight
+  / 1 other (sum 362), format distribution 253 DVD / 32 CD / 31 book /
+  27 audiobook / 19 streaming, owned distribution 311 true / 25 false /
+  26 blank, all 6 URL fields use https:// schemes.
+- **5 `--check` modes re-run in this session** (process_data.py needs
+  pandas which the sandbox doesn't have, but the other 5 pass): all green.
+- **6 gaps surfaced** that the prior 5 audits didn't explicitly call out:
+  1. `docs/catalogue-block-map.json` is build-emitted but not in
+     `build-manifest.json` (and not in `FrontendDeliveryContractTests`).
+  2. `docs/js/config.js#VIEWS` is not cross-checked against
+     `build_catalogue_pages.py` output file list.
+  3. 29 of 362 masters have no `source_url_veritas` but no visual
+     indicator distinguishes "intentionally blank" from "missing data."
+  4. Firefox ignores `::-webkit-scrollbar`; 16px custom scrollbar is
+     silently the OS default there.
+  5. Work-family stripe grouping has no legend / toggle in View settings.
+  6. The "Not owned" badge was hidden in 019fe8a5 per owner request, but
+     `owned: false` rows now have a fully empty cell — a subtle visual
+     cue (faint strikethrough on title? outlined "✕" badge?) would
+     communicate the distinction without re-introducing the noisy pill.
+- **Scoreboard alignment:** My independent re-audit agrees with the current
+  scoreboard (overall_effective 8.5 / gate pass) on every aspect except
+  performance (I'd add a Lighthouse budget step before declaring 8/10
+  confident — currently 8 with medium confidence per the scoreboard,
+  which is fair). No score changes recommended.
+- **No code changes** in this session — pure audit + audit doc.
 
 ## 2026-08-09 Session Summary — 019fe8a5 (Audit, Consolidation, Modularization)
 
