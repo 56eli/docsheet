@@ -55,13 +55,15 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 139 tests, no browser/network needed
+python -m unittest discover tests          # 140 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-09 (with 139 deterministic pipeline and style tests); every pipeline module is ≥ 88%. `requirements-ci.txt` records the
-exact Python dependency set used by the owner-applied workflows. PR #34 merged
+2026-08-09 (with 140 deterministic pipeline and style tests). The gate applies
+to total coverage; individual modules currently range from 78% to 100%.
+`requirements-ci.txt` records the exact Python dependency set used by the
+owner-applied workflows. The 25 Playwright specs run separately in CI. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
 replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
@@ -106,13 +108,12 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
 `NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
 [`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
-[`.scoreboard/`](.scoreboard/scoreboard.yml), the declared-current audits
-`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
-PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
+[`.scoreboard/`](.scoreboard/scoreboard.yml), the declared-current
+[`deployment forensics full audit`](docs/audits/2026-08-09-deployment-forensics-full-audit.md),
+and the supporting 2026-08-09 expert/deep-dive reports at the root. The
 historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
-and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` (archived 2026-08-09
-with the other superseded audits),
+and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09
+with the other superseded audits,
 `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Superseded audits,
 suggestion documents, and workflow guides live in

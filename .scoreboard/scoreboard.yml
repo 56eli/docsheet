@@ -16,23 +16,26 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs you. If workflow changes are needed, document exact GitHub web editor steps in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 7.9
+  overall_effective_score: 7.6
   repo_ready_gate_status: fail
   top_priorities:
     - github_pages_presentation
     - ux_usability
     - maintainability
     - code_hygiene
+    - ci_cd
     - content_quality
     - repo_organization
   active_risk_flags:
     - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
-    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 — effective scores fall below target for these aspects (user_unhappy / needs_work); AI scores and evidence unchanged."
+    - "Pages deploys main independently of CI and observed PRs merged before checks completed; require CI and gate Pages before treating a green deployment as validated."
+    - "The raw Original Spreadsheet and curated Everything view are separate payloads; owner corrections in docs/master.json intentionally do not alter docs/data.json."
+    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 — effective scores remain below target for these aspects."
 
 quality_gates:
   repo_ready:
     status: fail
-    overall_effective_score: 7.9
+    overall_effective_score: 7.6
     last_evaluated: "2026-08-09"
     minimum_overall_effective_score: 8
     required:
@@ -47,7 +50,7 @@ quality_gates:
       - "If a gate is satisfied only because of user_score while ai_score is low, mark the relevant aspect as accepted_debt or risk_accepted."
       - "If required aspects have active risk_flags, mention them in SCOREBOARD.md even when the gate numerically passes."
       - "2026-08-09 baseline: numeric thresholds initially passed (8.4 >= 8) with gate WARNING (low-severity risk flag + medium-confidence items)."
-      - "2026-08-09 (after owner user scores): effective scores for github_pages_presentation (5), ux_usability (5), content_quality (7), maintainability (6) moved the weighted average to 7.9 — below the 8 minimum — so the gate is now FAIL. Required aspect minimums still pass individually; the overall minimum does not. AI scores are unchanged; the owner's scores drive priority."
+      - "2026-08-09 deployment-forensics re-audit: effective score is 7.6, below the 8 minimum. Required minima still pass (CI/CD 7 and agent readiness 8 are now at threshold), but Pages is not gated by CI; see the active risk flag and manual-workflow plan."
 
 aspects:
   - id: project_purpose_scope
@@ -92,7 +95,7 @@ aspects:
     ai_basis: "README and INSTRUCTIONS cover quick start, local checks, the curated pipeline safeguard, field semantics, and the edition model; every headline count in the README was reproduced exactly from the data."
     user_basis: null
     evidence:
-      - "All six --check modes and 139/139 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
+      - "All six --check modes and 140/140 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
       - "FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
     user_notes: null
     desired_direction: []
@@ -116,11 +119,11 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/. 2026-08-09 pass archived the superseded 08-08 baseline pair, EXTERNAL_AUDIT.md, and the implemented PRESENTATION_UX_PROPOSAL; root now holds 18 .md files (living docs + the declared-current 08-09 audits + schemas/policies + generated reports), all referenced from README 'Documentation layout'. Remaining noise is mostly NEXT_AGENT_HANDOFF.md size and the four current audits."
+    ai_basis: "Layout is logical (archive/, decisions/, data/, docs/, tests/), but 20 root Markdown files, 86 archived Markdown files, an oversized handoff, and multiple same-day audit snapshots create avoidable search cost. The current audit was placed under docs/audits/ rather than adding another root report."
     user_basis: null
     evidence:
-      - "Root listing: 18 .md files; superseded audits moved to archive/ on 2026-08-09 with banners (FULL_STACK_AUDIT_2026-08-08_ARENA.md, FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md, EXTERNAL_AUDIT.md, PRESENTATION_UX_PROPOSAL_2026-08-09.md); archive/README.md indexes the additions."
-      - "README 'Documentation layout' and INSTRUCTIONS point to the declared-current 08-09 audits only."
+      - "Current listing: 20 root Markdown files and 86 archive Markdown files."
+      - "README and INSTRUCTIONS now point to the deployment-forensics audit as declared-current."
       - "archive/ and decisions/ are indexed by their READMEs."
     user_notes: null
     desired_direction:
@@ -138,21 +141,23 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "All python scripts pass ruff check with 0 warnings/errors, all shebangs correct, unused variables/imports removed, and exception handling narrowed."
+    ai_basis: "Python is ruff-clean, but the deleted hero/overview/stats DOM left nullable bindings, render functions, listeners, settings state, and CSS selectors in the 2,692-line app.js / 2,382-line style.css frontend."
     user_basis: null
     evidence:
-      - "ruff check . passes 100% clean across all modules and tests."
+      - "ruff check . passes across Python modules and tests."
+      - "Missing DOM IDs catalogue-intro, hero, hero-dismiss, overview-cards, series-strip-list, stats-strip, and overview-btn still have JS/CSS references."
     user_notes: null
     desired_direction: []
-    next_actions: []
+    next_actions:
+      - "Remove dead overview/stats JS and CSS in a behavior-preserving cleanup after CI is green."
     risk_flags: []
     files_reviewed:
       - build_research_master.py
@@ -169,22 +174,23 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 8
     user_score: null
-    effective_score: 9
+    effective_score: 8
     gap: 0
     priority: 0
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Ledger-driven curation with deterministic generators, --check idempotence for every pipeline stage, read-only reconciliation report, and a static Pages frontend; the 2026-08-08 independent audit called the pipeline design exemplary."
+    ai_basis: "Ledger-driven curation, deterministic --check generators, and a static read-only frontend are sound; the raw and curated data planes are intentionally separate but operationally easy to confuse, and deployment validation is outside this data architecture."
     user_basis: null
     evidence:
-      - "All six --check modes byte-current in this session."
-      - "Ledger -> master -> Pages JSON -> static site chain verified end-to-end."
+      - "All six --check modes are byte-current; ledger -> master -> Pages JSON verified end-to-end."
+      - "REVISION1 corrections exist in docs/master.json but intentionally not docs/data.json."
     user_notes: null
     desired_direction: []
-    next_actions: []
+    next_actions:
+      - "Make the raw-versus-curated boundary explicit in live view labels and provenance text."
     risk_flags: []
     files_reviewed:
       - build_research_master.py
@@ -198,7 +204,7 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: 6
     effective_score: 6
     gap: 2
@@ -206,14 +212,15 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 139/139 tests green, coverage 90%."
+    ai_basis: "The Python refactor improved generator boundaries, but build_catalogue remains 228 lines, app.js is 2,692 lines, boot() is about 230 lines, style.css is 2,382 lines, and removed UI features left dead code."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
-      - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
-      - "All 139/139 tests pass, 90% statement coverage, all 6 --check modes green."
+      - "140 offline tests and all six --check modes pass, providing a strong refactor safety net."
+      - "Coverage is 90% total, with helpers at 78% and relationships at 82%; no per-module floor is enforced."
     user_notes: null
     desired_direction: []
-    next_actions: []
+    next_actions:
+      - "Remove dead frontend features, then split app.js boot/view modules and the remaining large generator functions."
     risk_flags: []
     files_reviewed:
       - build_research_master.py
@@ -313,15 +320,15 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "139 deterministic pipeline and style tests (132 pipeline + 7 style contrast) plus 26 Playwright browser specs; 90% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
+    ai_basis: "140 deterministic pipeline/style tests plus 25 Playwright specs; 90% total coverage against an enforced 85% floor; tamper guards cover every generator and a new test locks the owner-corrected Pages rows."
     user_basis: null
     evidence:
-      - "python -m unittest discover tests: Ran 139, OK; coverage report TOTAL 90% (lowest module 88%)."
-      - "Browser suite runs in CI (green); sandbox cannot download Playwright browsers, so e2e was not re-run locally this session."
+      - "python -m unittest discover tests: Ran 140, OK; coverage report TOTAL 90%."
+      - "The stale stats-selector test was corrected; browser execution awaits CI because the sandbox blocks Chromium downloads."
     user_notes: null
     desired_direction: []
     next_actions:
-      - "Ensure CI keeps running the 26 browser specs; consider a local browser fallback note in INSTRUCTIONS."
+      - "Confirm all 25 browser specs on this branch in GitHub Actions before merge."
     risk_flags: []
     files_reviewed:
       - tests/test_pipeline.py
@@ -336,23 +343,28 @@ aspects:
     category: operations
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: blocked_manual_workflow_edit
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "CI runs py_compile, all six --check modes, 139 unit tests, coverage gate, JS syntax, and 26 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
+    ai_basis: "CI has strong checks, but one stale E2E selector produced 11 failures, PRs merged before checks completed, Pages deployed every red main commit, the job is monolithic, and action runtime warnings remain."
     user_basis: null
     evidence:
-      - "gh run list: CI and pages-build-deployment green on main (latest run after PR #43)."
-      - "ci.yml reviewed: paths-ignore for the raw CSV complements update_spreadsheet.yml paths."
+      - "Runs from PR #48 through ea4e30d all failed only at #show-stats-toggle; 24 of 25 browser specs passed."
+      - "All corresponding Pages deployments succeeded, proving CI is not a deployment gate."
+      - "ci.yml path filters correctly avoid raw-updater races; all three Update Spreadsheet runs succeeded."
     user_notes: null
     desired_direction: []
-    next_actions: []
-    risk_flags: []
+    next_actions:
+      - "Require CI before merge and gate Pages on successful main CI; exact owner-reviewed steps are in .scoreboard/manual-workflow-edits.md."
+      - "Split data/Python and browser jobs, then update deprecated action runtimes deliberately."
+    risk_flags:
+      - "Pages can deploy a commit whose CI failed."
+      - "Workflow/settings change requires explicit owner approval."
     files_reviewed:
       - .github/workflows/ci.yml
       - .github/workflows/update_spreadsheet.yml
@@ -457,7 +469,7 @@ aspects:
     user_basis: "Explicit owner score provided 2026-08-09: 'ux_usability 5/10'."
     evidence:
       - "docs/app.js VIEWS/VIEW_GROUPS, facet engine, and settings persistence reviewed."
-      - "9 ux-enhancement + 4 column-layout + 5 csv-export browser specs cover the flows (CI green)."
+      - "9 UX + 6 presentation + 5 CSV/export + 4 column-layout + 1 blank-row browser specs cover the flows; corrected branch CI is pending."
     user_notes: null
     desired_direction: []
     next_actions: []
@@ -553,23 +565,25 @@ aspects:
     category: operations
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 8
     user_score: null
-    effective_score: 9
+    effective_score: 8
     gap: 0
     priority: 0
-    status: healthy
+    status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "GitHub Pages deployment is fully automated and green; docs/ is self-contained with .nojekyll; update-spreadsheet workflow regenerates on raw CSV changes."
+    ai_basis: "Pages branch deployment is reliable and current, but it is independent of CI, has no post-deploy row/content assertion, and the live UI exposes no commit or data-revision fingerprint."
     user_basis: null
     evidence:
-      - "pages-build-deployment success on latest main push."
-      - "Static serve of docs/ (all assets 200)."
+      - "Pages API: latest build ea4e30d is built; deployment 5821353112 succeeded."
+      - "PR #46 row-fix deployment succeeded and current main Pages payload files contain the corrected rows."
     user_notes: null
     desired_direction: []
-    next_actions: []
-    risk_flags: []
+    next_actions:
+      - "Add CI-gated Pages deployment, a build manifest, and a post-deploy content smoke assertion."
+    risk_flags:
+      - "A green Pages run currently proves publishing, not validation."
     files_reviewed:
       - .github/workflows/update_spreadsheet.yml
       - docs/.nojekyll
@@ -579,22 +593,23 @@ aspects:
     category: operations
     weight: 5
     target: 8
-    ai_score: 9
+    ai_score: 8
     user_score: null
-    effective_score: 9
+    effective_score: 8
     gap: 0
     priority: 0
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "NEXT_AGENT_HANDOFF, INSTRUCTIONS, six --check modes, deterministic test suite, and now the scoreboard (SCOREBOARD.md, .scoreboard/*, AGENTS.md) give a fresh sandboxed agent everything needed without chat memory."
+    ai_basis: "The six checks, 140-test suite, scoreboard, instructions, and handoff provide strong durable context; the prior handoff was stale about branch, browser count, per-module coverage, and latest CI status."
     user_basis: null
     evidence:
-      - "Fresh venv + README quick start worked in this session."
-      - "All checks reproducible in under 30 seconds."
+      - "Fresh venv reproduced all six checks, 140 tests, and 90% total coverage."
+      - "Current handoff now records the deployment/CI distinction and owner-gated workflow work."
     user_notes: null
     desired_direction: []
-    next_actions: []
+    next_actions:
+      - "Future agents must inspect the latest CI and Pages runs rather than inheriting a green-status claim."
     risk_flags: []
     files_reviewed:
       - NEXT_AGENT_HANDOFF.md
@@ -606,22 +621,23 @@ aspects:
     category: operations
     weight: 3
     target: 8
-    ai_score: 8
+    ai_score: 7
     user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
+    effective_score: 7
+    gap: 1
+    priority: 3
+    status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Single open issue (#18); every audit finding from this session is resolved and committed; no TODO/FIXME markers in notes; open-work section in the handoff is current."
+    ai_basis: "Issue #18 remains open and the deployment audit has four owner-directed follow-ups (CI/Pages gating, build identity, view-label clarity, dead frontend cleanup); the handoff now records them explicitly."
     user_basis: null
     evidence:
-      - "gh issue list: 1 open; git log shows three fix commits this session."
-      - "Independent probes found 0 TODO markers in master notes."
+      - "gh issue list: one open issue (#18)."
+      - "Deployment-forensics audit findings F-04 through F-08 remain open or owner-gated."
     user_notes: null
     desired_direction: []
     next_actions:
+      - "Obtain owner direction on CI/Pages gating and raw-versus-curated labeling."
       - "Triage issue #18 when Drive access is available."
     risk_flags: []
     files_reviewed:
@@ -633,22 +649,23 @@ aspects:
     category: operations
     weight: 3
     target: 8
-    ai_score: 9
+    ai_score: 8
     user_score: null
-    effective_score: 9
+    effective_score: 8
     gap: 0
     priority: 0
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Every master row carries provenance (year_source, raw_row_number, candidate_key), the ledger retains all 374 raw rows with dispositions and reasons, reconciliation is a generated read-only report, and audit documents follow a dated convention."
+    ai_basis: "Row-level provenance and deterministic reconciliation are strong, but the live site lacks a build SHA/data revision and overlapping audit documents previously obscured the current operational state."
     user_basis: null
     evidence:
-      - "reconcile_research_master.py --check byte-current; RECONCILIATION_REPORT.md regenerated."
-      - "Decisions/ docs explain every ruling batch."
+      - "All generated outputs reconcile; a new test locks corrected rows in docs/master.json."
+      - "GitHub Pages API provides the deployed SHA externally, but the site does not display it."
     user_notes: null
     desired_direction: []
-    next_actions: []
+    next_actions:
+      - "Publish and display a generated build manifest; continue consolidating superseded audits."
     risk_flags: []
     files_reviewed:
       - RECONCILIATION_REPORT.md

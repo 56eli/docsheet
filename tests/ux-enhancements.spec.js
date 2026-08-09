@@ -51,7 +51,7 @@ test('facet bar is hidden on non-catalogue views', async ({ page }) => {
   await expect(page.locator('#facet-bar')).toBeHidden();
 });
 
-test('stats chips and task jump menu navigate to their sheets', async ({ page }) => {
+test('view jump menu navigates across catalogue and review sheets', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
@@ -62,17 +62,14 @@ test('stats chips and task jump menu navigate to their sheets', async ({ page })
   await page.locator('#view-jump').selectOption('manualLeads');
   await waitForTable(page);
   await expect(page.locator('#view-title')).toHaveText('Manual Leads');
-  await page.locator('#view-jump').selectOption('master');
-  await waitForTable(page);
 
-  // Stats are hidden by default now to save space. Turn them on.
-  await page.locator('#settings-btn').click();
-  await page.locator('#show-stats-toggle').check();
-  await page.locator('#settings-btn').click(); // close settings menu
-
-  await page.locator('.stat-chip[data-jump="productRelationships"]').click();
+  await page.locator('#view-jump').selectOption('productRelationships');
   await waitForTable(page);
   await expect(page.locator('#view-title')).toHaveText('Product Relationships');
+
+  await page.locator('#view-jump').selectOption('master');
+  await waitForTable(page);
+  await expect(page.locator('#view-title')).toHaveText('Everything');
 });
 
 test('compact CM badge carries the full Curated master tooltip', async ({ page }) => {

@@ -1,13 +1,42 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Zebra Contrast Fix + Regression Guard) — current handoff for
-branch `arena/019fe776-docsheet`.
-**Scoreboard:** this repo has a persistent scoreboard — read
-`SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
-and `AGENTS.md` first; they are the durable agent-memory layer (Arena
-sessions may expire after PR merge).
+**Prepared:** 2026-08-09 — deployment forensics and full audit on branch
+`arena/019fe7b6-docsheet` (baseline `ea4e30d`).
+**Scoreboard:** read `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`,
+`.scoreboard/agent-handoff.md`, and `AGENTS.md` first; they are the durable
+agent-memory layer.
 
-## 2026-08-09 Zebra contrast fix + regression guard (arena/019fe776-docsheet, current)
+## 2026-08-09 deployment forensics (current)
+
+- **Root cause of the recent red Actions:** commit `255d937` removed the stats
+  controls from `docs/index.html`, but `tests/ux-enhancements.spec.js` still
+  waited for `#show-stats-toggle`. That one impossible locator caused **11 CI
+  failures** from PR #48 through `ea4e30d` (plus one cancelled run); each
+  completed run otherwise passed all data/Python checks and reported 24
+  browser specs passed.
+- **These were not Pages deployment failures.** All corresponding Pages runs
+  succeeded. The latest Pages build/deployment API reports `ea4e30d` as built
+  and deployed successfully. PR #46's REVISION1 commit `a981641` also had
+  green CI and a successful Pages deployment.
+- **Why corrections can look absent:** REVISION1 updates the curated
+  `docs/master.json` used by **Everything**, not raw `docs/data.json` used by
+  **Original Spreadsheet**. Several corrected promoted UUIDs do not exist in
+  the raw CSV. This is intended but needs clearer live labeling.
+- **Fix on this branch:** the stale browser test now navigates only through the
+  surviving `#view-jump` menu. A new offline regression test locks UUIDs 312,
+  315, 356, 357, and 358 in the actual Pages payload. Suite: **140 offline
+  tests**, 90% total coverage; browser suite: **25 specs**.
+- **Current audit:**
+  `docs/audits/2026-08-09-deployment-forensics-full-audit.md`.
+- **Open P1 operations work:** Pages is not gated on CI, merges occurred before
+  checks completed, there is no post-deploy content assertion/build fingerprint,
+  and raw-vs-curated view names are ambiguous. Workflow/settings changes need
+  explicit owner approval; exact proposal is in
+  `.scoreboard/manual-workflow-edits.md`.
+- **Open P2 engineering work:** remove dead hero/overview/stats JS and CSS;
+  split the monolithic CI job; address action-runtime deprecation warnings.
+
+## 2026-08-09 Zebra contrast fix + regression guard (historical session)
 
 **Root cause:** 5+ agents edited `docs/style.css` and deployed changes to
 GitHub Pages, but the zebra-row contrast was **below human perception**
@@ -34,7 +63,7 @@ CI now enforces on every PR:
 **Verification:** all 139 tests pass (132 pipeline + 7 style guards),
 all six `--check` modes pass, `node --check` clean, coverage 90%.
 
-## Headline results (2026-08-09 Expert Full-Stack Pass, current)
+## Historical results (2026-08-09 earlier expert full-stack pass)
 
 - **Desktop UI Modernization & Clean Design System:**
   - Removed cluttered horizontal `<nav class="dataset-tabs">` tab strip ("Catalogue" row) in favor of the top-bar **Jump to** dropdown selector (`#view-jump`), maximizing vertical spreadsheet space.
@@ -87,13 +116,10 @@ all six `--check` modes pass, `node --check` clean, coverage 90%.
   All six `--check` modes pass; README documents the new inputs.
 - **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage.
 
-The declared-current audits are
-`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
-verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
-(verified at `d731e1b`) and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
-H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
-updated for the 2026-08-09 reclassification);
+The declared-current audit is
+`docs/audits/2026-08-09-deployment-forensics-full-audit.md`; the root
+`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`, deep-dive, and full-extension
+reports remain supporting snapshots from earlier commits;
 the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
 the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
@@ -304,8 +330,8 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 139 tests, offline, ~3s
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
+python -m unittest discover tests     # 140 tests, offline, ~5s
+coverage run -m unittest discover tests && coverage report   # total gate: 85%; currently 90%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
@@ -323,8 +349,9 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 18 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 9); don't burn time installing locally.
+  suite (5 spec files / 25 tests: `blank-rows` 1, `column-layout` 4,
+  `csv-export` 5, `presentation-ux` 6, `ux-enhancements` 9); don't burn time
+  repeatedly installing it locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -344,7 +371,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 338 members approved; work_id coverage 362/362 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **139 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 90%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **140 offline tests; coverage 90% total; 25 Playwright specs in CI** | `.coveragerc` enforces total `fail_under = 85`; individual modules currently range 78–100% |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,

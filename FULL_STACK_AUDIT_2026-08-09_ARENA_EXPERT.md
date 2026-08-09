@@ -1,9 +1,12 @@
 # Full-Stack & Catalogue Audit — 2026-08-09 (Expert Pass)
 
+> **Supporting historical snapshot.** The declared-current audit is
+> `docs/audits/2026-08-09-deployment-forensics-full-audit.md`.
+
 **Auditor:** Arena.ai Agent Mode (expert full-stack developer + data engineer, independent probes)
 **Date:** 2026-08-09
 **Branch audited:** `arena/019fe659-docsheet` at `556bf48` (main HEAD = merge of PR #43)
-**Status:** Current — all six `--check` modes green, 126/126 tests, 91% coverage, no critical or high-severity findings.
+**Status at audited commit:** all six `--check` modes green, 126/126 tests, 91% coverage, no critical or high-severity findings.
 
 ---
 

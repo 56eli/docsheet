@@ -162,10 +162,10 @@ year/month/year_source corrections), `data/master_notes_overrides.csv`
 (verbatim notes replacements), and `data/catalogue_display_order.csv` (the
 owner-approved block order of the Everything view and its CSV export; the
 change record is the colour-coded `review/hawkins-everything-REVISION1.ods`).
-See `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
-extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for the current
-full-stack audit and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
-status (`archive/` material is historical and not normative).
+See `docs/audits/2026-08-09-deployment-forensics-full-audit.md` for the current
+full-stack and deployment-forensics audit and `NEXT_AGENT_HANDOFF.md` §6 for
+current risk and roadmap status (`archive/` material is historical and not
+normative).
 
 ### Pipeline test suite and coverage gate
 
@@ -179,17 +179,17 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 139 deterministic tests
+python -m unittest discover tests      # 140 deterministic tests
 coverage run -m unittest discover tests
-coverage report                        # exits non-zero below the 85% floor (.coveragerc)
+coverage report                        # exits non-zero below the 85% total floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 → 140).
 
-Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-09, style
-guard tests excluded from coverage denominator).
+Current coverage: **90% total** (2026-08-09; the enforced floor is total
+coverage only). Individual reported modules currently range from 78% to 100%.
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright

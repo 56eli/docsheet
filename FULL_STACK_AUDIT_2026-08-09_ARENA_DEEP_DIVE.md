@@ -1,5 +1,8 @@
 # Full-Stack & Catalogue Audit — 2026-08-09 (Arena Deep-Dive, post PR #40)
 
+> **Supporting historical snapshot.** The declared-current audit is
+> `docs/audits/2026-08-09-deployment-forensics-full-audit.md`.
+
 **Auditor:** Arena.ai Full-Stack / Data-Engineering agent
 **Repository:** `56eli/docsheet`
 **Branch audited:** `arena/019fe5fc-docsheet` at `d731e1b` (`main` HEAD — Merge of PR #40)

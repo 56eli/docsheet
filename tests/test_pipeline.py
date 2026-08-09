@@ -2077,6 +2077,30 @@ class OwnerOverrideAndDisplayOrderTests(unittest.TestCase):
             self.assertEqual(int(row["block_position"]), seen[row["block_id"]])
         self.assertEqual(sum(counts.values()), 362)
 
+    def test_published_revision1_row_corrections_are_present(self) -> None:
+        """Lock the owner-reviewed corrections in the actual Pages payload."""
+        rows = {
+            row["uuid"]: row
+            for row in json.loads((REPO / "docs/master.json").read_text(encoding="utf-8"))
+        }
+        self.assertEqual(
+            rows["312"]["proposed_filename"],
+            "2012 - DISCUSSION - Permanent Inner Peace.mp4",
+        )
+        self.assertEqual(rows["315"]["notes"], "FRAN GRACE")
+        self.assertEqual(
+            (rows["356"]["year"], rows["356"]["month"], rows["356"]["proposed_filename"]),
+            ("", "", "Don’t Set Sail Without A Compass – Audio.mp3"),
+        )
+        self.assertEqual(
+            (rows["357"]["year"], rows["357"]["month"], rows["357"]["proposed_filename"]),
+            ("2003", "", "2003 - OTR - Peace is the Natural State.mp3"),
+        )
+        self.assertEqual(
+            (rows["358"]["year"], rows["358"]["month"], rows["358"]["proposed_filename"]),
+            ("", "", "The Essence of Letting Go A Living Transmission of Truth.m4b"),
+        )
+
     def test_display_order_duplicate_uuid_fails_build(self) -> None:
         tempdir = make_sandbox()
         try:

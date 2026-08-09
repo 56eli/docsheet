@@ -1,5 +1,8 @@
 # Full-Stack Audit — Arena 019fe767 (2026-08-09)
 
+> **Supporting historical snapshot.** The declared-current audit is
+> `docs/audits/2026-08-09-deployment-forensics-full-audit.md`.
+
 **Branch:** `arena/019fe767-docsheet` @ `c884138` (main = PR #49 merge)  
 **Auditor:** Arena agent — Full-Stack Developer + Data Engineer  
 **Scope:** Catalogue consistency, pipeline integrity, project setup, frontend, tests/CI, docs/scoreboard  
@@ -61,7 +64,7 @@ All counts reproduce exactly via independent pandas probes (bypass project valid
 
 - **Python:** `python -m unittest discover tests` — **132 tests OK** (~3.5s), write/--check/tamper/CLI smoke + determinism + retry ladder + rule matrices.
 - **Coverage:** **90% total**, modules 78–100% (gate 85% pass).
-- **Playwright:** 4 spec files (`blank-rows`, `column-layout`, `csv-export`, `ux-enhancements` + `presentation-ux`) — 26 specs total. Cannot run in sandbox (Chromium CDN blocked); CI is verification point. `column-layout` asserts header sort + width engine; `csv-export` asserts whole-view export now includes hidden columns.
+- **Playwright:** 5 spec files (`blank-rows`, `column-layout`, `csv-export`, `presentation-ux`, `ux-enhancements`) — 25 specs total after the overview simplification. Cannot run in sandbox (Chromium CDN blocked); CI is the verification point. `column-layout` asserts header sort + width engine; `csv-export` asserts whole-view export now includes hidden columns.
 - **CI workflow:** `.github/workflows/*` not edited by agent (policy). README states owner-applied CI on `main` is green (install + `py_compile` + 6 checks + unittest + coverage + `node --check` + Playwright). No workflow edit needed this audit.
 
 ## 6. Docs & handoff
