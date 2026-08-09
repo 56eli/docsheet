@@ -1,11 +1,44 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (expert full-stack audit + low-severity fixes) — current handoff for
-branch `arena/019fe659-docsheet` at current HEAD.
+**Prepared:** 2026-08-09 (REVISION1 ODS owner revision applied — see below) — current handoff for
+branch `arena/019fe6c1-docsheet`.
 **Scoreboard:** this repo now has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
 sessions may expire after PR merge).
+
+## Headline results (2026-08-09 REVISION1 ODS pass, current)
+
+- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
+  `fa51f67`): a colour-coded expert-columns export of the Everything view.
+  Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
+  rows matched the master; the file carries **58 proposed-filename edits**
+  (unified `OTR - ` prefix on 32 On-The-Road rows, `198X - A-01 … B-06` codes
+  on the 16 Office rows, `DISCUSSION - ` prefix on 8 discussion rows, year
+  dropped on 356/358, year 2014→2003 on 357, truncated 312 completed as
+  `2012 - DISCUSSION - Permanent Inner Peace.mp4`), **1 notes edit**
+  (`FRAN GRACE` on master 315, replacing the provenance note — owner chose
+  replace-entirely), **year data changes** (356/358 cleared, 357 → 2003 with
+  month cleared; owner chose apply-full), and **colour-group presentation
+  order** (owner-confirmed block order: 2002-2011 lectures → discussion →
+  satsang → on-the-road → volumes → office → books → transcription → media-misc
+  → undecided → Fran Grace last).
+- **Applied through new reviewed overlays** (no hand-edits to generated
+  files): `data/master_year_overrides.csv` (3 rows),
+  `data/master_notes_overrides.csv` (1 row), and
+  `data/catalogue_display_order.csv` (362 rows; dense 1..n per block;
+  `build_catalogue_pages.py` reorders the Everything view + CSV export and
+  fails on duplicates/missing uuids/unapproved rows). Filename edits landed
+  in the reviewed `data/filename_proposal_YYYYMM.csv` (safe + display
+  variants; year/month mirrored for 356–358). The change record itself is
+  committed as `review/hawkins-everything-REVISION1.ods`.
+- **Tests 126 → 132** (new `OwnerOverrideAndDisplayOrderTests` class);
+  coverage 91% → 90% (floor 85; both generator modules still 88%).
+  All six `--check` modes pass; README documents the new inputs.
+- **Fresh audit** (`docs/audits/2026-08-09-arena-full-audit.md`) plus
+  F-01..F-04 fixes and the repo-organization archival are in this branch's
+  earlier commit `18295b6` — see the section below.
+
 The declared-current audits are
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
 verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`

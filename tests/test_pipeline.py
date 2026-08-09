@@ -72,7 +72,8 @@ def make_sandbox() -> "tempfile.TemporaryDirectory[str]":
     for name in INPUT_ROOT_FILES:
         shutil.copy2(REPO / name, sandbox / name)
     for path in (REPO / "data").iterdir():
-        shutil.copy2(path, sandbox / "data" / path.name)
+        if path.is_file():
+            shutil.copy2(path, sandbox / "data" / path.name)
     for path in (REPO / "docs").glob("*.json"):
         shutil.copy2(path, sandbox / "docs" / path.name)
     return tempdir
@@ -1845,14 +1846,15 @@ class DocumentationCurrencyTests(unittest.TestCase):
         # Retired UUIDs must be gone from the proposal.
         for retired in ("225", "226", "227"):
             self.assertNotIn(retired, by_uuid)
-        # The surviving single-DVD masters use plain names.
+        # The surviving single-DVD masters use plain names with the OTR prefix
+        # added by the 2026-08-09 REVISION1 ODS owner revision.
         self.assertEqual(
             by_uuid["311"]["proposed_filename"],
-            "2003 - Devotion to Truth Talk.mp4",
+            "2003 - OTR - Devotion to Truth Talk.mp4",
         )
         self.assertEqual(
             by_uuid["310"]["proposed_filename"],
-            "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
+            "2003 - OTR - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
         )
 
     def test_same_work_audiobooks_use_source_suffixes_not_audiobook_labels(self) -> None:
@@ -1889,8 +1891,8 @@ class DocumentationCurrencyTests(unittest.TestCase):
             # collision was retired by the 2026-08-08 D-01 collapse, so seed
             # the duplicate from the current clean set.
             seeded = text.replace(
-                "2003 - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
-                "2003 - Devotion to Truth Talk.mp4",
+                "2003 - OTR - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
+                "2003 - OTR - Devotion to Truth Talk.mp4",
                 1,
             )
             self.assertNotEqual(seeded, text)
@@ -2045,6 +2047,136 @@ class DocumentationCurrencyTests(unittest.TestCase):
             if row["item_type"].strip() == "book" and row["catalog_code"].strip()
         ]
         self.assertEqual(coded_books, [], "book rows must never receive a catalogue code")
+
+
+class OwnerOverrideAndDisplayOrderTests(unittest.TestCase):
+    """Owner-reviewed overrides (year/notes) and the REVISION1 display order."""
+
+    ORDER_HEADER = "uuid,block_id,block_position,review_status,reviewed_on,note"
+
+    def test_master_json_follows_committed_display_order(self) -> None:
+        """The published Everything view must match the reviewed display order.
+
+        REVISION1 ODS rule: 2002-2011 lectures first, then the colour-group
+        blocks (discussion, satsang, on-the-road, volume, office, books,
+        transcription, media-misc), then undecided rows, and Fran Grace last.
+        """
+        with (REPO / "data/catalogue_display_order.csv").open(encoding="utf-8", newline="") as handle:
+            order = list(csv.DictReader(handle))
+        self.assertEqual(len(order), 362)
+        rows = json.loads((REPO / "docs/master.json").read_text(encoding="utf-8"))
+        self.assertEqual([row["uuid"] for row in rows], [row["uuid"] for row in order])
+        blocks = [row["block_id"] for row in order]
+        self.assertEqual(blocks[0], "lectures-2002-2011")
+        self.assertEqual(blocks[-1], "fran-grace")
+        self.assertEqual(rows[-1]["title"], "The Power of Love: A Transformed Heart Changes the World")
+        # block positions are dense within each block
+        from collections import Counter
+        counts = Counter(blocks)
+        seen: dict[str, int] = {}
+        for row in order:
+            seen[row["block_id"]] = seen.get(row["block_id"], 0) + 1
+            self.assertEqual(int(row["block_position"]), seen[row["block_id"]])
+        self.assertEqual(sum(counts.values()), 362)
+
+    def test_display_order_duplicate_uuid_fails_build(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            order = (sandbox / "data/catalogue_display_order.csv").read_text(encoding="utf-8")
+            lines = order.splitlines()
+            lines.append(lines[1])  # duplicate the first uuid row
+            (sandbox / "data/catalogue_display_order.csv").write_text(
+                "\n".join(lines) + "\n", encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            self.assertIn("duplicates UUID", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
+
+    def test_display_order_missing_uuid_fails_build(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            order = (sandbox / "data/catalogue_display_order.csv").read_text(encoding="utf-8")
+            lines = [line for line in order.splitlines() if not line.startswith("1,")]
+            (sandbox / "data/catalogue_display_order.csv").write_text(
+                "\n".join(lines) + "\n", encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_catalogue_pages.py", sandbox, "--check")
+            self.assertIn("missing master UUID", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
+
+    def test_year_and_notes_overrides_apply(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            (sandbox / "data/master_year_overrides.csv").write_text(
+                "uuid,year,month,year_source,review_status,reviewed_on,reason\n"
+                "230,2004,03,Test override year,approved,2026-08-09,fixture\n"
+                "356,,,\"Blank: owner revision (REVISION1 ODS, 2026-08-09)\",approved,2026-08-09,committed\n"
+                "357,2003,,\"Owner revision: 2003 (REVISION1 ODS, 2026-08-09)\",approved,2026-08-09,committed\n"
+                "358,,,\"Blank: owner revision (REVISION1 ODS, 2026-08-09)\",approved,2026-08-09,committed\n",
+                encoding="utf-8")
+            # The filename proposal mirrors the final master year/month, so
+            # keep the proposal row for 230 in sync with the override.
+            proposal = sandbox / "data/filename_proposal_YYYYMM.csv"
+            proposal.write_text(
+                proposal.read_text(encoding="utf-8")
+                .replace(
+                    "230,w-verification-of-spiritual-realities,lecture,On The Road Talk Series,,,DVD,",
+                    "230,w-verification-of-spiritual-realities,lecture,On The Road Talk Series,2004,03,DVD,",
+                ),
+                encoding="utf-8",
+            )
+            (sandbox / "data/master_notes_overrides.csv").write_text(
+                "uuid,notes,review_status,reviewed_on,reason\n"
+                "1,TEST NOTE OVERRIDE,approved,2026-08-09,fixture\n"
+                "315,FRAN GRACE,approved,2026-08-09,committed\n",
+                encoding="utf-8")
+            result = invoke_script("build_research_master.py", sandbox)
+            self.assertEqual(result.returncode, 0)
+            with (sandbox / "data/research_master_draft.csv").open(encoding="utf-8", newline="") as handle:
+                rows = {row["uuid"]: row for row in csv.DictReader(handle)}
+            self.assertEqual(rows["230"]["year"], "2004")
+            self.assertEqual(rows["230"]["month"], "03")
+            self.assertEqual(rows["230"]["year_source"], "Test override year")
+            self.assertEqual(rows["1"]["notes"], "TEST NOTE OVERRIDE")
+            # committed REVISION1 overrides still apply in the same build
+            self.assertEqual(rows["357"]["year"], "2003")
+            self.assertEqual(rows["357"]["year_source"], "Owner revision: 2003 (REVISION1 ODS, 2026-08-09)")
+            self.assertEqual(rows["315"]["notes"], "FRAN GRACE")
+        finally:
+            tempdir.cleanup()
+
+    def test_override_rejects_unknown_uuid(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            (sandbox / "data/master_year_overrides.csv").write_text(
+                "uuid,year,month,year_source,review_status,reviewed_on,reason\n"
+                "9999,2004,,Test,approved,2026-08-09,fixture\n",
+                encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_research_master.py", sandbox)
+            self.assertIn("not a master record", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
+
+    def test_override_rejects_unapproved_row(self) -> None:
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            (sandbox / "data/master_notes_overrides.csv").write_text(
+                "uuid,notes,review_status,reviewed_on,reason\n"
+                "1,NOT APPROVED,pending,2026-08-09,fixture\n",
+                encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                invoke_script("build_research_master.py", sandbox)
+            self.assertIn("is not approved", str(ctx.exception))
+        finally:
+            tempdir.cleanup()
 
 
 class DefensiveDepthTests(unittest.TestCase):

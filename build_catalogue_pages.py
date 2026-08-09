@@ -31,6 +31,7 @@ MANUAL_LEADS = Path("data/research_manual_leads.csv")
 MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
 SOURCE_OVERRIDES = Path("data/research_master_source_overrides.csv")
 FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
+DISPLAY_ORDER = Path("data/catalogue_display_order.csv")
 MIGRATION_LEDGER = Path("migration_review_ledger.csv")
 OUT_MASTER = Path("docs/master.json")
 OUT_REVIEW_OVERVIEW = Path("docs/review-overview.json")
@@ -164,6 +165,69 @@ def validate_work_family_coverage(master_items: list[dict[str, str]]) -> None:
             raise ValueError(
                 f"Master record {item['uuid']} ({item['title']!r}) has a missing work_id"
             )
+
+
+def apply_display_order(master_records: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Reorder master records per the reviewed ``catalogue_display_order.csv``.
+
+    The file is the owner-approved presentation order (REVISION1 ODS colour
+    groups: lectures first, then discussion/satsang/on-the-road/volumes/
+    office/books/transcription/media-misc blocks, undecided rows, Fran Grace
+    last). Its row order is authoritative — every current master uuid must
+    appear exactly once with ``review_status=approved``, and block positions
+    must be dense (1..n per block) so a dropped row cannot silently renumber
+    the rest. The Everything view (``docs/master.json``) is emitted in this
+    order; the frontend keeps data order, so display and CSV export follow it.
+    """
+    if not DISPLAY_ORDER.exists():
+        return master_records
+    with DISPLAY_ORDER.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        columns = set(reader.fieldnames or [])
+        missing = {"uuid", "block_id", "block_position", "review_status"} - columns
+        if missing:
+            raise ValueError(
+                f"{DISPLAY_ORDER} is missing required columns: {', '.join(sorted(missing))}"
+            )
+    order_rows = read_csv(DISPLAY_ORDER)
+    master_by_uuid = {record["uuid"]: record for record in master_records}
+    seen: set[str] = set()
+    blocks: dict[str, list[int]] = {}
+    for line_number, row in enumerate(order_rows, start=2):
+        uuid = row["uuid"].strip()
+        if row["review_status"].strip() != "approved":
+            raise ValueError(
+                f"{DISPLAY_ORDER.name}:{line_number} uuid {uuid} is not approved"
+            )
+        if uuid in seen:
+            raise ValueError(
+                f"{DISPLAY_ORDER.name}:{line_number} duplicates UUID {uuid}"
+            )
+        seen.add(uuid)
+        if uuid not in master_by_uuid:
+            raise ValueError(
+                f"{DISPLAY_ORDER.name}:{line_number} uuid {uuid} is not a master record"
+            )
+        block = row["block_id"].strip()
+        position = row["block_position"].strip()
+        if not block or not position.isdigit():
+            raise ValueError(
+                f"{DISPLAY_ORDER.name}:{line_number} uuid {uuid} has a malformed block/position"
+            )
+        blocks.setdefault(block, []).append(int(position))
+    missing = sorted(set(master_by_uuid) - seen)
+    if missing:
+        raise ValueError(
+            f"{DISPLAY_ORDER.name} is missing master UUID(s): {', '.join(missing)}"
+        )
+    for block, positions in blocks.items():
+        if sorted(positions) != list(range(1, len(positions) + 1)):
+            raise ValueError(
+                f"{DISPLAY_ORDER.name} block {block!r} positions are not dense "
+                f"(got {sorted(positions)})"
+            )
+    order_by_uuid = {row["uuid"].strip(): rank for rank, row in enumerate(order_rows)}
+    return sorted(master_records, key=lambda record: order_by_uuid[record["uuid"]])
 
 
 def validate_veritas_inventory(
@@ -819,6 +883,9 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     """
     master_records = list(master_items) if master_items is not None else read_csv(MASTER)
     migrated_items = len(master_records)
+    # Owner-approved presentation order (REVISION1 ODS colour groups) — the
+    # Everything view and its CSV export follow this order.
+    master_records = apply_display_order(master_records)
     filename_proposal = read_csv(FILENAME_PROPOSAL)
     display_by_uuid = {
         row["uuid"].strip(): row["proposed_filename_display"].strip()

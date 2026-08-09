@@ -15,6 +15,27 @@ The scoreboard was created as part of the persistent-memory protocol:
 `.scoreboard/manual-workflow-edits.md`, `AGENTS.md`,
 `docs/audits/2026-08-09-baseline.md`, `.github/pull_request_template.md`.
 
+## 2026-08-09 REVISION1 ODS owner revision (this branch, current)
+
+- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** — a
+  colour-coded expert-columns export. Decoded cell-by-cell; applied with
+  owner confirmation:
+  - 58 filename edits in `data/filename_proposal_YYYYMM.csv`: unified
+    `OTR - ` prefix (32 On-The-Road rows), `198X - A-01…B-06` Office codes
+    (16), `DISCUSSION - ` prefix (8, incl. completed 312), year dropped on
+    356/358, year 2014→2003 on 357.
+  - `data/master_year_overrides.csv` (356/358 year+month cleared, 357 → 2003)
+    and `data/master_notes_overrides.csv` (315 → `FRAN GRACE`) — new reviewed
+    overlays consumed by `build_research_master.py`.
+  - `data/catalogue_display_order.csv` — owner-confirmed block order drives
+    the Everything view + CSV export (lectures → discussion → satsang →
+    on-the-road → volumes → office → books → transcription → media-misc →
+    undecided → Fran Grace last); `build_catalogue_pages.py` validates it.
+  - Change record committed: `review/hawkins-everything-REVISION1.ods`.
+  - Tests 126 → 132; coverage 90%; all six `--check` green.
+- **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
+  priorities 15/12 remain open.
+
 ## 2026-08-09 fresh audit + fixes + repo-organization pass (this branch)
 
 - **Fresh full-stack audit** (`docs/audits/2026-08-09-arena-full-audit.md`,

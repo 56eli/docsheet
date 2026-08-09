@@ -34,6 +34,8 @@ EDITION_CANDIDATES = Path("data") / "edition_candidates.csv"
 EDITION_PROMOTIONS = Path("data") / "edition_promotions.csv"
 VERITAS_STREAMING = Path("data") / "veritas_streaming_urls.csv"
 FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
+YEAR_OVERRIDES = Path("data/master_year_overrides.csv")
+NOTES_OVERRIDES = Path("data/master_notes_overrides.csv")
 
 FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "item_type",
@@ -1305,6 +1307,83 @@ def apply_series_approvals(items: list[dict[str, str]]) -> int:
     return changed
 
 
+def apply_year_overrides(items: list[dict[str, str]]) -> int:
+    """Apply reviewed owner year overrides after all derivation steps.
+
+    ``data/master_year_overrides.csv`` is the reviewed input for owner
+    corrections that no automated backfill could know (e.g. the REVISION1
+    ODS year changes for masters 356/357/358). Rows must be ``approved``;
+    each uuid must exist in the built master; ``year`` must be blank or a
+    4-digit year (``198X`` allowed); ``month`` must be blank or zero-padded
+    01-12. Runs after ``apply_year_source_provenance`` so the override
+    ``year_source`` wins over derived provenance.
+    """
+    if not YEAR_OVERRIDES.exists():
+        return 0
+    require_columns(YEAR_OVERRIDES, {"uuid", "year", "month", "year_source", "review_status"})
+    overrides = read_csv(YEAR_OVERRIDES)
+    by_uuid = {item["uuid"]: item for item in items}
+    applied = 0
+    for line_number, row in enumerate(overrides, start=2):
+        uuid = row["uuid"].strip()
+        if row["review_status"].strip() != "approved":
+            raise ValueError(
+                f"{YEAR_OVERRIDES.name}:{line_number} uuid {uuid} is not approved"
+            )
+        if uuid not in by_uuid:
+            raise ValueError(
+                f"{YEAR_OVERRIDES.name}:{line_number} uuid {uuid} is not a master record"
+            )
+        year = row["year"].strip()
+        month = row["month"].strip()
+        if year and not (year.isdigit() and len(year) == 4 or year == "198X"):
+            raise ValueError(
+                f"{YEAR_OVERRIDES.name}:{line_number} uuid {uuid} has malformed year {year!r}"
+            )
+        if month and not (month.isdigit() and 1 <= int(month) <= 12):
+            raise ValueError(
+                f"{YEAR_OVERRIDES.name}:{line_number} uuid {uuid} has malformed month {month!r}"
+            )
+        item = by_uuid[uuid]
+        item["year"] = year
+        item["month"] = month
+        item["year_source"] = row["year_source"].strip()
+        applied += 1
+    if applied:
+        print(f"[year-overrides] Applied {applied} owner year overrides from {YEAR_OVERRIDES.name}")
+    return applied
+
+
+def apply_notes_overrides(items: list[dict[str, str]]) -> int:
+    """Apply reviewed owner notes overrides last.
+
+    ``data/master_notes_overrides.csv`` replaces a master row's ``notes``
+    verbatim (e.g. the REVISION1 ODS author marker ``FRAN GRACE`` on master
+    315). Rows must be ``approved`` and reference existing master uuids.
+    """
+    if not NOTES_OVERRIDES.exists():
+        return 0
+    require_columns(NOTES_OVERRIDES, {"uuid", "notes", "review_status"})
+    overrides = read_csv(NOTES_OVERRIDES)
+    by_uuid = {item["uuid"]: item for item in items}
+    applied = 0
+    for line_number, row in enumerate(overrides, start=2):
+        uuid = row["uuid"].strip()
+        if row["review_status"].strip() != "approved":
+            raise ValueError(
+                f"{NOTES_OVERRIDES.name}:{line_number} uuid {uuid} is not approved"
+            )
+        if uuid not in by_uuid:
+            raise ValueError(
+                f"{NOTES_OVERRIDES.name}:{line_number} uuid {uuid} is not a master record"
+            )
+        by_uuid[uuid]["notes"] = row["notes"].strip()
+        applied += 1
+    if applied:
+        print(f"[notes-overrides] Applied {applied} owner notes overrides from {NOTES_OVERRIDES.name}")
+    return applied
+
+
 def apply_year_source_provenance(items: list[dict[str, str]], ledger: list[dict[str, str]]) -> None:
     """Set ``year_source`` — a human-readable explanation of how each row's ``year`` was derived."""
     ledger_by_raw: dict[str, dict[str, str]] = {}
@@ -1578,6 +1657,12 @@ def build_master() -> MasterBuild:
     work_families_applied = apply_work_families(items)
 
     apply_year_source_provenance(items, ledger)
+
+    # Reviewed owner overrides run after every derivation step so they always
+    # win: year/month/year_source corrections (REVISION1 ODS masters 356-358)
+    # and verbatim notes replacements (REVISION1 ODS author marker).
+    apply_year_overrides(items)
+    apply_notes_overrides(items)
 
     # Ensure every item has the column (for CSV header stability)
     for it in items:
