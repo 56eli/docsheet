@@ -426,7 +426,7 @@
       id: "owned",
       el: () => facetOwned,
       field: "owned",
-      buildOptionLabel: (value) => (value === "true" ? "Owned" : value === "false" ? "Not owned" : "Not stated"),
+      buildOptionLabel: (value) => { const v = String(value ?? "").toLowerCase(); return v === "true" ? "Owned" : v === "false" ? "Not owned" : "Not stated"; },
     },
   ];
 
@@ -1409,9 +1409,11 @@
     }
     // Owned vocabulary: true = owned, false = explicitly not owned, empty =
     // not stated (minted editions/programs without a raw ownership marker).
-    if ((field === "owned" || field === "proposed_owned") &&
-        (value === "true" || value === "false")) {
-      return value === "true" ? "Owned" : "Not owned";
+    // Comparison is case-insensitive so legacy capitalised values ("True"/"False")
+    // render the same badge as the normalised "true"/"false" vocabulary.
+    if (field === "owned" || field === "proposed_owned") {
+      const v = String(value ?? "").toLowerCase();
+      if (v === "true" || v === "false") return v === "true" ? "Owned" : "Not owned";
     }
     return value.replace(/_/g, " ");
   }
