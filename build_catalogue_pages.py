@@ -74,6 +74,7 @@ OUT_AUDIBLE_PRODUCTS = DOCS_DIR / "audible-products.json"
 OUT_INTERNATIONAL = DOCS_DIR / "international-products.json"
 OUT_FILENAME_PROPOSAL = DOCS_DIR / "filename-proposal.json"
 OUT_PUBLISHERS = DOCS_DIR / "publishers.json"
+OUT_BLOCK_MAP = DOCS_DIR / "catalogue-block-map.json"
 OUT_META = DOCS_DIR / "catalogue-meta.json"
 
 RECORD_TYPE_MASTER = "master"
@@ -801,6 +802,12 @@ def build_catalogue(
         )
 
     publishers = PUBLISHERS
+    order_rows = read_csv(DISPLAY_ORDER) if DISPLAY_ORDER.exists() else []
+    block_map = {
+        row["uuid"].strip(): row["block_id"].strip()
+        for row in order_rows
+        if row.get("uuid") and row.get("block_id") and row.get("review_status") == "approved"
+    }
     outputs = {
         OUT_MASTER: json_text(items),
         OUT_REVIEW_OVERVIEW: json_text(review_overview),
@@ -820,6 +827,7 @@ def build_catalogue(
         OUT_INTERNATIONAL: json_text(intl_items),
         OUT_FILENAME_PROPOSAL: json_text(filename_proposal),
         OUT_PUBLISHERS: json_text(publishers),
+        OUT_BLOCK_MAP: json_text(block_map),
         OUT_META: json_text({
             "master_items": migrated_items,
             "migrated_items": migrated_items,

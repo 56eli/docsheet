@@ -69,7 +69,7 @@ test('published catalogue views are read-only', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  const cell = page.locator('.tabulator-cell[tabulator-field="title"]').first();
+  const cell = page.locator('.tabulator-cell[tabulator-field="proposed_filename"]').first();
   await cell.dblclick();
   await expect(cell.locator('input, textarea, select')).toHaveCount(0);
   await expect(page.locator('#footer-note')).toContainText(/read-only/i);

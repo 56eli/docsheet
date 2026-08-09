@@ -1,21 +1,33 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Arena 019fe830 multidisciplinary re-audit - Web Designer, Full-Stack & Data Engineer)
+Last updated: 2026-08-09 (Arena 019fe844 — Block Map Extraction, Column Layout & Archive.org Ownership Promotion)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` **(Declared current - 019fe830 multidisciplinary re-audit, Web/Full-Stack/Data, 9e4ee4d)**
+- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` **(Declared current - multidisciplinary audit, Web/Full-Stack/Data)**
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
 - `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Prior full audit & cleanup)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
 
-## 2026-08-09 Session Summary - 019fe830 re-audit (Web/Full-Stack/Data)
+## 2026-08-09 Session Summary - 019fe844 (Block Map Extraction, Column Layout & Archive.org Holdings)
 
-- **Full multidisciplinary re-audit (this session):** Re-executed all six --check modes, 141/141 tests at 90% (78-100% per module), node --check, CSP/SRI, CSV-JSON parity, token chromaticity, selector topology. Record: `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (read-only, promoted as declared-current in README/INSTRUCTIONS). Verified neutral palette (#f9f9fb/#0d0d0d, no slate, washes 8.5%), correct #spreadsheet.tabulator topology (63 correct vs 0 dead), content-versioned assets 39e1208f672b/e67530fcaebe + manifest row-delivery-p0-20260809.1. Confirmed Hay House traqnscending typo already fixed at 9e4ee4d (grep 0, master 294 correct). Updated scoreboard AI scores (maintainability 9->7, pages 7->8).
-- **Prior session 019fe80c - Multidisciplinary Audit + UX polish:** Full pass recorded in `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`; unlocked column resizing (fitDataFill + renderHorizontal:"basic"), widened scrollbars 12->16px, proposal-filename 13px semi-bold, work-family striping (#fafafa/#1c1c1c), header width unlock, search highlighting, asset version hashes. 141/141, 6/6 --check, 0 linter, 90% coverage.
+- **Block Map Build Extraction:** Removed 362 hardcoded UUID literals from `docs/app.js` and replaced them with build-generated `docs/catalogue-block-map.json` emitted by `build_catalogue_pages.py` from `data/catalogue_display_order.csv`.
+- **CSS Token Layer Consolidation:** Consolidated `:root` and `:root.dark` layers in `docs/style.css`, eliminating duplicate override blocks.
+- **Column Layout & Single-Line Headers:**
+  - Reduced Record Type column width to tight `CM` badge width (52px).
+  - Enforced single-line column headers (`white-space: nowrap`, `overflow: hidden`, `text-overflow: ellipsis`) so header height stays strictly one line.
+  - Hidden `Title`, `Series`, and `Year-Month` under Expert columns by default.
+  - Placed `Owned` and `Notes` immediately to the right of `Item Type`.
+  - Moved `Catalogue Code` to the back.
+  - Reduced row heights to compact single-line content heights matching largest items (~32–34px).
+- **Archive.org Ownership Verification & Holdings Promotion:**
+  - Cross-checked the entire catalogue against `https://archive.org/download/Hawkins_Lectures_transcoded_actual_files`.
+  - Confirmed and promoted 16 master records to `owned: true` in `data/manual_master_candidates.csv` and `data/edition_candidates.csv` (How to Surrender to God, Book of Slides, Orthomolecular Psychiatry 1973, 2006 Satsang Series 1–6, Discussion talks, Audiobooks; total owned increased 295 → **311 owned / 25 false / 26 blank**).
+  - Tracked newly discovered audio materials (BTO Radio Interviews 14 eps, Unity Church Phoenix 2005) as manual leads in `data/research_manual_leads.csv` (leads 2 → 4).
+- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` and `docs/build-manifest.json`. All 141 deterministic unit tests pass, all 6 `--check` modes pass, `ruff check .` clean (0 issues), 90% statement coverage.
 
 Do not claim that a successful Pages artifact proves a row change reached the
 end user. The owner explicitly rejected that conclusion. Acceptance requires a
