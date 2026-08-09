@@ -61,7 +61,7 @@ The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
 2026-08-08; every pipeline module is ≥ 88%. `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
-replacement record is in `WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
+replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
 pass live in `data/research_master_source_overrides.csv`; unresolved manual
 edition/copy leads live in `data/research_manual_leads.csv` outside the master;
 reviewed but unpromoted official candidates live in
@@ -87,18 +87,17 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the declared-current audits
+`NEXT_AGENT_HANDOFF`, the declared-current audit
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
 PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
 historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
-and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, the superseded
-`FULL_STACK_AUDIT_2026-08-09_ARENA.md` (pre-PR #40; its findings are resolved —
-see its banner), `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
-proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
+and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`,
+`FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+proposals, and the generated `RECONCILIATION_REPORT.md`). Superseded audits,
+suggestion documents, and workflow guides live in
+[`archive/`](archive/README.md) and are not normative. Approved ruling
 records live in
-[`decisions/`](decisions/README.md); superseded status docs, research drafts,
-and evidence notes live in [`archive/`](archive/README.md) and are not
-normative.
+[`decisions/`](decisions/README.md).
 
 ## Curated records vs. official candidates
 

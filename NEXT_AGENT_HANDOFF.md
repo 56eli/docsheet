@@ -1,16 +1,16 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (post-PR-#41 + H-01/L-02 hygiene) — current handoff for
-branch `arena/019fe620-docsheet` at `2bc99ec` (H-01 Hay House typo + DOC-10 + L-02 cross-listing clarified).
+**Prepared:** 2026-08-09 (fresh-eyes audit + doc cleanup + code refactoring) — current handoff for
+branch `arena/019fe63c-docsheet` at current HEAD.
 The declared-current audits are
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `d731e1b`) and its extension
 `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`, H-01/L-02/DOC-10 clarified at `2bc99ec`);
 the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
-`FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT` carry SUPERSEDED
+`archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` carry SUPERSEDED
 banners (pre-PR-#40 findings). See the session log at the bottom of §6.
 Headline results (2026-08-08 independent pass, baseline):
-- **Independent full-stack audit (`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`):**
+- **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
   all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
   Python 3.11 venv (pandas 3.0.5 / coverage 7.15.4); independent pandas probes
   bypassing the project's own validators surfaced 8 catalogue findings
@@ -51,7 +51,7 @@ Headline results (2026-08-08 independent pass, baseline):
 - **Docs refreshed:** README, NEXT_AGENT_HANDOFF (this file),
   MIGRATION_REVIEW_LEDGER, EDITION_MODEL_PROPOSAL,
   FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
-  UX_REWORK_SUGGESTIONS, YEAR_COLUMN_PROVENANCE.
+  UX_REWORK_SUGGESTIONS (now `archive/UX_REWORK_SUGGESTIONS.md`), YEAR_COLUMN_PROVENANCE.
 - **Left open for owner triage (no code/data changes in PR #39):**
   - **D-04 (Low/Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): Amazon paperback URLs for masters 359–361 no longer duplicate into `reference_url_1`; `build_research_master.py:1394` now treats Amazon URLs as curated-source URLs and `reference_url_1` is blank for 359–361 (verified 0 `amazon==reference` duplicates).
   - **B-01 (Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): two Spanish Audible titles moved from hardcoded `build_catalogue_pages.py:797–815` into `data/international_discovery_queue.csv` (36 → 38 rows); `international-products.json` is now fully input-driven (38 → 38 parity) and `catalogue-meta.json` now publishes `international_products: 38`.
@@ -90,9 +90,9 @@ session:
   New `tests/ux-enhancements.spec.js` (9 browser tests; suite now 18 browser
   tests).
 - **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
-  now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
+  now loops `tests/*.spec.js`; `archive/WORKFLOW_WEB_EDITOR_GUIDE.md` +
   `archive/UNBLOCK_INSTRUCTIONS.md` record it applied.
-- `UX_REWORK_SUGGESTIONS.md` documents the prioritized backlog.
+- `archive/UX_REWORK_SUGGESTIONS.md` documents the prioritized backlog.
 
 **Previous (2026-08-08 follow-up, branch `arena/019fe0ef-docsheet`, merged):**
 owner streaming-reference ruling applied — raw streaming rows may stand alone,
@@ -389,7 +389,7 @@ then owner-approved fixes applied in this branch).
     added: `notes`); ledger raw mirrors + review_reason updated for both rows
     (row 373 → "Owner note relocated to notes column; not a catalogue item.");
     exclusions/migration-review artifacts regenerated.
-  - DOC-06…09: `FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT` got
+  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` got
     SUPERSEDED banners; README documentation layout now declares the deep-dive
     current, Everything-view wording softened (candidates only when intake
     lanes are populated; Record Type filter hidden while all rows are
@@ -400,15 +400,26 @@ then owner-approved fixes applied in this branch).
   remains as belt-and-braces); `reference_url_1` Veritas links (53) are not
   mirrored in the 191-product inventory (all live-checked OK, by design).
 
-## 2026-08-09 Full-stack audit + hygiene (arena/019fe620-docsheet, current)
+## 2026-08-09 Full-stack audit + hygiene (arena/019fe620-docsheet, previous)
 
-Branch `arena/019fe620-docsheet` at `2bc99ec` (this branch). Full audit
+Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
 `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (read-only at `f520e9b`, fixes at `80cdcea`/`2bc99ec`).
 
-- **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved. New forensics:
-  - **H-01 (Medium):** Hay House URL typo `traqnscending → transcending` in `data/hayhouse_official_products.csv` and its source-override for master 294 (both inventory + master shipped a 404). Fixed in `80cdcea`: both files corrected, master 294 rebuilt, `grep traqn` 0 hits, all checks green.
-  - **L-02 (Low):** Audible Spanish titles `Disolver el ego` / `El nivel más alto` appear in both `audible_official_products.csv` (26) and `international_discovery_queue.csv` (38) as `matched_by_title`. Intentional cross-listing for Spanish-market discoverability; clarified in `2bc99ec` by adding explicit `review_notes` cross-reference to both international rows (no count change, 38→38).
-  - **DOC-10 (Low):** `archive/README.md` declared-current pointed to 08-08 audit; corrected to `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (+ `ARENA_FULL.md` extension).
-- **Docs hygiene (P2, low-risk):** handoff header refreshed to `2bc99ec`/this branch/declared-current pair; `NEXT_AGENT_HANDOFF` §2 quick-verify updated 125→126 tests; `archive/README` current-audit pointer corrected. Root history: 4 historical proposal snapshots (`CATALOGUE_READABILITY_ROADMAP.md`, `LECTURE_SERIES_REVIEW.md`, `REVIEW_MODEL_SLIM_ANALYSIS.md`, `SERIES_WORK_REGROUPING_PROPOSAL.md`) archived to `archive/` in `7182f7f`; normative schemas/policies (`CATEGORY_DOMINANCE_POLICY.md`, `PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_TAXONOMY_MAPPING.md`, `SERIES_COMPILATION_SCHEMA.md`, `EDITION_MODEL_PROPOSAL.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, `MIGRATION_REVIEW_LEDGER.md`, `YEAR_COLUMN_PROVENANCE.md`) intentionally kept at root as living policies (64 cross-refs would break otherwise) — owner confirmed `keep_normative`.
-- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, `coverage 91%`, `node --check` PASS, `grep traqn` 0, `grep -rn traqn` 0, international cross-list docs present.
-- **Left open:** P2 optional root-doc slimming and handoff deep slimming (deferrable; no pipeline break). Branch-protection required-checks still 403-unverifiable with this token.
+- **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
+- **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
+
+## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, current)
+
+Branch `arena/019fe63c-docsheet` from `main` at `150f080`.
+
+- **Independent audit:** all six `--check` modes green, 126/126 tests, 91% coverage, all README claims match generated data exactly (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations, 191 Veritas products). Zero critical/data-loss issues. Full audit at `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_INDEPENDENT_FRESH.md`.
+- **Documentation cleanup (root `.md` count 24 → 18):**
+  - Archived 7 files to `archive/`: `FULL_STACK_AUDIT_2026-08-09_ARENA.md` (superseded), `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (duplicate of archive copy), `UI_PRINCIPLES_AND_SUGGESTIONS.md`, `UX_REWORK_SUGGESTIONS.md`, `WORKFLOW_FIX_DROPINS_2026-08-09.md`, `WORKFLOW_WEB_EDITOR_GUIDE.md`.
+  - Renamed `EXTERNAL_AUDIT` → `EXTERNAL_AUDIT.md`.
+  - Updated cross-references in `README.md`, `NEXT_AGENT_HANDOFF.md`, `archive/README.md`.
+  - Fixed README "Documentation layout" section to match current state.
+- **Code refactoring:**
+  - Extracted `apply_year_source_provenance()` from `build_master()` (296 → 192 lines).
+  - Extracted `build_review_overview()` from `build_catalogue()` (346 → 239 lines).
+  - All 6 `--check` modes and 126/126 tests pass after refactoring.
+- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, `coverage 91%`.

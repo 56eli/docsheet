@@ -18,8 +18,19 @@ and moved here in the 2026-08-08 audit-noise cleanup:
 - `FULL_STACK_AUDIT_2026-08-08.md` — 2026-08-08 base audit (sections 1–14).
 - `FULL_STACK_AUDIT_2026-08-08_DEEP_DIVE.md` — 2026-08-08 deep-dive companion.
 - `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` — 2026-08-08 independent
-  baseline audit (still the historical-baseline reference in
-  `NEXT_AGENT_HANDOFF.md`).
+  baseline audit (original 13KB archive copy; the expanded 31KB root version
+  is archived as `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`).
+- `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md` — the expanded root-level
+  version of the 2026-08-08 independent audit (31KB; supersedes the archive
+  copy above); archived 2026-08-09 in the doc-cleanup pass.
+- `FULL_STACK_AUDIT_2026-08-09_ARENA.md` — 2026-08-09 Arena audit
+  (pre-PR #40); findings resolved at HEAD; archived 2026-08-09.
+- `FULL_STACK_AUDIT_2026-08-09_ARENA_INDEPENDENT_FRESH.md` — 2026-08-09
+  independent fresh-eyes audit; archived 2026-08-09 in the doc-cleanup pass.
+- `UI_PRINCIPLES_AND_SUGGESTIONS.md` — UI design principles; archived 2026-08-09.
+- `UX_REWORK_SUGGESTIONS.md` — prioritized UX backlog; archived 2026-08-09.
+- `WORKFLOW_FIX_DROPINS_2026-08-09.md` — dated workflow fix snippets; archived 2026-08-09.
+- `WORKFLOW_WEB_EDITOR_GUIDE.md` — web-editor workflow guide; archived 2026-08-09.
 
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07
