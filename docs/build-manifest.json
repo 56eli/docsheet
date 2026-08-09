@@ -1,9 +1,9 @@
 {
-  "revision": "row-delivery-p0-20260809.1",
-  "source_baseline": "ea4e30d00b9e830d54d3e00710d84a5b73e6c085",
-  "generated_on": "2026-08-09",
+  "revision": "row-delivery-p0-20260810.1",
+  "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
+  "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "359f7c6d889a3bdd3de08bdcffca36c8f01e4334be62228e1b5d05ef5cf304c0",
+    "app.js": "c2547cce23b56a6cc07feb04943b20ac7a81913f83659bc786305813c10b8bd2",
     "style.css": "805701f0ca917daf396b21d738632117cf46e0d8d7e27fff0f185f6d6e276b65"
   },
   "data": {

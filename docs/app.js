@@ -109,6 +109,17 @@ import {
   let renderedAsMobileBrowse = false;
   let viewActivation = 0;
   let activeDataRequest = null;
+  // The active Tabulator instance for the Everything / review views. Declared
+  // at module scope (was `let table = null;` in the pre-019fe8a5 IIFE; the
+  // ES-module refactor in 019fe8a5 omitted it, which made every reference
+  // throw ReferenceError and stuck the page on the static loading skeleton).
+  let table = null;
+  // The active view's data array. Held at module scope so the global search,
+  // export, and per-view re-render paths can read it without a round-trip
+  // through Tabulator. The pre-019fe8a5 IIFE declared this with `let allData
+  // = [];`; the ES-module refactor omitted it, so applyLoadedViewMeta's
+  // assignment threw ReferenceError on the first activateView call.
+  let allData = [];
   const MOBILE_BROWSE_STORAGE_KEY = "docsheet-mobile-master-mode";
   const MASTER_PRESENTATION_KEY = "docsheet-master-presentation";
   const INTRO_STORAGE_KEY = "docsheet-intro-dismissed";

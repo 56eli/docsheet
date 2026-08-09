@@ -2405,6 +2405,44 @@ class FrontendDeliveryContractTests(unittest.TestCase):
             "catalogue-block-map.json drifted from its manifest hash; rebuild the manifest",
         )
 
+    def test_app_js_declares_critical_module_scope_variables(self) -> None:
+        """Critical module-scope identifiers must be declared with let/var/const.
+
+        Regression guard for the 019fe8d0 P0 incident: the 019fe8a5 ES-module
+        refactor of docs/app.js dropped the `let table = null;` and
+        `let allData = [];` declarations that lived at IIFE scope in the
+        pre-modular version. The page then failed silently on the first
+        ``boot()`` call (``ReferenceError: table is not defined``) and the
+        browser stayed on the static "Loading research master…" skeleton
+        forever.
+
+        A future refactor that re-introduces a free-variable reference to
+        one of these critical module-scope identifiers must fail this test
+        before it can ship.
+        """
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+
+        # The critical module-scope state. `table` holds the active Tabulator
+        # instance, `allData` holds the current view's data array. Both must
+        # be declared inside the IIFE so their references resolve.
+        critical = ("table", "allData")
+        # Match the variable name as the LHS of a let/var/const declaration
+        # at IIFE scope (whitespace + `let` + whitespace + the name + ...).
+        # We do not match imports (which use `as`) or destructuring (which
+        # uses commas), so a positive match means the IIFE declares the
+        # variable as a let/var/const at its top level.
+        missing = [
+            name for name in critical
+            if not re.search(rf"^\s+(?:let|var|const)\s+{re.escape(name)}\b", app_js, re.MULTILINE)
+        ]
+        self.assertEqual(
+            missing, [],
+            f"docs/app.js must declare these critical module-scope identifiers "
+            f"at IIFE scope (e.g. `let {missing[0] if missing else ''} = ...`); "
+            f"a free-variable reference will throw ReferenceError on first use "
+            f"and silently break the page. Missing: {missing}",
+        )
+
 
 class RetiredVocabularyTests(unittest.TestCase):
     """The deprecated medium item types (audio/video) were retired 2026-08-03.
