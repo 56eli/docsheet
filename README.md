@@ -117,6 +117,8 @@ Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
 [`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
 [`.scoreboard/`](.scoreboard/scoreboard.yml), the current corrective audit
 [`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](docs/audits/2026-08-09-end-user-row-delivery-postmortem.md),
+the multidisciplinary audit
+[`docs/audits/2026-08-09-expert-multidisciplinary-audit.md`](docs/audits/2026-08-09-expert-multidisciplinary-audit.md),
 and the broader audits
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after

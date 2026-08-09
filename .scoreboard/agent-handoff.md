@@ -1,17 +1,22 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Full-Stack & Data Engineering Session)
+Last updated: 2026-08-09 (Multidisciplinary Web Designer, Full-Stack & Data Engineer Session)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
+- `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Multidisciplinary Audit across Web Design, Full-Stack, & Data Engineering)
 - `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Current Full Audit & Cleanup)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`
 
 ## 2026-08-09 Session Summary
 
+- **Multidisciplinary Audit (Web Design, Full-Stack Development, & Data Engineering):** Executed a full multidisciplinary review across presentation styling/UX, pipeline architecture/testing, and dataset curation/schema provenance, recorded in `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`.
+- **Unlocked Column Resizing & Jitter-Free Scrolling:** Replaced `layout: "fitColumns"` with `layout: "fitDataFill"` and `renderHorizontal: "basic"`, removed `setMaxHeight()` on virtual scroll `renderComplete`, and widened `.tabulator-tableholder` scrollbars from 12px to 16px.
+- **Proposal File Name Readability:** Upgraded lead column font to 13px semi-bold (`font-weight: 600`) with high-contrast extension text and removed the hard 340px width cap.
+- **Work-Family Stripe Grouping & Subtle Zebra Parity:** Softened alternating zebra tints (`#fafafa` light / `#1c1c1c` dark) and implemented `applyWorkFamilyStriping(table)` so rows sharing the same `work_id` (e.g., multi-part DVD sets) share the same row background color.
 - **Header Truncation & Width Unlocking:** Removed letter-by-letter vertical wrapping on "Record Type" header title by eliminating `overflow-wrap: anywhere` and `max-width: 54px` in `docs/style.css` and removing `{ width: 54, minWidth: 54, maxWidth: 54 }` hard column lock in `docs/app.js`.
 - **Search Highlighting:** Added cell text matching and search query highlighting (`mark.search-highlight`) in `docs/app.js` and `docs/style.css`.
 - **Asset Versioning:** Updated asset content hashes in `docs/build-manifest.json` and `docs/index.html`.

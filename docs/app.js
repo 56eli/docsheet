@@ -307,10 +307,9 @@
   // measured-width engine, but compact controls and the frozen identity rail
   // must never grow just because a label is long.
   const COLUMN_BUDGETS = {
-    proposed_filename: { maxWidth: 340 },
-    title: { minWidth: 150, maxWidth: 560 },
+    proposed_filename: { minWidth: 220 },
+    title: { minWidth: 150 },
     series: { minWidth: 180 },
-    notes: { maxWidth: 560 },
   };
 
   const COLUMN_PRESETS = {
@@ -1876,7 +1875,6 @@
       const measured = measuredColumnWidth(key, col.title, data);
       let cap = budget.maxWidth ?? MAX_COLUMN_WIDTH;
       if (/title|note|reason|purpose|role/i.test(key)) cap = Math.min(cap, MAX_TEXT_WIDTH);
-      if (key === "proposed_filename") cap = Math.min(cap, 340);
       if (budget.width != null) {
         col.width = budget.width;
       } else {
@@ -2065,6 +2063,30 @@
     });
   }
 
+  /* Work-family stripe grouping: rows sharing the same work_id (e.g. a 3-set DVD)
+     share the same row background color, while alternating work families change color. */
+  function applyWorkFamilyStriping(tableInstance) {
+    if (!tableInstance) return;
+    const rows = typeof tableInstance.getRows === "function" ? tableInstance.getRows("active") : [];
+    let workGroupIndex = 0;
+    let lastWorkId = null;
+    rows.forEach((row) => {
+      const data = typeof row.getData === "function" ? row.getData() : {};
+      const workId = data.work_id || null;
+      if (workId !== lastWorkId || !workId) {
+        if (lastWorkId !== null) workGroupIndex++;
+        lastWorkId = workId;
+      }
+      const isEven = workGroupIndex % 2 === 1;
+      row._workGroupEven = isEven;
+      const el = typeof row.getElement === "function" ? row.getElement() : null;
+      if (el && el.classList) {
+        el.classList.toggle("tabulator-row-even", isEven);
+        el.classList.toggle("tabulator-row-odd", !isEven);
+      }
+    });
+  }
+
   /* ------------------------------------------------------------------ *
    *  Tabulator init
    * ------------------------------------------------------------------ */
@@ -2073,11 +2095,11 @@
     table = new Tabulator(spreadsheet, {
       data,
       columns: buildColumns(data),
-      layout: "fitColumns",
+      layout: "fitDataFill",
+      renderHorizontal: "basic",
       height: "100%",              // fixed virtual scroll viewport prevents rubberbanding
       placeholder: "No data found",
-      /* keep the table sized to its container on resize */
-      renderComplete: () => fitTableToContainer(),
+      renderComplete: () => applyWorkFamilyStriping(table),
       /* sorting */
       headerSort: true,
       /* All records stay in one scrollable view — no pagination. */
@@ -2107,6 +2129,11 @@
         element.className = element.className.replace(/\brow-block-\S+/g, "").trim();
         element.classList.add("row-block-styled", `row-block-${blockId}`);
 
+        if (typeof row._workGroupEven === "boolean") {
+          element.classList.toggle("tabulator-row-even", row._workGroupEven);
+          element.classList.toggle("tabulator-row-odd", !row._workGroupEven);
+        }
+
         if (!data.work_id) {
           element.classList.remove("work-group-start");
           return;
@@ -2127,8 +2154,8 @@
     configureExpertToggle(activeView);
     applyViewSettings();
     restoreGridState();
-    table.on("dataFiltered", updateSearchStatus);
-    table.on("dataSorted", saveSortState);
+    table.on("dataFiltered", () => { applyWorkFamilyStriping(table); updateSearchStatus(); });
+    table.on("dataSorted", () => { applyWorkFamilyStriping(table); saveSortState(); });
     // Listeners are attached once (guarded) so tab switches don't accumulate
     // duplicate scroll handlers.
     if (!spreadsheet._docsheetScrollBound) {
@@ -2138,7 +2165,7 @@
     // The synchronous call below can run before Tabulator has processed its
     // initial data ("active" row pipeline is still empty), leaving the footer
     // stuck on "Showing: 0"; tableBuilt corrects the count once rows exist.
-    table.on("tableBuilt", updateSearchStatus);
+    table.on("tableBuilt", () => { applyWorkFamilyStriping(table); fitTableToContainer(); updateSearchStatus(); });
     table.on("rowClick", (event, row) => {
       if (event.target.closest && event.target.closest("a, button, input, select, textarea")) return;
       const element = row.getElement();
