@@ -25,7 +25,8 @@ agent-memory layer.
 - **Fix on this branch:** the stale browser test now navigates only through the
   surviving `#view-jump` menu. A new offline regression test locks UUIDs 312,
   315, 356, 357, and 358 in the actual Pages payload. Suite: **140 offline
-  tests**, 90% total coverage; browser suite: **25 specs**.
+  tests**, 90% total coverage; all **25 browser specs** passed in PR #53 run
+  `31328879360`.
 - **Current audit:**
   `docs/audits/2026-08-09-deployment-forensics-full-audit.md`.
 - **Open P1 operations work:** Pages is not gated on CI, merges occurred before

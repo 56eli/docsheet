@@ -4,7 +4,7 @@
 **Audited baseline:** `ea4e30d` (`main`)  
 **Audit branch:** `arena/019fe7b6-docsheet`  
 **Auditor role:** expert Full-Stack Developer and Data Engineer  
-**Status:** current audit; P0 CI regression fixed on this branch, workflow-governance improvements remain open
+**Status:** current audit; P0 CI regression fixed and all 25 browser specs green in PR #53, workflow-governance improvements remain open
 
 ## 1. Executive verdict
 
@@ -120,7 +120,7 @@ The UI simplification reduced Playwright from 26 to **25 specs** (1 blank-row + 
 | Date integrity | **Pass** | 19 intentional blank years, 16 `198X` Office years, zero malformed years/months, zero blank `year_source` values. |
 | URL integrity | **Pass** | 461 populated master URLs, all HTTPS, all parseable; zero orphaned primary Veritas URLs. |
 | Display-order integrity | **Pass** | `docs/master.json` UUID order exactly matches the approved dense 362-row display-order overlay. |
-| Tests | **Strong after F-01/F-02** | 140 offline tests pass; total coverage 90%; 25 Playwright specs are syntactically clean and the corrected selector path awaits CI confirmation. |
+| Tests | **Strong after F-01/F-02** | 140 offline tests pass; total coverage 90%; all 25 Playwright specs passed in PR #53 run `31328879360`. |
 | Coverage claims | **Needs doc correction** | Total floor is correctly enforced at 85%, but current per-module results include `pipeline/helpers.py` 78% and `pipeline/relationships.py` 82%; the former “every pipeline module ≥88%” claim was false. |
 | Frontend | **Functionally rich, maintainability debt** | Static read-only SPA, responsive browse/table modes, facets, CSV export, keyboard and drawer flows; `docs/app.js` is 2,692 lines and `docs/style.css` is 2,382 lines. |
 | Frontend dead code | **Needs cleanup** | The deleted hero/overview/stats DOM still has nullable bindings, render functions, listeners, and many CSS selectors in `app.js`/`style.css`. |
@@ -195,13 +195,13 @@ Twenty root Markdown documents and 86 archived Markdown documents create overlap
 
 ### Environment-limited
 
-- Playwright Chromium download is blocked in this sandbox by CDN TLS resets; the 25-spec browser run must be confirmed in GitHub Actions.
+- Playwright Chromium download is blocked in this sandbox by CDN TLS resets; GitHub Actions provided browser verification instead: all 25 specs passed in PR #53 run `31328879360` (1m36s).
 - Direct HTTPS fetching of `56eli.github.io` is blocked from this sandbox by TLS EOF; GitHub Pages build/deployment APIs, deployment status, and repository content hashes were used instead.
 - Classic branch-protection settings returned HTTP 403 to this integration; rulesets were readable and empty, and observed merges before check completion establish the practical behavior.
 
 ## 7. Recommended execution order
 
-1. **Merge this branch only after its CI is green** (stale selector fix + Pages-payload regression test).
+1. **Owner-review and merge PR #53 while its CI is green** (the stale-selector fix and Pages-payload regression guard passed run `31328879360`).
 2. **Owner decision:** enable required checks and CI-gated Pages deployment.
 3. Add a deployed build manifest/post-deploy smoke assertion.
 4. Clarify curated vs. raw labels in the UI.

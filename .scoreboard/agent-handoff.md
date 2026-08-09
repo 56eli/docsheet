@@ -36,7 +36,7 @@ exist in the raw CSV.
   locks REVISION1 UUIDs 312, 315, 356, 357, and 358.
 - Offline suite: **140 tests**, all passing; total coverage **90%**.
 - Browser suite: **25 specs** (1 blank-row, 4 column-layout, 5 CSV/export,
-  6 presentation, 9 UX).
+  6 presentation, 9 UX), all green in PR #53 run `31328879360`.
 - Corrected current docs that falsely claimed 26 browser specs and every
   pipeline module ≥88%; individual coverage is currently 78–100%.
 - Added full deployment forensics and updated the scoreboard.
@@ -61,8 +61,8 @@ Passed locally:
 
 Environment limitations:
 
-- Chromium download fails with CDN TLS resets; verify all 25 browser specs in
-  branch CI before merge.
+- Chromium download fails locally with CDN TLS resets; PR #53 CI supplied the
+  browser verification (all 25 passed in run `31328879360`).
 - Direct GitHub Pages fetch fails with TLS EOF from this sandbox; Pages API,
   deployment status, and GitHub Contents API hashes were used instead.
 - Classic branch-protection API is forbidden to this integration; repository

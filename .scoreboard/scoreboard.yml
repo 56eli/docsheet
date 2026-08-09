@@ -324,11 +324,11 @@ aspects:
     user_basis: null
     evidence:
       - "python -m unittest discover tests: Ran 140, OK; coverage report TOTAL 90%."
-      - "The stale stats-selector test was corrected; browser execution awaits CI because the sandbox blocks Chromium downloads."
+      - "The stale stats-selector test was corrected; all 25 browser specs passed in PR #53 run 31328879360."
     user_notes: null
     desired_direction: []
     next_actions:
-      - "Confirm all 25 browser specs on this branch in GitHub Actions before merge."
+      - "Keep all 25 browser specs required in CI and add deployed-content smoke coverage after owner approval."
     risk_flags: []
     files_reviewed:
       - tests/test_pipeline.py
@@ -355,6 +355,7 @@ aspects:
     user_basis: null
     evidence:
       - "Runs from PR #48 through ea4e30d all failed only at #show-stats-toggle; 24 of 25 browser specs passed."
+      - "PR #53 run 31328879360 passed after the stale-selector fix (140 offline tests + all 25 browser specs)."
       - "All corresponding Pages deployments succeeded, proving CI is not a deployment gate."
       - "ci.yml path filters correctly avoid raw-updater races; all three Update Spreadsheet runs succeeded."
     user_notes: null
