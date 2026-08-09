@@ -112,28 +112,13 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 
 ## Documentation layout
 
-Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
-[`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
-[`.scoreboard/`](.scoreboard/scoreboard.yml), the **declared-current** multidisciplinary audit
-[`docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`](docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md) (Web Designer · Full-Stack · Data Engineer at `9e4ee4d`, 141/141 + 90%),
-the corrective postmortem
-[`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](docs/audits/2026-08-09-end-user-row-delivery-postmortem.md),
-the prior multidisciplinary audit
-[`docs/audits/2026-08-09-expert-multidisciplinary-audit.md`](docs/audits/2026-08-09-expert-multidisciplinary-audit.md),
-and the broader audits
-`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
-PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
-historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
-and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` (archived 2026-08-09
-with the other superseded audits),
-`FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
-proposals, and the generated `RECONCILIATION_REPORT.md`). Superseded audits,
-suggestion documents, and workflow guides live in
-[`archive/`](archive/README.md) and are not normative. Approved ruling
-records live in
-[`decisions/`](decisions/README.md).
+| Location | Contents |
+|---|---|
+| Root (essential) | `README`, `INSTRUCTIONS`, `AGENTS`, [`SCOREBOARD.md`](SCOREBOARD.md) + [`.scoreboard/`](.scoreboard/scoreboard.yml), `NEXT_AGENT_HANDOFF`, `RECONCILIATION_REPORT` (generated) |
+| Root (normative) | `EDITION_MODEL_PROPOSAL`, `SERIES_TAXONOMY_MAPPING`, `PRODUCT_RELATIONSHIP_SCHEMA`, `SERIES_COMPILATION_SCHEMA`, `CATEGORY_DOMINANCE_POLICY`, `MIGRATION_REVIEW_LEDGER` |
+| [`docs/audits/`](docs/audits/) | **Declared-current** multidisciplinary audit, corrective postmortem, prior audits |
+| [`decisions/`](decisions/README.md) | Approved ruling records, filename proposals, provenance docs, source registry |
+| [`archive/`](archive/README.md) | Superseded audits, historical proposals, suggestion docs, workflow guides |
 
 ## Curated records vs. official candidates
 
@@ -209,7 +194,7 @@ additions are reflected in the current generated inventory (362 master records,
 191 Veritas products, 340 relationships). See
 [`docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`](docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md)
 (declared-current) alongside
-[FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md)
+[`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`](archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md)
 for full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; the archive reports preserve earlier checkpoints.
 
@@ -265,8 +250,14 @@ investigation`).
 `owned` records collection status with three values: `true` (owned), `false`
 (explicitly not owned), and **blank** (not stated — e.g. minted edition rows
 and NC/Hay House programs that have no raw spreadsheet ownership marker). The
-site renders it as a badge (`Owned` / `Not owned`) and leaves blank cells
+site renders it as a badge (`Owned`) and leaves blank cells
 empty; exports keep the raw `true`/`false`/empty values.
+
+`notes` is reserved for **owner-applied markers only** (e.g. the FRAN GRACE
+marker on master 315). All provenance, audit-trail, and research notes
+(title corrections, publisher source evidence, promotion records) live in the
+`research` column at the end of the master — hidden under Expert columns in
+the spreadsheet, visible in the row-details drawer.
 
 Two identifier conventions worth knowing: catalogue-code sequence numbers
 (`LECTURE-2008-023`) follow **ledger/candidate minting order, not

@@ -27,6 +27,7 @@ from pipeline.enrichments import (
     apply_year_source_provenance,
     backfill_months_from_official_source,
     infer_format_from_official_source,
+    migrate_notes_to_research,
 )
 from pipeline.helpers import (
     index_csv,
@@ -66,7 +67,7 @@ FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "source_url_amazon", "reference_url_1", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "notes", "research",
     "raw_row_number", "candidate_key",
 ]
 EXCLUSION_FIELDS = [
@@ -426,9 +427,14 @@ def build_master() -> MasterBuild:
     apply_year_overrides(items)
     apply_notes_overrides(items)
 
+    # Move provenance/research notes out of the notes column into a dedicated
+    # research column. Only the FRAN GRACE owner marker stays in notes.
+    migrate_notes_to_research(items)
+
     for it in items:
         it.setdefault("year_source", "")
         it.setdefault("source_url_amazon", "")
+        it.setdefault("research", "")
 
     validate_filename_proposal_mirrors(items)
     validate_master_items_integrity(items)

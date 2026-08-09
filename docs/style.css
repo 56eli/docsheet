@@ -2,6 +2,12 @@
    Live Spreadsheet — Google Sheets-inspired UI
    ========================================================================== */
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §1  DESIGN TOKENS — CSS custom properties for light and dark themes.
+       All colours, spacing, and block-tint tokens live here.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Design tokens (light mode) ---- */
 :root {
   --bg: #f9f9fb;
@@ -108,6 +114,11 @@
   --block-fran-grace-bg: rgba(244, 63, 94, 0.085);
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §2  BASE & LAYOUT — html/body reset, page flex column, scrollbars.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Base ---- */
 * { box-sizing: border-box; }
 
@@ -127,6 +138,12 @@ body {
   background: var(--bg);
   transition: background-color 0.25s ease, color 0.25s ease;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §3  TOP BAR — brand, search, view-jump dropdown, export button, dark
+       mode toggle, settings menu, presentation controls.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ==========================================================================
    Top bar
@@ -329,6 +346,11 @@ mark.search-highlight, .search-highlight {
 .switch input:checked + .slider::before { transform: translateX(18px); }
 .switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   §4  VIEW SUMMARY & COLUMN MENU — dataset tabs, view title/description/
+       meta, column tools (menu, expert toggle), column list.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ==========================================================================
    Dataset tabs
    ========================================================================== */
@@ -493,6 +515,12 @@ mark.search-highlight, .search-highlight {
   line-height: 1.35;
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §5  REVIEW TOOLBAR & FILTERS — review filter dropdown, active filter
+       chips, clear-all button.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Review toolbar ---- */
 .review-toolbar {
   display: flex;
@@ -572,6 +600,14 @@ mark.search-highlight, .search-highlight {
 }
 #clear-all-filters:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
 #clear-all-filters:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §6  SPREADSHEET AREA & TABULATOR TABLE — table container, header styling,
+       zebra rows, hover highlights, block colour tints (data-block rules),
+       work-family striping, frozen columns, scrollbars, status badges in
+       cells, URL links, empty state, record-type badges.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ==========================================================================
    Spreadsheet area (fills remaining height; table scrolls inside)
@@ -835,6 +871,12 @@ mark.search-highlight, .search-highlight {
   color: var(--text-muted);
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §7  ROW DETAILS DRAWER — slide-in panel showing all fields for the
+       selected row, with copy actions and source links.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ==========================================================================
    Row details drawer
    ========================================================================== */
@@ -932,6 +974,11 @@ mark.search-highlight, .search-highlight {
 .row-detail-field a { color: var(--accent); font-weight: 600; }
 #spreadsheet .tabulator-row { cursor: pointer; }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §8  FOOTER BAR — row count, last-modified, build revision.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ==========================================================================
    Footer bar
    ========================================================================== */
@@ -951,6 +998,12 @@ mark.search-highlight, .search-highlight {
 .footerbar span { white-space: nowrap; }
 .footer-note { margin-left: auto; }
 .footerbar .updated { font-weight: 500; color: var(--text); }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §17  RESPONSIVE — mobile (≤720px) and tablet (≤900px) overrides for
+        topbar, table, view summary, filters, row details, browse mode.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ==========================================================================
    Responsive (mobile)
@@ -1073,6 +1126,12 @@ mark.search-highlight, .search-highlight {
   line-height: 1.5;
   text-align: center;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §16  ACCESSIBILITY & FOCUS — visible focus rings for all interactive
+        controls, reduced-motion overrides, touch-friendly targets.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ================================================================== *
  *  2026-08-08 redesign Phase 2 (accessibility) + mobile polish
@@ -1404,6 +1463,12 @@ body {
    copy-file-name action, work-group row striping, carrier color dots.
    ========================================================================== */
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §9  FACETED FILTER BAR — series/year/type/format/owned dropdowns,
+       filter chips, stats chips as buttons.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Faceted filter bar (catalogue view only) ---- */
 .facet-bar {
   display: flex;
@@ -1533,6 +1598,12 @@ button.stat-chip:hover b { color: var(--accent); }
   border-top: 2px solid color-mix(in srgb, var(--text-muted) 24%, transparent);
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §10  KEYBOARD NAVIGATION & SHORTCUTS — row focus ring, shortcuts
+        overlay, j/k navigation styling.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Keyboard row focus + shortcuts overlay ---- */
 #spreadsheet.tabulator .tabulator-row.row-keyboard-focus {
   outline: 2px solid var(--accent);
@@ -1641,6 +1712,12 @@ button.stat-chip:hover b { color: var(--accent); }
   .stat-chip { padding: 1px 5px; font-size: 10px; border-radius: 4px; }
   .stat-chip b { font-size: 10px; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §12  MOBILE BROWSE MODE — work-card catalogue for small screens,
+        series shelf, year rail, discovery chips, source/stream actions.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ================================================================== *
  *  Mobile Browse mode — a work-first catalogue for small screens.
@@ -1914,6 +1991,12 @@ button.stat-chip:hover b { color: var(--accent); }
   #mobile-discovery-clear:focus-visible { outline-offset: 1px; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §11  CATALOGUE OVERVIEW — hero banner, collection stats cards, series
+        strip, description toggle, review nav groups.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ========================================================================
    Catalogue overview (hero, collection stats, series strip) — 2026-08-09
    ======================================================================== */
@@ -2122,6 +2205,12 @@ body.intro-visible #table-container {
 @media (max-width: 720px) {
   #master-browse-toggle { display: none !important; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §13  SERIES BROWSER — series landing grid, series cards with counts,
+        ownership bars, year spans.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ---- Series browser (client-side landing view) ---- */
 .series-landing {
@@ -2348,6 +2437,12 @@ body.intro-visible #table-container {
   html.browse-active .mobile-discovery-chip:focus-visible, html.browse-active #mobile-discovery-clear:focus-visible { outline-offset: 1px; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §14  DESKTOP BROWSE MODE — work-card grid at any viewport width,
+        multi-column auto-fill layout.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 /* ---- Desktop Browse mode: the work-card UI at any width ---- */
 @media (min-width: 721px) {
   html.browse-active .mobile-browse:not([hidden]) {
@@ -2374,6 +2469,11 @@ body.intro-visible #table-container {
     align-items: start;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §15  LOADING SKELETON — shimmer animation placeholder while data loads.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 /* ---- Loading skeleton (2026-08-09) ---- */
 .table-loading {

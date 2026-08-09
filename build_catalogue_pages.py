@@ -116,7 +116,7 @@ EVERYTHING_FIELDS = [
     "proposed_filename_display", "legacy_title", "item_type",
     "series", "year", "month", "year_source", "format", "format_detail", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
-    "source_url_audible", "source_url_amazon", "reference_url_1", "notes",
+    "source_url_audible", "source_url_amazon", "reference_url_1", "notes", "research",
     "raw_row_number",
 ]
 
