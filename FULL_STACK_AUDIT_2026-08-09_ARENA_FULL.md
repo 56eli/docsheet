@@ -307,4 +307,18 @@ Offline replay is sufficient: `fetch_veritas_catalogue.py --check` is intentiona
 
 ---
 
-*End of audit — `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` committed at `f520e9b`.*
+## 12. Post-audit fix applied 2026-08-09 — H-01 + DOC-10 (this branch, `80cdcea`)
+
+**Trigger:** owner selected "Fix H-01 Hay House typo now".
+
+**Changes (verified):**
+
+- `data/hayhouse_official_products.csv`: `https://www.hayhouse.com/traqnscending-the-levels-of-consciousness-paperback` → `https://www.hayhouse.com/transcending-the-levels-of-consciousness-paperback`.
+- `data/research_master_source_overrides.csv` row `333,source_url_hay_house` (the `matched_by_title` override that feeds master **294**): same `traqn → tran` correction — the master had derived its `source_url_hay_house` from that override, not directly from the HH inventory join, so both files needed the fix (the earlier audit note that only the HH inventory needed fixing was inaccurate; the grep during the audit missed the override because the search pattern was limited to `data/hayhouse_official_products.csv`).
+- `archive/README.md`: `FULL_STACK_AUDIT_2026-08-08_ARENA.md` → `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (+ note that this full audit `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` extends it).
+
+Regenerated in committed order: `python build_research_master.py` → `python build_catalogue_pages.py` (writes `data/research_master_draft.*`, `docs/master.json`, `docs/hayhouse-products.json`, `docs/source-overrides.json`). `grep -rn traqn` now 0 hits. Master 294 `source_url_hay_house` now `https://www.hayhouse.com/transcending-the-levels-of-consciousness-paperback`.
+
+**Verification:** all six `--check` modes PASS, 126/126 tests PASS, 91% coverage, `node --check` PASS, `grep traqn` 0. Remaining open from §9: L-02 Audible Spanish duplication (policy, no pipeline break) and P2 hygiene.
+
+*End of audit — `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` audited at `f520e9b`, fixed at `80cdcea` (branch `arena/019fe620-docsheet`).*
