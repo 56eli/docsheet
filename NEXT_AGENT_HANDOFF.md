@@ -1,10 +1,11 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (post-PR-#40 verification) — current handoff for
-branch `arena/019fe5fc-docsheet` at `d731e1b` (`main` HEAD, PR #40 merged).
-The declared-current audit is now
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at HEAD); the
-baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
+**Prepared:** 2026-08-09 (post-PR-#41 + H-01/L-02 hygiene) — current handoff for
+branch `arena/019fe620-docsheet` at `2bc99ec` (H-01 Hay House typo + DOC-10 + L-02 cross-listing clarified).
+The declared-current audits are
+`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `d731e1b`) and its extension
+`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`, H-01/L-02/DOC-10 clarified at `2bc99ec`);
+the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
 `FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT` carry SUPERSEDED
 banners (pre-PR-#40 findings). See the session log at the bottom of §6.
@@ -160,7 +161,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 125 tests, offline, ~3s
+python -m unittest discover tests     # 126 tests, offline, ~3s
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 91%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
@@ -200,7 +201,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 338 members approved; work_id coverage 362/362 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **125 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **126 tests; coverage 91% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 89%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
@@ -745,3 +746,16 @@ then owner-approved fixes applied in this branch).
   ledger validator is the enforced fix for the C-01 class (silent `.lower()`
   remains as belt-and-braces); `reference_url_1` Veritas links (53) are not
   mirrored in the 191-product inventory (all live-checked OK, by design).
+
+## 2026-08-09 Full-stack audit + hygiene (arena/019fe620-docsheet, current)
+
+Branch `arena/019fe620-docsheet` at `2bc99ec` (this branch). Full audit
+`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (read-only at `f520e9b`, fixes at `80cdcea`/`2bc99ec`).
+
+- **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved. New forensics:
+  - **H-01 (Medium):** Hay House URL typo `traqnscending → transcending` in `data/hayhouse_official_products.csv` and its source-override for master 294 (both inventory + master shipped a 404). Fixed in `80cdcea`: both files corrected, master 294 rebuilt, `grep traqn` 0 hits, all checks green.
+  - **L-02 (Low):** Audible Spanish titles `Disolver el ego` / `El nivel más alto` appear in both `audible_official_products.csv` (26) and `international_discovery_queue.csv` (38) as `matched_by_title`. Intentional cross-listing for Spanish-market discoverability; clarified in `2bc99ec` by adding explicit `review_notes` cross-reference to both international rows (no count change, 38→38).
+  - **DOC-10 (Low):** `archive/README.md` declared-current pointed to 08-08 audit; corrected to `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (+ `ARENA_FULL.md` extension).
+- **Docs hygiene (P2, low-risk):** handoff header refreshed to `2bc99ec`/this branch/declared-current pair; `NEXT_AGENT_HANDOFF` §2 quick-verify updated 125→126 tests; `archive/README` current-audit pointer corrected. Root proposal docs (`CATALOGUE_READABILITY_ROADMAP.md` etc.) intentionally kept at root for now — moving all 11 to `archive/` would orphan active schema references (`PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_TAXONOMY_MAPPING.md`, `EDITION_MODEL_PROPOSAL.md` etc.); owner to confirm if they should be archived vs. kept as living policies.
+- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, `coverage 91%`, `node --check` PASS, `grep traqn` 0, `grep -rn traqn` 0, international cross-list docs present.
+- **Left open:** P2 optional root-doc slimming and handoff deep slimming (deferrable; no pipeline break). Branch-protection required-checks still 403-unverifiable with this token.
