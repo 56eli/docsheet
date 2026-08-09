@@ -1,0 +1,107 @@
+# DOCSHEET — Audit Results & Fix Spec (single handover file)
+
+**Prepared:** 2026-08-09 · **Audited revision:** `56eli/docsheet` @ commit `bbe8b01` (2026-08-08)
+**Audit method:** five-part audit (identity, purpose, integrity, verification, re-validation),
+independently re-derived in pure stdlib (no pandas, no project validators, no network).
+**Hand to:** the next agent working on `56eli/docsheet`. This file is self-contained — no patch needed;
+apply the fix specs below directly.
+
+---
+
+## 1. One-sentence summary
+
+`docsheet` is the production repository behind `hawkins-everything-1.csv`, and an independent
+re-derivation shows its curated-catalogue pipeline is internally highly consistent — the export is
+cell-faithful to the master (7240/7240), all ledger/mirror/filename/exclusion invariants hold, and the
+only actionable defect is a 21-row `owned` casing inconsistency (lowercase `true`), plus two inherited
+URL defects and optional CI hardening.
+
+## 2. Audit summary (five dimensions)
+
+| Dimension | Result |
+|---|---|
+| **Identity** | Two pipelines: (1) live spreadsheet — `hawkins archive clone - Sheet1.csv` → `process_data.py` → `docs/data.json` → GitHub Pages (pass-through); (2) curated catalogue — raw sheet → `migration_review_ledger.csv` → `data/research_master_draft.csv` (canonical master, 362×24) → `build_research_master.py`/`build_catalogue_pages.py` → `docs/*.json` + the `hawkins-everything-1.csv` export. Veritas catalog-map workflow confirmed (`fetch_veritas_catalogue.py` + `data/veritas_official_products.csv`). |
+| **Purpose** | Single source of truth; ledger-driven curation (dispositions: `item` 299, `duplicate` 7, `needs_review` 1, …); per-field provenance (`year_source`, `raw_row_number`, `candidate_key`); publishes live spreadsheet, catalogue JSON, and the audited export. |
+| **Integrity** | Export == master on all **7240/7240 cells** (uuid == Master ID); ledger 299/299 legacy masters backed; exclusions (75 raw rows) disjoint; Veritas mirror 333/333 matched, 0 dangling refs; filenames unique, `filename_proposal_YYYYMM.csv` == master; all `docs/*.json` parse; month zero-pad regression (`"1.0"…"12.0"`) confirmed fixed. |
+| **Verification** | URL health carried over from the CSV audit (identical URL set): 463/464 live; row-289 Hay House 404 + row-265 mangled Veritas URL trace to master uuids **289/265**. Live-site/mirror freshness **not assessed** (no network in the audit sandbox) — use the repo's `map_veritas_catalogue.yml` workflow. |
+| **Re-validation** | Repo CI (125 tests, 91% coverage, `--check` gates) is strong. Gaps: no validator rule for `owned` casing; no assert that `docs/master.json` count == master CSV count; audit's stdlib checker is reusable (`check_docsheet.py`). |
+
+## 3. Findings register
+
+| ID | Sev | Finding | Status |
+|---|---|---|---|
+| D-01 | medium | `owned` lowercase `true` on 21 promoted masters | **FIX SPEC §4 (required)** |
+| D-02 | info | 154 `work_id` deviate from `w-`+slugify(title) | Owner decision: keep (externally referenced); 3 splits approved — see §6 |
+| D-03 | info | URL defects in master: row 289 Hay House 404 (`parperback` typo); row 265 mangled Veritas URL | **FIX SPEC §5 (recommended)** |
+| D-04 | info | Export cell-faithful to master (7240/7240) | verified, no action |
+| D-05 | info | All cross-file invariants pass | verified, no action |
+
+**No critical/high findings at the audited commit.**
+
+## 4. FIX SPEC — D-01 (required): normalize `owned` casing to `True`
+
+Lowercase `true` originates in two candidate source files and flows into the master and its generated
+outputs. Fix all five locations together so the `--check` gates stay consistent:
+
+### 4.1 `data/edition_candidates.csv` — column `proposed_owned`, 19 rows: `true` → `True`
+candidate_keys: `edition-audible-pvf`, `edition-audible-eye`, `edition-audible-tvf`,
+`edition-audible-lettinggo`, `edition-audible-healing`, `edition-audible-transcending`,
+`edition-audible-itwbnoi`, `edition-audible-hle`, `edition-audible-wtg-nature`, `edition-audible-wtg-advaita`,
+`edition-audible-wtg-root`, `edition-audible-dni-intention`, `edition-audible-dni-alignment`,
+`edition-audible-tms-id`, `edition-audible-tms-emotions`, `edition-audible-srmm-godvs`,
+`edition-audible-tlc-perception`, `edition-audible-compassion`, `edition-hh-liveprayer`
+
+### 4.2 `data/manual_master_candidates.csv` — column `proposed_owned`, 2 rows: `true` → `True`
+candidate_keys: `manual-veritas-54219`, `manual-veritas-55473`
+
+### 4.3 `data/research_master_draft.csv` — column `owned`, 21 rows: `true` → `True`
+uuids: `310, 311, 320, 321, 322, 323, 324, 325, 326, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343`
+
+### 4.4 `docs/master.json` — 21 occurrences `"owned": "true"` → `"owned": "True"`
+
+### 4.5 `docs/manual-candidates.json` — 2 occurrences `"proposed_owned": "true"` → `"proposed_owned": "True"`
+
+### 4.6 Verify after applying
+```bash
+grep -rn ': *"true"' data/*.csv docs/*.json   # expect no output
+python build_research_master.py --check
+python build_catalogue_pages.py --check
+python process_data.py --check
+python -m unittest discover tests
+```
+Also re-export `hawkins-everything-1.csv` from the master afterwards — the version in REPOTESTER is the
+pre-fix revision and should be regenerated to pick up the 21 corrected cells (export fidelity is proven
+cell-exact, so regeneration is safe).
+
+## 5. FIX SPEC — D-03 (recommended): URL defects in the master
+
+| uuid | Column | Current value | Fix |
+|---|---|---|---|
+| 289 | `source_url_hay_house` | `https://www.hayhouse.com/catalog/product/view/id/23364/s/truth-vs-falsehood-parperback/` | slug typo `parperback` → `paperback`; confirm 200 in a browser (or drop the link — Veritas + Amazon alternatives are live) |
+| 265 | `source_url_veritas` | `https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/` | replace with `https://veritaspub.com/product/golden-word-book-signing-january-13-2007/`; confirm in a browser that it renders *Golden Word Book Signing* (current URL returns 200 but is a malformed/soft-404 path) |
+
+Both fixes must be mirrored in the generated outputs (`docs/master.json`) when `build_*` is next run.
+
+## 6. Deferred items (owner decisions already made)
+
+- **Work-slug splits (approved 2026-08-09):** apply to `work_id` in the master when convenient:
+  - uuids 121/122/123: `w-live-prayer` → `w-live-your-life-like-a-prayer`
+  - uuid 343: `w-live-prayer` → `w-live-life-as-a-prayer`
+  - uuid 328: `w-healing-and-recovery` → `w-healing-achieving-total-wellness`
+  - uuid 330: `w-highest-level-of-enlightenment` → `w-highest-level-of-enlightenment-audio`
+  - Slugs are referenced externally → coordinate any change. Full analysis: `audits/docsheet/hawkins-csv/WORK_SLUG_REVIEW.md`.
+- **`198X` placeholder years** (16 lectures): owner decided to keep as deliberate decade-unknown markers.
+- **`Owned` blanks** (42 rows): owner decided blanks mean *unknown* — do not backfill.
+- **`Item Type` semantics:** content type (an audiobook of a lecture is `lecture`) — current values correct.
+
+## 7. Optional CI hardening (low priority)
+
+1. Add a validator rule: `owned` ∈ {`True`, `False`, ``} (this would have caught D-01).
+2. Assert `len(docs/master.json) == len(data/research_master_draft.csv)` in CI.
+3. Optionally wire `audits/docsheet/tools/check_docsheet.py` (pandas-free cross-check) into CI.
+
+## 8. Open questions for the owner
+
+1. Where should this audit's docs live permanently (here vs mirrored into docsheet)?
+2. D-03 URL fixes — confirmed with the browser check, or drop the Hay House link?
+3. CI hardening — wanted?
