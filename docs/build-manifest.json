@@ -8,7 +8,8 @@
   },
   "data": {
     "master.json": "6347ed936ddebc042ee284cdf8eef487dd88f71e5fa9f64dd2c89a0311dc7cf7",
-    "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37"
+    "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
+    "catalogue-block-map.json": "e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac"
   },
   "acceptance": "owner_visual_review_required"
 }

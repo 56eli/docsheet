@@ -13,7 +13,7 @@ David R. Hawkins archive. It runs two parallel data lanes (raw pass-through +
 curated research master) driven by **six deterministic, --check-validated Python
 generators**, served as a **single-page Tabulator app** with dark mode, faceted
 filters, mobile Browse cards, row-details drawer, and CSV export. The
-**curated pipeline is exemplary** (141/141 unit tests, 90 % coverage,
+**curated pipeline is exemplary** (145/145 unit tests, 90 % coverage,
 run-twice determinism, six `--check` modes byte-current, build-manifest
 content-versioning, SRI-pinned Tabulator, hash-pinned CSP, no `eval()`, no
 secrets). Two real gaps remain: **GitHub Pages is not gated on CI** (a
@@ -87,7 +87,10 @@ deployed build ID, (3) continue modularising `app.js`.
   `FrontendDeliveryContractTests` does not check the block map, so a stale
   block map paired with a fresh `app.js` would silently mis-render.
   Recommend adding the block map to the manifest's `assets` (or `data`)
-  map and adding a contract assertion.
+  map and adding a contract assertion. **(Fixed in 019fe8d0: block map
+  added to `data` section of `build-manifest.json` with SHA-256 hash;
+  `FrontendDeliveryContractTests.test_block_map_drift_fails_manifest_contract`
+  asserts the contract.)**
 
 ---
 
@@ -472,7 +475,7 @@ deployed build ID, (3) continue modularising `app.js`.
 
 ### What works
 
-- **`ci.yml` covers all six `--check` modes + 141 tests +
+- **`ci.yml` covers all six `--check` modes + 145 tests +
   coverage + JS syntax + 25 Playwright specs.** It's
   comprehensive for what's in scope.
 - **Concurrency group `ci-${{ github.ref }}`** cancels
@@ -546,7 +549,7 @@ deployed build ID, (3) continue modularising `app.js`.
   context (e.g. conflicting approved series in
   `pipeline/validators.py`).
 - **Test count discipline** — the README's
-  "141 tests" line is in sync with the actual
+  "145 tests" line is in sync with the actual
   `python -m unittest discover tests` run count;
   the test count has been updated six times in
   the project history without ever being wrong
@@ -574,6 +577,8 @@ deployed build ID, (3) continue modularising `app.js`.
   HTTP requests on the critical path.
 - **The build-manifest contract is missing the
   block map** (see Architecture §1 gap).
+  **(Fixed in 019fe8d0; see the Architecture
+  section note.)**
 - **`docs/js/config.js` mixes runtime data
   (VIEWS, COLUMN_PRESETS) with build-time data
   candidates** (the VIEWS list is hardcoded
@@ -583,7 +588,13 @@ deployed build ID, (3) continue modularising `app.js`.
   the actual `docs/*.json` file names would
   prevent silent breakage when a new view is
   added to the build but the VIEWS list is
-  forgotten.
+  forgotten. **(Fixed in 019fe8d0: new
+  `ViewsConfigConsistencyTests` class with three
+  tests — VIEWS covers every user-facing build
+  output, every VIEWS file exists in docs/, and
+  no two view keys share a file (with the
+  documented `master`+`series` → `master.json`
+  exception pinned).)**
 
 ---
 
@@ -734,6 +745,8 @@ deployed build ID, (3) continue modularising `app.js`.
 3. **Add the catalogue block map to `build-manifest.json`** (and
    add a `FrontendDeliveryContractTests` assertion) so a stale
    block map can't silently mis-render a fresh `app.js`.
+   **✅ Done in 019fe8d0** — block map added to `data` section;
+   new test `test_block_map_drift_fails_manifest_contract`.
 4. **Add `axe-core` to one of the Playwright specs** (a single
    `await new AxeBuilder({ page }).analyze()` after the Everything
    view loads). This catches a11y regressions for free.
@@ -741,6 +754,8 @@ deployed build ID, (3) continue modularising `app.js`.
    `docs/js/config.js#VIEWS` enumerates exactly the
    `docs/*.json` files that `build_catalogue_pages.py` produces.
    Prevents the "added a new view, forgot to register it" bug.
+   **✅ Done in 019fe8d0** — new `ViewsConfigConsistencyTests`
+   class with 3 tests.
 6. **Lazy-load `docs/data.json`** — only fetch when the user
    selects the "Original Spreadsheet" view. Cuts the initial
    load by ~25 %.

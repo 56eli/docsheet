@@ -46,12 +46,43 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
      `owned: false` rows now have a fully empty cell — a subtle visual
      cue (faint strikethrough on title? outlined "✕" badge?) would
      communicate the distinction without re-introducing the noisy pill.
+- **P1 gaps 1+2 fixed in this session** (delivery-contract only, per
+  the owner-aligned scope decision):
+  - **Gap 1** — `docs/catalogue-block-map.json` added to
+    `build-manifest.json#data` with SHA-256 hash
+    (`e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac`).
+    New test `FrontendDeliveryContractTests.test_block_map_drift_fails_manifest_contract`
+    re-reads the file, recomputes the hash, and asserts it matches
+    the manifest entry — a tampered block map now fails the
+    contract test loudly.
+  - **Gap 2** — new `ViewsConfigConsistencyTests` class with three
+    tests: (1) every VIEWS `file:` key matches a build-emitted
+    user-facing JSON (excludes the non-Jump-to outputs
+    `catalogue-meta.json`, `catalogue-block-map.json`,
+    `build-manifest.json`); (2) every VIEWS file actually exists
+    in `docs/`; (3) no two view keys share a file (with the
+    documented `master`+`series` → `master.json` exception
+    pinned so it cannot silently grow).
+  - **Test count** — 141 → 145 deterministic tests
+    (`tests/test_pipeline.py`); 137 pre-existing + 4 new
+    manifest/contract + 3 new VIEWS = 4 net new in
+    `test_pipeline.py`; 8 unchanged in `test_style_contrast.py`
+    = 153 total. README + INSTRUCTIONS test-count lines updated
+    per the project house rule. Drift test proved: manually
+    tampered block map now fails the contract test with the
+    exact expected error message.
+  - **All `--check` modes still green** (5/5 that don't need
+    pandas); 4 new tests pass; no regressions in the 137
+    pre-existing tests; 8 process_data failures are
+    pre-existing (sandbox lacks pandas).
+- **P1 gaps 3-6 not touched in this session** (deferred per
+  the owner-aligned scope decision: 4 UI/data polish items
+  need owner visual review before any change).
 - **Scoreboard alignment:** My independent re-audit agrees with the current
   scoreboard (overall_effective 8.5 / gate pass) on every aspect except
   performance (I'd add a Lighthouse budget step before declaring 8/10
   confident — currently 8 with medium confidence per the scoreboard,
   which is fair). No score changes recommended.
-- **No code changes** in this session — pure audit + audit doc.
 
 ## 2026-08-09 Session Summary — 019fe8a5 (Audit, Consolidation, Modularization)
 
