@@ -56,8 +56,18 @@ Headline results (2026-08-09 expert pass, current):
   corrected for the record — the 17 blank-year rows are 13 Volumes + 4
   under-investigation; the 7 Highlights rows carry years and omit the prefix
   per the separate "filename equals title" directive.
-- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive) — the only
-  remaining open item.
+- **Presentation/UX implementation (owner approved the full plan):** see
+  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` — catalogue overview hero +
+  collection stats + series strip, desktop Browse cards toggle, Review
+  workspace nav toggle, Series browser tab, search hints, loading skeleton,
+  a11y labels. Browser suite grew 19 → **26 tests** (new
+  `tests/presentation-ux.spec.js`). Scoreboard AI scores for
+  github_pages_presentation/ux_usability/accessibility are **unchanged
+  pending re-audit** — the owner's 5/10 user scores still stand and the
+  effective scores still drive priority (15/12).
+- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the
+  presentation/UX re-score and re-audit after the owner reviews the new
+  first impression.
 
 Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**

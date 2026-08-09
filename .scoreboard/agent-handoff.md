@@ -55,11 +55,22 @@ user scores (see `.scoreboard/scoreboard.yml`).
 - CSP `style-src 'unsafe-inline'` (low severity; required for dark-mode
   toggles; scripts are hash-pinned, Tabulator SRI-pinned). Visible in
   `SCOREBOARD.md` and `scoreboard.yml` until the owner accepts or mitigates it.
-- Browser e2e suite (19 specs) cannot run in the Arena sandbox (Playwright
+- Browser e2e suite (26 specs) cannot run in the Arena sandbox (Playwright
   CDN blocked); CI is the verification point — always check CI status after
   pushes.
 - Live site `https://56eli.github.io/docsheet` is unreachable from the
   sandbox network; use `gh run list` Pages status instead.
+
+## Presentation/UX implementation (2026-08-09, owner approved the full plan)
+
+Phases A–D of `PRESENTATION_UX_PROPOSAL_2026-08-09.md` are implemented on
+`arena/019fe659-docsheet`: catalogue overview hero + collection stats +
+series strip, desktop Browse cards toggle, Review-workspace nav toggle,
+Series browser tab, search hints, loading skeleton, a11y labels; browser
+suite 19 → 26 tests. **Scoreboard AI scores are unchanged pending a re-audit
+and the owner's re-score** — the owner's user scores (presentation 5, UX 5)
+still make those the top priorities (15/12). Next agent: verify the new
+specs in CI, then ask the owner to re-score or give concrete feedback.
 
 ## Manual workflow edits pending
 
@@ -83,8 +94,9 @@ re-audit changes effective scores. Re-evaluate after the next audit.
 - `python sync_inventory_mirrors.py --check` ✅
 - `python -m unittest discover tests` ✅ Ran 126, OK
 - `coverage run -m unittest discover tests && coverage report` ✅ 91%
-- `node --check docs/app.js` + all `tests/*.spec.js` ✅
-- `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only)
+- `node --check docs/app.js` + all `tests/*.spec.js` (26 browser specs) ✅
+- `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only;
+  the 26 specs run in CI)
 - Static serve of `docs/` ✅ (all assets 200)
 
 ## Files intentionally not changed

@@ -28,6 +28,18 @@
   const showFiltersToggle = $("show-filters-toggle");
   const showBlankRowsToggle = $("show-blank-rows-toggle");
   const blankRowsToggleWrap = $("blank-rows-toggle-wrap");
+  // Catalogue overview (hero / collection stats / series strip) + presentation controls
+  const masterBrowseToggle = $("master-browse-toggle");
+  const overviewBtn = $("overview-btn");
+  const catalogueIntro = $("catalogue-intro");
+  const hero = $("hero");
+  const heroDismiss = $("hero-dismiss");
+  const overviewCards = $("overview-cards");
+  const seriesStripList = $("series-strip-list");
+  const reviewNavToggle = $("review-nav-toggle");
+  const reviewNavGroups = $("review-nav-groups");
+  const seriesLanding = $("series-landing");
+  const seriesLandingGrid = $("series-landing-grid");
   const descToggleBtn = $("desc-toggle-btn");
   const facetToggleBtn = $("facet-toggle-btn");
   const mobileViewToggle = $("mobile-view-toggle");
@@ -76,6 +88,7 @@
 
   const VIEWS = {
     master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
+    series: { file: "master.json", label: "Series", exportName: "hawkins-series.csv" },
     reviewOverview: { file: "review-overview.json", label: "Review Overview", exportName: "hawkins-review-overview.csv" },
     manualCandidates: { file: "manual-candidates.json", label: "Candidates", exportName: "hawkins-master-candidates.csv" },
     manualLeads: { file: "manual-leads.json", label: "Manual Leads", exportName: "hawkins-manual-leads.csv" },
@@ -97,7 +110,7 @@
   };
 
   const VIEW_GROUPS = [
-    { label: "Catalogue", views: ["master", "productRelationships", "seriesCompilations"] },
+    { label: "Catalogue", views: ["master", "series", "productRelationships", "seriesCompilations"] },
     { label: "Review workspace", views: ["reviewOverview", "manualCandidates", "manualLeads", "masterExclusions", "sourceOverrides", "veritasMappingDecisions", "newWorkReview", "officialDiscovery", "internationalProducts"] },
     { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview", "original"] },
   ];
@@ -116,6 +129,10 @@
   const VIEW_DETAILS = {    master: {
       type: "Complete curated catalogue",
       description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. On phones it opens in Browse mode: compact work stacks with source and streaming actions; use Spreadsheet for the full grid. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
+    },
+    series: {
+      type: "Series browser",
+      description: "Every curated series as a card: record count, ownership, and year span. Pick a series to open the Everything view filtered to it.",
     },
     reviewOverview: {
       type: "Review index",
@@ -353,6 +370,9 @@
   let viewActivation = 0;
   let activeDataRequest = null;
   const MOBILE_BROWSE_STORAGE_KEY = "docsheet-mobile-master-mode";
+  const MASTER_PRESENTATION_KEY = "docsheet-master-presentation";
+  const INTRO_STORAGE_KEY = "docsheet-intro-dismissed";
+  const REVIEW_NAV_KEY = "docsheet-review-nav-collapsed";
   const mobileBrowseMedia = window.matchMedia
     ? window.matchMedia("(max-width: 720px)")
     : { matches: false };
@@ -768,8 +788,28 @@
     }
   }
 
+  function masterPresentationMode() {
+    try {
+      return localStorage.getItem(MASTER_PRESENTATION_KEY) || "table";
+    } catch (err) {
+      return "table";
+    }
+  }
+
+  function setMasterPresentationMode(mode) {
+    try {
+      localStorage.setItem(MASTER_PRESENTATION_KEY, mode);
+    } catch (err) {
+      /* storage unavailable — table remains the fallback */
+    }
+  }
+
+  // Browse mode: phones default to it (per-viewport), desktops opt in via the
+  // "Browse cards" toolbar toggle. Both render the same work-card UI.
   function mobileBrowseIsActive() {
-    return activeView === "master" && mobileBrowseMedia.matches && mobileMasterMode() !== "spreadsheet";
+    if (activeView !== "master") return false;
+    if (mobileBrowseMedia.matches) return mobileMasterMode() !== "spreadsheet";
+    return masterPresentationMode() === "browse";
   }
 
   function updateMobileViewToggle() {
@@ -785,6 +825,13 @@
     }
     if (mobileBrowseSheetBtn) {
       mobileBrowseSheetBtn.hidden = !browsing;
+    }
+    if (masterBrowseToggle) {
+      // Desktop presentation toggle: hidden on phones (the mobile UI owns
+      // that choice) and on every non-catalogue view.
+      masterBrowseToggle.hidden = activeView !== "master" || mobileBrowseMedia.matches;
+      masterBrowseToggle.textContent = browsing ? "Spreadsheet" : "Browse cards";
+      masterBrowseToggle.setAttribute("aria-pressed", String(browsing));
     }
   }
 
@@ -993,6 +1040,7 @@
   function renderLoadedView(data, force = false) {
     const useMobileBrowse = mobileBrowseIsActive();
     updateMobileViewToggle();
+    if (seriesLanding) seriesLanding.hidden = true;
     if (!force && useMobileBrowse === renderedAsMobileBrowse) {
       if (useMobileBrowse) renderMobileBrowse(data);
       return;
@@ -1003,6 +1051,7 @@
     }
     renderedAsMobileBrowse = useMobileBrowse;
     document.documentElement.classList.toggle("mobile-browse-active", useMobileBrowse);
+    document.documentElement.classList.toggle("browse-active", useMobileBrowse);
 
     if (useMobileBrowse) {
       spreadsheet.hidden = true;
@@ -1026,6 +1075,208 @@
     setMobileMasterMode(mobileBrowseIsActive() ? "spreadsheet" : "browse");
     closeRowDetails();
     renderLoadedView(allData, true);
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Catalogue overview (hero, collection stats, series strip) and the
+   *  client-side Series browser. All data comes from the same generated
+   *  master.json rows already loaded into allData — no extra data files.
+   * ------------------------------------------------------------------ */
+  function introDismissed() {
+    try {
+      return localStorage.getItem(INTRO_STORAGE_KEY) === "1";
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function setIntroDismissed(dismissed) {
+    try {
+      localStorage.setItem(INTRO_STORAGE_KEY, dismissed ? "1" : "0");
+    } catch (err) {
+      /* storage unavailable — the overview just stays visible */
+    }
+  }
+
+  function ownedValue(row) {
+    return String(row.owned ?? "").toLowerCase();
+  }
+
+  function updateCatalogueIntro(data = allData) {
+    if (!catalogueIntro) return;
+    const show = activeView === "master" && data.length > 0 && !introDismissed();
+    catalogueIntro.hidden = !show;
+    if (overviewBtn) overviewBtn.hidden = activeView !== "master" || show;
+    if (!show) return;
+    renderCollectionOverview(data);
+    renderSeriesStrip(data);
+  }
+
+  function overviewCard(title, statLine, owned, total) {
+    const card = document.createElement("div");
+    card.className = "overview-card";
+    const name = document.createElement("strong");
+    name.textContent = title;
+    const stat = document.createElement("span");
+    stat.className = "overview-stat";
+    stat.textContent = statLine;
+    card.append(name, stat);
+    if (total > 0) {
+      const track = document.createElement("div");
+      track.className = "progress-track";
+      track.setAttribute("role", "img");
+      track.setAttribute("aria-label", `${owned} of ${total} owned`);
+      const fill = document.createElement("div");
+      fill.className = "progress-fill";
+      fill.style.width = `${Math.round((owned / total) * 100)}%`;
+      track.append(fill);
+      card.append(track);
+    }
+    return card;
+  }
+
+  function renderCollectionOverview(data) {
+    if (!overviewCards) return;
+    overviewCards.replaceChildren();
+    let ownedTrue = 0, ownedFalse = 0, ownedBlank = 0;
+    data.forEach((row) => {
+      const v = ownedValue(row);
+      if (v === "true") ownedTrue += 1;
+      else if (v === "false") ownedFalse += 1;
+      else ownedBlank += 1;
+    });
+    const total = data.length;
+    overviewCards.append(overviewCard(
+      "Overall collection",
+      `${ownedTrue} owned · ${ownedFalse} not owned · ${ownedBlank} not stated`,
+      ownedTrue,
+      total,
+    ));
+    const bySeries = new Map();
+    data.forEach((row) => {
+      const series = row.series || "(unassigned)";
+      if (!bySeries.has(series)) bySeries.set(series, { total: 0, owned: 0 });
+      const stats = bySeries.get(series);
+      stats.total += 1;
+      if (ownedValue(row) === "true") stats.owned += 1;
+    });
+    [...bySeries.entries()]
+      .sort((a, b) => b[1].total - a[1].total)
+      .slice(0, 8)
+      .forEach(([series, stats]) => {
+        overviewCards.append(overviewCard(
+          series,
+          `${stats.owned} of ${stats.total} owned`,
+          stats.owned,
+          stats.total,
+        ));
+      });
+  }
+
+  function renderSeriesStrip(data) {
+    if (!seriesStripList) return;
+    seriesStripList.replaceChildren();
+    const counts = new Map();
+    data.forEach((row) => {
+      const series = row.series || "(unassigned)";
+      counts.set(series, (counts.get(series) || 0) + 1);
+    });
+    [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([series, count]) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "series-chip";
+        chip.textContent = `${series} (${count})`;
+        chip.setAttribute("data-series", series);
+        chip.title = `Filter the catalogue to ${series}`;
+        chip.addEventListener("click", () => openSeriesFromStrip(series));
+        seriesStripList.append(chip);
+      });
+  }
+
+  // Apply a facet value to the master view (used by the strip and the Series
+  // browser). The facet state is written for "master" regardless of the view
+  // we are coming from, then the master view is (re)activated.
+  function applyMasterFacet(facetId, value) {
+    activeFacets = readFacetState("master");
+    activeFacets[facetId] = [value];
+    writeFacetState("master", activeFacets);
+    syncFacetSelect(facetId);
+    if (facetClear) facetClear.hidden = facetsEmpty();
+  }
+
+  function ensureTablePresentation() {
+    if (mobileBrowseMedia.matches) return; // phones keep their own mode
+    if (masterPresentationMode() !== "table") {
+      setMasterPresentationMode("table");
+      renderLoadedView(allData, true);
+    }
+  }
+
+  function openSeriesFromStrip(series) {
+    applyMasterFacet("series", series);
+    ensureTablePresentation();
+    applyActiveFilters();
+    if (spreadsheet && !spreadsheet.hidden) spreadsheet.scrollIntoView({ block: "start" });
+  }
+
+  function openSeriesFromLanding(series) {
+    applyMasterFacet("series", series);
+    setMasterPresentationMode("table");
+    activateView("master").then(() => {
+      // populateFacets restores the persisted selection; apply it to the rows.
+      applyActiveFilters();
+      if (spreadsheet && !spreadsheet.hidden) spreadsheet.scrollIntoView({ block: "start" });
+    });
+  }
+
+  function yearSpanFor(rows) {
+    const years = [...new Set(
+      rows.map((row) => String(row.year || "").trim())
+        .filter((year) => /^\d{4}$/.test(year))
+        .map(Number),
+    )].sort((a, b) => a - b);
+    if (!years.length) return "years unrecorded";
+    return years.length === 1 ? String(years[0]) : `${years[0]}–${years[years.length - 1]}`;
+  }
+
+  function renderSeriesLanding(data) {
+    if (!seriesLanding || !seriesLandingGrid) return;
+    spreadsheet.hidden = true;
+    mobileBrowse.hidden = true;
+    emptyState.hidden = true;
+    seriesLanding.hidden = false;
+    // Spreadsheet-only controls don't apply to the card browser.
+    if (expertToggleBtn) expertToggleBtn.hidden = true;
+    if (columnMenuBtn) columnMenuBtn.hidden = true;
+    seriesLandingGrid.replaceChildren();
+    const bySeries = new Map();
+    data.forEach((row) => {
+      const series = row.series || "(unassigned)";
+      if (!bySeries.has(series)) bySeries.set(series, []);
+      bySeries.get(series).push(row);
+    });
+    const entries = [...bySeries.entries()].sort((a, b) => b[1].length - a[1].length);
+    entries.forEach(([series, rows]) => {
+      const owned = rows.filter((row) => ownedValue(row) === "true").length;
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "series-landing-card";
+      const name = document.createElement("strong");
+      name.textContent = series;
+      const meta = document.createElement("span");
+      meta.textContent = `${rows.length} record${rows.length === 1 ? "" : "s"} · ${owned} owned`;
+      const years = document.createElement("span");
+      years.className = "series-card-years";
+      years.textContent = yearSpanFor(rows);
+      card.append(name, meta, years);
+      card.addEventListener("click", () => openSeriesFromLanding(series));
+      seriesLandingGrid.append(card);
+    });
+    footerStats.textContent = `Series: ${entries.length} series`;
+    searchStatus.textContent = `${entries.length} series · ${data.length} records`;
+    spreadsheet.setAttribute("aria-busy", "false");
   }
 
   function updateViewSummary(viewName, rowCount = null) {
@@ -1966,6 +2217,10 @@
     if (facetToggleBtn) {
       facetToggleBtn.hidden = (viewName !== "master");
     }
+    updateMobileViewToggle();
+    if (catalogueIntro) catalogueIntro.hidden = true;
+    if (overviewBtn) overviewBtn.hidden = true;
+    if (seriesLanding) seriesLanding.hidden = true;
     activeSearchQuery = "";
     activeReviewFilter = null;
     searchInput.value = "";
@@ -1982,9 +2237,10 @@
     renderedAsMobileBrowse = false;
     mobileBrowseRows = [];
     document.documentElement.classList.remove("mobile-browse-active");
+    document.documentElement.classList.remove("browse-active");
     if (mobileBrowse) mobileBrowse.hidden = true;
     spreadsheet.hidden = false;
-    spreadsheet.innerHTML = `<div class="table-loading">Loading ${view.label.toLowerCase()}…</div>`;
+    spreadsheet.innerHTML = `<div class="table-loading" role="status"><span class="table-loading-text">Loading ${view.label.toLowerCase()}…</span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line skeleton-line-short" aria-hidden="true"></span></div>`;
     document.querySelectorAll(".dataset-tab").forEach((tab) => {
       const selected = tab.dataset.view === viewName;
       tab.classList.toggle("active", selected);
@@ -2014,6 +2270,12 @@
         return;
       }
       emptyState.hidden = true;
+      if (viewName === "series") {
+        renderSeriesLanding(data);
+        console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
+        return;
+      }
+      if (viewName === "master") updateCatalogueIntro(data);
       renderLoadedView(data, true);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
@@ -2088,8 +2350,81 @@
       button.addEventListener("click", toggleMobilePresentation);
     });
     if (mobileDiscoveryClear) mobileDiscoveryClear.addEventListener("click", clearFacets);
+    if (masterBrowseToggle) {
+      masterBrowseToggle.addEventListener("click", () => {
+        if (activeView !== "master") return;
+        const browsing = mobileBrowseIsActive();
+        setMasterPresentationMode(browsing ? "table" : "browse");
+        closeRowDetails();
+        renderLoadedView(allData, true);
+      });
+    }
+    if (heroDismiss) {
+      heroDismiss.addEventListener("click", () => {
+        setIntroDismissed(true);
+        if (catalogueIntro) catalogueIntro.hidden = true;
+        if (overviewBtn) overviewBtn.hidden = false;
+      });
+    }
+    if (overviewBtn) {
+      overviewBtn.addEventListener("click", () => {
+        setIntroDismissed(false);
+        updateCatalogueIntro();
+        if (catalogueIntro && !catalogueIntro.hidden) {
+          catalogueIntro.scrollIntoView({ block: "start" });
+        }
+      });
+    }
+    if (hero) {
+      hero.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-hero-action]");
+        if (!button) return;
+        const action = button.dataset.heroAction;
+        if (action === "browse") {
+          if (!mobileBrowseMedia.matches) {
+            setMasterPresentationMode("browse");
+            renderLoadedView(allData, true);
+          }
+        } else if (action === "series") {
+          const strip = document.getElementById("series-strip-list");
+          if (strip) strip.scrollIntoView({ block: "start" });
+        } else if (action === "overview") {
+          const overview = document.getElementById("collection-overview-title");
+          if (overview) overview.scrollIntoView({ block: "start" });
+        } else if (action === "not-owned") {
+          applyMasterFacet("owned", "false");
+          ensureTablePresentation();
+          applyActiveFilters();
+          if (spreadsheet && !spreadsheet.hidden) spreadsheet.scrollIntoView({ block: "start" });
+        }
+      });
+    }
+    if (reviewNavToggle && reviewNavGroups) {
+      let navCollapsed = false;
+      try {
+        navCollapsed = localStorage.getItem(REVIEW_NAV_KEY) === "1";
+      } catch (err) {
+        /* storage unavailable — expanded default */
+      }
+      const applyNavState = (collapsed) => {
+        reviewNavGroups.hidden = collapsed;
+        reviewNavToggle.setAttribute("aria-expanded", String(!collapsed));
+        reviewNavToggle.classList.toggle("collapsed", collapsed);
+      };
+      applyNavState(navCollapsed);
+      reviewNavToggle.addEventListener("click", () => {
+        navCollapsed = !reviewNavGroups.hidden;
+        applyNavState(navCollapsed);
+        try {
+          localStorage.setItem(REVIEW_NAV_KEY, navCollapsed ? "1" : "0");
+        } catch (err) {
+          /* storage unavailable */
+        }
+      });
+    }
     if (mobileBrowseMedia.addEventListener) {
       mobileBrowseMedia.addEventListener("change", () => {
+        updateMobileViewToggle();
         if (activeView === "master" && allData.length) renderLoadedView(allData, true);
       });
     }

@@ -1,6 +1,8 @@
 # Presentation & UX Improvement Proposal — 2026-08-09
 
-**Status:** Proposal — awaiting owner reaction (no site changes made yet).
+**Status:** ✅ **IMPLEMENTED (Phases A–D, owner-approved "full plan" 2026-08-09)** —
+see the implementation notes at the bottom. Re-verification is pending the
+owner's reaction/re-score; AI scores are unchanged until a re-audit.
 **Driven by:** owner user scores `github_pages_presentation = 5/10`,
 `ux_usability = 5/10` (scoreboard aspects `github_pages_presentation`,
 `ux_usability`, related: `accessibility`, `performance`, `repo_organization`).
@@ -116,13 +118,56 @@ Each phase keeps all six `--check` modes and the 126-test suite green; the
 19 browser specs get extended per phase (following the existing spec
 patterns).
 
-## Questions for the owner (to react to)
+## Implementation notes (2026-08-09, after owner approved "full plan")
 
-1. Which of the three quick wins (A1 hero, A3 series strip, C1 collection
-   overview) matter most to you?
+- **A1 ✅** Catalogue overview hero above the table on the Everything view:
+  title, one-line description, quick actions (Browse cards / Series overview /
+  Collection overview / Not owned), dismissible ("Show overview" restores it;
+  persisted per browser).
+- **A2 ✅** Desktop Browse cards: new toolbar toggle on the Everything view
+  (desktop only; phones keep their own mode). Reuses the work-card UI —
+  cards, edition stacks, and Series/Timeline discovery rails — in a
+  responsive multi-column layout.
+- **A3 ✅** Series strip (chips with counts) above the table; clicking filters
+  the catalogue and scrolls to the table.
+- **B1 ✅** "Review workspace" nav toggle collapses/expands the review +
+  sources tab row (default expanded; persisted). All 20 tabs remain in the
+  DOM and reachable.
+- **B2 ✅** Search placeholder/hint updated ("Search titles, series, years…
+  (press /)") with a title tooltip; the existing `/` and `?` shortcuts stay.
+- **B3 ✅** New **Series** tab (Catalogue group): a client-side Series browser
+  card grid (records, owned count, year span) built from master.json; picking
+  a series opens the Everything view filtered to it. Implemented as a
+  client-rendered view rather than a new JSON contract.
+- **C1 ✅** Collection overview cards: overall owned / not-owned / not-stated
+  plus per-series progress bars (top 8 series by size).
+- **C2 ✅** "Not owned" one-click action in the hero (sets the Owned facet).
+- **D1 ✅** Typography/color/card polish for hero, chips, cards, nav toggle;
+  review views keep the spreadsheet aesthetic.
+- **D2 ✅** Loading skeleton in place of the plain "Loading…" text; new
+  transitions guarded by `prefers-reduced-motion`.
+- **D3 ⚠️** Static accessibility pass on the new controls (aria-labels,
+  aria-expanded/aria-controls, aria-pressed, roles) + new browser spec
+  asserting them. An automated axe-core scan still cannot run in the Arena
+  sandbox (no browser download) — scheduled for CI/follow-up.
+- **D4 ✅** Friendlier empty/edge copy in browse mode and the series landing.
+
+**Tests:** new `tests/presentation-ux.spec.js` (7 browser tests; suite now
+26). All six `--check` modes and 126/126 Python tests remain green.
+
+**Deviations from the proposal text:** the standalone "Series & year landing
+views" (B3) is shipped as the Series browser + the existing Series/Timeline
+rails; a separate year-landing view was folded into the Timeline rail to keep
+the view contract unchanged. No new dependencies; no pipeline or workflow
+changes.
+
+## Questions for the owner (still open — please react)
+
+1. Does the new first impression (hero + overview + series strip) address
+   the 5/10? What is still missing?
 2. Is the target audience mostly *you* (reviewer) or mostly *visitors*
-   (sharing the catalogue)? This decides how far Phase B goes.
+   (sharing the catalogue)? This decides how far the visitor-facing polish
+   should go.
 3. Any specific complaint behind the 5/10 — e.g. "too cluttered",
    "doesn't look like a real site", "can't find X", "slow"?
-4. Should the site have a home/landing view as the default tab instead of
-   the spreadsheet?
+4. Should the Series tab replace the Everything tab as the landing view?
