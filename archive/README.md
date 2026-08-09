@@ -5,8 +5,8 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-08_ARENA.md](../FULL_STACK_AUDIT_2026-08-08_ARENA.md) (declared-current audit; the
-2026-08-08 ARENA_FRESH_EYES pass sits beside it), and the
+[FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](../FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md) (declared-current audit; the
+2026-08-09 full audit `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` extends it) and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
 Root-level full-stack audits superseded by `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
