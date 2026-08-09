@@ -1,15 +1,19 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Full-Stack & Data Engineering Audit & Cleanup) — current branch `arena/019fe7ff-docsheet`.  
-**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-stack-data-engineering-audit.md`, and `AGENTS.md`.
+**Prepared:** 2026-08-09 (Multidisciplinary Web Designer, Full-Stack & Data Engineer Audit & UX Enhancements) — current branch `arena/019fe80c-docsheet`.  
+**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`, and `AGENTS.md`.
 
-## 2026-08-09 Full-Stack & Data Engineering Audit & UX Cleanup (Current)
+## 2026-08-09 Multidisciplinary Audit & UX Presentation Enhancements (Current)
 
-- **Comprehensive Audit:** Published full audit report at `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` covering dual-pipeline architecture, data integrity, frontend rendering, test coverage (90%), and linter score (0 errors).
-- **Header Formatting & Column Lock Fix:** Removed `overflow-wrap: anywhere` and `max-width: 54px` on `record_type` in `docs/style.css` and removed `{ width: 54, minWidth: 54, maxWidth: 54 }` column width lock in `docs/app.js`. Header title "Record Type" now truncates gracefully with ellipsis (`text-overflow: ellipsis`) when narrow rather than spelling letter-by-letter vertically.
+- **Comprehensive Multidisciplinary Audit:** Published full audit report at `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` covering Web Design/UX styling, Full-Stack pipeline architecture & testing, and Data Engineering schema provenance & reconciliation.
+- **Unlocked Column Resizing & Jitter-Free Scrolling:** Switched Tabulator layout to `fitDataFill` with `renderHorizontal: "basic"` and removed `setMaxHeight()` calls on virtual scroll `renderComplete`, eliminating horizontal scroll rubber-banding and enabling free user column resizing.
+- **Wider Prominent Scrollbars:** Widened `.tabulator-tableholder::-webkit-scrollbar` from 12px to 16px with an 8px border-radius thumb for comfortable grab targets.
+- **Proposal File Name Readability:** Upgraded lead column font size to `13px` semi-bold (`font-weight: 600`) with high-contrast extension text (`color-mix(in srgb, var(--text) 72%, transparent)`) and removed the hard 340px truncation cap.
+- **Work-Family Stripe Grouping & Gentle Zebra Parity:** Softened alternating zebra backgrounds (`#fafafa` light / `#1c1c1c` dark) and implemented `applyWorkFamilyStriping(table)` so consecutive rows belonging to the same `work_id` (such as multi-part DVD sets) share the same row background color while alternating work families change color.
+- **Header Formatting & Column Lock Fix:** Removed `overflow-wrap: anywhere` and `max-width: 54px` on `record_type` in `docs/style.css` and removed `{ width: 54, minWidth: 54, maxWidth: 54 }` column width lock in `docs/app.js`.
 - **Search Term Highlighting:** Implemented live cell text matching and search term highlighting (`<mark class="search-highlight">`) across table cells and formatters in `docs/app.js` and `docs/style.css`.
 - **Asset Hashing & Manifest:** Updated 12-character asset content hashes (`app.js`, `style.css`) in `docs/index.html` and `docs/build-manifest.json`.
-- **Verification:** All 141 deterministic unit tests pass (`python3 -m unittest discover tests`), all 6 `--check` pipeline commands pass, `ruff check .` clean (0 items), 90% coverage maintained.
+- **Verification:** All 141 deterministic unit tests pass (`python -m unittest discover tests`), all 6 `--check` pipeline commands pass, `ruff check .` clean (0 items), 90% coverage maintained.
 
 ## 2026-08-09 End-user row delivery P0 (Historical)
 

@@ -441,6 +441,7 @@ aspects:
       - "All table rules now use #spreadsheet.tabulator; data-block styling and horizontal work separation avoid the latent shadow collision."
       - "Computed-style tests cover selector matching, lecture/discussion/office accents, zebra, and dark mode."
       - "index.html content-versions app.js/style.css and displays matching hashes linked to build-manifest.json."
+      - "2026-08-09 multidisciplinary UI/UX session: widened .tabulator-tableholder scrollbars from 12px to 16px, upgraded proposal_filename column to 13px semi-bold (#text) with contrast-enhanced extension text (.ext), and softened zebra striping parity (#fafafa light / #1c1c1c dark) while implementing work-family stripe grouping."
     user_notes: "Do not treat Pages artifact success as proof that the row problem reached the end user."
     desired_direction:
       - "Versioned, observable browser delivery with explicit owner acceptance."
@@ -474,6 +475,7 @@ aspects:
     evidence:
       - "docs/app.js VIEWS/VIEW_GROUPS, facet engine, and settings persistence reviewed."
       - "9 ux-enhancement + 4 column-layout + 5 csv-export browser specs cover the flows (CI green)."
+      - "2026-08-09 multidisciplinary UI/UX session: unlocked sheet column resizing by replacing layout: 'fitColumns' with 'fitDataFill' and 'renderHorizontal: \"basic\"' (eliminating horizontal scroll rubber-banding), removed proposed_filename 340px maxWidth truncation cap, and added applyWorkFamilyStriping(table) so multi-part works share the same background color."
     user_notes: null
     desired_direction: []
     next_actions: []
