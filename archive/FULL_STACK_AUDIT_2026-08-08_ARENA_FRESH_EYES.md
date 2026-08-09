@@ -1,5 +1,10 @@
 # Full-Stack Audit — 2026-08-08 (Arena, fresh-eyes independent pass)
 
+> **⚠️ ARCHIVED (2026-08-09):** superseded by the declared-current audits
+> `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` and its extension
+> `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` at the repository root. Kept for
+> provenance only — counts and states here are historical.
+
 **Branch:** `arena/019fe244-docsheet` (at `main` HEAD `58247a0`)
 **Method:** independent re-verification — ran every safeguard in a clean venv, then
 wrote standalone pandas probes that ignore the pipeline's own validators and

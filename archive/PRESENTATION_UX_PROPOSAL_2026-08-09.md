@@ -1,5 +1,10 @@
 # Presentation & UX Improvement Proposal — 2026-08-09
 
+> **📦 ARCHIVED (2026-08-09):** the proposal is fully implemented (Phases A–D)
+> and its implementation notes live with it here. Re-verification and any
+> follow-up work are tracked via the scoreboard aspects
+> `github_pages_presentation` / `ux_usability`.
+
 **Status:** ✅ **IMPLEMENTED (Phases A–D, owner-approved "full plan" 2026-08-09)** —
 see the implementation notes at the bottom. Re-verification is pending the
 owner's reaction/re-score; AI scores are unchanged until a re-audit.

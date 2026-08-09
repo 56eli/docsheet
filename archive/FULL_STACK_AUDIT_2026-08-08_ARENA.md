@@ -1,5 +1,10 @@
 # DocSheet Full-Stack & Catalogue Audit — 2026-08-08
 
+> **⚠️ ARCHIVED (2026-08-09):** superseded by the declared-current audits
+> `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` and its extension
+> `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` at the repository root. Kept for
+> provenance only — counts and states here are historical.
+
 **Auditor:** Arena.ai helpful agent — Full-Stack Development / Data Engineering pass  
 **Repository:** `56eli/docsheet`  
 **Commit audited:** `6c96a00e086e37ef8af148c24b1436625899e01f` (`main`, session branch `arena/019fe1a1-docsheet`)  

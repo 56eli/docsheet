@@ -12,7 +12,7 @@
 | 2026-08-09 | type_safety_validation | — | 8 | — | null | Arena agent | Baseline audit; typed row contracts, controlled vocabularies, rule matrices verified. |
 | 2026-08-09 | error_handling_logging | — | 8 | — | null | Arena agent | Baseline audit; non-zero exits, load-error UI, abort-safe fetches. |
 | 2026-08-09 | dependency_hygiene | — | 9 | — | null | Arena agent | Baseline audit; pinned requirements-ci.txt, npm ci clean, audit 0 vulns (prior). |
-| 2026-08-09 | tests | — | 9 | — | null | Arena agent | Baseline audit; 126/126 unit tests, 91% coverage ≥ 85 floor; 19 browser specs via CI. |
+| 2026-08-09 | tests | — | 9 | — | null | Arena agent | Baseline audit; 126/126 unit tests, 91% coverage ≥ 85 floor; 26 browser specs via CI. |
 | 2026-08-09 | ci_cd | — | 9 | — | null | Arena agent | Baseline audit; CI + Pages green on main (gh run list); concurrency guards reviewed. |
 | 2026-08-09 | security_privacy | — | 8 | — | null | Arena agent | Baseline audit; CSP/SRI/no secrets; low-severity style-src 'unsafe-inline' flag recorded. |
 | 2026-08-09 | performance | — | 8 | — | null | Arena agent | Baseline audit; static JSON payloads; no browser benchmark (Playwright unavailable); medium confidence. |

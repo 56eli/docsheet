@@ -71,7 +71,7 @@ Volume VI How to Raise Your Level of Consciousness.mp4
 Volume VII A Conversation with Knowingness.mp4
 ```
 
-Current counts: 365 total; all 365 safe names and all 365 display names are unique, with 0 collisions (verified). The earlier 363/356 totals are historical intermediate snapshots.
+Current counts: 362 total; all 362 safe names and all 362 display names are unique, with 0 collisions (verified; corrected from 365 on 2026-08-09 after the D-01 collapse retired masters 225/226/227). The earlier 365/363/356 totals are historical intermediate snapshots.
 
 **v4.1 amendment (2026-08-07): global uniqueness is now build-enforced** for both `proposed_filename` and `proposed_filename_display` (guard in `validate_filename_proposal_groups`). The first real collision found by the audit — same work in two carriers with neither row part-indexed (master 225 raw streaming + master 311 promoted DVD, both `2003 - Devotion to Truth Talk.mp4`) — was resolved by a **carrier suffix**: `(streaming)` on the raw streaming file, `(DVD)` on the promoted product row. Rule: same-work filename collisions that are *not* sequential parts (`[1-2]`) get an explicit carrier suffix (`(streaming)` / `(DVD)`) or, when carrier is the same, a publisher suffix (`(Audible)` / `(Veritas)`), so every file stays uniquely named.
 **2026-08-08 D-01 follow-up:** the streaming master 225 and its DVD twin 311 were collapsed into the single DVD master 311 (streaming demoted to `reference_url_1`); master 311's filename reverted to the plain `2003 - Devotion to Truth Talk.mp4`. The carrier-suffix rule remains available for any genuine two-carrier work, but no current master uses it. Current counts: **362 rows, 362 unique safe, 362 unique display** (2026-08-08).

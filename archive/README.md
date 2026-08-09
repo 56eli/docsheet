@@ -11,7 +11,6 @@ generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
 Root-level full-stack audits superseded by `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
 and moved here in the 2026-08-08 audit-noise cleanup:
-
 - `FULL_STACK_AUDIT_2026-08-07_DEEP.md` — the 2026-08-07 end-of-day deep audit
   (was the root "current audit" until 2026-08-08; cross-referenced from
   historical session logs).
@@ -31,6 +30,24 @@ and moved here in the 2026-08-08 audit-noise cleanup:
 - `UX_REWORK_SUGGESTIONS.md` — prioritized UX backlog; archived 2026-08-09.
 - `WORKFLOW_FIX_DROPINS_2026-08-09.md` — dated workflow fix snippets; archived 2026-08-09.
 - `WORKFLOW_WEB_EDITOR_GUIDE.md` — web-editor workflow guide; archived 2026-08-09.
+
+Root-level documents archived 2026-08-09 (repo-organization pass; the
+declared-current audits are `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
++ `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` + `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`
+at the repository root):
+
+- `FULL_STACK_AUDIT_2026-08-08_ARENA.md` — 2026-08-08 checkpoint audit; the
+  historical baseline pair with the next entry; superseded by the 08-09 audits.
+- `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` — 2026-08-08 fresh-eyes
+  independent audit; historical baseline pair; superseded by the 08-09 audits.
+- `EXTERNAL_AUDIT.md` — 2026-08-08 external five-part audit of `bbe8b01`
+  (pre-PR #40); carries a SUPERSEDED banner (opposite-direction owned-casing
+  claim; references `check_docsheet.py`, which is not in the repo).
+- `PRESENTATION_UX_PROPOSAL_2026-08-09.md` — Phases A–D fully implemented
+  (catalogue overview hero, collection stats, series strip, Browse cards,
+  Review-workspace toggle, Series tab, search hints, loading skeleton, a11y);
+  re-verification tracked via scoreboard `github_pages_presentation` /
+  `ux_usability`.
 
 - `HANDOFF_HISTORY.md` — archived 2026-08-03 session chronicle + 2026-08-04
   final-audit notes, moved out of `NEXT_AGENT_HANDOFF.md` in the 2026-08-07

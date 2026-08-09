@@ -156,7 +156,8 @@ python reconcile_research_master.py
 The generated Pages workspace includes the catalogue plus dedicated review
 sheets for candidates, leads, exclusions, migration review, source overrides,
 official discovery, Veritas decisions, item-product relationships, and series
-compilations. See `FULL_STACK_AUDIT_2026-08-08_ARENA.md` for the current
+compilations. See `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
+extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for the current
 full-stack audit and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
 status (`archive/` material is historical and not normative).
 

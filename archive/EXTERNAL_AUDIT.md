@@ -1,5 +1,8 @@
 # DOCSHEET — Audit Results & Fix Spec (single handover file)
 
+> **📦 ARCHIVED (2026-08-09):** moved from the repository root with the other
+> superseded audits.
+>
 > **⚠️ SUPERSEDED (2026-08-09):** audited `bbe8b01` (pre-PR #40). Its claimed
 > "21-row lowercase-`true` defect" and the Arena 08-09 pass's opposite C-01
 > claim (uppercase `True`) both describe the pre-fix state; at `d731e1b`

@@ -13,10 +13,11 @@ verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
 `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
 H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
 updated for the 2026-08-09 reclassification);
-the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
-`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
-`archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` carry SUPERSEDED
-banners (pre-PR-#40 findings). See the session log at the bottom of §6.
+the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
+`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
+the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
+SUPERSEDED banner; `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` too —
+pre-PR-#40 findings). See the session log at the bottom of §6.
 Headline results (2026-08-09 expert pass, current):
 - **Expert full-stack audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
   all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
@@ -57,7 +58,8 @@ Headline results (2026-08-09 expert pass, current):
   under-investigation; the 7 Highlights rows carry years and omit the prefix
   per the separate "filename equals title" directive.
 - **Presentation/UX implementation (owner approved the full plan):** see
-  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` — catalogue overview hero +
+  `archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md` (implemented, archived
+  2026-08-09) — catalogue overview hero +
   collection stats + series strip, desktop Browse cards toggle, Review
   workspace nav toggle, Series browser tab, search hints, loading skeleton,
   a11y labels. Browser suite grew 19 → **26 tests** (new
@@ -123,10 +125,10 @@ Headline results (2026-08-08 independent pass, baseline):
 
 **Previous (2026-08-08 follow-up, branch `arena/019fe244-docsheet`, PR #37
 merged):** independent full-stack audit
-(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
+(`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
 and doc fixes (D-01…D-05 from that audit, S-1…S-8 hygiene). The
 fresh-eyes baseline is preserved in
-`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
+`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
 session:
 - **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
@@ -451,7 +453,8 @@ then owner-approved fixes applied in this branch).
     added: `notes`); ledger raw mirrors + review_reason updated for both rows
     (row 373 → "Owner note relocated to notes column; not a catalogue item.");
     exclusions/migration-review artifacts regenerated.
-  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` got
+  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` +
+    `archive/EXTERNAL_AUDIT.md` got
     SUPERSEDED banners; README documentation layout now declares the deep-dive
     current, Everything-view wording softened (candidates only when intake
     lanes are populated; Record Type filter hidden while all rows are
@@ -501,7 +504,8 @@ Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of 
 
 ## 2026-08-09 Presentation/UX implementation, Phases A–D (arena/019fe659-docsheet, current)
 
-Owner approved the full plan (`PRESENTATION_UX_PROPOSAL_2026-08-09.md`) after
+Owner approved the full plan (`archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md`,
+archived 2026-08-09 after implementation) after
 providing user scores (presentation 5, UX 5, content 7, maintainability 6).
 
 - **Shipped (commit `7ed3a5f`):** catalogue overview hero + collection stats

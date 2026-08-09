@@ -116,16 +116,17 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/, but 18 root-level .md files still create onboarding noise; the 2026-08-08 fresh-eyes audit flagged the same bloat and PR #43 slimmed 24 -> 18."
+    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/. 2026-08-09 pass archived the superseded 08-08 baseline pair, EXTERNAL_AUDIT.md, and the implemented PRESENTATION_UX_PROPOSAL; root now holds 18 .md files (living docs + the declared-current 08-09 audits + schemas/policies + generated reports), all referenced from README 'Documentation layout'. Remaining noise is mostly NEXT_AGENT_HANDOFF.md size and the four current audits."
     user_basis: null
     evidence:
-      - "Root listing: 18 .md files incl. multiple audit snapshots; superseded docs carry banners; README 'Documentation layout' explains the split."
+      - "Root listing: 18 .md files; superseded audits moved to archive/ on 2026-08-09 with banners (FULL_STACK_AUDIT_2026-08-08_ARENA.md, FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md, EXTERNAL_AUDIT.md, PRESENTATION_UX_PROPOSAL_2026-08-09.md); archive/README.md indexes the additions."
+      - "README 'Documentation layout' and INSTRUCTIONS point to the declared-current 08-09 audits only."
       - "archive/ and decisions/ are indexed by their READMEs."
     user_notes: null
     desired_direction:
-      - "Consolidate or archive older root audits once the 2026-08-09 audits are the declared-current set."
+      - "Keep archiving superseded root audits as new audits land; consider slimming NEXT_AGENT_HANDOFF.md."
     next_actions:
-      - "Move superseded root audits to archive/ (owner approval) as new audits land."
+      - "Re-audit repo_organization on the next pass (consolidation executed 2026-08-09; score unchanged pending re-audit)."
     risk_flags: []
     files_reviewed:
       - "root *.md listing"
