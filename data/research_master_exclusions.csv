@@ -70,7 +70,7 @@ raw_row_number,disposition,review_reason,raw_tempid,raw_title,raw_we_have,raw_or
 370,blank_separator,Empty visual separator row.,,,,,
 371,needs_review,Non-empty row without item ID or ownership status.,,Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️,,,
 372,source_context,Landing page or source URL stored in title.,,https://www.goodreads.com/book/show/23323.Dialogues_on_Consciousness_and_Spirituality,,,
-373,source_context,Landing page or source URL stored in title.,,SETH HAS IT https://discord.com/channels/1194598173742731284/1194598173742731287/1529890680824926259,,,
+373,source_context,Owner note relocated to notes column; not a catalogue item.,,,,,
 374,blank_separator,Empty visual separator row.,,,,,
 375,research_note,Editorial gap/research note; item identity needs confirmation.,,scorpion book,,,
 376,research_note,Editorial gap/research note; item identity needs confirmation.,,orthomolecular book,✅,,

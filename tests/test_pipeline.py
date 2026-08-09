@@ -2285,6 +2285,26 @@ class RetiredVocabularyTests(unittest.TestCase):
         finally:
             tempdir.cleanup()
 
+    def test_ledger_owned_casing_fails_build(self) -> None:
+        """A ledger row with mixed-case proposed_owned must fail validation."""
+        tempdir = make_sandbox()
+        try:
+            sandbox = Path(tempdir.name)
+            ledger_path = sandbox / "migration_review_ledger.csv"
+            with ledger_path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+                columns = rows[0].keys()
+            item_row = next(row for row in rows if row["disposition"] == "item")
+            item_row["proposed_owned"] = "True"
+            with ledger_path.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=columns)
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "proposed_owned must be blank, true, or false"):
+                invoke_script("build_research_master.py", sandbox)
+        finally:
+            tempdir.cleanup()
+
 
 if __name__ == "__main__":
     unittest.main()

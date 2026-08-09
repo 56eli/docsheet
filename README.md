@@ -53,7 +53,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 125 tests, no browser/network needed
+python -m unittest discover tests          # 126 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
@@ -87,7 +87,12 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the audit pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` (declared current) and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
+`NEXT_AGENT_HANDOFF`, the declared-current audit
+`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
+PR #40), the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
+and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, the superseded
+`FULL_STACK_AUDIT_2026-08-09_ARENA.md` (pre-PR #40; its findings are resolved —
+see its banner), `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Approved ruling
 records live in
 [`decisions/`](decisions/README.md); superseded status docs, research drafts,
@@ -96,8 +101,9 @@ normative.
 
 ## Curated records vs. official candidates
 
-The **Everything** sheet intentionally shows curated master records next to
-official product candidates so they can be compared. Every row therefore carries
+The **Everything** sheet shows curated master records, and — whenever the
+intake lanes are populated — official product candidates next to them for
+comparison. Every row therefore carries
 an explicit `record_type`:
 
 | `record_type` | Meaning |
@@ -108,7 +114,9 @@ an explicit `record_type`:
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
 
 Only `master` rows are catalogue records. Use the Record Type filter on that tab
-to isolate curated data before exporting. Counts per class are published in
+to isolate curated data before exporting (the filter appears when more than one
+record type is present; today every row is `master`, so the toolbar stays
+hidden until a candidate lands). Counts per class are published in
 `docs/catalogue-meta.json` under `everything_record_types`.
 
 The **Everything** view opens visitor-first: product facts (title, series,
@@ -159,7 +167,7 @@ reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (362 master records,
 191 Veritas products, 340 relationships). See
-[FULL_STACK_AUDIT_2026-08-08_ARENA.md](FULL_STACK_AUDIT_2026-08-08_ARENA.md)
+[FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md)
 for the current full-stack audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; the archive reports preserve earlier checkpoints.
 

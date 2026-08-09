@@ -53,8 +53,10 @@ DATA_OUTPUT = Path("docs") / "data.json"          # array of objects
 JSON_INDENT = 2                                     # pretty-print for git diffs
 
 # Owner ruling 2026-08-07: the published view trims raw columns that are empty
-# on all 374 rows; the source CSV keeps them untouched.
-VIEW_DROP_COLUMNS = ["uuid", "Unnamed: 8", "Unnamed: 9", "Unnamed: 10", "other links"]
+# on all 374 rows; the source CSV keeps them untouched. All six always-empty
+# raw columns are dropped (uuid, Unnamed: 8/9/10/11, other links); the notes
+# column is kept even though most rows leave it blank.
+VIEW_DROP_COLUMNS = ["uuid", "Unnamed: 8", "Unnamed: 9", "Unnamed: 10", "Unnamed: 11", "other links"]
 
 
 def apply_transformations(df):

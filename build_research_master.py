@@ -1309,6 +1309,17 @@ def build_master() -> MasterBuild:
     """Prepare all draft outputs in memory without changing the working tree."""
     ledger = read_csv(LEDGER)
 
+    # The ledger is a hand-maintained review input; its ownership marker must
+    # use the documented three-value vocabulary ("", true, false). Validate it
+    # up front so a casing slip (e.g. "True") fails loudly instead of being
+    # silently normalized by the .lower() applied to every ownership path.
+    for row in ledger:
+        if row["proposed_owned"].strip() not in {"", "true", "false"}:
+            raise ValueError(
+                f"{LEDGER} raw row {row['raw_row_number']} proposed_owned must "
+                f"be blank, true, or false; got {row['proposed_owned']!r}"
+            )
+
     retained_uuids = existing_uuids()
     item_rows = [row for row in ledger if row["disposition"] == "item"]
     excluded_rows = [row for row in ledger if row["disposition"] != "item"]
