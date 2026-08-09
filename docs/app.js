@@ -11,7 +11,7 @@
 import {
   VIEWS, VIEW_GROUPS, EMPTY_STATE_MESSAGES, DEFAULT_EMPTY_MESSAGE,
   VIEW_DETAILS, COLUMN_LABELS, STATUS_FIELDS, FORMAT_FIELDS,
-  REVIEW_FILTER_FIELDS, RECORD_TYPE_LABELS, RECORD_TYPE_TITLES,
+  REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
 } from "./js/config.js";
@@ -109,6 +109,12 @@ import {
   let renderedAsMobileBrowse = false;
   let viewActivation = 0;
   let activeDataRequest = null;
+  // Track the in-flight block-map load so the first activateView call can
+  // await it (otherwise getRowBlockId returns "undecided" because the map
+  // singleton is still empty). The 019fe8a5 ES-module refactor imported
+  // loadCatalogueBlockMap but never invoked it; boot() now starts the
+  // fetch and activateView awaits the same promise.
+  let blockMapReady = null;
   // The active Tabulator instance for the Everything / review views. Declared
   // at module scope (was `let table = null;` in the pre-019fe8a5 IIFE; the
   // ES-module refactor in 019fe8a5 omitted it, which made every reference
@@ -2013,6 +2019,10 @@ import {
     });
 
     try {
+      // Wait for the catalogue block map so the first render uses the
+      // correct data-block attribute. If the fetch is in flight, this
+      // adds at most one network round-trip to the first activateView.
+      if (blockMapReady) await blockMapReady;
       const { data, lastModified } = await loadData(viewName, request.signal);
       if (activation !== viewActivation) return;
       if (activeDataRequest === request) activeDataRequest = null;
@@ -2082,6 +2092,14 @@ import {
 
   async function boot() {
     initDarkMode();
+    // Block map is owned by formatters.js (loaded as a module-scope
+    // singleton); start the fetch immediately and capture the promise so
+    // the first activateView can await it (otherwise getRowBlockId
+    // returns "undecided" because the map singleton is still empty). The
+    // 019fe8a5 ES-module refactor imported loadCatalogueBlockMap but
+    // never invoked it, which made every row fall back to "undecided"
+    // until a full-page reload re-fetched the JSON.
+    blockMapReady = loadCatalogueBlockMap();
     loadStatsStrip();
     configureViewJump();
     if (viewJump) {

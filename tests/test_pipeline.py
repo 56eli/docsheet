@@ -2438,9 +2438,49 @@ class FrontendDeliveryContractTests(unittest.TestCase):
         self.assertEqual(
             missing, [],
             f"docs/app.js must declare these critical module-scope identifiers "
-            f"at IIFE scope (e.g. `let {missing[0] if missing else ''} = ...`); "
-            f"a free-variable reference will throw ReferenceError on first use "
-            f"and silently break the page. Missing: {missing}",
+            f"at IIFE scope; a free-variable reference will throw ReferenceError "
+            f"on first use and silently break the page. Missing: {missing}",
+        )
+
+    def test_app_js_invokes_every_named_import(self) -> None:
+        """Every destructured import in app.js must be used (called or read).
+
+        Regression guard for the 019fe8d0 follow-up P0 incident: the 019fe8a5
+        ES-module refactor of `docs/app.js` imported `loadCatalogueBlockMap`
+        from `./js/formatters.js` but never called it. The block map singleton
+        therefore stayed empty, every row fell back to ``data-block="undecided"``,
+        and the 25/25 Playwright computed-style specs failed. A second P0 hotfix
+        caught it. This test fails any future refactor that leaves a named
+        import unused.
+
+        Matches the `import { A, B, C } from "...";` block at the top of
+        app.js and asserts that every destructured name appears as a token
+        later in the file. This is approximate (it does not differentiate
+        a call from a property access) but it catches the imported-but-
+        never-called class of error.
+        """
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        # Extract the import block: from `import {` to the matching `};`.
+        match = re.search(r"^import\s*\{([^}]*)\}\s*from\s*[\"'][^\"']*[\"'];",
+                          app_js, re.MULTILINE | re.DOTALL)
+        if not match:
+            self.fail("docs/app.js must start with at least one `import {...}` block")
+        names = [n.strip() for n in match.group(1).split(",") if n.strip()]
+        self.assertTrue(names, "the import block must list at least one name")
+        # Strip the import block out of the rest of the file so the "usage"
+        # check doesn't see the import line itself.
+        rest = app_js[match.end():]
+        unused = [
+            name for name in names
+            if not re.search(rf"\b{re.escape(name)}\b", rest)
+        ]
+        self.assertEqual(
+            unused, [],
+            f"docs/app.js imports {unused} but never references them; "
+            f"an unused import typically means a forgotten call (e.g. "
+            f"loadCatalogueBlockMap in the 019fe8d0 follow-up P0). The "
+            f"fix is either to invoke the import or remove it from the "
+            f"destructuring list.",
         )
 
 

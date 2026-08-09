@@ -1,9 +1,9 @@
 {
-  "revision": "row-delivery-p0-20260810.1",
+  "revision": "row-delivery-p0-20260810.2",
   "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "c2547cce23b56a6cc07feb04943b20ac7a81913f83659bc786305813c10b8bd2",
+    "app.js": "9f03af76cabb690d08e5e1b059a5fa625cbcf73a52ffdc3ac1db55a410450f48",
     "style.css": "805701f0ca917daf396b21d738632117cf46e0d8d7e27fff0f185f6d6e276b65"
   },
   "data": {
