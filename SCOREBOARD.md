@@ -25,8 +25,11 @@ files** — this scoreboard is part of that memory. See
 
 | Priority | Aspect | Why |
 |---:|---|---|
+| 15 | GitHub Pages presentation | Owner scored 5/10 (user_unhappy); AI 9 — find out what falls short |
+| 12 | UX / usability | Owner scored 5/10 (user_unhappy); AI 9 — find out what falls short |
+| 8 | Maintainability | Owner scored 6/10; AI 7 — split generator monoliths |
 | 4 | Code hygiene | Generators remain large monoliths; split into focused modules |
-| 4 | Maintainability | Same root cause; refactor in progress (PR #43 started it) |
+| 3 | Content quality | Owner scored 7/10 (user_unhappy); AI 9 — clarify expectations |
 | 3 | Repo organization | 18 root-level .md files; consolidate/archive superseded audits |
 | — | Issue #18 | Owned-flags cross-check vs. lak.nz Drive (needs owner Drive access) |
 
@@ -39,7 +42,7 @@ files** — this scoreboard is part of that memory. See
 | Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Archive superseded root audits |
 | Code hygiene | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work | high | Split generator monoliths |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work | high | Modularize generators |
+| Maintainability | 4 | 8 | 7 | 6 | 6 | 2 | 8 | needs_work | high | Modularize generators |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
@@ -47,22 +50,30 @@ files** — this scoreboard is part of that memory. See
 | CI/CD | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |
-| GitHub Pages presentation | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | medium | — |
-| UX / usability | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
+| GitHub Pages presentation | 5 | 8 | 9 | 5 | 5 | 3 | 15 | user_unhappy | medium | Ask owner what falls short |
+| UX / usability | 4 | 8 | 9 | 5 | 5 | 3 | 12 | user_unhappy | high | Ask owner what falls short |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional axe-core scan |
-| Content quality | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
+| Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy | high | Clarify owner expectations |
 | Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Triage issue #18 |
 | Deployment readiness | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Agent readiness | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Triage issue #18 |
 | Auditability | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| **Overall effective** | **83** | **8** | — | — | **8.4** | — | — | **warning** | — | — |
+| **Overall effective** | **83** | **8** | — | — | **7.9** | — | — | **fail** | — | — |
 
 ## AI / user disagreement notes
 
-None yet — the user has not provided any scores (`user_score` is `null`
-everywhere). If the owner supplies scores, disagreements are preserved here
-and never averaged away.
+Owner user scores were provided on 2026-08-09. AI scores and evidence are
+unchanged; the user scores below drive priority:
+
+| Aspect | AI | User | Reading |
+|---|---:|---:|---|
+| GitHub Pages presentation | 9 | 5 | `user_unhappy` — owner finds the site presentation lacking despite a strong AI assessment; agents should ask what falls short |
+| UX / usability | 9 | 5 | `user_unhappy` — same; concrete feedback needed |
+| Content quality | 9 | 7 | `user_unhappy` — mild; clarify expectations |
+| Maintainability | 7 | 6 | `needs_work` — both sides agree below target; modularize generators |
+
+Disagreements are preserved — user scores never erase AI findings.
 
 ## Critical risk flags
 
@@ -73,17 +84,18 @@ and never averaged away.
 
 ## Aspects needing user review
 
-All 22 aspects are `pending_user_review`-eligible (AI score exists, user
-score `null`). The owner may provide scores at any time — e.g. "set UX to
-7/10" — which will drive priority without changing AI findings.
+18 aspects still have `user_score: null` (all are `pending_user_review`-
+eligible). The owner may provide scores at any time — e.g. "set Tests to
+9/10" — which will drive priority without changing AI findings.
 
 ## Quality gate status
 
-**`repo_ready` = `warning`** (evaluated 2026-08-09).
+**`repo_ready` = `fail`** (evaluated 2026-08-09).
 
-- Overall effective score **8.4** ≥ minimum 8 ✅
-- Required aspects: security/privacy 8 ≥ 8 ✅, tests 9 ≥ 7 ✅, README 9 ≥ 7 ✅,
-  CI/CD 9 ≥ 7 ✅, agent readiness 9 ≥ 8 ✅
-- `warning` because an active (low-severity) risk flag exists and several
-  scores are medium-confidence (browser suite CI-verified only; no automated
-  a11y scan). See `.scoreboard/scoreboard.yml` → `quality_gates`.
+- Overall effective score **7.9** < minimum 8 ❌ (moved from 8.4 by the
+  owner's user scores for GitHub Pages presentation 5, UX 5, content 7,
+  maintainability 6)
+- Required aspects still pass individually: security/privacy 8 ≥ 8 ✅,
+  tests 9 ≥ 7 ✅, README 9 ≥ 7 ✅, CI/CD 9 ≥ 7 ✅, agent readiness 9 ≥ 8 ✅
+- `fail` because the overall minimum is not met. User scores drive priority;
+  AI evidence is unchanged. See `.scoreboard/scoreboard.yml` → `quality_gates`.

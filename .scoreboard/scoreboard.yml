@@ -16,19 +16,23 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs you. If workflow changes are needed, document exact GitHub web editor steps in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 8.4
-  repo_ready_gate_status: warning
+  overall_effective_score: 7.9
+  repo_ready_gate_status: fail
   top_priorities:
-    - code_hygiene
+    - github_pages_presentation
+    - ux_usability
     - maintainability
+    - code_hygiene
+    - content_quality
     - repo_organization
   active_risk_flags:
     - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
+    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 — effective scores fall below target for these aspects (user_unhappy / needs_work); AI scores and evidence unchanged."
 
 quality_gates:
   repo_ready:
-    status: warning
-    overall_effective_score: 8.4
+    status: fail
+    overall_effective_score: 7.9
     last_evaluated: "2026-08-09"
     minimum_overall_effective_score: 8
     required:
@@ -42,7 +46,8 @@ quality_gates:
       - "User overrides may satisfy a numeric gate, but risk_flags must remain visible."
       - "If a gate is satisfied only because of user_score while ai_score is low, mark the relevant aspect as accepted_debt or risk_accepted."
       - "If required aspects have active risk_flags, mention them in SCOREBOARD.md even when the gate numerically passes."
-      - "2026-08-09 baseline: numeric thresholds pass (8.4 >= 8, all required aspects >= minimum), but gate is WARNING because an active low-severity risk flag exists and several scores are medium-confidence (browser suite verified via CI only; no automated a11y scan)."
+      - "2026-08-09 baseline: numeric thresholds initially passed (8.4 >= 8) with gate WARNING (low-severity risk flag + medium-confidence items)."
+      - "2026-08-09 (after owner user scores): effective scores for github_pages_presentation (5), ux_usability (5), content_quality (7), maintainability (6) moved the weighted average to 7.9 — below the 8 minimum — so the gate is now FAIL. Required aspect minimums still pass individually; the overall minimum does not. AI scores are unchanged; the owner's scores drive priority."
 
 aspects:
   - id: project_purpose_scope
@@ -192,15 +197,15 @@ aspects:
     weight: 4
     target: 8
     ai_score: 7
-    user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 4
+    user_score: 6
+    effective_score: 6
+    gap: 2
+    priority: 8
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
     ai_basis: "Clear function boundaries, schema contracts tested, and rule matrices documented, but the two main generators are single files exceeding 1k lines, which makes targeted navigation/review harder."
-    user_basis: null
+    user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
       - "build_research_master.py 1660 lines, build_catalogue_pages.py 1078 lines (2026-08-08 fresh-eyes audit §3.5)."
       - "Refactoring already began in PR #43 (apply_year_source_provenance, build_review_overview extracted)."
@@ -413,15 +418,15 @@ aspects:
     weight: 5
     target: 8
     ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    user_score: 5
+    effective_score: 5
+    gap: 3
+    priority: 15
+    status: user_unhappy
     confidence: medium
     last_audited: "2026-08-09"
     ai_basis: "19-tab interactive spreadsheet with Everything-first UX, mobile Browse mode, dark mode, faceted filters; pages-build-deployment green on main. Visual verification is via code review + CI browser tests (sandbox cannot run Playwright)."
-    user_basis: null
+    user_basis: "Explicit owner score provided 2026-08-09: 'github_pages_presentation 5/10'."
     evidence:
       - "pages-build-deployment workflow succeeded for the latest main push (gh run list)."
       - "Static serve of all assets returned 200."
@@ -440,15 +445,15 @@ aspects:
     weight: 4
     target: 8
     ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    user_score: 5
+    effective_score: 5
+    gap: 3
+    priority: 12
+    status: user_unhappy
     confidence: high
     last_audited: "2026-08-09"
     ai_basis: "Faceted filters with removable chips, per-view persistence, keyboard shortcuts, row-detail drawer, Copy file name action, mobile Browse/Series/Timeline rails, and view settings menu (incl. the new blank-separator-rows toggle)."
-    user_basis: null
+    user_basis: "Explicit owner score provided 2026-08-09: 'ux_usability 5/10'."
     evidence:
       - "docs/app.js VIEWS/VIEW_GROUPS, facet engine, and settings persistence reviewed."
       - "9 ux-enhancement + 4 column-layout + 5 csv-export browser specs cover the flows (CI green)."
@@ -494,15 +499,15 @@ aspects:
     weight: 3
     target: 8
     ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    user_score: 7
+    effective_score: 7
+    gap: 1
+    priority: 3
+    status: user_unhappy
     confidence: high
     last_audited: "2026-08-09"
     ai_basis: "Catalogue data audited field-by-field: counts, codes, filenames, URLs, months, work groupings, ledger reconciliation all consistent; raw placeholder rows are ruled/excluded with provenance."
-    user_basis: null
+    user_basis: "Explicit owner score provided 2026-08-09: 'content_quality 7/10'."
     evidence:
       - "~20 independent pandas probes in FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md found no data defects."
       - "Ledger row 371 reclassified needs_review -> duplicate (this session)."

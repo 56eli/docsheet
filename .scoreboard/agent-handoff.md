@@ -17,21 +17,38 @@ The scoreboard was created as part of the persistent-memory protocol:
 
 ## Top priorities for next agent
 
-1. `code_hygiene` / `maintainability` (priority 4 each): split the two large
-   generators (`build_research_master.py` ~1660 lines, `build_catalogue_pages.py`
-   ~1078 lines) into focused modules; the 126-test suite is the safety net.
-2. `repo_organization` (priority 3): consolidate/archive older root audit .md
-   files once the 2026-08-09 audits are the declared-current set (owner
-   approval).
-3. Triage GitHub issue #18 (owned-flags cross-check vs. the lak.nz Drive) —
+1. `github_pages_presentation` (priority 15, `user_unhappy`): owner scored
+   5/10 while AI is 9 — **ask the owner what specifically falls short**
+   (layout, branding, content presentation, speed?) before making changes.
+2. `ux_usability` (priority 12, `user_unhappy`): owner scored 5/10 while AI
+   is 9 — same: get concrete feedback first.
+3. `maintainability` (priority 8): owner scored 6/10; split the two large
+   generators (`build_research_master.py` ~1660 lines,
+   `build_catalogue_pages.py` ~1078 lines) into focused modules; the
+   126-test suite is the safety net.
+4. `code_hygiene` (priority 4): same refactor workstream.
+5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
+   expectations (e.g. raw placeholder rows still visible in the original
+   sheet?).
+6. `repo_organization` (priority 3): consolidate/archive older root audit
+   .md files (owner approval).
+7. Triage GitHub issue #18 (owned-flags cross-check vs. the lak.nz Drive) —
    requires owner Drive access or a CSV export.
-4. Re-audit `ci_cd` / `deployment_readiness` if the owner ever applies
-   workflow edits manually (see `.scoreboard/manual-workflow-edits.md`).
 
 ## User scores currently known
 
-None recorded. All `user_score` values are `null` by policy — do not invent
-scores from PR merges, silence, or assumed satisfaction.
+Explicit owner scores (2026-08-09, via Arena chat):
+
+| Aspect | User score |
+|---|---:|
+| github_pages_presentation | 5 |
+| ux_usability | 5 |
+| content_quality | 7 |
+| maintainability | 6 |
+
+All other aspects have `user_score: null` — do not invent scores from PR
+merges, silence, or assumed satisfaction. AI scores are unchanged by these
+user scores (see `.scoreboard/scoreboard.yml`).
 
 ## Important risks
 
@@ -50,9 +67,11 @@ None. See `.scoreboard/manual-workflow-edits.md`.
 
 ## Quality gate status
 
-`repo_ready` = **warning** (overall_effective_score 8.4 >= 8; all required
-aspects pass numeric thresholds; warning because of the active low-severity
-risk flag and medium-confidence scores). Re-evaluate after the next audit.
+`repo_ready` = **fail** (overall_effective_score **7.9** < 8 minimum, after
+the owner's user scores: presentation 5, UX 5, content 7, maintainability 6).
+All five required aspect thresholds still pass individually. The gate will
+recover when the owner raises scores, the flagged aspects are improved, or a
+re-audit changes effective scores. Re-evaluate after the next audit.
 
 ## Checks last run
 
