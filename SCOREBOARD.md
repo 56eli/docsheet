@@ -43,7 +43,7 @@ files** — this scoreboard is part of that memory. See
 | Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Re-audit after 2026-08-09 consolidation |
 | Code hygiene | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 9 | 6 | 6 | 2 | 8 | needs_work | high | — |
+| Maintainability | 4 | 8 | 7 | 6 | 6 | 2 | 8 | needs_work | high | Split app.js/style.css; generate block map |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
@@ -51,7 +51,7 @@ files** — this scoreboard is part of that memory. See
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit | high | Require CI; gate Pages |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |
-| GitHub Pages presentation | 5 | 8 | 7 | 5 | 5 | 3 | 15 | user_unhappy | high | Accept/reject visible build ID |
+| GitHub Pages presentation | 5 | 8 | 8 | 5 | 5 | 3 | 15 | user_unhappy | high | Accept/reject build row-delivery-p0-20260809.1 |
 | UX / usability | 4 | 8 | 9 | 5 | 5 | 3 | 12 | user_unhappy | high | Ask owner what falls short |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional axe-core scan |
 | Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy | high | Clarify owner expectations |
@@ -69,10 +69,10 @@ unchanged; the user scores below drive priority:
 
 | Aspect | AI | User | Reading |
 |---|---:|---:|---|
-| GitHub Pages presentation | 7 | 5 | `user_unhappy` — audit confirmed a CSS/delivery defect; P0 is implemented on branch but owner acceptance is pending |
+| GitHub Pages presentation | 8 | 5 | `user_unhappy` — delivery contract & neutral row topology verified at 9e4ee4d (63× ` #spreadsheet.tabulator`, 8.5% washes, manifest `row-delivery-p0-20260809.1`, 141/141 tests + computed-style green); effective 5 until owner accepts the visible build ID |
 | UX / usability | 9 | 5 | `user_unhappy` — same; concrete feedback needed |
 | Content quality | 9 | 7 | `user_unhappy` — mild; clarify expectations |
-| Maintainability | 7 | 6 | `needs_work` — both sides agree below target; modularize generators |
+| Maintainability | 7 | 6 | `needs_work` — AI 7 (frontend monoliths 2755/2399L + hard-coded block map) vs user 6; both sides agree below target; split app.js/style.css and generate block map |
 
 Disagreements are preserved — user scores never erase AI findings.
 

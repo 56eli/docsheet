@@ -1,26 +1,21 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Multidisciplinary Web Designer, Full-Stack & Data Engineer Session)
+Last updated: 2026-08-09 (Arena 019fe830 multidisciplinary re-audit - Web Designer, Full-Stack & Data Engineer)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Multidisciplinary Audit across Web Design, Full-Stack, & Data Engineering)
-- `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Current Full Audit & Cleanup)
-- `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`
+- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` **(Declared current - 019fe830 multidisciplinary re-audit, Web/Full-Stack/Data, 9e4ee4d)**
+- `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
+- `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Prior full audit & cleanup)
+- `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
 
-## 2026-08-09 Session Summary
+## 2026-08-09 Session Summary - 019fe830 re-audit (Web/Full-Stack/Data)
 
-- **Multidisciplinary Audit (Web Design, Full-Stack Development, & Data Engineering):** Executed a full multidisciplinary review across presentation styling/UX, pipeline architecture/testing, and dataset curation/schema provenance, recorded in `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`.
-- **Unlocked Column Resizing & Jitter-Free Scrolling:** Replaced `layout: "fitColumns"` with `layout: "fitDataFill"` and `renderHorizontal: "basic"`, removed `setMaxHeight()` on virtual scroll `renderComplete`, and widened `.tabulator-tableholder` scrollbars from 12px to 16px.
-- **Proposal File Name Readability:** Upgraded lead column font to 13px semi-bold (`font-weight: 600`) with high-contrast extension text and removed the hard 340px width cap.
-- **Work-Family Stripe Grouping & Subtle Zebra Parity:** Softened alternating zebra tints (`#fafafa` light / `#1c1c1c` dark) and implemented `applyWorkFamilyStriping(table)` so rows sharing the same `work_id` (e.g., multi-part DVD sets) share the same row background color.
-- **Header Truncation & Width Unlocking:** Removed letter-by-letter vertical wrapping on "Record Type" header title by eliminating `overflow-wrap: anywhere` and `max-width: 54px` in `docs/style.css` and removing `{ width: 54, minWidth: 54, maxWidth: 54 }` hard column lock in `docs/app.js`.
-- **Search Highlighting:** Added cell text matching and search query highlighting (`mark.search-highlight`) in `docs/app.js` and `docs/style.css`.
-- **Asset Versioning:** Updated asset content hashes in `docs/build-manifest.json` and `docs/index.html`.
-- **Pipeline Health:** 141/141 tests pass, 6/6 `--check` pipeline scripts pass, 0 linter errors, 90% coverage.
+- **Full multidisciplinary re-audit (this session):** Re-executed all six --check modes, 141/141 tests at 90% (78-100% per module), node --check, CSP/SRI, CSV-JSON parity, token chromaticity, selector topology. Record: `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (read-only, promoted as declared-current in README/INSTRUCTIONS). Verified neutral palette (#f9f9fb/#0d0d0d, no slate, washes 8.5%), correct #spreadsheet.tabulator topology (63 correct vs 0 dead), content-versioned assets 39e1208f672b/e67530fcaebe + manifest row-delivery-p0-20260809.1. Confirmed Hay House traqnscending typo already fixed at 9e4ee4d (grep 0, master 294 correct). Updated scoreboard AI scores (maintainability 9->7, pages 7->8).
+- **Prior session 019fe80c - Multidisciplinary Audit + UX polish:** Full pass recorded in `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`; unlocked column resizing (fitDataFill + renderHorizontal:"basic"), widened scrollbars 12->16px, proposal-filename 13px semi-bold, work-family striping (#fafafa/#1c1c1c), header width unlock, search highlighting, asset version hashes. 141/141, 6/6 --check, 0 linter, 90% coverage.
 
 Do not claim that a successful Pages artifact proves a row change reached the
 end user. The owner explicitly rejected that conclusion. Acceptance requires a
@@ -41,7 +36,7 @@ visible deployed build ID and an explicit owner accept/reject response.
 4. The page exposed no build/SHA/content identity.
 5. Existing tests checked CSS tokens and one row class, not selector matching,
    computed styles, block transitions, dark mode, cache versions, or deployment.
-6. PRs #48–#52 merged before checks completed; Pages deployed independently of
+6. PRs #48-#52 merged before checks completed; Pages deployed independently of
    red CI.
 7. Mobile/persisted Browse mode contains cards, not Tabulator rows; presentation
    mode must be explicit during acceptance.
@@ -92,11 +87,11 @@ explicit owner direction.
 - Raw source: 374 rows; 31 blank separators; seven published columns.
 - Curated master: 362 rows; 75 exclusions; 134 source overrides; 39 reviewed
   manual candidates.
-- REVISION1: 58 filename edits, year overrides on 356–358, notes override on
+- REVISION1: 58 filename edits, year overrides on 356-358, notes override on
   315, and 362-row reviewed color-block order.
-- The ODS was independently parsed: 362 rows × 23 columns; its filename-cell
+- The ODS was independently parsed: 362 rows x 23 columns; its filename-cell
   colors map exactly to the 11 committed display blocks.
-- All six generator `--check` modes pass.
+- All six generator --check modes pass.
 
 ## Current scores / risks
 
@@ -109,9 +104,10 @@ Owner scores remain authoritative and unchanged:
 | Content quality | 7 |
 | Maintainability | 6 |
 
-Corrected AI scores:
+Corrected AI scores (019fe830):
 
-- GitHub Pages presentation: 7 (effective 5 due owner score).
+- Maintainability: 7 (effective 6 due owner score) — frontend monoliths 2755/2399L + hard-coded block map.
+- GitHub Pages presentation: 8 (effective 5 due owner score) — delivery contract verified at 9e4ee4d.
 - CI/CD: 7 (`blocked_manual_workflow_edit`).
 - Deployment readiness: 7 (`blocked_manual_workflow_edit`).
 - Tests: 9.
@@ -124,16 +120,17 @@ Additional open risks:
 - CSP `style-src 'unsafe-inline'` remains low-severity debt;
 - issue #18 still needs the owner's Drive export/access.
 
-## Verification performed
+## Verification performed (019fe830)
 
-- six generator `--check` modes ✅
+- six generator --check modes ✅
 - `python -m unittest discover tests` — 141/141 ✅
 - coverage — 90% total ✅
 - JS/config/all spec syntax ✅
-- `npm ci` / `npm audit` — zero vulnerabilities ✅
+- `npm ci` / `npm audit` — zero vulnerabilities (prior audit) ✅
 - manifest/content-version contract ✅
-- Git diff/fsck/secret scan ✅
-- PR #54 GitHub CI `31331297543`: 25/25 browser specs ✅
+- neutral tokens / selector topology / washes ✅
+- Hay House typo grep 0 ✅
+- PR #54 GitHub CI 31331297543: 25/25 browser specs ✅ (prior branch; this branch re-uses same manifest)
 - Chromium install locally ❌ environment TLS reset; GitHub CI is authoritative
 
 ## Next-agent rules
