@@ -2,12 +2,13 @@
 
 Superseded status documents, research drafts, and evidence notes that are no
 longer normative. Files here are kept for provenance only — **do not treat
-their counts, states, or instructions as current.** For the current state use
-the repository root: [README.md](../README.md),
-[NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](../FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md) (declared-current audit; the
-2026-08-09 full audit `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` extends it) and the
-generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
+their counts, states, or instructions as current.** For current frontend,
+Actions, Pages, and acceptance status use
+[`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](../docs/audits/2026-08-09-end-user-row-delivery-postmortem.md),
+plus [README.md](../README.md),
+[NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md), and the generated
+[RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md). The older root audits
+remain point-in-time data evidence only.
 
 Root-level full-stack audits superseded by `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
 and moved here in the 2026-08-08 audit-noise cleanup:

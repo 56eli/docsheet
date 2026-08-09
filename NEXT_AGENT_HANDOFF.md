@@ -1,13 +1,46 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Zebra Contrast Fix + Regression Guard) — current handoff for
-branch `arena/019fe776-docsheet`.
-**Scoreboard:** this repo has a persistent scoreboard — read
-`SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
-and `AGENTS.md` first; they are the durable agent-memory layer (Arena
-sessions may expire after PR merge).
+**Prepared:** 2026-08-09 (End-user Row Delivery P0) — current branch
+`arena/019fe7c9-docsheet`.
+**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`,
+`.scoreboard/agent-handoff.md`,
+`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`, and `AGENTS.md`.
 
-## 2026-08-09 Zebra contrast fix + regression guard (arena/019fe776-docsheet, current)
+## 2026-08-09 End-user row delivery P0 (current)
+
+The owner explicitly rejected prior claims that Pages artifact success proved
+row changes reached the user. Browser CI then exposed the primary defect: all
+70 table rules used dead `#spreadsheet .tabulator ...` roots even though
+Tabulator attaches `.tabulator` to `#spreadsheet` itself. The browser therefore
+kept external-theme greys while agents edited rules that never matched. A
+latent work-group shadow collision, bare assets, no build ID, and
+class/token-only tests compounded the failure.
+
+Current branch changes:
+
+- all table rules use `#spreadsheet.tabulator ...`; a static guard rejects the
+  dead descendant topology;
+- block rules use stable `data-block` selectors;
+- work-family starts use `border-top`, preserving block-colored inset accents;
+- app/style URLs carry 12-character content hashes;
+- footer shows `app-cf43f33a062c/css-71a1e6b2ca25` and links
+  `docs/build-manifest.json`;
+- offline delivery-contract and cascade guards bring the suite to **141**;
+- all 25 Playwright specs passed in PR #54 run `31331297543`, including
+  computed selector matching, light/dark zebra, and lecture/discussion/office
+  accent checks;
+- stale `#show-stats-toggle` CI selector removed;
+- older root/docs audits now have correction banners pointing here; the archive
+  landing page also names the corrective audit as current;
+- owner-gated required-check, CI-gated Pages, post-deploy hash/row assertions,
+  and screenshot procedure are in `.scoreboard/manual-workflow-edits.md`.
+
+Do not call the incident resolved before branch browser CI, deployment of the
+visible build ID, live hash verification, and explicit owner acceptance.
+
+## Historical context — prior zebra contrast pass (superseded as current status)
+
+## 2026-08-09 Zebra contrast fix + regression guard (arena/019fe776-docsheet, historical)
 
 **Root cause:** 5+ agents edited `docs/style.css` and deployed changes to
 GitHub Pages, but the zebra-row contrast was **below human perception**
@@ -87,13 +120,12 @@ all six `--check` modes pass, `node --check` clean, coverage 90%.
   All six `--check` modes pass; README documents the new inputs.
 - **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage.
 
-The declared-current audits are
-`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
-verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
-(verified at `d731e1b`) and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
-H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
-updated for the 2026-08-09 reclassification);
+The current corrective audit is
+`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`. The older root
+expert/deep/full audits are point-in-time data checkpoints at `556bf48`,
+`d731e1b`, and `f520e9b`; their frontend/CI/deployment conclusions are
+superseded by PR #54 and their top banners say so. Their data findings remain
+historical evidence;
 the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
 the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
@@ -304,7 +336,7 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 139 tests, offline, ~3s
+python -m unittest discover tests     # 141 tests, offline
 coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
@@ -344,7 +376,7 @@ Sandbox traps learned the hard way (all still true):
 | Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 338 members approved; work_id coverage 362/362 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **139 tests; coverage 90% total, every pipeline module ≥ 88%** (build_catalogue_pages.py = 90%) | `.coveragerc` enforces `fail_under = 85` (raised 2026-08-07) |
+| Test suite | **141 tests; coverage 90% total, individual modules 78–100%** | `.coveragerc` enforces `fail_under = 85`; 25 browser specs require CI in this sandbox |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,

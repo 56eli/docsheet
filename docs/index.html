@@ -16,7 +16,9 @@
   <link id="tabulator-light-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator.min.css" integrity="sha384-7L13yWDATAJeK/mNTrYjb3Z8l08N1iGKbO9mSeSdlqR91llnpd0c4Y8wPznKlHCh" crossorigin="anonymous">
   <link id="tabulator-dark-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/css/tabulator_midnight.min.css" integrity="sha384-IjPQxP4KslfqCUeR2++fWi5zeLwAG8boDCsM0yhyn08PoINK8bdzXatWy+KPm9UQ" crossorigin="anonymous" disabled>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- Local assets are content-versioned so a Pages deploy cannot pair fresh
+       data/HTML with stale browser-cached presentation code. -->
+  <link rel="stylesheet" href="style.css?v=71a1e6b2ca25">
 
   <!-- Apply dark mode before first paint (no flash of white). -->
   <script>
@@ -220,11 +222,12 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
+    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-cf43f33a062c/css-71a1e6b2ca25</code></a>
     <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->
   <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=cf43f33a062c"></script>
 </body>
 </html>

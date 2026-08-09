@@ -1,4 +1,6 @@
 # Full-Stack Audit — Arena 019fe767 (2026-08-09)
+> **Status correction (2026-08-09): Historical checkpoint, not current frontend/deployment truth.** PR #54 found that all 70 custom Tabulator rules used the dead descendant root `#spreadsheet .tabulator`; Tabulator attaches `.tabulator` to `#spreadsheet` itself. Current evidence, test counts, CI/Pages findings, and acceptance status live in [`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](docs/audits/2026-08-09-end-user-row-delivery-postmortem.md). Point-in-time data findings below remain historical evidence.
+
 
 **Branch:** `arena/019fe767-docsheet` @ `c884138` (main = PR #49 merge)  
 **Auditor:** Arena agent — Full-Stack Developer + Data Engineer  

@@ -18,6 +18,7 @@ from __future__ import annotations
 import collections
 import contextlib
 import csv
+import hashlib
 import importlib
 import inspect
 import io
@@ -2335,6 +2336,38 @@ class DefensiveDepthTests(unittest.TestCase):
                 invoke_script("build_research_master.py", sandbox)
         finally:
             tempdir.cleanup()
+
+
+class FrontendDeliveryContractTests(unittest.TestCase):
+    """Keep Pages asset URLs, the visible build ID, and manifest in lockstep."""
+
+    @staticmethod
+    def sha256(path: Path) -> str:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def test_versioned_assets_and_visible_manifest_match_committed_bytes(self) -> None:
+        index = (REPO / "docs/index.html").read_text(encoding="utf-8")
+        manifest = json.loads((REPO / "docs/build-manifest.json").read_text(encoding="utf-8"))
+
+        expected = {
+            "app.js": self.sha256(REPO / "docs/app.js"),
+            "style.css": self.sha256(REPO / "docs/style.css"),
+        }
+        for filename, digest in expected.items():
+            match = re.search(rf'{re.escape(filename)}\?v=([0-9a-f]{{12}})', index)
+            self.assertIsNotNone(match, f"{filename} must have a 12-character content version")
+            self.assertEqual(match.group(1), digest[:12], f"stale cache version for {filename}")
+            self.assertEqual(manifest["assets"][filename], digest)
+
+        expected_data = {
+            "master.json": self.sha256(REPO / "docs/master.json"),
+            "data.json": self.sha256(REPO / "docs/data.json"),
+        }
+        self.assertEqual(manifest["data"], expected_data)
+        visible_revision = f"app-{expected['app.js'][:12]}/css-{expected['style.css'][:12]}"
+        self.assertIn(f'id="build-revision">{visible_revision}</code>', index)
+        self.assertIn('href="build-manifest.json"', index)
+        self.assertEqual(manifest["acceptance"], "owner_visual_review_required")
 
 
 class RetiredVocabularyTests(unittest.TestCase):

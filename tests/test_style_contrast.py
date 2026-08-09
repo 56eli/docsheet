@@ -59,7 +59,8 @@ def parse_color_mix_percentages(css: str) -> list[float]:
     return [
         float(m.group(1))
         for m in re.finditer(
-            r"row-block-.*?color-mix\(in srgb,\s*var\(--block-\w+\)\s+([\d.]+)%",
+            r'(?:row-block-[^\s,{]+|\[data-block="[^"]+"\]).*?'
+            r"color-mix\(in srgb,\s*var\(--block-\w+\)\s+([\d.]+)%",
             css,
         )
     ]
@@ -145,6 +146,26 @@ class StyleContrastTests(unittest.TestCase):
                 18.0,
                 f"Block wash {pct}% exceeds 18% maximum (rows would be opaque)",
             )
+
+    def test_work_group_separator_cannot_override_block_accent(self):
+        """Work-family grouping must not replace the REVISION1 left-edge color."""
+        self.assertNotRegex(
+            self.css,
+            r"#spreadsheet\s+\.tabulator(?=[\s.{:#\[])",
+            "Tabulator attaches .tabulator to #spreadsheet itself; descendant-root selectors are dead",
+        )
+        match = re.search(
+            r"#spreadsheet\.tabulator\s+\.tabulator-row\.work-group-start\s*\{([^}]*)\}",
+            self.css,
+        )
+        self.assertIsNotNone(match, "work-group-start presentation rule is missing")
+        declarations = match.group(1)
+        self.assertNotIn(
+            "box-shadow",
+            declarations,
+            "work-group-start box-shadow overrides block-specific inset accents on odd rows",
+        )
+        self.assertIn("border-top", declarations, "work groups need a non-conflicting separator")
 
     def test_no_slate_blue_in_tokens(self):
         """No --bg/--surface/--border token may contain visible blue hue (slate)."""

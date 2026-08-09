@@ -68,6 +68,9 @@ may expire after PR merge. Durable context must live in repo files.
   is `data/catalogue_display_order.csv` (consumed by
   `build_catalogue_pages.py`); the change record behind them is
   `review/hawkins-everything-REVISION1.ods`.
-- All six `--check` modes must pass; the 139-test suite must stay green
+- All six `--check` modes must pass; the 141-test suite must stay green
   (coverage floor 85%).
+- If `docs/app.js`, `docs/style.css`, `docs/master.json`, or `docs/data.json`
+  changes, refresh the content versions, visible build ID, and
+  `docs/build-manifest.json`; `FrontendDeliveryContractTests` enforces this.
 - Do not edit `.github/workflows/*` (see `.scoreboard/manual-workflow-edits.md`).

@@ -78,7 +78,14 @@ When you're ready to transform the data:
 |---|---|
 | Format | `https://[username].github.io/[repo-name]` |
 | This repo | `https://56eli.github.io/docsheet` |
-| Deploy source | Branch `main` → folder `/docs` |
+| Deploy source | Branch `main` → folder `/docs` (CI-gated Actions cutover pending) |
+
+The footer shows the exact content versions of `app.js` and `style.css` and
+links `build-manifest.json`, which also records raw/curated payload hashes. When
+investigating a stale or incorrect page, record that visible build ID; do not
+use a green Pages badge as a substitute for the browser revision or owner
+acceptance. Required-check and CI-gated Pages cutover steps are maintained in
+`.scoreboard/manual-workflow-edits.md`.
 
 ---
 
@@ -179,17 +186,17 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 139 deterministic tests
+python -m unittest discover tests      # 141 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 → 141).
 
-Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-09, style
-guard tests excluded from coverage denominator).
+Current coverage: **90% total; individual modules 78–100%** (2026-08-09;
+style tests are excluded from the coverage denominator).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright

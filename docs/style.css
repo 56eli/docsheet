@@ -601,7 +601,7 @@ body {
 }
 
 /* ---- Tabulator: Sleek modern desktop spreadsheet table ---- */
-#spreadsheet .tabulator {
+#spreadsheet.tabulator {
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -611,7 +611,7 @@ body {
 }
 
 /* Frozen header row: modern, clean typography, zero vertical dividing borders */
-#spreadsheet .tabulator .tabulator-header {
+#spreadsheet.tabulator .tabulator-header {
   background: var(--header-bg);
   color: var(--header-text);
   border-bottom: 1px solid var(--border);
@@ -619,70 +619,67 @@ body {
   font-size: 12px;
   letter-spacing: 0.02em;
 }
-#spreadsheet .tabulator .tabulator-header .tabulator-col {
+#spreadsheet.tabulator .tabulator-header .tabulator-col {
   background: var(--header-bg);
   color: var(--header-text);
   border-right: none;
 }
-#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+#spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
   padding: 10px 12px;
 }
-#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-title {
+#spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-title {
   white-space: normal;
   line-height: 1.35;
 }
-#spreadsheet .tabulator .tabulator-header .tabulator-col:hover {
+#spreadsheet.tabulator .tabulator-header .tabulator-col:hover {
   background: color-mix(in srgb, var(--accent) 6%, var(--header-bg));
 }
 
 /* Sleek modern rows: comfortable padding, clean horizontal borders, no vertical column lines */
-#spreadsheet .tabulator .tabulator-row {
+#spreadsheet.tabulator .tabulator-row {
   background: var(--surface);
   color: var(--text);
   border-bottom: 1px solid var(--border);
   transition: background-color 0.12s ease;
   position: relative;
 }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even {
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even {
   background: var(--zebra);
 }
 
 /* Hover highlighting */
-#spreadsheet .tabulator .tabulator-row:hover,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even:hover {
+#spreadsheet.tabulator .tabulator-row:hover,
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even:hover {
   background: var(--row-hover) !important;
   color: var(--text);
 }
 
 /* Group block color coding: sleek neutral rows + crisp 3.5px inset left accent bar (REVISION1 blocks).
    Odd rows tint lightly (8.5%) over --surface, even rows tint over --zebra so rows stay clean & readable. */
-#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
+#spreadsheet.tabulator .tabulator-row[data-block="lectures-2002-2011"] { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="lectures-2002-2011"] { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet.tabulator .tabulator-row[data-block="discussion"] { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="discussion"] { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet.tabulator .tabulator-row[data-block="satsang"] { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="satsang"] { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet.tabulator .tabulator-row[data-block="on-the-road"] { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="on-the-road"] { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet.tabulator .tabulator-row[data-block="volume-series"] { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="volume-series"] { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet.tabulator .tabulator-row[data-block="office-series"] { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="office-series"] { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet.tabulator .tabulator-row[data-block="books"] { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="books"] { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet.tabulator .tabulator-row[data-block="transcription-books"] { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="transcription-books"] { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet.tabulator .tabulator-row[data-block="media-misc"] { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="media-misc"] { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet.tabulator .tabulator-row[data-block="undecided"] { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="undecided"] { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet.tabulator .tabulator-row[data-block="fran-grace"] { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
+#spreadsheet.tabulator .tabulator-row.tabulator-row-even[data-block="fran-grace"] { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
 
-#spreadsheet .tabulator .tabulator-cell {
+#spreadsheet.tabulator .tabulator-cell {
   border-right: none;
   border-bottom: none;
   padding: 10px 12px;
@@ -691,8 +688,8 @@ body {
   line-height: 1.45;
 }
 /* URL cells: keep links readable without filling rows with long raw URLs. */
-#spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
-#spreadsheet .tabulator .tabulator-cell a.url-link {
+#spreadsheet.tabulator .tabulator-cell a { color: var(--accent); }
+#spreadsheet.tabulator .tabulator-cell a.url-link {
   display: inline-flex;
   max-width: 100%;
   align-items: center;
@@ -703,14 +700,14 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#spreadsheet .tabulator .tabulator-cell a.url-link::after {
+#spreadsheet.tabulator .tabulator-cell a.url-link::after {
   content: "↗";
   flex: 0 0 auto;
   font-size: 11px;
   opacity: 0.78;
 }
-#spreadsheet .tabulator .tabulator-cell a.url-link:hover,
-#spreadsheet .tabulator .tabulator-cell a.url-link:focus { text-decoration: underline; }
+#spreadsheet.tabulator .tabulator-cell a.url-link:hover,
+#spreadsheet.tabulator .tabulator-cell a.url-link:focus { text-decoration: underline; }
 
 /* Review statuses and dispositions stay scannable in wide review sheets. */
 .status-badge {
@@ -778,39 +775,39 @@ body {
 }
 
 /* Edit-ready cursor hint */
-#spreadsheet .tabulator .tabulator-cell.tabulator-editing {
+#spreadsheet.tabulator .tabulator-cell.tabulator-editing {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 /* Pagination bar */
-#spreadsheet .tabulator .tabulator-footer {
+#spreadsheet.tabulator .tabulator-footer {
   background: var(--surface-2);
   border-top: 1px solid var(--border);
   color: var(--text-muted);
 }
-#spreadsheet .tabulator .tabulator-footer .tabulator-paginator label,
-#spreadsheet .tabulator .tabulator-footer .tabulator-page-counter { color: var(--text-muted); }
-#spreadsheet .tabulator .tabulator-footer .tabulator-page {
+#spreadsheet.tabulator .tabulator-footer .tabulator-paginator label,
+#spreadsheet.tabulator .tabulator-footer .tabulator-page-counter { color: var(--text-muted); }
+#spreadsheet.tabulator .tabulator-footer .tabulator-page {
   color: var(--text);
   background: var(--surface);
   border-color: var(--border);
 }
-#spreadsheet .tabulator .tabulator-footer .tabulator-page.active {
+#spreadsheet.tabulator .tabulator-footer .tabulator-page.active {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
 }
-#spreadsheet .tabulator .tabulator-footer .tabulator-page:not(.disabled):hover {
+#spreadsheet.tabulator .tabulator-footer .tabulator-page:not(.disabled):hover {
   background: color-mix(in srgb, var(--accent) 15%, var(--surface));
 }
 
 /* Resize handle visible on hover */
-#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-resize-handle {
+#spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-resize-handle {
   position: absolute; right: 0; top: 0; bottom: 0; width: 5px;
 }
 
 /* Placeholder text */
-#spreadsheet .tabulator .tabulator-placeholder {
+#spreadsheet.tabulator .tabulator-placeholder {
   color: var(--text-muted);
 }
 
@@ -972,9 +969,9 @@ body {
   #expert-toggle-btn { flex: 1; }
 
   /* Denser table cells so more product info fits a phone screen. */
-  #spreadsheet .tabulator { font-size: 13px; }
-  #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content { padding: 6px 8px; }
-  #spreadsheet .tabulator .tabulator-tableholder .tabulator-table .tabulator-row .tabulator-cell { padding: 5px 8px; }
+  #spreadsheet.tabulator { font-size: 13px; }
+  #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content { padding: 6px 8px; }
+  #spreadsheet.tabulator .tabulator-tableholder .tabulator-table .tabulator-row .tabulator-cell { padding: 5px 8px; }
 
   /* Row details become a full-screen sheet — the phone pattern for details. */
   .row-details { width: 100vw; border-left: none; }
@@ -1129,6 +1126,17 @@ body {
   border-bottom: 1px solid transparent;
 }
 .footer-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.footer-build {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-decoration: none;
+}
+.footer-build code {
+  color: var(--text);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+}
+.footer-build:hover code { color: var(--accent); }
 
 /* View summary + stats strip: soft cards. */
 .view-summary { box-shadow: var(--shadow-sm); }
@@ -1136,9 +1144,9 @@ body {
 .stat-chip:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
 
 /* Tabulator skin upgrades: header separation, selection, link affordance. */
-#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content { font-weight: 600; }
-#spreadsheet .tabulator .tabulator-row.tabulator-selected,
-#spreadsheet .tabulator .tabulator-row.tabulator-selected:hover {
+#spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content { font-weight: 600; }
+#spreadsheet.tabulator .tabulator-row.tabulator-selected,
+#spreadsheet.tabulator .tabulator-row.tabulator-selected:hover {
   background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   color: var(--text);
 }
@@ -1341,7 +1349,7 @@ body {
 
 #table-container { padding: 0 10px; }
 #spreadsheet { top: 10px; left: 10px; right: 10px; bottom: 10px; }
-#spreadsheet .tabulator {
+#spreadsheet.tabulator {
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
 }
@@ -1355,18 +1363,18 @@ body {
 .footer-link { margin-left: 0; }
 
 /* View settings: expanded review mode. */
-:root.wrap-cells #spreadsheet .tabulator .tabulator-cell {
+:root.wrap-cells #spreadsheet.tabulator .tabulator-cell {
   white-space: normal !important;
   overflow-wrap: anywhere;
   line-height: 1.42;
 }
-:root.wrap-cells #spreadsheet .tabulator .tabulator-cell a.url-link {
+:root.wrap-cells #spreadsheet.tabulator .tabulator-cell a.url-link {
   white-space: normal;
 }
-:root:not(.compact-density) #spreadsheet .tabulator .tabulator-cell {
+:root:not(.compact-density) #spreadsheet.tabulator .tabulator-cell {
   padding: 10px 12px;
 }
-:root:not(.compact-density) #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+:root:not(.compact-density) #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
   padding: 10px 12px;
 }
 :root:not(.compact-density) .dataset-tab { min-height: 36px; padding: 7px 12px; }
@@ -1457,7 +1465,7 @@ button.stat-chip {
 button.stat-chip:hover b { color: var(--accent); }
 
 /* ---- Proposed file name: the lead column reads like a file explorer ---- */
-#spreadsheet .tabulator .tabulator-cell[tabulator-field="proposed_filename"] {
+#spreadsheet.tabulator .tabulator-cell[tabulator-field="proposed_filename"] {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 12.5px;
   letter-spacing: -0.01em;
@@ -1466,7 +1474,7 @@ button.stat-chip:hover b { color: var(--accent); }
   text-overflow: ellipsis;
 }
 /* Color the file extension as a muted suffix so carriers are scannable. */
-#spreadsheet .tabulator .tabulator-cell[tabulator-field="proposed_filename"] .ext {
+#spreadsheet.tabulator .tabulator-cell[tabulator-field="proposed_filename"] .ext {
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -1487,7 +1495,7 @@ button.stat-chip:hover b { color: var(--accent); }
 .row-details-copy:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 
 /* ---- Carrier color dots in the Edition column ---- */
-#spreadsheet .tabulator .tabulator-cell[tabulator-field="edition"] .carrier-dot {
+#spreadsheet.tabulator .tabulator-cell[tabulator-field="edition"] .carrier-dot {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -1506,14 +1514,14 @@ button.stat-chip:hover b { color: var(--accent); }
 :root.dark .carrier-dot.dot-streaming { background: #c79af0; }
 :root.dark .carrier-dot.dot-book { background: #b6b9bd; }
 
-/* ---- Work-group striping: consecutive rows sharing a work_id get a faint
-   left accent so parts/editions read as a family. ---- */
-#spreadsheet .tabulator .tabulator-row.work-group-start {
-  box-shadow: inset 3px 0 0 var(--accent);
+/* ---- Work-group separation: use the horizontal axis so the separator never
+   replaces the REVISION1 block-specific inset accent on the left edge. ---- */
+#spreadsheet.tabulator .tabulator-row.work-group-start {
+  border-top: 2px solid color-mix(in srgb, var(--text-muted) 24%, transparent);
 }
 
 /* ---- Keyboard row focus + shortcuts overlay ---- */
-#spreadsheet .tabulator .tabulator-row.row-keyboard-focus {
+#spreadsheet.tabulator .tabulator-row.row-keyboard-focus {
   outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
