@@ -47,7 +47,7 @@ test('CSV export uses the selected view filename', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await page.getByRole('tab', { name: 'Original Spreadsheet' }).click();
+  await page.locator('#view-jump').selectOption('original');
   await waitForTable(page);
 
   const [download] = await Promise.all([

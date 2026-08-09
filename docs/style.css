@@ -4,91 +4,106 @@
 
 /* ---- Design tokens (light mode) ---- */
 :root {
-  --bg: #f8f9fa;
+  --bg: #f8fafc;
   --surface: #ffffff;
-  --surface-2: #f1f3f4;
-  --text: #202124;
-  --text-muted: #5f6368;
-  --border: #dadce0;
-  --accent: #188038;          /* Google Sheets green */
+  --surface-2: #f1f5f9;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #188038;          /* Google Sheets emerald green */
   --accent-hover: #137333;
   --accent-contrast: #ffffff;
-  --header-bg: #f1f3f4;
-  --header-text: #3c4043;
-  --zebra: #f9fbf9;
-  --row-hover: #eef4fe;       /* soft blue highlight */
-  --shadow: 0 1px 3px rgba(60, 64, 67, 0.18);
+  --header-bg: #f8fafc;
+  --header-text: #334155;
+  --zebra: #ffffff;
+  --row-hover: #f1f5f9;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --ring: #188038;
   --topbar-h: 58px;
   --footer-h: 40px;
 
+  /* Scrollbars */
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+  --scrollbar-track: #f1f5f9;
+
   /* Group block color tokens (aligned with ODS REVISION1 colour coding & site palette) */
   --block-lectures: #059669;
-  --block-lectures-bg: #ecfdf5;
+  --block-lectures-bg: rgba(5, 150, 105, 0.04);
   --block-discussion: #e11d48;
-  --block-discussion-bg: #fff1f2;
+  --block-discussion-bg: rgba(225, 29, 72, 0.04);
   --block-satsang: #d97706;
-  --block-satsang-bg: #fffbeb;
+  --block-satsang-bg: rgba(217, 119, 6, 0.04);
   --block-on-the-road: #0d9488;
-  --block-on-the-road-bg: #f0fdfa;
+  --block-on-the-road-bg: rgba(13, 148, 136, 0.04);
   --block-volume-series: #6366f1;
-  --block-volume-series-bg: #eef2ff;
+  --block-volume-series-bg: rgba(99, 102, 241, 0.04);
   --block-office-series: #0284c7;
-  --block-office-series-bg: #f0f9ff;
+  --block-office-series-bg: rgba(2, 132, 199, 0.04);
   --block-books: #7c3aed;
-  --block-books-bg: #f5f3ff;
+  --block-books-bg: rgba(124, 58, 237, 0.04);
   --block-transcription-books: #c026d3;
-  --block-transcription-books-bg: #fdf4ff;
+  --block-transcription-books-bg: rgba(192, 38, 211, 0.04);
   --block-media-misc: #475569;
-  --block-media-misc-bg: #f8fafc;
+  --block-media-misc-bg: rgba(71, 85, 105, 0.04);
   --block-undecided: #ea580c;
-  --block-undecided-bg: #fff7ed;
+  --block-undecided-bg: rgba(234, 88, 12, 0.04);
   --block-fran-grace: #be123c;
-  --block-fran-grace-bg: #fff1f2;
+  --block-fran-grace-bg: rgba(190, 18, 60, 0.04);
 }
 
 /* ---- Design tokens (dark mode) ----
    Applied to <html> (see inline script in index.html) so dark-mode users
    don't see a flash of the light theme on first paint. */
 :root.dark {
-  /* Low-contrast charcoal and soft off-white reduce glare during long reads. */
-  --bg: #20252b;
-  --surface: #282e36;
+  --bg: #0f172a;
+  --surface: #1e293b;
   --surface-2: #333b45;
-  --text: #edf1f5;
-  --text-muted: #b4bec9;
-  --border: #45505d;
-  --accent: #76c893;
-  --accent-hover: #96d5aa;
-  --accent-contrast: #172019;
-  --header-bg: #343d47;
-  --header-text: #f2f5f7;
-  --zebra: #2b323b;
-  --row-hover: #324355;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --accent: #34d399;
+  --accent-hover: #6ee7b7;
+  --accent-contrast: #0f172a;
+  --header-bg: #1e293b;
+  --header-text: #e2e8f0;
+  --zebra: #1e293b;
+  --row-hover: #283548;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --ring: #34d399;
 
-  /* Group block color tokens (dark mode) */
+  /* Scrollbars (dark mode) */
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+  --scrollbar-track: #0f172a;
+
+  /* Group block color tokens (dark mode) — refined translucent tints */
   --block-lectures: #34d399;
-  --block-lectures-bg: #064e3b;
+  --block-lectures-bg: rgba(52, 211, 153, 0.08);
   --block-discussion: #fb7185;
-  --block-discussion-bg: #4c0519;
+  --block-discussion-bg: rgba(251, 113, 133, 0.08);
   --block-satsang: #fbbf24;
-  --block-satsang-bg: #451a03;
+  --block-satsang-bg: rgba(251, 191, 36, 0.08);
   --block-on-the-road: #2dd4bf;
-  --block-on-the-road-bg: #042f2e;
+  --block-on-the-road-bg: rgba(45, 212, 191, 0.08);
   --block-volume-series: #818cf8;
-  --block-volume-series-bg: #1e1b4b;
+  --block-volume-series-bg: rgba(129, 140, 248, 0.08);
   --block-office-series: #38bdf8;
-  --block-office-series-bg: #082f49;
+  --block-office-series-bg: rgba(56, 189, 248, 0.08);
   --block-books: #a78bfa;
-  --block-books-bg: #2e1065;
+  --block-books-bg: rgba(167, 139, 250, 0.08);
   --block-transcription-books: #e879f9;
-  --block-transcription-books-bg: #4a044e;
+  --block-transcription-books-bg: rgba(232, 121, 249, 0.08);
   --block-media-misc: #94a3b8;
-  --block-media-misc-bg: #1e293b;
+  --block-media-misc-bg: rgba(148, 163, 184, 0.08);
   --block-undecided: #fb923c;
-  --block-undecided-bg: #431407;
+  --block-undecided-bg: rgba(251, 146, 60, 0.08);
   --block-fran-grace: #f43f5e;
-  --block-fran-grace-bg: #4c0519;
+  --block-fran-grace-bg: rgba(244, 63, 94, 0.08);
 }
 
 /* ---- Base ---- */
@@ -624,18 +639,18 @@ body {
 #spreadsheet .tabulator .tabulator-row {
   background: var(--surface);
   color: var(--text);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
   transition: background-color 0.12s ease, border-color 0.12s ease;
   position: relative;
 }
 #spreadsheet .tabulator .tabulator-row.tabulator-row-even {
-  background: color-mix(in srgb, var(--zebra) 50%, var(--surface));
+  background: var(--surface);
 }
 
 /* Hover highlighting */
 #spreadsheet .tabulator .tabulator-row:hover,
 #spreadsheet .tabulator .tabulator-row.tabulator-row-even:hover {
-  background: var(--row-hover);
+  background: var(--row-hover) !important;
   color: var(--text);
 }
 
@@ -1160,58 +1175,52 @@ body {
 #spreadsheet .tabulator-cell a.url-link:hover { text-decoration-color: currentcolor; }
 #spreadsheet .tabulator-cell a.url-link::after { content: " ↗"; opacity: 0.55; font-size: 0.85em; }
 
-/* Themed scrollbars (webkit + firefox). */
-* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-*::-webkit-scrollbar { width: 10px; height: 10px; }
-*::-webkit-scrollbar-track { background: transparent; }
+/* Themed visible scrollbars (webkit + firefox). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
 *::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-muted) 35%, transparent);
+  background: var(--scrollbar-thumb);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-*::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--text-muted) 55%, transparent); }
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Dedicated prominent scrollbar for Tabulator virtual DOM tableholder */
+.tabulator-tableholder {
+  scrollbar-width: auto;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+.tabulator-tableholder::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+.tabulator-tableholder::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+.tabulator-tableholder::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+  border: 2px solid var(--scrollbar-track);
+}
+.tabulator-tableholder::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
 
 /* ================================================================== *
- *  Minimalist redesign follow-up (2026-08-08): make the Pages UI visibly
- *  simpler and add display settings for expanded review sessions.
+ *  Minimalist typography & desktop controls
  * ================================================================== */
-:root {
-  --bg: #f7f7f4;
-  --surface: #fffefa;
-  --surface-2: #f0f0eb;
-  --text: #191919;
-  --text-muted: #686862;
-  --border: #deded5;
-  --accent: #191919;
-  --accent-hover: #000000;
-  --accent-contrast: #ffffff;
-  --header-bg: #f3f3ee;
-  --header-text: #222222;
-  --zebra: #fbfbf8;
-  --row-hover: #eeeeea;
-  --shadow: none;
-  --shadow-sm: none;
-  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.14);
-  --ring: #111111;
-}
-:root.dark {
-  --bg: #151515;
-  --surface: #1d1d1d;
-  --surface-2: #262626;
-  --text: #f1f1ed;
-  --text-muted: #a5a59c;
-  --border: #373731;
-  --accent: #f1f1ed;
-  --accent-hover: #ffffff;
-  --accent-contrast: #151515;
-  --header-bg: #242424;
-  --header-text: #f5f5ef;
-  --zebra: #1a1a1a;
-  --row-hover: #2b2b27;
-  --ring: #f1f1ed;
-}
-
 body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   background: var(--bg);

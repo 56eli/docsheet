@@ -48,28 +48,27 @@ test('desktop Browse cards toggle swaps the Everything view presentation', async
   await expect(page.locator('#mobile-browse')).toBeHidden();
 });
 
-test('review workspace tabs collapse and expand via the nav toggle', async ({ page }) => {
+test('Jump to selector switches catalogue and review workspace views', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  const groups = page.locator('#review-nav-groups');
-  await expect(groups).toBeVisible();
-  await expect(page.locator('#review-nav-toggle')).toHaveAttribute('aria-expanded', 'true');
+  const jumpSelect = page.locator('#view-jump');
+  await expect(jumpSelect).toBeVisible();
 
-  await page.locator('#review-nav-toggle').click();
-  await expect(groups).toBeHidden();
-  await expect(page.locator('#review-nav-toggle')).toHaveAttribute('aria-expanded', 'false');
+  await jumpSelect.selectOption('veritasProducts');
+  await waitForTable(page);
+  await expect(page.locator('#view-title')).toHaveText('Veritas Products');
 
-  await page.locator('#review-nav-toggle').click();
-  await expect(groups).toBeVisible();
-  await expect(page.locator('#review-nav-toggle')).toHaveAttribute('aria-expanded', 'true');
+  await jumpSelect.selectOption('master');
+  await waitForTable(page);
+  await expect(page.locator('#view-title')).toHaveText('Everything');
 });
 
 test('Series browser lists every series and opens the filtered catalogue', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await page.getByRole('tab', { name: 'Series', exact: true }).click();
+  await page.locator('#view-jump').selectOption('series');
   await expect(page.locator('#series-landing')).toBeVisible();
   await expect(page.locator('#spreadsheet')).toBeHidden();
   await expect(page.locator('#series-landing-grid .series-landing-card').first()).toBeVisible();
@@ -94,7 +93,7 @@ test('presentation controls carry accessible names and states', async ({ page })
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await expect(page.locator('#review-nav-toggle')).toHaveAttribute('aria-controls', 'review-nav-groups');
+  await expect(page.locator('#view-jump')).toHaveAttribute('aria-label', 'Jump to a catalogue view');
   await expect(page.locator('#master-browse-toggle')).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('#series-landing')).toHaveAttribute('aria-label', 'Series browser');
 });

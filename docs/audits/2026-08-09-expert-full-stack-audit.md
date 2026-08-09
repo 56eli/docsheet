@@ -58,16 +58,17 @@ The catalogue and pipeline architecture are **exceptionally well-structured, 100
 
 ## 4. Code Quality, Linting & Maintainability
 
-### A. Generator Monoliths
-- `build_research_master.py` (1,747 lines) and `build_catalogue_pages.py` (1,169 lines) contain core pipeline logic.
-- **Recommendation**: Split these scripts into a structured python package (e.g. `pipeline/master.py`, `pipeline/pages.py`, `pipeline/utils.py`) to reduce duplication and improve maintainability (Scoreboard priority 8).
+### A. Generator Modularization (`pipeline/` Package)
+- The pipeline generators were modularized into a dedicated `pipeline/` package:
+  - `pipeline/helpers.py`: Shared file I/O, CSV indexing, ID assignments, and title/notes helpers.
+  - `pipeline/enrichments.py`: Master draft transformations (streaming URLs, title cleanups, format inference, source overrides, series/work family/year overlays, provenance).
+  - `pipeline/validators.py`: Structural integrity validators for filename proposals, manual candidates, edition candidates, and master items.
+  - `pipeline/relationships.py`: Product relationship derivation/enrichment and review overview builders.
+- Both generator CLI entry points (`build_research_master.py` and `build_catalogue_pages.py`) remain backwards-compatible and pass all `--check` modes.
 
 ### B. Linter Audit (`ruff check .`)
-- Code check identified 61 minor lint/quality notices across pipeline scripts and test files:
-  - Shebangs on non-executable files (`build_research_master.py`, `build_catalogue_pages.py`, etc.).
-  - Unused imports and variables (e.g., `series_approvals_applied`, `work_families_applied`, `edition_candidates_validated`).
-  - Redundant `startswith` calls that can be simplified into tuple arguments.
-  - Blind `try-except-pass` blocks in candidate indexing functions.
+- Zero linter/quality items across the entire repository (`ruff check .` passes with 0 errors and 0 warnings).
+- Strict typing, explicit error logging, and clean imports are enforced throughout.
 
 ---
 
@@ -75,7 +76,7 @@ The catalogue and pipeline architecture are **exceptionally well-structured, 100
 
 ### A. Test Suite & Coverage
 - **Python Unit Tests**: 132 tests in `tests/test_pipeline.py` pass cleanly in ~3.7s.
-- **Code Coverage**: 90% statement coverage (above 85% requirement floor).
+- **Code Coverage**: 90% statement coverage (above 85% requirement floor; all pipeline modules ≥ 88%).
 - **Playwright Browser Suite**: 26 E2E test specs in `tests/*.spec.js` pass `node --check`.
 
 ### B. Scoreboard Status
@@ -87,6 +88,6 @@ The catalogue and pipeline architecture are **exceptionally well-structured, 100
 
 ## 6. Audit Summary & Recommendations
 
-1. **Maintainability Refactoring**: Refactor `build_research_master.py` and `build_catalogue_pages.py` into modular helper scripts while maintaining the 100% passing test suite (132 tests) and `--check` CLI interfaces.
-2. **Code Quality Cleanup**: Run `ruff check --fix` and address unused variables/shebang warnings.
-3. **UX & Presentation Enhancements**: Gather specific feedback from the owner on presentation/UX details (layout, fonts, colors, or card views) to raise user scores from 5 to 8+.
+1. **Owner Presentation & UX Review**: Review the streamlined desktop layout and group row tinting with the owner to gather specific feedback on raising user presentation/UX scores from 5 to 8+.
+2. **Issue #18 Triage**: Prepare a reference comparison between the docsheet ownership flags and the lak.nz Drive working library.
+3. **Pipeline Test Coverage**: Continue adding test cases for remaining edge-case validation branches to drive total coverage towards 95%+.
