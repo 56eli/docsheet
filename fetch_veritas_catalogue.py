@@ -104,7 +104,7 @@ def get_page(page: int, endpoint: str = API) -> list[dict]:
                 body = response.read()
                 try:
                     payload = json.loads(body)
-                except JSONDecodeError as error:
+                except JSONDecodeError:
                     preview = body[:160].decode("utf-8", errors="replace").replace("\n", " ")
                     content_type = response.headers.get("Content-Type", "unknown")
                     last_error = RuntimeError(

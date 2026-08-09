@@ -36,10 +36,10 @@ from urllib.error import HTTPError, URLError
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-import build_catalogue_pages as bcp  # noqa: E402
-import build_research_master as brm  # noqa: E402
-import fetch_veritas_catalogue as fvc  # noqa: E402
-import map_series_taxonomy as mst  # noqa: E402
+import build_catalogue_pages as bcp
+import build_research_master as brm
+import fetch_veritas_catalogue as fvc
+import map_series_taxonomy as mst
 
 SCRIPTS = [
     "process_data.py",
@@ -59,7 +59,7 @@ GENERATOR_SCRIPTS_AND_OUTPUTS = [
 ]
 
 
-def make_sandbox() -> "tempfile.TemporaryDirectory[str]":
+def make_sandbox() -> tempfile.TemporaryDirectory[str]:
     """Copy every pipeline input into a disposable directory.
 
     Tests always get a pristine, hand-maintained ledger — generators that
@@ -129,16 +129,15 @@ def invoke_script(script: str, sandbox: Path, *args: str) -> SimpleNamespace:
     previous_argv = sys.argv
     sys.argv = [script, *args]
     try:
-        with working_directory(sandbox):
-            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                try:
-                    if inspect.signature(module.main).parameters:
-                        result = module.main(list(args))
-                    else:  # argparse reads (patched) sys.argv
-                        result = module.main()
-                    returncode = result if isinstance(result, int) else 0
-                except SystemExit as exc:
-                    returncode = exc.code if isinstance(exc.code, int) else 1
+        with working_directory(sandbox), contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            try:
+                if inspect.signature(module.main).parameters:
+                    result = module.main(list(args))
+                else:  # argparse reads (patched) sys.argv
+                    result = module.main()
+                returncode = result if isinstance(result, int) else 0
+            except SystemExit as exc:
+                returncode = exc.code if isinstance(exc.code, int) else 1
     finally:
         sys.argv = previous_argv
     return SimpleNamespace(returncode=returncode, stdout=out.getvalue(), stderr=err.getvalue())
@@ -151,6 +150,7 @@ def run_script(script: str, sandbox: Path, *args: str) -> subprocess.CompletedPr
         capture_output=True,
         text=True,
         timeout=300,
+        check=False,
     )
 
 
@@ -222,7 +222,7 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result_clean.returncode, 0)
 
         # Add a temporary pending candidate to prove --no-include-pending strips it
-        row = "manual-veritas-99999,Test Candidate,lecture,2026,CD,,veritas,99999,https://veritaspub.com/test,Test Candidate,evidence,reviewed_candidate,2026-08-03,not_promoted,pending note"
+        row = "manual-other-99999,Test Candidate,lecture,2026,CD,,true,other,99999,https://veritaspub.com/test,Test Candidate,evidence,reviewed_candidate,2026-08-03,not_promoted,pending note"
         with (self.sandbox / "data" / "manual_master_candidates.csv").open("a", encoding="utf-8") as f:
             f.write(f"{row}\n")
         result_pending = self.run_script("build_catalogue_pages.py", "--no-include-pending", "--check")
@@ -717,10 +717,9 @@ class JsonTextTests(unittest.TestCase):
         self.assertTrue(text.endswith("\n"))
         self.assertEqual(json.loads(text), {"a": 1})
 
-import unittest.mock as mock  # noqa: E402
+from unittest import mock
 
-import process_data as pdata  # noqa: E402
-import reconcile_research_master as rrm  # noqa: E402
+import reconcile_research_master as rrm
 
 
 class ProcessDataFailurePathTests(unittest.TestCase):
@@ -883,27 +882,27 @@ class GetPageRetryTests(unittest.TestCase):
 
     def test_html_response_retries_then_raises(self) -> None:
         with mock.patch.object(fvc, "urlopen", return_value=self.FakeResponse(b"<html>block</html>", "text/html")), \
-             mock.patch("time.sleep"):
-            with self.assertRaisesRegex(RuntimeError, "non-JSON"):
-                fvc.get_page(1)
+             mock.patch("time.sleep"), \
+             self.assertRaisesRegex(RuntimeError, "non-JSON"):
+            fvc.get_page(1)
 
     def test_non_list_payload_retries_then_raises(self) -> None:
         with mock.patch.object(fvc, "urlopen", return_value=self.FakeResponse(b'{"error": true}')), \
-             mock.patch("time.sleep"):
-            with self.assertRaisesRegex(RuntimeError, "not a product list"):
-                fvc.get_page(1)
+             mock.patch("time.sleep"), \
+             self.assertRaisesRegex(RuntimeError, "not a product list"):
+            fvc.get_page(1)
 
     def test_400_on_first_page_is_a_real_error(self) -> None:
         with mock.patch.object(fvc, "urlopen", side_effect=self.http_error(400)), \
-             mock.patch("time.sleep"):
-            with self.assertRaisesRegex(RuntimeError, "failed after"):
-                fvc.get_page(1)
+             mock.patch("time.sleep"), \
+             self.assertRaisesRegex(RuntimeError, "failed after"):
+            fvc.get_page(1)
 
     def test_urlerror_retries_then_raises(self) -> None:
         with mock.patch.object(fvc, "urlopen", side_effect=URLError("tls eof")), \
-             mock.patch("time.sleep"):
-            with self.assertRaisesRegex(RuntimeError, "tls eof"):
-                fvc.get_page(1)
+             mock.patch("time.sleep"), \
+             self.assertRaisesRegex(RuntimeError, "tls eof"):
+            fvc.get_page(1)
 
     def test_taxonomy_endpoint_requests_compact_fields(self) -> None:
         calls = []
@@ -984,9 +983,8 @@ class ReconcileDriftTests(unittest.TestCase):
                 ["title", "format"],
             )],
         )
-        with working_directory(self.sandbox):
-            with mock.patch.object(rrm, "compare_drafts", return_value=drift):
-                report = rrm.render_report()
+        with working_directory(self.sandbox), mock.patch.object(rrm, "compare_drafts", return_value=drift):
+            report = rrm.render_report()
         self.assertIn("Extra", report)
         self.assertIn("Missing", report)
         self.assertIn("`∅` → `audiobook`", report)  # empty-before drift stays visible
@@ -1283,10 +1281,10 @@ class EditionCandidateTests(unittest.TestCase):
 
     def candidate_rows(self, promotion_status: str = "not_promoted") -> list[str]:
         return [
-            f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audiobook,Audiobook,true,"
+            (f"edition-audible-tvf,w-tvf,audio,289,Truth Vs Falsehood (Audiobook),book,,audiobook,Audiobook,true,"
             f"audible,https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,"
             f"https://www.audible.com/pd/Truths-vs-Falsehood-Audiobook/B00NWS4SQO,Truth Vs Falsehood,"
-            f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition",
+            f"audible inventory row,reviewed_candidate,2026-08-03,{promotion_status},audiobook edition"),
         ]
 
     def write_files(self, sandbox: Path, candidate_rows: list[str], promo_rows: list[str] | None = None,
@@ -1526,9 +1524,9 @@ class SourceOverrideStatusTests(unittest.TestCase):
         try:
             sandbox = Path(tempdir.name)
             self.write_overrides(sandbox, [
-                "candidate:manual-veritas-47979,source_url_hay_house,"
+                ("candidate:manual-veritas-47979,source_url_hay_house,"
                 "https://www.hayhouse.com/the-ego-is-not-the-real-you-paperback-us,"
-                "approved,2026-08-03,paperback link for promoted master,data/hayhouse_official_products.csv",
+                "approved,2026-08-03,paperback link for promoted master,data/hayhouse_official_products.csv"),
             ])
             write = invoke_script("build_research_master.py", sandbox)
             self.assertEqual(write.returncode, 0, write.stderr)
@@ -1766,7 +1764,7 @@ class DocumentationCurrencyTests(unittest.TestCase):
         )
         # app.js master preset: every hidden (Expert) field must exist.
         app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
-        preset = re.search(r"master: \{.*?hidden: \[([^\]]*)\]", app_js, re.S)
+        preset = re.search(r"master: \{.*?hidden: \[([^\]]*)\]", app_js, re.DOTALL)
         self.assertIsNotNone(preset, "app.js master preset hidden list not found")
         hidden = re.findall(r'"([a-z_0-9]+)"', preset.group(1))
         self.assertTrue(hidden, "app.js master preset hidden list is empty")

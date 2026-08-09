@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Shared helpers for the docsheet generator modules.
 
 The generators are standalone scripts that run in a sandbox (and as

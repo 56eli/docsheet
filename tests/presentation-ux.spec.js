@@ -5,62 +5,27 @@ async function waitForTable(page) {
   await page.locator('.tabulator-row').first().waitFor();
 }
 
-// Presentation/UX improvements from the 2026-08-09 proposal: catalogue
-// overview (hero, collection stats, series strip), desktop Browse mode,
-// review-workspace nav toggle, and the client-side Series browser. Expected
-// counts are derived from the committed master.json so nothing is hardcoded.
+// Presentation/UX improvements: sleek clean desktop layout, group row block
+// color coding, desktop Browse mode toggle, review-workspace nav toggle, and
+// the client-side Series browser.
 
-test('hero shows on Everything, dismisses, and restores via Show overview', async ({ page }) => {
+test('desktop interface opens directly into the clean spreadsheet', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await expect(page.locator('#catalogue-intro')).toBeVisible();
-  await expect(page.locator('#hero')).toContainText('David R. Hawkins — Archive Catalogue');
-  await expect(page.locator('#overview-btn')).toBeHidden();
-
-  await page.locator('#hero-dismiss').click();
+  // Hero, overview cards, and stats strip have been removed as requested for an unbloated desktop view.
   await expect(page.locator('#catalogue-intro')).toBeHidden();
-  await expect(page.locator('#overview-btn')).toBeVisible();
-
-  await page.locator('#overview-btn').click();
-  await expect(page.locator('#catalogue-intro')).toBeVisible();
-  await expect(page.locator('#overview-btn')).toBeHidden();
+  await expect(page.locator('#stats-strip')).toBeHidden();
+  await expect(page.locator('#spreadsheet')).toBeVisible();
+  await expect(page.locator('.tabulator-row').first()).toBeVisible();
 });
 
-test('collection overview cards match the master data', async ({ page }) => {
+test('desktop rows feature group block styling classes', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  const counts = await page.evaluate(async () => {
-    const rows = await fetch('/docs/master.json').then((response) => response.json());
-    const owned = rows.filter((row) => String(row.owned ?? '').toLowerCase() === 'true').length;
-    const notOwned = rows.filter((row) => String(row.owned ?? '').toLowerCase() === 'false').length;
-    return { total: rows.length, owned, notOwned, blank: rows.length - owned - notOwned };
-  });
-
-  const overall = page.locator('#overview-cards .overview-card').first();
-  await expect(overall).toContainText(
-    `${counts.owned} owned · ${counts.notOwned} not owned · ${counts.blank} not stated`
-  );
-  // Progress bar aria-label states owned-of-total on the overall card.
-  await expect(overall.locator('.progress-track')).toHaveAttribute(
-    'aria-label',
-    `${counts.owned} of ${counts.total} owned`
-  );
-});
-
-test('series strip chip filters the Everything view', async ({ page }) => {
-  await page.goto('/docs/');
-  await waitForTable(page);
-
-  const expected = await page.evaluate(async () => {
-    const rows = await fetch('/docs/master.json').then((response) => response.json());
-    return rows.filter((row) => row.series === 'Satsang Series').length;
-  });
-
-  await page.locator('#series-strip-list .series-chip', { hasText: 'Satsang Series' }).first().click();
-  await expect(page.locator('#search-status')).toContainText(`Showing: ${expected} of 362`);
-  await expect(page.locator('#filter-chips')).toContainText('Satsang Series');
+  const firstRow = page.locator('.tabulator-row').first();
+  await expect(firstRow).toHaveClass(/row-block-styled/);
 });
 
 test('desktop Browse cards toggle swaps the Everything view presentation', async ({ page }) => {
@@ -125,13 +90,11 @@ test('Series browser lists every series and opens the filtered catalogue', async
   await expect(page.locator('#filter-chips')).toContainText('Satsang Series');
 });
 
-test('new presentation controls carry accessible names and states', async ({ page }) => {
+test('presentation controls carry accessible names and states', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await expect(page.locator('#hero-dismiss')).toHaveAttribute('aria-label', /Dismiss/);
   await expect(page.locator('#review-nav-toggle')).toHaveAttribute('aria-controls', 'review-nav-groups');
   await expect(page.locator('#master-browse-toggle')).toHaveAttribute('aria-pressed', 'false');
-  await expect(page.locator('#series-strip-list')).toHaveAttribute('role', 'group');
   await expect(page.locator('#series-landing')).toHaveAttribute('aria-label', 'Series browser');
 });

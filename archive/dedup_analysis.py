@@ -2,7 +2,6 @@
 """Analyze potential duplicates UUID 264 and UUID 329."""
 
 import csv
-import json
 
 # Load master
 with open('data/research_master_draft.csv', 'r', encoding='utf-8') as f:
@@ -35,7 +34,7 @@ with open('data/work_families.csv', 'r', encoding='utf-8') as f:
 fam_264 = [f for f in families if f['uuid'] == '264']
 fam_329 = [f for f in families if f['uuid'] == '329']
 
-print(f"\n=== WORK FAMILIES ===")
+print("\n=== WORK FAMILIES ===")
 print(f"UUID 264 in families: {len(fam_264)}")
 print(f"UUID 329 in families: {len(fam_329)}")
 
@@ -46,7 +45,7 @@ with open('data/edition_promotions.csv', 'r', encoding='utf-8') as f:
 ed_264 = [e for e in editions if e['uuid'] == '264']
 ed_329 = [e for e in editions if e['uuid'] == '329']
 
-print(f"\n=== EDITION PROMOTIONS ===")
+print("\n=== EDITION PROMOTIONS ===")
 print(f"UUID 264 in editions: {len(ed_264)}")
 print(f"UUID 329 in editions: {len(ed_329)}")
 
@@ -57,7 +56,7 @@ with open('data/product_relationships.csv', 'r', encoding='utf-8') as f:
 rel_264 = [r for r in relationships if r['uuid'] == '264']
 rel_329 = [r for r in relationships if r['uuid'] == '329']
 
-print(f"\n=== PRODUCT RELATIONSHIPS ===")
+print("\n=== PRODUCT RELATIONSHIPS ===")
 print(f"UUID 264 relationships: {len(rel_264)}")
 print(f"UUID 329 relationships: {len(rel_329)}")
 

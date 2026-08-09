@@ -41,7 +41,6 @@ import csv
 import sys
 from pathlib import Path
 
-
 SOURCE_REQUIRED_HEADERS = {
     "uuid", "tempid", "title", "WE HAVE?", "original source",
     "format", "product link", "other links",

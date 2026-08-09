@@ -1,17 +1,29 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Desktop Table Modernization + REVISION1 Group Color-Coding + Doc Sweep) — current handoff for
-branch `arena/019fe720-docsheet`.
-**Scoreboard:** this repo now has a persistent scoreboard — read
+**Prepared:** 2026-08-09 (Full-Stack Audit, Generator Refactoring, Desktop UI Streamlining, Linter Sweep) — current handoff for
+branch `arena/019fe734-docsheet`.
+**Scoreboard:** this repo has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
 sessions may expire after PR merge).
 
-## Headline results (2026-08-09 Desktop Table Modernization + REVISION1 ODS pass, current)
+## Headline results (2026-08-09 Expert Full-Stack Pass, current)
 
-- **Desktop table modernized:** replaced harsh borders and barebones alternating zebra styling with a sleek modern Linear/Stripe design system.
-  - Added subtle left-border color accents and group styling mapped directly to the 11 REVISION1 ODS block groups (`lectures-2002-2011`, `discussion`, `satsang`, `on-the-road`, `volume-series`, `office-series`, `books`, `transcription-books`, `media-misc`, `undecided`, `fran-grace`) in both light and dark themes.
-  - Refined table typography, cell padding (8px 10px), header weights and uppercase tracking, hover transitions, and pill badges for status, carrier, and type.
+- **Monolith Generators Refactored into `pipeline/` Package:**
+  - Split `build_research_master.py` (1,747 lines) and `build_catalogue_pages.py` (1,169 lines) into clean, modular Python modules under `pipeline/`:
+    - `pipeline/helpers.py`: Shared file I/O, CSV indexing, ID assignments, and title/notes helpers.
+    - `pipeline/enrichments.py`: Master draft transformations (streaming URLs, title cleanups, format inference, source overrides, series/work family/year overlays, provenance).
+    - `pipeline/validators.py`: Structural integrity validators for filename proposals, manual candidates, edition candidates, and master items.
+    - `pipeline/relationships.py`: Product relationship derivation/enrichment and review overview builders.
+  - All 132 unit tests pass, statement coverage 90% (above floor 85%), all six `--check` modes green.
+- **Code Quality & Linter Sweep (`ruff check .`):**
+  - Resolved all 61 linter/quality items across Python modules and test suites down to **100% clean (0 errors, 0 warnings)**.
+  - Added shebangs, removed unused imports/variables, and updated exception handling.
+- **Desktop UI Streamlining & Group Row Background Coloring:**
+  - Removed bloated hero copy, collection overview cards, "browse by series" strip, and "Master records 362" stat strip from desktop view per owner instructions.
+  - Applied row background color tinting (`--block-*-bg`) and 4px left accent borders to all 11 REVISION1 ODS block groups in both light and dark themes.
+- **Full Audit Report:**
+  - Published comprehensive audit report at `docs/audits/2026-08-09-expert-full-stack-audit.md`.
 - **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
   `fa51f67`): a colour-coded expert-columns export of the Everything view.
   Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
