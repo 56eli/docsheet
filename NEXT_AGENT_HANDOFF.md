@@ -1,12 +1,17 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (End-user Row Delivery P0) — current branch
-`arena/019fe7c9-docsheet`.
-**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`,
-`.scoreboard/agent-handoff.md`,
-`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`, and `AGENTS.md`.
+**Prepared:** 2026-08-09 (Full-Stack & Data Engineering Audit & Cleanup) — current branch `arena/019fe7ff-docsheet`.  
+**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-stack-data-engineering-audit.md`, and `AGENTS.md`.
 
-## 2026-08-09 End-user row delivery P0 (current)
+## 2026-08-09 Full-Stack & Data Engineering Audit & UX Cleanup (Current)
+
+- **Comprehensive Audit:** Published full audit report at `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` covering dual-pipeline architecture, data integrity, frontend rendering, test coverage (90%), and linter score (0 errors).
+- **Header Formatting & Column Lock Fix:** Removed `overflow-wrap: anywhere` and `max-width: 54px` on `record_type` in `docs/style.css` and removed `{ width: 54, minWidth: 54, maxWidth: 54 }` column width lock in `docs/app.js`. Header title "Record Type" now truncates gracefully with ellipsis (`text-overflow: ellipsis`) when narrow rather than spelling letter-by-letter vertically.
+- **Search Term Highlighting:** Implemented live cell text matching and search term highlighting (`<mark class="search-highlight">`) across table cells and formatters in `docs/app.js` and `docs/style.css`.
+- **Asset Hashing & Manifest:** Updated 12-character asset content hashes (`app.js`, `style.css`) in `docs/index.html` and `docs/build-manifest.json`.
+- **Verification:** All 141 deterministic unit tests pass (`python3 -m unittest discover tests`), all 6 `--check` pipeline commands pass, `ruff check .` clean (0 items), 90% coverage maintained.
+
+## 2026-08-09 End-user row delivery P0 (Historical)
 
 The owner explicitly rejected prior claims that Pages artifact success proved
 row changes reached the user. Browser CI then exposed the primary defect: all
