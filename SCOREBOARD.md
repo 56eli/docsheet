@@ -47,7 +47,7 @@ files** — this scoreboard is part of that memory. See
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | Confirm 25 browser specs in branch CI |
+| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | 141 offline + 25 browser green |
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit | high | Require CI; gate Pages |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |

@@ -57,8 +57,9 @@ visible deployed build ID and an explicit owner accept/reject response.
   through the surviving `#view-jump` control.
 - Offline suite: **141 tests** (133 pipeline/contract + 8 style), all passing;
   coverage remains **90% total**.
-- Browser suite: **25 specs**; syntax is clean, but Chromium download is locally
-  CDN-blocked. GitHub branch CI is the required execution environment.
+- Browser suite: **25/25 passed** in PR #54 run `31331149785`, including real
+  selector matching and computed light/dark block colors. Local Chromium
+  download remains CDN-blocked.
 
 ### Not complete until owner/settings action
 
@@ -118,7 +119,8 @@ Additional open risks:
 - `npm ci` / `npm audit` — zero vulnerabilities ✅
 - manifest/content-version contract ✅
 - Git diff/fsck/secret scan ✅
-- Chromium install / local Playwright ❌ environment TLS reset; use branch CI
+- PR #54 GitHub CI `31331149785`: 25/25 browser specs ✅
+- Chromium install locally ❌ environment TLS reset; GitHub CI is authoritative
 
 ## Next-agent rules
 

@@ -41,9 +41,10 @@ After owner direction, this branch implemented the non-subjective P0 controls:
 - documented exact required-check, CI-gated Pages, post-deploy hash/row checks,
   and visual acceptance steps in `.scoreboard/manual-workflow-edits.md`.
 
-The incident remains open until GitHub branch CI executes the 25 browser specs,
-the versioned build is deployed/verified, and the owner accepts that exact
-visible build ID.
+PR #54 branch CI run `31331149785` passed all 25 browser specs, including real
+selector matching and computed light/dark block colors. The incident remains
+open until the versioned build is merged, deployed/hash-verified, and the owner
+accepts that exact visible build ID.
 
 ## 2. Project architecture, as actually deployed
 
@@ -416,7 +417,7 @@ Before calling the row issue fixed:
 Passed:
 
 - all six generator `--check` modes;
-- 139/139 offline tests in an isolated virtual environment;
+- baseline audit: 139/139 offline tests; P0 branch: 141/141;
 - 90% statement coverage;
 - JS and Playwright-spec syntax checks;
 - `npm ci` and `npm audit` with zero reported vulnerabilities;
@@ -430,8 +431,8 @@ Environment-limited:
 
 - local Chromium installation was blocked by repeated CDN TLS resets;
 - direct `curl`/`wget` to GitHub Pages was TLS-blocked in the sandbox;
-- PR #53 GitHub Actions supplied the current 25-spec browser run, but those specs do not test the failed visual acceptance conditions.
+- PR #54 run `31331149785` supplied browser execution: all 25 specs passed, including computed selector, zebra, block, work-start, and dark-mode assertions.
 
 ## 11. Final conclusion
 
-The audited baseline could generate correct data and a built Pages artifact while the end user still received no accepted row fix because its 70 custom Tabulator selectors did not match the real DOM. This branch corrects that topology and the latent cascade collision, then adds versioned, visible browser assets plus computed-style/delivery-contract guards; the incident remains unresolved until branch CI, deployment/hash verification, and explicit owner acceptance complete the path.
+The audited baseline could generate correct data and a built Pages artifact while the end user still received no accepted row fix because its 70 custom Tabulator selectors did not match the real DOM. This branch corrects that topology and the latent cascade collision, then adds versioned, visible browser assets plus computed-style/delivery-contract guards; PR #54 CI proves the corrected selectors now compute as intended, but the incident remains unresolved until deployment/hash verification and explicit owner acceptance complete the path.

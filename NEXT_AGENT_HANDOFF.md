@@ -26,8 +26,9 @@ Current branch changes:
 - footer shows `app-cf43f33a062c/css-71a1e6b2ca25` and links
   `docs/build-manifest.json`;
 - offline delivery-contract and cascade guards bring the suite to **141**;
-- the existing 25 Playwright specs now include computed light/dark zebra and
-  lecture/discussion/office accent checks;
+- all 25 Playwright specs passed in PR #54 run `31331149785`, including
+  computed selector matching, light/dark zebra, and lecture/discussion/office
+  accent checks;
 - stale `#show-stats-toggle` CI selector removed;
 - owner-gated required-check, CI-gated Pages, post-deploy hash/row assertions,
   and screenshot procedure are in `.scoreboard/manual-workflow-edits.md`.
