@@ -26,6 +26,8 @@
   const showSummaryToggle = $("show-summary-toggle");
   const showStatsToggle = $("show-stats-toggle");
   const showFiltersToggle = $("show-filters-toggle");
+  const showBlankRowsToggle = $("show-blank-rows-toggle");
+  const blankRowsToggleWrap = $("blank-rows-toggle-wrap");
   const descToggleBtn = $("desc-toggle-btn");
   const facetToggleBtn = $("facet-toggle-btn");
   const mobileViewToggle = $("mobile-view-toggle");
@@ -556,7 +558,7 @@
    *  summary visibility, and one-click "Expand everything".
    * ------------------------------------------------------------------ */
   const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
-  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showStats: false, showFilters: false };
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showStats: false, showFilters: false, showBlankRows: false };
 
   function readViewSettings() {
     try {
@@ -591,6 +593,11 @@
     if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
     if (showStatsToggle) showStatsToggle.checked = Boolean(settings.showStats);
     if (showFiltersToggle) showFiltersToggle.checked = Boolean(settings.showFilters);
+    if (showBlankRowsToggle && blankRowsToggleWrap) {
+      showBlankRowsToggle.checked = Boolean(settings.showBlankRows);
+      // The raw spreadsheet is the only view with blank separator rows.
+      blankRowsToggleWrap.hidden = activeView !== "original";
+    }
     if (table) {
       try {
         table.redraw(true);
@@ -1312,7 +1319,15 @@
         row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
-    return { data, lastModified: res.headers.get("Last-Modified") };
+    // The raw spreadsheet export contains 31 fully-empty visual-separator
+    // rows (2026-08-09 audit §3.4). Hide them by default in the Original
+    // Spreadsheet view; the "Show blank separator rows" view setting restores
+    // the verbatim 374-row sheet (grid, counts, and CSV export all follow).
+    const viewRows =
+      viewName === "original" && !readViewSettings().showBlankRows
+        ? data.filter((row) => Object.values(row).some((value) => String(value ?? "").trim() !== ""))
+        : data;
+    return { data: viewRows, lastModified: res.headers.get("Last-Modified") };
   }
 
   function applyLoadedViewMeta(viewName, data, lastModified) {
@@ -2092,6 +2107,13 @@
     }
     if (showFiltersToggle) {
       showFiltersToggle.addEventListener("change", () => updateViewSetting("showFilters", showFiltersToggle.checked));
+    }
+    if (showBlankRowsToggle) {
+      showBlankRowsToggle.addEventListener("change", () => {
+        updateViewSetting("showBlankRows", showBlankRowsToggle.checked);
+        // The setting changes which rows the raw view loads, so re-activate it.
+        if (activeView === "original") activateView("original");
+      });
     }
     if (facetToggleBtn) {
       facetToggleBtn.addEventListener("click", () => {

@@ -21,10 +21,8 @@ Headline results (2026-08-09 expert pass, current):
   75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7
   compilations, 191 works, 191 products, 10 UUID gaps) and found **no
   data-loss or correctness defects**. Seven low-severity items were reported;
-  four were fixed this session (see below), three remain as documented
-  recommendations (§3.4 empty separator rows in the Original Spreadsheet
-  view, §3.6 "passed through unchanged" wording, §3.7 archived-audit
-  Highlights wording).
+  six were fixed this session (see below); one remains as a documented
+  recommendation (§3.7 archived-audit Highlights wording).
 - **Ledger row 371 reclassification (owner-approved 2026-08-09):** the single
   `needs_review` row — the raw sheet's "Dialogues on Consciousness and
   Spirituality: WHAT IS THIS ⚠️⚠️⚠️" placeholder — was reclassified to
@@ -42,8 +40,17 @@ Headline results (2026-08-09 expert pass, current):
   gained the `-2002-dvd` slug note (product 1800's URL slug says "dvd" but
   the storefront carrier is Streaming — master keeps `format=streaming`);
   handoff header refreshed for this branch.
-- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the three
-  documented recommendations in the expert audit (§3.4/§3.6/§3.7 above).
+- **Original Spreadsheet view (audit §3.4):** the 31 fully-empty raw
+  separator rows are now hidden by default — grid, footer count, and CSV
+  export all agree — with a persisted "Show blank separator rows" View
+  setting (visible only on that tab) restoring the verbatim 374-row sheet.
+  New `tests/blank-rows.spec.js` derives its expected counts from
+  `data.json` (browser suite now 19 tests).
+- **Wording (audit §3.6):** README, INSTRUCTIONS, and the `process_data.py`
+  docstring now state that the raw pipeline is pass-through *except* for the
+  six always-empty raw columns trimmed from the published view.
+- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the one
+  remaining audit recommendation (§3.7, archival wording note).
 
 Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
@@ -453,6 +460,7 @@ Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of 
 - **Expert audit:** all six `--check` modes green, 126/126 tests, 91% coverage; ~20 independent pandas probes bypassing the project's validators reproduced every README count exactly and found no data-loss/correctness defects. Seven low-severity findings (§3 of the audit); the Playwright browser suite could not be re-run in the sandbox (CDN blocked) but CI is green.
 - **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
 - **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
+- **Frontend (audit §3.4):** Original Spreadsheet view hides the 31 blank separator rows by default with a "Show blank separator rows" View setting; added `tests/blank-rows.spec.js` (browser suite now 19 tests). Pass-through wording clarified in README/INSTRUCTIONS/process_data.py (§3.6).
 - **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.
 
 ## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, previous)

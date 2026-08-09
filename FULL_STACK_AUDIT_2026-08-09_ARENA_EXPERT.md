@@ -29,10 +29,13 @@ only a handful of low-severity documentation and classification nits remain.
 findings §3.1 (ledger row 371 reclassified `needs_review` → `duplicate` of
 master 361, derived artifacts regenerated), §3.2 (SERIES_TAXONOMY_MAPPING.md
 corrected), §3.3 (slug note added to
-`decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`), and §3.5 (handoff header
-refreshed) are **resolved**; §3.4, §3.6, §3.7 remain as documented
-recommendations. Verification after the fixes: all six `--check` modes green,
-126/126 tests, 91% coverage.
+`decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`), §3.4 (Original Spreadsheet
+view now hides the 31 blank separator rows by default, with a "Show blank
+separator rows" view setting; browser test added), §3.5 (handoff header
+refreshed), and §3.6 (pass-through wording clarified in README/INSTRUCTIONS/
+process_data.py) are **resolved**; §3.7 remains as a documented
+archival-note recommendation. Verification after the fixes: all six `--check`
+modes green, 126/126 tests, 91% coverage.
 
 ---
 
@@ -147,11 +150,16 @@ in `decisions/`) would close it.
 ### 3.4 — "Original Spreadsheet" tab renders 31 empty rows (Low, UX)
 
 `docs/data.json` publishes all 374 raw rows, including 31 fully-empty
-visual-separator rows from the source sheet; `app.js` `loadData()` performs no
-empty-row filtering, so the tab and its CSV export include ~31 blank rows
-(including the very first displayed row). Faithful pass-through is documented,
-but a filter for rows with no non-empty field (kept available behind an expert
-toggle, or documented as intended) would make the tab less noisy.
+visual-separator rows from the source sheet; `app.js` `loadData()` performed no
+empty-row filtering, so the tab and its CSV export included ~31 blank rows
+(including the very first displayed row).
+
+**RESOLVED 2026-08-09:** the Original Spreadsheet view now hides rows with no
+non-empty field by default (grid, footer count, and CSV export all follow),
+and a **"Show blank separator rows"** checkbox in View settings (visible only
+on that tab, persisted per browser) restores the verbatim 374-row sheet.
+Covered by `tests/blank-rows.spec.js` (counts derived from `data.json`, never
+hardcoded).
 
 ### 3.5 — NEXT_AGENT_HANDOFF.md header names the previous session's branch (Low, doc)
 
@@ -162,11 +170,14 @@ refresh the header when this audit becomes the handoff.
 
 ### 3.6 — "Passed through unchanged" wording vs. the 6-column trim (Nit, doc)
 
-README/INSTRUCTIONS describe the raw pipeline as pass-through "unchanged,"
+README/INSTRUCTIONS described the raw pipeline as pass-through "unchanged,"
 while `process_data.py` drops the six always-empty raw columns (uuid,
 Unnamed: 8–11, other links) and keeps `notes`. Cell values are untouched, so
-this is only wording — one clarifying clause ("unchanged except always-empty
-columns trimmed") would remove the ambiguity.
+this was only wording.
+
+**RESOLVED 2026-08-09:** README, INSTRUCTIONS, and the `process_data.py`
+docstring now state the trim explicitly ("unchanged — cell values are never
+modified; the published view trims the six always-empty raw columns").
 
 ### 3.7 — Archived fresh-eyes audit mischaracterizes Highlights as "blank-year" (Nit, archive)
 
@@ -206,16 +217,20 @@ directive ("filename equals title"). No data impact; an archival footnote.
 
 ## 5. Recommendations (priority order)
 
-1. **Owner ruling (2 min):** reclassify ledger row 371 (§3.1) — the only item
-   that makes "75 exclusions" technically include an undecided row.
-2. **Doc fix (5 min):** correct the Highlights "out of scope / unmatched"
-   sentence in SERIES_TAXONOMY_MAPPING.md (§3.2).
-3. **Doc fix (5 min):** record the Highlights streaming ruling in
-   `decisions/` and optionally note the `-2002-dvd` slug on master 362 (§3.3).
-4. **Optional UX (30 min):** hide fully-empty rows in the Original Spreadsheet
-   view or add a "Show blank separator rows" toggle (§3.4).
-5. **Handoff refresh:** fold this audit into NEXT_AGENT_HANDOFF.md with the
-   current branch name (§3.5).
+1. ~~Owner ruling: reclassify ledger row 371~~ — **DONE 2026-08-09** (§3.1).
+2. ~~Correct the Highlights "out of scope / unmatched" sentence~~ — **DONE
+   2026-08-09** (§3.2).
+3. ~~Record the Highlights streaming ruling / `-2002-dvd` slug~~ — **DONE
+   2026-08-09** in `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` (§3.3).
+4. ~~Hide fully-empty rows in the Original Spreadsheet view~~ — **DONE
+   2026-08-09** with the "Show blank separator rows" toggle (§3.4).
+5. ~~Refresh NEXT_AGENT_HANDOFF.md~~ — **DONE 2026-08-09** (§3.5).
+6. ~~Clarify the "passed through unchanged" wording~~ — **DONE 2026-08-09**
+   (§3.6).
+7. **Optional archival nit:** annotate the archived 2026-08-08 audit's
+   "17 blank-year rows (Volumes + Highlights + …)" wording (§3.7) — no data
+   impact.
 
-No changes to data, code, or CI were made during this audit pass (read-only
-verification).
+The audit pass itself was read-only; all fixes above were applied afterwards
+in the same session (owner-approved) and re-verified: all six `--check` modes
+green, 126/126 tests, 91% coverage.
