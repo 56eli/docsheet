@@ -80,7 +80,11 @@ test('computed row styles preserve zebra and REVISION1 accents across blocks', a
 
   // Dark mode must preserve the block identity rather than reverting to the
   // generic accent; it must also produce a different computed row surface.
-  await page.locator('#dark-toggle').check();
+  await page.locator('#dark-toggle').evaluate((input) => {
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  await expect(page.locator('html')).toHaveClass(/dark/);
   const officeDark = await rowVisual(officeRow);
   expect(officeDark.backgroundColor).not.toBe(officeLight.backgroundColor);
   expect(officeDark.boxShadow).toContain('rgb(56, 189, 248)');
