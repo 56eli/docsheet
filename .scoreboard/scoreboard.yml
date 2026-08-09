@@ -202,7 +202,7 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: 6
     effective_score: 6
     gap: 2
@@ -210,18 +210,29 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 141/141 tests green, coverage 90%."
+    ai_basis: "Pipeline generators are modular (pipeline/helpers, enrichments, validators, relationships) but frontend remains monolithic (docs/app.js 2755 lines, docs/style.css 2399 lines) with duplicate :root token layers and a hard-coded CATALOGUE_BLOCK_MAP (362 literals) duplicating catalogue_display_order.csv — onboarding cost high."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
       - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
       - "All 141/141 tests pass, 90% statement coverage, all 6 --check modes green."
+      - "Frontend monoliths: docs/app.js 2755 lines (IIFE, no ESM), docs/style.css 2399 lines with duplicate :root layers; CATALOGUE_BLOCK_MAP 362 entries should be generated from catalogue_display_order.csv."
+      - "Re-audited 2026-08-09 (arena/019fe830) — score corrected 9→7 to reflect frontend debt; user score 6 remains authoritative."
     user_notes: null
-    desired_direction: []
-    next_actions: []
+    desired_direction:
+      - "Split docs/app.js into src/table/columns, filters, browse, drawer, state ESM modules with a light bundler or import map; extract tokens.css."
+      - "Generate CATALOGUE_BLOCK_MAP from docs/master.json or data/catalogue_display_order.csv at build time."
+    next_actions:
+      - "Plan ESM split with content-version contract preserved; keep single IIFE entry until split lands."
     risk_flags: []
     files_reviewed:
       - build_research_master.py
       - build_catalogue_pages.py
+      - docs/app.js
+      - docs/style.css
+      - pipeline/helpers.py
+      - pipeline/enrichments.py
+      - pipeline/validators.py
+      - pipeline/relationships.py
 
   - id: type_safety_validation
     name: Type safety / validation
@@ -426,7 +437,7 @@ aspects:
     category: presentation
     weight: 5
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: 5
     effective_score: 5
     gap: 3
@@ -434,20 +445,21 @@ aspects:
     status: user_unhappy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "The end-user row-delivery audit found that all 70 custom table selectors used a nonexistent descendant root, plus a latent shadow collision and no deployed visual acceptance boundary. This branch fixes selector topology/cascade, versions assets, exposes build identity, and adds computed-style coverage; owner acceptance is pending."
+    ai_basis: "Delivery contract is now observable (content-versioned app.js/style.css v=39e1208f672b/e67530fcaebe, visible footer build ID, build-manifest hashes, FrontendDeliveryContractTests + computed light/dark zebra/block tests) and row topology/cascade (63× #spreadsheet.tabulator, data-block inset accent, horizontal work separation, neutral grey tokens #f9f9fb/#0d0d0d) is correct — re-verified 2026-08-09 at 9e4ee4d (6 --check green, 141/141 tests at 90%). Effective score stays 5 until owner visually accepts the exact deployed build ID."
     user_basis: "Owner reiterated 2026-08-09 that repeated row changes never reached the end user; the prior 5/10 remains authoritative until explicit re-score."
     evidence:
-      - "Browser CI proved rows carried block metadata while element.matches('#spreadsheet .tabulator ...') was false and computed box-shadow was none; Tabulator attaches .tabulator to #spreadsheet itself."
-      - "All table rules now use #spreadsheet.tabulator; data-block styling and horizontal work separation avoid the latent shadow collision."
-      - "Computed-style tests cover selector matching, lecture/discussion/office accents, zebra, and dark mode."
-      - "index.html content-versions app.js/style.css and displays matching hashes linked to build-manifest.json."
+      - "Browser CI proved fix: rows carry block metadata while element.matches('#spreadsheet .tabulator ...') was false and computed box-shadow was none before fix; Tabulator attaches .tabulator to #spreadsheet itself."
+      - "All table rules now use #spreadsheet.tabulator (63 correct vs 0 dead descendant roots); data-block styling and horizontal work separation avoid the latent shadow collision."
+      - "Computed-style tests cover selector matching, lecture/discussion/office accents, zebra, and dark mode (presentation-ux.spec.js)."
+      - "index.html content-versions app.js/style.css and displays matching hashes linked to build-manifest.json (row-delivery-p0-20260809.1, sha256 pinned)."
       - "2026-08-09 multidisciplinary UI/UX session: widened .tabulator-tableholder scrollbars from 12px to 16px, upgraded proposal_filename column to 13px semi-bold (#text) with contrast-enhanced extension text (.ext), and softened zebra striping parity (#fafafa light / #1c1c1c dark) while implementing work-family stripe grouping."
+      - "Re-audited 2026-08-09 (arena/019fe830) — AI 7→8; Hay House traqnscending typo already fixed at this commit (grep traqn 0, master 294 correct), neutral tokens verified (no slate), washes 8.5% on all blocks."
     user_notes: "Do not treat Pages artifact success as proof that the row problem reached the end user."
     desired_direction:
       - "Versioned, observable browser delivery with explicit owner acceptance."
       - "Sleek neutral zebra rows with stable REVISION1 block accents."
     next_actions:
-      - "Merge/deploy the green PR #54 build, verify live hashes, then request accept/reject for that exact revision."
+      - "Merge/deploy the green build row-delivery-p0-20260809.1, verify live hashes, then request accept/reject for that exact build ID."
     risk_flags:
       - "Owner visual acceptance remains pending."
     files_reviewed:
@@ -455,7 +467,9 @@ aspects:
       - docs/style.css
       - docs/build-manifest.json
       - tests/presentation-ux.spec.js
+      - tests/test_style_contrast.py
       - docs/audits/2026-08-09-end-user-row-delivery-postmortem.md
+      - docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md
 
   - id: ux_usability
     name: UX / usability

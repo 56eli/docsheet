@@ -1,9 +1,18 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Multidisciplinary Web Designer, Full-Stack & Data Engineer Audit & UX Enhancements) — current branch `arena/019fe80c-docsheet`.  
-**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-expert-multidisciplinary-audit.md`, and `AGENTS.md`.
+**Prepared:** 2026-08-09 (Multidisciplinary re-audit 019fe830 — Web Designer, Full-Stack & Data Engineer at 9e4ee4d) — current branch `arena/019fe830-docsheet`.  
+**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`, and `AGENTS.md`.
 
-## 2026-08-09 Multidisciplinary Audit & UX Presentation Enhancements (Current)
+## 2026-08-09 Multidisciplinary re-audit 019fe830 — Web/Full-Stack/Data (Current, declared)
+
+- **Scope:** Full re-audit at `9e4ee4d` (main HEAD, PR #56) as Expert Web Designer, Full-Stack Developer, Data Engineer. Re-executed all six `--check` modes, `python -m unittest discover tests` (141/141 at 90%, 78–100% per module), `node --check`, CSP/SRI, CSV↔JSON parity, token chromaticity, selector topology. Record: `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (read-only, declared-current).
+- **Web Design:** Verified neutral palette (light #f9f9fb/#ffffff/#f4f4f5/#e4e4e7, dark #0d0d0d/#161616/#222222/#282828 — no slate), zebra delta 10/6, hover delta 7/8, washes 8.5% on all blocks (40 rules via `data-block`), correct `#spreadsheet.tabulator` root (63 correct vs 0 dead descendant `#spreadsheet .tabulator` roots), inset 3.5px accent + horizontal work separation, 41 aria attrs, roving tabindex, focus trap, Browse mode rails, 2755L app.js + 2399L style.css with duplicate `:root` layers and hard-coded 362-entry `CATALOGUE_BLOCK_MAP` (maintainability debt).
+- **Full-Stack:** Two-lane architecture clean (raw 374→7 cols via `process_data.py`, curated 362 via `build_research_master.py` + `build_catalogue_pages.py` + taxonomy/mirrors), deterministic `--check` + tamper detection, pipeline modularized but frontend monolith, delivery contract observable (versioned `v=39e1208f672b/e67530fcaebe`, manifest `row-delivery-p0-20260809.1`, footer build ID, `FrontendDeliveryContractTests` + 8 style-contrast tests + `presentation-ux.spec.js` computed light/dark checks). CI validates 6 `--check` + 141 + coverage + e2e, but legacy Pages remains ungated (P0 owner steps in `.scoreboard/manual-workflow-edits.md`).
+- **Data Engineering:** 374 raw / 362 master (306 lecture/40 book/8 discussion/7 highlight/1 other), 75 exclusions, 134 overrides, 39 promoted, 191 works/338+24 families, 278 codes, 362 filenames, 191 Veritas (186 matched/5 excluded), 29 Hay House, 26 Audible, 38 international, 340 relationships, 7 compilations, 186 taxonomy (177/9), year 1973–2026 (+16× 198X), owned true 295/false 25/blank 42. Zero duplicate IDs/codes/filenames, zero orphans, `grep traqn` 0 (Hay House typo already fixed at this commit, master 294 correct).
+- **Scoreboard:** Corrected maintainability AI 9→7 (frontend monolith + block map; user 6 makes effective 6), Pages AI 7→8 (delivery contract verified; effective 5 until owner acceptance). Overall effective 7.8 (gate fail — intentional until owner accepts build + gates Pages). Promoted audit in README/INSTRUCTIONS + updated `.scoreboard/*` history/handoff.
+- **Verification:** 6 `--check` green, 141/141 green, `coverage 90%`, `node --check` clean, `grep -E "#spreadsheet +\.tabulator\b"` 0 dead roots, neutral tokens, `coverage` 78–100% per module.
+
+## 2026-08-09 Multidisciplinary Audit & UX Presentation Enhancements (Prior 019fe80c)
 
 - **Comprehensive Multidisciplinary Audit:** Published full audit report at `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` covering Web Design/UX styling, Full-Stack pipeline architecture & testing, and Data Engineering schema provenance & reconciliation.
 - **Unlocked Column Resizing & Jitter-Free Scrolling:** Switched Tabulator layout to `fitDataFill` with `renderHorizontal: "basic"` and removed `setMaxHeight()` calls on virtual scroll `renderComplete`, eliminating horizontal scroll rubber-banding and enabling free user column resizing.

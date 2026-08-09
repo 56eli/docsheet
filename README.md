@@ -115,9 +115,11 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
 `NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
 [`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
-[`.scoreboard/`](.scoreboard/scoreboard.yml), the current corrective audit
+[`.scoreboard/`](.scoreboard/scoreboard.yml), the **declared-current** multidisciplinary audit
+[`docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`](docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md) (Web Designer · Full-Stack · Data Engineer at `9e4ee4d`, 141/141 + 90%),
+the corrective postmortem
 [`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](docs/audits/2026-08-09-end-user-row-delivery-postmortem.md),
-the multidisciplinary audit
+the prior multidisciplinary audit
 [`docs/audits/2026-08-09-expert-multidisciplinary-audit.md`](docs/audits/2026-08-09-expert-multidisciplinary-audit.md),
 and the broader audits
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
@@ -205,8 +207,10 @@ reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (362 master records,
 191 Veritas products, 340 relationships). See
+[`docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`](docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md)
+(declared-current) alongside
 [FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md)
-for the current full-stack audit and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
+for full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; the archive reports preserve earlier checkpoints.
 
 ### Field semantics
