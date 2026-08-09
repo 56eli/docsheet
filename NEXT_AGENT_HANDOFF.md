@@ -51,14 +51,8 @@ branch `arena/019fe2db-docsheet` (PR #39, open). See
   FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
   UX_REWORK_SUGGESTIONS, YEAR_COLUMN_PROVENANCE.
 - **Left open for owner triage (no code/data changes in PR #39):**
-  - **D-04 (Low/Med):** Amazon paperback URLs for masters 359–361 still sit
-    in both `source_url_amazon` and `reference_url_1`; the UI labels
-    `reference_url_1` "Streaming" and renders a "Stream" action that opens a
-    paperback page. The 369–372 precedent cited in the earlier D-4
-    resolution does not actually duplicate the URL.
-  - **B-01 (Med):** two Spanish Audible titles are hardcoded into
-    `build_catalogue_pages.py:797–815` (CSV 36 → JSON 38), bypassing the
-    "generated from committed CSV inputs" invariant.
+  - **D-04 (Low/Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): Amazon paperback URLs for masters 359–361 no longer duplicate into `reference_url_1`; `build_research_master.py:1394` now treats Amazon URLs as curated-source URLs and `reference_url_1` is blank for 359–361 (verified 0 `amazon==reference` duplicates).
+  - **B-01 (Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): two Spanish Audible titles moved from hardcoded `build_catalogue_pages.py:797–815` into `data/international_discovery_queue.csv` (36 → 38 rows); `international-products.json` is now fully input-driven (38 → 38 parity) and `catalogue-meta.json` now publishes `international_products: 38`.
   - **B-02/B-03, D-02 (moot after retirement), D-03, D-05–D-08,
     DOC-01–DOC-05** — described in the independent audit.
   - Open Issue #18 (ownership cross-check vs lak.nz Drive) still needs
@@ -91,7 +85,7 @@ session:
   filename with muted extension; carrier-color dots in Edition; "Copy file
   name" drawer action; work-group row striping; per-view sort/scroll
   persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
-  New `tests/ux-enhancements.spec.js` (7 browser tests; suite now 16 browser
+  New `tests/ux-enhancements.spec.js` (9 browser tests; suite now 18 browser
   tests).
 - **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
   now loops `tests/*.spec.js`; `WORKFLOW_WEB_EDITOR_GUIDE.md` +
@@ -184,8 +178,8 @@ Sandbox traps learned the hard way (all still true):
   live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
   editor.
 - **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 16 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 7); don't burn time installing locally.
+  suite (3 spec files / 18 tests: `column-layout` 4, `csv-export` 5,
+  `ux-enhancements` 9); don't burn time installing locally.
 - Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
   the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
   2026-08-08 — item K ✅ DONE; snippet remains in
@@ -711,6 +705,7 @@ resolutions, delivered as PR #37 (CI green, merged).
   all cross-references repathed (two dangling ones were inside the
   declared-current audit itself).
 - **Left intentionally:** nothing requiring code/data action. Watch items:
-  duplicate URL storage pattern (`reference_url_1` == curated source column on
-  the candidate-minted rows 359–361/369–372) is now consistent by precedent
-  but is the first dedupe candidate if the schema ever tightens.
+  duplicate URL storage pattern previously seen on 359–361 (`reference_url_1` ==
+  curated `source_url_amazon`) was cleared 2026-08-09 (now 0 duplicates; all
+  Amazon-only books have blank `reference_url_1`), so no dedupe candidate
+  remains; the pattern is now consistent.

@@ -1240,7 +1240,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "item_type": item_type, "series": row["series"].strip(),
             "year": candidate["proposed_year"].strip(), "month": "",
             "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
-            "owned": candidate["proposed_owned"].strip(),
+            "owned": candidate["proposed_owned"].strip().lower(),
             "source_url_veritas": "", "source_url_hay_house": "",
             "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
             "reference_url_1": "",
@@ -1352,7 +1352,7 @@ def build_master() -> MasterBuild:
             "month": row["proposed_month"],
             "format": row["proposed_format"],
             "format_detail": row["proposed_format_detail"],
-            "owned": row["proposed_owned"],
+            "owned": row["proposed_owned"].strip().lower(),
             "source_url_veritas": row["proposed_source_url_veritas"],
             "source_url_hay_house": "",
             "source_url_nightingale_conant": "",
@@ -1391,8 +1391,8 @@ def build_master() -> MasterBuild:
             # These have dedicated source columns; don't duplicate in reference_url_1
             # (source overrides will populate the dedicated column after promotions)
             pass
-        elif official_url.startswith("https://www.audible.com/") or official_url.startswith("https://www.hayhouse.com/"):
-            # URL is for a dedicated source column; don't duplicate in reference_url_1
+        elif official_url.startswith("https://www.audible.com/") or official_url.startswith("https://www.hayhouse.com/") or official_url.startswith("https://www.amazon.com/"):
+            # URL is for a dedicated source column (Audible/Hay House/Amazon); don't duplicate in reference_url_1
             # (source overrides will populate the dedicated column after promotions)
             pass
         else:
@@ -1403,7 +1403,7 @@ def build_master() -> MasterBuild:
             "item_type": item_type, "series": candidate["series"],
             "year": year, "month": month_from_title(candidate["candidate_title"], year),
             "format": candidate["proposed_format"],
-            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"],
+            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"].strip().lower(),
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
             "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
             "reference_url_1": ref1,

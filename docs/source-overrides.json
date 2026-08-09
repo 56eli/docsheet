@@ -290,7 +290,7 @@
   {
     "raw_row_number": "297",
     "target_field": "source_url_veritas",
-    "override_value": "https://veritaspub.com/product/https-veritaspub-com-product-golden-word-book-signing-january-13-2007/",
+    "override_value": "https://veritaspub.com/product/golden-word-book-signing-january-13-2007/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
     "review_reason": "Preserve current master association verified against the official inventory during reconciliation. 2026-08-08: publisher-verbatim slug for product 1552 confirmed via live WP-API (no clean-slug equivalent exists); keep as-is; do not \"fix\" (see archive/RULING_PREP_MASTER_265_GOLDEN_WORD_BOOK_SIGNING.md).",
@@ -713,7 +713,7 @@
   {
     "raw_row_number": "328",
     "target_field": "source_url_hay_house",
-    "override_value": "https://www.hayhouse.com/catalog/product/view/id/23364/s/truth-vs-falsehood-parperback/",
+    "override_value": "https://www.hayhouse.com/catalog/product/view/id/23364/s/truth-vs-falsehood-paperback/",
     "review_status": "approved",
     "approval_date": "2026-08-03",
     "review_reason": "same-carrier paperback edition link (Hay House inventory, matched_by_title).",

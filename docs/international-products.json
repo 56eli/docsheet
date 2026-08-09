@@ -1,29 +1,5 @@
 [
   {
-    "publisher": "Audible",
-    "market": "Spanish",
-    "candidate_title": "El nivel más alto de iluminación",
-    "item_type": "book",
-    "format": "digital",
-    "language": "Spanish",
-    "source_url": "https://www.audible.com/pd/El-nivel-mas-alto-de-iluminacion-Audiobook/B0D3FH2QLH",
-    "match_status": "matched_by_title",
-    "match_notes": "Spanish audiobook edition of master 301 (The Highest Level of Enlightenment); deduplicated 2026-08-07.",
-    "review_notes": ""
-  },
-  {
-    "publisher": "Audible",
-    "market": "Spanish",
-    "candidate_title": "Disolver el ego",
-    "item_type": "book",
-    "format": "digital",
-    "language": "Spanish",
-    "source_url": "https://www.audible.com/pd/Disolver-el-ego-Audiobook/8412363027",
-    "match_status": "matched_by_title",
-    "match_notes": "Spanish audiobook edition of master 299 (Dissolving the Ego); deduplicated 2026-08-07.",
-    "review_notes": ""
-  },
-  {
     "publisher": "Ediciones El Grano de Mostaza",
     "market": "Spain",
     "candidate_title": "",
@@ -453,6 +429,30 @@
     "source_url": "https://loja.pandoratreinamentos.com.br/combo-fa-de-hawkins",
     "match_status": "unreviewed",
     "match_notes": "Extracted from combo listing.",
+    "review_notes": ""
+  },
+  {
+    "publisher": "Audible",
+    "market": "Spanish",
+    "candidate_title": "Disolver el ego",
+    "item_type": "book",
+    "format": "digital",
+    "language": "Spanish",
+    "source_url": "https://www.audible.com/pd/Disolver-el-ego-Audiobook/8412363027",
+    "match_status": "matched_by_title",
+    "match_notes": "Spanish audiobook edition of master 299 (Dissolving the Ego); deduplicated 2026-08-07.",
+    "review_notes": ""
+  },
+  {
+    "publisher": "Audible",
+    "market": "Spanish",
+    "candidate_title": "El nivel más alto de iluminación",
+    "item_type": "book",
+    "format": "digital",
+    "language": "Spanish",
+    "source_url": "https://www.audible.com/pd/El-nivel-mas-alto-de-iluminacion-Audiobook/B0D3FH2QLH",
+    "match_status": "matched_by_title",
+    "match_notes": "Spanish audiobook edition of master 301 (The Highest Level of Enlightenment); deduplicated 2026-08-07.",
     "review_notes": ""
   }
 ]

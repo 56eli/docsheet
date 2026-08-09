@@ -794,26 +794,6 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         ))
 
     for product in audible_products:
-        # Spanish-language Audible listings are displayed with international leads.
-        if product["official_title"] in ("Disolver el ego", "El nivel más alto de iluminación"):
-            intl_items.append({
-                "publisher": "Audible",
-                "market": "Spanish",
-                "candidate_title": product["official_title"],
-                # Audiobook editions of book-typed works: the edition model
-                # (EDITION_MODEL_PROPOSAL.md) keeps item_type=book and puts
-                # the carrier in format; the retired medium value "audio"
-                # must not be used as an item_type.
-                "item_type": "book",
-                "format": "digital",
-                "language": "Spanish",
-                "source_url": product["audible_url"],
-                "match_status": product["mapping_status"],
-                "match_notes": product["review_notes"],
-                "review_notes": "",
-            })
-            continue
-
         if product["mapping_status"] != "unreviewed_official_product":
             continue
         items.append(everything_record(
@@ -1028,6 +1008,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             ),
             "hayhouse_official_products": len(hayhouse_products),
             "audible_official_products": len(audible_products),
+            "international_products": len(intl_items),
             "approved_publishers": len(PUBLISHERS),
             "original_source_rows": len(migration_review),
         }),
