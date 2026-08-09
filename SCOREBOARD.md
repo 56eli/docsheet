@@ -40,9 +40,9 @@ files** — this scoreboard is part of that memory. See
 | Project purpose / scope | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | README / onboarding | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Re-audit after 2026-08-09 consolidation |
-| Code hygiene | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work | high | Split generator monoliths |
+| Code hygiene | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 7 | 6 | 6 | 2 | 8 | needs_work | high | Modularize generators |
+| Maintainability | 4 | 8 | 9 | 6 | 6 | 2 | 8 | needs_work | high | — |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |

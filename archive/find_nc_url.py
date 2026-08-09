@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Search for Nightingale-Conant URL for 'In the World But Not of It'."""
 
-import json
 
 # Load the official discovery queue and other data files to see if NC URL is documented
 import os

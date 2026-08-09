@@ -38,16 +38,20 @@ The scoreboard was created as part of the persistent-memory protocol:
 - **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
   priorities 15/12 remain open.
 
-## 2026-08-09 Desktop Table Modernization & REVISION1 Group Color-Coding (this branch, current)
+## 2026-08-09 Desktop Streamlining, Row Group Color-Coding & Expert Audit (this branch, current)
 
-- **Desktop table modernized:** replaced harsh borders and barebones alternating zebra styling with a sleek modern Linear/Stripe design system.
-  - Added subtle left-border color accents and group styling mapped directly to the 11 REVISION1 ODS block groups (`lectures-2002-2011`, `discussion`, `satsang`, `on-the-road`, `volume-series`, `office-series`, `books`, `transcription-books`, `media-misc`, `undecided`, `fran-grace`) in both light and dark themes.
-  - Refined table typography, cell padding (8px 10px), header weights and uppercase tracking, hover transitions, and pill badges for status, carrier, and type.
-- **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage (floor 85%).
-- **Verification:** all 132 tests pass, all 6 `--check` modes green, `node --check` clean.
-- **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
-  priorities 15/12 remain open.
-- Nothing committed yet on this branch — review `git status`/`git diff`.
+- **Desktop Presentation Streamlined & Bloat Removed:**
+  - Removed bloated hero copy paragraphs, collection overview stat cards, "browse by series" strip, and "Master records 362" stat chip row per user instructions.
+  - Kept topbar interface clean, compact, and uncluttered.
+- **Row Group Background Color-Coding Fixed:**
+  - Applied distinct background color tints (`--block-*-bg`) and 4px left borders across all 11 REVISION1 ODS block groups in both light and dark mode for even and odd rows.
+- **Code Quality & Linter Sweep:**
+  - Ran `ruff check .`: **100% clean (0 errors, 0 warnings)**.
+  - Shebangs added, unused variables/imports removed, exception handling narrowed, subprocess calls explicitly declared with `check=False`.
+- **Full Audit Completed:**
+  - Published `docs/audits/2026-08-09-expert-full-stack-audit.md`.
+- **Verification:**
+  - All 132 tests pass (`pytest` / `unittest`), all 6 `--check` modes green, `node --check` clean, `ruff check .` clean.
 
 ## Top priorities for next agent
 

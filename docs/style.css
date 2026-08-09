@@ -639,39 +639,61 @@ body {
   color: var(--text);
 }
 
-/* Group block color coding: subtle left accent & group identity (REVISION1 ODS grouping) */
-#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 {
-  border-left: 3.5px solid var(--block-lectures);
+/* Group block color coding: row background tinting & left accent (REVISION1 ODS grouping) */
+#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 {
+  background-color: var(--block-lectures-bg);
+  border-left: 4px solid var(--block-lectures);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-discussion {
-  border-left: 3.5px solid var(--block-discussion);
+#spreadsheet .tabulator .tabulator-row.row-block-discussion,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion {
+  background-color: var(--block-discussion-bg);
+  border-left: 4px solid var(--block-discussion);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-satsang {
-  border-left: 3.5px solid var(--block-satsang);
+#spreadsheet .tabulator .tabulator-row.row-block-satsang,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang {
+  background-color: var(--block-satsang-bg);
+  border-left: 4px solid var(--block-satsang);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-on-the-road {
-  border-left: 3.5px solid var(--block-on-the-road);
+#spreadsheet .tabulator .tabulator-row.row-block-on-the-road,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road {
+  background-color: var(--block-on-the-road-bg);
+  border-left: 4px solid var(--block-on-the-road);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-volume-series {
-  border-left: 3.5px solid var(--block-volume-series);
+#spreadsheet .tabulator .tabulator-row.row-block-volume-series,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series {
+  background-color: var(--block-volume-series-bg);
+  border-left: 4px solid var(--block-volume-series);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-office-series {
-  border-left: 3.5px solid var(--block-office-series);
+#spreadsheet .tabulator .tabulator-row.row-block-office-series,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series {
+  background-color: var(--block-office-series-bg);
+  border-left: 4px solid var(--block-office-series);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-books {
-  border-left: 3.5px solid var(--block-books);
+#spreadsheet .tabulator .tabulator-row.row-block-books,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books {
+  background-color: var(--block-books-bg);
+  border-left: 4px solid var(--block-books);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-transcription-books {
-  border-left: 3.5px solid var(--block-transcription-books);
+#spreadsheet .tabulator .tabulator-row.row-block-transcription-books,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books {
+  background-color: var(--block-transcription-books-bg);
+  border-left: 4px solid var(--block-transcription-books);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc {
-  border-left: 3.5px solid var(--block-media-misc);
+#spreadsheet .tabulator .tabulator-row.row-block-media-misc,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc {
+  background-color: var(--block-media-misc-bg);
+  border-left: 4px solid var(--block-media-misc);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided {
-  border-left: 3.5px solid var(--block-undecided);
+#spreadsheet .tabulator .tabulator-row.row-block-undecided,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided {
+  background-color: var(--block-undecided-bg);
+  border-left: 4px solid var(--block-undecided);
 }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace {
-  border-left: 3.5px solid var(--block-fran-grace);
+#spreadsheet .tabulator .tabulator-row.row-block-fran-grace,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace {
+  background-color: var(--block-fran-grace-bg);
+  border-left: 4px solid var(--block-fran-grace);
 }
 
 #spreadsheet .tabulator .tabulator-cell {

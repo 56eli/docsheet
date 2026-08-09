@@ -57,7 +57,7 @@ def first_year(*values: str) -> str:
 
 def classify(row: list[str], current_series: str) -> tuple[str, str, str]:
     """Return disposition, reason, and next series context."""
-    uuid, tempid, title, owned, source, note, fmt, product, *_rest = row
+    _uuid, tempid, title, owned, _source, _note, _fmt, product, *_rest = row
     values = [clean(value) for value in row]
     title = clean(title)
     tempid = clean(tempid)
@@ -76,11 +76,7 @@ def classify(row: list[str], current_series: str) -> tuple[str, str, str]:
 
     title_upper = title.upper()
     if (
-        "MISSING" in title_upper
-        or "MORE STUFF MISSING" in title_upper
-        or title_upper.startswith("DISSERTATION")
-        or title_upper.startswith("SCORPION BOOK")
-        or title_upper.startswith("ORTHOMOLECULAR BOOK")
+        "MISSING" in title_upper or "MORE STUFF MISSING" in title_upper or title_upper.startswith(("DISSERTATION", "SCORPION BOOK", "ORTHOMOLECULAR BOOK"))
     ):
         return "research_note", "Editorial gap/research note; item identity needs confirmation.", current_series
 

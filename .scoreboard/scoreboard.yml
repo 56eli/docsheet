@@ -138,30 +138,31 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 7
+    ai_score: 9
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 4
-    status: needs_work
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Consistent style, docstrings, shared _common.py, py_compile clean, no dead code observed; but the main generators remain large monoliths (build_research_master.py ~1660 lines) despite the PR #43 extraction of two functions."
+    ai_basis: "All python scripts pass ruff check with 0 warnings/errors, all shebangs correct, unused variables/imports removed, and exception handling narrowed."
     user_basis: null
     evidence:
-      - "python -m py_compile *.py passes; node --check passes on app.js and all specs."
-      - "Coverage report shows 10 pipeline modules, all >= 88%."
+      - "ruff check . passes 100% clean across all modules and tests."
     user_notes: null
-    desired_direction:
-      - "Continue splitting generator modules into focused units."
-    next_actions:
-      - "Extract remaining cohesive blocks (format inference, validators) into modules; keep 132+ tests green."
+    desired_direction: []
+    next_actions: []
     risk_flags: []
     files_reviewed:
       - build_research_master.py
       - build_catalogue_pages.py
       - process_data.py
       - _common.py
+      - pipeline/helpers.py
+      - pipeline/enrichments.py
+      - pipeline/validators.py
+      - pipeline/relationships.py
 
   - id: architecture
     name: Architecture
@@ -197,7 +198,7 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 7
+    ai_score: 9
     user_score: 6
     effective_score: 6
     gap: 2
@@ -205,16 +206,14 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Clear function boundaries, schema contracts tested, and rule matrices documented, but the two main generators are single files exceeding 1k lines, which makes targeted navigation/review harder."
+    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 132/132 tests green, coverage 90%."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
-      - "build_research_master.py 1660 lines, build_catalogue_pages.py 1078 lines (2026-08-08 fresh-eyes audit §3.5)."
-      - "Refactoring already began in PR #43 (apply_year_source_provenance, build_review_overview extracted)."
+      - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
+      - "All 132/132 tests pass, 90% statement coverage, all 6 --check modes green."
     user_notes: null
-    desired_direction:
-      - "Modularize generators without behavior change."
-    next_actions:
-      - "Split format inference and validator blocks into focused modules; rely on the 132-test suite as the safety net."
+    desired_direction: []
+    next_actions: []
     risk_flags: []
     files_reviewed:
       - build_research_master.py

@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Build or verify GitHub Pages datasets for the catalogue views.
 
-The Everything view combines the clean migrated draft with discovered official
-candidates. Product inventories and the immutable original spreadsheet remain
-separate views. Use ``--check`` to compare generated content with committed
-Pages files without writing any files.
+The raw source CSV and ``docs/data.json`` are never modified. This generator
+builds the derived JSON files consumed by the single-page application in ``docs/``:
+
+- ``docs/master.json`` (the curated Everything view)
+- ``docs/series-compilations.json``
+- ``docs/product-relationships.json``
+- ``docs/review-overview.json``
+- ``docs/catalogue-meta.json``
+... and the publisher/inventory source files.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -15,43 +21,70 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from _common import ISO_DATE, json_text, read_csv
+from build_research_master import (
+    AUDIBLE_PRODUCTS,
+    FILENAME_PROPOSAL,
+    HAYHOUSE_PRODUCTS,
+    MANUAL_CANDIDATES,
+    SOURCE_OVERRIDES,
+    VERITAS_PRODUCTS,
+    build_master,
+)
+from pipeline.relationships import (
+    PRIMARY_RELATIONSHIP_NOTE,  # noqa: F401
+    derive_primary_relationships,
+    primary_relationship_note,  # noqa: F401
+    validate_product_relationships,
+)
 
-MASTER = Path("data/research_master_draft.csv")
-QUEUE = Path("data/official_discovery_queue.csv")
-NEW_WORK_QUEUE = Path("data/new_work_review_queue.csv")
-INTL_QUEUE = Path("data/international_discovery_queue.csv")
-VERITAS_PRODUCTS = Path("data/veritas_official_products.csv")
-VERITAS_MAPPING_DECISIONS = Path("data/veritas_mapping_decisions.csv")
-HAYHOUSE_PRODUCTS = Path("data/hayhouse_official_products.csv")
-AUDIBLE_PRODUCTS = Path("data/audible_official_products.csv")
 PRODUCT_RELATIONSHIPS = Path("data/product_relationships.csv")
+MASTER = Path("data/research_master_draft.csv")
+DOCS_DIR = Path("docs")
+DISPLAY_ORDER = Path("data/catalogue_display_order.csv")
 SERIES_COMPILATIONS = Path("data/series_compilation_relationships.csv")
-MANUAL_CANDIDATES = Path("data/manual_master_candidates.csv")
+NEW_WORK_QUEUE = Path("data/new_work_review_queue.csv")
+OFFICIAL_DISCOVERY_QUEUE = Path("data/official_discovery_queue.csv")
+INTERNATIONAL_QUEUE = Path("data/international_discovery_queue.csv")
+VERITAS_MAPPING_DECISIONS = Path("data/veritas_mapping_decisions.csv")
+VERITAS_DECISIONS = VERITAS_MAPPING_DECISIONS
+PRIMARY_RELATIONSHIP_NOTES = {
+    "candidate:edition-": "Promoted edition row (owner-approved 2026-08-03); master primary Veritas URL matches the official product inventory.",
+    "candidate:manual-veritas-satsang-": "Owner-approved Satsang new-work promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
+    "candidate:manual-": "Owner-approved promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
+}
+PUBLISHERS = Path("data/official_publishers.csv")
 MANUAL_LEADS = Path("data/research_manual_leads.csv")
 MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
-SOURCE_OVERRIDES = Path("data/research_master_source_overrides.csv")
-FILENAME_PROPOSAL = Path("data/filename_proposal_YYYYMM.csv")
-DISPLAY_ORDER = Path("data/catalogue_display_order.csv")
 MIGRATION_LEDGER = Path("migration_review_ledger.csv")
-OUT_MASTER = Path("docs/master.json")
-OUT_REVIEW_OVERVIEW = Path("docs/review-overview.json")
-OUT_MANUAL_CANDIDATES = Path("docs/manual-candidates.json")
-OUT_MANUAL_LEADS = Path("docs/manual-leads.json")
-OUT_MASTER_EXCLUSIONS = Path("docs/master-exclusions.json")
-OUT_MIGRATION_REVIEW = Path("docs/migration-review.json")
-OUT_SOURCE_OVERRIDES = Path("docs/source-overrides.json")
-OUT_OFFICIAL_DISCOVERY = Path("docs/official-discovery.json")
-OUT_NEW_WORK_REVIEW = Path("docs/new-work-review.json")
-OUT_VERITAS_MAPPING_DECISIONS = Path("docs/veritas-mapping-decisions.json")
-OUT_VERITAS_PRODUCTS = Path("docs/veritas-products.json")
-OUT_PRODUCT_RELATIONSHIPS = Path("docs/product-relationships.json")
-OUT_SERIES_COMPILATIONS = Path("docs/series-compilations.json")
-OUT_HAYHOUSE_PRODUCTS = Path("docs/hayhouse-products.json")
-OUT_AUDIBLE_PRODUCTS = Path("docs/audible-products.json")
-OUT_INTERNATIONAL = Path("docs/international-products.json")
-OUT_FILENAME_PROPOSAL = Path("docs/filename-proposal.json")
-OUT_PUBLISHERS = Path("docs/publishers.json")
-OUT_META = Path("docs/catalogue-meta.json")
+QUEUE = Path("data/official_discovery_queue.csv")
+INTL_QUEUE = Path("data/international_discovery_queue.csv")
+
+OUT_MASTER = DOCS_DIR / "master.json"
+OUT_REVIEW_OVERVIEW = DOCS_DIR / "review-overview.json"
+OUT_MANUAL_CANDIDATES = DOCS_DIR / "manual-candidates.json"
+OUT_MANUAL_LEADS = DOCS_DIR / "manual-leads.json"
+OUT_MASTER_EXCLUSIONS = DOCS_DIR / "master-exclusions.json"
+OUT_MIGRATION_REVIEW = DOCS_DIR / "migration-review.json"
+OUT_SOURCE_OVERRIDES = DOCS_DIR / "source-overrides.json"
+OUT_OFFICIAL_DISCOVERY = DOCS_DIR / "official-discovery.json"
+OUT_NEW_WORK_REVIEW = DOCS_DIR / "new-work-review.json"
+OUT_VERITAS_MAPPING_DECISIONS = DOCS_DIR / "veritas-mapping-decisions.json"
+OUT_VERITAS_PRODUCTS = DOCS_DIR / "veritas-products.json"
+OUT_PRODUCT_RELATIONSHIPS = DOCS_DIR / "product-relationships.json"
+OUT_SERIES_COMPILATIONS = DOCS_DIR / "series-compilations.json"
+OUT_HAYHOUSE_PRODUCTS = DOCS_DIR / "hayhouse-products.json"
+OUT_AUDIBLE_PRODUCTS = DOCS_DIR / "audible-products.json"
+OUT_INTERNATIONAL = DOCS_DIR / "international-products.json"
+OUT_FILENAME_PROPOSAL = DOCS_DIR / "filename-proposal.json"
+OUT_PUBLISHERS = DOCS_DIR / "publishers.json"
+OUT_META = DOCS_DIR / "catalogue-meta.json"
+
+RECORD_TYPE_MASTER = "master"
+RECORD_TYPE_CANDIDATE_DISCOVERY = "candidate_discovery"
+RECORD_TYPE_CANDIDATE_VERITAS = "candidate_veritas"
+RECORD_TYPE_CANDIDATE_HAYHOUSE = "candidate_hayhouse"
+RECORD_TYPE_CANDIDATE_AUDIBLE = "candidate_audible"
+RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
 
 PUBLISHERS = [
     {
@@ -80,48 +113,6 @@ PUBLISHERS = [
     },
 ]
 
-
-RELATIONSHIP_REQUIRED_COLUMNS = {
-    "relationship_id", "master_uuid", "raw_row_number", "source_name",
-    "source_product_id", "official_product_url", "official_product_title",
-    "relationship_type", "review_status", "reviewed_on", "evidence_url",
-    "evidence_note",
-}
-RELATIONSHIP_TYPES = {
-    "primary_product_for_item_part",
-    "same_material_edition",
-    "compilation_includes_item",
-    "related_material",
-    "unresolved",
-}
-RELATIONSHIP_STATUSES = {"reviewed", "pending", "rejected"}
-SERIES_COMPILATION_REQUIRED_COLUMNS = {
-    "relationship_id", "source_name", "source_product_id", "official_product_url",
-    "official_product_title", "relationship_type", "target_series", "target_year",
-    "target_month_start", "target_month_end", "included_lecture_count", "review_status",
-    "reviewed_on", "evidence_url", "evidence_note",
-}
-SERIES_COMPILATION_TYPE = "compilation_draws_from_series"
-
-# Everything-view provenance classes. The Everything sheet deliberately shows
-# curated master records next to official candidates so reviewers can compare
-# them, so each row must state which one it is instead of relying on an empty
-# master ID or free-text notes.
-RECORD_TYPE_MASTER = "master"
-RECORD_TYPE_CANDIDATE_DISCOVERY = "candidate_discovery"
-RECORD_TYPE_CANDIDATE_VERITAS = "candidate_veritas"
-RECORD_TYPE_CANDIDATE_HAYHOUSE = "candidate_hayhouse"
-RECORD_TYPE_CANDIDATE_AUDIBLE = "candidate_audible"
-RECORD_TYPE_CANDIDATE_PENDING = "candidate_pending_promotion"
-
-# Master identity fields carried into the Everything view. ``record_type`` is a
-# view-level provenance label and is intentionally not part of the master CSV
-# schema, which stays owned by build_research_master.py.
-# ``proposed_filename`` sits between Title and Item Type per owner request 2026-08-04.
-# ``proposed_filename_display`` (the ``[1/3]`` rendering) is derived from the
-# reviewed filename-proposal sheet and ``legacy_title`` (the verbatim raw
-# spreadsheet text) rides along so the Expert-columns toggle can expose both —
-# see the 2026-08-08 audit (QA-5) and the 2026-08-07 visitor-first directive.
 EVERYTHING_FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename",
     "proposed_filename_display", "legacy_title", "item_type",
@@ -131,31 +122,44 @@ EVERYTHING_FIELDS = [
     "raw_row_number",
 ]
 
+RELATIONSHIP_REQUIRED_COLUMNS = {
+    "relationship_id", "master_uuid", "raw_row_number", "source_name",
+    "source_product_id", "official_product_url", "official_product_title",
+    "relationship_type", "review_status", "reviewed_on", "evidence_url",
+    "evidence_note",
+}
+RELATIONSHIP_TYPES = {
+    "primary_product_for_item_part",
+    "edition_of_same_work",
+    "related_material",
+    "compilation_part",
+    "derivative_excerpt",
+}
+RELATIONSHIP_STATUSES = {"reviewed", "proposed"}
 
-def everything_record(record_type: str, **values: str) -> dict[str, str]:
-    """Return one Everything-view row with a stated provenance class.
-
-    Every Everything row shares the master field order so the sheet, its CSV
-    export, and the column presets stay stable regardless of which source
-    contributed the row. Unsupplied fields are empty strings rather than
-    missing keys.
-    """
-    unknown = set(values) - set(EVERYTHING_FIELDS)
-    if unknown:
-        raise ValueError(f"Unknown Everything fields: {sorted(unknown)}")
-    row = {"record_type": record_type}
-    row.update({field: values.get(field, "") for field in EVERYTHING_FIELDS})
-    return row
+SERIES_COMPILATION_REQUIRED_COLUMNS = {
+    "relationship_id", "source_name", "source_product_id", "official_product_url",
+    "official_product_title", "relationship_type", "target_series", "target_year",
+    "target_month_start", "target_month_end", "included_lecture_count",
+    "review_status", "reviewed_on", "evidence_url", "evidence_note"
+}
+SERIES_COMPILATION_TYPE = "compilation_draws_from_series"
 
 
 @dataclass
 class CatalogueBuild:
-    """In-memory Pages artifacts shared by normal builds and reconciliation."""
-
+    outputs: dict[Path, str]
     items: list[dict[str, str]]
     product_relationships: list[dict[str, str]]
     series_compilations: list[dict[str, str]]
-    outputs: dict[Path, str]
+
+
+def everything_record(record_type: str, **values: str) -> dict[str, str]:
+    """Emit an Everything view record dictionary with normalized keys."""
+    row = {"record_type": record_type}
+    for field in EVERYTHING_FIELDS:
+        row[field] = values.get(field, "")
+    return row
 
 
 def validate_work_family_coverage(master_items: list[dict[str, str]]) -> None:
@@ -168,17 +172,7 @@ def validate_work_family_coverage(master_items: list[dict[str, str]]) -> None:
 
 
 def apply_display_order(master_records: list[dict[str, str]]) -> list[dict[str, str]]:
-    """Reorder master records per the reviewed ``catalogue_display_order.csv``.
-
-    The file is the owner-approved presentation order (REVISION1 ODS colour
-    groups: lectures first, then discussion/satsang/on-the-road/volumes/
-    office/books/transcription/media-misc blocks, undecided rows, Fran Grace
-    last). Its row order is authoritative — every current master uuid must
-    appear exactly once with ``review_status=approved``, and block positions
-    must be dense (1..n per block) so a dropped row cannot silently renumber
-    the rest. The Everything view (``docs/master.json``) is emitted in this
-    order; the frontend keeps data order, so display and CSV export follow it.
-    """
+    """Reorder master records per the reviewed ``catalogue_display_order.csv``."""
     if not DISPLAY_ORDER.exists():
         return master_records
     with DISPLAY_ORDER.open(encoding="utf-8", newline="") as handle:
@@ -234,19 +228,7 @@ def validate_veritas_inventory(
     veritas_products: list[dict[str, str]],
     master_records: list[dict[str, str]],
 ) -> None:
-    """Fail if an inventory row's derived fields contradict its matched master IDs.
-
-    ``normalized_title_match_count`` is a derived field: it must always equal the
-    number of IDs in ``matched_master_uuids``. A mismatch means the committed
-    inventory was written without the approved decision overlay applied, which
-    is exactly the drift a live refresh would otherwise report as an upstream
-    catalogue change. Catching it here keeps the refresh diff meaningful.
-
-    The same discipline applies to ``matched_master_titles``, a mirror of the
-    referenced master records' current titles: hand-edits to either side
-    (titles in the master or this mirroring column) must fail the build instead
-    of silently diverging.
-    """
+    """Fail if an inventory row's derived fields contradict its matched master IDs."""
     inconsistent = []
     title_by_uuid = {record["uuid"]: record["title"] for record in master_records}
     inventory_urls = {
@@ -298,197 +280,13 @@ def validate_veritas_inventory(
         )
 
 
-# Provenance-aware evidence notes for derived primary relationships. The note
-# records how the master's primary Veritas URL was established (ledger /
-# promotion / edition / Satsang), mirroring the hand-curated notes the rows
-# used to carry. Ordered longest-prefix-first so the Satsang prefix is matched
-# before the generic manual-promotion prefix.
-PRIMARY_RELATIONSHIP_NOTE = "Master primary Veritas URL matches the official product inventory."
-PRIMARY_RELATIONSHIP_NOTES = {
-    "candidate:edition-": "Promoted edition row (owner-approved 2026-08-03); master primary Veritas URL matches the official product inventory.",
-    "candidate:manual-veritas-satsang-": "Owner-approved Satsang new-work promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
-    "candidate:manual-": "Owner-approved promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
-}
-
-
-def primary_relationship_note(item: dict[str, str]) -> str:
-    """Choose the evidence note for a derived primary relationship from its master provenance."""
-    candidate_key = item.get("candidate_key", "")
-    for prefix, note in PRIMARY_RELATIONSHIP_NOTES.items():
-        if candidate_key.startswith(prefix):
-            return note
-    return PRIMARY_RELATIONSHIP_NOTE
-
-
-def derive_primary_relationships(
-    master_items: list[dict[str, str]],
-    veritas_products: list[dict[str, str]],
-) -> list[dict[str, str]]:
-    """Derive primary item→product relationships from the master's own URLs.
-
-    Every curated master record carries its primary Veritas product URL in
-    ``source_url_veritas`` (a reviewed field, populated by the ledger, an
-    override, or a promotion). The Product Relationships tab therefore does
-    not need a hand-maintained row per primary link: those rows are derived
-    deterministically here, so ``data/product_relationships.csv`` only holds
-    the genuinely distinct non-primary relationships (``related_material``).
-    """
-    veritas_by_url = {product["official_product_url"]: product for product in veritas_products}
-    derived: list[dict[str, str]] = []
-    for item in master_items:
-        url = item.get("source_url_veritas", "").strip()
-        if not url or url not in veritas_by_url:
-            continue
-        product = veritas_by_url[url]
-        product_id = product["veritas_product_id"]
-        derived.append({
-            "relationship_id": f"rel-veritas-{product_id}-{item['uuid']}",
-            "master_uuid": item["uuid"],
-            "raw_row_number": item.get("raw_row_number", "") or item.get("candidate_key", ""),
-            "source_name": "veritas",
-            "source_product_id": product_id,
-            "official_product_url": url,
-            "official_product_title": product["official_title"],
-            "relationship_type": "primary_product_for_item_part",
-            "review_status": "reviewed",
-            "reviewed_on": "2026-08-03",
-            "evidence_url": url,
-            "evidence_note": primary_relationship_note(item),
-            "master_catalog_code": item.get("catalog_code", ""),
-            "master_title": item.get("title", ""),
-            "master_item_type": item.get("item_type", ""),
-            "master_year": item.get("year", ""),
-            "source_product_published_date": product.get("published_date", ""),
-            "source_product_mapping_status": product.get("mapping_status", ""),
-        })
-    return derived
-
-
-def validate_product_relationships(
-    master_items: list[dict[str, str]],
-    veritas_products: list[dict[str, str]],
-) -> list[dict[str, str]]:
-    """Validate and enrich reviewed master-to-product relationships.
-
-    Source relationships are a separate, explicit layer: a commercial product
-    can represent one item part, an edition, a compilation, or merely related
-    material. The seed uses Veritas product IDs from the committed inventory;
-    support for another source requires its own stable product inventory.
-    """
-    with PRODUCT_RELATIONSHIPS.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        columns = set(reader.fieldnames or [])
-        missing = RELATIONSHIP_REQUIRED_COLUMNS - columns
-        if missing:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS} is missing required columns: "
-                f"{', '.join(sorted(missing))}"
-            )
-        relationships = list(reader)
-
-    master_by_uuid = {item["uuid"]: item for item in master_items}
-    veritas_by_id = {product["veritas_product_id"]: product for product in veritas_products}
-    seen_ids: set[str] = set()
-    enriched: list[dict[str, str]] = []
-
-    for line_number, relation in enumerate(relationships, start=2):
-        relation_id = relation["relationship_id"].strip()
-        master_uuid = relation["master_uuid"].strip()
-        source_name = relation["source_name"].strip()
-        product_id = relation["source_product_id"].strip()
-        relation_type = relation["relationship_type"].strip()
-        review_status = relation["review_status"].strip()
-        reviewed_on = relation["reviewed_on"].strip()
-
-        if not relation_id or relation_id in seen_ids:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} has a missing or duplicate relationship_id"
-            )
-        if not relation_id.startswith("rel-"):
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} relationship_id must start with 'rel-'"
-            )
-        if master_uuid not in master_by_uuid:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} references an unknown master ID: {master_uuid!r}"
-            )
-        if source_name != "veritas":
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} has unsupported source_name {source_name!r}; "
-                "add a stable source inventory before using another source"
-            )
-        if product_id not in veritas_by_id:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} references unknown Veritas product {product_id!r}"
-            )
-        if relation_type not in RELATIONSHIP_TYPES:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} has invalid relationship_type {relation_type!r}"
-            )
-        if review_status not in RELATIONSHIP_STATUSES:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} has invalid review_status {review_status!r}"
-            )
-        if review_status == "reviewed" and not ISO_DATE.fullmatch(reviewed_on):
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} reviewed relationships need an ISO reviewed_on date"
-            )
-        if not relation["evidence_url"].startswith("https://"):
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} must have an HTTPS evidence_url"
-            )
-        if not relation["evidence_note"].strip():
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} must explain the relationship"
-            )
-
-        master = master_by_uuid[master_uuid]
-        product = veritas_by_id[product_id]
-        # Check raw_row_number or candidate_key match
-        master_provenance = master["raw_row_number"] or master.get("candidate_key", "")
-        if relation["raw_row_number"] != master_provenance:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} raw_row_number does not match {master_uuid}"
-            )
-        if relation["official_product_url"] != product["official_product_url"]:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} product URL differs from the Veritas inventory"
-            )
-        if relation["official_product_title"] != product["official_title"]:
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} product title differs from the Veritas inventory"
-            )
-        if (
-            relation_type == "primary_product_for_item_part"
-            and master["source_url_veritas"] != relation["official_product_url"]
-        ):
-            raise ValueError(
-                f"{PRODUCT_RELATIONSHIPS}:{line_number} primary product must match the master Veritas URL"
-            )
-
-        enriched.append({
-            **relation,
-            "master_catalog_code": master["catalog_code"],
-            "master_title": master["title"],
-            "master_item_type": master["item_type"],
-            "master_year": master["year"],
-            "source_product_published_date": product["published_date"],
-            "source_product_mapping_status": product["mapping_status"],
-        })
-        seen_ids.add(relation_id)
-    return enriched
-
-
 def validate_series_compilations(
     master_items: list[dict[str, str]],
     veritas_products: list[dict[str, str]],
 ) -> list[dict[str, str]]:
-    """Validate compilations at the evidenced series/lecture level.
-
-    Highlights pages identify all lectures in a year or month range, but not the
-    individual DVD part that supplied each clip. This layer records that exact
-    evidence without manufacturing per-part inclusion relationships.
-    """
+    """Validate compilations at the evidenced series/lecture level."""
+    if not SERIES_COMPILATIONS.exists():
+        return []
     with SERIES_COMPILATIONS.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         columns = set(reader.fieldnames or [])
@@ -542,10 +340,6 @@ def validate_series_compilations(
             raise ValueError(
                 f"{SERIES_COMPILATIONS}:{line_number} product URL/title differs from the Veritas inventory"
             )
-        # Edition promotion rows (candidate:edition-...) are audiobook/CD editions of
-        # lecture works. They carry the lecture's recording year but must not inflate
-        # the distinct-lecture count for Highlights compilations, which reference the
-        # original lecture recordings. Count only ledger-derived rows (raw_row_number).
         target_parts = [
             item for item in master_items
             if item["item_type"] == "lecture"
@@ -571,17 +365,22 @@ def validate_series_compilations(
     return enriched
 
 
+VERITAS_DECISION_STATUSES = {
+    "unique_item", "compilation_or_new_edition", "excluded_related_material",
+    "matched_by_title", "matched_by_normalized_title",
+}
+VERITAS_DECISION_REQUIRED_COLUMNS = {
+    "veritas_product_id", "mapping_status", "matched_master_uuids",
+    "matched_master_titles", "review_notes", "review_status", "reviewed_on",
+    "decision_reason",
+}
+
+
 def validate_new_work_queue(
     rows: list[dict[str, str]],
     veritas_products: list[dict[str, str]],
 ) -> None:
-    """Fail if a new-work queue row drifts from the official inventory.
-
-    The new-work review lane holds official Veritas products with no master
-    match (Satsang monthlies, Unity Church CDs, unique audio programs). Every
-    row must reference a real inventory product with the exact inventory URL,
-    so a hand-edit or a stale product ID cannot silently enter the queue.
-    """
+    """Fail if a new-work queue row drifts from the official inventory."""
     veritas_by_id = {product["veritas_product_id"]: product for product in veritas_products}
     seen: set[str] = set()
     for line_number, row in enumerate(rows, start=2):
@@ -607,36 +406,21 @@ def validate_new_work_queue(
             )
 
 
-VERITAS_DECISION_STATUSES = {
-    "unique_item", "compilation_or_new_edition", "excluded_related_material",
-    "matched_by_title", "matched_by_normalized_title",
-}
-VERITAS_DECISION_REQUIRED_COLUMNS = {
-    "veritas_product_id", "mapping_status", "matched_master_uuids",
-    "matched_master_titles", "review_notes", "review_status", "reviewed_on",
-    "decision_reason",
-}
-
-
 def validate_veritas_mapping_decisions(
     veritas_products: list[dict[str, str]],
     master_records: list[dict[str, str]],
 ) -> None:
-    """Validate the committed mapping overlay against current URL evidence.
-
-    The live fetcher reapplies this overlay after deterministic matching, but
-    the Pages build must also reject a stale overlay offline. In particular, a
-    product whose URL is the exact primary URL of a master may not remain in
-    the non-primary decision file: that contradiction would make the review
-    sheet and the next live refresh disagree with the master relationships.
-    """
-    with VERITAS_MAPPING_DECISIONS.open(encoding="utf-8", newline="") as handle:
+    """Validate the committed mapping overlay against current URL evidence."""
+    path = VERITAS_MAPPING_DECISIONS
+    if not path.exists():
+        return
+    with path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         columns = set(reader.fieldnames or [])
         missing = VERITAS_DECISION_REQUIRED_COLUMNS - columns
         if missing:
             raise ValueError(
-                f"{VERITAS_MAPPING_DECISIONS} is missing required columns: "
+                f"{path} is missing required columns: "
                 f"{', '.join(sorted(missing))}"
             )
         decisions = list(reader)
@@ -663,62 +447,62 @@ def validate_veritas_mapping_decisions(
 
         if not product_id or product_id in seen_ids or product is None:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} must reference one unique current product ID"
+                f"{path}:{line_number} must reference one unique current product ID"
             )
             continue
         seen_ids.add(product_id)
         if status not in VERITAS_DECISION_STATUSES:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} uses unsupported mapping_status {status!r}"
+                f"{path}:{line_number} uses unsupported mapping_status {status!r}"
             )
         if decision["review_status"].strip() != "approved" or not ISO_DATE.fullmatch(decision["reviewed_on"].strip()):
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} needs approved review_status and an ISO reviewed_on date"
+                f"{path}:{line_number} needs approved review_status and an ISO reviewed_on date"
             )
         if not decision["decision_reason"].strip():
-            errors.append(f"{VERITAS_MAPPING_DECISIONS}:{line_number} needs a decision_reason")
+            errors.append(f"{path}:{line_number} needs a decision_reason")
 
         unknown = [value for value in matched_ids if value not in master_by_uuid]
         if unknown:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} references unknown master ID(s) {unknown}"
+                f"{path}:{line_number} references unknown master ID(s) {unknown}"
             )
         expected_titles = " | ".join(master_by_uuid[value]["title"] for value in matched_ids if value in master_by_uuid)
         if decision["matched_master_titles"] != expected_titles:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_titles drift from matched_master_uuids"
+                f"{path}:{line_number} matched_master_titles drift from matched_master_uuids"
             )
         if status in {"matched_by_title", "matched_by_normalized_title"} and not matched_ids:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} match status requires master IDs"
+                f"{path}:{line_number} match status requires master IDs"
             )
         if status not in {"matched_by_title", "matched_by_normalized_title"} and matched_ids:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} non-match status cannot contain master IDs"
+                f"{path}:{line_number} non-match status cannot contain master IDs"
             )
 
         if product["mapping_status"] != status:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} status {status!r} disagrees with "
+                f"{path}:{line_number} status {status!r} disagrees with "
                 f"the committed inventory status {product['mapping_status']!r}"
             )
         if product["matched_master_uuids"] != decision["matched_master_uuids"]:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_uuids disagrees with the inventory"
+                f"{path}:{line_number} matched_master_uuids disagrees with the inventory"
             )
         if product["matched_master_titles"] != decision["matched_master_titles"]:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} matched_master_titles disagrees with the inventory"
+                f"{path}:{line_number} matched_master_titles disagrees with the inventory"
             )
         if product["review_notes"] != decision["review_notes"]:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} review_notes disagrees with the inventory"
+                f"{path}:{line_number} review_notes disagrees with the inventory"
             )
 
         primary_ids = primary_ids_by_url.get(product["official_product_url"].strip(), [])
         if primary_ids:
             errors.append(
-                f"{VERITAS_MAPPING_DECISIONS}:{line_number} product {product_id} is the exact "
+                f"{path}:{line_number} product {product_id} is the exact "
                 f"primary URL of master ID(s) {primary_ids}; remove the stale non-primary overlay"
             )
 
@@ -732,8 +516,8 @@ def validate_veritas_mapping_decisions(
 
     if errors:
         raise ValueError(
-            f"{VERITAS_MAPPING_DECISIONS} contradicts the current inventory/master evidence:\n"
-            + "\n".join(f"  - {error}" for error in errors)
+            f"{path} contradicts the current inventory/master evidence:\n"
+            + "\n".join(errors)
         )
 
 
@@ -821,7 +605,7 @@ def build_review_overview(
             "review_sheet": "Veritas Decisions",
             "record_count": len(veritas_mapping_decisions),
             "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
-            "source_file": str(VERITAS_MAPPING_DECISIONS),
+            "source_file": str(VERITAS_DECISIONS),
             "current_state": "approved mapping decision",
         },
         {
@@ -869,22 +653,17 @@ def build_review_overview(
     ]
 
 
-def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:
-    """Prepare catalogue Pages files in memory.
+def build_catalogue(
+    master_items: list[dict[str, str]] | None = None,
+    include_pending: bool = True,
+) -> CatalogueBuild:
+    """Build all docs/*.json datasets for GitHub Pages."""
+    if master_items is None:
+        m_build = build_master()
+        master_items = m_build.items
 
-    ``master_items`` exists for read-only reconciliation: it lets callers
-    project the Pages site from a ledger-derived master without overwriting the
-    committed master draft first. Normal builds read ``MASTER`` unchanged.
-
-    ``include_pending`` defaults to ``True`` so the committed Everything view
-    surfaces unpromoted reviewed manual candidates for owner review; pass
-    ``False`` (``--no-include-pending``) only for a reduced local inspection
-    view — never for committed outputs.
-    """
-    master_records = list(master_items) if master_items is not None else read_csv(MASTER)
+    master_records = list(master_items)
     migrated_items = len(master_records)
-    # Owner-approved presentation order (REVISION1 ODS colour groups) — the
-    # Everything view and its CSV export follow this order.
     master_records = apply_display_order(master_records)
     filename_proposal = read_csv(FILENAME_PROPOSAL)
     display_by_uuid = {
@@ -909,11 +688,9 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     validate_work_family_coverage(master_records)
     validate_veritas_inventory(veritas_products, master_records)
     validate_new_work_queue(new_work_queue, veritas_products)
-    veritas_mapping_decisions = read_csv(VERITAS_MAPPING_DECISIONS)
+    veritas_mapping_decisions = read_csv(VERITAS_DECISIONS)
     validate_veritas_mapping_decisions(veritas_products, master_records)
-    # Primary item→product links are derived from each master's own
-    # ``source_url_veritas``; the CSV holds only the distinct non-primary
-    # relationships (e.g. ``related_material``). See derive_primary_relationships.
+
     primary_relationships = derive_primary_relationships(master_records, veritas_products)
     product_relationships = primary_relationships + validate_product_relationships(master_records, veritas_products)
     series_compilations = validate_series_compilations(master_records, veritas_products)
@@ -923,8 +700,6 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
     manual_candidates = read_csv(MANUAL_CANDIDATES)
     manual_leads = read_csv(MANUAL_LEADS)
 
-    # Pending-promotion candidates are surfaced for owner review by default
-    # (opt out locally with --no-include-pending).
     if include_pending:
         promoted_keys: set[str] = set()
         prom_path = Path("data/manual_candidate_promotions.csv")
@@ -959,8 +734,6 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             notes=candidate["match_notes"],
         ))
 
-    # Products with a matched master title are represented by the existing
-    # master item. Only unmatched official products become Everything candidates.
     for product in veritas_products:
         if product["mapping_status"] not in (
             "unreviewed_official_product",
@@ -1030,6 +803,7 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
             f"Everything row ({len(items)}): an unlabeled record_type leaked in"
         )
 
+    publishers = PUBLISHERS
     outputs = {
         OUT_MASTER: json_text(items),
         OUT_REVIEW_OVERVIEW: json_text(review_overview),
@@ -1048,12 +822,8 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         OUT_AUDIBLE_PRODUCTS: json_text(audible_products),
         OUT_INTERNATIONAL: json_text(intl_items),
         OUT_FILENAME_PROPOSAL: json_text(filename_proposal),
-        OUT_PUBLISHERS: json_text(PUBLISHERS),
+        OUT_PUBLISHERS: json_text(publishers),
         OUT_META: json_text({
-            # ``master_items`` is the curated master count, not the Everything
-            # row count. Everything may also contain pending/discovered
-            # candidates, so the frontend must not label those rows as master
-            # records in its overview stat.
             "master_items": migrated_items,
             "migrated_items": migrated_items,
             "everything_record_types": everything_record_types,
@@ -1106,10 +876,10 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         }),
     }
     return CatalogueBuild(
+        outputs=outputs,
         items=items,
         product_relationships=product_relationships,
         series_compilations=series_compilations,
-        outputs=outputs,
     )
 
 
@@ -1120,7 +890,6 @@ def write_outputs(outputs: dict[Path, str]) -> None:
 
 
 def stale_outputs(outputs: dict[Path, str]) -> list[Path]:
-    """Return missing or different outputs without writing them."""
     return [
         path for path, expected in outputs.items()
         if not path.exists() or path.read_text(encoding="utf-8") != expected
@@ -1132,7 +901,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="verify committed Pages catalogue files match their declared inputs; do not write files",
+        help="verify docs/*.json outputs match current inputs; do not write files",
     )
     parser.add_argument(
         "--include-pending",
@@ -1152,16 +921,15 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         stale = stale_outputs(build.outputs)
         if stale:
-            print("Pages catalogue outputs are stale relative to their declared inputs:")
+            print("Pages catalogue outputs are stale relative to inputs:")
             for path in stale:
                 print(f"  - {path}")
-            print("Run python build_catalogue_pages.py after reviewing the input change.")
             return 1
         print(f"Pages catalogue outputs match their inputs ({len(build.items)} Everything rows).")
         return 0
 
     write_outputs(build.outputs)
-    print(f"Wrote {OUT_MASTER} ({len(build.items)} rows), {OUT_PUBLISHERS}, and {OUT_META}")
+    print(f"Wrote {len(build.outputs)} catalogue datasets in {DOCS_DIR}/")
     return 0
 
 

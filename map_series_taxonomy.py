@@ -124,9 +124,9 @@ def choose_dominant(categories: list[str]) -> tuple[str, str, str]:
     if CAT_LECTURE_HIGHLIGHTS in highlights:
         return CAT_LECTURE_HIGHLIGHTS, "R1", ""
     if highlights:
-        return sorted(highlights)[0], "R1", ""
+        return min(highlights), "R1", ""
     if satsang:
-        return (CAT_SATSANG if CAT_SATSANG in satsang else sorted(satsang)[0]), "R2", ""
+        return (CAT_SATSANG if CAT_SATSANG in satsang else min(satsang)), "R2", ""
     if CAT_SIX_BOOK in present:
         return CAT_SIX_BOOK, "R5", ""
     annual = present & set(ANNUAL_SERIES)
@@ -136,12 +136,12 @@ def choose_dominant(categories: list[str]) -> tuple[str, str, str]:
         return next(iter(annual)), "R3", ""
     on_the_road = present & GROUP_ON_THE_ROAD
     if on_the_road:
-        return (CAT_ON_THE_ROAD if CAT_ON_THE_ROAD in on_the_road else sorted(on_the_road)[0]), "R4", ""
+        return (CAT_ON_THE_ROAD if CAT_ON_THE_ROAD in on_the_road else min(on_the_road)), "R4", ""
     if CAT_OFFICE in present:
         return CAT_OFFICE, "R6", ""
     if CAT_CARD_DECKS in present:
         return CAT_CARD_DECKS, "R7", ""
-    for category, _series in COLLECTION_SERIES.items():
+    for category in COLLECTION_SERIES:
         if category in present:
             return category, "R7", ""
     descriptive = present - NEVER_DOMINANT

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Synchronize derived mirror columns in the Veritas official-product inventory.
 
 Why this exists
