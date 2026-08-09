@@ -72,7 +72,7 @@ The scoreboard was created as part of the persistent-memory protocol:
 3. `maintainability` (priority 8): owner scored 6/10; split the two large
    generators (`build_research_master.py` ~1660 lines,
    `build_catalogue_pages.py` ~1078 lines) into focused modules; the
-   126-test suite is the safety net.
+   132-test suite is the safety net.
 4. `code_hygiene` (priority 4): same refactor workstream.
 5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
    expectations (e.g. raw placeholder rows still visible in the original
@@ -141,8 +141,8 @@ re-audit changes effective scores. Re-evaluate after the next audit.
 - `python reconcile_research_master.py --check` ✅
 - `python map_series_taxonomy.py --check` ✅ (186 mappings; 0 queued)
 - `python sync_inventory_mirrors.py --check` ✅
-- `python -m unittest discover tests` ✅ Ran 126, OK
-- `coverage run -m unittest discover tests && coverage report` ✅ 91%
+- `python -m unittest discover tests` ✅ Ran 132, OK
+- `coverage run -m unittest discover tests && coverage report` ✅ 90%
 - `node --check docs/app.js` + all `tests/*.spec.js` (26 browser specs) ✅
 - `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only;
   the 26 specs run in CI)

@@ -15,11 +15,35 @@
   --accent-contrast: #ffffff;
   --header-bg: #f1f3f4;
   --header-text: #3c4043;
-  --zebra: #f7f9f8;
-  --row-hover: #e8f0fe;       /* soft blue highlight */
+  --zebra: #f9fbf9;
+  --row-hover: #eef4fe;       /* soft blue highlight */
   --shadow: 0 1px 3px rgba(60, 64, 67, 0.18);
   --topbar-h: 58px;
   --footer-h: 40px;
+
+  /* Group block color tokens (aligned with ODS REVISION1 colour coding & site palette) */
+  --block-lectures: #059669;
+  --block-lectures-bg: #ecfdf5;
+  --block-discussion: #e11d48;
+  --block-discussion-bg: #fff1f2;
+  --block-satsang: #d97706;
+  --block-satsang-bg: #fffbeb;
+  --block-on-the-road: #0d9488;
+  --block-on-the-road-bg: #f0fdfa;
+  --block-volume-series: #6366f1;
+  --block-volume-series-bg: #eef2ff;
+  --block-office-series: #0284c7;
+  --block-office-series-bg: #f0f9ff;
+  --block-books: #7c3aed;
+  --block-books-bg: #f5f3ff;
+  --block-transcription-books: #c026d3;
+  --block-transcription-books-bg: #fdf4ff;
+  --block-media-misc: #475569;
+  --block-media-misc-bg: #f8fafc;
+  --block-undecided: #ea580c;
+  --block-undecided-bg: #fff7ed;
+  --block-fran-grace: #be123c;
+  --block-fran-grace-bg: #fff1f2;
 }
 
 /* ---- Design tokens (dark mode) ----
@@ -38,9 +62,33 @@
   --accent-contrast: #172019;
   --header-bg: #343d47;
   --header-text: #f2f5f7;
-  --zebra: #2c333c;
-  --row-hover: #35485a;
+  --zebra: #2b323b;
+  --row-hover: #324355;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
+
+  /* Group block color tokens (dark mode) */
+  --block-lectures: #34d399;
+  --block-lectures-bg: #064e3b;
+  --block-discussion: #fb7185;
+  --block-discussion-bg: #4c0519;
+  --block-satsang: #fbbf24;
+  --block-satsang-bg: #451a03;
+  --block-on-the-road: #2dd4bf;
+  --block-on-the-road-bg: #042f2e;
+  --block-volume-series: #818cf8;
+  --block-volume-series-bg: #1e1b4b;
+  --block-office-series: #38bdf8;
+  --block-office-series-bg: #082f49;
+  --block-books: #a78bfa;
+  --block-books-bg: #2e1065;
+  --block-transcription-books: #e879f9;
+  --block-transcription-books-bg: #4a044e;
+  --block-media-misc: #94a3b8;
+  --block-media-misc-bg: #1e293b;
+  --block-undecided: #fb923c;
+  --block-undecided-bg: #431407;
+  --block-fran-grace: #f43f5e;
+  --block-fran-grace-bg: #4c0519;
 }
 
 /* ---- Base ---- */
@@ -537,54 +585,102 @@ body {
   .table-loading::before { animation: none; }
 }
 
-/* ---- Tabulator: Google-Sheets-style header & rows (applies to both themes) ---- */
+/* ---- Tabulator: Sleek modern desktop spreadsheet table ---- */
 #spreadsheet .tabulator {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   font-family: inherit;
   background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* Frozen header row: bold, muted background, subtle bottom border */
+/* Frozen header row: modern, clean typography, subtle borders */
 #spreadsheet .tabulator .tabulator-header {
   background: var(--header-bg);
   color: var(--header-text);
   border-bottom: 1px solid var(--border);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col {
   background: var(--header-bg);
   color: var(--header-text);
-  border-right: 1px solid var(--border);
+  border-right: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
-  padding: 9px 8px;
+  padding: 10px 10px;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-title {
   white-space: normal;   /* wrap long headers like "WE HAVE?" */
-  line-height: 1.3;
+  line-height: 1.35;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col:hover {
-  background: color-mix(in srgb, var(--accent) 10%, var(--header-bg));
+  background: color-mix(in srgb, var(--accent) 8%, var(--header-bg));
 }
 
-/* Zebra striping */
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even { background: var(--zebra); }
-#spreadsheet .tabulator .tabulator-row { background: var(--surface); color: var(--text); }
+/* Sleek modern rows */
+#spreadsheet .tabulator .tabulator-row {
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+  position: relative;
+}
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even {
+  background: color-mix(in srgb, var(--zebra) 50%, var(--surface));
+}
 
 /* Hover highlighting */
-#spreadsheet .tabulator .tabulator-row:hover {
+#spreadsheet .tabulator .tabulator-row:hover,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even:hover {
   background: var(--row-hover);
   color: var(--text);
 }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even:hover { background: var(--row-hover); }
+
+/* Group block color coding: subtle left accent & group identity (REVISION1 ODS grouping) */
+#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 {
+  border-left: 3.5px solid var(--block-lectures);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-discussion {
+  border-left: 3.5px solid var(--block-discussion);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-satsang {
+  border-left: 3.5px solid var(--block-satsang);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-on-the-road {
+  border-left: 3.5px solid var(--block-on-the-road);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-volume-series {
+  border-left: 3.5px solid var(--block-volume-series);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-office-series {
+  border-left: 3.5px solid var(--block-office-series);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-books {
+  border-left: 3.5px solid var(--block-books);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-transcription-books {
+  border-left: 3.5px solid var(--block-transcription-books);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-media-misc {
+  border-left: 3.5px solid var(--block-media-misc);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-undecided {
+  border-left: 3.5px solid var(--block-undecided);
+}
+#spreadsheet .tabulator .tabulator-row.row-block-fran-grace {
+  border-left: 3.5px solid var(--block-fran-grace);
+}
 
 #spreadsheet .tabulator .tabulator-cell {
-  border-right: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 35%, transparent);
-  padding: 7px 8px;
+  border-right: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  border-bottom: none;
+  padding: 8px 10px;
   color: var(--text);
+  font-size: 13.5px;
+  line-height: 1.4;
 }
 /* URL cells: keep links readable without filling rows with long raw URLs. */
 #spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
