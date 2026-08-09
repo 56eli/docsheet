@@ -60,8 +60,7 @@ coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-09 (was 91% before the REVISION1 overrides/order tests grew the suite
-to 132); every pipeline module is ≥ 88%. `requirements-ci.txt` records the
+2026-08-09 (with 139 deterministic pipeline and style tests); every pipeline module is ≥ 88%. `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
 replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
@@ -148,12 +147,9 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Above the table, a dismissible **catalogue overview** (hero with quick
-actions, collection stats with owned/not-owned progress, and a **series
-strip**) gives visitors an entry point; "Show overview" restores it. A
-**Series** tab (Catalogue group) lists every series as a card (records, owned,
+A **Series** tab (Catalogue group) lists every series as a card (records, owned,
 year span) and opens the Everything view pre-filtered.
-Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The Everything view opens in **Browse mode** on phone screens — compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters — and the same work-card browser is available on desktop via the **Browse cards** toolbar toggle; **Spreadsheet** restores the full Tabulator grid for expert comparison. All 19 catalogue and review workspace sheets are accessed directly via the clean **Jump to** dropdown selector in the top bar. Full-width row details and responsive table scrolling remain available in all views.
+Clicking any row always shows every stored field in the clean details drawer, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The Everything view opens in **Browse mode** on phone screens — compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters — and the same work-card browser is available on desktop via the **Browse cards** toolbar toggle; **Spreadsheet** restores the full Tabulator grid for expert comparison. All 19 catalogue and review workspace sheets are accessed directly via the clean **Jump to** dropdown selector in the top bar. Full-width row details and responsive table scrolling remain available in all views.
 
 ## Review workspace
 

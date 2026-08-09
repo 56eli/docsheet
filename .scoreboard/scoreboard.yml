@@ -92,7 +92,7 @@ aspects:
     ai_basis: "README and INSTRUCTIONS cover quick start, local checks, the curated pipeline safeguard, field semantics, and the edition model; every headline count in the README was reproduced exactly from the data."
     user_basis: null
     evidence:
-      - "All six --check modes and 132/132 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
+      - "All six --check modes and 139/139 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
       - "FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
     user_notes: null
     desired_direction: []
@@ -206,11 +206,11 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 132/132 tests green, coverage 90%."
+    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 139/139 tests green, coverage 90%."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
       - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
-      - "All 132/132 tests pass, 90% statement coverage, all 6 --check modes green."
+      - "All 139/139 tests pass, 90% statement coverage, all 6 --check modes green."
     user_notes: null
     desired_direction: []
     next_actions: []
@@ -313,10 +313,10 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "132 deterministic pipeline tests plus 26 Playwright browser specs; 90% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
+    ai_basis: "139 deterministic pipeline and style tests (132 pipeline + 7 style contrast) plus 26 Playwright browser specs; 90% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
     user_basis: null
     evidence:
-      - "python -m unittest discover tests: Ran 132, OK; coverage report TOTAL 90% (lowest module 88%)."
+      - "python -m unittest discover tests: Ran 139, OK; coverage report TOTAL 90% (lowest module 88%)."
       - "Browser suite runs in CI (green); sandbox cannot download Playwright browsers, so e2e was not re-run locally this session."
     user_notes: null
     desired_direction: []
@@ -325,6 +325,7 @@ aspects:
     risk_flags: []
     files_reviewed:
       - tests/test_pipeline.py
+      - tests/test_style_contrast.py
       - tests/csv-export.spec.js
       - tests/column-layout.spec.js
       - tests/ux-enhancements.spec.js
@@ -343,7 +344,7 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "CI runs py_compile, all six --check modes, 132 unit tests, coverage gate, JS syntax, and 26 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
+    ai_basis: "CI runs py_compile, all six --check modes, 139 unit tests, coverage gate, JS syntax, and 26 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
     user_basis: null
     evidence:
       - "gh run list: CI and pages-build-deployment green on main (latest run after PR #43)."

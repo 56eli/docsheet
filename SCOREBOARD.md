@@ -25,10 +25,9 @@ files** — this scoreboard is part of that memory. See
 
 | Priority | Aspect | Why |
 |---:|---|---|
-| 15 | GitHub Pages presentation | Owner scored 5/10 (user_unhappy); AI 9 — find out what falls short |
-| 12 | UX / usability | Owner scored 5/10 (user_unhappy); AI 9 — find out what falls short |
-| 8 | Maintainability | Owner scored 6/10; AI 7 — split generator monoliths |
-| 4 | Code hygiene | Generators remain large monoliths; split into focused modules |
+| 15 | GitHub Pages presentation | Modern Linear/Stripe design applied; owner to re-score |
+| 12 | UX / usability | Clean horizontal dividers & comfortable row padding applied; owner to re-score |
+| 8 | Maintainability | Monolith generators modularized into pipeline/ package |
 | 3 | Content quality | Owner scored 7/10 (user_unhappy); AI 9 — clarify expectations |
 | 3 | Repo organization | Root .md noise reduced 2026-08-09 (4 superseded/implemented docs archived); re-audit pending |
 | — | Issue #18 | Owned-flags cross-check vs. lak.nz Drive (needs owner Drive access) |
