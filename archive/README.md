@@ -5,8 +5,8 @@ longer normative. Files here are kept for provenance only — **do not treat
 their counts, states, or instructions as current.** For the current state use
 the repository root: [README.md](../README.md),
 [NEXT_AGENT_HANDOFF.md](../NEXT_AGENT_HANDOFF.md),
-[FULL_STACK_AUDIT_2026-08-08_ARENA.md](../FULL_STACK_AUDIT_2026-08-08_ARENA.md) (declared-current audit; the
-2026-08-08 ARENA_FRESH_EYES pass sits beside it), and the
+[FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md](../FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md) (declared-current audit; the
+2026-08-09 full audit `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` extends it) and the
 generated [RECONCILIATION_REPORT.md](../RECONCILIATION_REPORT.md).
 
 Root-level full-stack audits superseded by `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
@@ -38,6 +38,12 @@ and moved here in the 2026-08-08 audit-noise cleanup:
   moved from the root in the 2026-08-07 hygiene triage (batch 1 of
   `TEMP_RESPONSE_HYGIENE_2026-08-07.md`); kept for provenance, their findings
   are implemented/closed.
+- `CATALOGUE_READABILITY_ROADMAP.md`, `LECTURE_SERIES_REVIEW.md`,
+  `REVIEW_MODEL_SLIM_ANALYSIS.md`, `SERIES_WORK_REGROUPING_PROPOSAL.md` —
+  historical proposal snapshots (2026-08-03–04) moved from the root in the
+  2026-08-09 hygiene pass (`arena/019fe620-docsheet`); they correctly describe
+  early counts (356 rows etc.) and are superseded by the current generated
+  schema + `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`.
 - `TEMP_RESPONSE_HYGIENE_2026-08-07.md` — hygiene/ledger/complexity assessment (2026-08-07): ranked improvement proposals (root-doc triage, year-mirror retirement, derivable inventory mirrors, coverage-gate raise, handoff checkpointing), with an "already clean, do not fix" list.
 - `TEMP_RESPONSE_TITLE_AUDIT_2026-08-07.md` — distributor title-alignment session (2026-08-07): 60 live-verified title corrections to official naming, the 50491 re-link 121→278, decision rules R1–R5, and the full change table.
 - `TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md` — post-PR #27 audit (2026-08-07); re-verified all catalogue counts, root-caused the red CI run on `main` to the stale Playwright candidate assertions (fixed data-driven), and corrected the 103-test/92%-coverage doc drift.

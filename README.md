@@ -87,9 +87,10 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the declared-current audit
+`NEXT_AGENT_HANDOFF`, the declared-current audits
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
-PR #40), the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
+PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
+historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
 and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, the superseded
 `FULL_STACK_AUDIT_2026-08-09_ARENA.md` (pre-PR #40; its findings are resolved —
 see its banner), `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
