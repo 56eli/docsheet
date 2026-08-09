@@ -2,6 +2,10 @@
 
 **Prepared:** 2026-08-09 (expert full-stack audit + low-severity fixes) — current handoff for
 branch `arena/019fe659-docsheet` at current HEAD.
+**Scoreboard:** this repo now has a persistent scoreboard — read
+`SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
+and `AGENTS.md` first; they are the durable agent-memory layer (Arena
+sessions may expire after PR merge).
 The declared-current audits are
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
 verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`

@@ -89,7 +89,9 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the declared-current audits
+`NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
+[`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
+[`.scoreboard/`](.scoreboard/scoreboard.yml), the declared-current audits
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
 PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the

@@ -1,0 +1,650 @@
+# ============================================================================
+# DocSheet — Persistent Repo Scoreboard (canonical machine-readable source)
+# ============================================================================
+meta:
+  project_name: docsheet
+  scoreboard_version: 1
+  last_updated: "2026-08-09"
+  stale_after_days: 45
+  agent_model: arena_sandboxed_agent
+  effective_score_policy: user_score_overrides_ai_score
+  context_policy: repo_files_are_durable_memory
+  arena_context: "Agent sessions are sandboxed and may expire after PR merge; durable context must live in repo files."
+
+manual_workflow_policy:
+  may_edit_github_workflows: false
+  instruction: "Do not edit .github/workflows/* unless the user explicitly instructs you. If workflow changes are needed, document exact GitHub web editor steps in .scoreboard/manual-workflow-edits.md."
+
+summary:
+  overall_effective_score: 8.4
+  repo_ready_gate_status: warning
+  top_priorities:
+    - code_hygiene
+    - maintainability
+    - repo_organization
+  active_risk_flags:
+    - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
+
+quality_gates:
+  repo_ready:
+    status: warning
+    overall_effective_score: 8.4
+    last_evaluated: "2026-08-09"
+    minimum_overall_effective_score: 8
+    required:
+      security_privacy: 8
+      tests: 7
+      readme_onboarding: 7
+      ci_cd: 7
+      agent_readiness: 8
+    notes:
+      - "Quality gates use effective_score."
+      - "User overrides may satisfy a numeric gate, but risk_flags must remain visible."
+      - "If a gate is satisfied only because of user_score while ai_score is low, mark the relevant aspect as accepted_debt or risk_accepted."
+      - "If required aspects have active risk_flags, mention them in SCOREBOARD.md even when the gate numerically passes."
+      - "2026-08-09 baseline: numeric thresholds pass (8.4 >= 8, all required aspects >= minimum), but gate is WARNING because an active low-severity risk flag exists and several scores are medium-confidence (browser suite verified via CI only; no automated a11y scan)."
+
+aspects:
+  - id: project_purpose_scope
+    name: Project purpose / scope
+    category: product
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "README and INSTRUCTIONS state the purpose (GitHub Pages live spreadsheet + curated research catalogue) and separate the raw pass-through pipeline from the curated pipeline."
+    user_basis: null
+    evidence:
+      - "README.md sections 'Live Spreadsheet' and 'Catalogue-data safeguard' reproduced against actual pipeline outputs."
+      - "INSTRUCTIONS.md documents the data flow and one-time Pages setup."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - README.md
+      - INSTRUCTIONS.md
+
+  - id: readme_onboarding
+    name: README / onboarding
+    category: documentation
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "README and INSTRUCTIONS cover quick start, local checks, the curated pipeline safeguard, field semantics, and the edition model; every headline count in the README was reproduced exactly from the data."
+    user_basis: null
+    evidence:
+      - "All six --check modes and 126/126 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
+      - "FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - README.md
+      - INSTRUCTIONS.md
+      - FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
+
+  - id: repo_organization
+    name: Repo organization
+    category: repo
+    weight: 3
+    target: 8
+    ai_score: 7
+    user_score: null
+    effective_score: 7
+    gap: 1
+    priority: 3
+    status: needs_work
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/, but 18 root-level .md files still create onboarding noise; the 2026-08-08 fresh-eyes audit flagged the same bloat and PR #43 slimmed 24 -> 18."
+    user_basis: null
+    evidence:
+      - "Root listing: 18 .md files incl. multiple audit snapshots; superseded docs carry banners; README 'Documentation layout' explains the split."
+      - "archive/ and decisions/ are indexed by their READMEs."
+    user_notes: null
+    desired_direction:
+      - "Consolidate or archive older root audits once the 2026-08-09 audits are the declared-current set."
+    next_actions:
+      - "Move superseded root audits to archive/ (owner approval) as new audits land."
+    risk_flags: []
+    files_reviewed:
+      - "root *.md listing"
+      - archive/README.md
+      - decisions/README.md
+
+  - id: code_hygiene
+    name: Code hygiene
+    category: engineering
+    weight: 4
+    target: 8
+    ai_score: 7
+    user_score: null
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: needs_work
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Consistent style, docstrings, shared _common.py, py_compile clean, no dead code observed; but the main generators remain large monoliths (build_research_master.py ~1660 lines) despite the PR #43 extraction of two functions."
+    user_basis: null
+    evidence:
+      - "python -m py_compile *.py passes; node --check passes on app.js and all specs."
+      - "Coverage report shows 10 pipeline modules, all >= 88%."
+    user_notes: null
+    desired_direction:
+      - "Continue splitting generator modules into focused units."
+    next_actions:
+      - "Extract remaining cohesive blocks (format inference, validators) into modules; keep 126+ tests green."
+    risk_flags: []
+    files_reviewed:
+      - build_research_master.py
+      - build_catalogue_pages.py
+      - process_data.py
+      - _common.py
+
+  - id: architecture
+    name: Architecture
+    category: engineering
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Ledger-driven curation with deterministic generators, --check idempotence for every pipeline stage, read-only reconciliation report, and a static Pages frontend; the 2026-08-08 independent audit called the pipeline design exemplary."
+    user_basis: null
+    evidence:
+      - "All six --check modes byte-current in this session."
+      - "Ledger -> master -> Pages JSON -> static site chain verified end-to-end."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - build_research_master.py
+      - build_catalogue_pages.py
+      - reconcile_research_master.py
+      - map_series_taxonomy.py
+      - sync_inventory_mirrors.py
+
+  - id: maintainability
+    name: Maintainability
+    category: engineering
+    weight: 4
+    target: 8
+    ai_score: 7
+    user_score: null
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: needs_work
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Clear function boundaries, schema contracts tested, and rule matrices documented, but the two main generators are single files exceeding 1k lines, which makes targeted navigation/review harder."
+    user_basis: null
+    evidence:
+      - "build_research_master.py 1660 lines, build_catalogue_pages.py 1078 lines (2026-08-08 fresh-eyes audit §3.5)."
+      - "Refactoring already began in PR #43 (apply_year_source_provenance, build_review_overview extracted)."
+    user_notes: null
+    desired_direction:
+      - "Modularize generators without behavior change."
+    next_actions:
+      - "Split format inference and validator blocks into focused modules; rely on the 126-test suite as the safety net."
+    risk_flags: []
+    files_reviewed:
+      - build_research_master.py
+      - build_catalogue_pages.py
+
+  - id: type_safety_validation
+    name: Type safety / validation
+    category: engineering
+    weight: 3
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Typed dict[str,str] row contracts, required-column validators, controlled vocabularies for item_type/format/owned, and rule matrices that fail the build on drift; Python 3.11 annotations used throughout."
+    user_basis: null
+    evidence:
+      - "Validator failures raise ValueError with file:line context (e.g. conflicting approved series)."
+      - "Independent probes found 0 invalid month/code/URL values."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - build_research_master.py
+      - tests/test_pipeline.py
+
+  - id: error_handling_logging
+    name: Error handling / logging
+    category: engineering
+    weight: 3
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Generators exit non-zero on failure with actionable messages, the frontend shows a load-error state for bad fetches, and abort-safe view activation prevents stale-fetch races; console.info logging is consistent."
+    user_basis: null
+    evidence:
+      - "process_data.py docstring + CI behavior: exits non-zero so CI shows the error."
+      - "docs/app.js loadData/activateView abort handling reviewed."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - process_data.py
+      - docs/app.js
+
+  - id: dependency_hygiene
+    name: Dependency hygiene
+    category: engineering
+    weight: 3
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Runtime deps minimal (pandas only); exact tested pins in requirements-ci.txt; package-lock.json in sync; prior audit reported npm audit 0 vulnerabilities."
+    user_basis: null
+    evidence:
+      - "Fresh venv install matched pins (pandas 3.0.5, coverage 7.15.4); npm ci succeeded."
+      - "requirements-ci.txt records the exact set used by owner-applied workflows."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - requirements.txt
+      - requirements-dev.txt
+      - requirements-ci.txt
+      - package.json
+      - package-lock.json
+
+  - id: tests
+    name: Tests
+    category: quality
+    weight: 5
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "126 deterministic pipeline tests plus 19 Playwright browser specs; 91% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
+    user_basis: null
+    evidence:
+      - "python -m unittest discover tests: Ran 126, OK; coverage report TOTAL 91% (lowest module 88%)."
+      - "Browser suite runs in CI (green); sandbox cannot download Playwright browsers, so e2e was not re-run locally this session."
+    user_notes: null
+    desired_direction: []
+    next_actions:
+      - "Ensure CI keeps running the 19 browser specs; consider a local browser fallback note in INSTRUCTIONS."
+    risk_flags: []
+    files_reviewed:
+      - tests/test_pipeline.py
+      - tests/csv-export.spec.js
+      - tests/column-layout.spec.js
+      - tests/ux-enhancements.spec.js
+      - tests/blank-rows.spec.js
+
+  - id: ci_cd
+    name: CI/CD
+    category: operations
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "CI runs py_compile, all six --check modes, 126 unit tests, coverage gate, JS syntax, and 19 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
+    user_basis: null
+    evidence:
+      - "gh run list: CI and pages-build-deployment green on main (latest run after PR #43)."
+      - "ci.yml reviewed: paths-ignore for the raw CSV complements update_spreadsheet.yml paths."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - .github/workflows/ci.yml
+      - .github/workflows/update_spreadsheet.yml
+      - .github/workflows/map_veritas_catalogue.yml
+
+  - id: security_privacy
+    name: Security / privacy
+    category: risk
+    weight: 5
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "CSP present with a hash-pinned inline script, Tabulator pinned with SRI, no secrets/credentials in tracked files, static read-only site, no PII collected."
+    user_basis: null
+    evidence:
+      - "docs/index.html CSP + integrity attributes reviewed; git grep found no tokens."
+      - "No network calls from the frontend beyond same-origin JSON and the pinned CDN assets."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags:
+      - "CSP style-src 'unsafe-inline' is required for dark-mode/theme toggles (low severity; scripts remain hash-pinned, Tabulator SRI-pinned)."
+    files_reviewed:
+      - docs/index.html
+      - .gitignore
+      - .github/workflows/*.yml
+
+  - id: performance
+    name: Performance
+    category: quality
+    weight: 3
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: medium
+    last_audited: "2026-08-09"
+    ai_basis: "Static JSON payloads (largest ~375 KB) rendered client-side by Tabulator; virtual DOM for large tables; no obvious hot paths. No browser-side performance benchmark was run this session (Playwright unavailable in sandbox)."
+    user_basis: null
+    evidence:
+      - "docs/*.json sizes measured; static server responds 200 instantly on all assets."
+      - "Tabulator virtual DOM + measured-width column engine in app.js."
+    user_notes: null
+    desired_direction: []
+    next_actions:
+      - "Optionally run a Lighthouse pass on the deployed Pages site."
+    risk_flags: []
+    files_reviewed:
+      - docs/app.js
+      - docs/*.json
+
+  - id: github_pages_presentation
+    name: GitHub Pages presentation
+    category: presentation
+    weight: 5
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: medium
+    last_audited: "2026-08-09"
+    ai_basis: "19-tab interactive spreadsheet with Everything-first UX, mobile Browse mode, dark mode, faceted filters; pages-build-deployment green on main. Visual verification is via code review + CI browser tests (sandbox cannot run Playwright)."
+    user_basis: null
+    evidence:
+      - "pages-build-deployment workflow succeeded for the latest main push (gh run list)."
+      - "Static serve of all assets returned 200."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - docs/index.html
+      - docs/app.js
+      - docs/style.css
+
+  - id: ux_usability
+    name: UX / usability
+    category: presentation
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Faceted filters with removable chips, per-view persistence, keyboard shortcuts, row-detail drawer, Copy file name action, mobile Browse/Series/Timeline rails, and view settings menu (incl. the new blank-separator-rows toggle)."
+    user_basis: null
+    evidence:
+      - "docs/app.js VIEWS/VIEW_GROUPS, facet engine, and settings persistence reviewed."
+      - "9 ux-enhancement + 4 column-layout + 5 csv-export browser specs cover the flows (CI green)."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - docs/app.js
+      - docs/index.html
+      - tests/ux-enhancements.spec.js
+
+  - id: accessibility
+    name: Accessibility
+    category: presentation
+    weight: 3
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: medium
+    last_audited: "2026-08-09"
+    ai_basis: "ARIA labels, roving tabindex, focus trap in the row drawer, keyboard shortcuts, focus-visible styles, and semantic buttons; no automated a11y scan (axe/Lighthouse) was run this session."
+    user_basis: null
+    evidence:
+      - "app.js trapRowDetailsFocus/roving tabindex code reviewed; index.html uses labelled controls."
+      - "Column-layout specs assert frozen lead columns and toolbar visibility."
+    user_notes: null
+    desired_direction: []
+    next_actions:
+      - "Run an automated a11y scan (axe-core) on the deployed site as a follow-up."
+    risk_flags: []
+    files_reviewed:
+      - docs/app.js
+      - docs/index.html
+
+  - id: content_quality
+    name: Content quality
+    category: presentation
+    weight: 3
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Catalogue data audited field-by-field: counts, codes, filenames, URLs, months, work groupings, ledger reconciliation all consistent; raw placeholder rows are ruled/excluded with provenance."
+    user_basis: null
+    evidence:
+      - "~20 independent pandas probes in FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md found no data defects."
+      - "Ledger row 371 reclassified needs_review -> duplicate (this session)."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - data/research_master_draft.csv
+      - migration_review_ledger.csv
+      - data/*.csv
+
+  - id: feature_completeness
+    name: Feature completeness
+    category: product
+    weight: 4
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "All documented features exist (19 views, filters, exports, browse mode, expert toggle, standing intake lanes); one open product item remains: issue #18 owned-flags cross-check vs the lak.nz Drive."
+    user_basis: null
+    evidence:
+      - "VIEWS registry (19 views) matches every generated docs/*.json."
+      - "gh issue list: exactly 1 open issue (#18)."
+    user_notes: null
+    desired_direction: []
+    next_actions:
+      - "Triage issue #18 (needs owner Drive access/export)."
+    risk_flags: []
+    files_reviewed:
+      - docs/app.js
+      - docs/catalogue-meta.json
+
+  - id: deployment_readiness
+    name: Deployment readiness
+    category: operations
+    weight: 4
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "GitHub Pages deployment is fully automated and green; docs/ is self-contained with .nojekyll; update-spreadsheet workflow regenerates on raw CSV changes."
+    user_basis: null
+    evidence:
+      - "pages-build-deployment success on latest main push."
+      - "Static serve of docs/ (all assets 200)."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - .github/workflows/update_spreadsheet.yml
+      - docs/.nojekyll
+
+  - id: agent_readiness
+    name: Agent readiness
+    category: operations
+    weight: 5
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "NEXT_AGENT_HANDOFF, INSTRUCTIONS, six --check modes, deterministic test suite, and now the scoreboard (SCOREBOARD.md, .scoreboard/*, AGENTS.md) give a fresh sandboxed agent everything needed without chat memory."
+    user_basis: null
+    evidence:
+      - "Fresh venv + README quick start worked in this session."
+      - "All checks reproducible in under 30 seconds."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - NEXT_AGENT_HANDOFF.md
+      - INSTRUCTIONS.md
+      - AGENTS.md
+
+  - id: task_hygiene
+    name: Task hygiene
+    category: operations
+    weight: 3
+    target: 8
+    ai_score: 8
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Single open issue (#18); every audit finding from this session is resolved and committed; no TODO/FIXME markers in notes; open-work section in the handoff is current."
+    user_basis: null
+    evidence:
+      - "gh issue list: 1 open; git log shows three fix commits this session."
+      - "Independent probes found 0 TODO markers in master notes."
+    user_notes: null
+    desired_direction: []
+    next_actions:
+      - "Triage issue #18 when Drive access is available."
+    risk_flags: []
+    files_reviewed:
+      - NEXT_AGENT_HANDOFF.md
+      - FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
+
+  - id: auditability
+    name: Auditability
+    category: operations
+    weight: 3
+    target: 8
+    ai_score: 9
+    user_score: null
+    effective_score: 9
+    gap: 0
+    priority: 0
+    status: healthy
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: "Every master row carries provenance (year_source, raw_row_number, candidate_key), the ledger retains all 374 raw rows with dispositions and reasons, reconciliation is a generated read-only report, and audit documents follow a dated convention."
+    user_basis: null
+    evidence:
+      - "reconcile_research_master.py --check byte-current; RECONCILIATION_REPORT.md regenerated."
+      - "Decisions/ docs explain every ruling batch."
+    user_notes: null
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed:
+      - RECONCILIATION_REPORT.md
+      - migration_review_ledger.csv
+      - decisions/
