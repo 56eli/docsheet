@@ -313,7 +313,7 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "126 deterministic pipeline tests plus 19 Playwright browser specs; 91% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
+    ai_basis: "126 deterministic pipeline tests plus 26 Playwright browser specs; 91% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
     user_basis: null
     evidence:
       - "python -m unittest discover tests: Ran 126, OK; coverage report TOTAL 91% (lowest module 88%)."
@@ -321,7 +321,7 @@ aspects:
     user_notes: null
     desired_direction: []
     next_actions:
-      - "Ensure CI keeps running the 19 browser specs; consider a local browser fallback note in INSTRUCTIONS."
+      - "Ensure CI keeps running the 26 browser specs; consider a local browser fallback note in INSTRUCTIONS."
     risk_flags: []
     files_reviewed:
       - tests/test_pipeline.py
@@ -343,7 +343,7 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "CI runs py_compile, all six --check modes, 126 unit tests, coverage gate, JS syntax, and 19 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
+    ai_basis: "CI runs py_compile, all six --check modes, 126 unit tests, coverage gate, JS syntax, and 26 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
     user_basis: null
     evidence:
       - "gh run list: CI and pages-build-deployment green on main (latest run after PR #43)."
@@ -533,10 +533,10 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "All documented features exist (19 views, filters, exports, browse mode, expert toggle, standing intake lanes); one open product item remains: issue #18 owned-flags cross-check vs the lak.nz Drive."
+    ai_basis: "All documented features exist (20 views incl. the Series browser, catalogue overview, desktop Browse cards, filters, exports, expert toggle, standing intake lanes); one open product item remains: issue #18 owned-flags cross-check vs the lak.nz Drive."
     user_basis: null
     evidence:
-      - "VIEWS registry (19 views) matches every generated docs/*.json."
+      - "VIEWS registry (20 views incl. the client-side Series browser) matches every generated docs/*.json."
       - "gh issue list: exactly 1 open issue (#18)."
     user_notes: null
     desired_direction: []

@@ -48,7 +48,7 @@ Headline results (2026-08-09 expert pass, current):
   export all agree — with a persisted "Show blank separator rows" View
   setting (visible only on that tab) restoring the verbatim 374-row sheet.
   New `tests/blank-rows.spec.js` derives its expected counts from
-  `data.json` (browser suite now 19 tests).
+  `data.json`.
 - **Wording (audit §3.6):** README, INSTRUCTIONS, and the `process_data.py`
   docstring now state that the raw pipeline is pass-through *except* for the
   six always-empty raw columns trimmed from the published view.
@@ -479,6 +479,23 @@ Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of 
 - **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
 - **Frontend (audit §3.4):** Original Spreadsheet view hides the 31 blank separator rows by default with a "Show blank separator rows" View setting; added `tests/blank-rows.spec.js` (browser suite now 19 tests). Pass-through wording clarified in README/INSTRUCTIONS/process_data.py (§3.6).
 - **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.
+
+## 2026-08-09 Presentation/UX implementation, Phases A–D (arena/019fe659-docsheet, current)
+
+Owner approved the full plan (`PRESENTATION_UX_PROPOSAL_2026-08-09.md`) after
+providing user scores (presentation 5, UX 5, content 7, maintainability 6).
+
+- **Shipped (commit `7ed3a5f`):** catalogue overview hero + collection stats
+  + series strip on Everything; desktop Browse cards toggle (work-card UI +
+  Series/Timeline rails at any width); Review-workspace nav toggle; Series
+  browser tab (client-side, from master.json); search hints; loading
+  skeleton; `prefers-reduced-motion`; a11y labels. New
+  `tests/presentation-ux.spec.js` (7 specs; suite 19 → 26).
+- **Verified:** 6/6 `--check`, 126/126 tests, `node --check` clean, CSS
+  brace-balanced, no duplicate HTML ids. Browser specs run in CI.
+- **Scoreboard:** AI scores unchanged pending re-audit; user scores still
+  make presentation (15) and UX (12) the top priorities. Gate remains
+  `fail` (7.9 < 8) until the owner re-scores or the aspects are re-audited.
 
 ## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, previous)
 

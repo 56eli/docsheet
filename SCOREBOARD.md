@@ -46,7 +46,7 @@ files** — this scoreboard is part of that memory. See
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | Keep CI running 19 browser specs |
+| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | Keep CI running 26 browser specs |
 | CI/CD | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |

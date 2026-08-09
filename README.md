@@ -129,7 +129,12 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. On phone screens, the Everything catalogue opens in **Browse mode**: compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters; **Spreadsheet** restores the full Tabulator grid for expert comparison. Full-width row details and horizontally scrolling tabs remain available in both modes.
+Above the table, a dismissible **catalogue overview** (hero with quick
+actions, collection stats with owned/not-owned progress, and a **series
+strip**) gives visitors an entry point; "Show overview" restores it. A
+**Series** tab (Catalogue group) lists every series as a card (records, owned,
+year span) and opens the Everything view pre-filtered.
+Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The Everything view opens in **Browse mode** on phone screens — compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters — and the same work-card browser is available on desktop via the **Browse cards** toolbar toggle; **Spreadsheet** restores the full Tabulator grid for expert comparison. Review and source tabs sit under a collapsible **Review workspace** toggle (default expanded). Full-width row details and horizontally scrolling tabs remain available in both modes.
 
 ## Review workspace
 
