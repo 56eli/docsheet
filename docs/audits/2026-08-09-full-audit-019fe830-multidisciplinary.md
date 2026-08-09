@@ -42,7 +42,7 @@
 
 ### 1.1 Visual language & design tokens
 
-**Palette is now neutral (correct).** The repeated-failure audit `AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md` documented four sessions of slate-blue regression (`#f8fafc/#f1f5f9/#e2e8f0` light, `#0f172a/#1e293b` dark — Tailwind slate). The current `:root` is **fixed**:
+**Palette is now neutral (correct).** The repeated-failure audit `archive/AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md` documented four sessions of slate-blue regression (`#f8fafc/#f1f5f9/#e2e8f0` light, `#0f172a/#1e293b` dark — Tailwind slate). The current `:root` is **fixed**:
 
 ```css
 /* light */
@@ -290,7 +290,7 @@ Until the owner applies these, scoreboard aspects `ci_cd` (7) and `deployment_re
 - Title duplication: 75 title groups, 74 are same-work multi-part (one work_id), one cross-work (`A Review of the Work` 2006/2007 masters 115–117 vs 142–144) is a recurring annual talk with year-scoped filenames — intentional.
 
 **Watch-list (triaged, P3 — no action required unless owner extends):**
-- **Hay House `traqnscending` typo** (H-01 in prior deep-dive): previously `hayhouse_official_products.csv` line 8 and `docs/master.json` master 294 shipped `https://www.hayhouse.com/traqnscending-the-levels-of-consciousness-paperback` (`traqnscending` → `transcending`). At `9e4ee4d` the row is **already correct** (`https://www.hayhouse.com/transcending-the-levels-of-consciousness-paperback` in both `data/hayhouse_official_products.csv` and `docs/master.json:294`); `grep -r traqn` now 0 hits. The H-01 fix landed before this branch (see `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` resolution at `80cdcea`), so no action is required here — left as a regression-guard note (URL reachability is still not validated by `--check`).
+- **Hay House `traqnscending` typo** (H-01 in prior deep-dive): previously `hayhouse_official_products.csv` line 8 and `docs/master.json` master 294 shipped `https://www.hayhouse.com/traqnscending-the-levels-of-consciousness-paperback` (`traqnscending` → `transcending`). At `9e4ee4d` the row is **already correct** (`https://www.hayhouse.com/transcending-the-levels-of-consciousness-paperback` in both `data/hayhouse_official_products.csv` and `docs/master.json:294`); `grep -r traqn` now 0 hits. The H-01 fix landed before this branch (see `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` resolution at `80cdcea`), so no action is required here — left as a regression-guard note (URL reachability is still not validated by `--check`).
 - **Raw CSV quirks** (`Unnamed: 5` / `other links` staleness) already resolved: `process_data.py` now drops `Unnamed: 11`, `app.js` Original Spreadsheet priority lists `notes` not `other links`; `Unnamed: 5` is intentionally kept (contains `BARRET?` / `my pdfs are trash` provenance notes under `Unnamed: 5` header — ledger rows 279/373 `source_context`).
 - **Legends:** 19 blank years + 57 blank months are intentional per rules (Volume Series blank, 198X decade placeholder for Office Series, month only when product slug exists). Not a defect, but a reviewer unfamiliar with the rules will ask — the field-semantics note in `README` covers it.
 
@@ -402,7 +402,7 @@ Per `.scoreboard/manual-workflow-edits.md`:
 
 ## 7. Evidence appendix — what was re-checked beyond the validators
 
-- **Hay House typo (H-01) now fixed:** `grep -r traqn` 0 hits at `9e4ee4d`; `data/hayhouse_official_products.csv:8` and `docs/master.json:294` both ship `transcending` (inventory `matched_by_title`); previously open at `f520e9b`, resolved before this branch (`80cdcea` per `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`).
+- **Hay House typo (H-01) now fixed:** `grep -r traqn` 0 hits at `9e4ee4d`; `data/hayhouse_official_products.csv:8` and `docs/master.json:294` both ship `transcending` (inventory `matched_by_title`); previously open at `f520e9b`, resolved before this branch (`80cdcea` per `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`).
 - **Dead root eliminated:** `grep -E "#spreadsheet +\.tabulator\b"` now 0 for `#spreadsheet .tabulator` as Tabulator root (the remaining 4 `#spreadsheet .tabulator-row/.tabulator-cell` are correct descendant selectors — row/cell live inside `#spreadsheet`).
 - **Block accent orthogonal to work grouping:** `test_work_group_separator_cannot_override_block_accent` asserts `work-group-start` uses `border-top` not `box-shadow` — so `data-block` inset shadows on all 11 blocks survive work separation.
 - **Tokens are neutral, not slate:** `test_no_slate_blue_in_tokens` blocklist catches every Tailwind-slate hue; current light `#f9f9fb/#ffffff/#f4f4f5/#e4e4e7` and dark `#0d0d0d/#161616/#222222/#282828` are 0-chroma greys.
@@ -416,10 +416,10 @@ Per `.scoreboard/manual-workflow-edits.md`:
 This audit supersedes no living document — it complements:
 
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` — **authoritative incident analysis** (F-01/F-02/F-03/F-04). Current code resolves F-01/F-02/F-03; F-04 (mobile/desktop browse hides rows) is correctly preserved as a presentation choice with an escape hatch.
-- `AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md` — **root-cause styling audit** (slate vs grey, wash opacity, specificity). Current tokens and 8.5% washes satisfy its Phase-1/2 acceptance; Phase-3 guard (computed-style gate) is now present.
+- `archive/AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md` — **root-cause styling audit** (slate vs grey, wash opacity, specificity). Current tokens and 8.5% washes satisfy its Phase-1/2 acceptance; Phase-3 guard (computed-style gate) is now present.
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` — prior `arena/019fe80c` pass covering the same three roles (web/full-stack/data). Findings for pipeline determinism, delivery contract, and scale remain accurate; owner-score gates remain the open items.
 - `docs/audits/2026-08-09-baseline.md` / `docs/audits/2026-08-09-expert-full-stack-audit.md` — historical checkpoints at earlier merges; their verifier matrices are superseded by the re-executed matrix above.
-- `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` — 08-09 full audit at `f520e9b` (pre-row-fix). Data findings remain valid; frontend/deployment sections are **stale** as noted by its header banner (“Point-in-time data findings below remain historical evidence”).
+- `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` — 08-09 full audit at `f520e9b` (pre-row-fix). Data findings remain valid; frontend/deployment sections are **stale** as noted by its header banner (“Point-in-time data findings below remain historical evidence”).
 - `archive/` — 86 historical audits/proposals (including `EXTERNAL_AUDIT`, `PRESENTATION_UX_PROPOSAL_2026-08-09`, `WORKFLOW_WEB_EDITOR_GUIDE.md`) — correctly archived per README’s “Historical context” layout.
 
 ---

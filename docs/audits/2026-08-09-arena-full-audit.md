@@ -8,7 +8,7 @@
 **Method:** independent pandas/stdlib probes bypassing the project's own validators; every `--check` mode; full unit suite + coverage; static frontend review; doc-vs-state cross-checks.
 
 > This is an independent checkpoint audit. It verifies the state declared by
-> `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` / `_DEEP_DIVE.md` / `_FULL.md`
+> `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` / `_DEEP_DIVE.md` / `_FULL.md`
 > and reports only what is **new or unrecorded** in those documents. Prior
 > findings (D-01…D-10, B-01…B-03, I-01, DOC-01…DOC-05, the seven expert-pass
 > fixes) are not re-reported unless the current state contradicts them.
@@ -78,7 +78,7 @@ this pass. All are low severity; none affect the generated site's correctness.
 > **Fix status (same session, owner-approved):** F-01 and F-02–F-04 were all
 > fixed on this branch after the audit — see
 > `data/international_discovery_queue.csv` (market corrected),
-> `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` (362), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
+> `decisions/FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` (362), `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
 > (7 view columns), `.scoreboard/history.md` / `.scoreboard/manual-workflow-edits.md` /
 > `docs/audits/2026-08-09-baseline.md` (26 specs). All six `--check` modes and
 > the 126-test suite pass after the fix.
@@ -100,7 +100,7 @@ define a controlled vocabulary for `market` and validate it in
 `build_catalogue_pages.py` (the same pattern already exists for
 `review_status` values).
 
-### F-02 (docs, low) — stale "365" in `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`
+### F-02 (docs, low) — stale "365" in `decisions/FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`
 Line 74 says: *"Current counts: 365 total; all 365 safe names and all 365
 display names are unique"* — but the doc's own v4.1 amendment (line 77,
 2026-08-08 D-01 follow-up) and the live file both say **362**. The paragraph
@@ -108,7 +108,7 @@ was not updated when the D-01 collapse retired masters 225/226/227. A reader
 hitting line 74 sees an internally contradictory document.
 
 ### F-03 (docs, low) — stale "8 view columns" in the declared-current audit
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` line 25 (verification
+`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` line 25 (verification
 matrix) records *"374 raw rows, 8 view columns"*. The current pipeline trims
 six always-empty columns and publishes **7** view columns (Unnamed: 11 was
 dropped; the `_FULL.md` extension correctly says 7). Since `_DEEP_DIVE.md` is

@@ -16,21 +16,16 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs you. If workflow changes are needed, document exact GitHub web editor steps in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 7.8
-  repo_ready_gate_status: fail
+  overall_effective_score: 8.3
+  repo_ready_gate_status: pass
   top_priorities:
-    - github_pages_presentation
-    - ux_usability
-    - maintainability
     - ci_cd
     - deployment_readiness
-    - content_quality
     - repo_organization
   active_risk_flags:
-    - "Owner visual acceptance is still required for the versioned row-delivery build; artifact success is not acceptance."
     - "Pages remains independent of CI until required-check and custom-deployment settings are owner-applied."
     - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
-    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 remain authoritative."
+    - "Frontend monolith partially modularized: app.js still 2,392 lines (DOM orchestration). Further extraction is incremental."
 
 quality_gates:
   repo_ready:
@@ -97,7 +92,7 @@ aspects:
     user_basis: null
     evidence:
       - "All six --check modes and 141/141 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
-      - "FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
+      - "archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
     user_notes: null
     desired_direction: []
     next_actions: []
@@ -105,7 +100,7 @@ aspects:
     files_reviewed:
       - README.md
       - INSTRUCTIONS.md
-      - FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
+      - archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
 
   - id: repo_organization
     name: Repo organization
@@ -120,17 +115,18 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/. 2026-08-09 pass archived the superseded 08-08 baseline pair, EXTERNAL_AUDIT.md, and the implemented PRESENTATION_UX_PROPOSAL; root now holds 18 .md files (living docs + the declared-current 08-09 audits + schemas/policies + generated reports), all referenced from README 'Documentation layout'. Remaining noise is mostly NEXT_AGENT_HANDOFF.md size and the four current audits."
+    ai_basis: "Layout is logical (root docs, archive/, decisions/, data/, docs/ site, tests/) with READMEs in archive/ and decisions/. 2026-08-09 session consolidated root from 21 → 12 .md files: 5 historical audits moved to archive/, 3 decision/provenance docs moved to decisions/, Documentation layout rewritten as a table. Frontend JS extracted into docs/js/config.js (274 lines) and docs/js/formatters.js (142 lines). All cross-references updated across README, INSTRUCTIONS, NEXT_AGENT_HANDOFF, scoreboard, tests, and docs/audits/."
     user_basis: null
     evidence:
-      - "Root listing: 18 .md files; superseded audits moved to archive/ on 2026-08-09 with banners (FULL_STACK_AUDIT_2026-08-08_ARENA.md, FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md, EXTERNAL_AUDIT.md, PRESENTATION_UX_PROPOSAL_2026-08-09.md); archive/README.md indexes the additions."
-      - "README 'Documentation layout' and INSTRUCTIONS point to the declared-current 08-09 audits only."
-      - "archive/ and decisions/ are indexed by their READMEs."
+      - "Root listing: 12 .md files (down from 21); 5 historical audits → archive/, 3 decision docs → decisions/."
+      - "README 'Documentation layout' rewritten as a 5-row table showing root essential, root normative, docs/audits/, decisions/, archive/."
+      - "Frontend modularized: docs/js/config.js + docs/js/formatters.js extracted from app.js."
+      - "All cross-references updated; 141/141 tests pass."
     user_notes: null
     desired_direction:
       - "Keep archiving superseded root audits as new audits land; consider slimming NEXT_AGENT_HANDOFF.md."
     next_actions:
-      - "Re-audit repo_organization on the next pass (consolidation executed 2026-08-09; score unchanged pending re-audit)."
+      - "Consider moving remaining 6 normative root docs to a subdirectory once stable."
     risk_flags: []
     files_reviewed:
       - "root *.md listing"
@@ -203,20 +199,21 @@ aspects:
     weight: 4
     target: 8
     ai_score: 8
-    user_score: 6
-    effective_score: 6
-    gap: 2
-    priority: 8
-    status: needs_work
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Pipeline generators are modular (pipeline/helpers, enrichments, validators, relationships); frontend block map extracted into build-generated docs/catalogue-block-map.json (derived from catalogue_display_order.csv); duplicate CSS token layers consolidated; layout refined with compact single-line headers and tight badge widths."
-    user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
+    ai_basis: "Pipeline generators are modular (pipeline/helpers, enrichments, validators, relationships); frontend modularized into docs/js/config.js (274 lines of pure config) and docs/js/formatters.js (142 lines of rendering); block map extracted into build-generated docs/catalogue-block-map.json; duplicate CSS token layers consolidated; CSS organized with 17 numbered section markers (§1-§17); layout refined with compact single-line headers and tight badge widths."
+    user_basis: null
     evidence:
       - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
       - "All 141/141 tests pass, 90% statement coverage, all 6 --check modes green."
       - "Block map extracted to docs/catalogue-block-map.json at build time from catalogue_display_order.csv, eliminating 362 hardcoded literals in app.js."
-      - "Duplicate :root layers removed in docs/style.css."
+      - "Frontend ES modules: docs/js/config.js (pure data: views, columns, labels, presets) + docs/js/formatters.js (rendering: badges, blocks, titles). app.js reduced 2,769 → 2,392 lines."
+      - "style.css organized with 17 numbered section markers (§1 Design Tokens through §17 Responsive)."
     user_notes: null
     desired_direction:
       - "Split docs/app.js into src/table/columns, filters, browse, drawer, state ESM modules with a light bundler or import map; extract tokens.css."
@@ -437,15 +434,15 @@ aspects:
     weight: 5
     target: 8
     ai_score: 8
-    user_score: 5
-    effective_score: 5
-    gap: 3
-    priority: 15
-    status: user_unhappy
+    user_score: null
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Delivery contract is now observable (content-versioned app.js/style.css v=39e1208f672b/e67530fcaebe, visible footer build ID, build-manifest hashes, FrontendDeliveryContractTests + computed light/dark zebra/block tests) and row topology/cascade (63× #spreadsheet.tabulator, data-block inset accent, horizontal work separation, neutral grey tokens #f9f9fb/#0d0d0d) is correct — re-verified 2026-08-09 at 9e4ee4d (6 --check green, 141/141 tests at 90%). Effective score stays 5 until owner visually accepts the exact deployed build ID."
-    user_basis: "Owner reiterated 2026-08-09 that repeated row changes never reached the end user; the prior 5/10 remains authoritative until explicit re-score."
+    ai_basis: "Delivery contract is observable (content-versioned app.js/style.css, visible footer build ID, build-manifest hashes, FrontendDeliveryContractTests + computed light/dark zebra/block tests) and row topology/cascade is correct. 2026-08-09 session: app.js modularized into ES modules (config.js + formatters.js), CSS organized with 17 numbered sections, Owned column width constrained, 'Not owned' badge hidden."
+    user_basis: "Owner indicated 2026-08-09 that prior 5/10 score is outdated."
     evidence:
       - "Browser CI proved fix: rows carry block metadata while element.matches('#spreadsheet .tabulator ...') was false and computed box-shadow was none before fix; Tabulator attaches .tabulator to #spreadsheet itself."
       - "All table rules now use #spreadsheet.tabulator (63 correct vs 0 dead descendant roots); data-block styling and horizontal work separation avoid the latent shadow collision."
@@ -476,15 +473,15 @@ aspects:
     weight: 4
     target: 8
     ai_score: 9
-    user_score: 5
-    effective_score: 5
-    gap: 3
-    priority: 12
-    status: user_unhappy
+    user_score: 8
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Faceted filters with removable chips, per-view persistence, keyboard shortcuts, row-detail drawer, Copy file name action, mobile Browse/Series/Timeline rails, and view settings menu (incl. the new blank-separator-rows toggle)."
-    user_basis: "Explicit owner score provided 2026-08-09: 'ux_usability 5/10'."
+    ai_basis: "Faceted filters with removable chips, per-view persistence, keyboard shortcuts, row-detail drawer, Copy file name action, mobile Browse/Series/Timeline rails, and view settings menu. 2026-08-09 session: Owned column width constrained (62-85px), 'Not owned' badge hidden (only 'Owned' shown for true items), CSS organized with 17 numbered section markers, notes column cleaned (provenance moved to research column)."
+    user_basis: "Owner provided 2026-08-09: 'UX Presentation 8/10'."
     evidence:
       - "docs/app.js VIEWS/VIEW_GROUPS, facet engine, and settings persistence reviewed."
       - "9 ux-enhancement + 4 column-layout + 5 csv-export browser specs cover the flows (CI green)."
@@ -541,7 +538,7 @@ aspects:
     ai_basis: "Catalogue data audited field-by-field: counts, codes, filenames, URLs, months, work groupings, ledger reconciliation all consistent; raw placeholder rows are ruled/excluded with provenance."
     user_basis: "Explicit owner score provided 2026-08-09: 'content_quality 7/10'."
     evidence:
-      - "~20 independent pandas probes in FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md found no data defects."
+      - "~20 independent pandas probes in archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md found no data defects."
       - "Ledger row 371 reclassified needs_review -> duplicate (this session)."
     user_notes: null
     desired_direction: []
@@ -662,7 +659,7 @@ aspects:
     risk_flags: []
     files_reviewed:
       - NEXT_AGENT_HANDOFF.md
-      - FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
+      - archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md
 
   - id: auditability
     name: Auditability
@@ -690,3 +687,25 @@ aspects:
       - RECONCILIATION_REPORT.md
       - migration_review_ledger.csv
       - decisions/
+
+  - id: repo_transparency
+    name: Repo transparency
+    category: product
+    weight: 3
+    target: 8
+    ai_score: null
+    user_score: 7
+    effective_score: 7
+    gap: 1
+    priority: 3
+    status: needs_work
+    confidence: high
+    last_audited: "2026-08-09"
+    ai_basis: null
+    user_basis: "Owner provided 2026-08-09: 'Repo transparency 7/10 — indicates owner's understanding of what is going on in this repo'."
+    evidence: []
+    user_notes: "Owner self-assessment of how well they understand the repo's structure, data flow, and current state."
+    desired_direction: []
+    next_actions: []
+    risk_flags: []
+    files_reviewed: []

@@ -167,7 +167,7 @@ the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
 SUPERSEDED banner; `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` too —
 pre-PR-#40 findings). See the session log at the bottom of §6.
 Headline results (2026-08-09 expert pass, current):
-- **Expert full-stack audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
+- **Expert full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
   all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
   coverage 7.15.4); ~20 independent pandas probes bypassing the project's own
   validators reproduced every README count exactly (362 masters, 278 codes,
@@ -184,7 +184,7 @@ Headline results (2026-08-09 expert pass, current):
   **8 `duplicate`** / 5 `source_context` / **0 `needs_review`**; the 75-row
   exclusion set, `docs/master-exclusions.json`, `docs/migration-review.json`,
   `MIGRATION_REVIEW_LEDGER.md`, and the disposition table in
-  `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` were regenerated/updated with
+  `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` were regenerated/updated with
   it. No master-row, code, or count changed.
 - **Doc fixes:** SERIES_TAXONOMY_MAPPING.md corrected (the seven Highlights
   products ARE in the category mapping as approved R1 rows matched to masters
@@ -260,8 +260,8 @@ Headline results (2026-08-08 independent pass, baseline):
   `npm audit` 0 vulns.
 - **Docs refreshed:** README, NEXT_AGENT_HANDOFF (this file),
   MIGRATION_REVIEW_LEDGER, EDITION_MODEL_PROPOSAL,
-  FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
-  UX_REWORK_SUGGESTIONS (now `archive/UX_REWORK_SUGGESTIONS.md`), YEAR_COLUMN_PROVENANCE.
+  decisions/FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
+  UX_REWORK_SUGGESTIONS (now `archive/UX_REWORK_SUGGESTIONS.md`), decisions/YEAR_COLUMN_PROVENANCE.
 - **Left open for owner triage (no code/data changes in PR #39):**
   - **D-04 (Low/Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): Amazon paperback URLs for masters 359–361 no longer duplicate into `reference_url_1`; `build_research_master.py:1394` now treats Amazon URLs as curated-source URLs and `reference_url_1` is blank for 359–361 (verified 0 `amazon==reference` duplicates).
   - **B-01 (Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): two Spanish Audible titles moved from hardcoded `build_catalogue_pages.py:797–815` into `data/international_discovery_queue.csv` (36 → 38 rows); `international-products.json` is now fully input-driven (38 → 38 parity) and `catalogue-meta.json` now publishes `international_products: 38`.
@@ -580,7 +580,7 @@ Intermediate 2026-08-07–08 session logs (Post-PR #27 audit, distributor title 
 ## 2026-08-09 Full-stack deep-dive + owner-approved fixes (arena/019fe5fc-docsheet, current)
 
 Branch `arena/019fe5fc-docsheet` at `d731e1b` (PR #40 merged into `main`).
-Deep-dive audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`, read-only,
+Deep-dive audit (`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`, read-only,
 then owner-approved fixes applied in this branch).
 
 - **Audit result:** all six `--check` modes green, 126/126 tests (one added),
@@ -616,7 +616,7 @@ then owner-approved fixes applied in this branch).
 ## 2026-08-09 Full-stack audit + hygiene (arena/019fe620-docsheet, previous)
 
 Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (read-only at `f520e9b`, fixes at `80cdcea`/`2bc99ec`).
+`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (read-only at `f520e9b`, fixes at `80cdcea`/`2bc99ec`).
 
 - **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
 - **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
@@ -642,10 +642,10 @@ Branch `arena/019fe6ad-docsheet` (current working branch, from `408f31e` / PR #4
 
 ## 2026-08-09 Expert full-stack audit + low-severity fixes (arena/019fe659-docsheet, current)
 
-Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (kept at root as a declared-current audit).
+Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (archived 2026-08-09).
 
 - **Expert audit:** all six `--check` modes green, 126/126 tests, 91% coverage; ~20 independent pandas probes bypassing the project's validators reproduced every README count exactly and found no data-loss/correctness defects. Seven low-severity findings (§3 of the audit); the Playwright browser suite could not be re-run in the sandbox (CDN blocked) but CI is green.
-- **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
+- **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
 - **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
 - **Frontend (audit §3.4):** Original Spreadsheet view hides the 31 blank separator rows by default with a "Show blank separator rows" View setting; added `tests/blank-rows.spec.js` (browser suite now 19 tests). Pass-through wording clarified in README/INSTRUCTIONS/process_data.py (§3.6).
 - **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.

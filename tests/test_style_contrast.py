@@ -2,7 +2,7 @@
 """Regression guard: verify CSS zebra-row and block-wash contrast stays above the human-perception threshold.
 
 This test prevents future agents from silently flattening the alternating
-row colors (the defect documented in AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md
+row colors (the defect documented in archive/AUDIT_REPEATED_FAILURE_STYLING_2026-08-09.md
 and R-01 in NEXT_AGENT_HANDOFF.md). It reads docs/style.css and asserts that:
 
 1. --zebra is sufficiently distinct from --surface in both light and dark modes.

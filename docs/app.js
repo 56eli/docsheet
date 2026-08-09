@@ -8,6 +8,19 @@
    generated catalogue data is corrected in the declared CSV review
    inputs and republished, never patched session-locally in the UI.
    ========================================================================== */
+import {
+  VIEWS, VIEW_GROUPS, EMPTY_STATE_MESSAGES, DEFAULT_EMPTY_MESSAGE,
+  VIEW_DETAILS, COLUMN_LABELS, STATUS_FIELDS, FORMAT_FIELDS,
+  REVIEW_FILTER_FIELDS, RECORD_TYPE_LABELS, RECORD_TYPE_TITLES,
+  DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
+  COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
+} from "./js/config.js";
+import {
+  statusClass, formatClass, statusLabel, statusFormatter,
+  rowTitle, primaryIdentifier,
+  loadCatalogueBlockMap, getRowBlockId,
+} from "./js/formatters.js";
+
 (function () {
   "use strict";
 
@@ -86,275 +99,6 @@
   const copyFilenameBtn = $("copy-filename-btn");
   const copyIdBtn = $("copy-id-btn");
 
-  const VIEWS = {
-    master: { file: "master.json", label: "Everything", exportName: "hawkins-everything.csv" },
-    series: { file: "master.json", label: "Series", exportName: "hawkins-series.csv" },
-    reviewOverview: { file: "review-overview.json", label: "Review Overview", exportName: "hawkins-review-overview.csv" },
-    manualCandidates: { file: "manual-candidates.json", label: "Candidates", exportName: "hawkins-master-candidates.csv" },
-    manualLeads: { file: "manual-leads.json", label: "Manual Leads", exportName: "hawkins-manual-leads.csv" },
-    masterExclusions: { file: "master-exclusions.json", label: "Exclusions", exportName: "hawkins-master-exclusions.csv" },
-    migrationReview: { file: "migration-review.json", label: "Migration Review", exportName: "hawkins-migration-review.csv" },
-    sourceOverrides: { file: "source-overrides.json", label: "Source Overrides", exportName: "hawkins-source-overrides.csv" },
-    officialDiscovery: { file: "official-discovery.json", label: "Official Discovery", exportName: "hawkins-official-discovery.csv" },
-    newWorkReview: { file: "new-work-review.json", label: "New Work Review", exportName: "hawkins-new-work-review.csv" },
-    veritasMappingDecisions: { file: "veritas-mapping-decisions.json", label: "Decisions", exportName: "hawkins-veritas-decisions.csv" },
-    productRelationships: { file: "product-relationships.json", label: "Product Relationships", exportName: "hawkins-product-relationships.csv" },
-    seriesCompilations: { file: "series-compilations.json", label: "Compilations", exportName: "hawkins-series-compilations.csv" },
-    internationalProducts: { file: "international-products.json", label: "International Editions", exportName: "hawkins-international-products.csv" },
-    publishers: { file: "publishers.json", label: "Publishers", exportName: "hawkins-approved-publishers.csv" },
-    veritasProducts: { file: "veritas-products.json", label: "Veritas Products", exportName: "hawkins-veritas-products.csv" },
-    hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
-    audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
-    filenameProposal: { file: "filename-proposal.json", label: "Filename Proposal", exportName: "hawkins-filename-proposal.csv" },
-    original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
-  };
-
-  const VIEW_GROUPS = [
-    { label: "Catalogue", views: ["master", "series", "productRelationships", "seriesCompilations"] },
-    { label: "Review workspace", views: ["reviewOverview", "manualCandidates", "manualLeads", "masterExclusions", "sourceOverrides", "veritasMappingDecisions", "newWorkReview", "officialDiscovery", "internationalProducts"] },
-    { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview", "original"] },
-  ];
-
-  // Standing intake lanes show a friendly explanation instead of an empty
-  // grid (2026-08-08 IA redesign, Phase 1).
-  const EMPTY_STATE_MESSAGES = {
-    officialDiscovery:
-      "Standing intake lane — every queued item has been ruled out or promoted. " +
-      "If a Veritas catalogue refresh surfaces unmatched products, they will land here for review.",
-    newWorkReview:
-      "Standing intake lane — no unmatched Veritas products are awaiting a new-work ruling right now.",
-  };
-  const DEFAULT_EMPTY_MESSAGE = "No rows in this view.";
-
-  const VIEW_DETAILS = {    master: {
-      type: "Complete curated catalogue",
-      description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. On phones it opens in Browse mode: compact work stacks with source and streaming actions; use Spreadsheet for the full grid. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
-    },
-    series: {
-      type: "Series browser",
-      description: "Every curated series as a card: record count, ownership, and year span. Pick a series to open the Everything view filtered to it.",
-    },
-    reviewOverview: {
-      type: "Review index",
-      description: "A guide to the review sheets, their source files, row counts, and current decision state.",
-    },
-    manualCandidates: {
-      type: "Promotion queue",
-      description: "Evidence-backed official candidates that are validated but intentionally not promoted until a separate approval path exists.",
-    },
-    manualLeads: {
-      type: "Research leads",
-      description: "Manual edition, copy, or source leads that remain outside the master until reviewed.",
-    },
-    masterExclusions: {
-      type: "Exclusion ledger",
-      description: "Raw spreadsheet rows intentionally excluded from the curated master, retained with disposition and review reason.",
-    },
-    migrationReview: {
-      type: "Migration ledger",
-      description: "Raw-row provenance and proposed migration metadata used to regenerate the curated master.",
-    },
-    sourceOverrides: {
-      type: "Approved overrides",
-      description: "Reviewed official-source links applied after the original migration ledger pass without editing generated master files.",
-    },
-    officialDiscovery: {
-      type: "Discovery queue",
-      description: "Nightingale-Conant and platform candidates awaiting source, duplicate, or relationship review.",
-    },
-    newWorkReview: {
-      type: "Review queue",
-      description: "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
-    },
-    veritasMappingDecisions: {
-      type: "Refresh decisions",
-      description: "Approved Veritas product-ID dispositions reapplied after every live catalogue refresh.",
-    },
-    productRelationships: {
-      type: "Relationship evidence",
-      description: "Reviewed item-to-product assertions kept separate from master identity and source inventory.",
-    },
-    seriesCompilations: {
-      type: "Series evidence",
-      description: "Compilation links to annual lecture series where evidence supports a series/month scope rather than individual DVD parts.",
-    },
-    internationalProducts: {
-      type: "International leads",
-      description: "Non-English and market-specific products tracked separately from the current English-focused master.",
-    },
-    publishers: {
-      type: "Source registry",
-      description: "Approved publisher/platform sources and their role in the catalogue review process.",
-    },
-    veritasProducts: {
-      type: "Official inventory",
-      description: "Reviewed Veritas Publishing product inventory with product IDs, official categories, mapping status, and matched master records.",
-    },
-    hayhouseProducts: {
-      type: "Official inventory",
-      description: "Reviewed Hay House product inventory used for book and audio-edition source matching.",
-    },
-    audibleProducts: {
-      type: "Platform inventory",
-      description: "Reviewed Audible catalogue entries and their current mapping notes, including international editions routed out of the English master.",
-    },
-    filenameProposal: {
-      type: "Filename review",
-      description: "Reviewed proposed output filenames with master metadata mirrors and display-safe part labels.",
-    },
-    original: {
-      type: "Raw source view",
-      description: "The original spreadsheet rendered unchanged; use this for provenance checks, not curated master decisions.",
-    },
-  };
-
-  const COLUMN_LABELS = {
-    record_type: "Record Type",
-    uuid: "Master ID",
-    work_id: "Work",
-    edition: "Edition",
-    master_uuid: "Master ID",
-    year_month: "Year-Month",
-    year_source: "Year Source",
-    item_type: "Item Type",
-    series: "Series",
-    owned: "Owned",
-    source_url_veritas: "Veritas (Official Store)",
-    source_url_hay_house: "Hay House",
-    source_url_nightingale_conant: "Nightingale-Conant",
-    source_url_audible: "Audible",
-    source_url_amazon: "Amazon",
-    reference_url_1: "Streaming",
-    legacy_title: "Original Spreadsheet Title",
-    raw_row_number: "Raw Row",
-    catalog_code: "Catalogue Code",
-    legacy_tempid: "Legacy ID",
-    proposed_filename: "Proposed File Name",
-    proposed_filename_display: "Proposed File Name Display",
-    proposed_item_type: "Proposed Item Type",
-    proposed_format: "Proposed Format",
-    proposed_format_detail: "Proposed Format Detail",
-    proposed_owned: "Proposed Owned",
-    proposed_year: "Proposed Year",
-    proposed_title: "Proposed Title",
-    matched_master_uuids: "Matched Master IDs",
-    source_product_id: "Source Product ID",
-    source_name: "Source",
-    official_product_url: "Official Product URL",
-    official_product_title: "Official Product Title",
-    official_catalogue_url: "Official Catalogue URL",
-    official_discovery_url: "Official Discovery URL",
-    review_status: "Review Status",
-    review_reason: "Review Reason",
-    review_notes: "Review Notes",
-    promotion_status: "Promotion Status",
-    promotion_notes: "Promotion Notes",
-    relationship_type: "Relationship Type",
-    mapping_status: "Mapping Status",
-    match_status: "Match Status",
-    evidence_url: "Evidence URL",
-    evidence_note: "Evidence Note",
-    override_value: "Override Value",
-    target_field: "Target Field",
-  };
-  const STATUS_FIELDS = new Set([
-    "record_type", "review_status", "promotion_status", "mapping_status", "match_status",
-    "disposition", "approval", "owned", "proposed_owned", "relationship_type",
-  ]);
-  const FORMAT_FIELDS = new Set(["format"]);
-  const REVIEW_FILTER_FIELDS = [
-    "record_type", "promotion_status", "review_status", "disposition", "approval",
-    "mapping_status", "match_status", "relationship_type",
-  ];
-  // Human-readable Everything-view provenance labels. Curated master records and
-  // official candidates share the sheet, so the difference must be explicit.
-  // Record-type badges are intentionally compact (owner directive 2026-08-08):
-  // curated master rows read "CM" to keep the first column narrow. The full
-  // phrase stays in the badge's `title` tooltip (see statusFormatter) and in
-  // the column header / filter chips. Candidate lanes are empty today but
-  // their labels stay descriptive for when a refresh surfaces new products.
-  const RECORD_TYPE_LABELS = {
-    master: "CM",
-    candidate_discovery: "Candidate · discovery",
-    candidate_veritas: "Candidate · Veritas",
-    candidate_hayhouse: "Candidate · Hay House",
-    candidate_audible: "Candidate · Audible",
-    candidate_pending_promotion: "Candidate · pending promotion",
-  };
-  const RECORD_TYPE_TITLES = {
-    master: "Curated master",
-    candidate_discovery: "Candidate · discovery",
-    candidate_veritas: "Candidate · Veritas",
-    candidate_hayhouse: "Candidate · Hay House",
-    candidate_audible: "Candidate · Audible",
-    candidate_pending_promotion: "Candidate · pending promotion",
-  };
-  const DEFAULT_PRIORITY_FIELDS = [
-    "record_type",
-    "title", "proposed_filename", "candidate_title", "official_title", "review_sheet", "publisher",
-    "relationship_id", "raw_row_number", "disposition", "review_status",
-    "mapping_status", "promotion_status", "match_status", "item_type", "series",
-    "year", "year_source", "format", "owned", "source_name", "official_product_url",
-    "evidence_url", "review_notes", "notes",
-  ];
-  const LOW_PRIORITY_FIELDS = [
-    "uuid", "work_id", "master_uuid", "matched_master_uuids", "raw_uuid", "catalog_code",
-    "legacy_tempid", "raw_tempid", "source_product_id", "veritas_product_id",
-    "normalized_title_match_count", "raw_unnamed_5", "raw_unnamed_8", "raw_unnamed_9",
-    "raw_unnamed_10", "raw_unnamed_11",
-  ];
-  // Width budgets are a presentation contract: content columns may use the
-  // measured-width engine, but compact controls and the frozen identity rail
-  // must never grow just because a label is long.
-  const COLUMN_BUDGETS = {
-    record_type: { width: 52, minWidth: 48, maxWidth: 58 },
-    proposed_filename: { minWidth: 220 },
-    title: { minWidth: 150 },
-    series: { minWidth: 180 },
-  };
-
-  const COLUMN_PRESETS = {
-    master: {
-      // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08 & 2026-08-09): a
-      // first-time visitor sees the proposed output file name (the most
-      // important column) immediately after the compact Record Type badge, then
-      // item type, owned status, and notes, followed by edition and source links.
-      // Technical metadata, raw Title, Series, and Year-Month are hidden under Expert columns.
-      priority: ["record_type", "proposed_filename", "item_type", "owned", "notes", "edition", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "catalog_code", "title", "series", "year_month"],
-      frozen: ["record_type", "proposed_filename"],
-      // Expert columns: Title, Series, Year-Month, internal IDs, and provenance fields.
-      // Hidden by default so the catalogue opens on the file name + key facts; the "Expert
-      // columns" toggle reveals them.
-      hidden: ["title", "series", "year", "month", "uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
-      // Owner-directed 2026-08-04: park the Work grouping column right after
-      // Legacy ID (the empty Location placeholders it used to precede were
-      // dropped from the schema by owner ruling 2026-08-07).
-      moveAfter: { work_id: "legacy_tempid" },
-    },
-    original: {
-      priority: ["title", "tempid", "WE HAVE?", "original source", "notes", "format", "product link"],
-      frozen: ["title"],
-    },
-    reviewOverview: { priority: ["review_sheet", "record_count", "purpose", "current_state", "source_file"], frozen: ["review_sheet"] },
-    manualCandidates: { priority: ["candidate_title", "proposed_item_type", "proposed_year", "proposed_format", "proposed_owned", "review_status", "promotion_status", "official_product_title", "evidence_note"], frozen: ["candidate_title"] },
-    manualLeads: { priority: ["title", "proposed_item_type", "proposed_year", "proposed_owned", "lead_status", "review_reason", "provenance_note"], frozen: ["title"] },
-    masterExclusions: { priority: ["raw_title", "disposition", "review_reason", "raw_row_number", "raw_tempid", "raw_we_have", "raw_product_link"], frozen: ["raw_title"] },
-    migrationReview: { priority: ["proposed_title", "disposition", "review_reason", "proposed_item_type", "proposed_series", "proposed_year", "proposed_owned", "raw_row_number", "raw_title"], frozen: ["proposed_title"] },
-    officialDiscovery: { priority: ["candidate_title", "item_type", "series", "year", "format", "match_status", "approval", "source_url_audible", "review_notes"], frozen: ["candidate_title"] },
-    newWorkReview: { priority: ["candidate_title", "item_type", "series", "year", "format", "source_product_id", "match_status", "approval", "source_url_veritas", "match_notes", "review_notes"], frozen: ["candidate_title"] },
-    veritasMappingDecisions: { priority: ["veritas_product_id", "mapping_status", "matched_master_uuids", "matched_master_titles", "review_status", "decision_reason"], frozen: ["veritas_product_id"] },
-    productRelationships: { priority: ["master_uuid", "master_title", "relationship_type", "review_status", "official_product_title", "evidence_note", "source_name", "reviewed_on"], frozen: ["master_uuid", "master_title"] },
-    seriesCompilations: { priority: ["official_product_title", "target_series", "target_year", "relationship_type", "included_lecture_count", "review_status", "target_lecture_titles"], frozen: ["official_product_title"] },
-    internationalProducts: { priority: ["candidate_title", "publisher", "market", "language", "item_type", "match_status", "source_url", "review_notes"], frozen: ["candidate_title"] },
-    publishers: { priority: ["publisher", "status", "role", "official_catalogue_url"], frozen: ["publisher"] },
-    veritasProducts: { priority: ["veritas_product_id", "official_title", "mapping_status", "matched_master_uuids", "matched_master_titles", "published_date", "official_product_url", "official_categories", "review_notes"], frozen: ["veritas_product_id", "official_title"] },
-    hayhouseProducts: { priority: ["official_title", "format", "mapping_status", "official_product_url", "review_notes"], frozen: ["official_title"] },
-    audibleProducts: { priority: ["official_title", "mapping_status", "audible_url", "review_notes"], frozen: ["official_title"] },
-    filenameProposal: { priority: ["uuid", "title", "proposed_filename_display", "proposed_filename", "work_id", "item_type", "series", "year", "month", "format", "part_index", "part_total"], frozen: ["uuid", "title"] },
-  };
-
-  let table = null;
-  let allData = [];
   let activeView = "master";
   let activeSearchQuery = "";
   let activeReviewFilter = null;
@@ -444,7 +188,7 @@
       id: "owned",
       el: () => facetOwned,
       field: "owned",
-      buildOptionLabel: (value) => { const v = String(value ?? "").toLowerCase(); return v === "true" ? "Owned" : v === "false" ? "Not owned" : "Not stated"; },
+      buildOptionLabel: (value) => { const v = String(value ?? "").toLowerCase(); return v === "true" ? "Owned" : v === "false" ? "Not owned" : "Unknown"; },
     },
   ];
 
@@ -1365,12 +1109,6 @@
     fitTableToContainer();
   }
 
-  function rowTitle(data) {
-    return data.title || data.candidate_title || data.official_title ||
-      data.official_product_title || data.master_title || data.review_sheet ||
-      data.publisher || data.relationship_id || data.raw_title || "Selected row";
-  }
-
   function valueNode(field, value) {
     const text = String(value ?? "").trim();
     if (!text) return document.createTextNode("—");
@@ -1408,33 +1146,11 @@
     copyValue(data?.proposed_filename, copyFilenameBtn);
   }
 
-  function primaryIdentifier(data) {
-    return data?.uuid || data?.master_uuid || data?.veritas_product_id ||
-      data?.source_product_id || data?.candidate_key || "";
-  }
-
   function copyIdentifier(data) {
     copyValue(primaryIdentifier(data), copyIdBtn);
   }
 
-  const DETAIL_SECTIONS = [
-    {
-      title: "Identity",
-      fields: ["record_type", "proposed_filename", "title", "series", "item_type", "edition", "year_month", "catalog_code"],
-    },
-    {
-      title: "Ownership & status",
-      fields: ["owned", "review_status", "promotion_status", "mapping_status", "match_status", "disposition", "approval", "relationship_type"],
-    },
-    {
-      title: "Sources",
-      fields: ["source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant", "source_url_audible", "source_url_amazon", "reference_url_1", "official_product_url", "evidence_url", "source_url"],
-    },
-    {
-      title: "Provenance",
-      fields: ["uuid", "work_id", "master_uuid", "legacy_tempid", "raw_tempid", "raw_row_number", "candidate_key", "source_product_id", "veritas_product_id", "year_source", "legacy_title", "notes", "evidence_note", "review_reason", "decision_reason", "provenance_note", "source_file"],
-    },
-  ];
+
 
   let currentRowData = null;
   let lastRowTrigger = null;
@@ -1548,12 +1264,6 @@
    * ------------------------------------------------------------------ */
   async function loadData(viewName, signal) {
     const view = VIEWS[viewName];
-    if ((viewName === "master" || viewName === "series") && Object.keys(catalogueBlockMap).length === 0) {
-      try {
-        const blockRes = await fetch("catalogue-block-map.json", { cache: "no-store", signal });
-        if (blockRes.ok) catalogueBlockMap = await blockRes.json();
-      } catch (err) { /* fallback to heuristic */ }
-    }
     const res = await fetch(view.file, { cache: "no-store", signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
@@ -1650,93 +1360,6 @@
     return anchor;
   }
 
-  function humanizeField(key) {
-    if (COLUMN_LABELS[key]) return COLUMN_LABELS[key];
-    return key
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (character) => character.toUpperCase());
-  }
-
-  function statusClass(value) {
-    const normalized = String(value ?? "").toLowerCase();
-    // Everything-view provenance: curated master vs. unpromoted candidate.
-    if (normalized === "master") return "status-master";
-    if (normalized.startsWith("candidate_")) return "status-candidate";
-    if (/(excluded|rejected)/.test(normalized)) return "status-excluded";
-    if (/(pending|needs|unmatched|not.promoted|unique_item|compilation_or_new_edition|^false$)/.test(normalized)) return "status-pending";
-    if (/(approved|reviewed|matched|^item$|^true$)/.test(normalized)) return "status-approved";
-    return "status-neutral";
-  }
-
-  function formatClass(value) {
-    const normalized = String(value ?? "").toLowerCase().trim();
-    if (normalized === "dvd") return "status-approved";
-    if (normalized === "cd") return "status-approved";
-    if (normalized === "streaming") return "status-pending";
-    if (normalized === "audio") return "status-neutral";
-    if (normalized === "book") return "status-master";
-    return "status-neutral";
-  }
-
-  let catalogueBlockMap = {};
-
-  // Eagerly load the build-generated catalogue block map (derived from catalogue_display_order.csv)
-  fetch("catalogue-block-map.json", { cache: "no-store" })
-    .then((res) => (res.ok ? res.json() : null))
-    .then((map) => {
-      if (map) catalogueBlockMap = map;
-    })
-    .catch(() => {});
-
-  function getRowBlockId(data) {
-    if (!data) return "undecided";
-    const uuid = String(data.uuid || "").trim();
-    if (catalogueBlockMap && catalogueBlockMap[uuid]) {
-      return catalogueBlockMap[uuid];
-    }
-    const series = String(data.series || "").trim();
-    const type = String(data.item_type || "").trim();
-    const notes = String(data.notes || "").trim();
-
-    if (uuid === "315" || notes.includes("FRAN GRACE")) return "fran-grace";
-    if (series === "Discussion Series" || type === "discussion") return "discussion";
-    if (series === "Satsang Series") return "satsang";
-    if (series === "On The Road Talk Series") return "on-the-road";
-    if (series === "Volume Series") return "volume-series";
-    if (series === "Office Series") return "office-series";
-    if (series === "Transcription Series Books") return "transcription-books";
-    if (series === "Books" || type === "book") return "books";
-    if (series === "Media Miscellaneous") return "media-misc";
-    return "undecided";
-  }
-
-  function statusLabel(field, value) {
-    if (field === "record_type" && RECORD_TYPE_LABELS[value]) {
-      return RECORD_TYPE_LABELS[value];
-    }
-    // Owned vocabulary: true = owned, false = explicitly not owned, empty =
-    // not stated (minted editions/programs without a raw ownership marker).
-    // Comparison is case-insensitive so legacy capitalised values ("True"/"False")
-    // render the same badge as the normalised "true"/"false" vocabulary.
-    if (field === "owned" || field === "proposed_owned") {
-      const v = String(value ?? "").toLowerCase();
-      if (v === "true" || v === "false") return v === "true" ? "Owned" : "Not owned";
-    }
-    return value.replace(/_/g, " ");
-  }
-
-  function statusFormatter(cell) {
-    const value = String(cell.getValue() ?? "");
-    if (!value) return "";
-    const field = cell.getColumn().getField();
-    const badge = document.createElement("span");
-    badge.className = `status-badge ${statusClass(value)}`;
-    badge.textContent = statusLabel(field, value);
-    // Compact record-type badges (e.g. "CM") carry their full label in the
-    // tooltip; everything else shows the raw status value on hover.
-    badge.title = (field === "record_type" && RECORD_TYPE_TITLES[value]) || value;
-    return badge;
-  }
 
   function columnPresetFor(viewName) {
     return COLUMN_PRESETS[viewName] || { priority: DEFAULT_PRIORITY_FIELDS, frozen: [] };

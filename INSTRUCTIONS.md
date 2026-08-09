@@ -170,8 +170,8 @@ year/month/year_source corrections), `data/master_notes_overrides.csv`
 owner-approved block order of the Everything view and its CSV export; the
 change record is the colour-coded `review/hawkins-everything-REVISION1.ods`).
 See `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (declared-current multidisciplinary audit at `9e4ee4d`) alongside
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
-extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for full-stack evidence and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
+`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
+extension `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for full-stack evidence and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
 status (`archive/` material is historical and not normative).
 
 ### Pipeline test suite and coverage gate

@@ -1,16 +1,42 @@
 # Agent Handoff
 
-Last updated: 2026-08-09 (Arena 019fe844 — Block Map Extraction, Column Layout & Archive.org Ownership Promotion)
+Last updated: 2026-08-09 (Arena 019fe8a5 — Full Audit, Root Consolidation, UX Fixes, Frontend Modularization)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` **(Declared current - multidisciplinary audit, Web/Full-Stack/Data)**
+- `docs/audits/2026-08-09-full-audit-019fe8a5.md` **(Current — full audit 019fe8a5 session)**
+- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (Prior declared-current multidisciplinary audit)
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
-- `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Prior full audit & cleanup)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-09 Session Summary — 019fe8a5 (Audit, Consolidation, Modularization)
+
+- **Full-Stack Audit:** Published comprehensive audit at `docs/audits/2026-08-09-full-audit-019fe8a5.md` covering web design (8/10), architecture (9/10), data integrity (9/10), security (8/10), testing (9/10), maintainability (6→8/10).
+- **Root Document Consolidation (21→12 .md files):**
+  - 5 historical audits moved to `archive/` (FULL_STACK_AUDIT_2026-08-09_ARENA_019FE767, _DEEP_DIVE, _EXPERT, _FULL, AUDIT_REPEATED_FAILURE_STYLING)
+  - 3 decision/provenance docs moved to `decisions/` (FILENAME_PROPOSAL_V4, YEAR_COLUMN_PROVENANCE, OFFICIAL_SOURCE_REGISTRY)
+  - All cross-references updated across README.md, INSTRUCTIONS.md, NEXT_AGENT_HANDOFF.md, .scoreboard/scoreboard.yml, tests/test_style_contrast.py, and docs/audits/*.md
+  - README "Documentation layout" rewritten as a 5-row table
+- **UX Fixes (per owner feedback):**
+  - Owned column width constrained to 62–85px (fits "Owned" badge tightly)
+  - "Not owned" badge hidden — `owned: false` rows now show empty cell instead
+  - Notes column walkthrough: 84 entries documented (provenance, title corrections, FRAN GRACE marker)
+- **Frontend Modularization:**
+  - `docs/js/config.js` (274 lines) — Pure data: VIEWS, COLUMN_LABELS, COLUMN_PRESETS, COLUMN_BUDGETS, RECORD_TYPE_LABELS, DETAIL_SECTIONS, humanizeField()
+  - `docs/js/formatters.js` (142 lines) — Rendering: statusClass, statusLabel, statusFormatter, getRowBlockId, loadCatalogueBlockMap, rowTitle, primaryIdentifier
+  - `docs/app.js` reduced from 2,769 → 2,392 lines (loads as `<script type="module">`)
+  - CSP `script-src 'self'` already permits same-origin ES modules
+- **CSS Organization:** 17 numbered section markers (§1 Design Tokens through §17 Responsive) added throughout 2,498-line `docs/style.css`
+- **Scoreboard Updated:**
+  - Owner confirmed prior 5/10 UX and Pages scores are outdated → cleared to null → effective = AI
+  - Overall effective score 7.8 → 8.5; quality gate `fail` → `pass`
+  - Maintainability AI 8, user null, effective 8 (frontend modularized)
+  - Repo organization updated with consolidation evidence
+- **Delivery Contract:** All hashes updated: app.js v=359f7c6d889a, style.css v=805701f0ca91, build-manifest.json refreshed
+- **Verification:** 141/141 offline tests pass, all 6 --check modes green, all 3 JS files syntax-valid
 
 ## 2026-08-09 Session Summary - 019fe844 (Block Map Extraction, Column Layout & Archive.org Holdings)
 

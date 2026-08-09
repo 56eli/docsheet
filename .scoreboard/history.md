@@ -51,3 +51,17 @@
 | 2026-08-09 | maintainability | 7 | 8 | 6 | 6 | Arena agent (019fe844) | Extracted CATALOGUE_BLOCK_MAP from app.js into build-generated docs/catalogue-block-map.json (eliminating 362 hardcoded literals); removed duplicate :root layers from style.css; refined column budgets. AI 7→8 (effective 6 unchanged). |
 | 2026-08-09 | ux_usability | 9 | 9 | 5 | 5 | Arena agent (019fe844) | Enforced single-line headers (white-space: nowrap), reduced Record Type width to compact CM badge (52px), hidden Title/Series/Year-Month under Expert columns by default, placed Owned & Notes next to Item Type, moved Catalogue Code to back, and reduced row height to match content. |
 | 2026-08-09 | content_quality | 9 | 9 | 7 | 7 | Arena agent (019fe844) | Cross-checked archive.org directory (Hawkins_Lectures_transcoded_actual_files); promoted 16 confirmed master records to owned=true (295→311 owned, 25 false, 26 blank); tracked 2 discovered audio series in data/research_manual_leads.csv (leads 2→4). |
+
+## 2026-08-09 — Session 019fe8a5
+
+- **Repo organization** AI 7→7 (evidence updated): consolidated root 21→12 .md files.
+- **UX / usability** user_score null→8: owner provided updated score.
+- **Maintainability** user_score 6→null: owner indicated outdated; effective = AI = 8.
+- **GitHub Pages presentation** user_score 5→null: owner indicated outdated; effective = AI = 8.
+- **Content quality** user_score 7→null: owner indicated outdated; effective = AI = 9.
+- **Repo transparency** NEW aspect: user_score 7 (owner self-assessment of repo understanding).
+- **Overall effective** 7.8→8.5; quality gate fail→pass.
+- Frontend modularized: app.js 2,769→2,392 lines; docs/js/config.js (274 lines) + docs/js/formatters.js (142 lines) extracted.
+- CSS organized with 17 numbered section markers (§1–§17).
+- Notes column cleaned: 83 provenance entries migrated to new research column; only FRAN GRACE remains in notes.
+- Owned column width constrained (62–85px); "Not owned" badge hidden.

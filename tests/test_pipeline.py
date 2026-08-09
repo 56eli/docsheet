@@ -1764,7 +1764,10 @@ class DocumentationCurrencyTests(unittest.TestCase):
             csv_fields,
         )
         # app.js master preset: every hidden (Expert) field must exist.
-        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        # COLUMN_PRESETS lives in docs/js/config.js (ES module extracted 2026-08-09).
+        app_js = (REPO / "docs/js/config.js").read_text(encoding="utf-8")
+        if not app_js.strip():
+            app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
         preset = re.search(r"master: \{.*?hidden: \[([^\]]*)\]", app_js, re.DOTALL)
         self.assertIsNotNone(preset, "app.js master preset hidden list not found")
         hidden = re.findall(r'"([a-z_0-9]+)"', preset.group(1))
@@ -2141,7 +2144,8 @@ class OwnerOverrideAndDisplayOrderTests(unittest.TestCase):
             self.assertEqual(rows["230"]["year"], "2004")
             self.assertEqual(rows["230"]["month"], "03")
             self.assertEqual(rows["230"]["year_source"], "Test override year")
-            self.assertEqual(rows["1"]["notes"], "TEST NOTE OVERRIDE")
+            self.assertEqual(rows["1"]["notes"], "")
+            self.assertEqual(rows["1"]["research"], "TEST NOTE OVERRIDE")
             # committed REVISION1 overrides still apply in the same build
             self.assertEqual(rows["357"]["year"], "2003")
             self.assertEqual(rows["357"]["year_source"], "Owner revision: 2003 (REVISION1 ODS, 2026-08-09)")

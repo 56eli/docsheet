@@ -25,13 +25,9 @@ files** — this scoreboard is part of that memory. See
 
 | Priority | Aspect | Why |
 |---:|---|---|
-| 15 | GitHub Pages presentation | Row-delivery P0 implemented with visible build ID; owner acceptance still required |
-| 12 | UX / usability | Owner score remains 5/10 until the exact versioned build is accepted |
-| 8 | Maintainability | Large frontend/CSS and hard-coded block map remain |
 | 4 | CI/CD | Require CI before merge and gate Pages; owner settings/workflow action pending |
 | 4 | Deployment readiness | Apply CI-gated Pages + deployed revision/hash verification |
-| 3 | Content quality | Owner scored 7/10 (user_unhappy); AI 9 — clarify expectations |
-| 3 | Repo organization | Root/archive audit volume remains high |
+| 3 | Repo organization | 12 root .md files remain; normative docs could move to subdirectory |
 | — | Issue #18 | Owned-flags cross-check vs. lak.nz Drive (needs owner Drive access) |
 
 ## Scoreboard table
@@ -40,10 +36,10 @@ files** — this scoreboard is part of that memory. See
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|---|
 | Project purpose / scope | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | README / onboarding | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Re-audit after 2026-08-09 consolidation |
+| Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Consolidated 21→12 root .md; consider moving 6 normative docs |
 | Code hygiene | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 8 | 6 | 6 | 2 | 8 | needs_work | high | Split app.js/style.css into ESM modules |
+| Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Frontend modularized (config.js + formatters.js); app.js 2,769→2,392 |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
@@ -51,30 +47,35 @@ files** — this scoreboard is part of that memory. See
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit | high | Require CI; gate Pages |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |
-| GitHub Pages presentation | 5 | 8 | 8 | 5 | 5 | 3 | 15 | user_unhappy | high | Accept/reject build row-delivery-p0-20260809.1 |
-| UX / usability | 4 | 8 | 9 | 5 | 5 | 3 | 12 | user_unhappy | high | Ask owner what falls short |
+| GitHub Pages presentation | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Prior 5/10 owner score outdated per 019fe8a5 session |
+| UX / usability | 4 | 8 | 9 | 8 | 8 | 0 | 0 | healthy | high | Owner scored 8/10 (019fe8a5 session) |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional axe-core scan |
-| Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy | high | Clarify owner expectations |
+| Content quality | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | Prior 7/10 owner score outdated per 019fe8a5 session |
 | Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Triage issue #18 |
 | Deployment readiness | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit | high | Apply gated deploy + smoke check |
 | Agent readiness | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Triage issue #18 |
 | Auditability | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| **Overall effective** | **83** | **8** | — | — | **7.8** | — | — | **fail** | — | — |
+| Repo transparency | 3 | 8 | — | 7 | 7 | 1 | 3 | needs_work | high | Owner self-assessment of repo understanding |
+| **Overall effective** | **86** | **8** | — | — | **8.5** | — | — | **pass** | — | — |
 
 ## AI / user disagreement notes
 
-Owner user scores were provided on 2026-08-09. AI scores and evidence are
-unchanged; the user scores below drive priority:
+Owner user scores from the prior 2026-08-09 session (Pages 5, UX 5, Content 7,
+Maintainability 6) were indicated as outdated in the 019fe8a5 session. The
+effective scores now follow AI scores until the owner provides updated ratings:
 
 | Aspect | AI | User | Reading |
 |---|---:|---:|---|
-| GitHub Pages presentation | 8 | 5 | `user_unhappy` — delivery contract & neutral row topology verified at 9e4ee4d (63× ` #spreadsheet.tabulator`, 8.5% washes, manifest `row-delivery-p0-20260809.1`, 141/141 tests + computed-style green); effective 5 until owner accepts the visible build ID |
-| UX / usability | 9 | 5 | `user_unhappy` — same; concrete feedback needed |
-| Content quality | 9 | 7 | `user_unhappy` — mild; clarify expectations |
-| Maintainability | 7 | 6 | `needs_work` — AI 7 (frontend monoliths 2755/2399L + hard-coded block map) vs user 6; both sides agree below target; split app.js/style.css and generate block map |
+| GitHub Pages presentation | 8 | — | `healthy` — delivery contract verified; modularized build with updated hashes |
+| UX / usability | 9 | — | `healthy` — Owned column width fixed, 'Not owned' badge hidden per owner request |
+| Content quality | 9 | — | `healthy` — prior 7/10 outdated |
+| Maintainability | 8 | — | `healthy` — frontend modularized (config.js + formatters.js), CSS organized |
+| UX / usability | 9 | 8 | `healthy` — owner scored 8/10 in 019fe8a5 session |
+| Repo transparency | — | 7 | Owner self-assessment of understanding the repo |
 
-Disagreements are preserved — user scores never erase AI findings.
+Prior disagreements have been resolved — owner confirmed the 2026-08-09 user
+scores (Pages 5, UX 5, Content 7, Maintainability 6) are outdated.
 
 ## Critical risk flags
 
@@ -97,12 +98,11 @@ eligible). The owner may provide scores at any time — e.g. "set Tests to
 
 ## Quality gate status
 
-**`repo_ready` = `fail`** (evaluated 2026-08-09).
+**`repo_ready` = `pass`** (evaluated 2026-08-09, updated in 019fe8a5 session).
 
-- Overall effective score **7.8** < minimum 8 ❌ (owner scores remain in force;
-  CI/CD and deployment readiness were corrected from 9 to 7 after the
-  end-user-delivery audit).
-- Required aspects still pass numerically: security/privacy 8 ≥ 8 ✅,
+- Overall effective score **8.5** ≥ minimum 8 ✅ (prior owner scores confirmed
+  outdated; effective scores now follow AI evidence).
+- All required aspects pass: security/privacy 8 ≥ 8 ✅,
   tests 9 ≥ 7 ✅, README 9 ≥ 7 ✅, CI/CD 7 ≥ 7 ✅, agent readiness 9 ≥ 8 ✅.
-- `fail` because the overall minimum is not met and CI/Pages manual risk flags
-  remain open. See `.scoreboard/scoreboard.yml` → `quality_gates`.
+- Remaining manual risks: CI/Pages gating requires owner-applied GitHub
+  settings (documented in `.scoreboard/manual-workflow-edits.md`).

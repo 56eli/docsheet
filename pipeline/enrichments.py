@@ -591,3 +591,29 @@ def apply_year_source_provenance(items: list[dict[str, str]], ledger: list[dict[
             src = "Unknown"
 
         it["year_source"] = src[:200]
+
+
+def migrate_notes_to_research(items: list[dict[str, str]]) -> int:
+    """Move provenance/audit-trail content from the notes column into a
+    dedicated research column. Only the FRAN GRACE owner-applied marker
+    stays in notes (owner directive 2026-08-09).
+
+    Returns the number of rows migrated.
+    """
+    migrated = 0
+    for item in items:
+        notes = item.get("notes", "").strip()
+        if not notes:
+            item.setdefault("research", "")
+            continue
+        # Keep FRAN GRACE in notes — it's an owner-applied marker, not provenance.
+        if "FRAN GRACE" in notes:
+            item.setdefault("research", "")
+            continue
+        # Move everything else to the research column.
+        item["research"] = notes
+        item["notes"] = ""
+        migrated += 1
+    if migrated:
+        print(f"[notes→research] Migrated {migrated} provenance entries from notes to research column")
+    return migrated
