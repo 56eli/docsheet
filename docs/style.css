@@ -1807,17 +1807,30 @@ button.stat-chip:hover b { color: var(--accent); }
 
 .catalogue-intro {
   flex: 0 0 auto;
-  padding: 16px;
+  padding: 12px 16px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+
+/* The overview lives in the page flow: when it is visible the page scrolls
+   naturally and the spreadsheet keeps a usable fixed height instead of
+   being squeezed out of the viewport (2026-08-09 CI fix). */
+body.intro-visible {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto;
+}
+body.intro-visible #table-container {
+  flex: 0 0 auto;
+  min-height: 480px;
 }
 
 .hero {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
-  padding: 18px 20px;
+  gap: 16px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background:
@@ -1875,7 +1888,7 @@ button.stat-chip:hover b { color: var(--accent); }
   border-color: var(--border);
 }
 
-.overview-section { margin-top: 16px; }
+.overview-section { margin-top: 12px; }
 .overview-section h3 {
   margin: 0 0 8px;
   font-size: 11px;
@@ -1886,11 +1899,11 @@ button.stat-chip:hover b { color: var(--accent); }
 }
 .overview-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
 }
 .overview-card {
-  padding: 12px 14px;
+  padding: 10px 12px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -1939,15 +1952,6 @@ button.stat-chip:hover b { color: var(--accent); }
 .series-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---- Review workspace nav toggle (2026-08-09) ---- */
-.tab-nav-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 16px 8px;
-  overflow-x: auto;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
 #review-nav-groups { display: flex; align-items: stretch; gap: 4px; }
 #review-nav-groups[hidden] { display: none; }
 #review-nav-toggle {
@@ -1955,7 +1959,7 @@ button.stat-chip:hover b { color: var(--accent); }
   align-items: center;
   gap: 5px;
   flex: 0 0 auto;
-  margin-right: 8px;
+  margin: 0 2px 0 10px;
   padding: 6px 10px;
   border-radius: 8px;
   font: inherit;

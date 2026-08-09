@@ -1107,6 +1107,9 @@
     const show = activeView === "master" && data.length > 0 && !introDismissed();
     catalogueIntro.hidden = !show;
     if (overviewBtn) overviewBtn.hidden = activeView !== "master" || show;
+    // The overview is tall; when it is visible the page scrolls naturally
+    // and the spreadsheet keeps a fixed minimum height (CI fix 2026-08-09).
+    document.body.classList.toggle("intro-visible", show);
     if (!show) return;
     renderCollectionOverview(data);
     renderSeriesStrip(data);
@@ -2221,6 +2224,7 @@
     if (catalogueIntro) catalogueIntro.hidden = true;
     if (overviewBtn) overviewBtn.hidden = true;
     if (seriesLanding) seriesLanding.hidden = true;
+    document.body.classList.remove("intro-visible");
     activeSearchQuery = "";
     activeReviewFilter = null;
     searchInput.value = "";
@@ -2363,6 +2367,7 @@
       heroDismiss.addEventListener("click", () => {
         setIntroDismissed(true);
         if (catalogueIntro) catalogueIntro.hidden = true;
+        document.body.classList.remove("intro-visible");
         if (overviewBtn) overviewBtn.hidden = false;
       });
     }
