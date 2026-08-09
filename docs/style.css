@@ -257,6 +257,22 @@ body {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
+/* Search term highlighting */
+mark.search-highlight, .search-highlight {
+  background-color: #fff3bf;
+  color: #1c7ed6;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+:root.dark mark.search-highlight, :root.dark .search-highlight {
+  background-color: #364fc7;
+  color: #edf2ff;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
 /* ---- Buttons ---- */
 #export-btn {
   display: inline-flex;
@@ -750,15 +766,6 @@ body {
 
 /* Everything-view provenance: curated master records must never be mistaken
    for official candidates that are only shown for review. */
-/* Record Type is a compact badge rail. Keep the header/content narrow so it
-   does not consume the space needed by the filename and title columns. */
-#spreadsheet .tabulator-col[tabulator-field="record_type"],
-#spreadsheet .tabulator-cell[tabulator-field="record_type"] {
-  max-width: 54px;
-}
-#spreadsheet .tabulator-col[tabulator-field="record_type"] .tabulator-col-title {
-  overflow-wrap: anywhere;
-}
 .status-badge.status-master { color: #123a6b; background: #e3edfb; border-color: #a9c6ea; }
 .status-badge.status-candidate {
   color: #6b3a00;

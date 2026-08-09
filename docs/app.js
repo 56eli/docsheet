@@ -307,7 +307,6 @@
   // measured-width engine, but compact controls and the frozen identity rail
   // must never grow just because a label is long.
   const COLUMN_BUDGETS = {
-    record_type: { width: 54, minWidth: 54, maxWidth: 54 },
     proposed_filename: { maxWidth: 340 },
     title: { minWidth: 150, maxWidth: 560 },
     series: { minWidth: 180 },
@@ -1777,6 +1776,34 @@
     return measureContext.measureText(text).width;
   }
 
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function renderHighlightedText(text, query = activeSearchQuery) {
+    const raw = String(text ?? "");
+    if (!raw) return "";
+    const q = (query || "").trim();
+    if (!q) return document.createTextNode(raw);
+
+    const regex = new RegExp(`(${escapeRegex(q)})`, "gi");
+    const parts = raw.split(regex);
+    if (parts.length <= 1) return document.createTextNode(raw);
+
+    const frag = document.createDocumentFragment();
+    parts.forEach((part) => {
+      if (part.toLowerCase() === q.toLowerCase()) {
+        const mark = document.createElement("mark");
+        mark.className = "search-highlight";
+        mark.textContent = part;
+        frag.append(mark);
+      } else if (part) {
+        frag.append(document.createTextNode(part));
+      }
+    });
+    return frag;
+  }
+
   function renderedValueForWidth(key, value) {
     const raw = String(value ?? "").trim();
     if (!raw) return "";
@@ -1831,7 +1858,6 @@
         : 0;
 
       const budget = COLUMN_BUDGETS[key] || {};
-      const compactRecordType = key === "record_type";
       const col = {
         title: humanizeField(key),
         field: key,
@@ -1880,7 +1906,8 @@
       if (key === "year" || key === "year_month" || key === "proposed_year") {
         col.formatter = (cell) => {
           const value = String(cell.getValue() ?? "");
-          return value === "198X" ? "c. 1980s" : value;
+          const display = value === "198X" ? "c. 1980s" : value;
+          return renderHighlightedText(display);
         };
         col.sorter = "string";
         col.sorterParams = { alignEmptyValues: "bottom" };
@@ -1899,9 +1926,9 @@
           const value = String(cell.getValue() ?? "");
           if (!value) return "";
           const match = value.match(/^(.*?)(\.[A-Za-z0-9]+)$/);
-          if (!match) return document.createTextNode(value);
+          if (!match) return renderHighlightedText(value);
           const frag = document.createDocumentFragment();
-          frag.append(document.createTextNode(match[1]));
+          frag.append(renderHighlightedText(match[1]));
           const ext = document.createElement("span");
           ext.className = "ext";
           ext.textContent = match[2];
@@ -1926,7 +1953,7 @@
             dot.title = carrier;
             frag.append(dot);
           }
-          frag.append(document.createTextNode(value));
+          frag.append(renderHighlightedText(value));
           return frag;
         };
       } else if (FORMAT_FIELDS.has(key)) {
@@ -1935,7 +1962,7 @@
           if (!value) return "";
           const badge = document.createElement("span");
           badge.className = `status-badge ${formatClass(value)}`;
-          badge.textContent = value;
+          badge.replaceChildren(renderHighlightedText(value));
           badge.title = value;
           return badge;
         };
@@ -1944,6 +1971,13 @@
       // This does NOT modify the underlying data.
       if (urlRatio >= 0.6 && !STATUS_FIELDS.has(key)) {
         col.formatter = urlFormatter;
+      }
+      if (!col.formatter && !STATUS_FIELDS.has(key)) {
+        col.formatter = (cell) => {
+          const val = cell.getValue();
+          if (val === null || val === undefined || val === "") return "";
+          return renderHighlightedText(val);
+        };
       }
       if (hiddenByDefault.has(key)) {
         col.visible = false;
@@ -2015,10 +2049,12 @@
     if (!table) return;
     if (!activeSearchQuery && !activeReviewFilter && facetsEmpty()) {
       table.clearFilter();
+      table.redraw(true);
       updateSearchStatus();
       return;
     }
     table.setFilter(rowMatchesActiveFilters);
+    table.redraw(true);
     updateSearchStatus();
   }
 

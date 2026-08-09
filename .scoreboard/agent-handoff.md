@@ -1,14 +1,21 @@
 # Agent Handoff
 
-Last updated: 2026-08-09
+Last updated: 2026-08-09 (Full-Stack & Data Engineering Session)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
-(`docs/data.json`) and curated (`docs/master.json`) lanes. The current corrective
-audit is:
+(`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
+- `docs/audits/2026-08-09-full-stack-data-engineering-audit.md` (Current Full Audit & Cleanup)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`
+
+## 2026-08-09 Session Summary
+
+- **Header Truncation & Width Unlocking:** Removed letter-by-letter vertical wrapping on "Record Type" header title by eliminating `overflow-wrap: anywhere` and `max-width: 54px` in `docs/style.css` and removing `{ width: 54, minWidth: 54, maxWidth: 54 }` hard column lock in `docs/app.js`.
+- **Search Highlighting:** Added cell text matching and search query highlighting (`mark.search-highlight`) in `docs/app.js` and `docs/style.css`.
+- **Asset Versioning:** Updated asset content hashes in `docs/build-manifest.json` and `docs/index.html`.
+- **Pipeline Health:** 141/141 tests pass, 6/6 `--check` pipeline scripts pass, 0 linter errors, 90% coverage.
 
 Do not claim that a successful Pages artifact proves a row change reached the
 end user. The owner explicitly rejected that conclusion. Acceptance requires a
