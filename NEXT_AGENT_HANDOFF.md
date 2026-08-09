@@ -1,11 +1,38 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Full-Stack Audit + Repeated-Failure Styling Audit + Neutral Grey-Black Restoration & R-01 Zebra Fix) — current handoff for
-branch `arena/019fe767-docsheet`.
+**Prepared:** 2026-08-09 (Zebra Contrast Fix + Regression Guard) — current handoff for
+branch `arena/019fe776-docsheet`.
 **Scoreboard:** this repo has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
 sessions may expire after PR merge).
+
+## 2026-08-09 Zebra contrast fix + regression guard (arena/019fe776-docsheet, current)
+
+**Root cause:** 5+ agents edited `docs/style.css` and deployed changes to
+GitHub Pages, but the zebra-row contrast was **below human perception**
+(~3.1% in light mode, ~4.7% in dark mode). The CSS was technically correct
+but visually invisible — every agent raised opacity slightly (4% → 6% → 7%)
+but never crossed the perception threshold.
+
+**Fix applied (docs/style.css):**
+- `--zebra` light: `#f7f7f8` → `#f0f0f2` (Δ 7.9 → Δ 14.8 luminance units)
+- `--zebra` dark: `#202020` → `#232323` (Δ 6.0 → Δ 9.0)
+- `--row-hover` light: `#e3f3ea` → `#e0e0e4` (neutral, Δ 15.8 from zebra)
+- `--row-hover` dark: `#2f4a41` → `#353535` (neutral, Δ 18.0 from zebra)
+- Block washes raised from 5-7% to 9-11% (light) / 10-13% to 14-16% (dark)
+- Phase 3 hover overrides neutralised (was slate-tinted)
+
+**Regression guard (tests/test_style_contrast.py, 7 tests):**
+CI now enforces on every PR:
+- Zebra contrast ≥ 10/6 luminance units (light/dark)
+- Hover contrast ≥ 7/8 from zebra
+- Block wash ≥ 8% opacity (above perception threshold)
+- Block wash ≤ 18% opacity (rows stay light)
+- No slate-blue hex values in `--bg`/`--surface`/`--border` tokens
+
+**Verification:** all 139 tests pass (132 pipeline + 7 style guards),
+all six `--check` modes pass, `node --check` clean, coverage 90%.
 
 ## Headline results (2026-08-09 Expert Full-Stack Pass, current)
 
