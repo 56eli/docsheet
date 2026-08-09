@@ -31,7 +31,9 @@ The scoreboard was created as part of the persistent-memory protocol:
     the Everything view + CSV export (lectures → discussion → satsang →
     on-the-road → volumes → office → books → transcription → media-misc →
     undecided → Fran Grace last); `build_catalogue_pages.py` validates it.
-  - Change record committed: `review/hawkins-everything-REVISION1.ods`.
+  - Change record committed: `review/hawkins-everything-REVISION1.ods`
+    (root-level upload removed in the merge so `review/` is the single
+    canonical copy).
   - Tests 126 → 132; coverage 90%; all six `--check` green.
 - **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
   priorities 15/12 remain open.

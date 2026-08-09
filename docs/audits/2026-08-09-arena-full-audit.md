@@ -122,6 +122,22 @@ The suite is **26** specs today (`presentation-ux.spec.js` +7 and
 files above contradict them. (Cosmetic; the CI workflow itself runs all
 `tests/*.spec.js` and needs no change.)
 
+## 4b. Addendum — REVISION1 ODS owner revision (same session, after the audit)
+
+The owner uploaded `hawkins-everything-REVISION1.ods` (colour-coded
+expert-columns export) and approved applying it as the change authority:
+58 filename edits (unified `OTR - ` prefix, Office `A-01…B-06` codes,
+`DISCUSSION - ` prefix, year fixes on 356–358, completed uuid 312),
+notes → `FRAN GRACE` on 315, year data changes (356/358 cleared, 357 → 2003),
+and the colour-group block order for the Everything view + CSV export
+(lectures → discussion → satsang → on-the-road → volumes → office → books →
+transcription → media-misc → undecided → Fran Grace last). Implemented via new
+reviewed inputs (`data/master_year_overrides.csv`,
+`data/master_notes_overrides.csv`, `data/catalogue_display_order.csv`) with
+validators in `build_research_master.py` / `build_catalogue_pages.py`; the ODS
+is committed at `review/hawkins-everything-REVISION1.ods`. Suite 126 → 132,
+coverage 90%, all six `--check` green.
+
 ## 5. Observations (no action required)
 
 1. **work_id slugs (25/191) are exactly 42 chars, truncated mid-word**

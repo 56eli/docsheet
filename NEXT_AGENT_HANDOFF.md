@@ -31,7 +31,9 @@ sessions may expire after PR merge).
   fails on duplicates/missing uuids/unapproved rows). Filename edits landed
   in the reviewed `data/filename_proposal_YYYYMM.csv` (safe + display
   variants; year/month mirrored for 356–358). The change record itself is
-  committed as `review/hawkins-everything-REVISION1.ods`.
+  committed as `review/hawkins-everything-REVISION1.ods` (the owner's
+  root-level upload was removed on merge so `review/` is the single canonical
+  copy).
 - **Tests 126 → 132** (new `OwnerOverrideAndDisplayOrderTests` class);
   coverage 91% → 90% (floor 85; both generator modules still 88%).
   All six `--check` modes pass; README documents the new inputs.
