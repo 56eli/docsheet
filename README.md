@@ -32,6 +32,14 @@ npm run test:e2e:install
 npm run test:e2e
 ```
 
+Local frontend assets are content-versioned in `docs/index.html`. The public
+footer exposes the matching app/style build ID and links
+`docs/build-manifest.json`, which records full asset and raw/curated payload
+hashes. `FrontendDeliveryContractTests` fails if a file changes without its URL,
+visible ID, and manifest being refreshed. This identifies browser-delivery
+revisions; explicit owner visual acceptance is still required before a row
+presentation issue is considered resolved.
+
 ## Catalogue-data safeguard
 
 The raw spreadsheet pipeline above is independent from the curated research
@@ -55,12 +63,13 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 139 tests, no browser/network needed
+python -m unittest discover tests          # 141 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-09 (with 139 deterministic pipeline and style tests); every pipeline module is ≥ 88%. `requirements-ci.txt` records the
+2026-08-09 (with 141 deterministic pipeline, style, and delivery-contract tests;
+individual module coverage is 78–100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
 replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
@@ -106,7 +115,9 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
 `NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
 [`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
-[`.scoreboard/`](.scoreboard/scoreboard.yml), the declared-current audits
+[`.scoreboard/`](.scoreboard/scoreboard.yml), the current corrective audit
+[`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`](docs/audits/2026-08-09-end-user-row-delivery-postmortem.md),
+and the broader audits
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
 PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the

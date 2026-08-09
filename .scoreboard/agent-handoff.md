@@ -2,157 +2,127 @@
 
 Last updated: 2026-08-09
 
-## Current repo state
+## Current state
 
-DocSheet: a GitHub Pages live spreadsheet + curated research catalogue for
-David Hawkins material. The 2026-08-09 expert full-stack audit
-(`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`, root) plus
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` are the declared-current audits.
-The scoreboard was created as part of the persistent-memory protocol:
-`SCOREBOARD.md`, `.scoreboard/scoreboard.yml` (canonical), `.scoreboard/rubric.md`,
-`.scoreboard/history.md`, `.scoreboard/agent-handoff.md`,
-`.scoreboard/manual-workflow-edits.md`, `AGENTS.md`,
-`docs/audits/2026-08-09-baseline.md`, `.github/pull_request_template.md`.
+DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
+(`docs/data.json`) and curated (`docs/master.json`) lanes. The current corrective
+audit is:
 
-## 2026-08-09 REVISION1 ODS owner revision (this branch, current)
+- `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`
 
-- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** — a
-  colour-coded expert-columns export. Decoded cell-by-cell; applied with
-  owner confirmation:
-  - 58 filename edits in `data/filename_proposal_YYYYMM.csv`: unified
-    `OTR - ` prefix (32 On-The-Road rows), `198X - A-01…B-06` Office codes
-    (16), `DISCUSSION - ` prefix (8, incl. completed 312), year dropped on
-    356/358, year 2014→2003 on 357.
-  - `data/master_year_overrides.csv` (356/358 year+month cleared, 357 → 2003)
-    and `data/master_notes_overrides.csv` (315 → `FRAN GRACE`) — new reviewed
-    overlays consumed by `build_research_master.py`.
-  - `data/catalogue_display_order.csv` — owner-confirmed block order drives
-    the Everything view + CSV export (lectures → discussion → satsang →
-    on-the-road → volumes → office → books → transcription → media-misc →
-    undecided → Fran Grace last); `build_catalogue_pages.py` validates it.
-  - Change record committed: `review/hawkins-everything-REVISION1.ods`
-    (root-level upload removed in the merge so `review/` is the single
-    canonical copy).
-  - Tests 126 → 132; coverage 90%; all six `--check` green.
-- **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
-  priorities 15/12 remain open.
+Do not claim that a successful Pages artifact proves a row change reached the
+end user. The owner explicitly rejected that conclusion. Acceptance requires a
+visible deployed build ID and an explicit owner accept/reject response.
 
-## 2026-08-09 Modern Table Overhaul & Full Audit (this branch, current)
+## End-user row-delivery P0 (branch `arena/019fe7c9-docsheet`)
 
-- **Modern Table Row Presentation (Linear/Stripe Standard):**
-  - Eliminated full-bleed opaque pastel washes and rigid vertical column gridlines across the table.
-  - Applied clean neutral canvas with subtle alternating zebra striping (`#f4f4f5` light / `#1e1e1e` dark).
-  - Preserved the owner's preferred warm brownish-black neutral dark mode (`--bg: #0d0d0d`, `--surface: #161616`, `--zebra: #1e1e1e`, `--border: #282828`).
-  - Added crisp 3.5px inset left accent bars per REVISION1 color-group block (`box-shadow: inset 3.5px 0 0 ...`).
-  - Upgraded cell vertical padding to comfortable 10px-12px with clean modern typography.
-- **Codebase & Documentation Cleanups:**
-  - Removed shadowed `PUBLISHERS = Path(...)` and duplicate queue aliases in `build_catalogue_pages.py`.
-  - Updated all test count references to 139 across `README.md`, `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `NEXT_AGENT_HANDOFF.md`, and `.scoreboard/agent-handoff.md`.
-  - Cleaned up stale hero overview descriptions in `README.md`.
-- **Verification:**
-  - All 139 tests pass (132 pipeline + 7 style contrast), statement coverage 90%, all 6 `--check` modes green, `node --check` clean, `ruff check .` 100% clean.
+### Root causes found
 
-## Top priorities for next agent
+1. `docs/style.css` had two equal-specificity odd-row `box-shadow` rules. The
+   later `.work-group-start` rule replaced the REVISION1 block color with the
+   generic green accent on 105 rows in default order; filtering/sorting changed
+   the affected subset.
+2. `index.html` loaded bare `style.css` and `app.js`; JSON alone used
+   `cache: "no-store"`. Pages build success could not prove matching assets in
+   the owner's browser.
+3. The page exposed no build/SHA/content identity.
+4. Existing tests checked CSS tokens and one row class, not computed styles,
+   block transitions, dark mode, cache versions, or the deployed URL.
+5. PRs #48–#52 merged before checks completed; Pages deployed independently of
+   red CI.
+6. Mobile/persisted Browse mode contains cards, not Tabulator rows; presentation
+   mode must be explicit during acceptance.
 
-1. `github_pages_presentation` (priority 15, `user_unhappy`): owner scored
-   5/10 while AI is 9 — **ask the owner what specifically falls short**
-   (layout, branding, content presentation, speed?) before making changes.
-2. `ux_usability` (priority 12, `user_unhappy`): owner scored 5/10 while AI
-   is 9 — same: get concrete feedback first.
-3. `maintainability` (priority 8): owner scored 6/10; split the two large
-   generators into focused modules in `pipeline/`; the
-   139-test suite is the safety net.
-4. `code_hygiene` (priority 4): same refactor workstream.
-5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
-   expectations (e.g. raw placeholder rows still visible in the original
-   sheet?).
-6. `repo_organization` (priority 3): consolidation executed 2026-08-09
-   (4 superseded/implemented root docs archived); re-audit the aspect on the
-   next pass — score kept at 7.
-7. Triage GitHub issue #18 (owned-flags cross-check vs. the lak.nz Drive) —
-   requires owner Drive access or a CSV export.
+### Implemented on this branch
 
-## User scores currently known
+- Work-family grouping now uses a horizontal `border-top`; it no longer replaces
+  the block-specific inset `box-shadow`.
+- `style.css` and `app.js` use 12-character SHA-256 query versions in
+  `docs/index.html`.
+- `docs/build-manifest.json` records full app/style/master/raw hashes and
+  revision `row-delivery-p0-20260809.1`.
+- Footer visibly identifies `app-cf43f33a062c/css-ccaa5a8a62e6` and links the
+  manifest.
+- `FrontendDeliveryContractTests` fails on stale asset query versions, manifest
+  hashes, footer build ID, or payload hashes.
+- Style tests fail if `.work-group-start` reintroduces a competing box-shadow.
+- `presentation-ux.spec.js` now checks computed odd/even backgrounds and exact
+  light/dark accent colors for lecture, discussion, and office rows, including
+  the filtered first-row/work-start case that exposed the bug.
+- The stale `#show-stats-toggle` Playwright path is removed; navigation is tested
+  through the surviving `#view-jump` control.
+- Offline suite: **141 tests** (133 pipeline/contract + 8 style), all passing;
+  coverage remains **90% total**.
+- Browser suite: **25 specs**; syntax is clean, but Chromium download is locally
+  CDN-blocked. GitHub branch CI is the required execution environment.
 
-Explicit owner scores (2026-08-09, via Arena chat):
+### Not complete until owner/settings action
+
+- Owner visual acceptance of the exact deployed footer build ID.
+- Required CI check/branch rule.
+- CI-gated custom Pages workflow.
+- Post-deploy live manifest, asset hash, and 362-row assertion.
+- Successful-run screenshot artifact/reference review.
+
+Exact owner instructions and workflow YAML are in
+`.scoreboard/manual-workflow-edits.md`. Do not edit `.github/workflows/*` without
+explicit owner direction.
+
+## Data state
+
+- Raw source: 374 rows; 31 blank separators; seven published columns.
+- Curated master: 362 rows; 75 exclusions; 134 source overrides; 39 reviewed
+  manual candidates.
+- REVISION1: 58 filename edits, year overrides on 356–358, notes override on
+  315, and 362-row reviewed color-block order.
+- The ODS was independently parsed: 362 rows × 23 columns; its filename-cell
+  colors map exactly to the 11 committed display blocks.
+- All six generator `--check` modes pass.
+
+## Current scores / risks
+
+Owner scores remain authoritative and unchanged:
 
 | Aspect | User score |
 |---|---:|
-| github_pages_presentation | 5 |
-| ux_usability | 5 |
-| content_quality | 7 |
-| maintainability | 6 |
+| GitHub Pages presentation | 5 |
+| UX / usability | 5 |
+| Content quality | 7 |
+| Maintainability | 6 |
 
-All other aspects have `user_score: null` — do not invent scores from PR
-merges, silence, or assumed satisfaction. AI scores are unchanged by these
-user scores (see `.scoreboard/scoreboard.yml`).
+Corrected AI scores:
 
-## Important risks
+- GitHub Pages presentation: 7 (effective 5 due owner score).
+- CI/CD: 7 (`blocked_manual_workflow_edit`).
+- Deployment readiness: 7 (`blocked_manual_workflow_edit`).
+- Tests: 9.
+- Overall effective score: **7.8**, gate **fail**.
 
-- CSP `style-src 'unsafe-inline'` (low severity; required for dark-mode
-  toggles; scripts are hash-pinned, Tabulator SRI-pinned). Visible in
-  `SCOREBOARD.md` and `scoreboard.yml` until the owner accepts or mitigates it.
-- Browser e2e suite (26 specs) cannot run in the Arena sandbox (Playwright
-  CDN blocked); CI is the verification point — always check CI status after
-  pushes.
-- Live site `https://56eli.github.io/docsheet` is unreachable from the
-  sandbox network; use `gh run list` Pages status instead.
+Additional open risks:
 
-## Presentation/UX implementation (2026-08-09, owner approved the full plan)
+- owner visual acceptance pending;
+- legacy Pages remains independent of CI;
+- CSP `style-src 'unsafe-inline'` remains low-severity debt;
+- issue #18 still needs the owner's Drive export/access.
 
-Phases A–D of `archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md` (archived
-2026-08-09 after implementation) are implemented on
-`arena/019fe659-docsheet`: catalogue overview hero + collection stats +
-series strip, desktop Browse cards toggle, Review-workspace nav toggle,
-Series browser tab, search hints, loading skeleton, a11y labels; browser
-suite 19 → 26 tests. **Scoreboard AI scores are unchanged pending a re-audit
-and the owner's re-score** — the owner's user scores (presentation 5, UX 5)
-still make those the top priorities (15/12). Next agent: verify the new
-specs in CI, then ask the owner to re-score or give concrete feedback.
+## Verification performed
 
-## Manual workflow edits pending
+- six generator `--check` modes ✅
+- `python -m unittest discover tests` — 141/141 ✅
+- coverage — 90% total ✅
+- JS/config/all spec syntax ✅
+- `npm ci` / `npm audit` — zero vulnerabilities ✅
+- manifest/content-version contract ✅
+- Git diff/fsck/secret scan ✅
+- Chromium install / local Playwright ❌ environment TLS reset; use branch CI
 
-None. See `.scoreboard/manual-workflow-edits.md`.
+## Next-agent rules
 
-## Quality gate status
-
-`repo_ready` = **fail** (overall_effective_score **7.9** < 8 minimum, after
-the owner's user scores: presentation 5, UX 5, content 7, maintainability 6).
-All five required aspect thresholds still pass individually. The gate will
-recover when the owner raises scores, the flagged aspects are improved, or a
-re-audit changes effective scores. Re-evaluate after the next audit.
-
-## Checks last run
-
-- `python process_data.py --check` ✅
-- `python build_research_master.py --check` ✅ (362 items; 75 excluded; 134 overrides)
-- `python build_catalogue_pages.py --check` ✅
-- `python reconcile_research_master.py --check` ✅
-- `python map_series_taxonomy.py --check` ✅ (186 mappings; 0 queued)
-- `python sync_inventory_mirrors.py --check` ✅
-- `python -m unittest discover tests` ✅ Ran 139, OK
-- `coverage run -m unittest discover tests && coverage report` ✅ 90%
-- `node --check docs/app.js` + all `tests/*.spec.js` (26 browser specs) ✅
-- `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only;
-  the 26 specs run in CI)
-- Static serve of `docs/` ✅ (all assets 200)
-
-## Files intentionally not changed
-
-- `.github/workflows/*` — policy: never edit workflows without explicit user
-  instruction; none needed currently.
-- No data/master CSV changes for the scoreboard (read-only audit scoring).
-
-## Notes for next sandboxed session
-
-1. Start by reading `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`,
-   `.scoreboard/agent-handoff.md`, and `AGENTS.md` (Scoreboard Protocol).
-2. `NEXT_AGENT_HANDOFF.md` is still the deep project handoff; the scoreboard
-   is the lightweight durable layer on top.
-3. All audit findings are resolved; the only open data item is issue #18.
-4. If you change scores: update `scoreboard.yml`, `history.md`, `SCOREBOARD.md`,
-   this file, and the PR template section — and record evidence.
-5. Branch for this session: `arena/019fe659-docsheet` (commits `f2d05c8`,
-   `83b5c37`, `1886b84`). No PR has been opened yet; the owner may merge or
-   open one later.
+1. Read this file, `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, and the
+   corrective audit before changing rows.
+2. Never infer owner satisfaction from CI, Pages, PR merge, or silence.
+3. Do not call the row incident resolved before branch browser CI, deployment,
+   visible-build verification, and owner acceptance.
+4. If app/style/master/raw bytes change, update `docs/build-manifest.json` and
+   the versioned references/footer ID; the offline contract test enforces this.
+5. Preserve all owner scores.

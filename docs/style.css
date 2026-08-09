@@ -1129,6 +1129,17 @@ body {
   border-bottom: 1px solid transparent;
 }
 .footer-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.footer-build {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-decoration: none;
+}
+.footer-build code {
+  color: var(--text);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+}
+.footer-build:hover code { color: var(--accent); }
 
 /* View summary + stats strip: soft cards. */
 .view-summary { box-shadow: var(--shadow-sm); }
@@ -1506,10 +1517,10 @@ button.stat-chip:hover b { color: var(--accent); }
 :root.dark .carrier-dot.dot-streaming { background: #c79af0; }
 :root.dark .carrier-dot.dot-book { background: #b6b9bd; }
 
-/* ---- Work-group striping: consecutive rows sharing a work_id get a faint
-   left accent so parts/editions read as a family. ---- */
+/* ---- Work-group separation: use the horizontal axis so the separator never
+   replaces the REVISION1 block-specific inset accent on the left edge. ---- */
 #spreadsheet .tabulator .tabulator-row.work-group-start {
-  box-shadow: inset 3px 0 0 var(--accent);
+  border-top: 2px solid color-mix(in srgb, var(--text-muted) 24%, transparent);
 }
 
 /* ---- Keyboard row focus + shortcuts overlay ---- */

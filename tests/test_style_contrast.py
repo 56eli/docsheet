@@ -146,6 +146,21 @@ class StyleContrastTests(unittest.TestCase):
                 f"Block wash {pct}% exceeds 18% maximum (rows would be opaque)",
             )
 
+    def test_work_group_separator_cannot_override_block_accent(self):
+        """Work-family grouping must not replace the REVISION1 left-edge color."""
+        match = re.search(
+            r"#spreadsheet\s+\.tabulator\s+\.tabulator-row\.work-group-start\s*\{([^}]*)\}",
+            self.css,
+        )
+        self.assertIsNotNone(match, "work-group-start presentation rule is missing")
+        declarations = match.group(1)
+        self.assertNotIn(
+            "box-shadow",
+            declarations,
+            "work-group-start box-shadow overrides block-specific inset accents on odd rows",
+        )
+        self.assertIn("border-top", declarations, "work groups need a non-conflicting separator")
+
     def test_no_slate_blue_in_tokens(self):
         """No --bg/--surface/--border token may contain visible blue hue (slate)."""
         slate_hexes = {"f8fafc", "f1f5f9", "e2e8f0", "0f172a", "1e293b", "334155", "333b45"}

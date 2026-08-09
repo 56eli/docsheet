@@ -16,23 +16,26 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs you. If workflow changes are needed, document exact GitHub web editor steps in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 7.9
+  overall_effective_score: 7.8
   repo_ready_gate_status: fail
   top_priorities:
     - github_pages_presentation
     - ux_usability
     - maintainability
-    - code_hygiene
+    - ci_cd
+    - deployment_readiness
     - content_quality
     - repo_organization
   active_risk_flags:
+    - "Owner visual acceptance is still required for the versioned row-delivery build; artifact success is not acceptance."
+    - "Pages remains independent of CI until required-check and custom-deployment settings are owner-applied."
     - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
-    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 — effective scores fall below target for these aspects (user_unhappy / needs_work); AI scores and evidence unchanged."
+    - "Owner user scores (2026-08-09): github_pages_presentation 5, ux_usability 5, content_quality 7, maintainability 6 remain authoritative."
 
 quality_gates:
   repo_ready:
     status: fail
-    overall_effective_score: 7.9
+    overall_effective_score: 7.8
     last_evaluated: "2026-08-09"
     minimum_overall_effective_score: 8
     required:
@@ -47,7 +50,8 @@ quality_gates:
       - "If a gate is satisfied only because of user_score while ai_score is low, mark the relevant aspect as accepted_debt or risk_accepted."
       - "If required aspects have active risk_flags, mention them in SCOREBOARD.md even when the gate numerically passes."
       - "2026-08-09 baseline: numeric thresholds initially passed (8.4 >= 8) with gate WARNING (low-severity risk flag + medium-confidence items)."
-      - "2026-08-09 (after owner user scores): effective scores for github_pages_presentation (5), ux_usability (5), content_quality (7), maintainability (6) moved the weighted average to 7.9 — below the 8 minimum — so the gate is now FAIL. Required aspect minimums still pass individually; the overall minimum does not. AI scores are unchanged; the owner's scores drive priority."
+      - "2026-08-09 (after owner user scores): effective scores for github_pages_presentation (5), ux_usability (5), content_quality (7), maintainability (6) moved the weighted average to 7.9 — below the 8 minimum — so the gate became FAIL."
+      - "2026-08-09 row-delivery audit: CI/CD and deployment readiness were corrected from 9 to 7 because merges and Pages were ungated; weighted effective score is now 7.8. Required CI/CD minimum still passes at 7, but manual workflow risks remain active."
 
 aspects:
   - id: project_purpose_scope
@@ -92,7 +96,7 @@ aspects:
     ai_basis: "README and INSTRUCTIONS cover quick start, local checks, the curated pipeline safeguard, field semantics, and the edition model; every headline count in the README was reproduced exactly from the data."
     user_basis: null
     evidence:
-      - "All six --check modes and 139/139 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
+      - "All six --check modes and 141/141 tests verified; README numbers (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations) match the CSVs."
       - "FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md §2 reproduced every claim."
     user_notes: null
     desired_direction: []
@@ -206,11 +210,11 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 139/139 tests green, coverage 90%."
+    ai_basis: "Monolith generators build_research_master.py (1,747 lines) and build_catalogue_pages.py (1,169 lines) refactored into modular pipeline/ package (helpers, enrichments, validators, relationships); 141/141 tests green, coverage 90%."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
       - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
-      - "All 139/139 tests pass, 90% statement coverage, all 6 --check modes green."
+      - "All 141/141 tests pass, 90% statement coverage, all 6 --check modes green."
     user_notes: null
     desired_direction: []
     next_actions: []
@@ -313,50 +317,54 @@ aspects:
     status: healthy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "139 deterministic pipeline and style tests (132 pipeline + 7 style contrast) plus 26 Playwright browser specs; 90% coverage against an 85% floor; tamper-detection tests for every pipeline stage."
+    ai_basis: "141 deterministic pipeline/style/delivery-contract tests (133 pipeline/contract + 8 style contrast) plus 25 Playwright specs; 90% coverage against an 85% floor; computed row-style acceptance now crosses block, parity, work-start, and dark-mode boundaries."
     user_basis: null
     evidence:
-      - "python -m unittest discover tests: Ran 139, OK; coverage report TOTAL 90% (lowest module 88%)."
-      - "Browser suite runs in CI (green); sandbox cannot download Playwright browsers, so e2e was not re-run locally this session."
+      - "python -m unittest discover tests: Ran 141, OK; coverage report TOTAL 90% (individual modules 78-100%)."
+      - "presentation-ux.spec.js now reads computed background and box-shadow values for lecture, discussion, and office blocks; branch CI is required because the sandbox cannot download Chromium."
+      - "FrontendDeliveryContractTests locks content-versioned app/style URLs, visible build ID, and build-manifest hashes."
     user_notes: null
     desired_direction: []
     next_actions:
-      - "Ensure CI keeps running the 26 browser specs; consider a local browser fallback note in INSTRUCTIONS."
+      - "Confirm all 25 browser specs in branch CI and obtain owner visual acceptance for the visible build ID."
     risk_flags: []
     files_reviewed:
       - tests/test_pipeline.py
       - tests/test_style_contrast.py
-      - tests/csv-export.spec.js
-      - tests/column-layout.spec.js
+      - tests/presentation-ux.spec.js
       - tests/ux-enhancements.spec.js
-      - tests/blank-rows.spec.js
+      - docs/build-manifest.json
 
   - id: ci_cd
     name: CI/CD
     category: operations
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: blocked_manual_workflow_edit
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "CI runs py_compile, all six --check modes, 139 unit tests, coverage gate, JS syntax, and 26 browser tests; workflow concurrency groups prevent raw-updater/CI races; GitHub Actions pinned to v4/v5 tags."
+    ai_basis: "Validation coverage is broad, but PRs #48-#52 merged before checks completed, 11 runs repeated one stale selector, Pages deploys independently of CI, and required-check/settings changes remain owner-gated."
     user_basis: null
     evidence:
-      - "gh run list: CI and pages-build-deployment green on main (latest run after PR #43)."
-      - "ci.yml reviewed: paths-ignore for the raw CSV complements update_spreadsheet.yml paths."
+      - "154 CI runs: 98 success, 48 failure, 8 cancelled; 41 failures reached the browser step."
+      - "PRs #48-#52 merged before failed checks completed; their main commits still deployed."
+      - "This branch removes the stale selector and adds computed row/browser-delivery contract coverage; offline suite is 141 and browser suite is 25."
     user_notes: null
     desired_direction: []
-    next_actions: []
-    risk_flags: []
+    next_actions:
+      - "Owner: require the CI check, gate Pages on successful main CI, and split data/browser jobs per .scoreboard/manual-workflow-edits.md."
+    risk_flags:
+      - "Pages remains independent of CI until the owner applies the documented settings/workflow cutover."
     files_reviewed:
       - .github/workflows/ci.yml
       - .github/workflows/update_spreadsheet.yml
       - .github/workflows/map_veritas_catalogue.yml
+      - .scoreboard/manual-workflow-edits.md
 
   - id: security_privacy
     name: Security / privacy
@@ -418,27 +426,34 @@ aspects:
     category: presentation
     weight: 5
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: 5
     effective_score: 5
     gap: 3
     priority: 15
     status: user_unhappy
-    confidence: medium
+    confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "19-tab interactive spreadsheet with Everything-first UX, mobile Browse mode, dark mode, faceted filters; pages-build-deployment green on main. Visual verification is via code review + CI browser tests (sandbox cannot run Playwright)."
-    user_basis: "Explicit owner score provided 2026-08-09: 'github_pages_presentation 5/10'."
+    ai_basis: "The end-user row-delivery audit found a real CSS cascade defect and no deployed visual acceptance boundary. This branch fixes the accent collision, versions local assets, exposes the build ID/manifest, and adds computed-style coverage, but owner acceptance is still pending."
+    user_basis: "Owner reiterated 2026-08-09 that repeated row changes never reached the end user; the prior 5/10 remains authoritative until explicit re-score."
     evidence:
-      - "pages-build-deployment workflow succeeded for the latest main push (gh run list)."
-      - "Static serve of all assets returned 200."
-    user_notes: null
-    desired_direction: []
-    next_actions: []
-    risk_flags: []
+      - "105 odd work-group-start rows lost their block-specific inset color to a later generic green box-shadow on the audited baseline."
+      - "Work-family separation now uses border-top, preserving block box-shadow; computed-style tests cover lecture, discussion, office, zebra, and dark mode."
+      - "index.html now content-versions app.js/style.css and displays matching hashes linked to build-manifest.json."
+    user_notes: "Do not treat Pages artifact success as proof that the row problem reached the end user."
+    desired_direction:
+      - "Versioned, observable browser delivery with explicit owner acceptance."
+      - "Sleek neutral zebra rows with stable REVISION1 block accents."
+    next_actions:
+      - "Confirm branch browser CI, deploy the visible build ID, then request accept/reject for that exact revision."
+    risk_flags:
+      - "Owner visual acceptance remains pending."
     files_reviewed:
       - docs/index.html
-      - docs/app.js
       - docs/style.css
+      - docs/build-manifest.json
+      - tests/presentation-ux.spec.js
+      - docs/audits/2026-08-09-end-user-row-delivery-postmortem.md
 
   - id: ux_usability
     name: UX / usability
@@ -553,26 +568,31 @@ aspects:
     category: operations
     weight: 4
     target: 8
-    ai_score: 9
+    ai_score: 7
     user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
+    effective_score: 7
+    gap: 1
+    priority: 4
+    status: blocked_manual_workflow_edit
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "GitHub Pages deployment is fully automated and green; docs/ is self-contained with .nojekyll; update-spreadsheet workflow regenerates on raw CSV changes."
+    ai_basis: "Pages artifact deployment is reliable, and this branch makes browser assets/data revisions observable, but legacy branch deploy remains ungated and no post-deploy assertion runs until the owner applies the documented workflow cutover."
     user_basis: null
     evidence:
-      - "pages-build-deployment success on latest main push."
-      - "Static serve of docs/ (all assets 200)."
+      - "docs/build-manifest.json records full app/style/master/raw hashes; index.html uses matching content versions and a visible footer build ID."
+      - "FrontendDeliveryContractTests fail when an asset URL, footer ID, manifest hash, or committed payload drifts."
+      - "Legacy Pages still deploys main independently of CI; exact custom-workflow and post-deploy steps are documented."
     user_notes: null
     desired_direction: []
-    next_actions: []
-    risk_flags: []
+    next_actions:
+      - "Owner: switch Pages to the reviewed CI-gated workflow after branch CI and merge."
+    risk_flags:
+      - "No deployed-URL verification exists until the owner applies .scoreboard/manual-workflow-edits.md."
     files_reviewed:
-      - .github/workflows/update_spreadsheet.yml
-      - docs/.nojekyll
+      - docs/index.html
+      - docs/build-manifest.json
+      - tests/test_pipeline.py
+      - .scoreboard/manual-workflow-edits.md
 
   - id: agent_readiness
     name: Agent readiness

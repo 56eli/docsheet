@@ -21,6 +21,26 @@ The failure is a chain, not one broken deployment command:
 
 PR #53 fixes the stale Playwright selector and adds a five-row curated-payload guard. Those are useful changes, but **PR #53 does not fix or prove the end-user row presentation**.
 
+### P0 implementation addendum (branch `arena/019fe7c9-docsheet`)
+
+After owner direction, this branch implemented the non-subjective P0 controls:
+
+- removed the competing work-group left shadow and moved work separation to a
+  horizontal border;
+- content-versioned `app.js` and `style.css` in `index.html`;
+- added `docs/build-manifest.json` with full asset/raw/curated hashes;
+- exposed visible build ID `app-cf43f33a062c/css-ccaa5a8a62e6` in the footer;
+- added offline drift/cascade guards (suite 139 → 141);
+- replaced the stale stats selector;
+- upgraded the existing browser row test to inspect computed light/dark zebra
+  backgrounds and block shadows for lecture, discussion, and office rows;
+- documented exact required-check, CI-gated Pages, post-deploy hash/row checks,
+  and visual acceptance steps in `.scoreboard/manual-workflow-edits.md`.
+
+The incident remains open until GitHub branch CI executes the 25 browser specs,
+the versioned build is deployed/verified, and the owner accepts that exact
+visible build ID.
+
 ## 2. Project architecture, as actually deployed
 
 DocSheet is a static GitHub Pages application with two distinct data lanes.
@@ -387,4 +407,4 @@ Environment-limited:
 
 ## 11. Final conclusion
 
-The repository can generate correct data and GitHub can build the committed site while the end user still receives no accepted row fix. The missing link is a versioned, observable, browser-level acceptance pipeline, compounded by a concrete CSS cascade bug that current tests cannot see. The incident is unresolved until that path—not merely the repository bytes—is fixed and accepted by the owner.
+The audited baseline could generate correct data and a built Pages artifact while the end user still received no accepted row fix. This branch corrects the concrete cascade collision and adds versioned, visible browser assets plus computed-style/delivery-contract guards; the incident remains unresolved until branch CI, deployment/hash verification, and explicit owner acceptance complete the path.

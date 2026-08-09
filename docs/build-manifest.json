@@ -1,0 +1,14 @@
+{
+  "revision": "row-delivery-p0-20260809.1",
+  "source_baseline": "ea4e30d00b9e830d54d3e00710d84a5b73e6c085",
+  "generated_on": "2026-08-09",
+  "assets": {
+    "app.js": "cf43f33a062c0efa28f67b9cc7d8b8f06f1082e522102d5257b4ec990360741c",
+    "style.css": "ccaa5a8a62e631c4e1d4745b31453df176b7dfb2ef16c923883d2e224f9686e4"
+  },
+  "data": {
+    "master.json": "78acd9955632749e2a6524095ebc589aab2aee22c5909ffbd5ca34ac8b50acf3",
+    "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37"
+  },
+  "acceptance": "owner_visual_review_required"
+}
