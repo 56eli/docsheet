@@ -26,10 +26,12 @@ Current branch changes:
 - footer shows `app-cf43f33a062c/css-71a1e6b2ca25` and links
   `docs/build-manifest.json`;
 - offline delivery-contract and cascade guards bring the suite to **141**;
-- all 25 Playwright specs passed in PR #54 run `31331149785`, including
+- all 25 Playwright specs passed in PR #54 run `31331297543`, including
   computed selector matching, light/dark zebra, and lecture/discussion/office
   accent checks;
 - stale `#show-stats-toggle` CI selector removed;
+- older root/docs audits now have correction banners pointing here; the archive
+  landing page also names the corrective audit as current;
 - owner-gated required-check, CI-gated Pages, post-deploy hash/row assertions,
   and screenshot procedure are in `.scoreboard/manual-workflow-edits.md`.
 
@@ -118,13 +120,12 @@ all six `--check` modes pass, `node --check` clean, coverage 90%.
   All six `--check` modes pass; README documents the new inputs.
 - **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage.
 
-The declared-current audits are
-`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
-verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
-(verified at `d731e1b`) and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
-H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
-updated for the 2026-08-09 reclassification);
+The current corrective audit is
+`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`. The older root
+expert/deep/full audits are point-in-time data checkpoints at `556bf48`,
+`d731e1b`, and `f520e9b`; their frontend/CI/deployment conclusions are
+superseded by PR #54 and their top banners say so. Their data findings remain
+historical evidence;
 the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
 the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a

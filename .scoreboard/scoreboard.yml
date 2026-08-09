@@ -321,7 +321,7 @@ aspects:
     user_basis: null
     evidence:
       - "python -m unittest discover tests: Ran 141, OK; coverage report TOTAL 90% (individual modules 78-100%)."
-      - "PR #54 run 31331149785 passed all 25 browser specs; presentation-ux.spec.js proves the corrected root selector matches and reads computed light/dark zebra/block values for lecture, discussion, and office."
+      - "PR #54 run 31331297543 passed all 25 browser specs; presentation-ux.spec.js proves the corrected root selector matches and reads computed light/dark zebra/block values for lecture, discussion, and office."
       - "FrontendDeliveryContractTests locks content-versioned app/style URLs, visible build ID, and build-manifest hashes."
     user_notes: null
     desired_direction: []

@@ -55,9 +55,11 @@ visible deployed build ID and an explicit owner accept/reject response.
   the filtered first-row/work-start case that exposed the bug.
 - The stale `#show-stats-toggle` Playwright path is removed; navigation is tested
   through the surviving `#view-jump` control.
+- All non-archived older audit documents carry status-correction banners that
+  point to the current row-delivery postmortem; `archive/README.md` does too.
 - Offline suite: **141 tests** (133 pipeline/contract + 8 style), all passing;
   coverage remains **90% total**.
-- Browser suite: **25/25 passed** in PR #54 run `31331149785`, including real
+- Browser suite: **25/25 passed** in PR #54 run `31331297543`, including real
   selector matching and computed light/dark block colors. Local Chromium
   download remains CDN-blocked.
 
@@ -119,7 +121,7 @@ Additional open risks:
 - `npm ci` / `npm audit` — zero vulnerabilities ✅
 - manifest/content-version contract ✅
 - Git diff/fsck/secret scan ✅
-- PR #54 GitHub CI `31331149785`: 25/25 browser specs ✅
+- PR #54 GitHub CI `31331297543`: 25/25 browser specs ✅
 - Chromium install locally ❌ environment TLS reset; GitHub CI is authoritative
 
 ## Next-agent rules

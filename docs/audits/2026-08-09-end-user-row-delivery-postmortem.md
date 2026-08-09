@@ -41,7 +41,7 @@ After owner direction, this branch implemented the non-subjective P0 controls:
 - documented exact required-check, CI-gated Pages, post-deploy hash/row checks,
   and visual acceptance steps in `.scoreboard/manual-workflow-edits.md`.
 
-PR #54 branch CI run `31331149785` passed all 25 browser specs, including real
+PR #54 branch CI run `31331297543` passed all 25 browser specs, including real
 selector matching and computed light/dark block colors. The incident remains
 open until the versioned build is merged, deployed/hash-verified, and the owner
 accepts that exact visible build ID.
@@ -431,7 +431,7 @@ Environment-limited:
 
 - local Chromium installation was blocked by repeated CDN TLS resets;
 - direct `curl`/`wget` to GitHub Pages was TLS-blocked in the sandbox;
-- PR #54 run `31331149785` supplied browser execution: all 25 specs passed, including computed selector, zebra, block, work-start, and dark-mode assertions.
+- PR #54 run `31331297543` supplied browser execution: all 25 specs passed, including computed selector, zebra, block, work-start, and dark-mode assertions.
 
 ## 11. Final conclusion
 
