@@ -9937,8 +9937,8 @@
   },
   {
     "raw_row_number": "371",
-    "disposition": "needs_review",
-    "review_reason": "Non-empty row without item ID or ownership status.",
+    "disposition": "duplicate",
+    "review_reason": "Duplicate of promoted master 361 (Dialogues on Consciousness and Spirituality; promoted from candidate manual-academic-dialogues-1998). The raw row is the owner's own placeholder note ('WHAT IS THIS ⚠️') for the same work — it has no item ID or ownership status. Owner ruling 2026-08-09: reclassify from needs_review to duplicate; raw row excluded from the master; provenance kept here.",
     "proposed_series": "",
     "proposed_title": "",
     "proposed_item_type": "",

@@ -1,14 +1,50 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (fresh-eyes audit + doc cleanup + code refactoring) — current handoff for
-branch `arena/019fe63c-docsheet` at current HEAD.
+**Prepared:** 2026-08-09 (expert full-stack audit + low-severity fixes) — current handoff for
+branch `arena/019fe659-docsheet` at current HEAD.
 The declared-current audits are
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `d731e1b`) and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`, H-01/L-02/DOC-10 clarified at `2bc99ec`);
+`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
+verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
+(verified at `d731e1b`) and its extension
+`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
+H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
+updated for the 2026-08-09 reclassification);
 the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
 `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` carry SUPERSEDED
 banners (pre-PR-#40 findings). See the session log at the bottom of §6.
+Headline results (2026-08-09 expert pass, current):
+- **Expert full-stack audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
+  all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
+  coverage 7.15.4); ~20 independent pandas probes bypassing the project's own
+  validators reproduced every README count exactly (362 masters, 278 codes,
+  75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7
+  compilations, 191 works, 191 products, 10 UUID gaps) and found **no
+  data-loss or correctness defects**. Seven low-severity items were reported;
+  four were fixed this session (see below), three remain as documented
+  recommendations (§3.4 empty separator rows in the Original Spreadsheet
+  view, §3.6 "passed through unchanged" wording, §3.7 archived-audit
+  Highlights wording).
+- **Ledger row 371 reclassification (owner-approved 2026-08-09):** the single
+  `needs_review` row — the raw sheet's "Dialogues on Consciousness and
+  Spirituality: WHAT IS THIS ⚠️⚠️⚠️" placeholder — was reclassified to
+  `duplicate` (of promoted master 361, promoted from
+  `manual-academic-dialogues-1998`). Dispositions are now 299 `item` /
+  31 `blank_separator` / 21 `series_context` / 10 `research_note` /
+  **8 `duplicate`** / 5 `source_context` / **0 `needs_review`**; the 75-row
+  exclusion set, `docs/master-exclusions.json`, `docs/migration-review.json`,
+  `MIGRATION_REVIEW_LEDGER.md`, and the disposition table in
+  `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` were regenerated/updated with
+  it. No master-row, code, or count changed.
+- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md corrected (the seven Highlights
+  products ARE in the category mapping as approved R1 rows matched to masters
+  362–368, not "out of scope / unmatched"); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`
+  gained the `-2002-dvd` slug note (product 1800's URL slug says "dvd" but
+  the storefront carrier is Streaming — master keeps `format=streaming`);
+  handoff header refreshed for this branch.
+- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the three
+  documented recommendations in the expert audit (§3.4/§3.6/§3.7 above).
+
 Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
   all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
@@ -321,13 +357,15 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   the review notes (1546/1548, 1661/1695/1728/1742, 55576 — the curated
   series stands; editions keep their work's series; the publisher's
   "Media Miscellaneous" shelf describes the carrier, not the series). Taxonomy is
-  now **169 approved / 0 proposed / 10 rejected** (179 matched products).
-- **`format` blank on 8 records** (was 73): the 2026-08-03 format backfill
-  inferred 65 formats (89% fill rate). The remaining 8 blank-format records
-  have no automated inference match — root cause and evidence in `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md`
-  §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
-  strings, streaming markers) stays in
-  `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
+  now **177 approved / 9 rejected / 0 queued** (186 mapping rows; the earlier
+  "169 approved / 10 rejected / 179 matched" snapshot was superseded by the
+  50521 resolution and the 2026-08-09 mapping refresh — the master build
+  applies 324 approved master-level mappings with 3 series changes).
+- ~~**`format` blank on 8 records**~~ — **resolved**: 0/362 master rows are
+  blank today (the inference grew to 107 formats from the official inventory;
+  the 2026-08-03 snapshot of 8 blank records and its evidence live in
+  `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d, with the second
+  inference pass in `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`).
 - ~~**Four always-empty master columns**~~ — **resolved 2026-08-07 (owner
   ruling: drop all four)**: `location_physical`, `location_digital`,
   `location_streaming`, `reference_url_2` removed from schema, sheet, specs
@@ -408,7 +446,16 @@ Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
 - **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
 - **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
 
-## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, current)
+## 2026-08-09 Expert full-stack audit + low-severity fixes (arena/019fe659-docsheet, current)
+
+Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (kept at root as a declared-current audit).
+
+- **Expert audit:** all six `--check` modes green, 126/126 tests, 91% coverage; ~20 independent pandas probes bypassing the project's validators reproduced every README count exactly and found no data-loss/correctness defects. Seven low-severity findings (§3 of the audit); the Playwright browser suite could not be re-run in the sandbox (CDN blocked) but CI is green.
+- **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
+- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
+- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.
+
+## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, previous)
 
 Branch `arena/019fe63c-docsheet` from `main` at `150f080`.
 
