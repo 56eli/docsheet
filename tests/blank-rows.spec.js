@@ -33,9 +33,11 @@ test('Original Spreadsheet hides blank separator rows by default, toggle restore
     return { total: rows.length, nonEmpty: nonEmpty.length };
   });
 
-  // The toggle becomes visible on this tab, and blank rows are hidden by
-  // default: grid and footer agree on the non-empty count, and the blank
-  // first row of the raw sheet is absent.
+  // The toggle is inside the settings menu, so reopen it: on this tab the
+  // wrap becomes visible, and blank rows are hidden by default — grid and
+  // footer agree on the non-empty count, and the blank first row of the raw
+  // sheet is absent.
+  await page.getByRole('button', { name: 'View settings' }).click();
   await expect(page.locator('#blank-rows-toggle-wrap')).toBeVisible();
   await expect(page.locator('#footer-stats')).toContainText(
     `Original Spreadsheet: ${counts.nonEmpty} rows`
