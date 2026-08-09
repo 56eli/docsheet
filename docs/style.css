@@ -656,31 +656,28 @@ body {
 
 /* Group block color coding: sleek neutral rows + crisp 3.5px inset left accent bar (REVISION1 blocks).
    Odd rows tint lightly (8.5%) over --surface, even rows tint over --zebra so rows stay clean & readable. */
-#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace.tabulator-row-even,
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
+#spreadsheet .tabulator .tabulator-row[data-block="lectures-2002-2011"] { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="lectures-2002-2011"] { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row[data-block="discussion"] { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="discussion"] { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row[data-block="satsang"] { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="satsang"] { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row[data-block="on-the-road"] { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="on-the-road"] { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row[data-block="volume-series"] { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="volume-series"] { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row[data-block="office-series"] { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="office-series"] { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row[data-block="books"] { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="books"] { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet .tabulator .tabulator-row[data-block="transcription-books"] { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="transcription-books"] { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row[data-block="media-misc"] { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="media-misc"] { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row[data-block="undecided"] { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="undecided"] { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row[data-block="fran-grace"] { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even[data-block="fran-grace"] { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
 
 #spreadsheet .tabulator .tabulator-cell {
   border-right: none;

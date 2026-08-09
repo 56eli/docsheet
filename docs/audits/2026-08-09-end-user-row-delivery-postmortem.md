@@ -29,7 +29,7 @@ After owner direction, this branch implemented the non-subjective P0 controls:
   horizontal border;
 - content-versioned `app.js` and `style.css` in `index.html`;
 - added `docs/build-manifest.json` with full asset/raw/curated hashes;
-- exposed visible build ID `app-cf43f33a062c/css-ccaa5a8a62e6` in the footer;
+- exposed visible build ID `app-cf43f33a062c/css-482895a56d9d` in the footer;
 - added offline drift/cascade guards (suite 139 → 141);
 - replaced the stale stats selector;
 - upgraded the existing browser row test to inspect computed light/dark zebra

@@ -59,7 +59,8 @@ def parse_color_mix_percentages(css: str) -> list[float]:
     return [
         float(m.group(1))
         for m in re.finditer(
-            r"row-block-.*?color-mix\(in srgb,\s*var\(--block-\w+\)\s+([\d.]+)%",
+            r'(?:row-block-[^\s,{]+|\[data-block="[^"]+"\]).*?'
+            r"color-mix\(in srgb,\s*var\(--block-\w+\)\s+([\d.]+)%",
             css,
         )
     ]

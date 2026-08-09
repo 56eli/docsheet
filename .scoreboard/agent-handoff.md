@@ -41,7 +41,7 @@ visible deployed build ID and an explicit owner accept/reject response.
   `docs/index.html`.
 - `docs/build-manifest.json` records full app/style/master/raw hashes and
   revision `row-delivery-p0-20260809.1`.
-- Footer visibly identifies `app-cf43f33a062c/css-ccaa5a8a62e6` and links the
+- Footer visibly identifies `app-cf43f33a062c/css-482895a56d9d` and links the
   manifest.
 - `FrontendDeliveryContractTests` fails on stale asset query versions, manifest
   hashes, footer build ID, or payload hashes.

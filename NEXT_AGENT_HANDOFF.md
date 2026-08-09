@@ -19,7 +19,7 @@ Current branch changes:
 
 - work-family starts use `border-top`, preserving block-colored inset accents;
 - app/style URLs carry 12-character content hashes;
-- footer shows `app-cf43f33a062c/css-ccaa5a8a62e6` and links
+- footer shows `app-cf43f33a062c/css-482895a56d9d` and links
   `docs/build-manifest.json`;
 - offline delivery-contract and cascade guards bring the suite to **141**;
 - the existing 25 Playwright specs now include computed light/dark zebra and
