@@ -14,7 +14,7 @@ async function rowVisual(row) {
       borderTopWidth: style.borderTopWidth,
       blockLectures: style.getPropertyValue('--block-lectures').trim(),
       className: element.className,
-      matchesLectureRule: element.matches('#spreadsheet .tabulator .tabulator-row[data-block="lectures-2002-2011"]'),
+      matchesLectureRule: element.matches('#spreadsheet.tabulator .tabulator-row[data-block="lectures-2002-2011"]'),
       styleSheets: [...document.styleSheets].map((sheet) => sheet.href || 'inline'),
     };
   });
@@ -61,7 +61,7 @@ test('computed row styles preserve zebra and REVISION1 accents across blocks', a
   expect(firstVisual.className).toContain('row-block-lectures-2002-2011');
   expect(firstVisual.matchesLectureRule).toBe(true);
   expect(firstVisual.blockLectures).toBe('#059669');
-  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=482895a56d9d'))).toBe(true);
+  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=71a1e6b2ca25'))).toBe(true);
   expect(firstVisual.backgroundColor).not.toBe(secondVisual.backgroundColor);
   expect(firstVisual.boxShadow).toContain('rgb(5, 150, 105)');
   expect(firstVisual.borderTopWidth).toBe('2px');

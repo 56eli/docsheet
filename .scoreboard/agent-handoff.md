@@ -18,30 +18,34 @@ visible deployed build ID and an explicit owner accept/reject response.
 
 ### Root causes found
 
-1. `docs/style.css` had two equal-specificity odd-row `box-shadow` rules. The
-   later `.work-group-start` rule replaced the REVISION1 block color with the
-   generic green accent on 105 rows in default order; filtering/sorting changed
-   the affected subset.
-2. `index.html` loaded bare `style.css` and `app.js`; JSON alone used
-   `cache: "no-store"`. Pages build success could not prove matching assets in
-   the owner's browser.
-3. The page exposed no build/SHA/content identity.
-4. Existing tests checked CSS tokens and one row class, not computed styles,
-   block transitions, dark mode, cache versions, or the deployed URL.
-5. PRs #48–#52 merged before checks completed; Pages deployed independently of
+1. All 70 intended table selectors used `#spreadsheet .tabulator ...`, but
+   Tabulator attaches `.tabulator` to `#spreadsheet` itself. None of those
+   descendant-root rules matched, so the browser kept the external theme's
+   default grey rows while agents edited dead CSS.
+2. A latent equal-specificity `.work-group-start` shadow would have replaced
+   REVISION1 block colors on 105 odd rows after activating the selectors.
+3. `index.html` loaded bare `style.css` and `app.js`; JSON alone used
+   `cache: "no-store"`. Pages build success could not prove matching assets.
+4. The page exposed no build/SHA/content identity.
+5. Existing tests checked CSS tokens and one row class, not selector matching,
+   computed styles, block transitions, dark mode, cache versions, or deployment.
+6. PRs #48–#52 merged before checks completed; Pages deployed independently of
    red CI.
-6. Mobile/persisted Browse mode contains cards, not Tabulator rows; presentation
+7. Mobile/persisted Browse mode contains cards, not Tabulator rows; presentation
    mode must be explicit during acceptance.
 
 ### Implemented on this branch
 
-- Work-family grouping now uses a horizontal `border-top`; it no longer replaces
-  the block-specific inset `box-shadow`.
+- All table rules now use the real `#spreadsheet.tabulator ...` root, with a
+  static regression guard against the dead descendant topology.
+- Block rules target stable `data-block` attributes.
+- Work-family grouping uses a horizontal `border-top`; it cannot replace the
+  block-specific inset `box-shadow`.
 - `style.css` and `app.js` use 12-character SHA-256 query versions in
   `docs/index.html`.
 - `docs/build-manifest.json` records full app/style/master/raw hashes and
   revision `row-delivery-p0-20260809.1`.
-- Footer visibly identifies `app-cf43f33a062c/css-482895a56d9d` and links the
+- Footer visibly identifies `app-cf43f33a062c/css-71a1e6b2ca25` and links the
   manifest.
 - `FrontendDeliveryContractTests` fails on stale asset query versions, manifest
   hashes, footer build ID, or payload hashes.

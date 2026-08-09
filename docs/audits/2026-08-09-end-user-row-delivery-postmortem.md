@@ -12,12 +12,13 @@ The previous investigations validated the wrong boundary. They proved that commi
 
 The failure is a chain, not one broken deployment command:
 
-1. **The row implementation itself is still defective.** A later CSS rule replaces the REVISION1 block-colored left accent on 105 default-order rows; filtering and sorting can move the defect to other odd rows.
-2. **The browser delivery path is not versioned.** `index.html` loads bare `style.css` and `app.js`, so a successful Pages build does not prove a user's browser consumed the matching CSS/JS pair.
-3. **There is no end-user acceptance test.** CI checks source tokens and the presence of a class, not computed row colors, block-specific accents, screenshots, cache freshness, or the deployed URL.
-4. **The public UI can hide the affected surface.** Mobile opens in Browse mode and desktop can persist Browse mode, where Tabulator spreadsheet rows are absent.
-5. **CI and deployment are independent and unenforced.** PRs #48–#52 were merged before checks completed; red commits were published anyway. The red Actions did not protect users and also obscured the actual visual defect.
-6. **Data and presentation were repeatedly conflated.** The owner-reviewed data lives in curated `master.json`, while raw `data.json` intentionally remains unchanged; meanwhile, the visible row-styling request is a browser-rendering concern. A byte-correct payload is not visual acceptance.
+1. **The 70 main custom Tabulator selectors never matched the DOM.** The CSS used descendant roots such as `#spreadsheet .tabulator .tabulator-row`, but Tabulator attaches `.tabulator` to `#spreadsheet` itself. The correct topology is `#spreadsheet.tabulator .tabulator-row`. The browser therefore kept showing Tabulator's default flat grey rows while agents edited dead rules.
+2. **A second cascade defect was waiting behind the dead selectors.** Once activated, the later generic work-group left shadow would replace block accents on 105 odd rows in the default order; sorting/filtering would change the subset.
+3. **The browser delivery path was not versioned.** `index.html` loaded bare `style.css` and `app.js`, so a successful Pages build did not prove a user's browser consumed the matching CSS/JS pair.
+4. **There was no end-user acceptance test.** CI checked source tokens and the presence of a class, not whether selectors matched, computed row colors, block-specific accents, screenshots, cache freshness, or the deployed URL.
+5. **The public UI can hide the affected surface.** Mobile opens in Browse mode and desktop can persist Browse mode, where Tabulator spreadsheet rows are absent.
+6. **CI and deployment are independent and unenforced.** PRs #48–#52 were merged before checks completed; red commits were published anyway. The red Actions did not protect users and also obscured the actual visual defect.
+7. **Data and presentation were repeatedly conflated.** The owner-reviewed data lives in curated `master.json`, while raw `data.json` intentionally remains unchanged; meanwhile, the visible row-styling request is a browser-rendering concern. A byte-correct payload is not visual acceptance.
 
 PR #53 fixes the stale Playwright selector and adds a five-row curated-payload guard. Those are useful changes, but **PR #53 does not fix or prove the end-user row presentation**.
 
@@ -25,11 +26,14 @@ PR #53 fixes the stale Playwright selector and adds a five-row curated-payload g
 
 After owner direction, this branch implemented the non-subjective P0 controls:
 
-- removed the competing work-group left shadow and moved work separation to a
-  horizontal border;
+- corrected all 70 dead `#spreadsheet .tabulator ...` roots to the actual
+  `#spreadsheet.tabulator ...` DOM topology;
+- switched block styling to stable `data-block` selectors;
+- removed the latent competing work-group left shadow and moved work separation
+  to a horizontal border;
 - content-versioned `app.js` and `style.css` in `index.html`;
 - added `docs/build-manifest.json` with full asset/raw/curated hashes;
-- exposed visible build ID `app-cf43f33a062c/css-482895a56d9d` in the footer;
+- exposed visible build ID `app-cf43f33a062c/css-71a1e6b2ca25` in the footer;
 - added offline drift/cascade guards (suite 139 → 141);
 - replaced the stale stats selector;
 - upgraded the existing browser row test to inspect computed light/dark zebra
@@ -175,38 +179,60 @@ As a result, neither the owner nor an agent can answer “which row implementati
 
 ## 5. Why the row result did not reach the end user
 
-### F-01 — CSS cascade destroys block-specific accents on odd work starts (P0)
+### F-01 — All intended Tabulator row selectors were rooted at a nonexistent descendant (P0)
 
-Every block rule sets a block-colored inset shadow, for example:
+The application initializes Tabulator on the `#spreadsheet` element:
 
-```css
-#spreadsheet .tabulator .tabulator-row.row-block-books {
-  box-shadow: inset 3.5px 0 0 var(--block-books);
-}
+```javascript
+new Tabulator(spreadsheet, { ... });
 ```
 
-A later rule sets another `box-shadow`:
+Tabulator transforms that same element into:
 
-```css
-#spreadsheet .tabulator .tabulator-row.work-group-start {
-  box-shadow: inset 3px 0 0 var(--accent);
-}
+```html
+<div id="spreadsheet" class="tabulator">...</div>
 ```
 
-For odd rows, the selectors have equal specificity and the later work-group rule wins. The requested block accent is replaced by the global green accent. In the default 362-row order:
+The stylesheet instead assumed a nested Tabulator element:
 
-- 215 rows are work-group starts;
-- 105 are odd-position work starts where the later rule replaces the block color;
-- affected rows span lectures, discussion, satsang, On-the-Road, volume, office, books, transcription, media-misc, and undecided blocks;
-- sorting and filtering change row parity, so the broken subset is unstable.
+```css
+#spreadsheet .tabulator .tabulator-row { ... }
+```
 
-This is a concrete implementation defect, not a deployment-status interpretation.
+That selector requires `.tabulator` to be a descendant of `#spreadsheet`; it
+cannot match when both identifiers are on the same node. The correct root is:
 
-### F-02 — The most prominent cue is too weak and inconsistent (P0)
+```css
+#spreadsheet.tabulator .tabulator-row { ... }
+```
 
-Block backgrounds are mixed at 8.5% over neutral row colors. In dark mode they are mixed over `#161616` / `#1e1e1e`; in light mode over white / `#f4f4f5`. The static test accepts any parsed percentage from 8–18%, but does not evaluate the computed color or compare neighboring blocks.
+Seventy custom table selectors shared the dead root, including row surfaces,
+zebra colors, hover, all 11 block rules, headers, cells, the work separator,
+and responsive density rules. CI browser diagnostics established the failure
+directly:
 
-When F-01 changes the conspicuous left edge to a generic green, the remaining block identity is only the faint 8.5% wash. That matches the reported experience that group changes appear absent or unchanged.
+- the first row carried `data-block="lectures-2002-2011"` and the expected row
+  classes;
+- `element.matches('#spreadsheet .tabulator ...')` was false;
+- `getComputedStyle(row).boxShadow` was `none`;
+- 24 other browser specs passed because they did not inspect computed table
+  presentation.
+
+This exactly explains the owner's observation: the browser kept rendering the
+external Tabulator theme's default alternating greys while repeated agents
+changed CSS that never matched a row.
+
+### F-02 — A latent shadow collision would have broken the activated rules (P0)
+
+The baseline also defined block and work-family cues on the same `box-shadow`
+property. Had F-01 been corrected alone, the later equal-specificity
+`.work-group-start` rule would have replaced the block color on 105 odd rows in
+the default order, with filtering/sorting changing the affected subset.
+
+This branch prevents that second failure by using `data-block` for block styles
+and a horizontal `border-top` for work-family separation. Static tests now
+reject the dead root topology and any reintroduced work-group box shadow;
+browser tests require real selector matching and computed colors.
 
 ### F-03 — Asset URLs are not cache-versioned (P0 delivery gap)
 
@@ -304,7 +330,7 @@ The 58 owner-edited filename rows are represented in the curated inputs and gene
 | Data integrity | Pass | Unique UUIDs and filenames; approved dense display order; no missing master title/type/work ID. |
 | REVISION1 interpretation | Data pass, UX fail | ODS color groups and edited records were decoded, but visibility and rendering are not assured. |
 | Frontend behavior | Feature-rich, high debt | 2,692-line app with persisted modes, virtualized table, and dead overview/stats code. |
-| Row presentation | Fail | Definite cascade collision, weak visual acceptance coverage, and unstable parity behavior. |
+| Row presentation | Fail at baseline; P0 on branch | All 70 custom table selectors used the wrong DOM root; a latent shadow collision and missing computed-style acceptance compounded it. |
 | Responsive behavior | Mixed | Mobile Browse is useful, but it removes the surface where row changes are expected. |
 | Accessibility | Reasonable baseline | Labels, focus restoration, keyboard actions; no automated axe/Lighthouse evidence. |
 | Security/privacy | Good for static app | Same-origin JSON, CSP, SRI-pinned Tabulator; `style-src 'unsafe-inline'` remains low-severity debt. |
@@ -316,7 +342,7 @@ The 58 owner-edited filename rows are represented in the curated inputs and gene
 | Observability | Fail for end-user support | No visible SHA/version; contradictory Pages status surfaces; no deployed-content report. |
 | Documentation | Thorough but misleading/overgrown | Multiple “current” audits and handoffs claimed resolution without browser acceptance. |
 | Repository hygiene | Pass | 219 tracked files, no tracked secrets found, clean Git/fsck/diff checks. |
-| Maintainability | Needs work | Large frontend/CSS, hard-coded 362-entry block map, duplicated dead selectors, and overlapping row cues. |
+| Maintainability | Needs work | Large frontend/CSS, hard-coded 362-entry block map, historically dead table-root selectors, and overlapping row cues. |
 
 ## 8. What PR #53 does and does not do
 
@@ -349,14 +375,15 @@ PR #53 should therefore be described as a **CI regression fix**, not closure of 
 3. Make the public page identify the exact JS, CSS, data revision, and source commit/build.
 4. Add a post-deploy job that loads the actual Pages URL after deployment and records the observed revision.
 
-### P0 — Correct and test the row cascade
+### P0 — Correct and test the selector topology and row cascade
 
-1. Remove the competing `work-group-start` left `box-shadow`, or compose it without replacing the block accent.
-2. Keep work-family grouping on a different visual axis (for example a top separator) if still required.
-3. Test computed styles for odd and even rows in at least three nonadjacent blocks.
-4. Test after filtering and sorting, because parity and group-start status change.
-5. Add light and dark visual snapshots at a fixed desktop viewport.
-6. Add an explicit test proving Browse mode is not being mistaken for Spreadsheet mode.
+1. Root Tabulator rules at `#spreadsheet.tabulator`, never the nonexistent `#spreadsheet .tabulator` descendant.
+2. Remove the competing `work-group-start` left `box-shadow`, or compose it without replacing the block accent.
+3. Keep work-family grouping on a different visual axis (for example a top separator) if still required.
+4. Test computed styles for odd and even rows in at least three nonadjacent blocks.
+5. Test after filtering and sorting, because parity and group-start status change.
+6. Add light and dark visual snapshots at a fixed desktop viewport.
+7. Add an explicit test proving Browse mode is not being mistaken for Spreadsheet mode.
 
 ### P0 — Stop deploying unvalidated merges
 
@@ -407,4 +434,4 @@ Environment-limited:
 
 ## 11. Final conclusion
 
-The audited baseline could generate correct data and a built Pages artifact while the end user still received no accepted row fix. This branch corrects the concrete cascade collision and adds versioned, visible browser assets plus computed-style/delivery-contract guards; the incident remains unresolved until branch CI, deployment/hash verification, and explicit owner acceptance complete the path.
+The audited baseline could generate correct data and a built Pages artifact while the end user still received no accepted row fix because its 70 custom Tabulator selectors did not match the real DOM. This branch corrects that topology and the latent cascade collision, then adds versioned, visible browser assets plus computed-style/delivery-contract guards; the incident remains unresolved until branch CI, deployment/hash verification, and explicit owner acceptance complete the path.

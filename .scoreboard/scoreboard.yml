@@ -434,12 +434,13 @@ aspects:
     status: user_unhappy
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "The end-user row-delivery audit found a real CSS cascade defect and no deployed visual acceptance boundary. This branch fixes the accent collision, versions local assets, exposes the build ID/manifest, and adds computed-style coverage, but owner acceptance is still pending."
+    ai_basis: "The end-user row-delivery audit found that all 70 custom table selectors used a nonexistent descendant root, plus a latent shadow collision and no deployed visual acceptance boundary. This branch fixes selector topology/cascade, versions assets, exposes build identity, and adds computed-style coverage; owner acceptance is pending."
     user_basis: "Owner reiterated 2026-08-09 that repeated row changes never reached the end user; the prior 5/10 remains authoritative until explicit re-score."
     evidence:
-      - "105 odd work-group-start rows lost their block-specific inset color to a later generic green box-shadow on the audited baseline."
-      - "Work-family separation now uses border-top, preserving block box-shadow; computed-style tests cover lecture, discussion, office, zebra, and dark mode."
-      - "index.html now content-versions app.js/style.css and displays matching hashes linked to build-manifest.json."
+      - "Browser CI proved rows carried block metadata while element.matches('#spreadsheet .tabulator ...') was false and computed box-shadow was none; Tabulator attaches .tabulator to #spreadsheet itself."
+      - "All table rules now use #spreadsheet.tabulator; data-block styling and horizontal work separation avoid the latent shadow collision."
+      - "Computed-style tests cover selector matching, lecture/discussion/office accents, zebra, and dark mode."
+      - "index.html content-versions app.js/style.css and displays matching hashes linked to build-manifest.json."
     user_notes: "Do not treat Pages artifact success as proof that the row problem reached the end user."
     desired_direction:
       - "Versioned, observable browser delivery with explicit owner acceptance."

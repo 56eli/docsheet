@@ -9,17 +9,21 @@
 ## 2026-08-09 End-user row delivery P0 (current)
 
 The owner explicitly rejected prior claims that Pages artifact success proved
-row changes reached the user. The corrective audit found a real CSS cascade
-collision: the later generic `.work-group-start` shadow replaced REVISION1
-block accents on 105 odd rows in default order, while bare app/style URLs, no
-visible build identity, and class/token-only tests left browser delivery
-unproven.
+row changes reached the user. Browser CI then exposed the primary defect: all
+70 table rules used dead `#spreadsheet .tabulator ...` roots even though
+Tabulator attaches `.tabulator` to `#spreadsheet` itself. The browser therefore
+kept external-theme greys while agents edited rules that never matched. A
+latent work-group shadow collision, bare assets, no build ID, and
+class/token-only tests compounded the failure.
 
 Current branch changes:
 
+- all table rules use `#spreadsheet.tabulator ...`; a static guard rejects the
+  dead descendant topology;
+- block rules use stable `data-block` selectors;
 - work-family starts use `border-top`, preserving block-colored inset accents;
 - app/style URLs carry 12-character content hashes;
-- footer shows `app-cf43f33a062c/css-482895a56d9d` and links
+- footer shows `app-cf43f33a062c/css-71a1e6b2ca25` and links
   `docs/build-manifest.json`;
 - offline delivery-contract and cascade guards bring the suite to **141**;
 - the existing 25 Playwright specs now include computed light/dark zebra and

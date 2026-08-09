@@ -149,8 +149,13 @@ class StyleContrastTests(unittest.TestCase):
 
     def test_work_group_separator_cannot_override_block_accent(self):
         """Work-family grouping must not replace the REVISION1 left-edge color."""
+        self.assertNotRegex(
+            self.css,
+            r"#spreadsheet\s+\.tabulator(?=[\s.{:#\[])",
+            "Tabulator attaches .tabulator to #spreadsheet itself; descendant-root selectors are dead",
+        )
         match = re.search(
-            r"#spreadsheet\s+\.tabulator\s+\.tabulator-row\.work-group-start\s*\{([^}]*)\}",
+            r"#spreadsheet\.tabulator\s+\.tabulator-row\.work-group-start\s*\{([^}]*)\}",
             self.css,
         )
         self.assertIsNotNone(match, "work-group-start presentation rule is missing")
