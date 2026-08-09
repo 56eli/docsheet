@@ -4,9 +4,9 @@
 
 /* ---- Design tokens (light mode) ---- */
 :root {
-  --bg: #f5f5f7;
+  --bg: #f9f9fb;
   --surface: #ffffff;
-  --surface-2: #f2f2f3;
+  --surface-2: #f4f4f5;
   --text: #18181b;
   --text-muted: #71717a;
   --border: #e4e4e7;
@@ -14,96 +14,96 @@
   --accent-hover: #137333;
   --accent-contrast: #ffffff;
   --header-bg: #fafafa;
-  --header-text: #3f3f46;
-  --zebra: #f0f0f2;
-  --row-hover: #e8e8eb;
+  --header-text: #52525b;
+  --zebra: #f4f4f5;
+  --row-hover: #e4e4e7;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
   --ring: #188038;
-  --topbar-h: 58px;
+  --topbar-h: 52px;
   --footer-h: 40px;
 
   /* Scrollbars — neutral to match chrome */
   --scrollbar-thumb: #d4d4d8;
   --scrollbar-thumb-hover: #a1a1aa;
-  --scrollbar-track: #f5f5f7;
+  --scrollbar-track: #f9f9fb;
 
-  /* Group block color tokens (neutral chrome + chromatic accents; washes at 10-11% light so they tint without flattening zebra) */
+  /* Group block color tokens (accents per REVISION1 block) */
   --block-lectures: #059669;
-  --block-lectures-bg: rgba(5, 150, 105, 0.11);
+  --block-lectures-bg: rgba(5, 150, 105, 0.085);
   --block-discussion: #e11d48;
-  --block-discussion-bg: rgba(225, 29, 72, 0.11);
+  --block-discussion-bg: rgba(225, 29, 72, 0.085);
   --block-satsang: #d97706;
-  --block-satsang-bg: rgba(217, 119, 6, 0.11);
+  --block-satsang-bg: rgba(217, 119, 6, 0.085);
   --block-on-the-road: #0d9488;
-  --block-on-the-road-bg: rgba(13, 148, 136, 0.11);
+  --block-on-the-road-bg: rgba(13, 148, 136, 0.085);
   --block-volume-series: #6366f1;
-  --block-volume-series-bg: rgba(99, 102, 241, 0.10);
+  --block-volume-series-bg: rgba(99, 102, 241, 0.085);
   --block-office-series: #0284c7;
-  --block-office-series-bg: rgba(2, 132, 199, 0.11);
+  --block-office-series-bg: rgba(2, 132, 199, 0.085);
   --block-books: #7c3aed;
-  --block-books-bg: rgba(124, 58, 237, 0.10);
+  --block-books-bg: rgba(124, 58, 237, 0.085);
   --block-transcription-books: #c026d3;
-  --block-transcription-books-bg: rgba(192, 38, 211, 0.10);
-  --block-media-misc: #475569;
-  --block-media-misc-bg: rgba(71, 85, 105, 0.09);
+  --block-transcription-books-bg: rgba(192, 38, 211, 0.085);
+  --block-media-misc: #71717a;
+  --block-media-misc-bg: rgba(113, 113, 122, 0.085);
   --block-undecided: #ea580c;
-  --block-undecided-bg: rgba(234, 88, 12, 0.09);
+  --block-undecided-bg: rgba(234, 88, 12, 0.085);
   --block-fran-grace: #be123c;
-  --block-fran-grace-bg: rgba(190, 18, 60, 0.11);
+  --block-fran-grace-bg: rgba(190, 18, 60, 0.085);
 }
 
-/* ---- Design tokens (dark mode) ----
+/* ---- Design tokens (dark mode — warm brownish/black neutral) ----
    Applied to <html> (see inline script in index.html) so dark-mode users
    don't see a flash of the light theme on first paint. */
 :root.dark {
-  --bg: #0f0f0f;
-  --surface: #1a1a1a;
-  --surface-2: #252525;
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface-2: #222222;
   --text: #fafafa;
   --text-muted: #a1a1aa;
-  --border: #2a2a2a;
+  --border: #282828;
   --accent: #34d399;
   --accent-hover: #6ee7b7;
-  --accent-contrast: #0f0f0f;
-  --header-bg: #1e1e1e;
-  --header-text: #e4e4e7;
-  --zebra: #232323;
-  --row-hover: #303030;
+  --accent-contrast: #0d0d0d;
+  --header-bg: #1a1a1a;
+  --header-text: #d4d4d8;
+  --zebra: #1e1e1e;
+  --row-hover: #292929;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
   --ring: #34d399;
 
-  /* Scrollbars (dark mode) — neutral */
+  /* Scrollbars (dark mode) */
   --scrollbar-thumb: #3f3f46;
   --scrollbar-thumb-hover: #52525b;
-  --scrollbar-track: #0f0f0f;
+  --scrollbar-track: #0d0d0d;
 
-  /* Group block color tokens (dark mode) — raised to 15-16% to be visible on #1a1a1a/#232323 */
+  /* Group block color tokens (dark mode) */
   --block-lectures: #34d399;
-  --block-lectures-bg: rgba(52, 211, 153, 0.16);
+  --block-lectures-bg: rgba(52, 211, 153, 0.085);
   --block-discussion: #fb7185;
-  --block-discussion-bg: rgba(251, 113, 133, 0.16);
+  --block-discussion-bg: rgba(251, 113, 133, 0.085);
   --block-satsang: #fbbf24;
-  --block-satsang-bg: rgba(251, 191, 36, 0.16);
+  --block-satsang-bg: rgba(251, 191, 36, 0.085);
   --block-on-the-road: #2dd4bf;
-  --block-on-the-road-bg: rgba(45, 212, 191, 0.16);
+  --block-on-the-road-bg: rgba(45, 212, 191, 0.085);
   --block-volume-series: #818cf8;
-  --block-volume-series-bg: rgba(129, 140, 248, 0.15);
+  --block-volume-series-bg: rgba(129, 140, 248, 0.085);
   --block-office-series: #38bdf8;
-  --block-office-series-bg: rgba(56, 189, 248, 0.16);
+  --block-office-series-bg: rgba(56, 189, 248, 0.085);
   --block-books: #a78bfa;
-  --block-books-bg: rgba(167, 139, 250, 0.15);
+  --block-books-bg: rgba(167, 139, 250, 0.085);
   --block-transcription-books: #e879f9;
-  --block-transcription-books-bg: rgba(232, 121, 249, 0.15);
+  --block-transcription-books-bg: rgba(232, 121, 249, 0.085);
   --block-media-misc: #a1a1aa;
-  --block-media-misc-bg: rgba(161, 161, 170, 0.14);
+  --block-media-misc-bg: rgba(161, 161, 170, 0.085);
   --block-undecided: #fb923c;
-  --block-undecided-bg: rgba(251, 146, 60, 0.14);
+  --block-undecided-bg: rgba(251, 146, 60, 0.085);
   --block-fran-grace: #f43f5e;
-  --block-fran-grace-bg: rgba(244, 63, 94, 0.16);
+  --block-fran-grace-bg: rgba(244, 63, 94, 0.085);
 }
 
 /* ---- Base ---- */
@@ -603,44 +603,44 @@ body {
 /* ---- Tabulator: Sleek modern desktop spreadsheet table ---- */
 #spreadsheet .tabulator {
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   font-family: inherit;
   background: var(--surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Frozen header row: modern, clean typography, subtle borders */
+/* Frozen header row: modern, clean typography, zero vertical dividing borders */
 #spreadsheet .tabulator .tabulator-header {
   background: var(--header-bg);
   color: var(--header-text);
   border-bottom: 1px solid var(--border);
   font-weight: 600;
-  font-size: 12.5px;
-  letter-spacing: 0.01em;
+  font-size: 12px;
+  letter-spacing: 0.02em;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col {
   background: var(--header-bg);
   color: var(--header-text);
-  border-right: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-right: none;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
-  padding: 10px 10px;
+  padding: 10px 12px;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-title {
-  white-space: normal;   /* wrap long headers like "WE HAVE?" */
+  white-space: normal;
   line-height: 1.35;
 }
 #spreadsheet .tabulator .tabulator-header .tabulator-col:hover {
-  background: color-mix(in srgb, var(--accent) 8%, var(--header-bg));
+  background: color-mix(in srgb, var(--accent) 6%, var(--header-bg));
 }
 
-/* Sleek modern rows */
+/* Sleek modern rows: comfortable padding, clean horizontal borders, no vertical column lines */
 #spreadsheet .tabulator .tabulator-row {
   background: var(--surface);
   color: var(--text);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
-  transition: background-color 0.12s ease, border-color 0.12s ease;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.12s ease;
   position: relative;
 }
 #spreadsheet .tabulator .tabulator-row.tabulator-row-even {
@@ -654,39 +654,41 @@ body {
   color: var(--text);
 }
 
-/* Group block color coding: sleek neutral zebra + left accent (REVISION1 blocks).
-   Odd rows tint over --surface, even rows tint over --zebra so the alternating
-   grey remains visible (fixes R-01 flat-grey regression). */
-#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 11%, var(--surface)); border-left: 4px solid var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 11%, var(--zebra)); border-left: 4px solid var(--block-lectures); }
-#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 11%, var(--surface)); border-left: 4px solid var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 11%, var(--zebra)); border-left: 4px solid var(--block-discussion); }
-#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 11%, var(--surface)); border-left: 4px solid var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 11%, var(--zebra)); border-left: 4px solid var(--block-satsang); }
-#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 11%, var(--surface)); border-left: 4px solid var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 11%, var(--zebra)); border-left: 4px solid var(--block-on-the-road); }
-#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 10%, var(--surface)); border-left: 4px solid var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 10%, var(--zebra)); border-left: 4px solid var(--block-volume-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 11%, var(--surface)); border-left: 4px solid var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 11%, var(--zebra)); border-left: 4px solid var(--block-office-series); }
-#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 10%, var(--surface)); border-left: 4px solid var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 10%, var(--zebra)); border-left: 4px solid var(--block-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 10%, var(--surface)); border-left: 4px solid var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 10%, var(--zebra)); border-left: 4px solid var(--block-transcription-books); }
-#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 9%, var(--surface)); border-left: 4px solid var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 9%, var(--zebra)); border-left: 4px solid var(--block-media-misc); }
-#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 9%, var(--surface)); border-left: 4px solid var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 9%, var(--zebra)); border-left: 4px solid var(--block-undecided); }
-#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 11%, var(--surface)); border-left: 4px solid var(--block-fran-grace); }
-#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 11%, var(--zebra)); border-left: 4px solid var(--block-fran-grace); }
+/* Group block color coding: sleek neutral rows + crisp 3.5px inset left accent bar (REVISION1 blocks).
+   Odd rows tint lightly (8.5%) over --surface, even rows tint over --zebra so rows stay clean & readable. */
+#spreadsheet .tabulator .tabulator-row.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-lectures-2002-2011 { background-color: color-mix(in srgb, var(--block-lectures) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-lectures); }
+#spreadsheet .tabulator .tabulator-row.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-discussion { background-color: color-mix(in srgb, var(--block-discussion) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-discussion); }
+#spreadsheet .tabulator .tabulator-row.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-satsang { background-color: color-mix(in srgb, var(--block-satsang) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-satsang); }
+#spreadsheet .tabulator .tabulator-row.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-on-the-road { background-color: color-mix(in srgb, var(--block-on-the-road) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-on-the-road); }
+#spreadsheet .tabulator .tabulator-row.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-volume-series { background-color: color-mix(in srgb, var(--block-volume-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-volume-series); }
+#spreadsheet .tabulator .tabulator-row.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-office-series { background-color: color-mix(in srgb, var(--block-office-series) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-office-series); }
+#spreadsheet .tabulator .tabulator-row.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-books { background-color: color-mix(in srgb, var(--block-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-books); }
+#spreadsheet .tabulator .tabulator-row.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-transcription-books { background-color: color-mix(in srgb, var(--block-transcription-books) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-transcription-books); }
+#spreadsheet .tabulator .tabulator-row.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row.row-block-media-misc.tabulator-row-even,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-media-misc { background-color: color-mix(in srgb, var(--block-media-misc) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-media-misc); }
+#spreadsheet .tabulator .tabulator-row.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row.row-block-undecided.tabulator-row-even,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-undecided { background-color: color-mix(in srgb, var(--block-undecided) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-undecided); }
+#spreadsheet .tabulator .tabulator-row.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--surface)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
+#spreadsheet .tabulator .tabulator-row.row-block-fran-grace.tabulator-row-even,
+#spreadsheet .tabulator .tabulator-row.tabulator-row-even.row-block-fran-grace { background-color: color-mix(in srgb, var(--block-fran-grace) 8.5%, var(--zebra)); box-shadow: inset 3.5px 0 0 var(--block-fran-grace); }
 
 #spreadsheet .tabulator .tabulator-cell {
-  border-right: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  border-right: none;
   border-bottom: none;
-  padding: 8px 10px;
+  padding: 10px 12px;
   color: var(--text);
-  font-size: 13.5px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.45;
 }
 /* URL cells: keep links readable without filling rows with long raw URLs. */
 #spreadsheet .tabulator .tabulator-cell a { color: var(--accent); }
@@ -1340,14 +1342,13 @@ body {
 #table-container { padding: 0 10px; }
 #spreadsheet { top: 10px; left: 10px; right: 10px; bottom: 10px; }
 #spreadsheet .tabulator {
-  border-radius: 10px;
-  box-shadow: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
 }
-#spreadsheet .tabulator .tabulator-header .tabulator-col .tabulator-col-content { padding: 7px 8px; }
-#spreadsheet .tabulator .tabulator-cell { padding: 6px 8px; }
 .status-badge {
-  border-radius: 8px;
-  font-weight: 650;
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 3px 8px;
 }
 .row-details { box-shadow: var(--shadow-md); }
 .row-details-header { background: var(--surface); }

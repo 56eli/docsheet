@@ -38,20 +38,20 @@ The scoreboard was created as part of the persistent-memory protocol:
 - **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
   priorities 15/12 remain open.
 
-## 2026-08-09 Desktop Streamlining, Row Group Color-Coding & Expert Audit (this branch, current)
+## 2026-08-09 Modern Table Overhaul & Full Audit (this branch, current)
 
-- **Desktop Presentation Streamlined & Bloat Removed:**
-  - Removed bloated hero copy paragraphs, collection overview stat cards, "browse by series" strip, and "Master records 362" stat chip row per user instructions.
-  - Kept topbar interface clean, compact, and uncluttered.
-- **Row Group Background Color-Coding Fixed:**
-  - Applied distinct background color tints (`--block-*-bg`) and 4px left borders across all 11 REVISION1 ODS block groups in both light and dark mode for even and odd rows.
-- **Code Quality & Linter Sweep:**
-  - Ran `ruff check .`: **100% clean (0 errors, 0 warnings)**.
-  - Shebangs added, unused variables/imports removed, exception handling narrowed, subprocess calls explicitly declared with `check=False`.
-- **Full Audit Completed:**
-  - Published `docs/audits/2026-08-09-expert-full-stack-audit.md`.
+- **Modern Table Row Presentation (Linear/Stripe Standard):**
+  - Eliminated full-bleed opaque pastel washes and rigid vertical column gridlines across the table.
+  - Applied clean neutral canvas with subtle alternating zebra striping (`#f4f4f5` light / `#1e1e1e` dark).
+  - Preserved the owner's preferred warm brownish-black neutral dark mode (`--bg: #0d0d0d`, `--surface: #161616`, `--zebra: #1e1e1e`, `--border: #282828`).
+  - Added crisp 3.5px inset left accent bars per REVISION1 color-group block (`box-shadow: inset 3.5px 0 0 ...`).
+  - Upgraded cell vertical padding to comfortable 10px-12px with clean modern typography.
+- **Codebase & Documentation Cleanups:**
+  - Removed shadowed `PUBLISHERS = Path(...)` and duplicate queue aliases in `build_catalogue_pages.py`.
+  - Updated all test count references to 139 across `README.md`, `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `NEXT_AGENT_HANDOFF.md`, and `.scoreboard/agent-handoff.md`.
+  - Cleaned up stale hero overview descriptions in `README.md`.
 - **Verification:**
-  - All 132 tests pass (`pytest` / `unittest`), all 6 `--check` modes green, `node --check` clean, `ruff check .` clean.
+  - All 139 tests pass (132 pipeline + 7 style contrast), statement coverage 90%, all 6 `--check` modes green, `node --check` clean, `ruff check .` 100% clean.
 
 ## Top priorities for next agent
 
@@ -61,9 +61,8 @@ The scoreboard was created as part of the persistent-memory protocol:
 2. `ux_usability` (priority 12, `user_unhappy`): owner scored 5/10 while AI
    is 9 — same: get concrete feedback first.
 3. `maintainability` (priority 8): owner scored 6/10; split the two large
-   generators (`build_research_master.py` ~1660 lines,
-   `build_catalogue_pages.py` ~1078 lines) into focused modules; the
-   132-test suite is the safety net.
+   generators into focused modules in `pipeline/`; the
+   139-test suite is the safety net.
 4. `code_hygiene` (priority 4): same refactor workstream.
 5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
    expectations (e.g. raw placeholder rows still visible in the original
@@ -132,7 +131,7 @@ re-audit changes effective scores. Re-evaluate after the next audit.
 - `python reconcile_research_master.py --check` ✅
 - `python map_series_taxonomy.py --check` ✅ (186 mappings; 0 queued)
 - `python sync_inventory_mirrors.py --check` ✅
-- `python -m unittest discover tests` ✅ Ran 132, OK
+- `python -m unittest discover tests` ✅ Ran 139, OK
 - `coverage run -m unittest discover tests && coverage report` ✅ 90%
 - `node --check docs/app.js` + all `tests/*.spec.js` (26 browser specs) ✅
 - `npm ci` ✅; Playwright browser install ❌ (CDN blocked in sandbox — CI only;

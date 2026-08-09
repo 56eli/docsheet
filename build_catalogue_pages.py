@@ -43,8 +43,8 @@ DOCS_DIR = Path("docs")
 DISPLAY_ORDER = Path("data/catalogue_display_order.csv")
 SERIES_COMPILATIONS = Path("data/series_compilation_relationships.csv")
 NEW_WORK_QUEUE = Path("data/new_work_review_queue.csv")
-OFFICIAL_DISCOVERY_QUEUE = Path("data/official_discovery_queue.csv")
-INTERNATIONAL_QUEUE = Path("data/international_discovery_queue.csv")
+QUEUE = Path("data/official_discovery_queue.csv")
+INTL_QUEUE = Path("data/international_discovery_queue.csv")
 VERITAS_MAPPING_DECISIONS = Path("data/veritas_mapping_decisions.csv")
 VERITAS_DECISIONS = VERITAS_MAPPING_DECISIONS
 PRIMARY_RELATIONSHIP_NOTES = {
@@ -52,12 +52,9 @@ PRIMARY_RELATIONSHIP_NOTES = {
     "candidate:manual-veritas-satsang-": "Owner-approved Satsang new-work promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
     "candidate:manual-": "Owner-approved promotion (2026-08-03); master primary Veritas URL matches the official product inventory.",
 }
-PUBLISHERS = Path("data/official_publishers.csv")
 MANUAL_LEADS = Path("data/research_manual_leads.csv")
 MASTER_EXCLUSIONS = Path("data/research_master_exclusions.csv")
 MIGRATION_LEDGER = Path("migration_review_ledger.csv")
-QUEUE = Path("data/official_discovery_queue.csv")
-INTL_QUEUE = Path("data/international_discovery_queue.csv")
 
 OUT_MASTER = DOCS_DIR / "master.json"
 OUT_REVIEW_OVERVIEW = DOCS_DIR / "review-overview.json"
