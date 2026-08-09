@@ -470,6 +470,25 @@ Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
 - **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
 - **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
 
+## 2026-08-09 CSV export fix + audit note (arena/019fe6ad-docsheet, current — this session)
+
+Branch `arena/019fe6ad-docsheet` (current working branch, from `408f31e` / PR #44 merge). Read-only audit + one fix applied:
+
+- **Audit scope:** CSV export feature (`docs/app.js` `exportCsv()`) — desktop `table.download()` vs mobile/manual fallback inconsistency, BOM effect on parsers, hidden column exclusion.
+- **Findings verified:**
+  1. Desktop download excluded hidden expert columns (`visibleColumnsOnly` defaults `true` in Tabulator).
+  2. Manual fallback included all fields but used JSON insertion order (different from preset order).
+  3. BOM (`\uFEFF`) at file start caused some CSV parsers to treat the first header cell as empty / missing.
+- **Fix applied (docs/app.js):**
+  - Added `visibleColumnsOnly: false` to desktop `table.download()` so all expert/provenance fields are included.
+  - Aligned manual fallback field list with preset order (`orderKeysForView` + hidden fields + data keys) so desktop/mobile exports match.
+  - Removed BOM from both desktop (`bom: false`) and manual fallback (`\uFEFF` removed) — eliminates parser error where the first row/header appeared missing.
+- **Verification:** `node --check docs/app.js` passes; no pipeline module changed; 126 tests unchanged; `docs/*.json` artifacts unaffected.
+- **Scoreboard impact:** improves usability (priority 12, user 5/10) by making CSV exports consistent across desktop/mobile; does not directly change presentation (priority 15) or maintainability (priority 8).
+- **Next open work:** owner should confirm BOM removal is acceptable for their Excel/CSV workflow; if BOM is needed for Excel UTF-8, it can be restored selectively.
+
+- **Verification:** `git diff --stat`: `docs/app.js | 18 insertions(+), 3 deletions(-)`.
+
 ## 2026-08-09 Expert full-stack audit + low-severity fixes (arena/019fe659-docsheet, current)
 
 Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (kept at root as a declared-current audit).

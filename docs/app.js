@@ -2155,16 +2155,31 @@
     // Export the whole active sheet (not the filtered/card subset) so mobile
     // Browse mode keeps the same export contract as the Tabulator spreadsheet.
     if (table) {
-      table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: true }, "all");
+      // Include hidden expert columns (visibleColumnsOnly: false) so the
+      // desktop download matches the full-data contract used by the mobile
+      // fallback and by the spec's "whole active view" requirement.
+      // Note: BOM removed (2026-08-09) because \uFEFF at file start caused
+      // some CSV parsers to treat the first header cell as empty / missing.
+      table.download("csv", VIEWS[activeView].exportName, { delimiter: ",", bom: false, visibleColumnsOnly: false }, "all");
       return;
     }
     if (!allData.length) return;
-    const fields = Object.keys(allData[0]);
+    // Build the field list to match the desktop column order (preset priority
+    // + hidden expert fields + any dynamically-added fields like edition/
+    // year_month), so desktop and mobile exports are byte-identical in
+    // structure.
+    const preset = columnPresetFor(activeView);
+    const allKeys = new Set([
+      ...(preset.priority || []),
+      ...(preset.hidden || []),
+      ...Object.keys(allData[0]),
+    ]);
+    const fields = orderKeysForView([...allKeys], activeView);
     const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
     const csv = [fields.map(quote).join(","), ...allData.map((row) =>
       fields.map((field) => quote(row[field])).join(",")
     )].join("\n");
-    const href = URL.createObjectURL(new Blob([`\uFEFF${csv}\n`], { type: "text/csv;charset=utf-8" }));
+    const href = URL.createObjectURL(new Blob([`${csv}\n`], { type: "text/csv;charset=utf-8" }));
     const anchor = document.createElement("a");
     anchor.href = href;
     anchor.download = VIEWS[activeView].exportName;
