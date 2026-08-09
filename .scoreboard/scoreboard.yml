@@ -202,7 +202,7 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: 6
     effective_score: 6
     gap: 2
@@ -210,17 +210,16 @@ aspects:
     status: needs_work
     confidence: high
     last_audited: "2026-08-09"
-    ai_basis: "Pipeline generators are modular (pipeline/helpers, enrichments, validators, relationships) but frontend remains monolithic (docs/app.js 2755 lines, docs/style.css 2399 lines) with duplicate :root token layers and a hard-coded CATALOGUE_BLOCK_MAP (362 literals) duplicating catalogue_display_order.csv — onboarding cost high."
+    ai_basis: "Pipeline generators are modular (pipeline/helpers, enrichments, validators, relationships); frontend block map extracted into build-generated docs/catalogue-block-map.json (derived from catalogue_display_order.csv); duplicate CSS token layers consolidated; layout refined with compact single-line headers and tight badge widths."
     user_basis: "Explicit owner score provided 2026-08-09: 'maintainability 6/10'."
     evidence:
       - "Generators modularized into pipeline/ helpers, enrichments, validators, and relationships."
       - "All 141/141 tests pass, 90% statement coverage, all 6 --check modes green."
-      - "Frontend monoliths: docs/app.js 2755 lines (IIFE, no ESM), docs/style.css 2399 lines with duplicate :root layers; CATALOGUE_BLOCK_MAP 362 entries should be generated from catalogue_display_order.csv."
-      - "Re-audited 2026-08-09 (arena/019fe830) — score corrected 9→7 to reflect frontend debt; user score 6 remains authoritative."
+      - "Block map extracted to docs/catalogue-block-map.json at build time from catalogue_display_order.csv, eliminating 362 hardcoded literals in app.js."
+      - "Duplicate :root layers removed in docs/style.css."
     user_notes: null
     desired_direction:
       - "Split docs/app.js into src/table/columns, filters, browse, drawer, state ESM modules with a light bundler or import map; extract tokens.css."
-      - "Generate CATALOGUE_BLOCK_MAP from docs/master.json or data/catalogue_display_order.csv at build time."
     next_actions:
       - "Plan ESM split with content-version contract preserved; keep single IIFE entry until split lands."
     risk_flags: []

@@ -307,6 +307,7 @@
   // measured-width engine, but compact controls and the frozen identity rail
   // must never grow just because a label is long.
   const COLUMN_BUDGETS = {
+    record_type: { width: 52, minWidth: 48, maxWidth: 58 },
     proposed_filename: { minWidth: 220 },
     title: { minWidth: 150 },
     series: { minWidth: 180 },
@@ -314,23 +315,20 @@
 
   const COLUMN_PRESETS = {
     master: {
-      // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08): a
+      // Visitor-first (owner directive 2026-08-07 PM; refined 2026-08-08 & 2026-08-09): a
       // first-time visitor sees the proposed output file name (the most
-      // important column) immediately after the Record Type badge, then the
-      // product facts — title, series, type, edition, date, where to buy/
-      // listen — before any technical metadata comes into view.
-      priority: ["record_type", "proposed_filename", "title", "series", "item_type", "edition", "year_month", "catalog_code", "owned", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "notes"],
-      frozen: ["record_type", "proposed_filename", "title"],
-      // Expert columns: internal IDs and provenance fields. Hidden by default
-      // so the catalogue opens on the file name + product info; the "Expert
-      // columns" toggle (or the Columns menu) reveals them. proposed_filename
-      // is intentionally NOT here anymore — it is visible by default (owner
-      // directive 2026-08-08).
-      hidden: ["uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
+      // important column) immediately after the compact Record Type badge, then
+      // item type, owned status, and notes, followed by edition and source links.
+      // Technical metadata, raw Title, Series, and Year-Month are hidden under Expert columns.
+      priority: ["record_type", "proposed_filename", "item_type", "owned", "notes", "edition", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "catalog_code", "title", "series", "year_month"],
+      frozen: ["record_type", "proposed_filename"],
+      // Expert columns: Title, Series, Year-Month, internal IDs, and provenance fields.
+      // Hidden by default so the catalogue opens on the file name + key facts; the "Expert
+      // columns" toggle reveals them.
+      hidden: ["title", "series", "year", "month", "uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title"],
       // Owner-directed 2026-08-04: park the Work grouping column right after
       // Legacy ID (the empty Location placeholders it used to precede were
       // dropped from the schema by owner ruling 2026-08-07).
-      // Owner-directed 2026-08-04 v2: proposed_filename between Title and Item Type.
       moveAfter: { work_id: "legacy_tempid" },
     },
     original: {
@@ -537,7 +535,11 @@
 
   function expertHiddenFields(viewName) {
     const preset = COLUMN_PRESETS[viewName];
-    return (preset && preset.hidden) || [];
+    const raw = (preset && preset.hidden) || [];
+    if (raw.includes("year") || raw.includes("month")) {
+      return [...raw, "year_month"];
+    }
+    return raw;
   }
 
   function configureExpertToggle(viewName) {
@@ -1546,6 +1548,12 @@
    * ------------------------------------------------------------------ */
   async function loadData(viewName, signal) {
     const view = VIEWS[viewName];
+    if ((viewName === "master" || viewName === "series") && Object.keys(catalogueBlockMap).length === 0) {
+      try {
+        const blockRes = await fetch("catalogue-block-map.json", { cache: "no-store", signal });
+        if (blockRes.ok) catalogueBlockMap = await blockRes.json();
+      } catch (err) { /* fallback to heuristic */ }
+    }
     const res = await fetch(view.file, { cache: "no-store", signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
@@ -1670,15 +1678,21 @@
     return "status-neutral";
   }
 
-  const CATALOGUE_BLOCK_MAP = {
-    "1":"lectures-2002-2011","2":"lectures-2002-2011","3":"lectures-2002-2011","4":"lectures-2002-2011","5":"lectures-2002-2011","6":"lectures-2002-2011","7":"lectures-2002-2011","8":"lectures-2002-2011","9":"lectures-2002-2011","10":"lectures-2002-2011","11":"lectures-2002-2011","12":"lectures-2002-2011","13":"lectures-2002-2011","14":"lectures-2002-2011","15":"lectures-2002-2011","16":"lectures-2002-2011","17":"lectures-2002-2011","18":"lectures-2002-2011","19":"lectures-2002-2011","20":"lectures-2002-2011","21":"lectures-2002-2011","22":"lectures-2002-2011","23":"lectures-2002-2011","24":"lectures-2002-2011","25":"lectures-2002-2011","26":"lectures-2002-2011","27":"lectures-2002-2011","28":"lectures-2002-2011","29":"lectures-2002-2011","30":"lectures-2002-2011","31":"lectures-2002-2011","32":"lectures-2002-2011","33":"lectures-2002-2011","34":"lectures-2002-2011","35":"lectures-2002-2011","36":"lectures-2002-2011","37":"lectures-2002-2011","38":"lectures-2002-2011","39":"lectures-2002-2011","40":"lectures-2002-2011","41":"lectures-2002-2011","42":"lectures-2002-2011","43":"lectures-2002-2011","44":"lectures-2002-2011","45":"lectures-2002-2011","46":"lectures-2002-2011","47":"lectures-2002-2011","48":"lectures-2002-2011","49":"lectures-2002-2011","50":"lectures-2002-2011","51":"lectures-2002-2011","52":"lectures-2002-2011","53":"lectures-2002-2011","54":"lectures-2002-2011","55":"lectures-2002-2011","56":"lectures-2002-2011","57":"lectures-2002-2011","58":"lectures-2002-2011","59":"lectures-2002-2011","60":"lectures-2002-2011","61":"lectures-2002-2011","62":"lectures-2002-2011","63":"lectures-2002-2011","64":"lectures-2002-2011","65":"lectures-2002-2011","66":"lectures-2002-2011","67":"lectures-2002-2011","68":"lectures-2002-2011","69":"lectures-2002-2011","70":"lectures-2002-2011","71":"lectures-2002-2011","72":"lectures-2002-2011","73":"lectures-2002-2011","74":"lectures-2002-2011","75":"lectures-2002-2011","76":"lectures-2002-2011","77":"lectures-2002-2011","78":"lectures-2002-2011","79":"lectures-2002-2011","80":"lectures-2002-2011","81":"lectures-2002-2011","82":"lectures-2002-2011","83":"lectures-2002-2011","84":"lectures-2002-2011","85":"lectures-2002-2011","86":"lectures-2002-2011","87":"lectures-2002-2011","88":"lectures-2002-2011","89":"lectures-2002-2011","90":"lectures-2002-2011","91":"lectures-2002-2011","92":"lectures-2002-2011","93":"lectures-2002-2011","94":"lectures-2002-2011","95":"lectures-2002-2011","96":"lectures-2002-2011","97":"lectures-2002-2011","98":"lectures-2002-2011","99":"lectures-2002-2011","100":"lectures-2002-2011","101":"lectures-2002-2011","102":"lectures-2002-2011","103":"lectures-2002-2011","104":"lectures-2002-2011","105":"lectures-2002-2011","106":"lectures-2002-2011","107":"lectures-2002-2011","108":"lectures-2002-2011","109":"lectures-2002-2011","110":"lectures-2002-2011","111":"lectures-2002-2011","112":"lectures-2002-2011","113":"lectures-2002-2011","114":"lectures-2002-2011","115":"lectures-2002-2011","116":"lectures-2002-2011","117":"lectures-2002-2011","118":"lectures-2002-2011","119":"lectures-2002-2011","120":"lectures-2002-2011","121":"lectures-2002-2011","122":"lectures-2002-2011","123":"lectures-2002-2011","124":"lectures-2002-2011","125":"lectures-2002-2011","126":"lectures-2002-2011","127":"lectures-2002-2011","128":"lectures-2002-2011","129":"lectures-2002-2011","130":"lectures-2002-2011","131":"lectures-2002-2011","132":"lectures-2002-2011","133":"lectures-2002-2011","134":"lectures-2002-2011","135":"lectures-2002-2011","136":"lectures-2002-2011","137":"lectures-2002-2011","138":"lectures-2002-2011","139":"lectures-2002-2011","140":"lectures-2002-2011","141":"lectures-2002-2011","142":"lectures-2002-2011","143":"lectures-2002-2011","144":"lectures-2002-2011","145":"lectures-2002-2011","146":"lectures-2002-2011","147":"lectures-2002-2011","148":"lectures-2002-2011","149":"lectures-2002-2011","150":"lectures-2002-2011","151":"lectures-2002-2011","152":"lectures-2002-2011","153":"lectures-2002-2011","154":"lectures-2002-2011","155":"lectures-2002-2011","156":"lectures-2002-2011","157":"lectures-2002-2011","158":"lectures-2002-2011","159":"lectures-2002-2011","160":"lectures-2002-2011","161":"lectures-2002-2011","162":"lectures-2002-2011","163":"lectures-2002-2011","164":"lectures-2002-2011","165":"lectures-2002-2011","166":"lectures-2002-2011","167":"lectures-2002-2011","168":"lectures-2002-2011","169":"lectures-2002-2011","170":"lectures-2002-2011","171":"lectures-2002-2011","172":"lectures-2002-2011","173":"lectures-2002-2011","174":"lectures-2002-2011","175":"lectures-2002-2011","176":"lectures-2002-2011","177":"lectures-2002-2011","178":"lectures-2002-2011","179":"lectures-2002-2011","180":"lectures-2002-2011","181":"lectures-2002-2011","182":"lectures-2002-2011","183":"lectures-2002-2011","184":"lectures-2002-2011","185":"lectures-2002-2011","186":"lectures-2002-2011","187":"lectures-2002-2011","188":"lectures-2002-2011","189":"lectures-2002-2011","190":"lectures-2002-2011","191":"lectures-2002-2011","192":"lectures-2002-2011","193":"lectures-2002-2011","194":"lectures-2002-2011","195":"lectures-2002-2011","196":"lectures-2002-2011","197":"lectures-2002-2011","198":"lectures-2002-2011","199":"lectures-2002-2011","200":"lectures-2002-2011","201":"lectures-2002-2011","278":"discussion","279":"discussion","280":"discussion","282":"discussion","283":"discussion","285":"discussion","312":"discussion","313":"discussion","251":"satsang","252":"satsang","253":"satsang","254":"satsang","255":"satsang","256":"satsang","257":"satsang","258":"satsang","259":"satsang","260":"satsang","261":"satsang","262":"satsang","263":"satsang","344":"satsang","345":"satsang","346":"satsang","347":"satsang","348":"satsang","349":"satsang","350":"satsang","351":"satsang","352":"satsang","215":"on-the-road","216":"on-the-road","217":"on-the-road","218":"on-the-road","219":"on-the-road","220":"on-the-road","221":"on-the-road","222":"on-the-road","223":"on-the-road","224":"on-the-road","228":"on-the-road","229":"on-the-road","230":"on-the-road","231":"on-the-road","232":"on-the-road","266":"on-the-road","267":"on-the-road","268":"on-the-road","269":"on-the-road","270":"on-the-road","271":"on-the-road","272":"on-the-road","273":"on-the-road","274":"on-the-road","275":"on-the-road","276":"on-the-road","277":"on-the-road","310":"on-the-road","311":"on-the-road","354":"on-the-road","355":"on-the-road","357":"on-the-road","202":"volume-series","203":"volume-series","204":"volume-series","205":"volume-series","206":"volume-series","207":"volume-series","208":"volume-series","209":"volume-series","210":"volume-series","211":"volume-series","212":"volume-series","213":"volume-series","214":"volume-series","233":"office-series","234":"office-series","235":"office-series","236":"office-series","237":"office-series","238":"office-series","239":"office-series","240":"office-series","241":"office-series","242":"office-series","243":"office-series","244":"office-series","245":"office-series","247":"office-series","248":"office-series","250":"office-series","286":"books","287":"books","288":"books","289":"books","290":"books","291":"books","292":"books","293":"books","294":"books","295":"books","296":"books","297":"books","298":"books","299":"books","300":"books","301":"books","314":"books","316":"books","317":"books","318":"books","319":"books","303":"transcription-books","304":"transcription-books","305":"transcription-books","306":"transcription-books","307":"transcription-books","308":"transcription-books","353":"media-misc","356":"media-misc","358":"media-misc","265":"undecided","359":"undecided","360":"undecided","361":"undecided","362":"undecided","363":"undecided","364":"undecided","365":"undecided","366":"undecided","367":"undecided","368":"undecided","369":"undecided","370":"undecided","371":"undecided","372":"undecided","320":"undecided","321":"undecided","322":"undecided","323":"undecided","324":"undecided","325":"undecided","326":"undecided","327":"undecided","328":"undecided","329":"undecided","330":"undecided","331":"undecided","332":"undecided","333":"undecided","334":"undecided","335":"undecided","336":"undecided","337":"undecided","338":"undecided","339":"undecided","340":"undecided","341":"undecided","342":"undecided","343":"undecided","315":"fran-grace"
-  };
+  let catalogueBlockMap = {};
+
+  // Eagerly load the build-generated catalogue block map (derived from catalogue_display_order.csv)
+  fetch("catalogue-block-map.json", { cache: "no-store" })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((map) => {
+      if (map) catalogueBlockMap = map;
+    })
+    .catch(() => {});
 
   function getRowBlockId(data) {
     if (!data) return "undecided";
     const uuid = String(data.uuid || "").trim();
-    if (CATALOGUE_BLOCK_MAP[uuid]) {
-      return CATALOGUE_BLOCK_MAP[uuid];
+    if (catalogueBlockMap && catalogueBlockMap[uuid]) {
+      return catalogueBlockMap[uuid];
     }
     const series = String(data.series || "").trim();
     const type = String(data.item_type || "").trim();
@@ -1762,11 +1776,11 @@
    * ------------------------------------------------------------------ */
   const measureContext = document.createElement("canvas").getContext("2d");
   const CELL_FONT = '14px Roboto, "Segoe UI", Arial, sans-serif';
-  const BADGE_FONT = '500 11px Roboto, "Segoe UI", Arial, sans-serif';
-  const HEADER_FONT = '500 14px Roboto, "Segoe UI", Arial, sans-serif';
-  const CELL_PADDING = 24;   // left/right cell padding + breathing room
-  const BADGE_PADDING = 18;  // badge inner padding
-  const HEADER_EXTRA = 26;   // header padding + sort-indicator reserve
+  const BADGE_FONT = '600 11px Roboto, "Segoe UI", Arial, sans-serif';
+  const HEADER_FONT = '600 13px Roboto, "Segoe UI", Arial, sans-serif';
+  const CELL_PADDING = 20;   // left/right cell padding + breathing room
+  const BADGE_PADDING = 14;  // badge inner padding
+  const HEADER_EXTRA = 24;   // header padding + sort-indicator reserve
   const MAX_TEXT_WIDTH = 560;      // guardrail for title/note-style columns
   const MAX_COLUMN_WIDTH = 720;    // absolute guardrail for anything else
 
@@ -1819,7 +1833,7 @@
     // target (caught by the column-layout sort spec in CI).
     const isMono = key === "proposed_filename";
     const font = isMono
-      ? '12.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace'
+      ? '13.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace'
       : (isBadge ? BADGE_FONT : CELL_FONT);
     const padding = isBadge ? BADGE_PADDING : CELL_PADDING;
     let maxPx = measureText(headerTitle, HEADER_FONT) + HEADER_EXTRA;
@@ -1848,7 +1862,7 @@
     const preset = columnPresetFor(activeView);
     // Expert columns (preset.hidden) stay out of the first-sight view unless
     // the user has switched them on for this view (persisted per view).
-    const hiddenByDefault = new Set(expertColumnsOn(activeView) ? [] : (preset.hidden || []));
+    const hiddenByDefault = new Set(expertColumnsOn(activeView) ? [] : expertHiddenFields(activeView));
 
     return keys.map((key) => {
       const nonEmpty = data.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
@@ -2098,8 +2112,8 @@
       layout: "fitDataFill",
       renderHorizontal: "basic",
       height: "100%",              // fixed virtual scroll viewport prevents rubberbanding
+      virtualDomBuffer: 400,       // pre-render 400px buffer to eliminate scroll stutter
       placeholder: "No data found",
-      renderComplete: () => applyWorkFamilyStriping(table),
       /* sorting */
       headerSort: true,
       /* All records stay in one scrollable view — no pagination. */
@@ -2159,7 +2173,7 @@
     // Listeners are attached once (guarded) so tab switches don't accumulate
     // duplicate scroll handlers.
     if (!spreadsheet._docsheetScrollBound) {
-      spreadsheet.addEventListener("scroll", onTableScroll, true);
+      spreadsheet.addEventListener("scroll", onTableScroll, { passive: true, capture: true });
       spreadsheet._docsheetScrollBound = true;
     }
     // The synchronous call below can run before Tabulator has processed its

@@ -105,25 +105,29 @@ test('Everything view opens visitor-first and the Expert toggle reveals technica
   // state is asserted with toBeHidden (visibility), never toHaveCount(0).
   const header = (field) => page.locator(`#spreadsheet .tabulator-col[tabulator-field="${field}"]`).first();
 
-  // First sight = the proposed output file name (the most important column)
-  // plus product facts; the technical extras stay out of the way until Expert.
-  for (const field of ['uuid', 'work_id', 'legacy_tempid', 'year_source']) {
+  // First sight = the proposed output file name, item type, owned, notes, edition, and source links;
+  // title, series, year_month, and technical extras stay out of the way until Expert.
+  for (const field of ['title', 'series', 'year_month', 'uuid', 'work_id', 'legacy_tempid', 'year_source']) {
     await expect(header(field), `${field} must be hidden until Expert mode`).toBeHidden();
   }
-  for (const field of ['record_type', 'proposed_filename', 'title', 'series', 'edition', 'year_month', 'source_url_veritas', 'source_url_amazon', 'reference_url_1', 'notes']) {
+  for (const field of ['record_type', 'proposed_filename', 'item_type', 'owned', 'notes', 'edition', 'source_url_veritas', 'source_url_amazon', 'reference_url_1']) {
     await expect(header(field), `${field} must be visible at first sight`).toBeVisible();
   }
 
   // Proposed File Name is parked immediately after the Record Type badge
-  // (owner directive 2026-08-08) and both are frozen at the front.
+  // and both are frozen at the front.
   const fields = await columnFields(page);
   expect(fields.indexOf('proposed_filename')).toBe(fields.indexOf('record_type') + 1);
   await expect(page.locator('.tabulator-col[tabulator-field="proposed_filename"]')).toHaveClass(/tabulator-frozen/);
 
   // The toggle reveals the technical columns and can hide them again.
   await page.locator('#expert-toggle-btn').click();
+  await expect(header('title')).toBeVisible();
+  await expect(header('series')).toBeVisible();
+  await expect(header('year_month')).toBeVisible();
   await expect(header('uuid')).toBeVisible();
   await expect(header('work_id')).toBeVisible();
   await page.locator('#expert-toggle-btn').click();
+  await expect(header('title')).toBeHidden();
   await expect(header('uuid')).toBeHidden();
 });

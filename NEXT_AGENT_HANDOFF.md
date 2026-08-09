@@ -1,9 +1,26 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Multidisciplinary re-audit 019fe830 — Web Designer, Full-Stack & Data Engineer at 9e4ee4d) — current branch `arena/019fe830-docsheet`.  
+**Prepared:** 2026-08-09 (Session 019fe844 — Block Map Extraction, Column Layout & Archive.org Ownership Promotion) — current branch `arena/019fe844-docsheet`.  
 **Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`, and `AGENTS.md`.
 
-## 2026-08-09 Multidisciplinary re-audit 019fe830 — Web/Full-Stack/Data (Current, declared)
+## 2026-08-09 Session Summary 019fe844 — Block Map Extraction, Column Layout & Archive.org Holdings (Current)
+
+- **Block Map Build Generation:** Eliminated 362 hardcoded UUID-to-block literals from `docs/app.js` by teaching `build_catalogue_pages.py` to auto-generate `docs/catalogue-block-map.json` directly from `data/catalogue_display_order.csv`.
+- **CSS Token Layer Cleanup:** Consolidated `:root` and `:root.dark` layers in `docs/style.css`, eliminating duplicate override blocks.
+- **Column Layout & Single-Line Header Formatting:**
+  - Reduced Record Type column width to tight `CM` badge fit (52px).
+  - Enforced single-line column headers (`white-space: nowrap`, `overflow: hidden`, `text-overflow: ellipsis`) so header height stays strictly one line.
+  - Placed `Title`, `Series`, and `Year-Month` under Expert columns (hidden by default).
+  - Positioned `Owned` and `Notes` immediately to the right of `Item Type`.
+  - Parked `Catalogue Code` at the back.
+  - Reduced row heights to compact single-line content heights matching largest items (~32–34px).
+- **Archive.org Ownership Verification & Holdings Promotion:**
+  - Cross-checked the entire catalogue against `https://archive.org/download/Hawkins_Lectures_transcoded_actual_files`.
+  - Promoted 16 confirmed master records to `owned: true` in `data/manual_master_candidates.csv` and `data/edition_candidates.csv` (How to Surrender to God, Book of Slides, Orthomolecular Psychiatry 1973, 2006 Satsang Series 1–6, Discussion talks, Audiobooks; total owned increased 295 → **311 owned / 25 false / 26 blank**).
+  - Tracked newly discovered audio materials (BTO Radio Interviews 14 eps, Unity Church Phoenix 2005) as manual leads in `data/research_manual_leads.csv` (leads 2 → 4).
+- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` and `docs/build-manifest.json`. All 141 deterministic unit tests pass, all 6 `--check` modes pass, `ruff check .` clean (0 issues), 90% statement coverage.
+
+## 2026-08-09 Multidisciplinary re-audit 019fe830 — Web/Full-Stack/Data (Prior declared audit)
 
 - **Scope:** Full re-audit at `9e4ee4d` (main HEAD, PR #56) as Expert Web Designer, Full-Stack Developer, Data Engineer. Re-executed all six `--check` modes, `python -m unittest discover tests` (141/141 at 90%, 78–100% per module), `node --check`, CSP/SRI, CSV↔JSON parity, token chromaticity, selector topology. Record: `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (read-only, declared-current).
 - **Web Design:** Verified neutral palette (light #f9f9fb/#ffffff/#f4f4f5/#e4e4e7, dark #0d0d0d/#161616/#222222/#282828 — no slate), zebra delta 10/6, hover delta 7/8, washes 8.5% on all blocks (40 rules via `data-block`), correct `#spreadsheet.tabulator` root (63 correct vs 0 dead descendant `#spreadsheet .tabulator` roots), inset 3.5px accent + horizontal work separation, 41 aria attrs, roving tabindex, focus trap, Browse mode rails, 2755L app.js + 2399L style.css with duplicate `:root` layers and hard-coded 362-entry `CATALOGUE_BLOCK_MAP` (maintainability debt).

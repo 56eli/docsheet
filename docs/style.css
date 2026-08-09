@@ -11,23 +11,24 @@
   --text-muted: #71717a;
   --border: #e4e4e7;
   --accent: #188038;          /* Google Sheets emerald green */
+  --accent-2: #0e7a8a;        /* teal partner for the accent gradient */
   --accent-hover: #137333;
   --accent-contrast: #ffffff;
   --header-bg: #fafafa;
   --header-text: #52525b;
   --zebra: #f5f5f5;
-  --row-hover: #e4e4e7;
+  --row-hover: #e0e0e4;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
-  --ring: #188038;
+  --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.14);
+  --shadow-md: 0 4px 14px rgba(60, 64, 67, 0.16);
+  --ring: color-mix(in srgb, var(--accent) 55%, var(--text));
   --topbar-h: 52px;
   --footer-h: 40px;
 
-  /* Scrollbars — neutral to match chrome */
-  --scrollbar-thumb: #d4d4d8;
-  --scrollbar-thumb-hover: #a1a1aa;
-  --scrollbar-track: #f9f9fb;
+  /* Scrollbars — neutral high-contrast prominent scrollbars */
+  --scrollbar-thumb: #b0b0b8;
+  --scrollbar-thumb-hover: #787882;
+  --scrollbar-track: #f1f1f4;
 
   /* Group block color tokens (accents per REVISION1 block) */
   --block-lectures: #059669;
@@ -65,21 +66,22 @@
   --text-muted: #a1a1aa;
   --border: #282828;
   --accent: #34d399;
+  --accent-2: #4fd1c5;
   --accent-hover: #6ee7b7;
   --accent-contrast: #0d0d0d;
   --header-bg: #1a1a1a;
   --header-text: #d4d4d8;
   --zebra: #1c1c1c;
-  --row-hover: #292929;
+  --row-hover: #353535;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
-  --ring: #34d399;
+  --ring: color-mix(in srgb, var(--accent) 65%, var(--text));
 
   /* Scrollbars (dark mode) */
-  --scrollbar-thumb: #3f3f46;
-  --scrollbar-thumb-hover: #52525b;
-  --scrollbar-track: #0d0d0d;
+  --scrollbar-thumb: #52525b;
+  --scrollbar-thumb-hover: #71717a;
+  --scrollbar-track: #141414;
 
   /* Group block color tokens (dark mode) */
   --block-lectures: #34d399;
@@ -113,6 +115,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -578,6 +581,7 @@ mark.search-highlight, .search-highlight {
   flex: 1 1 auto;
   min-height: 0;                    /* allow shrink inside flex column */
   padding: 0 12px;
+  overscroll-behavior: contain;
 }
 /* Absolutely positioned so the Tabulator table gets a definite height and
    its maxHeight:"100%" resolves → frozen header + internal body scroll. */
@@ -632,8 +636,9 @@ mark.search-highlight, .search-highlight {
   color: var(--header-text);
   border-bottom: 1px solid var(--border);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 #spreadsheet.tabulator .tabulator-header .tabulator-col {
   background: var(--header-bg);
@@ -641,14 +646,21 @@ mark.search-highlight, .search-highlight {
   border-right: none;
 }
 #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
-  padding: 10px 12px;
+  padding: 6px 10px;
+  white-space: nowrap;
 }
 #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-title {
-  white-space: normal;
-  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 #spreadsheet.tabulator .tabulator-header .tabulator-col:hover {
   background: color-mix(in srgb, var(--accent) 6%, var(--header-bg));
+}
+#spreadsheet.tabulator .tabulator-header .tabulator-col[tabulator-field="record_type"] .tabulator-col-content {
+  padding: 6px 4px;
+  text-align: center;
 }
 
 /* Sleek modern rows: comfortable padding, clean horizontal borders, no vertical column lines */
@@ -698,10 +710,14 @@ mark.search-highlight, .search-highlight {
 #spreadsheet.tabulator .tabulator-cell {
   border-right: none;
   border-bottom: none;
-  padding: 10px 12px;
+  padding: 6px 10px;
   color: var(--text);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.35;
+}
+#spreadsheet.tabulator .tabulator-cell[tabulator-field="record_type"] {
+  padding: 6px 4px;
+  text-align: center;
 }
 /* URL cells: keep links readable without filling rows with long raw URLs. */
 #spreadsheet.tabulator .tabulator-cell a { color: var(--accent); }
@@ -711,6 +727,7 @@ mark.search-highlight, .search-highlight {
   align-items: center;
   gap: 4px;
   overflow: hidden;
+  font-size: 13.5px;
   font-weight: 500;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -729,7 +746,7 @@ mark.search-highlight, .search-highlight {
 .status-badge {
   display: inline-block;
   max-width: 100%;
-  padding: 3px 7px;
+  padding: 2px 7px;
   overflow: hidden;
   color: var(--text);
   font-size: 11px;
@@ -1094,24 +1111,9 @@ mark.search-highlight, .search-highlight {
 }
 
 /* ================================================================== *
- *  2026-08-08 redesign Phase 3 (theme polish) — token refinements,
- *  gradient header strip, Tabulator skin upgrades, themed scrollbars.
+ *  2026-08-08 redesign Phase 3 (theme polish) — gradient header strip,
+ *  Tabulator skin upgrades, themed scrollbars.
  * ================================================================== */
-
-:root {
-  --accent-2: #0e7a8a;            /* teal partner for the accent gradient */
-  --ring: color-mix(in srgb, var(--accent) 55%, var(--text));
-  --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.14);
-  --shadow-md: 0 4px 14px rgba(60, 64, 67, 0.16);
-  --row-hover: #e0e0e4;           /* green-tinted hover (was blue) */
-}
-:root.dark {
-  --accent-2: #4fd1c5;
-  --ring: color-mix(in srgb, var(--accent) 65%, var(--text));
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
-  --row-hover: #353535;
-}
 
 /* Header: subtle accent gradient strip + softer elevation. */
 .topbar { position: relative; box-shadow: var(--shadow-sm); }
@@ -1167,8 +1169,8 @@ mark.search-highlight, .search-highlight {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
 }
 *::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
@@ -1176,7 +1178,7 @@ mark.search-highlight, .search-highlight {
 *::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 999px;
-  border: 2px solid transparent;
+  border: 3px solid var(--scrollbar-track);
   background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover {
@@ -1187,18 +1189,20 @@ mark.search-highlight, .search-highlight {
 .tabulator-tableholder {
   scrollbar-width: auto;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .tabulator-tableholder::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 .tabulator-tableholder::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
 }
 .tabulator-tableholder::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 8px;
-  border: 3px solid var(--scrollbar-track);
+  border-radius: 10px;
+  border: 4px solid var(--scrollbar-track);
 }
 .tabulator-tableholder::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
@@ -1373,16 +1377,16 @@ body {
 :root.wrap-cells #spreadsheet.tabulator .tabulator-cell {
   white-space: normal !important;
   overflow-wrap: anywhere;
-  line-height: 1.42;
+  line-height: 1.48;
 }
 :root.wrap-cells #spreadsheet.tabulator .tabulator-cell a.url-link {
   white-space: normal;
 }
 :root:not(.compact-density) #spreadsheet.tabulator .tabulator-cell {
-  padding: 10px 12px;
+  padding: 6px 10px;
 }
 :root:not(.compact-density) #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
-  padding: 10px 12px;
+  padding: 6px 10px;
 }
 :root:not(.compact-density) .dataset-tab { min-height: 36px; padding: 7px 12px; }
 
@@ -1474,7 +1478,7 @@ button.stat-chip:hover b { color: var(--accent); }
 /* ---- Proposed file name: the lead column reads like a file explorer ---- */
 #spreadsheet.tabulator .tabulator-cell[tabulator-field="proposed_filename"] {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text);
   letter-spacing: -0.01em;

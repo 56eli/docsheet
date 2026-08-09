@@ -43,7 +43,7 @@ files** — this scoreboard is part of that memory. See
 | Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Re-audit after 2026-08-09 consolidation |
 | Code hygiene | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 7 | 6 | 6 | 2 | 8 | needs_work | high | Split app.js/style.css; generate block map |
+| Maintainability | 4 | 8 | 8 | 6 | 6 | 2 | 8 | needs_work | high | Split app.js/style.css into ESM modules |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
