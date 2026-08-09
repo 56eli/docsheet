@@ -32,9 +32,10 @@ corrected), §3.3 (slug note added to
 `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`), §3.4 (Original Spreadsheet
 view now hides the 31 blank separator rows by default, with a "Show blank
 separator rows" view setting; browser test added), §3.5 (handoff header
-refreshed), and §3.6 (pass-through wording clarified in README/INSTRUCTIONS/
-process_data.py) are **resolved**; §3.7 remains as a documented
-archival-note recommendation. Verification after the fixes: all six `--check`
+refreshed), §3.6 (pass-through wording clarified in README/INSTRUCTIONS/
+process_data.py), and §3.7 (archival footnote added to
+`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`) are **resolved**.
+Verification after the fixes: all six `--check`
 modes green, 126/126 tests, 91% coverage.
 
 ---
@@ -184,7 +185,12 @@ modified; the published view trims the six always-empty raw columns").
 `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md` §7 groups "Volumes +
 Highlights + under-investigation" as "the 17 blank-year rows". Highlights
 (362–368) have years 2002–2007; their prefix omission is a separate owner
-directive ("filename equals title"). No data impact; an archival footnote.
+directive ("filename equals title"). No data impact.
+
+**RESOLVED 2026-08-09:** an archival footnote was added to that line
+correcting the wording for the record (17 blank-year = 13 Volumes + 4
+under-investigation; Highlights carry years from their titles and omit the
+prefix per the separate 2026-08-07 owner directive).
 
 ### 3.8 — Not findings (verified non-issues)
 
@@ -227,9 +233,9 @@ directive ("filename equals title"). No data impact; an archival footnote.
 5. ~~Refresh NEXT_AGENT_HANDOFF.md~~ — **DONE 2026-08-09** (§3.5).
 6. ~~Clarify the "passed through unchanged" wording~~ — **DONE 2026-08-09**
    (§3.6).
-7. **Optional archival nit:** annotate the archived 2026-08-08 audit's
-   "17 blank-year rows (Volumes + Highlights + …)" wording (§3.7) — no data
-   impact.
+7. ~~Annotate the archived 2026-08-08 audit's "17 blank-year rows (Volumes +
+   Highlights + …)" wording~~ — **DONE 2026-08-09** (archival footnote,
+   §3.7).
 
 The audit pass itself was read-only; all fixes above were applied afterwards
 in the same session (owner-approved) and re-verified: all six `--check` modes

@@ -20,9 +20,8 @@ Headline results (2026-08-09 expert pass, current):
   validators reproduced every README count exactly (362 masters, 278 codes,
   75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7
   compilations, 191 works, 191 products, 10 UUID gaps) and found **no
-  data-loss or correctness defects**. Seven low-severity items were reported;
-  six were fixed this session (see below); one remains as a documented
-  recommendation (§3.7 archived-audit Highlights wording).
+  data-loss or correctness defects**. Seven low-severity items were reported
+  and **all seven were fixed this session** (see below).
 - **Ledger row 371 reclassification (owner-approved 2026-08-09):** the single
   `needs_review` row — the raw sheet's "Dialogues on Consciousness and
   Spirituality: WHAT IS THIS ⚠️⚠️⚠️" placeholder — was reclassified to
@@ -49,8 +48,12 @@ Headline results (2026-08-09 expert pass, current):
 - **Wording (audit §3.6):** README, INSTRUCTIONS, and the `process_data.py`
   docstring now state that the raw pipeline is pass-through *except* for the
   six always-empty raw columns trimmed from the published view.
-- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the one
-  remaining audit recommendation (§3.7, archival wording note).
+- **Archival footnote (audit §3.7):** `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`
+  corrected for the record — the 17 blank-year rows are 13 Volumes + 4
+  under-investigation; the 7 Highlights rows carry years and omit the prefix
+  per the separate "filename equals title" directive.
+- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive) — the only
+  remaining open item.
 
 Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
