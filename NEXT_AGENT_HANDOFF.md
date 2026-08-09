@@ -472,7 +472,40 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
 
 ## 6. Open work, prioritized
 
-**P0 — Owner-actions:**
+**P0 — Owner-actions (current):**
+
+- **P0 — Apply `.scoreboard/manual-workflow-edits.md`** to require CI
+  before merge and gate Pages on successful main CI. The 019fe8d0
+  P0 hotfix shipped the 019fe8a5 module-scope bug (an undeclared
+  `let table`/`let allData` silently broke the page on the
+  "Loading research master…" skeleton) and a regression test
+  caught it before merge — but the same bug class will recur
+  until the documented cutover lands. The 25 Playwright specs
+  in CI run `31341418779` failed for the same reason the
+  prior 2026-08-09 row-delivery incident failed: a broken
+  frontend shipped to production because Pages deploys
+  independently of CI. Detailed in
+  `docs/audits/2026-08-10-row-delivery-p0-hotfix.md` (§5
+  Followups #1).
+
+**P0 — Module-scope trap (now guarded):**
+
+- The 019fe8a5 ES-module refactor of `docs/app.js` silently dropped
+  two IIFE-scope `let` declarations (`table`, `allData`). The page
+  then crashed silently on first `boot()` with `ReferenceError: table
+  is not defined`, never reached `aria-busy="false"`, and stayed
+  on the static "Loading research master…" skeleton. **Reproduction
+  pattern for any future IIFE-into-ES-module refactor: run the new
+  app.js under a minimal browser mock (Node + `document` /
+  `fetch` / `localStorage` stubs) and assert `aria-busy="false"`
+  after boot.** The 019fe8d0 hotfix added
+  `FrontendDeliveryContractTests.test_app_js_declares_critical_module_scope_variables`
+  which statically asserts the critical identifiers are declared
+  with `let`/`var`/`const` at IIFE scope; any future drop of an
+  identifier in the `critical` tuple will fail that test. Full
+  postmortem at `docs/audits/2026-08-10-row-delivery-p0-hotfix.md`.
+
+**P0 — Owner-actions (resolved in 019fe8a5):**
 
 - ✅ **CI is live on `main`** (commit `6b28e66`, "Add verification and testing
   steps to CI workflow"): `py_compile`, `process_data.py --check`,

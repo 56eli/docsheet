@@ -23,7 +23,7 @@ summary:
     - deployment_readiness
     - repo_organization
   active_risk_flags:
-    - "Pages remains independent of CI until required-check and custom-deployment settings are owner-applied."
+    - "Pages remains independent of CI until required-check and custom-deployment settings are owner-applied. The 019fe8d0 P0 hotfix (b5ef68b) shipped the 019fe8a5 module-scope defect (undeclared `table`/`allData` after the IIFE→ES-module refactor) which broke the page on the static 'Loading research master…' skeleton and caused CI run 31341418779 to fail 25/25 Playwright specs; same incident class as the 2026-08-09 row-delivery P0. See docs/audits/2026-08-10-row-delivery-p0-hotfix.md and .scoreboard/manual-workflow-edits.md for the durable cutover."
     - "CSP style-src 'unsafe-inline' is required for the dark-mode/theme toggles (low severity; script-src stays hash-pinned and Tabulator is SRI-pinned)."
     - "Frontend monolith partially modularized: app.js still 2,392 lines (DOM orchestration). Further extraction is incremental."
 
