@@ -55,7 +55,7 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 132 tests, no browser/network needed
+python -m unittest discover tests          # 139 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 

@@ -179,16 +179,17 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 132 deterministic tests
+python -m unittest discover tests      # 139 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139).
 
-Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-09).
+Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-09, style
+guard tests excluded from coverage denominator).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright

@@ -9,6 +9,7 @@
 [run]
 omit =
     tests/*
+    tests/test_style_contrast.py
 
 [report]
 show_missing = True
