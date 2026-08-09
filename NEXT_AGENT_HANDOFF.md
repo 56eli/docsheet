@@ -1,11 +1,46 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (expert full-stack audit + low-severity fixes) — current handoff for
-branch `arena/019fe659-docsheet` at current HEAD.
+**Prepared:** 2026-08-09 (REVISION1 ODS owner revision applied — see below) — current handoff for
+branch `arena/019fe6c1-docsheet`.
 **Scoreboard:** this repo now has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
 sessions may expire after PR merge).
+
+## Headline results (2026-08-09 REVISION1 ODS pass, current)
+
+- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
+  `fa51f67`): a colour-coded expert-columns export of the Everything view.
+  Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
+  rows matched the master; the file carries **58 proposed-filename edits**
+  (unified `OTR - ` prefix on 32 On-The-Road rows, `198X - A-01 … B-06` codes
+  on the 16 Office rows, `DISCUSSION - ` prefix on 8 discussion rows, year
+  dropped on 356/358, year 2014→2003 on 357, truncated 312 completed as
+  `2012 - DISCUSSION - Permanent Inner Peace.mp4`), **1 notes edit**
+  (`FRAN GRACE` on master 315, replacing the provenance note — owner chose
+  replace-entirely), **year data changes** (356/358 cleared, 357 → 2003 with
+  month cleared; owner chose apply-full), and **colour-group presentation
+  order** (owner-confirmed block order: 2002-2011 lectures → discussion →
+  satsang → on-the-road → volumes → office → books → transcription → media-misc
+  → undecided → Fran Grace last).
+- **Applied through new reviewed overlays** (no hand-edits to generated
+  files): `data/master_year_overrides.csv` (3 rows),
+  `data/master_notes_overrides.csv` (1 row), and
+  `data/catalogue_display_order.csv` (362 rows; dense 1..n per block;
+  `build_catalogue_pages.py` reorders the Everything view + CSV export and
+  fails on duplicates/missing uuids/unapproved rows). Filename edits landed
+  in the reviewed `data/filename_proposal_YYYYMM.csv` (safe + display
+  variants; year/month mirrored for 356–358). The change record itself is
+  committed as `review/hawkins-everything-REVISION1.ods` (the owner's
+  root-level upload was removed on merge so `review/` is the single canonical
+  copy).
+- **Tests 126 → 132** (new `OwnerOverrideAndDisplayOrderTests` class);
+  coverage 91% → 90% (floor 85; both generator modules still 88%).
+  All six `--check` modes pass; README documents the new inputs.
+- **Fresh audit** (`docs/audits/2026-08-09-arena-full-audit.md`) plus
+  F-01..F-04 fixes and the repo-organization archival are in this branch's
+  earlier commit `18295b6` — see the section below.
+
 The declared-current audits are
 `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
 verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
@@ -13,10 +48,11 @@ verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
 `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
 H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
 updated for the 2026-08-09 reclassification);
-the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
-`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
-`archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` carry SUPERSEDED
-banners (pre-PR-#40 findings). See the session log at the bottom of §6.
+the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
+`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
+the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
+SUPERSEDED banner; `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` too —
+pre-PR-#40 findings). See the session log at the bottom of §6.
 Headline results (2026-08-09 expert pass, current):
 - **Expert full-stack audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
   all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
@@ -57,7 +93,8 @@ Headline results (2026-08-09 expert pass, current):
   under-investigation; the 7 Highlights rows carry years and omit the prefix
   per the separate "filename equals title" directive.
 - **Presentation/UX implementation (owner approved the full plan):** see
-  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` — catalogue overview hero +
+  `archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md` (implemented, archived
+  2026-08-09) — catalogue overview hero +
   collection stats + series strip, desktop Browse cards toggle, Review
   workspace nav toggle, Series browser tab, search hints, loading skeleton,
   a11y labels. Browser suite grew 19 → **26 tests** (new
@@ -123,10 +160,10 @@ Headline results (2026-08-08 independent pass, baseline):
 
 **Previous (2026-08-08 follow-up, branch `arena/019fe244-docsheet`, PR #37
 merged):** independent full-stack audit
-(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
+(`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
 and doc fixes (D-01…D-05 from that audit, S-1…S-8 hygiene). The
 fresh-eyes baseline is preserved in
-`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
+`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
 session:
 - **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
   green after the F-01/F-02 follow-up fixes; the original 115-test audit found
@@ -451,7 +488,8 @@ then owner-approved fixes applied in this branch).
     added: `notes`); ledger raw mirrors + review_reason updated for both rows
     (row 373 → "Owner note relocated to notes column; not a catalogue item.");
     exclusions/migration-review artifacts regenerated.
-  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` got
+  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` +
+    `archive/EXTERNAL_AUDIT.md` got
     SUPERSEDED banners; README documentation layout now declares the deep-dive
     current, Everything-view wording softened (candidates only when intake
     lanes are populated; Record Type filter hidden while all rows are
@@ -501,7 +539,8 @@ Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of 
 
 ## 2026-08-09 Presentation/UX implementation, Phases A–D (arena/019fe659-docsheet, current)
 
-Owner approved the full plan (`PRESENTATION_UX_PROPOSAL_2026-08-09.md`) after
+Owner approved the full plan (`archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md`,
+archived 2026-08-09 after implementation) after
 providing user scores (presentation 5, UX 5, content 7, maintainability 6).
 
 - **Shipped (commit `7ed3a5f`):** catalogue overview hero + collection stats

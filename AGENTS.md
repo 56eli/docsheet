@@ -62,6 +62,12 @@ may expire after PR merge. Durable context must live in repo files.
 - The curated master is **generated** from `migration_review_ledger.csv` and
   the review overlays in `data/*.csv` — never hand-edit
   `data/research_master_draft.csv` or the `docs/*.json` outputs.
+- Owner revisions go through the reviewed overlays
+  `data/master_year_overrides.csv` and `data/master_notes_overrides.csv`
+  (consumed by `build_research_master.py`); the Everything view/export order
+  is `data/catalogue_display_order.csv` (consumed by
+  `build_catalogue_pages.py`); the change record behind them is
+  `review/hawkins-everything-REVISION1.ods`.
 - All six `--check` modes must pass; the 126-test suite must stay green
   (coverage floor 85%).
 - Do not edit `.github/workflows/*` (see `.scoreboard/manual-workflow-edits.md`).

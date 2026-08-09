@@ -55,12 +55,13 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 126 tests, no browser/network needed
+python -m unittest discover tests          # 132 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **91%** as of
-2026-08-08; every pipeline module is ≥ 88%. `requirements-ci.txt` records the
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
+2026-08-09 (was 91% before the REVISION1 overrides/order tests grew the suite
+to 132); every pipeline module is ≥ 88%. `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
 replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
@@ -71,6 +72,21 @@ reviewed but unpromoted official candidates live in
 live in `data/series_category_mapping.csv`, reviewed through
 `data/series_taxonomy_review_queue.csv`, and become master data only after
 owner approval — see `SERIES_TAXONOMY_MAPPING.md`.
+
+Owner revisions that no automated step could derive go through reviewed
+overlays, never hand-edits of the generated master: `data/master_year_overrides.csv`
+(year/month/year_source corrections, e.g. the REVISION1 ODS year changes for
+masters 356–358) and `data/master_notes_overrides.csv` (verbatim notes
+replacements, e.g. the `FRAN GRACE` author marker on master 315). The
+**curated presentation order** of the Everything view and its CSV export is
+`data/catalogue_display_order.csv` — the owner-approved REVISION1 colour-group
+order (2002–2011 lectures first, then discussion / satsang / on-the-road /
+volume / office / books / transcription / media-misc blocks, undecided rows,
+Fran Grace last); `build_catalogue_pages.py` fails the build if the order file
+is not a dense 1..n approved covering of all 362 masters. The change record
+behind all three inputs is the colour-coded
+`review/hawkins-everything-REVISION1.ods` (committed for provenance; the CSVs
+are the pipeline inputs, the ODS is the human review artifact).
 
 Approved master-to-product assertions render in the **Product Relationships**
 site tab: the primary item→product links are **derived automatically** from
@@ -96,7 +112,8 @@ Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
 PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
 historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
-and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`,
+and `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` (archived 2026-08-09
+with the other superseded audits),
 `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md`, policies, schemas,
 proposals, and the generated `RECONCILIATION_REPORT.md`). Superseded audits,
 suggestion documents, and workflow guides live in
@@ -124,7 +141,9 @@ record type is present; today every row is `master`, so the toolbar stays
 hidden until a candidate lands). Counts per class are published in
 `docs/catalogue-meta.json` under `everything_record_types`.
 
-The **Everything** view opens visitor-first: product facts (title, series,
+The **Everything** view opens in the owner-approved REVISION1 presentation
+order (lecture series first, then the colour-group blocks, Fran Grace last)
+and visitor-first: product facts (title, series,
 type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —

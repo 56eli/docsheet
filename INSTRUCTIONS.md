@@ -156,7 +156,14 @@ python reconcile_research_master.py
 The generated Pages workspace includes the catalogue plus dedicated review
 sheets for candidates, leads, exclusions, migration review, source overrides,
 official discovery, Veritas decisions, item-product relationships, and series
-compilations. See `FULL_STACK_AUDIT_2026-08-08_ARENA.md` for the current
+compilations. Three additional reviewed inputs shape the master without
+hand-editing generated files: `data/master_year_overrides.csv` (owner
+year/month/year_source corrections), `data/master_notes_overrides.csv`
+(verbatim notes replacements), and `data/catalogue_display_order.csv` (the
+owner-approved block order of the Everything view and its CSV export; the
+change record is the colour-coded `review/hawkins-everything-REVISION1.ods`).
+See `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
+extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for the current
 full-stack audit and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
 status (`archive/` material is historical and not normative).
 
@@ -172,16 +179,16 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 126 deterministic tests
+python -m unittest discover tests      # 132 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132).
 
-Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-08).
+Current coverage: **90% total, every pipeline module ≥ 88%** (2026-08-09).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
 dependency-error branches. Browser behavior stays with Playwright

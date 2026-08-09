@@ -22,7 +22,7 @@ The catalogue and pipeline at `d731e1b` are internally consistent and fully repr
 | Check | Result | Notes |
 |---|---|---|
 | `python -m py_compile *.py` | **PASS** | 10 root modules |
-| `process_data.py --check` | **PASS** | 374 raw rows, 8 view columns |
+| `process_data.py --check` | **PASS** | 374 raw rows, 7 view columns (corrected 2026-08-09: the six always-empty raw columns are trimmed, including `Unnamed: 11`; see the FULL extension) |
 | `build_research_master.py --check` | **PASS** | 362 items; 75 exclusions; 134 overrides; 39 candidates validated |
 | `build_catalogue_pages.py --check` | **PASS** | 362 Everything rows |
 | `reconcile_research_master.py --check` | **PASS** | 0 unexplained diffs |
@@ -90,6 +90,12 @@ That audit audited `bbe8b01` (pre-merge). Its three headline findings are **all 
 Anyone reading the 08-09 audit as "current" will re-open already-fixed work. The README also still declares the 08-08 pair as "(declared current)" and points to `FULL_STACK_AUDIT_2026-08-08_ARENA.md` as "the current full-stack audit" — while the 08-09 file sits at root, unlisted in the documentation layout.
 
 **Recommendation:** archive `FULL_STACK_AUDIT_2026-08-09_ARENA.md` and `EXTERNAL_AUDIT` (or add a status banner noting which findings are resolved), and refresh the README "Documentation layout" to list the declared-current audit.
+
+> **✅ Resolved 2026-08-09 (repo-organization pass):** the 08-08 baseline pair,
+> `EXTERNAL_AUDIT.md`, and the implemented `PRESENTATION_UX_PROPOSAL_2026-08-09.md`
+> were archived to `archive/` with banners; README "Documentation layout" now
+> lists only the declared-current 08-09 audits at root, and INSTRUCTIONS points
+> to the 08-09 deep-dive as the current audit.
 
 ### DOC-07 — `EXTERNAL_AUDIT` contradicts the 08-09 audit and references a missing tool (Medium, docs)
 

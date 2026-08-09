@@ -6,14 +6,61 @@ Last updated: 2026-08-09
 
 DocSheet: a GitHub Pages live spreadsheet + curated research catalogue for
 David Hawkins material. The 2026-08-09 expert full-stack audit
-(`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`, root) is the declared-current
-audit; all seven of its findings were fixed and committed this session
-(`f2d05c8`, `83b5c37`, `1886b84` on `arena/019fe659-docsheet`, pushed).
+(`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`, root) plus
+`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` and its extension
+`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` are the declared-current audits.
 The scoreboard was created as part of the persistent-memory protocol:
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml` (canonical), `.scoreboard/rubric.md`,
 `.scoreboard/history.md`, `.scoreboard/agent-handoff.md`,
 `.scoreboard/manual-workflow-edits.md`, `AGENTS.md`,
 `docs/audits/2026-08-09-baseline.md`, `.github/pull_request_template.md`.
+
+## 2026-08-09 REVISION1 ODS owner revision (this branch, current)
+
+- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** — a
+  colour-coded expert-columns export. Decoded cell-by-cell; applied with
+  owner confirmation:
+  - 58 filename edits in `data/filename_proposal_YYYYMM.csv`: unified
+    `OTR - ` prefix (32 On-The-Road rows), `198X - A-01…B-06` Office codes
+    (16), `DISCUSSION - ` prefix (8, incl. completed 312), year dropped on
+    356/358, year 2014→2003 on 357.
+  - `data/master_year_overrides.csv` (356/358 year+month cleared, 357 → 2003)
+    and `data/master_notes_overrides.csv` (315 → `FRAN GRACE`) — new reviewed
+    overlays consumed by `build_research_master.py`.
+  - `data/catalogue_display_order.csv` — owner-confirmed block order drives
+    the Everything view + CSV export (lectures → discussion → satsang →
+    on-the-road → volumes → office → books → transcription → media-misc →
+    undecided → Fran Grace last); `build_catalogue_pages.py` validates it.
+  - Change record committed: `review/hawkins-everything-REVISION1.ods`
+    (root-level upload removed in the merge so `review/` is the single
+    canonical copy).
+  - Tests 126 → 132; coverage 90%; all six `--check` green.
+- **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
+  priorities 15/12 remain open.
+
+## 2026-08-09 fresh audit + fixes + repo-organization pass (this branch)
+
+- **Fresh full-stack audit** (`docs/audits/2026-08-09-arena-full-audit.md`,
+  uncommitted on `arena/019fe6c1-docsheet`): all six `--check` modes, 126/126
+  tests, 91% coverage, ~30 independent probes — catalogue data clean, every
+  documented count reproduced. New findings (all low):
+  - F-01 `market='Spanish'` on two international-queue Audible rows → fixed
+    to `United States` (`data/international_discovery_queue.csv` +
+    regenerated `docs/international-products.json`).
+  - F-02 `FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md` stale "365" → 362.
+  - F-03 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` "8 view columns" → 7.
+  - F-04 `.scoreboard/history.md` + `.scoreboard/manual-workflow-edits.md` +
+    `docs/audits/2026-08-09-baseline.md` "19 browser specs" → 26.
+- **Repo-organization pass (owner-approved):** archived 4 root docs with
+  banners — `FULL_STACK_AUDIT_2026-08-08_ARENA.md`,
+  `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`, `EXTERNAL_AUDIT.md`,
+  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` (implemented). README
+  "Documentation layout", INSTRUCTIONS (was still pointing at the 08-08
+  audit as current!), NEXT_AGENT_HANDOFF, archive/README.md, and the
+  declared-current audits updated accordingly. Root now has 18 .md files.
+- **Presentation/UX feedback:** owner deferred (no concrete feedback yet);
+  priorities 15/12 remain open.
+- Nothing committed yet on this branch — review `git status`/`git diff`.
 
 ## Top priorities for next agent
 
@@ -30,8 +77,9 @@ The scoreboard was created as part of the persistent-memory protocol:
 5. `content_quality` (priority 3, `user_unhappy`): owner scored 7/10; clarify
    expectations (e.g. raw placeholder rows still visible in the original
    sheet?).
-6. `repo_organization` (priority 3): consolidate/archive older root audit
-   .md files (owner approval).
+6. `repo_organization` (priority 3): consolidation executed 2026-08-09
+   (4 superseded/implemented root docs archived); re-audit the aspect on the
+   next pass — score kept at 7.
 7. Triage GitHub issue #18 (owned-flags cross-check vs. the lak.nz Drive) —
    requires owner Drive access or a CSV export.
 
@@ -63,7 +111,8 @@ user scores (see `.scoreboard/scoreboard.yml`).
 
 ## Presentation/UX implementation (2026-08-09, owner approved the full plan)
 
-Phases A–D of `PRESENTATION_UX_PROPOSAL_2026-08-09.md` are implemented on
+Phases A–D of `archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md` (archived
+2026-08-09 after implementation) are implemented on
 `arena/019fe659-docsheet`: catalogue overview hero + collection stats +
 series strip, desktop Browse cards toggle, Review-workspace nav toggle,
 Series browser tab, search hints, loading skeleton, a11y labels; browser

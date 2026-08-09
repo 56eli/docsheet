@@ -30,7 +30,7 @@ files** — this scoreboard is part of that memory. See
 | 8 | Maintainability | Owner scored 6/10; AI 7 — split generator monoliths |
 | 4 | Code hygiene | Generators remain large monoliths; split into focused modules |
 | 3 | Content quality | Owner scored 7/10 (user_unhappy); AI 9 — clarify expectations |
-| 3 | Repo organization | 18 root-level .md files; consolidate/archive superseded audits |
+| 3 | Repo organization | Root .md noise reduced 2026-08-09 (4 superseded/implemented docs archived); re-audit pending |
 | — | Issue #18 | Owned-flags cross-check vs. lak.nz Drive (needs owner Drive access) |
 
 ## Scoreboard table
@@ -39,7 +39,7 @@ files** — this scoreboard is part of that memory. See
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|---|
 | Project purpose / scope | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | README / onboarding | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Archive superseded root audits |
+| Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Re-audit after 2026-08-09 consolidation |
 | Code hygiene | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work | high | Split generator monoliths |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Maintainability | 4 | 8 | 7 | 6 | 6 | 2 | 8 | needs_work | high | Modularize generators |

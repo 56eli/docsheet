@@ -12,7 +12,7 @@
 | 2026-08-09 | type_safety_validation | — | 8 | — | null | Arena agent | Baseline audit; typed row contracts, controlled vocabularies, rule matrices verified. |
 | 2026-08-09 | error_handling_logging | — | 8 | — | null | Arena agent | Baseline audit; non-zero exits, load-error UI, abort-safe fetches. |
 | 2026-08-09 | dependency_hygiene | — | 9 | — | null | Arena agent | Baseline audit; pinned requirements-ci.txt, npm ci clean, audit 0 vulns (prior). |
-| 2026-08-09 | tests | — | 9 | — | null | Arena agent | Baseline audit; 126/126 unit tests, 91% coverage ≥ 85 floor; 19 browser specs via CI. |
+| 2026-08-09 | tests | — | 9 | — | null | Arena agent | Baseline audit; 126/126 unit tests, 91% coverage ≥ 85 floor; 26 browser specs via CI. |
 | 2026-08-09 | ci_cd | — | 9 | — | null | Arena agent | Baseline audit; CI + Pages green on main (gh run list); concurrency guards reviewed. |
 | 2026-08-09 | security_privacy | — | 8 | — | null | Arena agent | Baseline audit; CSP/SRI/no secrets; low-severity style-src 'unsafe-inline' flag recorded. |
 | 2026-08-09 | performance | — | 8 | — | null | Arena agent | Baseline audit; static JSON payloads; no browser benchmark (Playwright unavailable); medium confidence. |
@@ -30,3 +30,5 @@
 | 2026-08-09 | auditability | — | 9 | — | null | Arena agent | Baseline audit; provenance columns, ledger dispositions, generated reconciliation. |
 | 2026-08-09 | overall_effective_score | — | 8.4 | — | null | Arena agent | Weighted average of 22 aspects (701/83); gate warning (risk flag + medium-confidence items). |
 | 2026-08-09 | overall_effective_score | 8.4 | 7.9 | null | (4 aspects) | Owner (via Arena chat) | User scores applied (presentation 5, UX 5, content 7, maintainability 6); weighted average 655/83 = 7.9; gate fail (below 8 minimum). |
+| 2026-08-09 | tests | 9 | 9 | null | null | Arena agent | REVISION1 ODS pass: suite 126 → 132 (OwnerOverrideAndDisplayOrderTests: overrides + display order); coverage 91% → 90% (floor 85, generators still 88%); six --check green. No score change. |
+| 2026-08-09 | content_quality | 9 | 9 | null | null | Arena agent | Owner REVISION1 ODS applied (58 filenames, year/notes overrides, block order); all 362 rows matched cell-by-cell before applying. No score change. |

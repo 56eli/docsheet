@@ -14,7 +14,7 @@ steps, and the affected scoreboard aspects are marked
 
 No manual workflow edits currently required.
 
-- `.github/workflows/ci.yml` — current (runs all checks, coverage gate, 19
+- `.github/workflows/ci.yml` — current (runs all checks, coverage gate, 26
   browser specs; green on `main`).
 - `.github/workflows/update_spreadsheet.yml` — current (regenerates
   `docs/data.json` on raw-CSV pushes / manual dispatch).
