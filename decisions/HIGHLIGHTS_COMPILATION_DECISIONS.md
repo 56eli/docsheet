@@ -32,3 +32,11 @@ each Highlights product draws from. The seven inventory rows are now
 `matched_by_primary_source`; the seven mapping-decision suppression rows were
 lifted and the taxonomy mapping approves `Lecture Highlights` (rule R1) for
 them.
+
+**Slug note (2026-08-09):** product 1800's official URL slug still contains
+`-dvd` (`…/the-way-to-god-highlights-of-the-first-6-lectures-of-2002-dvd/`)
+even though the storefront product detail declares the carrier Streaming
+(verified 2026-08-07 for the 2003/2005 Highlights pages; see
+`build_research_master.py` `infer_format_from_official_source`). The master
+therefore keeps `format=streaming` for all seven Highlights rows — the slug is
+a publisher URL artifact, not a carrier statement.

@@ -51,7 +51,7 @@ No critical or data-loss issue exists. The store is safe to extend.
 | Layer | Count / Value | Notes |
 |---|---:|---|
 | Raw rows / ledger rows | **374 / 374** | `hawkins archive clone - Sheet1.csv` / `migration_review_ledger.csv` |
-| Ledger disposition | **299 `item`** + 31 `blank_separator` + 21 `series_context` + 10 `research_note` + 7 `duplicate` + 5 `source_context` + 1 `needs_review` | 374 total; `duplicate` includes Path truncated variant, 2012 Discussion legacy rows, NC audio duplicate 246, and collapsed streaming rows 249/250/251 |
+| Ledger disposition | **299 `item`** + 31 `blank_separator` + 21 `series_context` + 10 `research_note` + 8 `duplicate` + 5 `source_context` + 0 `needs_review` | 374 total; `duplicate` includes Path truncated variant, 2012 Discussion legacy rows, NC audio duplicate 246, collapsed streaming rows 249/250/251, and raw row 371 (owner 'WHAT IS THIS ⚠️' placeholder for the same work as master 361 — reclassified from `needs_review` by the 2026-08-09 ruling; the table above predates that reclassification) |
 | Curated master | **362** | 306 lecture / 40 book / 8 discussion / 7 highlight / 1 other — zero untyped |
 | Everything view | **362** | 362 master + 0 candidate_veritas/hayhouse/audible/discovery/pending (all intake lanes empty by design, 39 candidates promoted) |
 | Exclusions / source overrides | **75 / 134** | Includes 4 Nightingale-Conant edition URLs, 18 Amazon direct links, 3 academic-book Amazon links on `source_url_amazon`, product 53277 moved 309→221 |

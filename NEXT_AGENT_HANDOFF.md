@@ -1,14 +1,74 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (fresh-eyes audit + doc cleanup + code refactoring) — current handoff for
-branch `arena/019fe63c-docsheet` at current HEAD.
+**Prepared:** 2026-08-09 (expert full-stack audit + low-severity fixes) — current handoff for
+branch `arena/019fe659-docsheet` at current HEAD.
+**Scoreboard:** this repo now has a persistent scoreboard — read
+`SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
+and `AGENTS.md` first; they are the durable agent-memory layer (Arena
+sessions may expire after PR merge).
 The declared-current audits are
-`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `d731e1b`) and its extension
-`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`, H-01/L-02/DOC-10 clarified at `2bc99ec`);
+`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (this session's expert pass,
+verified at `556bf48`), `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`
+(verified at `d731e1b`) and its extension
+`FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (verified at `f520e9b`,
+H-01/L-02/DOC-10 clarified at `2bc99ec`; its ledger-disposition table was
+updated for the 2026-08-09 reclassification);
 the baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
 `FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
 `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT.md` carry SUPERSEDED
 banners (pre-PR-#40 findings). See the session log at the bottom of §6.
+Headline results (2026-08-09 expert pass, current):
+- **Expert full-stack audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
+  all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
+  coverage 7.15.4); ~20 independent pandas probes bypassing the project's own
+  validators reproduced every README count exactly (362 masters, 278 codes,
+  75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7
+  compilations, 191 works, 191 products, 10 UUID gaps) and found **no
+  data-loss or correctness defects**. Seven low-severity items were reported
+  and **all seven were fixed this session** (see below).
+- **Ledger row 371 reclassification (owner-approved 2026-08-09):** the single
+  `needs_review` row — the raw sheet's "Dialogues on Consciousness and
+  Spirituality: WHAT IS THIS ⚠️⚠️⚠️" placeholder — was reclassified to
+  `duplicate` (of promoted master 361, promoted from
+  `manual-academic-dialogues-1998`). Dispositions are now 299 `item` /
+  31 `blank_separator` / 21 `series_context` / 10 `research_note` /
+  **8 `duplicate`** / 5 `source_context` / **0 `needs_review`**; the 75-row
+  exclusion set, `docs/master-exclusions.json`, `docs/migration-review.json`,
+  `MIGRATION_REVIEW_LEDGER.md`, and the disposition table in
+  `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` were regenerated/updated with
+  it. No master-row, code, or count changed.
+- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md corrected (the seven Highlights
+  products ARE in the category mapping as approved R1 rows matched to masters
+  362–368, not "out of scope / unmatched"); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`
+  gained the `-2002-dvd` slug note (product 1800's URL slug says "dvd" but
+  the storefront carrier is Streaming — master keeps `format=streaming`);
+  handoff header refreshed for this branch.
+- **Original Spreadsheet view (audit §3.4):** the 31 fully-empty raw
+  separator rows are now hidden by default — grid, footer count, and CSV
+  export all agree — with a persisted "Show blank separator rows" View
+  setting (visible only on that tab) restoring the verbatim 374-row sheet.
+  New `tests/blank-rows.spec.js` derives its expected counts from
+  `data.json`.
+- **Wording (audit §3.6):** README, INSTRUCTIONS, and the `process_data.py`
+  docstring now state that the raw pipeline is pass-through *except* for the
+  six always-empty raw columns trimmed from the published view.
+- **Archival footnote (audit §3.7):** `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`
+  corrected for the record — the 17 blank-year rows are 13 Volumes + 4
+  under-investigation; the 7 Highlights rows carry years and omit the prefix
+  per the separate "filename equals title" directive.
+- **Presentation/UX implementation (owner approved the full plan):** see
+  `PRESENTATION_UX_PROPOSAL_2026-08-09.md` — catalogue overview hero +
+  collection stats + series strip, desktop Browse cards toggle, Review
+  workspace nav toggle, Series browser tab, search hints, loading skeleton,
+  a11y labels. Browser suite grew 19 → **26 tests** (new
+  `tests/presentation-ux.spec.js`). Scoreboard AI scores for
+  github_pages_presentation/ux_usability/accessibility are **unchanged
+  pending re-audit** — the owner's 5/10 user scores still stand and the
+  effective scores still drive priority (15/12).
+- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the
+  presentation/UX re-score and re-audit after the owner reviews the new
+  first impression.
+
 Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
   all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
@@ -321,13 +381,15 @@ checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
   the review notes (1546/1548, 1661/1695/1728/1742, 55576 — the curated
   series stands; editions keep their work's series; the publisher's
   "Media Miscellaneous" shelf describes the carrier, not the series). Taxonomy is
-  now **169 approved / 0 proposed / 10 rejected** (179 matched products).
-- **`format` blank on 8 records** (was 73): the 2026-08-03 format backfill
-  inferred 65 formats (89% fill rate). The remaining 8 blank-format records
-  have no automated inference match — root cause and evidence in `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md`
-  §11c/§11d. Second inference-pass evidence (SKU prefixes, product-detail
-  strings, streaming markers) stays in
-  `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`.
+  now **177 approved / 9 rejected / 0 queued** (186 mapping rows; the earlier
+  "169 approved / 10 rejected / 179 matched" snapshot was superseded by the
+  50521 resolution and the 2026-08-09 mapping refresh — the master build
+  applies 324 approved master-level mappings with 3 series changes).
+- ~~**`format` blank on 8 records**~~ — **resolved**: 0/362 master rows are
+  blank today (the inference grew to 107 formats from the official inventory;
+  the 2026-08-03 snapshot of 8 blank records and its evidence live in
+  `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d, with the second
+  inference pass in `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`).
 - ~~**Four always-empty master columns**~~ — **resolved 2026-08-07 (owner
   ruling: drop all four)**: `location_physical`, `location_digital`,
   `location_streaming`, `reference_url_2` removed from schema, sheet, specs
@@ -408,7 +470,34 @@ Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
 - **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
 - **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
 
-## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, current)
+## 2026-08-09 Expert full-stack audit + low-severity fixes (arena/019fe659-docsheet, current)
+
+Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (kept at root as a declared-current audit).
+
+- **Expert audit:** all six `--check` modes green, 126/126 tests, 91% coverage; ~20 independent pandas probes bypassing the project's validators reproduced every README count exactly and found no data-loss/correctness defects. Seven low-severity findings (§3 of the audit); the Playwright browser suite could not be re-run in the sandbox (CDN blocked) but CI is green.
+- **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
+- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
+- **Frontend (audit §3.4):** Original Spreadsheet view hides the 31 blank separator rows by default with a "Show blank separator rows" View setting; added `tests/blank-rows.spec.js` (browser suite now 19 tests). Pass-through wording clarified in README/INSTRUCTIONS/process_data.py (§3.6).
+- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.
+
+## 2026-08-09 Presentation/UX implementation, Phases A–D (arena/019fe659-docsheet, current)
+
+Owner approved the full plan (`PRESENTATION_UX_PROPOSAL_2026-08-09.md`) after
+providing user scores (presentation 5, UX 5, content 7, maintainability 6).
+
+- **Shipped (commit `7ed3a5f`):** catalogue overview hero + collection stats
+  + series strip on Everything; desktop Browse cards toggle (work-card UI +
+  Series/Timeline rails at any width); Review-workspace nav toggle; Series
+  browser tab (client-side, from master.json); search hints; loading
+  skeleton; `prefers-reduced-motion`; a11y labels. New
+  `tests/presentation-ux.spec.js` (7 specs; suite 19 → 26).
+- **Verified:** 6/6 `--check`, 126/126 tests, `node --check` clean, CSS
+  brace-balanced, no duplicate HTML ids. Browser specs run in CI.
+- **Scoreboard:** AI scores unchanged pending re-audit; user scores still
+  make presentation (15) and UX (12) the top priorities. Gate remains
+  `fail` (7.9 < 8) until the owner re-scores or the aspects are re-audited.
+
+## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, previous)
 
 Branch `arena/019fe63c-docsheet` from `main` at `150f080`.
 

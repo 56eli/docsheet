@@ -22,9 +22,13 @@ curated master, following the approved dominance rules. It **never** touches
 - Only products matched to one or more master IDs (`matched_master_uuids`)
   enter the mapping. Unmatched products keep their own review lane
   (`data/veritas_mapping_decisions.csv`, candidate views).
-- Highlights products map at series level through
-  `data/series_compilation_relationships.csv`, so they are intentionally out
-  of scope here (all seven are unmatched compilations).
+- Highlights products **are** in scope: all seven (1800/1808/1824/36857/
+  39238/40747/44429) carry approved R1 rows matched to masters 362–368
+  (`mapped_series=Lecture Highlights`). The series-compilation layer
+  (`data/series_compilation_relationships.csv`) additionally records which
+  annual series each Highlights compilation covers (`target_series`/
+  `target_year`) — a separate, complementary fact, not a replacement for the
+  category mapping.
 
 ## Files
 

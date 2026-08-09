@@ -52,7 +52,7 @@
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
           <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <input type="search" id="global-search" placeholder="Search across all columns…" autocomplete="off" aria-label="Search across all columns" aria-describedby="search-status">
+        <input type="search" id="global-search" placeholder="Search titles, series, years… (press /)" autocomplete="off" aria-label="Search across all columns" aria-describedby="search-status" title="Search every field of the current view. Press / to focus, ? for keyboard shortcuts.">
         <button id="clear-search-btn" class="clear-search" type="button" aria-label="Clear search" title="Clear search" hidden>
           <span aria-hidden="true">×</span>
         </button>
@@ -67,6 +67,8 @@
         </svg>
         Export CSV
       </button>
+      <button id="master-browse-toggle" type="button" aria-pressed="false" title="Switch between work-card browsing and the full spreadsheet" hidden>Browse cards</button>
+      <button id="overview-btn" type="button" title="Restore the catalogue overview (hero, collection stats, series strip)" hidden>Show overview</button>
       <div class="settings-tools">
         <button id="settings-btn" type="button" aria-expanded="false" aria-controls="settings-menu">View settings</button>
         <div id="settings-menu" class="settings-menu" hidden>
@@ -77,6 +79,7 @@
           <label><input type="checkbox" id="show-summary-toggle"> Show summary cards</label>
           <label><input type="checkbox" id="show-stats-toggle"> Show overview stats</label>
           <label><input type="checkbox" id="show-filters-toggle"> Show filters panel</label>
+          <label id="blank-rows-toggle-wrap" hidden title="The raw sheet contains 31 blank visual-separator rows; hidden by default"><input type="checkbox" id="show-blank-rows-toggle"> Show blank separator rows</label>
           <button id="reset-view-btn" type="button">Reset current view</button>
         </div>
       </div>
@@ -91,32 +94,65 @@
     <div class="tab-group" role="group" aria-label="Catalogue">
       <span class="tab-group-label">Catalogue</span>
       <button class="dataset-tab active" id="tab-master" type="button" role="tab" aria-selected="true" aria-controls="spreadsheet" data-view="master">Everything</button>
+      <button class="dataset-tab" id="tab-series" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="series">Series</button>
       <button class="dataset-tab" id="tab-product-relationships" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="productRelationships">Product Relationships</button>
       <button class="dataset-tab review-tab" id="tab-series-compilations" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="seriesCompilations">Compilations</button>
     </div>
-    <div class="tab-group" role="group" aria-label="Review workspace">
-      <span class="tab-group-label">Review workspace</span>
-      <button class="dataset-tab review-tab review-tab-start" id="tab-review-overview" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="reviewOverview">Review Overview</button>
-      <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Candidates</button>
-      <button class="dataset-tab review-tab" id="tab-manual-leads" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualLeads">Manual Leads</button>
-      <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Exclusions</button>
-      <button class="dataset-tab review-tab" id="tab-source-overrides" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="sourceOverrides">Source Overrides</button>
-      <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Decisions</button>
-      <button class="dataset-tab review-tab" id="tab-new-work-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="newWorkReview">New Work Review</button>
-      <button class="dataset-tab review-tab" id="tab-official-discovery" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="officialDiscovery">Official Discovery</button>
-      <button class="dataset-tab review-tab" id="tab-international" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="internationalProducts">International Editions</button>
-    </div>
-    <div class="tab-group" role="group" aria-label="Sources and provenance">
-      <span class="tab-group-label">Sources</span>
-      <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Publishers</button>
-      <button class="dataset-tab" id="tab-veritas-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasProducts">Veritas Products</button>
-      <button class="dataset-tab" id="tab-hayhouse-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="hayhouseProducts">Hay House Products</button>
-      <button class="dataset-tab" id="tab-audible-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="audibleProducts">Audible Products</button>
-      <button class="dataset-tab review-tab" id="tab-filename-proposal" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="filenameProposal">Filename Proposal</button>
-      <button class="dataset-tab review-tab" id="tab-migration-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="migrationReview">Migration Review</button>
-      <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
+    <button id="review-nav-toggle" type="button" aria-expanded="true" aria-controls="review-nav-groups" title="Show or hide the review workspace and source tabs">
+      <span>Review workspace</span>
+      <svg class="chevron" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="review-nav-groups" class="review-nav-groups">
+      <div class="tab-group" role="group" aria-label="Review workspace">
+        <span class="tab-group-label">Review workspace</span>
+        <button class="dataset-tab review-tab review-tab-start" id="tab-review-overview" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="reviewOverview">Review Overview</button>
+        <button class="dataset-tab review-tab" id="tab-manual-candidates" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualCandidates">Candidates</button>
+        <button class="dataset-tab review-tab" id="tab-manual-leads" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="manualLeads">Manual Leads</button>
+        <button class="dataset-tab review-tab" id="tab-master-exclusions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="masterExclusions">Exclusions</button>
+        <button class="dataset-tab review-tab" id="tab-source-overrides" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="sourceOverrides">Source Overrides</button>
+        <button class="dataset-tab review-tab" id="tab-veritas-decisions" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasMappingDecisions">Decisions</button>
+        <button class="dataset-tab review-tab" id="tab-new-work-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="newWorkReview">New Work Review</button>
+        <button class="dataset-tab review-tab" id="tab-official-discovery" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="officialDiscovery">Official Discovery</button>
+        <button class="dataset-tab review-tab" id="tab-international" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="internationalProducts">International Editions</button>
+      </div>
+      <div class="tab-group" role="group" aria-label="Sources and provenance">
+        <span class="tab-group-label">Sources</span>
+        <button class="dataset-tab" id="tab-publishers" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="publishers">Publishers</button>
+        <button class="dataset-tab" id="tab-veritas-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="veritasProducts">Veritas Products</button>
+        <button class="dataset-tab" id="tab-hayhouse-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="hayhouseProducts">Hay House Products</button>
+        <button class="dataset-tab" id="tab-audible-products" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="audibleProducts">Audible Products</button>
+        <button class="dataset-tab review-tab" id="tab-filename-proposal" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="filenameProposal">Filename Proposal</button>
+        <button class="dataset-tab review-tab" id="tab-migration-review" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="migrationReview">Migration Review</button>
+        <button class="dataset-tab" id="tab-original" type="button" role="tab" aria-selected="false" aria-controls="spreadsheet" data-view="original">Original Spreadsheet</button>
+      </div>
     </div>
   </nav>
+
+  <!-- Catalogue overview: hero, collection stats, series strip (Everything view only) -->
+  <section id="catalogue-intro" class="catalogue-intro" aria-label="Catalogue overview" hidden>
+    <div id="hero" class="hero">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Curated research catalogue</p>
+        <h2>David R. Hawkins — Archive Catalogue</h2>
+        <p>Curated records spanning lectures, books, discussions and highlights, with official sources, editions, ownership status and proposed archive file names. Browse by series, explore the collection overview, or open the full spreadsheet.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" data-hero-action="browse">Browse cards</button>
+        <button type="button" data-hero-action="series">Series overview</button>
+        <button type="button" data-hero-action="overview">Collection overview</button>
+        <button type="button" data-hero-action="not-owned">Not owned</button>
+        <button id="hero-dismiss" type="button" aria-label="Dismiss the catalogue overview" title="Hide the overview; restore it any time with 'Show overview'" aria-describedby="hero-dismiss-hint"><span aria-hidden="true">×</span><span id="hero-dismiss-hint" class="visually-hidden">Hides the catalogue overview until you press Show overview</span></button>
+      </div>
+    </div>
+    <section class="overview-section" aria-labelledby="collection-overview-title">
+      <h3 id="collection-overview-title">Collection overview</h3>
+      <div id="overview-cards" class="overview-cards"></div>
+    </section>
+    <section class="overview-section" aria-labelledby="series-strip-title">
+      <h3 id="series-strip-title">Browse by series</h3>
+      <div id="series-strip-list" class="series-strip" role="group" aria-label="Filter the catalogue by series"></div>
+    </section>
+  </section>
 
   <div id="stats-strip" class="stats-strip" hidden aria-label="Catalogue overview">
     <button type="button" class="stat-chip" data-jump="master" title="Open Everything catalogue"><b id="stat-master-items">—</b><span class="stat-label">Master records</span></button>
@@ -223,8 +259,17 @@
       </section>
       <div id="mobile-browse-list" class="mobile-browse-list"></div>
     </section>
+    <section id="series-landing" class="series-landing" aria-label="Series browser" hidden>
+      <p class="series-landing-intro">Every curated series in the archive. Pick one to filter the full catalogue.</p>
+      <div id="series-landing-grid" class="series-landing-grid"></div>
+    </section>
     <div id="spreadsheet" aria-live="polite" aria-busy="true">
-      <div class="table-loading">Loading research master…</div>
+      <div class="table-loading" role="status">
+        <span class="table-loading-text">Loading research master…</span>
+        <span class="skeleton-line" aria-hidden="true"></span>
+        <span class="skeleton-line" aria-hidden="true"></span>
+        <span class="skeleton-line skeleton-line-short" aria-hidden="true"></span>
+      </div>
     </div>
   </main>
 

@@ -31,7 +31,9 @@ NOTE ON THE HEADER ROW
 The CSV exported from Google Sheets has a stray title row as line 1
 ("archive clbs") and the real header (uuid, tempid, title, ...) as line 2.
 We read with header=1 so the live table shows the real column names.
-No cell values are modified — the data is passed through unchanged.
+No cell values are modified — the data is passed through unchanged (the
+published view trims only the six always-empty raw columns in
+VIEW_DROP_COLUMNS; the source CSV keeps them untouched).
 """
 
 import argparse

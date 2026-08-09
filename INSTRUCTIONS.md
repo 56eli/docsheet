@@ -34,7 +34,9 @@ https://<username>.github.io/<repo-name>   (the live site)
 ## 2️⃣ Add data transformation rules (when you're ready)
 
 The raw-spreadsheet pipeline above is intentionally **pass-through** — it
-displays your CSV exactly as-is. No enrichment logic has been added.
+displays your CSV with every cell value untouched (the published view trims
+the six always-empty raw columns listed under "How the pieces fit together"
+below; the source CSV keeps them). No enrichment logic has been added.
 
 > ⚠️ This repository also hosts a separate **curated-catalogue pipeline**:
 > the raw CSV flows through the hand-maintained `migration_review_ledger.csv`
@@ -223,7 +225,8 @@ inspect the artifact before accepting any live-source update.
 - **Header row:** the CSV's first line is a stray Google Sheets title row
   (`archive clbs`); the real header (`uuid, tempid, title, ...`) is line 2, so
   `process_data.py` reads with `header=1`. Cell values are passed through
-  **unchanged**.
+  **unchanged** (only the six always-empty raw columns — `uuid`,
+  `Unnamed: 8–11`, `other links` — are trimmed from the published view).
 - **Footer:** shows the active view's row count and its HTTP `Last-Modified`
   value. (The legacy `docs/meta.json` descriptor was dropped by owner ruling
   2026-08-07: nothing but `process_data.py`'s own self-check ever read it,

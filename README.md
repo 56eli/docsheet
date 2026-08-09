@@ -7,7 +7,9 @@ GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 
 - **Live site:** `https://56eli.github.io/docsheet` (once GitHub Pages is enabled)
 - **Pipeline:** `process_data.py` reads the CSV with Pandas and publishes
-  `docs/data.json` — data is currently passed through **unchanged**.
+  `docs/data.json` — data is currently passed through **unchanged** (cell
+  values are never modified; the published view trims the six always-empty
+  raw columns, see INSTRUCTIONS).
 - **Automation:** the "Update Spreadsheet" GitHub Actions workflow regenerates
   the data on demand or whenever the CSV changes on `main`.
 
@@ -87,7 +89,10 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 ## Documentation layout
 
 Living documents sit at the repository root (`README`, `INSTRUCTIONS`,
-`NEXT_AGENT_HANDOFF`, the declared-current audit
+`NEXT_AGENT_HANDOFF`, the persistent repo scoreboard
+[`SCOREBOARD.md`](SCOREBOARD.md) with its machine-readable source in
+[`.scoreboard/`](.scoreboard/scoreboard.yml), the declared-current audits
+`FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (2026-08-09 expert pass),
 `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at `main` HEAD after
 PR #40) and its extension `FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`, the
 historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md`
@@ -124,7 +129,12 @@ type, edition, date, official store and streaming links, notes) are visible at
 first sight, while technical metadata (Master ID, Work grouping, proposed file
 names, provenance columns) stays hidden until the **Expert columns** toggle —
 next to the Columns menu — is switched on; the choice persists per browser.
-Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. On phone screens, the Everything catalogue opens in **Browse mode**: compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters; **Spreadsheet** restores the full Tabulator grid for expert comparison. Full-width row details and horizontally scrolling tabs remain available in both modes.
+Above the table, a dismissible **catalogue overview** (hero with quick
+actions, collection stats with owned/not-owned progress, and a **series
+strip**) gives visitors an entry point; "Show overview" restores it. A
+**Series** tab (Catalogue group) lists every series as a card (records, owned,
+year span) and opens the Everything view pre-filtered.
+Clicking any row always shows every stored field, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The Everything view opens in **Browse mode** on phone screens — compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters — and the same work-card browser is available on desktop via the **Browse cards** toolbar toggle; **Spreadsheet** restores the full Tabulator grid for expert comparison. Review and source tabs sit under a collapsible **Review workspace** toggle (default expanded). Full-width row details and horizontally scrolling tabs remain available in both modes.
 
 ## Review workspace
 
