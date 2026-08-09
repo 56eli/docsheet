@@ -673,6 +673,138 @@ def validate_veritas_mapping_decisions(
         )
 
 
+def build_review_overview(
+    manual_candidates: list[dict[str, str]],
+    manual_leads: list[dict[str, str]],
+    master_exclusions: list[dict[str, str]],
+    migration_review: list[dict[str, str]],
+    source_overrides: list[dict[str, str]],
+    queue: list[dict[str, str]],
+    new_work_queue: list[dict[str, str]],
+    veritas_mapping_decisions: list[dict[str, str]],
+    veritas_products: list[dict[str, str]],
+    hayhouse_products: list[dict[str, str]],
+    audible_products: list[dict[str, str]],
+    filename_proposal: list[dict[str, str]],
+    product_relationships: list[dict[str, str]],
+    series_compilations: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    """Build the Review Overview sheet summary rows."""
+    promoted_candidates = sum(
+        1 for cand in manual_candidates if cand.get("promotion_status", "").strip() == "promoted"
+    )
+    unpromoted_candidates = len(manual_candidates) - promoted_candidates
+    return [
+        {
+            "review_sheet": "Master Candidates",
+            "record_count": len(manual_candidates),
+            "purpose": (
+                "All reviewed official candidates have been promoted to the master."
+                if unpromoted_candidates == 0
+                else f"{promoted_candidates} reviewed candidates promoted; "
+                     f"{unpromoted_candidates} still awaiting an explicit master-promotion decision."
+            ),
+            "source_file": str(MANUAL_CANDIDATES),
+            "current_state": (
+                f"{promoted_candidates}/{len(manual_candidates)} promoted"
+                if unpromoted_candidates == 0
+                else f"{promoted_candidates} promoted / {unpromoted_candidates} not_promoted"
+            ),
+        },
+        {
+            "review_sheet": "Manual Leads",
+            "record_count": len(manual_leads),
+            "purpose": "Manual edition/copy or research leads outside the master.",
+            "source_file": str(MANUAL_LEADS),
+            "current_state": "research lead",
+        },
+        {
+            "review_sheet": "Master Exclusions",
+            "record_count": len(master_exclusions),
+            "purpose": "Raw rows intentionally excluded from the curated master, with their disposition and review reason.",
+            "source_file": str(MASTER_EXCLUSIONS),
+            "current_state": "excluded from master / retained as provenance",
+        },
+        {
+            "review_sheet": "Migration Review",
+            "record_count": len(migration_review),
+            "purpose": "Raw-row disposition and proposed migration metadata.",
+            "source_file": str(MIGRATION_LEDGER),
+            "current_state": "review and provenance ledger",
+        },
+        {
+            "review_sheet": "Source Overrides",
+            "record_count": len(source_overrides),
+            "purpose": "Approved official source associations retained after the original ledger pass.",
+            "source_file": str(SOURCE_OVERRIDES),
+            "current_state": "approved source override",
+        },
+        {
+            "review_sheet": "Official Discovery",
+            "record_count": len(queue),
+            "purpose": "Nightingale-Conant and platform candidates awaiting source/relationship review.",
+            "source_file": str(QUEUE),
+            "current_state": "official discovery queue",
+        },
+        {
+            "review_sheet": "New Work Review",
+            "record_count": len(new_work_queue),
+            "purpose": "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
+            "source_file": str(NEW_WORK_QUEUE),
+            "current_state": "new-work review queue",
+        },
+        {
+            "review_sheet": "Veritas Decisions",
+            "record_count": len(veritas_mapping_decisions),
+            "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
+            "source_file": str(VERITAS_MAPPING_DECISIONS),
+            "current_state": "approved mapping decision",
+        },
+        {
+            "review_sheet": "Veritas Products",
+            "record_count": len(veritas_products),
+            "purpose": "Reviewed Veritas official-product inventory used for source matching, taxonomy mapping, and refresh diffs.",
+            "source_file": str(VERITAS_PRODUCTS),
+            "current_state": "reviewed official inventory",
+        },
+        {
+            "review_sheet": "Hay House Products",
+            "record_count": len(hayhouse_products),
+            "purpose": "Reviewed Hay House official-product inventory used for book and audio-edition links.",
+            "source_file": str(HAYHOUSE_PRODUCTS),
+            "current_state": "reviewed official inventory",
+        },
+        {
+            "review_sheet": "Audible Products",
+            "record_count": len(audible_products),
+            "purpose": "Reviewed Audible platform inventory used for audiobook editions and international leads.",
+            "source_file": str(AUDIBLE_PRODUCTS),
+            "current_state": "reviewed platform inventory",
+        },
+        {
+            "review_sheet": "Filename Proposal",
+            "record_count": len(filename_proposal),
+            "purpose": "Reviewed proposed filenames plus derived master metadata mirrors used by the filename guard.",
+            "source_file": str(FILENAME_PROPOSAL),
+            "current_state": "reviewed filename proposal",
+        },
+        {
+            "review_sheet": "Product Relationships",
+            "record_count": len(product_relationships),
+            "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
+            "source_file": str(PRODUCT_RELATIONSHIPS),
+            "current_state": "reviewed relationship",
+        },
+        {
+            "review_sheet": "Series Compilations",
+            "record_count": len(series_compilations),
+            "purpose": "Evidence-backed compilation links to annual lecture series without inventing per-DVD-part inclusion.",
+            "source_file": str(SERIES_COMPILATIONS),
+            "current_state": "reviewed series compilation",
+        },
+    ]
+
+
 def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pending: bool = True) -> CatalogueBuild:
     """Prepare catalogue Pages files in memory.
 
@@ -805,119 +937,12 @@ def build_catalogue(master_items: list[dict[str, str]] | None = None, include_pe
         ))
 
     intl_items.extend(intl_queue)
-    promoted_candidates = sum(
-        1 for cand in manual_candidates if cand.get("promotion_status", "").strip() == "promoted"
+    review_overview = build_review_overview(
+        manual_candidates, manual_leads, master_exclusions, migration_review,
+        source_overrides, queue, new_work_queue, veritas_mapping_decisions,
+        veritas_products, hayhouse_products, audible_products, filename_proposal,
+        product_relationships, series_compilations,
     )
-    unpromoted_candidates = len(manual_candidates) - promoted_candidates
-    review_overview = [
-        {
-            "review_sheet": "Master Candidates",
-            "record_count": len(manual_candidates),
-            "purpose": (
-                "All reviewed official candidates have been promoted to the master."
-                if unpromoted_candidates == 0
-                else f"{promoted_candidates} reviewed candidates promoted; "
-                     f"{unpromoted_candidates} still awaiting an explicit master-promotion decision."
-            ),
-            "source_file": str(MANUAL_CANDIDATES),
-            "current_state": (
-                f"{promoted_candidates}/{len(manual_candidates)} promoted"
-                if unpromoted_candidates == 0
-                else f"{promoted_candidates} promoted / {unpromoted_candidates} not_promoted"
-            ),
-        },
-        {
-            "review_sheet": "Manual Leads",
-            "record_count": len(manual_leads),
-            "purpose": "Manual edition/copy or research leads outside the master.",
-            "source_file": str(MANUAL_LEADS),
-            "current_state": "research lead",
-        },
-        {
-            "review_sheet": "Master Exclusions",
-            "record_count": len(master_exclusions),
-            "purpose": "Raw rows intentionally excluded from the curated master, with their disposition and review reason.",
-            "source_file": str(MASTER_EXCLUSIONS),
-            "current_state": "excluded from master / retained as provenance",
-        },
-        {
-            "review_sheet": "Migration Review",
-            "record_count": len(migration_review),
-            "purpose": "Raw-row disposition and proposed migration metadata.",
-            "source_file": str(MIGRATION_LEDGER),
-            "current_state": "review and provenance ledger",
-        },
-        {
-            "review_sheet": "Source Overrides",
-            "record_count": len(source_overrides),
-            "purpose": "Approved official source associations retained after the original ledger pass.",
-            "source_file": str(SOURCE_OVERRIDES),
-            "current_state": "approved source override",
-        },
-        {
-            "review_sheet": "Official Discovery",
-            "record_count": len(queue),
-            "purpose": "Nightingale-Conant and platform candidates awaiting source/relationship review.",
-            "source_file": str(QUEUE),
-            "current_state": "official discovery queue",
-        },
-        {
-            "review_sheet": "New Work Review",
-            "record_count": len(new_work_queue),
-            "purpose": "Official Veritas products with no master match (Satsang monthlies, Unity Church CDs, unique audio programs) awaiting a new-work ruling.",
-            "source_file": str(NEW_WORK_QUEUE),
-            "current_state": "new-work review queue",
-        },
-        {
-            "review_sheet": "Veritas Decisions",
-            "record_count": len(veritas_mapping_decisions),
-            "purpose": "Approved product-ID mapping dispositions re-applied after every live Veritas refresh.",
-            "source_file": str(VERITAS_MAPPING_DECISIONS),
-            "current_state": "approved mapping decision",
-        },
-        {
-            "review_sheet": "Veritas Products",
-            "record_count": len(veritas_products),
-            "purpose": "Reviewed Veritas official-product inventory used for source matching, taxonomy mapping, and refresh diffs.",
-            "source_file": str(VERITAS_PRODUCTS),
-            "current_state": "reviewed official inventory",
-        },
-        {
-            "review_sheet": "Hay House Products",
-            "record_count": len(hayhouse_products),
-            "purpose": "Reviewed Hay House official-product inventory used for book and audio-edition links.",
-            "source_file": str(HAYHOUSE_PRODUCTS),
-            "current_state": "reviewed official inventory",
-        },
-        {
-            "review_sheet": "Audible Products",
-            "record_count": len(audible_products),
-            "purpose": "Reviewed Audible platform inventory used for audiobook editions and international leads.",
-            "source_file": str(AUDIBLE_PRODUCTS),
-            "current_state": "reviewed platform inventory",
-        },
-        {
-            "review_sheet": "Filename Proposal",
-            "record_count": len(filename_proposal),
-            "purpose": "Reviewed proposed filenames plus derived master metadata mirrors used by the filename guard.",
-            "source_file": str(FILENAME_PROPOSAL),
-            "current_state": "reviewed filename proposal",
-        },
-        {
-            "review_sheet": "Product Relationships",
-            "record_count": len(product_relationships),
-            "purpose": "Reviewed item-to-product assertions kept separate from master identity.",
-            "source_file": str(PRODUCT_RELATIONSHIPS),
-            "current_state": "reviewed relationship",
-        },
-        {
-            "review_sheet": "Series Compilations",
-            "record_count": len(series_compilations),
-            "purpose": "Evidence-backed compilation links to annual lecture series without inventing per-DVD-part inclusion.",
-            "source_file": str(SERIES_COMPILATIONS),
-            "current_state": "reviewed series compilation",
-        },
-    ]
     everything_record_types = {
         record_type: sum(
             row["record_type"] == record_type for row in items
