@@ -20,9 +20,9 @@ test('Original Spreadsheet hides blank separator rows by default, toggle restore
   const toggle = page.locator('#show-blank-rows-toggle');
   await expect(page.locator('#blank-rows-toggle-wrap')).toBeHidden();
 
-  // Close the settings menu so it cannot overlay the tab row, then switch.
+  // Close the settings menu so it cannot overlay the controls, then switch.
   await page.getByRole('button', { name: 'View settings' }).click();
-  await page.getByRole('tab', { name: 'Original Spreadsheet' }).click();
+  await page.locator('#view-jump').selectOption('original');
   await waitForTable(page);
 
   const counts = await page.evaluate(async () => {

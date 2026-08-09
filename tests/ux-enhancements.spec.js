@@ -46,7 +46,7 @@ test('faceted filters narrow the Everything view and add removable chips', async
 test('facet bar is hidden on non-catalogue views', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
-  await page.getByRole('tab', { name: 'Original Spreadsheet' }).click();
+  await page.locator('#view-jump').selectOption('original');
   await waitForTable(page);
   await expect(page.locator('#facet-bar')).toBeHidden();
 });
@@ -120,13 +120,12 @@ test('rapid tab changes never let a stale JSON response replace the active view'
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await page.getByRole('tab', { name: 'Manual Leads' }).click();
-  await page.getByRole('tab', { name: 'Everything' }).click();
+  await page.locator('#view-jump').selectOption('manualLeads');
+  await page.locator('#view-jump').selectOption('master');
   await waitForTable(page);
   await page.waitForTimeout(450); // allow the deliberately slow request to settle
 
   await expect(page.locator('#view-title')).toHaveText('Everything');
-  await expect(page.getByRole('tab', { name: 'Everything' })).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('.tabulator-row').first()).toContainText('Causality');
 });
 

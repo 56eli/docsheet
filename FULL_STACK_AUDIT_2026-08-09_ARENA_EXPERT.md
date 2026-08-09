@@ -87,10 +87,10 @@ project's own validators):
 ### 2.2 Field-level hygiene
 
 - **Format × extension matrix is perfectly diagonal**: DVD→253 mp4, CD→32 mp3, audiobook→27 m4b, book→31 pdf, streaming→19 mp4.
-- **Filename prefixes**: all 355 dated rows carry `YYYY-MM -` or `YYYY-` prefixes that equal their record year/month; the 17 blank-year rows (13 Volume + 4 under-investigation) intentionally omit the prefix; the 7 Highlights rows follow the separate owner directive "filename equals title" (documented in FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md §"2026-08-07 Highlights promotion").
+- **Filename prefixes**: all 343 dated rows carry `YYYY-MM -` or `YYYY-` prefixes that equal their record year/month (including 16 `198X` placeholder rows); the 19 blank-year rows (13 Volume + 4 under-investigation + 2 REVISION1 ODS overrides on 356/358) intentionally omit the prefix; the 7 Highlights rows follow the separate owner directive "filename equals title" (documented in FILENAME_PROPOSAL_YYYYMM_DVD01_V4.md §"2026-08-07 Highlights promotion").
 - **Filename uniqueness**: 362/362 unique; `proposed_filename_display` is the exact `[1-3]`→`[1/3]` rendering of the on-disk safe name, 0 mismatches.
 - **Months**: 0 month-without-year; 0 book-months; values are zero-padded `01`–`12` in the CSV (a naive pandas probe shows `1.0` — a float-parse artifact of the probe, not the data; the same class of bug was fixed in the ledger's `proposed_month` and the master is clean).
-- **Year sources**: 68 distinct labelled values, all matching the documented vocabulary; the 16 `198X` Office rows carry codes `LECTURE-198X-001…016` as documented; 13 Volume + 4 under-investigation blanks labelled.
+- **Year sources**: 68 distinct labelled values, all matching the documented vocabulary; the 16 `198X` Office rows carry codes `LECTURE-198X-001…016` as documented; 13 Volume + 4 under-investigation + 2 REVISION1 ODS overrides (356/358) blanks labelled.
 - **Titles/notes**: 0 leading/trailing/double spaces, 0 mojibake/control characters, 0 TODO/FIXME/⚠ markers in notes.
 - **URLs**: 100% `https://`; no spaces; `reference_url_1` (53 values) is a strict subset of the 36 approved `veritas_streaming_urls.csv` rows.
 - **`legacy_tempid`**: 230 present (198 `LSyyyynn_n`, 32 legacy `SAT2011Q01-03` / `VOLxxx` archive ids — expected), 132 blank (candidate/edition-minted rows).

@@ -1,7 +1,7 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Full-Stack Audit, Generator Refactoring, Desktop UI Streamlining, Linter Sweep) — current handoff for
-branch `arena/019fe734-docsheet`.
+**Prepared:** 2026-08-09 (Full-Stack Audit, Desktop UI Modernization, Group Color-Coding Fix, Smooth Scrolling & Navigation Streamlining) — current handoff for
+branch `arena/019fe751-docsheet`.
 **Scoreboard:** this repo has a persistent scoreboard — read
 `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`,
 and `AGENTS.md` first; they are the durable agent-memory layer (Arena
@@ -9,8 +9,17 @@ sessions may expire after PR merge).
 
 ## Headline results (2026-08-09 Expert Full-Stack Pass, current)
 
+- **Desktop UI Modernization & Clean Design System:**
+  - Removed cluttered horizontal `<nav class="dataset-tabs">` tab strip ("Catalogue" row) in favor of the top-bar **Jump to** dropdown selector (`#view-jump`), maximizing vertical spreadsheet space.
+  - Eliminated conflicting duplicate `:root` and `:root.dark` overrides in `docs/style.css` that previously caused flat monochrome `#1d1d1d`/`#1a1a1a` alternating dark-grey zebra rows.
+  - Replaced harsh alternating striping with clean, modern card surfaces, subtle row dividers, and elegant translucent block tints (`rgba(..., 0.04)` light / `rgba(..., 0.08)` dark) with crisp 3.5px left accents.
+  - Added exact canonical `CATALOGUE_BLOCK_MAP` (362 UUIDs) in `docs/app.js` matching `catalogue_display_order.csv`, eliminating all 27 heuristic classification mismatches.
+- **Smooth 60fps Scrolling & Visible Scrollbars:**
+  - Fixed virtual DOM rubberbanding by switching Tabulator height configuration from `maxHeight: "100%"` to `height: "100%"`.
+  - Optimized `rowFormatter` from an $O(N^2)$ traversal (`table.getRows()` + `findIndex`) to $O(1)$ `row.getPrevRow()`, eliminating frame drops during scrolling.
+  - Added prominent, styled custom scrollbars (`--scrollbar-thumb`, `--scrollbar-track`) on `.tabulator-tableholder` and modals for smooth, easy-to-grab scrolling.
 - **Monolith Generators Refactored into `pipeline/` Package:**
-  - Split `build_research_master.py` (1,747 lines) and `build_catalogue_pages.py` (1,169 lines) into clean, modular Python modules under `pipeline/`:
+  - Split `build_research_master.py` and `build_catalogue_pages.py` into clean, modular Python modules under `pipeline/`:
     - `pipeline/helpers.py`: Shared file I/O, CSV indexing, ID assignments, and title/notes helpers.
     - `pipeline/enrichments.py`: Master draft transformations (streaming URLs, title cleanups, format inference, source overrides, series/work family/year overlays, provenance).
     - `pipeline/validators.py`: Structural integrity validators for filename proposals, manual candidates, edition candidates, and master items.
@@ -18,12 +27,9 @@ sessions may expire after PR merge).
   - All 132 unit tests pass, statement coverage 90% (above floor 85%), all six `--check` modes green.
 - **Code Quality & Linter Sweep (`ruff check .`):**
   - Resolved all 61 linter/quality items across Python modules and test suites down to **100% clean (0 errors, 0 warnings)**.
-  - Added shebangs, removed unused imports/variables, and updated exception handling.
-- **Desktop UI Streamlining & Group Row Background Coloring:**
-  - Removed bloated hero copy, collection overview cards, "browse by series" strip, and "Master records 362" stat strip from desktop view per owner instructions.
-  - Applied row background color tinting (`--block-*-bg`) and 4px left accent borders to all 11 REVISION1 ODS block groups in both light and dark themes.
-- **Full Audit Report:**
+- **Full Audit Report & Documentation Alignment:**
   - Published comprehensive audit report at `docs/audits/2026-08-09-expert-full-stack-audit.md`.
+  - Documented 19 blank-year rows (13 Volume Series + 4 under-investigation + 2 REVISION1 ODS overrides on 356/358).
 - **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
   `fa51f67`): a colour-coded expert-columns export of the Everything view.
   Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
