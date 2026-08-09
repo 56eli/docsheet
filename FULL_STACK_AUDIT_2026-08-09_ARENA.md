@@ -1,5 +1,15 @@
 # Full-Stack & Catalogue Audit — 2026-08-09 (Arena Deep Pass)
 
+> **⚠️ SUPERSEDED (2026-08-09, same day):** this pass audited branch
+> `arena/019fe5d4-docsheet` at `bbe8b01`, **before** the PR #40 merge
+> (`d731e1b`, current `main` HEAD). Its headline findings are all resolved at
+> HEAD — C-01 (owned casing; ledger + master now fully lowercase), D-04
+> (Amazon duplicates in `reference_url_1`; 0 remain), B-01 (hardcoded Spanish
+> rows; now input-driven, 38→38) and B-02 (`international_products` meta key;
+> now published). See
+> `FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` for the verified current
+> state and the remaining low-severity findings (B-04, D-09, D-10, DOC-06…09).
+
 **Auditor:** Arena.ai Full-Stack / Data-Engineering agent  
 **Repository:** `56eli/docsheet`  
 **Branch audited:** `arena/019fe5d4-docsheet` at `bbe8b01` (`main` HEAD — post D-01 collapse)  

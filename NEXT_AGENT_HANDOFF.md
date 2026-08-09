@@ -1,13 +1,14 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-08 (post-D-01-collapse verification) — current handoff for
-branch `arena/019fe2db-docsheet` (PR #39, open). See
-`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (current independent audit +
-§10 postscript with before/after counts) and the session log at the bottom of
-§6. The declared-current Arena audit
-(`FULL_STACK_AUDIT_2026-08-08_ARENA.md`) and the fresh-eyes pass
-(`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) remain at root; earlier
-2026-08-08 audits are in `archive/`. Headline results this session:
+**Prepared:** 2026-08-09 (post-PR-#40 verification) — current handoff for
+branch `arena/019fe5fc-docsheet` at `d731e1b` (`main` HEAD, PR #40 merged).
+The declared-current audit is now
+`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (verified at HEAD); the
+baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
+`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` remain at root, and
+`FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT` carry SUPERSEDED
+banners (pre-PR-#40 findings). See the session log at the bottom of §6.
+Headline results (2026-08-08 independent pass, baseline):
 - **Independent full-stack audit (`FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md`):**
   all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
   Python 3.11 venv (pandas 3.0.5 / coverage 7.15.4); independent pandas probes
@@ -709,3 +710,38 @@ resolutions, delivered as PR #37 (CI green, merged).
   curated `source_url_amazon`) was cleared 2026-08-09 (now 0 duplicates; all
   Amazon-only books have blank `reference_url_1`), so no dedupe candidate
   remains; the pattern is now consistent.
+
+## 2026-08-09 Full-stack deep-dive + owner-approved fixes (arena/019fe5fc-docsheet, current)
+
+Branch `arena/019fe5fc-docsheet` at `d731e1b` (PR #40 merged into `main`).
+Deep-dive audit (`FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`, read-only,
+then owner-approved fixes applied in this branch).
+
+- **Audit result:** all six `--check` modes green, 126/126 tests (one added),
+  91% coverage, HTTP/CSP/SRI clean, and the 08-09 Arena pass's headline
+  findings (C-01, D-04, B-01, B-02) verified **already resolved at HEAD**.
+  Remaining findings: B-04 (ledger `proposed_owned` validator missing),
+  D-09 (always-empty `Unnamed: 11` still published; `Unnamed: 5` junk column),
+  D-10 (raw CSV note rows), DOC-06…09 (stale audits/README/handoff).
+- **Fixes applied (owner-approved, all checks re-run green):**
+  - B-04: `build_research_master.py` now validates ledger `proposed_owned ∈
+    {"", "true", "false"}` before build (mirrors candidate validators); new
+    test `test_ledger_owned_casing_fails_build` (tests 125 → 126).
+  - D-09: `process_data.py` drops `Unnamed: 11` (view 8 → 7 columns; all six
+    always-empty columns now trimmed); `docs/app.js` `original` priority list
+    replaces dead `"other links"` with `notes`.
+  - D-10: raw CSV row 279 Discord URL moved out of the `format` column and row
+    373's `SETH HAS IT` note out of `title` into the notes column (header
+    added: `notes`); ledger raw mirrors + review_reason updated for both rows
+    (row 373 → "Owner note relocated to notes column; not a catalogue item.");
+    exclusions/migration-review artifacts regenerated.
+  - DOC-06…09: `FULL_STACK_AUDIT_2026-08-09_ARENA.md` + `EXTERNAL_AUDIT` got
+    SUPERSEDED banners; README documentation layout now declares the deep-dive
+    current, Everything-view wording softened (candidates only when intake
+    lanes are populated; Record Type filter hidden while all rows are
+    `master`), current-audit pointer updated; INSTRUCTIONS "5 → 6 always-empty
+    columns"; test counts 125 → 126 in README/INSTRUCTIONS.
+- **Left open for owner triage:** none from this pass. Watch items: the
+  ledger validator is the enforced fix for the C-01 class (silent `.lower()`
+  remains as belt-and-braces); `reference_url_1` Veritas links (53) are not
+  mirrored in the 191-product inventory (all live-checked OK, by design).

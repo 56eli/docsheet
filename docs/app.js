@@ -317,7 +317,7 @@
       moveAfter: { work_id: "legacy_tempid" },
     },
     original: {
-      priority: ["title", "tempid", "WE HAVE?", "original source", "format", "product link", "other links"],
+      priority: ["title", "tempid", "WE HAVE?", "original source", "notes", "format", "product link"],
       frozen: ["title"],
     },
     reviewOverview: { priority: ["review_sheet", "record_count", "purpose", "current_state", "source_file"], frozen: ["review_sheet"] },

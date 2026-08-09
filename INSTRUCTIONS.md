@@ -84,7 +84,7 @@ When you're ready to transform the data:
 
 ```bash
 pip install -r requirements.txt   # installs pandas
-python process_data.py            # regenerates docs/data.json (view trims 5 always-empty raw columns)
+python process_data.py            # regenerates docs/data.json (view trims 6 always-empty raw columns)
 python process_data.py --check    # verifies generated outputs match the source
 ```
 
@@ -170,14 +170,14 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 125 deterministic tests
+python -m unittest discover tests      # 126 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126).
 
 Current coverage: **91% total, every pipeline module ≥ 88%** (2026-08-08).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
@@ -210,7 +210,7 @@ inspect the artifact before accepting any live-source update.
 | File | Purpose |
 |---|---|
 | `hawkins archive clone - Sheet1.csv` | Your source data — never modified by the pipeline. |
-| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 5 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
+| `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 6 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Flexible Python runtime dependencies (pandas only, for now). |
 | `requirements-ci.txt` | Exact tested Python constraints used by CI and the raw-data updater. |
 | `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
