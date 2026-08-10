@@ -63,6 +63,7 @@ aspects:
   user_basis: null
   evidence:
   - README.md and INSTRUCTIONS.md reviewed against both pipeline entry points.
+  - Independent corroborating audit: docs/audits/2026-08-10-arena-019feb8c-full-audit.md.
   user_notes: null
   desired_direction: []
   next_actions: []

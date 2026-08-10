@@ -1,12 +1,12 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
-**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
-**Session branch:** `arena/019feb3e-docsheet`
+**Updated:** 2026-08-10 — Arena 019feb8c audit, audiobook ownership correction, and mobile-scroll repair
+**Audited baseline:** `f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5` (merged PR #66 baseline)
+**Session branch:** `arena/019feb8c-docsheet`
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feb3e-full-audit.md` for the complete multidisciplinary evidence, the byte-verification of the live deployment, and the current scoring.
+Read `docs/audits/2026-08-10-arena-019feb8c-full-audit.md` for the current independent full-stack evidence and verification limitations. It corroborates the existing 8.1 conditional-pass score without changing owner scores. The previous live byte-verification evidence remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
 
 ## State change this session
 
@@ -18,10 +18,11 @@ The 019feaf6 session repaired the P0 import, added Node/browser edition-formatte
 
 ## New findings this session (019feb3e)
 
+- **Mobile spreadsheet fix (019feb8c):** Spreadsheet mode now has an explicit two-axis Tabulator scroll owner and a non-scrolling dynamic-viewport shell, fixing the reported horizontal-pan failure and vertical rubber-banding. Regression coverage lives in `tests/ux-enhancements.spec.js`; details in `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
 - **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
 - **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
 - **P3 (agent-safe, DONE this session):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
-- **Branch work this session:** mobile-only bloat reduction (P1–P4, ~55% less mobile chrome, desktop untouched); retired the Original Spreadsheet view; blanked `owned` for master 373 + raw rows 297–end (312/25/26 → 282/13/68). A PR is being opened for merge.
+- **Ownership correction (019feb8c):** the PR #66 broad raw-ledger blanking was reverted because it did not target the promoted audiobook rows rendered in Everything and also altered unrelated media/print records. The actual promoted-edition sources now blank `owned` for every `format=audiobook`: 27/27 audiobook records are blank; overall ownership is 289 true / 25 false / 49 blank. See `review/OWNED_AUDIOBOOKS_2026-08-10.md`.
 - The CSS duplicate-`:root` issue flagged in an earlier audit is confirmed **fixed** (single `:root`/`:root.dark` token block).
 - `error_handling_logging` basis no longer says the formatter has an uncaught ReferenceError — that risk flag is retired; `activateView` exposes a visible fatal-render state on async load failures.
 

@@ -167,6 +167,29 @@ test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch
   await expect(browse).toBeVisible();
 });
 
+test('mobile Spreadsheet mode has an independent two-axis table scroller', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/docs/');
+  await expect(page.locator('#mobile-browse')).toBeVisible();
+
+  await page.locator('#mobile-browse-sheet-btn').click();
+  const holder = page.locator('#spreadsheet .tabulator-tableholder');
+  await expect(holder).toBeVisible();
+
+  const metrics = await holder.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+  }));
+  expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
+  expect(metrics.scrollHeight).toBeGreaterThan(metrics.clientHeight);
+
+  await holder.evaluate((element) => { element.scrollLeft = 160; element.scrollTop = 160; });
+  await expect.poll(() => holder.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await expect.poll(() => holder.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+});
+
 test('search redraw highlights the live query in visible cells', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
