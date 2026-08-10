@@ -1,6 +1,6 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019feb8c (independent full-stack audit)
+**Updated:** 2026-08-10 — Arena session 019feb8c (audit, audiobook correction, mobile-scroll repair)
 **Branch for this session:** `arena/019feb8c-docsheet`
 **Audited baseline:** `f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5` (merged PR #66 baseline)
 
@@ -10,16 +10,16 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019feb8c-full-audit.md`
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The baseline (`main` = `54b37f7`, PR #64) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js` confirmed this session); main CI is green; effective score **8.1/10, gate conditional_pass**.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`f7c58bc`, PR #66) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
 
-**This branch (`arena/019feb3e-docsheet`) adds on top of `main`:** a fresh full audit (gate 7.9 FAIL → 8.1 conditional_pass, broken-baseline blocker closed); removal of the residual `.dataset-tab` dead code; mobile-only bloat reduction (P1–P4, ~55% less mobile chrome); retirement of the Original Spreadsheet view; and owner-directed `owned` edits (master 373 + raw rows 297–end blanked → 282 true / 13 false / 68 blank). Full evidence: `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`; data-integrity answers (links/Vimeo/owned): `review/LINKS_VIMEO_OWNED_FINDINGS.md`; mobile plan: `review/MOBILE_BROWSE_PLAN.md`.
+**This branch (`arena/019feb8c-docsheet`) adds:** an independent declared-current audit, an owner-directed audiobook ownership correction, a mobile Spreadsheet scrolling repair, and synchronized documentation/handoff updates. The earlier broad raw-ledger ownership blanking was restored because it changed unrelated items and missed the rendered promoted audiobooks; now all 27 `format=audiobook` records are blank/not stated for `owned`. Details: `docs/audits/2026-08-10-arena-019feb8c-full-audit.md`, `review/OWNED_AUDIOBOOKS_2026-08-10.md`, and `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
 
-A PR from this branch is being opened for review + merge. After merge, the live site gains the mobile redesign, loses the Original Spreadsheet tab, and reflects the new `owned` values.
+This branch is ready for a reviewable PR and merge after required CI checks pass.
 
 ## 2. What this branch changes (on top of `main`)
 
@@ -27,8 +27,9 @@ A PR from this branch is being opened for review + merge. After merge, the live 
 - **Dead-code removal:** `.dataset-tab`/`.dataset-tabs`/`.tab-group` JS (4 no-op lookups + arrow-key block) and CSS removed (zero matching elements).
 - **Mobile bloat reduction (P1–P4):** single-row icon topbar, dismissible Browse intro, collapsible discovery rails, condensed view summary — all `≤720px`, desktop untouched.
 - **Retire Original Spreadsheet view:** removed from `config.js` + UI + specs; `data.json` still generated but unsurfaced.
-- **Owned edits:** blanked `owned` for master 373 and the 41 ledger item rows at raw ≥ 297 (edited the reviewed source, then rebuilt).
-- Full module-graph delivery contract refreshed (fixpoint). 149/149 tests, 3/3 Node, 6/6 checks, 90% coverage, all browser specs valid.
+- **Owned correction:** restored the unrelated prior raw-ledger edits, then cleared `proposed_owned` at the actual promoted audiobook sources (21 edition candidates plus one manual candidate). Rebuilt output: all 27 audiobooks blank/not stated; no non-audiobook ownership value is changed by this correction.
+- **Mobile Spreadsheet scrolling:** the dynamic-viewport shell no longer scrolls; Tabulator’s table holder explicitly owns touch-enabled horizontal and vertical scrolling, covered by a 390×844 Playwright regression spec.
+- Full module-graph delivery contract refreshed (fixpoint). 149/149 Python tests, 3/3 Node tests, 6/6 checks, 90% coverage; browser specs await CI because local Chromium installation is sandbox-network-blocked.
 
 ### Remaining findings
 

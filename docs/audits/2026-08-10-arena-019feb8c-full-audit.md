@@ -194,6 +194,19 @@ ordering, not code validation:
 | P2 | Increase targeted coverage in `pipeline/helpers.py` (78%) and `pipeline/relationships.py` (82%) | Agent-safe engineering follow-up |
 | P3 | Resolve issue #18 when Drive access is available | Repository owner |
 
+## Post-audit owner corrections
+
+Two owner-directed corrections were completed after the initial audit evidence:
+
+1. The earlier broad owned-status edit was traced to an incorrect source layer.
+   Unrelated ledger values were restored, while all 27 promoted audiobook records
+   now correctly have blank/not-stated ownership at their true edition-candidate
+   sources. See `review/OWNED_AUDIOBOOKS_2026-08-10.md`.
+2. Reported phone Spreadsheet panning was fixed by giving Tabulator’s table holder
+   explicit touch-enabled two-axis scrolling and locking the document shell to the
+   dynamic viewport. A 390×844 Playwright regression test covers both axes. See
+   `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
+
 ## Conclusion
 
 DocSheet is a robust reviewed catalogue pipeline with a thoughtful, accessible

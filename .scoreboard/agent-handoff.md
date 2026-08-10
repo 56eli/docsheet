@@ -1,6 +1,6 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feb8c independent full-stack audit
+**Updated:** 2026-08-10 — Arena 019feb8c audit, audiobook ownership correction, and mobile-scroll repair
 **Audited baseline:** `f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5` (merged PR #66 baseline)
 **Session branch:** `arena/019feb8c-docsheet`
 
