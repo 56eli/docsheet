@@ -1435,14 +1435,6 @@ import {
     if (mobileBrowse) mobileBrowse.hidden = true;
     spreadsheet.hidden = false;
     spreadsheet.innerHTML = `<div class="table-loading" role="status"><span class="table-loading-text">Loading ${view.label.toLowerCase()}…</span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line skeleton-line-short" aria-hidden="true"></span></div>`;
-    document.querySelectorAll(".dataset-tab").forEach((tab) => {
-      const selected = tab.dataset.view === viewName;
-      tab.classList.toggle("active", selected);
-      tab.setAttribute("aria-selected", String(selected));
-      // Roving tabindex: only the active tab stays in the Tab order
-      // (Phase 2 a11y, 2026-08-08).
-      tab.setAttribute("tabindex", selected ? "0" : "-1");
-    });
 
     try {
       // Wait for the catalogue block map so the first render uses the
@@ -1641,28 +1633,6 @@ import {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); closeColumnMenu(); }
     });
-    document.querySelectorAll(".dataset-tab").forEach((tab) => {
-      tab.addEventListener("click", () => activateView(tab.dataset.view));
-    });
-    // Arrow-key roving navigation across the grouped tab bar (Phase 2 a11y).
-    const tabsNav = document.querySelector(".dataset-tabs");
-    if (tabsNav) {
-      tabsNav.addEventListener("keydown", (e) => {
-        const list = [...document.querySelectorAll(".dataset-tab")];
-        if (list.length === 0) return;
-        const current = list.findIndex((tab) => tab.dataset.view === activeView);
-        let target = -1;
-        if (e.key === "ArrowRight") target = (current + 1) % list.length;
-        else if (e.key === "ArrowLeft") target = (current - 1 + list.length) % list.length;
-        else if (e.key === "Home") target = 0;
-        else if (e.key === "End") target = list.length - 1;
-        else return;
-        e.preventDefault();
-        const tab = list[target];
-        tab.focus();
-        activateView(tab.dataset.view);
-      });
-    }
     await activateView(activeView);
     document.addEventListener("keydown", handleGlobalShortcuts);
   }

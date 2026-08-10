@@ -221,3 +221,14 @@ No PII, auth, cookies, backend, or database. The primary risk surface is supply/
 ## Final assessment
 
 The catalogue data is trustworthy and the architecture is fundamentally sound. The incident that previously failed the gate — a deployed-but-broken frontend — is now closed: the repair is on `main`, CI is green, and I have proved the live deployment is byte-identical to the source and carries the fix. The project is at a passing readiness level. The work that remains is preventive delivery discipline (CI-gated Pages) and a few low-severity cleanup/quality items, none of which block the current healthy live site.
+
+## Follow-up actioned in-session (P3)
+
+After the audit, the owner selected the `.dataset-tab` dead-code removal (P3 above). It is now done:
+
+- Removed the 4 no-op `.dataset-tab`/`.dataset-tabs` JS lookups (the active/aria-state update in `activateView`, the click handler, and the arrow-key roving-navigation block) and all matching `.dataset-tab`/`.dataset-tabs`/`.tab-group`/`.tab-group-label` CSS — every rule had zero matching elements after the "Jump to" dropdown replaced the tab bar.
+- `app.js` 1,798 → 1,768 lines; `style.css` 2,137 → 2,041 lines (net −126 lines).
+- Refreshed the frontend delivery contract: `app.js?v=`, `style.css?v=`, the footer build ID, and the `build-manifest.json` asset hashes (modules and data payloads unchanged).
+- Verification stays green: 149/149 Python tests (including all 6 `FrontendDeliveryContractTests`), 3/3 Node module tests, all six generator `--check` modes, JS syntax for every file, and `npm audit`/`pip check` clean.
+
+The remaining open items are unchanged: owner CI-gated Pages + visual acceptance (P1/owner), and the agent-safe quick wins of adding `node --check docs/js/*.js` and an ESLint `no-undef` step to CI (P2).

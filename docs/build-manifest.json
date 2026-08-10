@@ -1,10 +1,10 @@
 {
-  "revision": "live-search-versioned-module-graph-019feaf6-20260810.1",
+  "revision": "remove-dead-tabbar-019feb3e-2026-08-10.1",
   "source_baseline": "aa1f1b76465e140b9cb62761d365765f0541d7d8",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "caf0106271013f8fb2bef42482ec4ce13fe7bc5da26fa3404140ecd465caebb3",
-    "style.css": "f58adda186fa282c65af9d6ce894de5909b6734cec7c19ebde9aff833dfd727c"
+    "app.js": "e3006ddb94871c6996e4b4ca4ccf81ede046fc504d648ece7f999a6029261d09",
+    "style.css": "309214a6f6b0e8745c4b2557c79cd3868a52d787a64bf0ca393cd16237298291"
   },
   "modules": {
     "js/config.js": "5189225f358d678fe714ee445afeb804d9a0baa44f6bcdf01618ab10ec8fd49a",

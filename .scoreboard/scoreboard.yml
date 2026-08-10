@@ -137,19 +137,18 @@ aspects:
   status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 'The P0 import, redundant imports, and absent-ID UI paths are repaired with executable Node/browser coverage; Ruff/ESLint remain optional
-    tooling gaps. A 2026-08-10 scan found residual .dataset-tab tab-bar code (4 app.js lookups + CSS) with zero matching elements.'
+  ai_basis: 'The P0 import, redundant imports, and absent-ID UI paths are repaired with executable Node/browser coverage; the residual .dataset-tab
+    tab-bar dead code (4 app.js lookups + ~96 CSS lines, zero matching elements) was removed in session 019feb3e. Ruff/ESLint remain optional tooling gaps.'
   user_basis: null
   evidence:
   - Node tests execute the edition formatter, live-query getter, and removed-UI guard.
   - All app.js element lookups resolve to current HTML IDs.
   - PR CI run 31378465750 passes 149 offline, 3 Node, and 28 browser tests.
-  - '2026-08-10 audit: app.js lines 1438/1644/1648/1651 and style.css lines 361-389 reference .dataset-tab/.dataset-tabs, which have zero
-    matches in index.html (replaced by the Jump-to dropdown).'
+  - '2026-08-10 (019feb3e): removed the .dataset-tab/.dataset-tabs/.tab-group JS (4 lookups + arrow-key block) and CSS; app.js 1798->1768, style.css
+    2137->2041; full 149-test suite + delivery contract + Node tests stay green.'
   user_notes: null
   desired_direction: []
   next_actions:
-  - Remove the residual .dataset-tab JS lookups (incl. the arrow-key roving block) and the tab-bar CSS; keep the Node/browser contract green.
   - Optionally add ESLint no-undef; executable regressions already cover the incidents.
   risk_flags: []
   files_reviewed:

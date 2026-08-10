@@ -146,3 +146,11 @@ Fresh, first-hand multidisciplinary audit of the current `main` HEAD (`54b37f7` 
 | 2026-08-10 | ci_cd | 7 | 7 | null | 7 | Arena 019feb3e | Score unchanged; added agent-safe next_actions (node --check docs/js/*.js, ESLint no-undef) and a module-syntax/lint risk flag. |
 | 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; new finding: residual .dataset-tab dead code (4 app.js lookups + CSS, zero matching elements). |
 | 2026-08-10 | overall_effective_score | 7.9 | 8.1 | preserved | 8.1 | Arena 019feb3e | Recomputed 694/86; gate fail→conditional_pass (broken baseline resolved; conditional on owner CI-gated Pages + visual acceptance). |
+
+## 2026-08-10 — Arena 019feb3e dead-code cleanup (user-selected follow-up)
+
+User selected the `.dataset-tab` dead-code removal. Removed the 4 no-op JS lookups + arrow-key roving block from app.js and all `.dataset-tab`/`.dataset-tabs`/`.tab-group` CSS (zero matching elements after the Jump-to dropdown replaced the tab bar). Refreshed the frontend delivery contract (content versions, visible build ID, manifest hashes). All user scores preserved; no score change (code_hygiene stays 8, the finding was cosmetic debt).
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; residual .dataset-tab tab-bar dead code removed (app.js 1798→1768, style.css 2137→2041; 149 tests + delivery contract + Node tests green). |
