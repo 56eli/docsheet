@@ -7,7 +7,7 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 - **History:** [`.scoreboard/history.md`](.scoreboard/history.md)
 - **Current handoff:** [`.scoreboard/agent-handoff.md`](.scoreboard/agent-handoff.md)
 - **Owner workflow actions:** [`.scoreboard/manual-workflow-edits.md`](.scoreboard/manual-workflow-edits.md)
-- **Current audit:** [`docs/audits/2026-08-10-arena-019feaf6-full-audit.md`](docs/audits/2026-08-10-arena-019feaf6-full-audit.md)
+- **Current audit:** [`docs/audits/2026-08-10-arena-019feb3e-full-audit.md`](docs/audits/2026-08-10-arena-019feb3e-full-audit.md)
 
 ## Scoring policy
 
@@ -19,19 +19,19 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 ## Current verdict
 
-**Repo-ready gate: FAIL — 7.9/10 effective (678 weighted points / 86).**
+**Repo-ready gate: CONDITIONAL PASS — 8.1/10 effective (694 weighted points / 86).**
 
-The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the P0, removes dormant UI, hardens shortcuts accessibility, restores live search highlights, and hash-versions the full module graph. PR CI run `31378465750` passes 149 offline, 3 Node, and 28 browser tests. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
+The data pipeline is healthy. **The previously release-blocking frontend defect is fixed, merged to `main`, and verified live** (session 019feb3e): PR #64 (`54b37f7`) is deployed (Pages built @10:34Z), main CI run `31379726756` is green, and the public `build-manifest.json` + deployed `columns.js` are byte-verified to carry the P0 fix. The broken-baseline blocker is closed. The gate is *conditional* only on the owner-applied CI-gated (Actions) Pages switch and explicit owner visual acceptance — until Pages is gated, a future broken commit can still deploy before CI fails.
 
 ## Current priorities
 
 | Priority | Aspect | Immediate action |
 |---:|---|---|
-| 8 | Deployment readiness | Merge/deploy the green repair, verify exact build, then owner gates Pages on CI |
-| 5 | GitHub Pages presentation | Verify the exact public build and obtain owner acceptance |
-| 4 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
-| 3 | Error handling / logging | Add a generic visible fatal-render state for async table failures |
+| 8 | CI/CD | Owner: gate Pages on CI; agent-safe: add `node --check docs/js/*.js` + ESLint `no-undef` to ci.yml |
+| 5 | GitHub Pages presentation | Owner: give explicit visual acceptance of the now-live, byte-verified build |
+| 4 | Deployment readiness | Owner: switch Pages from legacy to Actions `workflow` build type (deploy depends on green CI) |
 | 3 | Content quality | Resolve the owner-scored gap when new content direction is provided |
+| 2 | Code hygiene | Remove residual `.dataset-tab` dead code (4 app.js lookups + CSS, zero matching elements) |
 | — | Issue #18 | Ownership cross-check needs owner Drive access |
 
 ## Scoreboard table
@@ -45,23 +45,23 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Error handling / logging | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
+| Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| GitHub Pages presentation | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
+| GitHub Pages presentation | 5 | 8 | 8 | — | 8 | 0 | 0 | needs_owner_acceptance |
 | UX / usability | 4 | 8 | 8 | 8 | 8 | 0 | 0 | healthy |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy |
 | Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Deployment readiness | 4 | 8 | 6 | — | 6 | 2 | 8 | blocked_manual_workflow_edit |
+| Deployment readiness | 4 | 8 | 8 | — | 8 | 0 | 0 | needs_owner_action |
 | Agent readiness | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Auditability | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo transparency | 3 | 8 | 7 | 7 | 7 | 1 | 3 | needs_work |
-| **Overall effective** | **86** | **8** | — | — | **7.9** | — | — | **fail** |
+| **Overall effective** | **86** | **8** | — | — | **8.1** | — | — | **conditional_pass** |
 
 ## User-score notes
 
@@ -75,19 +75,20 @@ No other user score is inferred.
 
 ## Critical risk flags
 
-1. **Broken public baseline:** the repair passes PR CI, but legacy Pages still serves `aa1f1b7` until merge/deploy.
-2. **Ungated delivery:** Pages API reports legacy `main:/docs`; deployment can outrun CI.
-3. **Owner acceptance pending:** the exact public build still needs hash/screenshot verification and explicit acceptance.
+1. **RESOLVED (2026-08-10):** the broken public baseline is fixed, merged, deployed, and byte-verified live; this flag is retired.
+2. **Ungated delivery (owner action):** Pages API still reports legacy `main:/docs`; deployment can outrun CI until the owner switches to Actions-based gated Pages.
+3. **Owner acceptance pending:** the live build is hash-verified, but explicit owner visual acceptance is still required (`acceptance: owner_visual_review_required`).
 4. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
+5. **Static-quality gap (agent-safe):** CI does not syntax-check `docs/js/*.js` and has no `no-undef` lint — both would catch the next P0-class defect pre-browser.
 
 ## Quality gate details
 
-- Overall 7.9 < required 8: **fail**.
+- Overall 8.1 ≥ required 8: **pass** (conditional on owner Pages-gating + acceptance).
 - Security/privacy 8 ≥ 8: pass.
 - Tests 9 ≥ 7: pass.
 - README 8 ≥ 7: pass.
 - CI/CD 7 ≥ 7: pass.
 - Agent readiness 8 ≥ 8: pass.
-- Remaining blockers are the overall score, legacy ungated deployment, exact live-build verification, and owner acceptance.
+- Remaining items are the owner-applied CI-gated Pages switch, owner visual acceptance, and the agent-safe quick wins (module syntax check, ESLint, dead-code removal).
 
-See the current audit for full evidence, verification limitations, independent data counts, and the remediation sequence.
+See the current audit for full evidence, verification limitations, independent data counts, and the recommended sequence.

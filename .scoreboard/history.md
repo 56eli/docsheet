@@ -131,3 +131,18 @@ User-selected P1 work restored dynamic search highlighting and made every local 
 | 2026-08-10 | architecture | 8 | 9 | null | 9 | Arena 019feaf6 | Every local ES-module edge now carries its target hash; delivery contract traverses and validates the complete graph. |
 | 2026-08-10 | performance | 7 | 8 | null | 8 | Arena 019feaf6 | Nested/top-level imports now share one hash-versioned URL identity, eliminating duplicate/stale module loads. |
 | 2026-08-10 | overall_effective_score | 7.8 | 7.9 | preserved | 7.9 | Arena 019feaf6 | Recomputed 678/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |
+
+## 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
+
+Fresh, first-hand multidisciplinary audit of the current `main` HEAD (`54b37f7` = PR #64 merge). Full evidence in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`. All user scores preserved; AI scores changed only after evidence.
+
+**Unique this session:** used the network fetch tool (bypassing the sandbox TLS block) to confirm the public `build-manifest.json` is byte-identical to the committed manifest and the deployed `columns.js` carries the `isExtraEditionRow` import — closing the "broken public baseline" blocker that failed the prior gate.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | deployment_readiness | 6 | 8 | null | 8 | Arena 019feb3e | PR #64 deployed (Pages built 54b37f7 @10:34Z); main CI 31379726756 green; live manifest byte-verified. Pages still legacy/ungated (owner action). |
+| 2026-08-10 | github_pages_presentation | 7 | 8 | null | 8 | Arena 019feb3e | Deployed columns.js verified to carry the P0 import; live build-manifest byte-matches source. Owner acceptance still pending. |
+| 2026-08-10 | error_handling_logging | 7 | 8 | null | 8 | Arena 019feb3e | Formatter ReferenceError confirmed fixed and verified live; activateView exposes a visible fatal-render state on async load failure. |
+| 2026-08-10 | ci_cd | 7 | 7 | null | 7 | Arena 019feb3e | Score unchanged; added agent-safe next_actions (node --check docs/js/*.js, ESLint no-undef) and a module-syntax/lint risk flag. |
+| 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; new finding: residual .dataset-tab dead code (4 app.js lookups + CSS, zero matching elements). |
+| 2026-08-10 | overall_effective_score | 7.9 | 8.1 | preserved | 8.1 | Arena 019feb3e | Recomputed 694/86; gate fail→conditional_pass (broken baseline resolved; conditional on owner CI-gated Pages + visual acceptance). |

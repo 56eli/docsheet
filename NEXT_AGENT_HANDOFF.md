@@ -1,8 +1,8 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019feaf6
-**Branch for this session:** `arena/019feaf6-docsheet`
-**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
+**Updated:** 2026-08-10 — Arena session 019feb3e (post-PR-#64, live-verified audit)
+**Branch for this session:** `arena/019feb3e-docsheet`
+**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
 
 ## Read first
 
@@ -10,12 +10,12 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feaf6-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression and was deployed before CI; PR #64 now repairs that incident plus all selected cleanup and P1 findings.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy and **the previously release-blocking frontend defect is now fixed, merged to `main`, and verified live** (session 019feb3e). PR #64 (`54b37f7`) is deployed (Pages built @10:34Z), main CI run `31379726756` is green, and the public `build-manifest.json` + deployed `columns.js` are byte-verified to carry the P0 fix. Effective score is **8.1/10, gate conditional_pass** — conditional only on the owner switching Pages to CI-gated (Actions) deployment and giving explicit visual acceptance. The remaining engineering work is preventive (CI module syntax-check, ESLint `no-undef`, removal of residual `.dataset-tab` dead code).
 
 ## 2. Incident and completed frontend work
 
@@ -158,9 +158,10 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 ## Open work in priority order
 
-1. Merge/deploy PR #64, verify the exact live build revision/hashes/screenshots, and obtain owner acceptance.
-2. Owner: require CI and gate Pages deployment.
-3. Optionally add axe-core/Lighthouse automation.
-4. Resolve GitHub issue #18 when owner Drive access is available.
+1. **Owner:** switch Pages from legacy `main:/docs` to the Actions `workflow` build type so deploy depends on a green `Validate data pipeline and site` job (`.scoreboard/manual-workflow-edits.md`). This is the single remaining delivery risk.
+2. **Owner:** give explicit visual acceptance of the now-live, byte-verified build.
+3. **Agent-safe quick wins:** add `node --check docs/js/*.js` + ESLint `no-undef` to `ci.yml`; remove the residual `.dataset-tab` dead code (4 `app.js` lookups + CSS, zero matching elements).
+4. Optionally add axe-core/Lighthouse automation; raise `helpers.py`/`relationships.py` coverage.
+5. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.

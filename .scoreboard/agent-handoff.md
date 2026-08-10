@@ -1,49 +1,36 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feaf6 full audit + P0/cleanup/P1 implementation
-**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
-**Current branch head:** PR #64 on `arena/019feaf6-docsheet`
+**Updated:** 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
+**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
+**Session branch:** `arena/019feb3e-docsheet`
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for the complete multidisciplinary evidence and baseline scoring.
+Read `docs/audits/2026-08-10-arena-019feb3e-full-audit.md` for the complete multidisciplinary evidence, the byte-verification of the live deployment, and the current scoring.
 
-## Baseline incident
+## State change this session
 
-PR #63's extracted `columns.js` called `isExtraEditionRow` without importing it. Legacy Pages deployed the commit before main CI run `31373716254` failed all 25 browser specs with no rendered rows. Static hashes proved byte consistency but did not prove JavaScript execution.
+PR #64 is **merged to `main`, deployed, and verified live.** GitHub Pages built `54b37f7` @10:34Z; main CI run `31379726756` passed in 1m31s. Using the network fetch tool (which bypasses the sandbox TLS block that stopped prior sessions), this audit confirmed the public `build-manifest.json` is byte-identical to the committed manifest and the deployed `columns.js` contains the `isExtraEditionRow` import. **The broken-baseline blocker from the 019feaf6 audit is closed.** Effective score is **8.1/10 (694/86), gate conditional_pass.**
 
-## Completed on PR #64
+## What was true on PR #64 (preserved for context)
 
-- Restored the missing import and removed redundant imports.
-- Added Node/browser edition-formatter execution coverage.
-- Removed all 10 absent-ID overview/stats/review-nav paths and 411 net lines.
-- Added a Node guard rejecting return of the removed UI tokens.
-- Completed shortcuts-dialog `aria-modal`/labelledby, initial focus, Tab trap, Escape close, and focus restoration.
-- Fixed search highlighting by passing a live query getter to column formatters.
-- Added a browser assertion that visible marks update after search.
-- Hash-versioned every local ES-module edge so nested and top-level imports resolve to one module identity.
-- Extended the delivery contract to traverse every local app/module import and reject unversioned, escaping, unmanifested, or stale edges.
-- Refreshed app/module/style hashes, visible build ID, and `docs/build-manifest.json`.
+The 019feaf6 session repaired the P0 import, added Node/browser edition-formatter coverage, removed the 10 absent-ID overview/stats/review-nav UI paths (411 net lines), completed the shortcuts-dialog focus lifecycle, wired live search highlights via a query getter, hash-versioned every ES-module edge, extended the delivery contract to traverse the full graph, and refreshed the manifest. PR CI `31378465750` passed 149 offline + 3 Node + 28 browser tests.
 
-PR CI run `31378465750` passes:
+## New findings this session (019feb3e)
 
-- all six generator checks;
-- 149/149 offline Python tests;
-- 90% coverage across 2,327 statements;
-- 3/3 Node frontend tests;
-- 28/28 Playwright specs;
-- Python/JavaScript syntax and dependency installation.
+- **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
+- **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
+- **P3 (agent-safe):** Residual `.dataset-tab` tab-bar dead code — 4 lookups in `app.js` (1438/1644/1648/1651) + arrow-key block + CSS (361–389), zero matching elements (replaced by the Jump-to dropdown).
+- The CSS duplicate-`:root` issue flagged in an earlier audit is confirmed **fixed** (single `:root`/`:root.dark` token block).
+- `error_handling_logging` basis no longer says the formatter has an uncaught ReferenceError — that risk flag is retired; `activateView` exposes a visible fatal-render state on async load failures.
 
-## Current scores and remaining risks
+## Remaining risks (priority order)
 
-Canonical effective score is **7.9/10** (678/86), gate **FAIL** only because the total remains below 8 and deployment risks remain.
-
-- Public Pages still serves the broken `aa1f1b7` baseline until PR #64 merges/deploys.
-- Pages remains legacy `main:/docs` and is not CI-gated; owner instructions are in `.scoreboard/manual-workflow-edits.md`.
-- Exact live hashes/screenshots and explicit owner acceptance remain pending.
-- CSP `style-src 'unsafe-inline'` is low-severity debt.
-- Optional future automation: axe-core, Lighthouse, ESLint.
-- Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
+1. **Owner:** switch Pages from legacy `main:/docs` to the Actions `workflow` build type so deploy depends on a green CI job (`.scoreboard/manual-workflow-edits.md`). This is the single remaining delivery risk.
+2. **Owner:** give explicit visual acceptance of the now-live, byte-verified build.
+3. **Agent-safe quick wins:** module syntax check in CI, ESLint `no-undef`, remove `.dataset-tab` dead code.
+4. Optional: axe-core, Lighthouse/Web-Vitals budget, raise `helpers.py`/`relationships.py` coverage.
+5. Issue #18 ownership cross-check still needs owner Drive access.
 
 All recorded user scores were preserved unchanged.
 
@@ -67,3 +54,4 @@ npm run test:e2e
 ```
 
 Never hand-edit generated master/Pages data. Never edit `.github/workflows/*` without explicit owner authorization.
+
