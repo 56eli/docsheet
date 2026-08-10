@@ -1703,7 +1703,10 @@ import {
       }
       return;
     }
-    if (event.key === "/") {
+    if (event.key === "?" || (event.key === "/" && event.shiftKey)) {
+      event.preventDefault();
+      toggleShortcutsHelp();
+    } else if (event.key === "/") {
       event.preventDefault();
       searchInput.focus();
       searchInput.select();
@@ -1716,9 +1719,6 @@ import {
     } else if (event.key === "y") {
       event.preventDefault();
       if (currentRowData) copyFilename(currentRowData);
-    } else if (event.key === "?") {
-      event.preventDefault();
-      toggleShortcutsHelp();
     }
   }
 
