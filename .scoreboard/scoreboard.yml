@@ -4,7 +4,7 @@
 meta:
   project_name: docsheet
   scoreboard_version: 1
-  last_updated: "2026-08-09"
+  last_updated: "2026-08-10"
   stale_after_days: 45
   agent_model: arena_sandboxed_agent
   effective_score_policy: user_score_overrides_ai_score
