@@ -173,7 +173,7 @@ Frontend      docs/index.html + app.js (1,798 ln) + 7 ES modules + style.css (2,
 | Proposed filenames | **363; 363 unique**; 0 blank |
 | Item types | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other |
 | Formats | 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming |
-| Ownership | 312 true / 25 false / 26 blank (tri-state) |
+| Ownership | 282 true / 13 false / 68 blank (tri-state) |
 | Non-HTTPS master URLs | **0** |
 | Record types | 363 `master` (no candidates currently queued) |
 | Veritas / Hay House / Audible products | 191 / 29 / 26 |

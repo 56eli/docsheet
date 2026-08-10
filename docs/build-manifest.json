@@ -1,22 +1,22 @@
 {
-  "revision": "mobile-bloat-reduction-019feb3e-2026-08-10.1",
+  "revision": "remove-original-view-owned-edits-019feb3e-2026-08-10.1",
   "source_baseline": "aa1f1b76465e140b9cb62761d365765f0541d7d8",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "0e5d4333bbb675266398af6e63be865cb85002b340178765beace5926f475a25",
-    "style.css": "5da9feff6603f667735d6550c310afa26fac21371a87088a5da8124933a6ae5d"
+    "app.js": "6be6c651d8e7401181f12b0be41bad4771c7a252d6bf938ee2e98355a638b8f3",
+    "style.css": "abeca31393c93c43775333134b8e6f2d0ea34a5228119232b5053b7b3eb3834b"
   },
   "modules": {
-    "js/config.js": "5189225f358d678fe714ee445afeb804d9a0baa44f6bcdf01618ab10ec8fd49a",
-    "js/formatters.js": "ee2398b737f43b7abf1e9150e7597a5978c97a8628405da9e9e38907455866fe",
+    "js/config.js": "94f497018c49c6660a04984a5a89bc59d1a9884f881c0a6ed329615335ee9aef",
+    "js/formatters.js": "8c3288758a6406c265fe17a460fc571c98fca7bcae4f90a433205c381c545d3d",
     "js/data-utils.js": "0288c69670bba17c88d29c29086fd382f2315f86dd68e37a9333981dca50a306",
-    "js/mobile.js": "ac823d0b9eb56b1a63dd43449f0192776836780b799ede1f3446abebc5bc7579",
-    "js/columns.js": "9a29e21695021e30ba09b81f0367c58cdcaca89b748ae8f0f16e043b978590c1",
-    "js/filter-utils.js": "ad7cda5641cf2587f93f265724617bc259ae430fb136b731b89ecceaa432e2a8",
-    "js/view-utils.js": "7d59133a7f37e219096595c9ee9acddfcb29969b5d0c056d3876eb9213686c3d"
+    "js/mobile.js": "326d76c01d1e1390d7296b90493dae68405cc43757139ee1b61e3682f239ca5d",
+    "js/columns.js": "d185ba911b424e323e2db66bc3fec1c2e2740ae6c9d4cad0ce999aa1742efafd",
+    "js/filter-utils.js": "e824f86e241cca4b774b333b24d5ae6eeb1b1a80f6f2a3d940163577918789f6",
+    "js/view-utils.js": "3bd210e98a0b5b6562f0adae6cb6cb5bd3e03c1b215c4ae3da954129ebdc9685"
   },
   "data": {
-    "master.json": "5bc032a378e4ebea63d9f59815c9b745d232ad32a99991cfe2e347ea849328e0",
+    "master.json": "8af0834542352f327f03bf2603741ee7cc70464ab90520d513b41fbc4bd4a775",
     "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
     "catalogue-block-map.json": "810ec37280a36a7225f4b228f7249aa5ae6275a389db88760214785050765f93"
   },

@@ -7,10 +7,10 @@ import {
   COLUMN_LABELS, STATUS_FIELDS, FORMAT_FIELDS,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, humanizeField,
-} from "./config.js?v=5189225f358d";
+} from "./config.js?v=94f497018c49";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
-} from "./formatters.js?v=ee2398b737f4";
+} from "./formatters.js?v=8c3288758a64";
 import { isExtraEditionRow } from "./data-utils.js?v=0288c69670bb";
 
 /**

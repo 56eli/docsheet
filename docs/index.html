@@ -18,7 +18,7 @@
 
   <!-- Local assets are content-versioned so a Pages deploy cannot pair fresh
        data/HTML with stale browser-cached presentation code. -->
-  <link rel="stylesheet" href="style.css?v=5da9feff6603">
+  <link rel="stylesheet" href="style.css?v=abeca31393c9">
 
   <!-- Apply dark mode before first paint (no flash of white). -->
   <script>
@@ -82,7 +82,6 @@
           <label><input type="checkbox" id="compact-mode-toggle"> Compact rows</label>
           <label><input type="checkbox" id="show-summary-toggle"> Show summary cards</label>
           <label><input type="checkbox" id="show-filters-toggle"> Show filters panel</label>
-          <label id="blank-rows-toggle-wrap" hidden title="The raw sheet contains 31 blank visual-separator rows; hidden by default"><input type="checkbox" id="show-blank-rows-toggle"> Show blank separator rows</label>
           <button id="reset-view-btn" type="button">Reset current view</button>
         </div>
       </div>
@@ -229,12 +228,12 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
-    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-0e5d4333bbb6/css-5da9feff6603</code></a>
+    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-6be6c651d8e7/css-abeca31393c9</code></a>
     <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->
   <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
-  <script type="module" src="app.js?v=0e5d4333bbb6"></script>
+  <script type="module" src="app.js?v=6be6c651d8e7"></script>
 </body>
 </html>

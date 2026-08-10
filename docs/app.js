@@ -13,26 +13,26 @@ import {
   COLUMN_LABELS, STATUS_FIELDS,
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js?v=5189225f358d";
+} from "./js/config.js?v=94f497018c49";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=ee2398b737f4";
+} from "./js/formatters.js?v=8c3288758a64";
 import {
   mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import { mobileEditionCard } from "./js/mobile.js?v=ac823d0b9eb5";
+import { mobileEditionCard } from "./js/mobile.js?v=326d76c01d1e";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=9a29e2169502";
+} from "./js/columns.js?v=d185ba911b42";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
-} from "./js/filter-utils.js?v=ad7cda5641cf";
+} from "./js/filter-utils.js?v=e824f86e241c";
 import {
   updateViewSummary, renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=7d59133a7f37";
+} from "./js/view-utils.js?v=3bd210e98a0b";
 
 (function () {
   "use strict";
@@ -51,8 +51,6 @@ import {
   const compactModeToggle = $("compact-mode-toggle");
   const showSummaryToggle = $("show-summary-toggle");
   const showFiltersToggle = $("show-filters-toggle");
-  const showBlankRowsToggle = $("show-blank-rows-toggle");
-  const blankRowsToggleWrap = $("blank-rows-toggle-wrap");
   const masterBrowseToggle = $("master-browse-toggle");
   const seriesLanding = $("series-landing");
   const seriesLandingGrid = $("series-landing-grid");
@@ -338,7 +336,7 @@ import {
    *  summary visibility, and one-click "Expand everything".
    * ------------------------------------------------------------------ */
   const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
-  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showFilters: false, showBlankRows: false };
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showFilters: false };
 
   function readViewSettings() {
     try {
@@ -371,11 +369,6 @@ import {
     if (compactModeToggle) compactModeToggle.checked = Boolean(settings.compactRows);
     if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
     if (showFiltersToggle) showFiltersToggle.checked = Boolean(settings.showFilters);
-    if (showBlankRowsToggle && blankRowsToggleWrap) {
-      showBlankRowsToggle.checked = Boolean(settings.showBlankRows);
-      // The raw spreadsheet is the only view with blank separator rows.
-      blankRowsToggleWrap.hidden = activeView !== "original";
-    }
     if (table) {
       try {
         table.redraw(true);
@@ -1018,15 +1011,7 @@ import {
         row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
-    // The raw spreadsheet export contains 31 fully-empty visual-separator
-    // rows (2026-08-09 audit §3.4). Hide them by default in the Original
-    // Spreadsheet view; the "Show blank separator rows" view setting restores
-    // the verbatim 374-row sheet (grid, counts, and CSV export all follow).
-    const viewRows =
-      viewName === "original" && !readViewSettings().showBlankRows
-        ? data.filter((row) => Object.values(row).some((value) => String(value ?? "").trim() !== ""))
-        : data;
-    return { data: viewRows, lastModified: res.headers.get("Last-Modified") };
+    return { data, lastModified: res.headers.get("Last-Modified") };
   }
 
   function applyLoadedViewMeta(viewName, data, lastModified) {
@@ -1594,13 +1579,6 @@ import {
     }
     if (showFiltersToggle) {
       showFiltersToggle.addEventListener("change", () => updateViewSetting("showFilters", showFiltersToggle.checked));
-    }
-    if (showBlankRowsToggle) {
-      showBlankRowsToggle.addEventListener("change", () => {
-        updateViewSetting("showBlankRows", showBlankRowsToggle.checked);
-        // The setting changes which rows the raw view loads, so re-activate it.
-        if (activeView === "original") activateView("original");
-      });
     }
     if (facetToggleBtn) {
       facetToggleBtn.addEventListener("click", () => {
