@@ -1,8 +1,19 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-10 (Session 019fea62 — Mobile Header, White Grouping, Highlights Reposition, Edition Mediation with Extra Row 373) — current branch `arena/019fea62-docsheet`.
+**Prepared:** 2026-08-10 (Session 019feaaf — Owned Column Enlarged, Extra Badge Constrained to PvF Double, Edition Research Moved to Drawer Panel, Multidisciplinary Full Audit) — current branch `arena/019feaaf-docsheet`.
 
-## 2026-08-10 Session Summary 019fea62 — Mobile Header, White Grouping, Highlights + Edition Mediation (Current)
+## 2026-08-10 Session Summary 019feaaf — Owned Column Enlarged, Extra Badge PvF Only, Edition Research to Drawer (Current)
+
+- **Comprehensive Multidisciplinary Audit:** Full static and runtime audit across Web Design (8.5/10), Full-Stack Development (8.5/10), and Data Engineering (9.0/10). Published in `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` and summarized in `TEMP_AUDIT_RESPONSE.md`.
+- **Owned Column Enlarged:** Increased `COLUMN_BUDGETS.owned` in `docs/js/config.js` from `58px` (52–68px) to **`78px` (70–90px)**, allowing the full "Owned" header word (with sort arrow and padding) and badge to fit without any truncation.
+- **Constrained "Extra" Badge to PvF Double:** Updated `isExtraEditionRow(row)` in `docs/app.js` to return `true` strictly for the Power vs. Force double (`work_id === "w-power-vs-force" && uuid === "373"`). Removed extraneous "Extra" badges from the other 24 secondary audio/CD/DVD carrier rows.
+- **Cleaned Edition Column & Moved Research to Drawer:**
+  - Removed `mobile-edition-note` span insertion from mobile work cards.
+  - Removed `edition_note` from visible table priority preset.
+  - Positioned `edition_note` under the **Research** section in `DETAIL_SECTIONS` within `docs/js/config.js` so physical specs and edition research are accessible via the on-click details drawer.
+- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` (`app.js?v=49ca59628f20`, `style.css?v=936c444be89d`) and `docs/build-manifest.json` (`revision: owned-width-extra-clean-20260810.1`, footer build ID `app-49ca59628f20/css-936c444be89d`). All **147 unit tests pass** (90% coverage), all **6 generator `--check` modes pass**, `ruff` clean, `node --check` pass.
+
+## 2026-08-10 Session Summary 019fea62 — Mobile Header, White Grouping, Highlights + Edition Mediation (Prior)
 
 - **Mobile Header Compact:** Fixed 3-row tower (`brand` + search full-width + buttons) that made the header ~100 px on phones. New flex: `search-wrap flex:1 1 160px` shares the control line with Jump-to/Export, `topbar` mobile `padding 6px` + `min-height 44`, `settings-tools` stays auto-width. Header now collapses to brand + single control row (~68 px).
 - **White Ungrouped Grouping:** Changed `undecided` block tokens light/dark from orange `#ea580c/#fb923c` 8.5% to white `#ffffff` 8.5% (`color-mix` white into surface is pure white/zebra) — 32 truly ungrouped rows (265,359-361,369-372,320-343) now render neutral white, not orange.

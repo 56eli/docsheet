@@ -14,7 +14,7 @@ import {
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js?v=cfced6b202ba";
+} from "./js/config.js?v=5189225f358d";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
@@ -608,16 +608,9 @@ import {
 
   function isExtraEditionRow(row) {
     const workId = String(row.work_id || "").trim();
-    if (!workId) return Boolean(row.candidate_key && String(row.candidate_key).startsWith("candidate:edition-"));
-    let minUuid = null;
-    for (const r of allData) {
-      if (String(r.work_id || "").trim() === workId) {
-        const u = String(r.uuid || "").trim();
-        if (!u) continue;
-        if (minUuid === null || Number(u) < Number(minUuid)) minUuid = u;
-      }
-    }
-    return minUuid !== null && String(row.uuid || "").trim() !== minUuid;
+    const uuid = String(row.uuid || "").trim();
+    // Only the Power vs. Force double (extra hardcover row 373 under w-power-vs-force) shows the Extra badge
+    return workId === "w-power-vs-force" && uuid === "373";
   }
 
   function mobilePrimaryUrl(row) {
@@ -656,13 +649,6 @@ import {
     meta.className = "mobile-edition-meta";
     meta.textContent = `${displayMobileDate(row)} · ${displayMobileEdition(row)}`;
     button.append(filename, title, meta);
-    if (row.edition_note && String(row.edition_note).trim()) {
-      const note = document.createElement("span");
-      note.className = "mobile-edition-note";
-      note.textContent = String(row.edition_note).trim();
-      note.title = String(row.edition_note).trim();
-      button.append(note);
-    }
     button.addEventListener("click", () => openRowDetails(row, button));
     article.append(button);
 
