@@ -18,7 +18,7 @@ import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=fe5e058c851f";
+} from "./js/formatters.js?v=0d8f985fe469";
 import {
   displayMobileDate, displayMobileEdition, isExtraEditionRow,
   mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
