@@ -1,57 +1,43 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feaf6 audit through merged/live verification
-**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
-**Merged result:** PR #64 → `54b37f7097b6d6830d09f0825f7cfb8539b5360e`
+**Updated:** 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
+**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
+**Session branch:** `arena/019feb3e-docsheet`
 
-## Current status
+## Current audit
 
-PR #64 is merged and live. Main CI run `31379726756` passed 149 offline, 3 Node, and 28/28 Playwright tests. Pages run `31379725585` deployed successfully.
+Read `docs/audits/2026-08-10-arena-019feb3e-full-audit.md` for the complete multidisciplinary evidence, the byte-verification of the live deployment, and the current scoring.
 
-Live verification through the web fetch path confirms:
+## State change this session
 
-- revision `live-search-versioned-module-graph-019feaf6-20260810.1`;
-- exact committed hashes for app, style, all seven modules, master/data/block-map payloads;
-- `master_items=363`, 340 relationships, 7 compilations, and the expected inventory counts;
-- fetched index content renders `Rows 363`, catalogue columns, facets, and record rows.
+PR #64 is **merged to `main`, deployed, and verified live.** GitHub Pages built `54b37f7` @10:34Z; main CI run `31379726756` passed in 1m31s. Using the network fetch tool (which bypasses the sandbox TLS block that stopped prior sessions), this audit confirmed the public `build-manifest.json` is byte-identical to the committed manifest and the deployed `columns.js` contains the `isExtraEditionRow` import. **The broken-baseline blocker from the 019feaf6 audit is closed.** Effective score is **8.1/10 (694/86), gate conditional_pass.**
 
-## Incident and completed work
+## What was true on PR #64 (preserved for context)
 
-The PR #63 baseline called `isExtraEditionRow` without importing it. Legacy Pages deployed before main CI run `31373716254` failed all 25 browser specs with no rendered rows.
+The 019feaf6 session repaired the P0 import, added Node/browser edition-formatter coverage, removed the 10 absent-ID overview/stats/review-nav UI paths (411 net lines), completed the shortcuts-dialog focus lifecycle, wired live search highlights via a query getter, hash-versioned every ES-module edge, extended the delivery contract to traverse the full graph, and refreshed the manifest. PR CI `31378465750` passed 149 offline + 3 Node + 28 browser tests.
 
-PR #64:
+## New findings this session (019feb3e)
 
-- repaired the missing import and added executable formatter/browser coverage;
-- removed all 10 absent-ID UI paths and 411 net lines;
-- completed shortcuts-dialog focus/accessibility behavior;
-- restored live search highlighting with a query getter;
-- hash-versioned every local ES-module edge;
-- extended the delivery contract across the complete import graph;
-- refreshed every delivery hash and visible build ID;
-- published the full multidisciplinary audit and reconciled all current documentation.
+- **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
+- **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
+- **P3 (agent-safe, DONE this session):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
+- **Branch work this session:** mobile-only bloat reduction (P1–P4, ~55% less mobile chrome, desktop untouched); retired the Original Spreadsheet view; blanked `owned` for master 373 + raw rows 297–end (312/25/26 → 282/13/68). A PR is being opened for merge.
+- The CSS duplicate-`:root` issue flagged in an earlier audit is confirmed **fixed** (single `:root`/`:root.dark` token block).
+- `error_handling_logging` basis no longer says the formatter has an uncaught ReferenceError — that risk flag is retired; `activateView` exposes a visible fatal-render state on async load failures.
 
-## Current score and remaining risks
+## Remaining risks (priority order)
 
-Canonical effective score is **8.0/10** (687/86), gate **WARNING**.
+1. **Owner:** switch Pages from legacy `main:/docs` to the Actions `workflow` build type so deploy depends on a green CI job (`.scoreboard/manual-workflow-edits.md`). This is the single remaining delivery risk.
+2. **Owner:** give explicit visual acceptance of the now-live, byte-verified build.
+3. **Agent-safe quick wins:** module syntax check in CI, ESLint `no-undef` (the `.dataset-tab` dead code is already removed).
+4. Optional: axe-core, Lighthouse/Web-Vitals budget, raise `helpers.py`/`relationships.py` coverage.
+5. Issue #18 ownership cross-check still needs owner Drive access.
 
-- Pages remains legacy `main:/docs` and is not gated on successful CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
-- Exact live delivery is objectively verified, but explicit owner visual acceptance is still pending.
-- CSP `style-src 'unsafe-inline'` is low-severity debt.
-- Optional future automation: axe-core, Lighthouse, ESLint.
-- Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
-
-All user scores were preserved unchanged.
+All recorded user scores were preserved unchanged.
 
 ## Current data state
 
-363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: 312 true / 25 false / 26 blank. Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products.
-
-## Next actions
-
-1. Owner explicitly accepts/rejects live revision `live-search-versioned-module-graph-019feaf6-20260810.1`.
-2. Owner applies required checks and CI-gated Pages deployment.
-3. Resolve issue #18 when Drive access exists.
-4. Optionally add axe/Lighthouse/ESLint automation.
+363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: **282 true / 13 false / 68 blank** (was 312/25/26 before the owner-directed blanks for master 373 + raw rows 297–end). Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products. The Original Spreadsheet view is retired (19 Jump-to entries remain; `data.json` still generated by the raw lane).
 
 ## Safe commands
 
@@ -69,3 +55,4 @@ npm run test:e2e
 ```
 
 Never hand-edit generated master/Pages data. Never edit `.github/workflows/*` without explicit owner authorization.
+

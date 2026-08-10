@@ -3,7 +3,7 @@
 // and catalogue-block classification. Imported by app.js.
 // =============================================================================
 
-import { COLUMN_LABELS, RECORD_TYPE_LABELS, RECORD_TYPE_TITLES } from "./config.js?v=5189225f358d";
+import { COLUMN_LABELS, RECORD_TYPE_LABELS, RECORD_TYPE_TITLES } from "./config.js?v=94f497018c49";
 
 // ---------------------------------------------------------------------------
 // Status badges — CSS class + human-readable label for status-typed fields.

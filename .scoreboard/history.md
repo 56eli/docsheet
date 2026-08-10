@@ -132,12 +132,35 @@ User-selected P1 work restored dynamic search highlighting and made every local 
 | 2026-08-10 | performance | 7 | 8 | null | 8 | Arena 019feaf6 | Nested/top-level imports now share one hash-versioned URL identity, eliminating duplicate/stale module loads. |
 | 2026-08-10 | overall_effective_score | 7.8 | 7.9 | preserved | 7.9 | Arena 019feaf6 | Recomputed 678/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |
 
-## 2026-08-10 — PR #64 merge and live verification
+## 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
 
-PR #64 merged as `54b37f7`. Main CI run `31379726756` and Pages run `31379725585` succeeded. Live fetch verification matched the complete manifest and returned `master_items=363` plus rendered catalogue rows. User scores remain unchanged.
+Fresh, first-hand multidisciplinary audit of the current `main` HEAD (`54b37f7` = PR #64 merge). Full evidence in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`. All user scores preserved; AI scores changed only after evidence.
+
+**Unique this session:** used the network fetch tool (bypassing the sandbox TLS block) to confirm the public `build-manifest.json` is byte-identical to the committed manifest and the deployed `columns.js` carries the `isExtraEditionRow` import — closing the "broken public baseline" blocker that failed the prior gate.
 
 | Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
 |---|---|---:|---:|---:|---:|---|---|
-| 2026-08-10 | github_pages_presentation | 7 | 8 | null | 8 | Arena 019feaf6 | Exact live revision, all hashes, 363-row metadata, and rendered index rows verified after green main CI/Pages deploy. |
-| 2026-08-10 | deployment_readiness | 6 | 7 | null | 7 | Arena 019feaf6 | Merge/main CI/Pages/live verification complete; legacy Pages remains ungated pending owner settings/workflow. |
-| 2026-08-10 | overall_effective_score | 7.9 | 8.0 | preserved | 8.0 | Arena 019feaf6 | Recomputed 687/86; gate becomes WARNING (numeric pass with ungated Pages and owner acceptance pending). |
+| 2026-08-10 | deployment_readiness | 6 | 8 | null | 8 | Arena 019feb3e | PR #64 deployed (Pages built 54b37f7 @10:34Z); main CI 31379726756 green; live manifest byte-verified. Pages still legacy/ungated (owner action). |
+| 2026-08-10 | github_pages_presentation | 7 | 8 | null | 8 | Arena 019feb3e | Deployed columns.js verified to carry the P0 import; live build-manifest byte-matches source. Owner acceptance still pending. |
+| 2026-08-10 | error_handling_logging | 7 | 8 | null | 8 | Arena 019feb3e | Formatter ReferenceError confirmed fixed and verified live; activateView exposes a visible fatal-render state on async load failure. |
+| 2026-08-10 | ci_cd | 7 | 7 | null | 7 | Arena 019feb3e | Score unchanged; added agent-safe next_actions (node --check docs/js/*.js, ESLint no-undef) and a module-syntax/lint risk flag. |
+| 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; new finding: residual .dataset-tab dead code (4 app.js lookups + CSS, zero matching elements). |
+| 2026-08-10 | overall_effective_score | 7.9 | 8.1 | preserved | 8.1 | Arena 019feb3e | Recomputed 694/86; gate fail→conditional_pass (broken baseline resolved; conditional on owner CI-gated Pages + visual acceptance). |
+
+## 2026-08-10 — Arena 019feb3e dead-code cleanup (user-selected follow-up)
+
+User selected the `.dataset-tab` dead-code removal. Removed the 4 no-op JS lookups + arrow-key roving block from app.js and all `.dataset-tab`/`.dataset-tabs`/`.tab-group` CSS (zero matching elements after the Jump-to dropdown replaced the tab bar). Refreshed the frontend delivery contract (content versions, visible build ID, manifest hashes). All user scores preserved; no score change (code_hygiene stays 8, the finding was cosmetic debt).
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; residual .dataset-tab tab-bar dead code removed (app.js 1798→1768, style.css 2137→2041; 149 tests + delivery contract + Node tests green). |
+
+## 2026-08-10 — Arena 019feb3e mobile redesign + retire Original view + owned edits
+
+Owner-directed follow-ups; all user scores preserved. No AI score changes (the work is UX polish, a view retirement, and data edits within reviewed semantics).
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | ux_usability | 8 | 8 | 8 | 8 | Arena 019feb3e | Mobile-only bloat reduction P1–P4 (single-row icon topbar, dismissible Browse intro, collapsible discovery rails, condensed view summary); ~55% less mobile chrome, desktop untouched. Score unchanged (owner UX 8 preserved). |
+| 2026-08-10 | feature_completeness | 8 | 8 | null | 8 | Arena 019feb3e | Retired the Original Spreadsheet view (config/UI/specs; data.json still generated but unsurfaced). 19 Jump-to entries remain. Score unchanged. |
+| 2026-08-10 | content_quality | 9 | 9 | 7 | 7 | Arena 019feb3e | Owner-directed owned edits: blanked master 373 + 41 ledger item rows (raw ≥ 297). Ownership 312/25/26 → 282/13/68. AI 9 unchanged; owner 7 preserved (issue #18 cross-check still open). |

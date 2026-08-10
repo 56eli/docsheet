@@ -351,42 +351,9 @@ mark.search-highlight, .search-highlight {
 .switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   §4  VIEW SUMMARY & COLUMN MENU — dataset tabs, view title/description/
+   §4  VIEW SUMMARY & COLUMN MENU — view title/description/
        meta, column tools (menu, expert toggle), column list.
    ══════════════════════════════════════════════════════════════════════════ */
-
-/* ==========================================================================
-   Dataset tabs
-   ========================================================================== */
-.dataset-tabs {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 4px;
-  padding: 8px 16px 0;
-  overflow-x: auto;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-.dataset-tab {
-  min-height: 36px;
-  padding: 8px 12px;
-  color: var(--text-muted);
-  font: inherit;
-  font-weight: 500;
-  white-space: nowrap;
-  background: transparent;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-}
-.dataset-tab:hover { color: var(--text); background: color-mix(in srgb, var(--accent) 7%, transparent); }
-.dataset-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.dataset-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-/* Review sheets are grouped after the catalogue's Everything tab so they are
-   easy to find without obscuring the source/product views. */
-.dataset-tab.review-tab { background: color-mix(in srgb, var(--accent) 5%, transparent); }
-.dataset-tab.review-tab:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
-.dataset-tab.review-tab-start { margin-left: 8px; border-left: 1px solid var(--border); }
 
 /* ---- View summary ---- */
 .view-summary {
@@ -1049,14 +1016,6 @@ mark.search-highlight, .search-highlight {
   .footerbar { gap: 8px 16px; font-size: 12px; }
   .footer-note { display: none; }   /* hide the edit hint on small screens */
 
-  /* Touch-friendly tabs: taller hit targets, smooth horizontal scrolling. */
-  .dataset-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-  .dataset-tab { min-height: 42px; padding: 8px 12px; font-size: 13px; }
-
   /* View tools stack and stretch: Columns + Expert columns fill the row. */
   .column-tools { display: flex; gap: 8px; }
   #expert-toggle-btn { flex: 1; }
@@ -1074,35 +1033,9 @@ mark.search-highlight, .search-highlight {
 }
 
 /* ================================================================== *
- *  2026-08-08 IA redesign (Phase 1): tab groups and empty-state card.
+ *  2026-08-08 IA redesign (Phase 1): empty-state card.
  *  Keeps the existing token variables.
  * ================================================================== */
-
-/* --- grouped tab bar ------------------------------------------------- */
-.tab-group {
-  display: flex;
-  align-items: stretch;
-  gap: 4px;
-}
-.tab-group + .tab-group {
-  margin-left: 8px;
-  padding-left: 10px;
-  border-left: 1px solid var(--border);
-}
-.tab-group-label {
-  align-self: center;
-  margin-right: 2px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-@media (max-width: 900px) {
-  .tab-group-label { display: none; }
-  .tab-group + .tab-group { margin-left: 4px; padding-left: 6px; }
-}
 
 /* --- empty-state card (standing intake lanes) ------------------------ */
 .empty-state {
@@ -1134,7 +1067,6 @@ mark.search-highlight, .search-highlight {
   outline-offset: 2px;
   border-radius: 4px;
 }
-.dataset-tab:focus-visible { outline-offset: -2px; border-radius: 0; }
 .url-link:focus-visible { outline-offset: 1px; }
 
 /* Respect reduced-motion: kill transitions/animations broadly (the loading
@@ -1150,9 +1082,8 @@ mark.search-highlight, .search-highlight {
   }
 }
 
-/* Mobile: touch-friendly tabs and a tighter empty state. */
+/* Mobile: touch-friendly targets and a tighter empty state. */
 @media (max-width: 720px) {
-  .dataset-tab { min-height: 44px; }            /* WCAG-friendly hit target */
   .empty-state { margin: 16px 8px; padding: 20px 14px; font-size: 13px; }
 }
 
@@ -1345,33 +1276,6 @@ body {
   font-size: 13px;
 }
 .settings-menu input { accent-color: var(--accent); }
-/* The [hidden] attribute must beat the settings-menu label display rule. */
-#blank-rows-toggle-wrap[hidden] { display: none !important; }
-
-.dataset-tabs {
-  gap: 8px;
-  padding: 8px 14px;
-  background: var(--surface);
-}
-.tab-group { gap: 6px; }
-.tab-group + .tab-group { margin-left: 4px; padding-left: 8px; }
-.tab-group-label { font-size: 9px; color: var(--text-muted); }
-.dataset-tab,
-.dataset-tab.review-tab {
-  min-height: 30px;
-  padding: 5px 10px;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 999px;
-}
-.dataset-tab:hover,
-.dataset-tab.review-tab:hover { color: var(--text); background: var(--surface-2); }
-.dataset-tab.active {
-  color: var(--accent-contrast);
-  background: var(--accent);
-  border-color: var(--accent);
-}
 
 .view-summary,
 .review-toolbar,
@@ -1424,7 +1328,6 @@ body {
 :root:not(.compact-density) #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content {
   padding: 6px 10px;
 }
-:root:not(.compact-density) .dataset-tab { min-height: 36px; padding: 7px 12px; }
 
 @media (max-width: 720px) {
   /* Keep the header's search flexible rather than full-row; settings
@@ -1433,7 +1336,6 @@ body {
   .settings-tools { flex: 0 0 auto; }
   #settings-btn { width: auto; }
   .settings-menu { left: 0; right: auto; width: 100%; }
-  .dataset-tabs { padding: 7px 10px; }
   .view-summary { padding: 9px 10px; }
 }
 
@@ -2134,4 +2036,79 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton-line { animation: none; }
   .series-landing-card { transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §18  MOBILE BLOAT REDUCTION (019feb3e) — mobile-only (≤720px): compact
+        topbar, dismissible Browse intro, collapsible discovery rails, and a
+        condensed view summary so the first catalogue card lands in the first
+        viewport. Desktop (≥721px) is untouched (the two new controls are
+        display:none outside this breakpoint).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* The settings button gains a gear icon (desktop keeps its text label); the
+   two mobile-only controls are hidden on desktop by default and revealed only
+   inside the ≤720px breakpoint below. */
+#settings-btn { display: inline-flex; align-items: center; gap: 6px; }
+#mobile-discovery-toggle,
+#mobile-browse-intro-dismiss { display: none; }
+
+@media (max-width: 720px) {
+  /* P1 — collapse the topbar to one controls row: icon-only Export/Settings,
+     no "Jump to" label, and a search that shrinks further so all controls fit
+     a single ~340px row instead of wrapping to three. */
+  #export-btn .btn-label,
+  #settings-btn .btn-label { display: none; }
+  #export-btn,
+  #settings-btn { padding: 6px 9px; }
+  .view-jump > span { display: none; }
+  .view-jump select { max-width: 112px; }
+  .search-wrap { flex: 1 1 100px; }
+
+  /* P2 — compact, dismissible Browse intro (one slim line: eyebrow + actions). */
+  .mobile-browse-intro { padding: 8px 10px; gap: 8px; }
+  .mobile-browse-intro p { display: none; }
+  .mobile-browse-intro-actions { display: flex; gap: 6px; align-items: center; }
+  #mobile-browse-intro-dismiss {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 9px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .mobile-browse-intro.mobile-intro-dismissed { display: none; }
+
+  /* P3 — discovery rails collapsed by default; one tap expands (auto-expands
+     when a series/year facet is active, set from app.js). Desktop browse keeps
+     the title heading and the always-visible 2-column rails. */
+  .mobile-discovery-title { display: none; }
+  #mobile-discovery-toggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  #mobile-discovery-toggle::after { content: " ▾"; color: var(--text-muted); font-weight: 400; }
+  #mobile-discovery-toggle[aria-expanded="true"]::after { content: " ▴"; }
+  .mobile-discovery .mobile-discovery-group { display: none; }
+  .mobile-discovery.mobile-discovery-expanded .mobile-discovery-group { display: grid; }
+
+  /* P4 — condensed view summary: hide the redundant Type card and tighten the
+     spacing (the Rows count + toolbar remain). */
+  .view-summary { padding: 8px 10px; gap: 8px; }
+  .view-meta div:nth-child(2) { display: none; }
+  .view-meta div { min-width: 0; padding: 5px 8px; }
 }

@@ -3,7 +3,7 @@
 // No DOM access. Imported by app.js for facet matching and label helpers.
 // =============================================================================
 
-import { COLUMN_LABELS, humanizeField } from "./config.js?v=5189225f358d";
+import { COLUMN_LABELS, humanizeField } from "./config.js?v=94f497018c49";
 
 /**
  * Check if a row matches all active facet selections.

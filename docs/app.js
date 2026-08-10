@@ -13,26 +13,26 @@ import {
   COLUMN_LABELS, STATUS_FIELDS,
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js?v=5189225f358d";
+} from "./js/config.js?v=94f497018c49";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=ee2398b737f4";
+} from "./js/formatters.js?v=8c3288758a64";
 import {
   mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import { mobileEditionCard } from "./js/mobile.js?v=ac823d0b9eb5";
+import { mobileEditionCard } from "./js/mobile.js?v=326d76c01d1e";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=9a29e2169502";
+} from "./js/columns.js?v=d185ba911b42";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
-} from "./js/filter-utils.js?v=ad7cda5641cf";
+} from "./js/filter-utils.js?v=e824f86e241c";
 import {
   updateViewSummary, renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=7d59133a7f37";
+} from "./js/view-utils.js?v=3bd210e98a0b";
 
 (function () {
   "use strict";
@@ -51,8 +51,6 @@ import {
   const compactModeToggle = $("compact-mode-toggle");
   const showSummaryToggle = $("show-summary-toggle");
   const showFiltersToggle = $("show-filters-toggle");
-  const showBlankRowsToggle = $("show-blank-rows-toggle");
-  const blankRowsToggleWrap = $("blank-rows-toggle-wrap");
   const masterBrowseToggle = $("master-browse-toggle");
   const seriesLanding = $("series-landing");
   const seriesLandingGrid = $("series-landing-grid");
@@ -65,6 +63,10 @@ import {
   const mobileSeriesShelf = $("mobile-series-shelf");
   const mobileYearRail = $("mobile-year-rail");
   const mobileDiscoveryClear = $("mobile-discovery-clear");
+  const mobileDiscoveryToggle = $("mobile-discovery-toggle");
+  const mobileDiscoverySection = document.querySelector(".mobile-discovery");
+  const mobileBrowseIntro = document.querySelector(".mobile-browse-intro");
+  const mobileBrowseIntroDismiss = $("mobile-browse-intro-dismiss");
   const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
@@ -109,6 +111,8 @@ import {
   let activeFacets = {};
   let mobileBrowseRows = [];
   let renderedAsMobileBrowse = false;
+  let mobileDiscoveryExpanded = false;
+  const MOBILE_INTRO_KEY = "docsheet-mobile-intro-dismissed";
   let viewActivation = 0;
   let activeDataRequest = null;
   // Track the in-flight block-map load so the first activateView call can
@@ -332,7 +336,7 @@ import {
    *  summary visibility, and one-click "Expand everything".
    * ------------------------------------------------------------------ */
   const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
-  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showFilters: false, showBlankRows: false };
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showFilters: false };
 
   function readViewSettings() {
     try {
@@ -365,11 +369,6 @@ import {
     if (compactModeToggle) compactModeToggle.checked = Boolean(settings.compactRows);
     if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
     if (showFiltersToggle) showFiltersToggle.checked = Boolean(settings.showFilters);
-    if (showBlankRowsToggle && blankRowsToggleWrap) {
-      showBlankRowsToggle.checked = Boolean(settings.showBlankRows);
-      // The raw spreadsheet is the only view with blank separator rows.
-      blankRowsToggleWrap.hidden = activeView !== "original";
-    }
     if (table) {
       try {
         table.redraw(true);
@@ -647,6 +646,20 @@ import {
     );
     renderRail(mobileYearRail, yearFacet, yearFacet.sort);
     if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty(activeFacets, FACETS);
+    // Mobile discovery rails are collapsed by default and auto-expand when a
+    // series/year facet is active so a set filter stays visible. Desktop browse
+    // mode ignores this class (the collapse rules live in the ≤720px media query).
+    const hasFacets = !facetsEmpty(activeFacets, FACETS);
+    if (hasFacets) mobileDiscoveryExpanded = true;
+    if (mobileDiscoverySection) {
+      mobileDiscoverySection.classList.toggle("mobile-discovery-expanded", mobileDiscoveryExpanded);
+    }
+    if (mobileDiscoveryToggle) {
+      mobileDiscoveryToggle.setAttribute("aria-expanded", String(mobileDiscoveryExpanded));
+      mobileDiscoveryToggle.textContent = mobileDiscoveryExpanded
+        ? "Hide series / year filters"
+        : "Filter by series / year";
+    }
   }
 
   function renderMobileBrowse(data = allData) {
@@ -998,15 +1011,7 @@ import {
         row.edition = fmt ? (detail && detail !== fmt ? `${fmt} · ${detail}` : fmt) : detail;
       }
     });
-    // The raw spreadsheet export contains 31 fully-empty visual-separator
-    // rows (2026-08-09 audit §3.4). Hide them by default in the Original
-    // Spreadsheet view; the "Show blank separator rows" view setting restores
-    // the verbatim 374-row sheet (grid, counts, and CSV export all follow).
-    const viewRows =
-      viewName === "original" && !readViewSettings().showBlankRows
-        ? data.filter((row) => Object.values(row).some((value) => String(value ?? "").trim() !== ""))
-        : data;
-    return { data: viewRows, lastModified: res.headers.get("Last-Modified") };
+    return { data, lastModified: res.headers.get("Last-Modified") };
   }
 
   function applyLoadedViewMeta(viewName, data, lastModified) {
@@ -1435,14 +1440,6 @@ import {
     if (mobileBrowse) mobileBrowse.hidden = true;
     spreadsheet.hidden = false;
     spreadsheet.innerHTML = `<div class="table-loading" role="status"><span class="table-loading-text">Loading ${view.label.toLowerCase()}…</span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line" aria-hidden="true"></span><span class="skeleton-line skeleton-line-short" aria-hidden="true"></span></div>`;
-    document.querySelectorAll(".dataset-tab").forEach((tab) => {
-      const selected = tab.dataset.view === viewName;
-      tab.classList.toggle("active", selected);
-      tab.setAttribute("aria-selected", String(selected));
-      // Roving tabindex: only the active tab stays in the Tab order
-      // (Phase 2 a11y, 2026-08-08).
-      tab.setAttribute("tabindex", selected ? "0" : "-1");
-    });
 
     try {
       // Wait for the catalogue block map so the first render uses the
@@ -1538,6 +1535,24 @@ import {
       button.addEventListener("click", toggleMobilePresentation);
     });
     if (mobileDiscoveryClear) mobileDiscoveryClear.addEventListener("click", clearFacets);
+    if (mobileDiscoveryToggle) {
+      mobileDiscoveryToggle.addEventListener("click", () => {
+        mobileDiscoveryExpanded = !mobileDiscoveryExpanded;
+        if (mobileDiscoverySection) {
+          mobileDiscoverySection.classList.toggle("mobile-discovery-expanded", mobileDiscoveryExpanded);
+        }
+        mobileDiscoveryToggle.setAttribute("aria-expanded", String(mobileDiscoveryExpanded));
+        mobileDiscoveryToggle.textContent = mobileDiscoveryExpanded
+          ? "Hide series / year filters"
+          : "Filter by series / year";
+      });
+    }
+    if (mobileBrowseIntroDismiss) {
+      mobileBrowseIntroDismiss.addEventListener("click", () => {
+        if (mobileBrowseIntro) mobileBrowseIntro.classList.add("mobile-intro-dismissed");
+        try { localStorage.setItem(MOBILE_INTRO_KEY, "1"); } catch (err) { /* storage unavailable */ }
+      });
+    }
     if (masterBrowseToggle) {
       masterBrowseToggle.addEventListener("click", () => {
         if (activeView !== "master") return;
@@ -1564,13 +1579,6 @@ import {
     }
     if (showFiltersToggle) {
       showFiltersToggle.addEventListener("change", () => updateViewSetting("showFilters", showFiltersToggle.checked));
-    }
-    if (showBlankRowsToggle) {
-      showBlankRowsToggle.addEventListener("change", () => {
-        updateViewSetting("showBlankRows", showBlankRowsToggle.checked);
-        // The setting changes which rows the raw view loads, so re-activate it.
-        if (activeView === "original") activateView("original");
-      });
     }
     if (facetToggleBtn) {
       facetToggleBtn.addEventListener("click", () => {
@@ -1641,28 +1649,14 @@ import {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); closeColumnMenu(); }
     });
-    document.querySelectorAll(".dataset-tab").forEach((tab) => {
-      tab.addEventListener("click", () => activateView(tab.dataset.view));
-    });
-    // Arrow-key roving navigation across the grouped tab bar (Phase 2 a11y).
-    const tabsNav = document.querySelector(".dataset-tabs");
-    if (tabsNav) {
-      tabsNav.addEventListener("keydown", (e) => {
-        const list = [...document.querySelectorAll(".dataset-tab")];
-        if (list.length === 0) return;
-        const current = list.findIndex((tab) => tab.dataset.view === activeView);
-        let target = -1;
-        if (e.key === "ArrowRight") target = (current + 1) % list.length;
-        else if (e.key === "ArrowLeft") target = (current - 1 + list.length) % list.length;
-        else if (e.key === "Home") target = 0;
-        else if (e.key === "End") target = list.length - 1;
-        else return;
-        e.preventDefault();
-        const tab = list[target];
-        tab.focus();
-        activateView(tab.dataset.view);
-      });
-    }
+    // Restore a previously dismissed mobile Browse intro (mobile-only effect:
+    // the hiding rule lives inside the ≤720px media query, so desktop browse
+    // mode is unaffected even if the flag is set).
+    try {
+      if (localStorage.getItem(MOBILE_INTRO_KEY) === "1" && mobileBrowseIntro) {
+        mobileBrowseIntro.classList.add("mobile-intro-dismissed");
+      }
+    } catch (err) { /* storage unavailable */ }
     await activateView(activeView);
     document.addEventListener("keydown", handleGlobalShortcuts);
   }

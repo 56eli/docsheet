@@ -23,13 +23,12 @@ export const VIEWS = {
   hayhouseProducts: { file: "hayhouse-products.json", label: "Hay House Products", exportName: "hawkins-hayhouse-products.csv" },
   audibleProducts: { file: "audible-products.json", label: "Audible Products", exportName: "hawkins-audible-products.csv" },
   filenameProposal: { file: "filename-proposal.json", label: "Filename Proposal", exportName: "hawkins-filename-proposal.csv" },
-  original: { file: "data.json", label: "Original Spreadsheet", exportName: "hawkins-original-spreadsheet.csv" },
 };
 
 export const VIEW_GROUPS = [
   { label: "Catalogue", views: ["master", "series", "productRelationships", "seriesCompilations"] },
   { label: "Review workspace", views: ["reviewOverview", "manualCandidates", "manualLeads", "masterExclusions", "sourceOverrides", "veritasMappingDecisions", "newWorkReview", "officialDiscovery", "internationalProducts"] },
-  { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview", "original"] },
+  { label: "Sources", views: ["publishers", "veritasProducts", "hayhouseProducts", "audibleProducts", "filenameProposal", "migrationReview"] },
 ];
 
 export const EMPTY_STATE_MESSAGES = {
@@ -117,10 +116,6 @@ export const VIEW_DETAILS = {
   filenameProposal: {
     type: "Filename review",
     description: "Reviewed proposed output filenames with master metadata mirrors and display-safe part labels.",
-  },
-  original: {
-    type: "Raw source view",
-    description: "The original spreadsheet rendered unchanged; use this for provenance checks, not curated master decisions.",
   },
 };
 
@@ -237,10 +232,6 @@ export const COLUMN_PRESETS = {
     frozen: ["record_type", "proposed_filename"],
     hidden: ["title", "series", "year", "month", "uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title", "research", "edition_note"],
     moveAfter: { work_id: "legacy_tempid" },
-  },
-  original: {
-    priority: ["title", "tempid", "WE HAVE?", "original source", "notes", "format", "product link"],
-    frozen: ["title"],
   },
   reviewOverview: { priority: ["review_sheet", "record_count", "purpose", "current_state", "source_file"], frozen: ["review_sheet"] },
   manualCandidates: { priority: ["candidate_title", "proposed_item_type", "proposed_year", "proposed_format", "proposed_owned", "review_status", "promotion_status", "official_product_title", "evidence_note"], frozen: ["candidate_title"] },

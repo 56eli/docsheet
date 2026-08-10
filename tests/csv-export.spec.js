@@ -47,7 +47,9 @@ test('CSV export uses the selected view filename', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);
 
-  await page.locator('#view-jump').selectOption('original');
+  // The Original Spreadsheet view was retired (2026-08-10); use a review sheet
+  // to prove the export filename follows the active view.
+  await page.locator('#view-jump').selectOption('manualLeads');
   await waitForTable(page);
 
   const [download] = await Promise.all([
@@ -55,14 +57,15 @@ test('CSV export uses the selected view filename', async ({ page }) => {
     page.getByRole('button', { name: /export csv/i }).click(),
   ]);
 
-  expect(download.suggestedFilename()).toBe('hawkins-original-spreadsheet.csv');
+  expect(download.suggestedFilename()).toBe('hawkins-manual-leads.csv');
   const downloadPath = await download.path();
   expect(downloadPath).toBeTruthy();
 
   const csv = await fs.readFile(downloadPath, 'utf8');
   const lowerCsv = csv.toLowerCase();
-  expect(lowerCsv).toContain('tempid');
+  // Export headers are humanized column titles (e.g. "Title", "Lead Status").
   expect(lowerCsv).toContain('title');
+  expect(lowerCsv).toContain('lead status');
 });
 
 test('published catalogue views are read-only', async ({ page }) => {

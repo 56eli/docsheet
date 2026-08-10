@@ -11,21 +11,25 @@ manual_workflow_policy:
   may_edit_github_workflows: false
   instruction: Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md.
 summary:
-  overall_effective_score: 8.0
-  repo_ready_gate_status: warning
+  overall_effective_score: 8.1
+  repo_ready_gate_status: conditional_pass
   top_priorities:
-  - deployment_readiness
   - ci_cd
+  - github_pages_presentation
+  - deployment_readiness
   - error_handling_logging
-  - content_quality
   active_risk_flags:
-  - Pages remains legacy main:/docs and is not gated on successful CI; owner-applied workflow/settings remain pending.
-  - The exact live revision and 363-row render are verified, but explicit owner visual acceptance remains pending.
+  - 'RESOLVED 2026-08-10: PR #64 (54b37f7) is merged, deployed (Pages built @10:34Z), main CI 31379726756 green, and the live build-manifest/columns.js
+    are byte-verified to carry the P0 fix. The broken-baseline blocker is closed.'
+  - Pages API still reports legacy main:/docs deployment, so public deployment can still outrun CI until the owner applies Actions-based
+    gated Pages (manual-workflow-edits.md). This is the single remaining delivery risk.
+  - CI syntax-checks app.js but not the extracted docs/js/*.js modules, and there is no no-undef lint — both are agent-safe quick wins
+    that would catch the next P0-class defect pre-browser.
   - CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned.
 quality_gates:
   repo_ready:
-    status: warning
-    overall_effective_score: 8.0
+    status: conditional_pass
+    overall_effective_score: 8.1
     last_evaluated: '2026-08-10'
     minimum_overall_effective_score: 8
     required:
@@ -35,12 +39,12 @@ quality_gates:
       ci_cd: 7
       agent_readiness: 8
     notes:
-    - Overall effective score is 687/86 = 8.0 rounded.
-    - All required aspect thresholds pass.
-    - Main CI run 31379726756 passed 149 offline, 3 Node, and 28 browser tests after merge commit 54b37f7.
-    - Pages run 31379725585 deployed successfully; live manifest hashes/revision and catalogue-meta master_items=363 are verified.
-    - Gate remains warning because legacy Pages is not CI-gated and explicit owner visual acceptance is pending.
-    - User scores are preserved and never inferred from merge, silence, or PR approval.
+    - Overall effective score is 694/86 = 8.1 (deployment_readiness and github_pages_presentation rose after the live build was verified
+      byte-identical to source; error_handling_logging rose after the formatter defect was confirmed fixed).
+    - All required aspect thresholds pass and the overall score clears the 8.0 floor.
+    - PR #64 (54b37f7) is deployed; main CI 31379726756 passes; live build-manifest.json and deployed columns.js are byte-verified.
+    - Gate is conditional on (a) owner applying CI-gated (Actions) Pages and (b) owner visual acceptance (manifest acceptance=owner_visual_review_required);
+      user scores are preserved and never inferred from merge, silence, or PR approval.
 aspects:
 - id: project_purpose_scope
   name: Project purpose / scope
@@ -133,13 +137,15 @@ aspects:
   status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: The P0 import, redundant imports, and absent-ID UI paths are repaired with executable Node/browser coverage; Ruff/ESLint remain optional
-    tooling gaps.
+  ai_basis: 'The P0 import, redundant imports, and absent-ID UI paths are repaired with executable Node/browser coverage; the residual .dataset-tab
+    tab-bar dead code (4 app.js lookups + ~96 CSS lines, zero matching elements) was removed in session 019feb3e. Ruff/ESLint remain optional tooling gaps.'
   user_basis: null
   evidence:
   - Node tests execute the edition formatter, live-query getter, and removed-UI guard.
   - All app.js element lookups resolve to current HTML IDs.
   - PR CI run 31378465750 passes 149 offline, 3 Node, and 28 browser tests.
+  - '2026-08-10 (019feb3e): removed the .dataset-tab/.dataset-tabs/.tab-group JS (4 lookups + arrow-key block) and CSS; app.js 1798->1768, style.css
+    2137->2041; full 149-test suite + delivery contract + Node tests stay green.'
   user_notes: null
   desired_direction: []
   next_actions:
@@ -247,26 +253,26 @@ aspects:
   category: engineering
   weight: 3
   target: 8
-  ai_score: 7
+  ai_score: 8
   user_score: null
-  effective_score: 7
-  gap: 1
-  priority: 3
-  status: needs_work
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: The formatter regression is repaired and directly tested; generic asynchronous Tabulator-render failures still lack a dedicated fatal
-    state.
+  ai_basis: 'The formatter ReferenceError is fixed and verified live (deployed columns.js carries the isExtraEditionRow import); activateView exposes
+    a generic visible fatal-render state for async table load failures. Process/fetcher failure paths are tested.'
   user_basis: null
   evidence:
   - process_data and fetcher failure paths are tested.
-  - activateView handles AbortError/load failures; columns.js formatter has an uncaught ReferenceError.
+  - activateView catch block renders a visible load-error message and resets footer status on non-Abort failures.
+  - '2026-08-10 audit confirmed the deployed columns.js imports isExtraEditionRow; the prior uncaught-ReferenceError risk flag is retired.'
   user_notes: null
   desired_direction: []
   next_actions:
-  - Execute formatter paths in tests and provide a visible fatal-render state if table initialization fails asynchronously.
-  risk_flags:
-  - Primary UI may fail inside Tabulator formatter execution.
+  - Optionally add a dedicated fatal state for an asynchronous Tabulator initialization failure (Tabulator itself rarely throws init errors).
+  risk_flags: []
   files_reviewed:
   - process_data.py
   - fetch_veritas_catalogue.py
@@ -357,8 +363,10 @@ aspects:
   desired_direction: []
   next_actions:
   - 'Owner: require the aggregate CI check and apply the gated Pages workflow in manual-workflow-edits.md.'
+  - 'Agent-safe: add `for m in docs/js/*.js; do node --check "$m"; done` to ci.yml so extracted modules are syntax-checked.'
+  - 'Agent-safe: add an ESLint no-undef/no-unused-vars step to catch P0-class unresolved identifiers pre-browser.'
   risk_flags:
-  - Deployment can publish a browser-regressed commit before CI completes.
+  - Deployment can publish a browser-regressed commit before CI completes (legacy/ungated Pages).
   files_reviewed:
   - .github/workflows/ci.yml
   - .github/workflows/update_spreadsheet.yml
@@ -433,24 +441,25 @@ aspects:
   effective_score: 8
   gap: 0
   priority: 0
-  status: healthy
+  status: needs_owner_acceptance
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 'PR #64 is merged and the exact live manifest, module/asset hashes, 363-row metadata, and rendered table are verified; explicit owner
-    visual acceptance remains pending.'
+  ai_basis: The repaired branch passes 28 browser specs and the complete content contract, and the live deployment is byte-verified to carry
+    the fix; only explicit owner visual acceptance remains.
   user_basis: Owner previously indicated an older 5/10 score was outdated; no new score is inferred.
   evidence:
-  - Merge commit 54b37f7 passed main CI run 31379726756 with 28/28 browser specs.
-  - Pages run 31379725585 completed successfully.
-  - Live build manifest revision live-search-versioned-module-graph-019feaf6-20260810.1 exactly matches committed asset/module/data hashes.
-  - Live catalogue-meta reports 363 master items and fetched index content renders Rows 363 plus catalogue rows.
+  - Live-query highlights, edition badge, row styling, navigation, mobile Browse, exports, and both modal flows pass browser CI.
+  - App/style/module hashes and visible build ID are synchronized.
+  - '2026-08-10 audit: public build-manifest.json byte-matches committed manifest; deployed columns.js contains the P0 import. The broken-baseline
+    risk flag is retired.'
   user_notes: Do not treat Pages artifact success as proof that the presentation reached the end user.
   desired_direction:
   - Versioned, browser-verified delivery with explicit owner acceptance.
   next_actions:
-  - Obtain explicit owner visual acceptance for the live revision.
+  - 'Request owner visual acceptance of the now-live, byte-verified build.'
   risk_flags:
   - Owner visual acceptance remains pending.
+  - Pages remains legacy/ungated (see deployment_readiness).
   files_reviewed:
   - docs/index.html
   - docs/app.js
@@ -563,7 +572,7 @@ aspects:
     are guarded against returning.
   user_basis: null
   evidence:
-  - View registry covers all 19 user-facing JSON sheets plus client-side Series view.
+  - View registry covers all 18 user-facing catalogue JSON files (19 Jump-to entries; master + series share master.json) plus the client-side Series view. The Original Spreadsheet (raw data.json) view was retired 2026-08-10 (data.json is still generated by the raw lane).
   - Primary grid and edition formatter pass browser/Node execution.
   - Node guard confirms removed overview/stats/review-nav tokens stay absent.
   user_notes: null
@@ -581,27 +590,30 @@ aspects:
   category: operations
   weight: 4
   target: 8
-  ai_score: 7
+  ai_score: 8
   user_score: null
-  effective_score: 7
-  gap: 1
-  priority: 4
-  status: blocked_manual_workflow_edit
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: needs_owner_action
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 'PR #64 merged, main CI is green, Pages deployed, and live revision/rows are verified; legacy Pages still deploys independently of
-    CI.'
+  ai_basis: 'PR #64 (54b37f7) is merged, deployed, main CI is green, and the live deployment is byte-verified against source; the only remaining
+    readiness item is the owner-applied CI-gated (Actions) Pages switch.'
   user_basis: null
   evidence:
-  - Main CI run 31379726756 passed after merge commit 54b37f7.
-  - Pages run 31379725585 deployed the matching live manifest and 363-row catalogue.
-  - GitHub Pages API remains build_type legacy, source main:/docs.
+  - Pages built 54b37f7 @10:34:31Z; main CI run 31379726756 passed in 1m31s.
+  - 'Network fetch this session: public build-manifest.json is byte-identical to the committed manifest; deployed columns.js contains the
+    isExtraEditionRow import.'
+  - Manifest and visible build revision cover app, style, data, and every module.
   user_notes: null
   desired_direction: []
   next_actions:
-  - Owner applies required checks and CI-gated Pages workflow/settings.
+  - 'Owner: switch Pages from legacy main:/docs to the Actions workflow build type so deploy depends on a green Validate data pipeline and
+    site job (manual-workflow-edits.md).'
+  - 'Owner: provide explicit visual acceptance of the live build.'
   risk_flags:
-  - No enforced validation barrier exists between merge and public deployment.
+  - Pages is still legacy/ungated, so a future broken commit can deploy before CI fails (the exact race that shipped PR #63).
   files_reviewed:
   - docs/build-manifest.json
   - docs/index.html

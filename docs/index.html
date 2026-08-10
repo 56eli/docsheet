@@ -18,7 +18,7 @@
 
   <!-- Local assets are content-versioned so a Pages deploy cannot pair fresh
        data/HTML with stale browser-cached presentation code. -->
-  <link rel="stylesheet" href="style.css?v=f58adda186fa">
+  <link rel="stylesheet" href="style.css?v=abeca31393c9">
 
   <!-- Apply dark mode before first paint (no flash of white). -->
   <script>
@@ -67,11 +67,14 @@
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
           <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Export CSV
+        <span class="btn-label">Export CSV</span>
       </button>
       <button id="master-browse-toggle" type="button" aria-pressed="false" title="Switch between work-card browsing and the full spreadsheet" hidden>Browse cards</button>
       <div class="settings-tools">
-        <button id="settings-btn" type="button" aria-expanded="false" aria-controls="settings-menu">View settings</button>
+        <button id="settings-btn" type="button" aria-expanded="false" aria-controls="settings-menu" title="View settings">
+          <svg class="settings-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          <span class="btn-label">View settings</span>
+        </button>
         <div id="settings-menu" class="settings-menu" hidden>
           <div class="settings-menu-header">Display</div>
           <button id="expand-everything-btn" type="button">Expand everything</button>
@@ -79,7 +82,6 @@
           <label><input type="checkbox" id="compact-mode-toggle"> Compact rows</label>
           <label><input type="checkbox" id="show-summary-toggle"> Show summary cards</label>
           <label><input type="checkbox" id="show-filters-toggle"> Show filters panel</label>
-          <label id="blank-rows-toggle-wrap" hidden title="The raw sheet contains 31 blank visual-separator rows; hidden by default"><input type="checkbox" id="show-blank-rows-toggle"> Show blank separator rows</label>
           <button id="reset-view-btn" type="button">Reset current view</button>
         </div>
       </div>
@@ -165,15 +167,19 @@
     <div id="empty-state" class="empty-state" hidden></div>
     <section id="mobile-browse" class="mobile-browse" aria-label="Mobile catalogue browse mode" hidden>
       <div class="mobile-browse-intro">
-        <div>
+        <div class="mobile-browse-intro-copy">
           <span class="mobile-browse-eyebrow">Browse mode</span>
           <p>Explore works as compact stacks. Expand a work to inspect its editions and parts.</p>
         </div>
-        <button id="mobile-browse-sheet-btn" type="button">Open spreadsheet</button>
+        <div class="mobile-browse-intro-actions">
+          <button id="mobile-browse-sheet-btn" type="button">Spreadsheet</button>
+          <button id="mobile-browse-intro-dismiss" type="button" class="mobile-browse-intro-dismiss" aria-label="Hide this intro" title="Hide this intro">Dismiss</button>
+        </div>
       </div>
       <section class="mobile-discovery" aria-label="Browse catalogue by series or year">
         <div class="mobile-discovery-heading">
-          <span>Explore by series or year</span>
+          <span class="mobile-discovery-title">Explore by series or year</span>
+          <button id="mobile-discovery-toggle" type="button" class="mobile-discovery-toggle" aria-expanded="false">Filter by series / year</button>
           <button id="mobile-discovery-clear" type="button" hidden>Clear</button>
         </div>
         <div class="mobile-discovery-group">
@@ -222,12 +228,12 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
-    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-caf010627101/css-f58adda186fa</code></a>
+    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-6be6c651d8e7/css-abeca31393c9</code></a>
     <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->
   <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
-  <script type="module" src="app.js?v=caf010627101"></script>
+  <script type="module" src="app.js?v=6be6c651d8e7"></script>
 </body>
 </html>

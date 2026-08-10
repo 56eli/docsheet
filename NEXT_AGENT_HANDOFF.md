@@ -1,8 +1,8 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019feaf6
-**Branch for this session:** `arena/019feaf6-docsheet`
-**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
+**Updated:** 2026-08-10 — Arena session 019feb3e (post-PR-#64, live-verified audit)
+**Branch for this session:** `arena/019feb3e-docsheet`
+**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
 
 ## Read first
 
@@ -10,42 +10,37 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feaf6-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. PR #64 merged as `54b37f7`, main CI and Pages deployment passed, and the live manifest plus 363-row catalogue are verified.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The baseline (`main` = `54b37f7`, PR #64) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js` confirmed this session); main CI is green; effective score **8.1/10, gate conditional_pass**.
 
-## 2. Incident and completed frontend work
+**This branch (`arena/019feb3e-docsheet`) adds on top of `main`:** a fresh full audit (gate 7.9 FAIL → 8.1 conditional_pass, broken-baseline blocker closed); removal of the residual `.dataset-tab` dead code; mobile-only bloat reduction (P1–P4, ~55% less mobile chrome); retirement of the Original Spreadsheet view; and owner-directed `owned` edits (master 373 + raw rows 297–end blanked → 282 true / 13 false / 68 blank). Full evidence: `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`; data-integrity answers (links/Vimeo/owned): `review/LINKS_VIMEO_OWNED_FINDINGS.md`; mobile plan: `review/MOBILE_BROWSE_PLAN.md`.
 
-The baseline's `docs/js/columns.js` called `isExtraEditionRow(row)` without importing it. Main CI run `31373716254` failed **25/25 Playwright specs** because no row rendered, after legacy Pages had already deployed the commit.
+A PR from this branch is being opened for review + merge. After merge, the live site gains the mobile redesign, loses the Original Spreadsheet tab, and reflects the new `owned` values.
 
-This branch now:
+## 2. What this branch changes (on top of `main`)
 
-1. restores the missing import and removes redundant imports;
-2. executes edition formatting in Node and browser regressions;
-3. removes all 10 absent-ID overview/stats/review-nav paths and 411 net lines;
-4. completes shortcuts-modal labelling, focus entry/trap, Escape close, and focus restoration;
-5. passes a live search-query getter into formatters so highlights update on every redraw;
-6. applies target-hash query versions to every local ES-module edge;
-7. traverses the full import graph in `FrontendDeliveryContractTests`;
-8. refreshes module/app/style hashes, visible build ID, and the build manifest.
-
-Main CI run `31379726756` passes 149 offline, 3 Node, and **28/28 Playwright tests**. Pages run `31379725585` deployed successfully. Live verification confirms the exact revision `live-search-versioned-module-graph-019feaf6-20260810.1`, matching asset/module/data hashes, `master_items=363`, and rendered catalogue rows.
+- **Audit + scoreboard reconciliation:** new declared-current audit; `SCOREBOARD.md`/`scoreboard.yml` corrected from stale "FAIL / broken baseline / unverified deployment" to the verified 8.1 conditional-pass state; history + handoffs synchronized.
+- **Dead-code removal:** `.dataset-tab`/`.dataset-tabs`/`.tab-group` JS (4 no-op lookups + arrow-key block) and CSS removed (zero matching elements).
+- **Mobile bloat reduction (P1–P4):** single-row icon topbar, dismissible Browse intro, collapsible discovery rails, condensed view summary — all `≤720px`, desktop untouched.
+- **Retire Original Spreadsheet view:** removed from `config.js` + UI + specs; `data.json` still generated but unsurfaced.
+- **Owned edits:** blanked `owned` for master 373 and the 41 ledger item rows at raw ≥ 297 (edited the reviewed source, then rebuilt).
+- Full module-graph delivery contract refreshed (fixpoint). 149/149 tests, 3/3 Node, 6/6 checks, 90% coverage, all browser specs valid.
 
 ### Remaining findings
 
-- Pages is still legacy `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
-- Explicit owner visual acceptance remains pending despite objective live verification.
+- Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
 - Axe/Lighthouse automation is optional follow-up, not a current release blocker.
-- Issue #18 still needs owner Drive access.
+- Issue #18 (owned vs lak.nz Drive) still needs owner Drive access.
 
 ## 3. Current verified state
 
 | Metric | Current |
 |---|---:|
-| Raw published rows | 374 (31 blank separators, hidden by default) |
+| Raw published rows | 374 (31 blank separators; the Original Spreadsheet view was retired 2026-08-10, so they are no longer surfaced in the UI — data.json is still generated by the raw lane) |
 | Curated master | 363 |
 | Everything view | **363** |
 | Work IDs | 191 |
@@ -53,7 +48,7 @@ Main CI run `31379726756` passes 149 offline, 3 Node, and **28/28 Playwright tes
 | Proposed filenames | 363 unique |
 | Item types | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other |
 | Formats | 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming |
-| Ownership | 312 true / 25 false / 26 blank |
+| Ownership | 282 true / 13 false / 68 blank |
 | Exclusions / source overrides | 75 / 134 |
 | Manual candidates / leads | 40 / 4 |
 | Everything relationships | 340 product relationships, 7 series compilations |
@@ -80,7 +75,7 @@ BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
 BLOCK live curl probe (sandbox TLS connection restriction)
 ```
 
-Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. Main CI run `31379726756` and Pages run `31379725585` prove merge commit `54b37f7` passes and is live; fetched manifest/meta/index content confirms the exact revision and 363-row render.
+Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31378465750` proves the repaired/cleaned frontend passes 3/3 Node and 28/28 browser tests. The exact public deployment still needs verification.
 
 ## Data pipeline rules
 
@@ -159,9 +154,10 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 ## Open work in priority order
 
-1. Owner: explicitly accept/reject live revision `live-search-versioned-module-graph-019feaf6-20260810.1`.
-2. Owner: require CI and gate Pages deployment.
-3. Optionally add axe-core/Lighthouse automation.
-4. Resolve GitHub issue #18 when owner Drive access is available.
+1. **Owner:** switch Pages from legacy `main:/docs` to the Actions `workflow` build type so deploy depends on a green `Validate data pipeline and site` job (`.scoreboard/manual-workflow-edits.md`). This is the single remaining delivery risk.
+2. **Owner:** give explicit visual acceptance of the now-live, byte-verified build.
+3. **Agent-safe quick wins:** add `node --check docs/js/*.js` + ESLint `no-undef` to `ci.yml` (the `.dataset-tab` dead code is already removed on this branch).
+4. Optionally add axe-core/Lighthouse automation; raise `helpers.py`/`relationships.py` coverage.
+5. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.
