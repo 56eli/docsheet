@@ -223,7 +223,9 @@ test('JSON export downloads the complete active view with metadata', async ({ pa
   expect(payload.schema_version).toBe(1);
   expect(payload.view).toBe('master');
   expect(payload.row_count).toBe(363);
-  expect(payload.rows.some((row) => row.title === 'Satsang')).toBeTruthy();
+  // Whole-sheet semantics: this title does not match the active "Causality"
+  // search but must still be present in the exported payload.
+  expect(payload.rows.some((row) => row.title === 'Power vs. Force')).toBeTruthy();
   expect(payload.columns).toContain('uuid');
 });
 
