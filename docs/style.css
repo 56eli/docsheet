@@ -1262,15 +1262,15 @@ body {
 #reset-view-btn:hover {
   background: var(--surface-2);
 }
-.settings-tools { position: relative; }
-.settings-menu {
+.settings-tools, .export-tools { position: relative; }
+.settings-menu, .export-menu {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: 170;
   display: grid;
-  width: min(270px, 88vw);
-  gap: 9px;
+  width: min(290px, 88vw);
+  gap: 8px;
   padding: 12px;
   color: var(--text);
   background: var(--surface);
@@ -1278,11 +1278,42 @@ body {
   border-radius: 14px;
   box-shadow: var(--shadow-md);
 }
-.settings-menu[hidden] { display: none; }
-.settings-menu-header {
+.settings-menu[hidden], .export-menu[hidden] { display: none; }
+.settings-menu-header, .export-menu-header {
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.export-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.export-option:hover, .export-option:focus-visible {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+.export-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.export-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1352,7 +1383,7 @@ body {
   #global-search { width: 100%; }
   .settings-tools { flex: 0 0 auto; }
   #settings-btn { width: auto; }
-  .settings-menu { left: 0; right: auto; width: 100%; }
+  .settings-menu, .export-menu { left: 0; right: auto; width: 100%; }
   .view-summary { padding: 9px 10px; }
 }
 

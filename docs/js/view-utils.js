@@ -19,7 +19,7 @@ export function updateViewSummary(viewName, rowCount, viewTitleEl, viewDescEl, v
     const metaItems = [
       ["Rows", rowCount === null ? "Loading…" : rowCount.toLocaleString()],
       ["Type", details.type || "Spreadsheet"],
-      ["Export", view.exportName],
+      ["Export", `${view.exportName} / .ods`],
     ];
     metaItems.forEach(([label, value]) => {
       const wrapper = document.createElement("div");

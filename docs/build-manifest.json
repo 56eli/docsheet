@@ -1,10 +1,10 @@
 {
-  "revision": "audit-csv-export-019feb9b-2026-08-10.1",
+  "revision": "ods-export-menu-019feb9b-2026-08-10.1",
   "source_baseline": "8c59a912b133331dd34cd06a452317d24b332e5b",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "eac2f880d4028a68a197d1883152a9970eaf7bec9fd8e1f29cfde5e1e5ed0e2a",
-    "style.css": "d4a51b981016ff3958652f88c96546cbda4ba185bfef958984f3137773d81977"
+    "app.js": "155ef898c0c5d8c15598b689987033e86bb555f893bac86e12e20688c076cf19",
+    "style.css": "3a0ae4223b2623d6edc7c0f9878e5ef4a1ed7e90df2e594248c00836837bb8f0"
   },
   "modules": {
     "js/config.js": "94f497018c49c6660a04984a5a89bc59d1a9884f881c0a6ed329615335ee9aef",
@@ -13,7 +13,8 @@
     "js/mobile.js": "326d76c01d1e1390d7296b90493dae68405cc43757139ee1b61e3682f239ca5d",
     "js/columns.js": "d185ba911b424e323e2db66bc3fec1c2e2740ae6c9d4cad0ce999aa1742efafd",
     "js/filter-utils.js": "e824f86e241cca4b774b333b24d5ae6eeb1b1a80f6f2a3d940163577918789f6",
-    "js/view-utils.js": "3bd210e98a0b5b6562f0adae6cb6cb5bd3e03c1b215c4ae3da954129ebdc9685"
+    "js/view-utils.js": "0c20adc6e22010868d36d6948db355e527dd5dfafaeb5f4ef1ab2740db2be74d",
+    "js/ods-export.js": "c1a8d09da3aafcd080872808cc01b4b669a3521949b59e1d3a6767ed6578175f"
   },
   "data": {
     "master.json": "220052cb68e7df4e5e9864655c09c12513fdbf9e2e89fc8c8c61047265dafd4a",

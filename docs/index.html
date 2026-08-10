@@ -18,7 +18,7 @@
 
   <!-- Local assets are content-versioned so a Pages deploy cannot pair fresh
        data/HTML with stale browser-cached presentation code. -->
-  <link rel="stylesheet" href="style.css?v=d4a51b981016">
+  <link rel="stylesheet" href="style.css?v=3a0ae4223b26">
 
   <!-- Apply dark mode before first paint (no flash of white). -->
   <script>
@@ -63,12 +63,25 @@
         <span>Jump to</span>
         <select id="view-jump" aria-label="Jump to a catalogue view"></select>
       </label>
-      <button id="export-btn" type="button" title="Download all rows of the current view as a CSV file (filters do not reduce the export)">
-        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-          <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="btn-label">Export CSV</span>
-      </button>
+      <div class="export-tools">
+        <button id="export-btn" type="button" aria-expanded="false" aria-controls="export-menu" title="Download rows of the current view (filters do not reduce the export)">
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="btn-label">Export ▾</span>
+        </button>
+        <div id="export-menu" class="export-menu" hidden>
+          <div class="export-menu-header">Download format</div>
+          <button id="export-csv-btn" type="button" class="export-option" title="Download plain text CSV table">
+            <span class="export-title">CSV (.csv)</span>
+            <span class="export-desc">Plain text spreadsheet table</span>
+          </button>
+          <button id="export-ods-btn" type="button" class="export-option" title="Download styled OpenDocument Spreadsheet with colored groupings">
+            <span class="export-title">ODS (.ods)</span>
+            <span class="export-desc">Styled spreadsheet with REVISION1 colored groupings</span>
+          </button>
+        </div>
+      </div>
       <button id="master-browse-toggle" type="button" aria-pressed="false" title="Switch between work-card browsing and the full spreadsheet" hidden>Browse cards</button>
       <div class="settings-tools">
         <button id="settings-btn" type="button" aria-expanded="false" aria-controls="settings-menu" title="View settings">
@@ -228,12 +241,12 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
-    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-eac2f880d402/css-d4a51b981016</code></a>
+    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-155ef898c0c5/css-3a0ae4223b26</code></a>
     <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->
   <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
-  <script type="module" src="app.js?v=eac2f880d402"></script>
+  <script type="module" src="app.js?v=155ef898c0c5"></script>
 </body>
 </html>

@@ -26,9 +26,10 @@ test('CSV export downloads the whole active view even when filtered', async ({ p
   await page.getByRole('searchbox', { name: /search across all columns/i }).fill('Causality');
   await expect(page.locator('#search-status')).toContainText(/Showing: \d+ of \d+/);
 
+  await page.locator('#export-btn').click();
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.getByRole('button', { name: /export csv/i }).click(),
+    page.locator('#export-csv-btn').click(),
   ]);
 
   expect(download.suggestedFilename()).toBe('hawkins-everything.csv');
@@ -52,9 +53,10 @@ test('CSV export uses the selected view filename', async ({ page }) => {
   await page.locator('#view-jump').selectOption('manualLeads');
   await waitForTable(page);
 
+  await page.locator('#export-btn').click();
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.getByRole('button', { name: /export csv/i }).click(),
+    page.locator('#export-csv-btn').click(),
   ]);
 
   expect(download.suggestedFilename()).toBe('hawkins-manual-leads.csv');
@@ -160,4 +162,31 @@ test('edition model columns render on the Everything tab', async ({ page }) => {
 
   // The book row shows its own edition label.
   await expect(editionCells.filter({ hasText: 'book' }).first()).toBeVisible();
+});
+
+test('ODS export downloads a styled OpenDocument Spreadsheet (.ods) archive with colored groupings', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  await page.locator('#export-btn').click();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#export-ods-btn').click(),
+  ]);
+
+  expect(download.suggestedFilename()).toBe('hawkins-everything.ods');
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+
+  const buf = await fs.readFile(downloadPath);
+  expect(buf[0]).toBe(0x50); // P
+  expect(buf[1]).toBe(0x4b); // K
+  expect(buf[2]).toBe(0x03);
+  expect(buf[3]).toBe(0x04);
+  const text = buf.toString('utf8');
+  expect(text).toContain('application/vnd.oasis.opendocument.spreadsheet');
+  expect(text).toContain('#7C3AED'); // Books REVISION1 block border color
+  expect(text).toContain('#F4EEFE'); // Books REVISION1 block background tint
+  expect(text).toContain('Master ID');
+  expect(text).toContain('Work');
 });
