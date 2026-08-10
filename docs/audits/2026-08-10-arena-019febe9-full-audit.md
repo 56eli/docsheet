@@ -52,7 +52,7 @@ All counts match `NEXT_AGENT_HANDOFF.md` §3 and `docs/catalogue-meta.json`.
 ## Full-stack findings
 
 - Two-lane deterministic architecture (raw pass-through vs curated ledger+overlays) is sound; every write path has a `--check` twin and the CI workflow runs all six plus the 149-test suite and coverage floor.
-- Frontend is modularized behind a hash-versioned ES-module graph (8 modules); every local import edge carries its target SHA-256 prefix and the delivery-contract test traverses the full graph.
+- Frontend is modularized behind a hash-versioned ES-module graph (9 modules); every local import edge carries its target SHA-256 prefix and the delivery-contract test traverses the full graph.
 - Export engine covers XLSX/ODS/CSV/JSON/TSV with zero runtime dependencies for the binary formats (hand-rolled ZIP + XML), deterministic filenames, formula neutralisation, and REVISION1 block styling; 9 Node tests cover every production block id, the palette, and the `undecided` fallback.
 - `activateView` is abort-aware with a monotonic activation token, a visible fatal-render state, and an `aria-busy` lifecycle; `loadCatalogueBlockMap` is awaited before first render so row blocks are correct on the first paint.
 - The raw lane and curated lane are properly isolated; the raw updater owns `docs/data.json` while curated builders own `docs/*.json` catalogue payloads.
@@ -76,7 +76,7 @@ All non-blocking; ordered by practical priority.
 
 4. **P3 (UX): the shortcuts-help overlay advertises `←` / `→` "Switch tabs", but no handler exists.** `handleGlobalShortcuts` in `app.js` implements `/`, `j`, `k`, `y`, `?` only; the arrow-key roving block was removed with the `.dataset-tab` tab bar cleanup (019feb3e) and the help entry was left behind. **Fixed in this session:** the stale entry was removed from the overlay and a regression guard (`expect(dialog).not.toContainText('Switch tabs')`) was added to `tests/ux-enhancements.spec.js`; app.js content version, footer build ID, and manifest hash refreshed (delivery contract green).
 
-5. **P3 (robustness): the `getRowBlockId` fallback classifier cannot reproduce the block map.** If `catalogue-block-map.json` fails to load, the fallback (series/type rules in `formatters.js`) maps only 9 blocks and cannot express `lectures-2002-2011` — the largest block (201 rows) — so those rows and the ODS/XLSX exports would silently lose their REVISION1 grouping, and a handful of other rows would receive *wrong* fallback colors. The fallback is untested against the committed map (Node tests stub `getRowBlockId`). Recommend embedding the derived uuid→block table (or the equivalent lecture-series rule) as a fallback and asserting in a Node test that the fallback equals the map for all 363 rows.
+5. **P3 (robustness): the `getRowBlockId` fallback classifier cannot reproduce the block map.** If `catalogue-block-map.json` fails to load, the fallback (series/type rules in `formatters.js`) mapped only 9 blocks and could not express `lectures-2002-2011` — the largest block (201 rows) — so those rows and the ODS/XLSX exports would silently lose their REVISION1 grouping, and a handful of other rows would receive *wrong* fallback colors. **Fixed in this session:** a generated snapshot module `docs/js/block-map-fallback.js` (uuid→block for all 363 approved display-order rows) is embedded as the fallback, and a Node test asserts `getRowBlockId` equals the approved CSV for every row (fallback == map for all 363); the module is registered in the delivery contract.
 
 ## Remaining risks (unchanged, owner-gated)
 

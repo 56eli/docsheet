@@ -4,6 +4,7 @@
 // =============================================================================
 
 import { COLUMN_LABELS, RECORD_TYPE_LABELS, RECORD_TYPE_TITLES } from "./config.js?v=94f497018c49";
+import { FALLBACK_BLOCK_MAP } from "./block-map-fallback.js?v=d97878fffe62";
 
 // ---------------------------------------------------------------------------
 // Status badges — CSS class + human-readable label for status-typed fields.
@@ -95,6 +96,11 @@ export function getRowBlockId(data) {
   if (_catalogueBlockMap && _catalogueBlockMap[uuid]) {
     return _catalogueBlockMap[uuid];
   }
+  // Offline fallback: the approved display-order snapshot, used when the
+  // block-map fetch failed. Keeps every block (including the 201-row
+  // lectures-2002-2011 grouping) from silently degrading to "undecided"
+  // and guarantees fallback == map for all currently approved masters.
+  if (FALLBACK_BLOCK_MAP[uuid]) return FALLBACK_BLOCK_MAP[uuid];
   const series = String(data.series || "").trim();
   const type = String(data.item_type || "").trim();
   const notes = String(data.notes || "").trim();
