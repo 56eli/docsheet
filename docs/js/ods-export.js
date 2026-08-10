@@ -14,7 +14,7 @@ import {
 } from "./config.js?v=94f497018c49";
 
 const BLOCK_STYLES = {
-  "lectures":            { border: "#059669", bg: "#EAF6F2" },
+  "lectures-2002-2011":  { border: "#059669", bg: "#EAF6F2" },
   "discussion":          { border: "#E11D48", bg: "#FCECEF" },
   "satsang":             { border: "#D97706", bg: "#FDF4E8" },
   "on-the-road":         { border: "#0D9488", bg: "#EBF7F6" },

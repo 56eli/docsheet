@@ -167,6 +167,14 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
   const { createOdsArchive } = await import("../docs/js/ods-export.js");
   const sample = [
     {
+      uuid: 99,
+      work_id: "w-lecture",
+      title: "Lecture Series Sample",
+      series: "Lecture Series",
+      year_month: "2002-01",
+      notes: "",
+    },
+    {
       uuid: 100,
       work_id: "w-power-vs-force",
       title: "Power vs. Force",
@@ -184,7 +192,11 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
     },
   ];
 
-  const getRowBlockId = (row) => (row.series === "Books" ? "books" : "lecture-highlights");
+  const getRowBlockId = (row) => {
+    if (row.series === "Books") return "books";
+    if (row.series === "Lecture Series") return "lectures-2002-2011";
+    return "lecture-highlights";
+  };
   const archive = createOdsArchive(sample, "master", getRowBlockId);
 
   assert.ok(archive instanceof Uint8Array, "createOdsArchive must return Uint8Array");
@@ -200,6 +212,10 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
   assert.ok(text.includes("content.xml"), "must contain content path");
 
   // Verify REVISION1 block background colors are in content.xml
+  assert.ok(text.includes("#059669"), "must include Lecture Series block border color (#059669)");
+  assert.ok(text.includes("#EAF6F2"), "must include Lecture Series background tint (#EAF6F2)");
+  assert.ok((text.match(/table:style-name="ce-block-left-lectures-2002-2011"/g) || []).length >= 1,
+    "a Lecture Series data row must use the exact published block style");
   assert.ok(text.includes("#7C3AED"), "must include Books block border color (#7C3AED)");
   assert.ok(text.includes("#F4EEFE"), "must include Books block background tint (#F4EEFE)");
   assert.ok(text.includes("#EA580C"), "must include Lecture Highlights block border (#EA580C)");

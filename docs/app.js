@@ -29,7 +29,7 @@ import {
 } from "./js/columns.js?v=d185ba911b42";
 import {
   exportOds, exportXlsx, exportJson, exportTsv,
-} from "./js/ods-export.js?v=5e4004e8995b";
+} from "./js/ods-export.js?v=22b292e99cf3";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=e824f86e241c";
