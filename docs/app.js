@@ -18,26 +18,21 @@ import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=0d8f985fe469";
+} from "./js/formatters.js?v=ee2398b737f4";
 import {
-  displayMobileDate, displayMobileEdition, isExtraEditionRow,
-  mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
-  formatTimestamp, debounce,
+  mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import {
-  mobileEditionCard, overviewCard,
-} from "./js/mobile.js?v=84a5d471cc0f";
+import { mobileEditionCard } from "./js/mobile.js?v=ac823d0b9eb5";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=a96a86b836f3";
+} from "./js/columns.js?v=9a29e2169502";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
-} from "./js/filter-utils.js?v=daefe257ffd2";
+} from "./js/filter-utils.js?v=ad7cda5641cf";
 import {
-  updateViewSummary, renderCollectionOverview, renderSeriesStrip,
-  renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=7fb1cc9ec1dd";
+  updateViewSummary, renderSeriesLanding, configureViewJump,
+} from "./js/view-utils.js?v=7d59133a7f37";
 
 (function () {
   "use strict";
@@ -55,20 +50,10 @@ import {
   const wrapCellsToggle = $("wrap-cells-toggle");
   const compactModeToggle = $("compact-mode-toggle");
   const showSummaryToggle = $("show-summary-toggle");
-  const showStatsToggle = $("show-stats-toggle");
   const showFiltersToggle = $("show-filters-toggle");
   const showBlankRowsToggle = $("show-blank-rows-toggle");
   const blankRowsToggleWrap = $("blank-rows-toggle-wrap");
-  // Catalogue overview (hero / collection stats / series strip) + presentation controls
   const masterBrowseToggle = $("master-browse-toggle");
-  const overviewBtn = $("overview-btn");
-  const catalogueIntro = $("catalogue-intro");
-  const hero = $("hero");
-  const heroDismiss = $("hero-dismiss");
-  const overviewCards = $("overview-cards");
-  const seriesStripList = $("series-strip-list");
-  const reviewNavToggle = $("review-nav-toggle");
-  const reviewNavGroups = $("review-nav-groups");
   const seriesLanding = $("series-landing");
   const seriesLandingGrid = $("series-landing-grid");
   const descToggleBtn = $("desc-toggle-btn");
@@ -87,7 +72,6 @@ import {
   const footerUpdated = $("footer-updated");
   const spreadsheet = $("spreadsheet");
   const emptyState = $("empty-state");
-  const statsStrip = $("stats-strip");
   const reviewToolbar = $("review-toolbar");
   const reviewFilter = $("review-filter");
   const reviewFilterHint = $("review-filter-hint");
@@ -146,8 +130,6 @@ import {
   let allData = [];
   const MOBILE_BROWSE_STORAGE_KEY = "docsheet-mobile-master-mode";
   const MASTER_PRESENTATION_KEY = "docsheet-master-presentation";
-  const INTRO_STORAGE_KEY = "docsheet-intro-dismissed";
-  const REVIEW_NAV_KEY = "docsheet-review-nav-collapsed";
   const mobileBrowseMedia = window.matchMedia
     ? window.matchMedia("(max-width: 720px)")
     : { matches: false };
@@ -350,7 +332,7 @@ import {
    *  summary visibility, and one-click "Expand everything".
    * ------------------------------------------------------------------ */
   const VIEW_SETTINGS_STORAGE_KEY = "docsheet-view-settings";
-  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showStats: false, showFilters: false, showBlankRows: false };
+  const DEFAULT_VIEW_SETTINGS = { wrapCells: false, compactRows: true, showSummary: true, showFilters: false, showBlankRows: false };
 
   function readViewSettings() {
     try {
@@ -373,7 +355,6 @@ import {
     document.documentElement.classList.toggle("wrap-cells", Boolean(settings.wrapCells));
     document.documentElement.classList.toggle("compact-density", Boolean(settings.compactRows));
     if (viewSummary) viewSummary.hidden = !settings.showSummary;
-    if (statsStrip) statsStrip.hidden = !settings.showStats;
     if (facetToggleBtn) {
       facetToggleBtn.setAttribute("aria-pressed", String(settings.showFilters));
     }
@@ -383,7 +364,6 @@ import {
     if (wrapCellsToggle) wrapCellsToggle.checked = Boolean(settings.wrapCells);
     if (compactModeToggle) compactModeToggle.checked = Boolean(settings.compactRows);
     if (showSummaryToggle) showSummaryToggle.checked = Boolean(settings.showSummary);
-    if (showStatsToggle) showStatsToggle.checked = Boolean(settings.showStats);
     if (showFiltersToggle) showFiltersToggle.checked = Boolean(settings.showFilters);
     if (showBlankRowsToggle && blankRowsToggleWrap) {
       showBlankRowsToggle.checked = Boolean(settings.showBlankRows);
@@ -760,46 +740,9 @@ import {
   }
 
   /* ------------------------------------------------------------------ *
-   *  Catalogue overview (hero, collection stats, series strip) and the
-   *  client-side Series browser. All data comes from the same generated
-   *  master.json rows already loaded into allData — no extra data files.
+   *  Client-side Series browser. It reuses master.json and persists the
+   *  selected series through the normal master-view facet state.
    * ------------------------------------------------------------------ */
-  function introDismissed() {
-    try {
-      return localStorage.getItem(INTRO_STORAGE_KEY) === "1";
-    } catch (err) {
-      return false;
-    }
-  }
-
-  function setIntroDismissed(dismissed) {
-    try {
-      localStorage.setItem(INTRO_STORAGE_KEY, dismissed ? "1" : "0");
-    } catch (err) {
-      /* storage unavailable — the overview just stays visible */
-    }
-  }
-
-
-
-  function updateCatalogueIntro(data = allData) {
-    if (!catalogueIntro) return;
-    const show = activeView === "master" && data.length > 0 && !introDismissed();
-    catalogueIntro.hidden = !show;
-    if (overviewBtn) overviewBtn.hidden = activeView !== "master" || show;
-    // The overview is tall; when it is visible the page scrolls naturally
-    // and the spreadsheet keeps a fixed minimum height (CI fix 2026-08-09).
-    document.body.classList.toggle("intro-visible", show);
-    if (!show) return;
-    renderCollectionOverview(data, overviewCards);
-    renderSeriesStrip(data, seriesStripList, openSeriesFromStrip);
-  }
-
-
-
-
-
-
 
   // Apply a facet value to the master view (used by the strip and the Series
   // browser). The facet state is written for "master" regardless of the view
@@ -810,21 +753,6 @@ import {
     writeFacetState("master", activeFacets);
     syncFacetSelect(facetId);
     if (facetClear) facetClear.hidden = facetsEmpty(activeFacets, FACETS);
-  }
-
-  function ensureTablePresentation() {
-    if (mobileBrowseMedia.matches) return; // phones keep their own mode
-    if (masterPresentationMode() !== "table") {
-      setMasterPresentationMode("table");
-      renderLoadedView(allData, true);
-    }
-  }
-
-  function openSeriesFromStrip(series) {
-    applyMasterFacet("series", series);
-    ensureTablePresentation();
-    applyActiveFilters();
-    if (spreadsheet && !spreadsheet.hidden) spreadsheet.scrollIntoView({ block: "start" });
   }
 
   function openSeriesFromLanding(series) {
@@ -1116,9 +1044,6 @@ import {
   // is a closure over module-scope activeSearchQuery. formatters.js exports
   // statusClass, formatClass, statusLabel, statusFormatter, rowTitle,
   // primaryIdentifier, loadCatalogueBlockMap, and getRowBlockId only.
-  // NOTE: escapeRegex and renderHighlightedText are defined here (not imported
-  // from formatters.js) because renderHighlightedText's default query parameter
-  // is a closure over module-scope activeSearchQuery.
   function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
@@ -1252,7 +1177,7 @@ import {
     spreadsheet.innerHTML = "";
     table = new Tabulator(spreadsheet, {
       data,
-      columns: buildColumns(data, activeView, expertColumnsOn, expertHiddenFields, renderHighlightedText, activeSearchQuery),
+      columns: buildColumns(data, activeView, expertColumnsOn, expertHiddenFields, renderHighlightedText, () => activeSearchQuery),
       layout: "fitDataFill",
       renderHorizontal: "basic",
       height: "100%",              // fixed virtual scroll viewport prevents rubberbanding
@@ -1489,10 +1414,7 @@ import {
       facetToggleBtn.hidden = (viewName !== "master");
     }
     updateMobileViewToggle();
-    if (catalogueIntro) catalogueIntro.hidden = true;
-    if (overviewBtn) overviewBtn.hidden = true;
     if (seriesLanding) seriesLanding.hidden = true;
-    document.body.classList.remove("intro-visible");
     activeSearchQuery = "";
     activeReviewFilter = null;
     searchInput.value = "";
@@ -1559,7 +1481,6 @@ import {
         console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
         return;
       }
-      if (viewName === "master") updateCatalogueIntro(data);
       renderLoadedView(data, true);
       console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
     } catch (err) {
@@ -1578,30 +1499,6 @@ import {
     }
   }
 
-  async function loadStatsStrip() {
-    // Catalogue overview chips, read from the generated catalogue-meta.json
-    // (single source of truth — never hand-counted here).
-    try {
-      const res = await fetch("catalogue-meta.json", { cache: "no-store" });
-      if (!res.ok) return;
-      const meta = await res.json();
-      const chips = [
-        ["stat-master-items", meta.master_items],
-        ["stat-exclusions", meta.master_exclusion_rows],
-        ["stat-overrides", meta.approved_source_overrides],
-        ["stat-relationships", meta.reviewed_product_relationships],
-        ["stat-compilations", meta.reviewed_series_compilations],
-      ];
-      for (const [id, value] of chips) {
-        const el = document.getElementById(id);
-        if (el && Number.isFinite(value)) el.textContent = String(value);
-      }
-      applyViewSettings();
-    } catch (err) {
-      /* meta unavailable — the strip simply stays hidden */
-    }
-  }
-
   async function boot() {
     initDarkMode();
     // Block map is owned by formatters.js (loaded as a module-scope
@@ -1612,7 +1509,6 @@ import {
     // never invoked it, which made every row fall back to "undecided"
     // until a full-page reload re-fetched the JSON.
     blockMapReady = loadCatalogueBlockMap();
-    loadStatsStrip();
     configureViewJump(viewJump, VIEW_GROUPS, activeView);
     if (viewJump) {
       viewJump.addEventListener("change", () => activateView(viewJump.value));
@@ -1651,70 +1547,6 @@ import {
         renderLoadedView(allData, true);
       });
     }
-    if (heroDismiss) {
-      heroDismiss.addEventListener("click", () => {
-        setIntroDismissed(true);
-        if (catalogueIntro) catalogueIntro.hidden = true;
-        document.body.classList.remove("intro-visible");
-        if (overviewBtn) overviewBtn.hidden = false;
-      });
-    }
-    if (overviewBtn) {
-      overviewBtn.addEventListener("click", () => {
-        setIntroDismissed(false);
-        updateCatalogueIntro();
-        if (catalogueIntro && !catalogueIntro.hidden) {
-          catalogueIntro.scrollIntoView({ block: "start" });
-        }
-      });
-    }
-    if (hero) {
-      hero.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-hero-action]");
-        if (!button) return;
-        const action = button.dataset.heroAction;
-        if (action === "browse") {
-          if (!mobileBrowseMedia.matches) {
-            setMasterPresentationMode("browse");
-            renderLoadedView(allData, true);
-          }
-        } else if (action === "series") {
-          const strip = document.getElementById("series-strip-list");
-          if (strip) strip.scrollIntoView({ block: "start" });
-        } else if (action === "overview") {
-          const overview = document.getElementById("collection-overview-title");
-          if (overview) overview.scrollIntoView({ block: "start" });
-        } else if (action === "not-owned") {
-          applyMasterFacet("owned", "false");
-          ensureTablePresentation();
-          applyActiveFilters();
-          if (spreadsheet && !spreadsheet.hidden) spreadsheet.scrollIntoView({ block: "start" });
-        }
-      });
-    }
-    if (reviewNavToggle && reviewNavGroups) {
-      let navCollapsed = false;
-      try {
-        navCollapsed = localStorage.getItem(REVIEW_NAV_KEY) === "1";
-      } catch (err) {
-        /* storage unavailable — expanded default */
-      }
-      const applyNavState = (collapsed) => {
-        reviewNavGroups.hidden = collapsed;
-        reviewNavToggle.setAttribute("aria-expanded", String(!collapsed));
-        reviewNavToggle.classList.toggle("collapsed", collapsed);
-      };
-      applyNavState(navCollapsed);
-      reviewNavToggle.addEventListener("click", () => {
-        navCollapsed = !reviewNavGroups.hidden;
-        applyNavState(navCollapsed);
-        try {
-          localStorage.setItem(REVIEW_NAV_KEY, navCollapsed ? "1" : "0");
-        } catch (err) {
-          /* storage unavailable */
-        }
-      });
-    }
     if (mobileBrowseMedia.addEventListener) {
       mobileBrowseMedia.addEventListener("change", () => {
         updateMobileViewToggle();
@@ -1729,9 +1561,6 @@ import {
     }
     if (showSummaryToggle) {
       showSummaryToggle.addEventListener("change", () => updateViewSetting("showSummary", showSummaryToggle.checked));
-    }
-    if (showStatsToggle) {
-      showStatsToggle.addEventListener("change", () => updateViewSetting("showStats", showStatsToggle.checked));
     }
     if (showFiltersToggle) {
       showFiltersToggle.addEventListener("change", () => updateViewSetting("showFilters", showFiltersToggle.checked));
@@ -1797,10 +1626,6 @@ import {
         applyActiveFilters();
       });
     });
-    // Stats chips navigate to their corresponding sheet (P0 UX).
-    document.querySelectorAll(".stat-chip[data-jump]").forEach((chip) => {
-      chip.addEventListener("click", () => activateView(chip.dataset.jump));
-    });
     document.addEventListener("click", () => {
       closeColumnMenu();
       closeSettingsMenu();
@@ -1810,6 +1635,7 @@ import {
         closeColumnMenu();
         closeSettingsMenu();
         closeRowDetails();
+        closeShortcutsHelp();
       }
     });
     searchInput.addEventListener("keydown", (e) => {
@@ -1874,7 +1700,10 @@ import {
       }
       return;
     }
-    if (event.key === "/") {
+    if (event.key === "?" || (event.key === "/" && event.shiftKey)) {
+      event.preventDefault();
+      toggleShortcutsHelp();
+    } else if (event.key === "/") {
       event.preventDefault();
       searchInput.focus();
       searchInput.select();
@@ -1887,26 +1716,60 @@ import {
     } else if (event.key === "y") {
       event.preventDefault();
       if (currentRowData) copyFilename(currentRowData);
-    } else if (event.key === "?") {
-      event.preventDefault();
-      toggleShortcutsHelp();
     }
   }
 
-  function toggleShortcutsHelp() {
-    let overlay = document.getElementById("shortcuts-help");
-    if (overlay) {
-      overlay.remove();
+  let shortcutsReturnFocus = null;
+
+  function closeShortcutsHelp() {
+    const overlay = document.getElementById("shortcuts-help");
+    if (!overlay) return;
+    overlay.remove();
+    const trigger = shortcutsReturnFocus;
+    shortcutsReturnFocus = null;
+    if (trigger && document.contains(trigger)) {
+      requestAnimationFrame(() => trigger.focus({ preventScroll: true }));
+    }
+  }
+
+  function trapShortcutsFocus(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      closeShortcutsHelp();
       return;
     }
-    overlay = document.createElement("div");
+    if (event.key !== "Tab") return;
+    const controls = [...event.currentTarget.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )].filter((control) => !control.hidden && control.getClientRects().length > 0);
+    if (!controls.length) return;
+    const current = controls.indexOf(document.activeElement);
+    const delta = event.shiftKey ? -1 : 1;
+    const next = current === -1
+      ? (event.shiftKey ? controls.length - 1 : 0)
+      : (current + delta + controls.length) % controls.length;
+    event.preventDefault();
+    controls[next].focus();
+  }
+
+  function toggleShortcutsHelp() {
+    if (document.getElementById("shortcuts-help")) {
+      closeShortcutsHelp();
+      return;
+    }
+    shortcutsReturnFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const overlay = document.createElement("div");
     overlay.id = "shortcuts-help";
     overlay.className = "shortcuts-overlay";
     overlay.setAttribute("role", "dialog");
-    overlay.setAttribute("aria-label", "Keyboard shortcuts");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "shortcuts-help-title");
     overlay.innerHTML = `
       <div class="shortcuts-card">
-        <h2>Keyboard shortcuts</h2>
+        <h2 id="shortcuts-help-title">Keyboard shortcuts</h2>
         <dl>
           <dt><kbd>/</kbd></dt><dd>Focus search</dd>
           <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>Next / previous row (opens details)</dd>
@@ -1917,12 +1780,14 @@ import {
         </dl>
         <button type="button" class="shortcuts-close">Close</button>
       </div>`;
+    overlay.addEventListener("keydown", trapShortcutsFocus);
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay || event.target.classList.contains("shortcuts-close")) {
-        overlay.remove();
+        closeShortcutsHelp();
       }
     });
     document.body.append(overlay);
+    requestAnimationFrame(() => overlay.querySelector(".shortcuts-close").focus());
   }
 
   if (document.readyState === "loading") {

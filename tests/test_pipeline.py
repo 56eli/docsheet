@@ -2405,31 +2405,48 @@ class FrontendDeliveryContractTests(unittest.TestCase):
             )
 
     def test_app_js_module_import_hashes_match_manifest(self) -> None:
-        """The ?v= hash in each import line in app.js must match the module's SHA-256 prefix.
+        """Every local edge in the ES-module graph must carry its target hash.
 
-        Catches a stale import hash (e.g. updating config.js but forgetting
-        to bump the ?v= query in app.js's import line).
+        Browser module identity includes the full URL. A versioned app import
+        paired with an unversioned nested import loads two module identities
+        and lets the nested edge reuse stale bytes. Traverse app.js plus every
+        manifest module so no local edge can bypass the content contract.
         """
-        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
-        manifest = json.loads((REPO / "docs/build-manifest.json").read_text(encoding="utf-8"))
+        docs_dir = REPO / "docs"
+        manifest = json.loads((docs_dir / "build-manifest.json").read_text(encoding="utf-8"))
         modules = manifest.get("modules", {})
+        sources = [docs_dir / "app.js", *[docs_dir / rel_path for rel_path in modules]]
+        import_pattern = re.compile(
+            r'from\s*"(?P<path>\.[^"?]+\.js)(?:\?v=(?P<hash>[0-9a-f]{12}))?"'
+        )
+        edge_count = 0
 
-        for match in re.finditer(r'from\s*"\./js/([^"?]+)\?v=([0-9a-f]{12})"', app_js):
-            module_rel = f"js/{match.group(1)}"
-            import_hash = match.group(2)
-            full_path = REPO / "docs" / module_rel
-            self.assertTrue(full_path.exists(), f"imported module {module_rel} not found")
-            actual_hash = self.sha256(full_path)
-            self.assertEqual(
-                import_hash, actual_hash[:12],
-                f"app.js imports {module_rel}?v={import_hash} but file hash is {actual_hash[:12]}",
-            )
-            # Cross-check against manifest
-            if module_rel in modules:
-                self.assertEqual(
-                    modules[module_rel], actual_hash,
-                    f"manifest modules.{module_rel} hash doesn't match file",
+        for source in sources:
+            text = source.read_text(encoding="utf-8")
+            for match in import_pattern.finditer(text):
+                edge_count += 1
+                import_path = match.group("path")
+                import_hash = match.group("hash")
+                self.assertIsNotNone(
+                    import_hash,
+                    f"{source.relative_to(docs_dir)} imports {import_path} without a content version",
                 )
+                target = (source.parent / import_path).resolve()
+                self.assertTrue(
+                    target.is_relative_to(docs_dir.resolve()),
+                    f"local module import escapes docs/: {source} -> {import_path}",
+                )
+                module_rel = target.relative_to(docs_dir.resolve()).as_posix()
+                self.assertIn(module_rel, modules, f"imported module {module_rel} missing from manifest")
+                actual_hash = self.sha256(target)
+                self.assertEqual(
+                    import_hash, actual_hash[:12],
+                    f"{source.relative_to(docs_dir)} imports {module_rel}?v={import_hash} "
+                    f"but target hash is {actual_hash[:12]}",
+                )
+                self.assertEqual(modules[module_rel], actual_hash)
+
+        self.assertGreater(edge_count, len(modules), "module-graph contract found too few import edges")
 
     def test_block_map_drift_fails_manifest_contract(self) -> None:
         """A drift between the block map and its manifest hash must fail loudly.

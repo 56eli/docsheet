@@ -146,9 +146,9 @@ failure category.
 
 Split into:
 
-- `data-and-python`: recursive compile, all six `--check` modes, 141 offline
+- `data-and-python`: recursive compile, all six `--check` modes, 149 offline
   tests, and coverage;
-- `browser`: JS/spec syntax, `npm ci`, Chromium, and 25 Playwright specs;
+- `browser`: Node frontend-module tests, JS/spec syntax, `npm ci`, Chromium, and 28 Playwright specs;
 - `required`: `if: always()` aggregate that fails unless both jobs pass.
 
 The browser job must retain the computed-style row acceptance in

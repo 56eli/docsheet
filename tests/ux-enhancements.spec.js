@@ -162,6 +162,41 @@ test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch
   await expect(browse).toBeVisible();
 });
 
+test('search redraw highlights the live query in visible cells', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  await page.locator('#global-search').fill('Power');
+  const highlight = page.locator('.tabulator-row .search-highlight').first();
+  await expect(highlight).toBeVisible();
+  await expect(highlight).toHaveText(/Power/i);
+  await expect(page.locator('#search-status')).toContainText('Showing:');
+});
+
+test('keyboard shortcuts help behaves as a focus-managed modal', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  const trigger = page.locator('#settings-btn');
+  await trigger.focus();
+  await page.keyboard.press('Shift+/');
+
+  const dialog = page.locator('#shortcuts-help');
+  const close = dialog.locator('.shortcuts-close');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveAttribute('role', 'dialog');
+  await expect(dialog).toHaveAttribute('aria-modal', 'true');
+  await expect(dialog).toHaveAttribute('aria-labelledby', 'shortcuts-help-title');
+  await expect(close).toBeFocused();
+
+  // The close button is currently the modal's only control, so Tab must wrap.
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
 test('keyboard slash focuses search', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);

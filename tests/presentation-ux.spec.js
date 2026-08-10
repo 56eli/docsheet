@@ -35,11 +35,25 @@ test('desktop interface opens directly into the clean spreadsheet', async ({ pag
   await page.goto('/docs/');
   await waitForTable(page);
 
-  // Hero, overview cards, and stats strip have been removed as requested for an unbloated desktop view.
-  await expect(page.locator('#catalogue-intro')).toBeHidden();
-  await expect(page.locator('#stats-strip')).toBeHidden();
+  // Removed overview/stats components must not leave hidden DOM placeholders.
+  await expect(page.locator('#catalogue-intro')).toHaveCount(0);
+  await expect(page.locator('#stats-strip')).toHaveCount(0);
   await expect(page.locator('#spreadsheet')).toBeVisible();
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
+});
+
+test('edition formatter executes its imported helper and renders the Extra badge', async ({ page }) => {
+  const pageErrors = [];
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+
+  await page.goto('/docs/');
+  await waitForTable(page);
+  await page.locator('#global-search').fill('Original Hardcover');
+
+  const row = page.locator('.tabulator-row').first();
+  await expect(row).toBeVisible();
+  await expect(row.locator('.tabulator-cell[tabulator-field="edition"] .extra-edition-badge')).toHaveText('Extra');
+  expect(pageErrors).toEqual([]);
 });
 
 test('computed row styles preserve zebra and REVISION1 accents across blocks', async ({ page }) => {
@@ -61,11 +75,17 @@ test('computed row styles preserve zebra and REVISION1 accents across blocks', a
   expect(firstVisual.className).toContain('row-block-lectures-2002-2011');
   expect(firstVisual.matchesLectureRule).toBe(true);
   expect(firstVisual.blockLectures).toBe('#059669');
-  // The hard-coded style.css hash here is the *current* revision
-  // (936c444be89d) — the test catches a stale cache by failing when the
-  // browser delivers an older version. If the style.css bytes change,
-  // update this hash and the matching `?v=` in docs/index.html together.
-  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=936c444be89d'))).toBe(true);
+  // Resolve the expected content version from the deployed manifest. The
+  // offline delivery contract already proves that the manifest, stylesheet
+  // bytes, and index URL agree; this browser assertion proves that the page
+  // actually loaded that exact version without another hand-maintained hash.
+  const expectedStyleVersion = await page.evaluate(async () => {
+    const manifest = await fetch('/docs/build-manifest.json').then((response) => response.json());
+    return manifest.assets['style.css'].slice(0, 12);
+  });
+  expect(firstVisual.styleSheets.some(
+    (href) => href.includes(`/docs/style.css?v=${expectedStyleVersion}`),
+  )).toBe(true);
   expect(firstVisual.backgroundColor).not.toBe(secondVisual.backgroundColor);
   expect(firstVisual.boxShadow).toContain('rgb(5, 150, 105)');
   expect(firstVisual.borderTopWidth).toBe('2px');

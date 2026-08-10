@@ -7,10 +7,11 @@ import {
   COLUMN_LABELS, STATUS_FIELDS, FORMAT_FIELDS,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, humanizeField,
-} from "./config.js";
+} from "./config.js?v=5189225f358d";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
-} from "./formatters.js";
+} from "./formatters.js?v=ee2398b737f4";
+import { isExtraEditionRow } from "./data-utils.js?v=0288c69670bb";
 
 /**
  * Check if a string looks like a URL.
@@ -143,10 +144,11 @@ export function measuredColumnWidth(key, headerTitle, rows) {
 
 /**
  * Build Tabulator column definitions from data rows for the given view.
- * `renderHighlightedText` and `activeSearchQuery` are passed in from app.js
- * (they close over the module-scope search state).
+ * `renderHighlightedText` and `getSearchQuery` are passed in from app.js.
+ * The getter keeps formatter redraws connected to the current search state;
+ * passing a primitive here would freeze the query at table initialization.
  */
-export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields, renderHighlightedText, activeSearchQuery) {
+export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields, renderHighlightedText, getSearchQuery) {
   if (!Array.isArray(data) || data.length === 0) return [];
 
   let keys = orderKeysForView(Object.keys(data[0]), viewName);
@@ -196,7 +198,7 @@ export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields
       col.formatter = (cell) => {
         const value = String(cell.getValue() ?? "");
         const display = value === "198X" ? "c. 1980s" : value;
-        return renderHighlightedText(display, activeSearchQuery);
+        return renderHighlightedText(display, getSearchQuery());
       };
       col.sorter = "string";
       col.sorterParams = { alignEmptyValues: "bottom" };
@@ -213,9 +215,9 @@ export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields
         const value = String(cell.getValue() ?? "");
         if (!value) return "";
         const match = value.match(/^(.*?)(\.[A-Za-z0-9]+)$/);
-        if (!match) return renderHighlightedText(value, activeSearchQuery);
+        if (!match) return renderHighlightedText(value, getSearchQuery());
         const frag = document.createDocumentFragment();
-        frag.append(renderHighlightedText(match[1], activeSearchQuery));
+        frag.append(renderHighlightedText(match[1], getSearchQuery()));
         const ext = document.createElement("span");
         ext.className = "ext";
         ext.textContent = match[2];
@@ -238,7 +240,7 @@ export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields
           dot.title = carrier;
           frag.append(dot);
         }
-        frag.append(renderHighlightedText(value, activeSearchQuery));
+        frag.append(renderHighlightedText(value, getSearchQuery()));
         const isExtraEdition = isExtraEditionRow(row);
         if (isExtraEdition) {
           const badge = document.createElement("span");
@@ -256,7 +258,7 @@ export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields
         if (!value) return "";
         const badge = document.createElement("span");
         badge.className = `status-badge ${formatClass(value)}`;
-        badge.replaceChildren(renderHighlightedText(value, activeSearchQuery));
+        badge.replaceChildren(renderHighlightedText(value, getSearchQuery()));
         badge.title = value;
         return badge;
       };
@@ -268,7 +270,7 @@ export function buildColumns(data, viewName, expertColumnsOn, expertHiddenFields
       col.formatter = (cell) => {
         const val = cell.getValue();
         if (val === null || val === undefined || val === "") return "";
-        return renderHighlightedText(val, activeSearchQuery);
+        return renderHighlightedText(val, getSearchQuery());
       };
     }
     if (hiddenByDefault.has(key)) {

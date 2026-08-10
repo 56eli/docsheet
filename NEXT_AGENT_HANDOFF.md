@@ -1,741 +1,166 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-10 (Session 019feaaf — Owned Column Enlarged, Extra Badge Constrained to PvF Double, Edition Research Moved to Drawer Panel, Multidisciplinary Full Audit) — current branch `arena/019feaaf-docsheet`.
+**Updated:** 2026-08-10 — Arena session 019feaf6
+**Branch for this session:** `arena/019feaf6-docsheet`
+**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
 
-## 2026-08-10 Session Summary 019feaaf — Owned Column Enlarged, Extra Badge PvF Only, Edition Research to Drawer (Current)
+## Read first
 
-- **Comprehensive Multidisciplinary Audit:** Full static and runtime audit across Web Design (8.5/10), Full-Stack Development (8.5/10), and Data Engineering (9.0/10). Published in `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` and summarized in `TEMP_AUDIT_RESPONSE.md`.
-- **Owned Column Enlarged:** Increased `COLUMN_BUDGETS.owned` in `docs/js/config.js` from `58px` (52–68px) to **`78px` (70–90px)**, allowing the full "Owned" header word (with sort arrow and padding) and badge to fit without any truncation.
-- **Constrained "Extra" Badge to PvF Double:** Updated `isExtraEditionRow(row)` in `docs/app.js` to return `true` strictly for the Power vs. Force double (`work_id === "w-power-vs-force" && uuid === "373"`). Removed extraneous "Extra" badges from the other 24 secondary audio/CD/DVD carrier rows.
-- **Cleaned Edition Column & Moved Research to Drawer:**
-  - Removed `mobile-edition-note` span insertion from mobile work cards.
-  - Removed `edition_note` from visible table priority preset.
-  - Positioned `edition_note` under the **Research** section in `DETAIL_SECTIONS` within `docs/js/config.js` so physical specs and edition research are accessible via the on-click details drawer.
-- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` (`app.js?v=49ca59628f20`, `style.css?v=936c444be89d`) and `docs/build-manifest.json` (`revision: owned-width-extra-clean-20260810.1`, footer build ID `app-49ca59628f20/css-936c444be89d`). All **147 unit tests pass** (90% coverage), all **6 generator `--check` modes pass**, `ruff` clean, `node --check` pass.
+1. `AGENTS.md`
+2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
+3. `.scoreboard/agent-handoff.md`
+4. `.scoreboard/manual-workflow-edits.md`
+5. `docs/audits/2026-08-10-arena-019feaf6-full-audit.md`
+6. `INSTRUCTIONS.md`
 
-## 2026-08-10 Session Summary 019fea62 — Mobile Header, White Grouping, Highlights + Edition Mediation (Prior)
+## 1. Current status
 
-- **Mobile Header Compact:** Fixed 3-row tower (`brand` + search full-width + buttons) that made the header ~100 px on phones. New flex: `search-wrap flex:1 1 160px` shares the control line with Jump-to/Export, `topbar` mobile `padding 6px` + `min-height 44`, `settings-tools` stays auto-width. Header now collapses to brand + single control row (~68 px).
-- **White Ungrouped Grouping:** Changed `undecided` block tokens light/dark from orange `#ea580c/#fb923c` 8.5% to white `#ffffff` 8.5% (`color-mix` white into surface is pure white/zebra) — 32 truly ungrouped rows (265,359-361,369-372,320-343) now render neutral white, not orange.
-- **Lecture Highlights 4 Above White:** Extracted 7 Lecture Highlights (362-368) from the orange lump into new block `lecture-highlights` with orange tokens, reordered 12-block display: lectures 201, discussion 8, satsang 22, on-the-road 32, volume 13, office 16, highlights 7, books 22, transcription 6, media-misc 3, white 32, fran-grace 1. Highlights now at display 293-299, white at 331, distance 4 blocks as requested.
-- **Edition Mediation (Carrier vs Note):** Kept `edition` as carrier (`format·detail` with color dots), added new stored column `edition_note` (nullable free-text, reviewed via `data/edition_notes.csv`, `pipeline/enrichments.apply_edition_notes`). New sheet concept: `edition_note` shows physical specs (e.g. *spiral-bound; 94 pages; Veritas Publishing; ISBN 0964326175*) keeping Edition column clean. Config `COLUMN_LABELS` + `COLUMN_BUDGETS 180` + `DETAIL_SECTIONS`, style italic muted, mobile work-stack second line.
-- **New Extra Row 373 — Power vs Force Original Hardcover:** Manual candidate `manual-veritas-pvf-old-hardcover` (book, 1995, Hardcover, source other) promoted via `manual_candidate_promotions` → master 373 (`w-power-vs-force`, `Books`, `Hardcover`, placed in books block position 2 directly under standard 286). Filename `1995 - Power vs Force … (Original Hardcover - non-B&W).pdf`, `work_families` entry added, `catalogue_display_order` now 363 rows, `catalogue-block-map` regenerated. `edition_notes` now 2 rows: 286 current B&W paperback referencing 373, 373 original non-B&W hardcover with physical specs referencing 286.
-- **Small Indicator for All Extra Editions:** New `extra-edition-badge` pill (accent 10%, `Extra`) in Edition cell via `isExtraEditionRow()` (workId minUuid check) — all 25 extra rows (24 minted edition rows 320–343 plus new 373) show badge, standard rows do not. Mobile edition cards also show `edition_note` when present.
-- **Owned Column Tightened:** `COLUMN_BUDGETS.owned` `72/62/85 → 58/52/68` defaulting to Owned label width, reducing horizontal bloat (per owner request).
-- **Delivery Contract & Verification:** Updated `docs/index.html` `?v` and footer build ID, `docs/build-manifest.json` revision `extra-edition-pvf-20260810.2` (`app-9ee70dc1011c/css-936c444be89d`), `docs/js/config.js?v=cfced6b202ba`, `docs/js/formatters.js?v=fe5e058c851f`. All 147 tests, 85% coverage (78-100% per module), 6/6 --check, `ruff` clean, `node --check` pass. Master now **363** (306 lecture, **41 book**, 8 discussion, 7 highlight, 1 other), **40** promoted candidates, **339** work families.
-  
-**Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`, and `AGENTS.md`.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression and was deployed before CI; PR #64 now repairs that incident plus all selected cleanup and P1 findings.
 
-## 2026-08-09 Session Summary 019fe844 — Block Map Extraction, Column Layout & Archive.org Holdings (Current)
+## 2. Incident and completed frontend work
 
-- **Block Map Build Generation:** Eliminated 362 hardcoded UUID-to-block literals from `docs/app.js` by teaching `build_catalogue_pages.py` to auto-generate `docs/catalogue-block-map.json` directly from `data/catalogue_display_order.csv`.
-- **CSS Token Layer Cleanup:** Consolidated `:root` and `:root.dark` layers in `docs/style.css`, eliminating duplicate override blocks.
-- **Column Layout & Single-Line Header Formatting:**
-  - Reduced Record Type column width to tight `CM` badge fit (52px).
-  - Enforced single-line column headers (`white-space: nowrap`, `overflow: hidden`, `text-overflow: ellipsis`) so header height stays strictly one line.
-  - Placed `Title`, `Series`, and `Year-Month` under Expert columns (hidden by default).
-  - Positioned `Owned` and `Notes` immediately to the right of `Item Type`.
-  - Parked `Catalogue Code` at the back.
-  - Reduced row heights to compact single-line content heights matching largest items (~32–34px).
-- **Archive.org Ownership Verification & Holdings Promotion:**
-  - Cross-checked the entire catalogue against `https://archive.org/download/Hawkins_Lectures_transcoded_actual_files`.
-  - Promoted 16 confirmed master records to `owned: true` in `data/manual_master_candidates.csv` and `data/edition_candidates.csv` (How to Surrender to God, Book of Slides, Orthomolecular Psychiatry 1973, 2006 Satsang Series 1–6, Discussion talks, Audiobooks; total owned increased 295 → **311 owned / 25 false / 26 blank**).
-  - Tracked newly discovered audio materials (BTO Radio Interviews 14 eps, Unity Church Phoenix 2005) as manual leads in `data/research_manual_leads.csv` (leads 2 → 4).
-- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` and `docs/build-manifest.json`. All 141 deterministic unit tests pass, all 6 `--check` modes pass, `ruff check .` clean (0 issues), 90% statement coverage.
+The baseline's `docs/js/columns.js` called `isExtraEditionRow(row)` without importing it. Main CI run `31373716254` failed **25/25 Playwright specs** because no row rendered, after legacy Pages had already deployed the commit.
 
-## 2026-08-09 Multidisciplinary re-audit 019fe830 — Web/Full-Stack/Data (Prior declared audit)
+This branch now:
 
-- **Scope:** Full re-audit at `9e4ee4d` (main HEAD, PR #56) as Expert Web Designer, Full-Stack Developer, Data Engineer. Re-executed all six `--check` modes, `python -m unittest discover tests` (141/141 at 90%, 78–100% per module), `node --check`, CSP/SRI, CSV↔JSON parity, token chromaticity, selector topology. Record: `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (read-only, declared-current).
-- **Web Design:** Verified neutral palette (light #f9f9fb/#ffffff/#f4f4f5/#e4e4e7, dark #0d0d0d/#161616/#222222/#282828 — no slate), zebra delta 10/6, hover delta 7/8, washes 8.5% on all blocks (40 rules via `data-block`), correct `#spreadsheet.tabulator` root (63 correct vs 0 dead descendant `#spreadsheet .tabulator` roots), inset 3.5px accent + horizontal work separation, 41 aria attrs, roving tabindex, focus trap, Browse mode rails, 2755L app.js + 2399L style.css with duplicate `:root` layers and hard-coded 362-entry `CATALOGUE_BLOCK_MAP` (maintainability debt).
-- **Full-Stack:** Two-lane architecture clean (raw 374→7 cols via `process_data.py`, curated 362 via `build_research_master.py` + `build_catalogue_pages.py` + taxonomy/mirrors), deterministic `--check` + tamper detection, pipeline modularized but frontend monolith, delivery contract observable (versioned `v=39e1208f672b/e67530fcaebe`, manifest `row-delivery-p0-20260809.1`, footer build ID, `FrontendDeliveryContractTests` + 8 style-contrast tests + `presentation-ux.spec.js` computed light/dark checks). CI validates 6 `--check` + 141 + coverage + e2e, but legacy Pages remains ungated (P0 owner steps in `.scoreboard/manual-workflow-edits.md`).
-- **Data Engineering:** 374 raw / 363 master (306 lecture/41 book/8 discussion/7 highlight/1 other), 75 exclusions, 134 overrides, 39 promoted, 191 works/338+24 families, 278 codes, 362 filenames, 191 Veritas (186 matched/5 excluded), 29 Hay House, 26 Audible, 38 international, 340 relationships, 7 compilations, 186 taxonomy (177/9), year 1973–2026 (+16× 198X), owned true 295/false 25/blank 42. Zero duplicate IDs/codes/filenames, zero orphans, `grep traqn` 0 (Hay House typo already fixed at this commit, master 294 correct).
-- **Scoreboard:** Corrected maintainability AI 9→7 (frontend monolith + block map; user 6 makes effective 6), Pages AI 7→8 (delivery contract verified; effective 5 until owner acceptance). Overall effective 7.8 (gate fail — intentional until owner accepts build + gates Pages). Promoted audit in README/INSTRUCTIONS + updated `.scoreboard/*` history/handoff.
-- **Verification:** 6 `--check` green, 141/141 green, `coverage 90%`, `node --check` clean, `grep -E "#spreadsheet +\.tabulator\b"` 0 dead roots, neutral tokens, `coverage` 78–100% per module.
+1. restores the missing import and removes redundant imports;
+2. executes edition formatting in Node and browser regressions;
+3. removes all 10 absent-ID overview/stats/review-nav paths and 411 net lines;
+4. completes shortcuts-modal labelling, focus entry/trap, Escape close, and focus restoration;
+5. passes a live search-query getter into formatters so highlights update on every redraw;
+6. applies target-hash query versions to every local ES-module edge;
+7. traverses the full import graph in `FrontendDeliveryContractTests`;
+8. refreshes module/app/style hashes, visible build ID, and the build manifest.
 
-## 2026-08-09 Multidisciplinary Audit & UX Presentation Enhancements (Prior 019fe80c)
+Local checks pass. PR #64 CI run `31378465750` passes 149 offline, 3 Node, and **28/28 Playwright tests**. Merge/deploy plus exact live-build verification remain.
 
-- **Comprehensive Multidisciplinary Audit:** Published full audit report at `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` covering Web Design/UX styling, Full-Stack pipeline architecture & testing, and Data Engineering schema provenance & reconciliation.
-- **Unlocked Column Resizing & Jitter-Free Scrolling:** Switched Tabulator layout to `fitDataFill` with `renderHorizontal: "basic"` and removed `setMaxHeight()` calls on virtual scroll `renderComplete`, eliminating horizontal scroll rubber-banding and enabling free user column resizing.
-- **Wider Prominent Scrollbars:** Widened `.tabulator-tableholder::-webkit-scrollbar` from 12px to 16px with an 8px border-radius thumb for comfortable grab targets.
-- **Proposal File Name Readability:** Upgraded lead column font size to `13px` semi-bold (`font-weight: 600`) with high-contrast extension text (`color-mix(in srgb, var(--text) 72%, transparent)`) and removed the hard 340px truncation cap.
-- **Work-Family Stripe Grouping & Gentle Zebra Parity:** Softened alternating zebra backgrounds (`#fafafa` light / `#1c1c1c` dark) and implemented `applyWorkFamilyStriping(table)` so consecutive rows belonging to the same `work_id` (such as multi-part DVD sets) share the same row background color while alternating work families change color.
-- **Header Formatting & Column Lock Fix:** Removed `overflow-wrap: anywhere` and `max-width: 54px` on `record_type` in `docs/style.css` and removed `{ width: 54, minWidth: 54, maxWidth: 54 }` column width lock in `docs/app.js`.
-- **Search Term Highlighting:** Implemented live cell text matching and search term highlighting (`<mark class="search-highlight">`) across table cells and formatters in `docs/app.js` and `docs/style.css`.
-- **Asset Hashing & Manifest:** Updated 12-character asset content hashes (`app.js`, `style.css`) in `docs/index.html` and `docs/build-manifest.json`.
-- **Verification:** All 141 deterministic unit tests pass (`python -m unittest discover tests`), all 6 `--check` pipeline commands pass, `ruff check .` clean (0 items), 90% coverage maintained.
+### Remaining findings
 
-## 2026-08-09 End-user row delivery P0 (Historical)
+- Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Axe/Lighthouse automation is optional follow-up, not a current release blocker.
+- Issue #18 still needs owner Drive access.
 
-The owner explicitly rejected prior claims that Pages artifact success proved
-row changes reached the user. Browser CI then exposed the primary defect: all
-70 table rules used dead `#spreadsheet .tabulator ...` roots even though
-Tabulator attaches `.tabulator` to `#spreadsheet` itself. The browser therefore
-kept external-theme greys while agents edited rules that never matched. A
-latent work-group shadow collision, bare assets, no build ID, and
-class/token-only tests compounded the failure.
+## 3. Current verified state
 
-Current branch changes:
+| Metric | Current |
+|---|---:|
+| Raw published rows | 374 (31 blank separators, hidden by default) |
+| Curated master | 363 |
+| Everything view | **363** |
+| Work IDs | 191 |
+| Catalogue codes | 278 unique |
+| Proposed filenames | 363 unique |
+| Item types | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other |
+| Formats | 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming |
+| Ownership | 312 true / 25 false / 26 blank |
+| Exclusions / source overrides | 75 / 134 |
+| Manual candidates / leads | 40 / 4 |
+| Everything relationships | 340 product relationships, 7 series compilations |
+| Veritas / Hay House / Audible | 191 / 29 / 26 |
+| International products | 38 |
+| Display blocks | 12, complete and dense |
 
-- all table rules use `#spreadsheet.tabulator ...`; a static guard rejects the
-  dead descendant topology;
-- block rules use stable `data-block` selectors;
-- work-family starts use `border-top`, preserving block-colored inset accents;
-- app/style URLs carry 12-character content hashes;
-- footer shows `app-cf43f33a062c/css-71a1e6b2ca25` and links
-  `docs/build-manifest.json`;
-- offline delivery-contract and cascade guards bring the suite to **141**;
-- all 25 Playwright specs passed in PR #54 run `31331297543`, including
-  computed selector matching, light/dark zebra, and lecture/discussion/office
-  accent checks;
-- stale `#show-stats-toggle` CI selector removed;
-- older root/docs audits now have correction banners pointing here; the archive
-  landing page also names the corrective audit as current;
-- owner-gated required-check, CI-gated Pages, post-deploy hash/row assertions,
-  and screenshot procedure are in `.scoreboard/manual-workflow-edits.md`.
+No duplicate master ID, catalogue code, or filename was found. All non-empty master URLs are HTTPS. Display order covers all 363 masters exactly.
 
-Do not call the incident resolved before branch browser CI, deployment of the
-visible build ID, live hash verification, and explicit owner acceptance.
+## 4. Verification at this audit
 
-## Historical context — prior zebra contrast pass (superseded as current status)
-
-## 2026-08-09 Zebra contrast fix + regression guard (arena/019fe776-docsheet, historical)
-
-**Root cause:** 5+ agents edited `docs/style.css` and deployed changes to
-GitHub Pages, but the zebra-row contrast was **below human perception**
-(~3.1% in light mode, ~4.7% in dark mode). The CSS was technically correct
-but visually invisible — every agent raised opacity slightly (4% → 6% → 7%)
-but never crossed the perception threshold.
-
-**Fix applied (docs/style.css):**
-- `--zebra` light: `#f7f7f8` → `#f0f0f2` (Δ 7.9 → Δ 14.8 luminance units)
-- `--zebra` dark: `#202020` → `#232323` (Δ 6.0 → Δ 9.0)
-- `--row-hover` light: `#e3f3ea` → `#e0e0e4` (neutral, Δ 15.8 from zebra)
-- `--row-hover` dark: `#2f4a41` → `#353535` (neutral, Δ 18.0 from zebra)
-- Block washes raised from 5-7% to 9-11% (light) / 10-13% to 14-16% (dark)
-- Phase 3 hover overrides neutralised (was slate-tinted)
-
-**Regression guard (tests/test_style_contrast.py, 7 tests):**
-CI now enforces on every PR:
-- Zebra contrast ≥ 10/6 luminance units (light/dark)
-- Hover contrast ≥ 7/8 from zebra
-- Block wash ≥ 8% opacity (above perception threshold)
-- Block wash ≤ 18% opacity (rows stay light)
-- No slate-blue hex values in `--bg`/`--surface`/`--border` tokens
-
-**Verification:** all 139 tests pass (132 pipeline + 7 style guards),
-all six `--check` modes pass, `node --check` clean, coverage 90%.
-
-## Headline results (2026-08-09 Expert Full-Stack Pass, current)
-
-- **Desktop UI Modernization & Clean Design System:**
-  - Removed cluttered horizontal `<nav class="dataset-tabs">` tab strip ("Catalogue" row) in favor of the top-bar **Jump to** dropdown selector (`#view-jump`), maximizing vertical spreadsheet space.
-  - Eliminated conflicting duplicate `:root` and `:root.dark` overrides in `docs/style.css` that previously caused flat monochrome `#1d1d1d`/`#1a1a1a` alternating dark-grey zebra rows.
-  - Replaced harsh alternating striping with clean, modern card surfaces, subtle row dividers, and elegant translucent block tints (`rgba(..., 0.04)` light / `rgba(..., 0.08)` dark) with crisp 3.5px left accents.
-  - Added exact canonical `CATALOGUE_BLOCK_MAP` (362 UUIDs) in `docs/app.js` matching `catalogue_display_order.csv`, eliminating all 27 heuristic classification mismatches.
-- **Smooth 60fps Scrolling & Visible Scrollbars:**
-  - Fixed virtual DOM rubberbanding by switching Tabulator height configuration from `maxHeight: "100%"` to `height: "100%"`.
-  - Optimized `rowFormatter` from an $O(N^2)$ traversal (`table.getRows()` + `findIndex`) to $O(1)$ `row.getPrevRow()`, eliminating frame drops during scrolling.
-  - Added prominent, styled custom scrollbars (`--scrollbar-thumb`, `--scrollbar-track`) on `.tabulator-tableholder` and modals for smooth, easy-to-grab scrolling.
-- **Monolith Generators Refactored into `pipeline/` Package:**
-  - Split `build_research_master.py` and `build_catalogue_pages.py` into clean, modular Python modules under `pipeline/`:
-    - `pipeline/helpers.py`: Shared file I/O, CSV indexing, ID assignments, and title/notes helpers.
-    - `pipeline/enrichments.py`: Master draft transformations (streaming URLs, title cleanups, format inference, source overrides, series/work family/year overlays, provenance).
-    - `pipeline/validators.py`: Structural integrity validators for filename proposals, manual candidates, edition candidates, and master items.
-    - `pipeline/relationships.py`: Product relationship derivation/enrichment and review overview builders.
-  - All 139 unit and style tests pass, statement coverage 90% (above floor 85%), all six `--check` modes green.
-- **Code Quality & Linter Sweep (`ruff check .`):**
-  - Resolved all 61 linter/quality items across Python modules and test suites down to **100% clean (0 errors, 0 warnings)**.
-- **Full Audit Report & Documentation Alignment:**
-  - Published comprehensive audit report at `docs/audits/2026-08-09-expert-full-stack-audit.md`.
-  - Documented 19 blank-year rows (13 Volume Series + 4 under-investigation + 2 REVISION1 ODS overrides on 356/358).
-- **Owner uploaded `hawkins-everything-REVISION1.ods` to `main`** (commit
-  `fa51f67`): a colour-coded expert-columns export of the Everything view.
-  Decoded cell-by-cell (values + fill colours from `content.xml`): all 362
-  rows matched the master; the file carries **58 proposed-filename edits**
-  (unified `OTR - ` prefix on 32 On-The-Road rows, `198X - A-01 … B-06` codes
-  on the 16 Office rows, `DISCUSSION - ` prefix on 8 discussion rows, year
-  dropped on 356/358, year 2014→2003 on 357, truncated 312 completed as
-  `2012 - DISCUSSION - Permanent Inner Peace.mp4`), **1 notes edit**
-  (`FRAN GRACE` on master 315, replacing the provenance note — owner chose
-  replace-entirely), **year data changes** (356/358 cleared, 357 → 2003 with
-  month cleared; owner chose apply-full), and **colour-group presentation
-  order** (owner-confirmed block order: 2002-2011 lectures → discussion →
-  satsang → on-the-road → volumes → office → books → transcription → media-misc
-  → undecided → Fran Grace last).
-- **Applied through new reviewed overlays** (no hand-edits to generated
-  files): `data/master_year_overrides.csv` (3 rows),
-  `data/master_notes_overrides.csv` (1 row), and
-  `data/catalogue_display_order.csv` (362 rows; dense 1..n per block;
-  `build_catalogue_pages.py` reorders the Everything view + CSV export and
-  fails on duplicates/missing uuids/unapproved rows). Filename edits landed
-  in the reviewed `data/filename_proposal_YYYYMM.csv` (safe + display
-  variants; year/month mirrored for 356–358). The change record itself is
-  committed as `review/hawkins-everything-REVISION1.ods` (the owner's
-  root-level upload was removed on merge so `review/` is the single canonical
-  copy).
-- **Tests 126 → 132** (new `OwnerOverrideAndDisplayOrderTests` class);
-  coverage 91% → 90% (floor 85; both generator modules still 88%).
-  All six `--check` modes pass; README documents the new inputs.
-- **Documentation & test count sweep:** updated secondary documentation and handoffs from 126 to 132 tests and 90% coverage.
-
-The current corrective audit is
-`docs/audits/2026-08-09-end-user-row-delivery-postmortem.md`. The older root
-expert/deep/full audits are point-in-time data checkpoints at `556bf48`,
-`d731e1b`, and `f520e9b`; their frontend/CI/deployment conclusions are
-superseded by PR #54 and their top banners say so. Their data findings remain
-historical evidence;
-the historical baseline pair `FULL_STACK_AUDIT_2026-08-08_ARENA.md` and
-`FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md` was archived 2026-08-09 with
-the other superseded root audits (`archive/EXTERNAL_AUDIT.md` carries a
-SUPERSEDED banner; `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` too —
-pre-PR-#40 findings). See the session log at the bottom of §6.
-Headline results (2026-08-09 expert pass, current):
-- **Expert full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md`):**
-  all six `--check` modes, 126/126 tests, 91% coverage green (pandas 3.0.5 /
-  coverage 7.15.4); ~20 independent pandas probes bypassing the project's own
-  validators reproduced every README count exactly (362 masters, 278 codes,
-  75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7
-  compilations, 191 works, 191 products, 10 UUID gaps) and found **no
-  data-loss or correctness defects**. Seven low-severity items were reported
-  and **all seven were fixed this session** (see below).
-- **Ledger row 371 reclassification (owner-approved 2026-08-09):** the single
-  `needs_review` row — the raw sheet's "Dialogues on Consciousness and
-  Spirituality: WHAT IS THIS ⚠️⚠️⚠️" placeholder — was reclassified to
-  `duplicate` (of promoted master 361, promoted from
-  `manual-academic-dialogues-1998`). Dispositions are now 299 `item` /
-  31 `blank_separator` / 21 `series_context` / 10 `research_note` /
-  **8 `duplicate`** / 5 `source_context` / **0 `needs_review`**; the 75-row
-  exclusion set, `docs/master-exclusions.json`, `docs/migration-review.json`,
-  `MIGRATION_REVIEW_LEDGER.md`, and the disposition table in
-  `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` were regenerated/updated with
-  it. No master-row, code, or count changed.
-- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md corrected (the seven Highlights
-  products ARE in the category mapping as approved R1 rows matched to masters
-  362–368, not "out of scope / unmatched"); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md`
-  gained the `-2002-dvd` slug note (product 1800's URL slug says "dvd" but
-  the storefront carrier is Streaming — master keeps `format=streaming`);
-  handoff header refreshed for this branch.
-- **Original Spreadsheet view (audit §3.4):** the 31 fully-empty raw
-  separator rows are now hidden by default — grid, footer count, and CSV
-  export all agree — with a persisted "Show blank separator rows" View
-  setting (visible only on that tab) restoring the verbatim 374-row sheet.
-  New `tests/blank-rows.spec.js` derives its expected counts from
-  `data.json`.
-- **Wording (audit §3.6):** README, INSTRUCTIONS, and the `process_data.py`
-  docstring now state that the raw pipeline is pass-through *except* for the
-  six always-empty raw columns trimmed from the published view.
-- **Archival footnote (audit §3.7):** `archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`
-  corrected for the record — the 17 blank-year rows are 13 Volumes + 4
-  under-investigation; the 7 Highlights rows carry years and omit the prefix
-  per the separate "filename equals title" directive.
-- **Presentation/UX implementation (owner approved the full plan):** see
-  `archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md` (implemented, archived
-  2026-08-09) — catalogue overview hero +
-  collection stats + series strip, desktop Browse cards toggle, Review
-  workspace nav toggle, Series browser tab, search hints, loading skeleton,
-  a11y labels. Browser suite grew 19 → **26 tests** (new
-  `tests/presentation-ux.spec.js`). Scoreboard AI scores for
-  github_pages_presentation/ux_usability/accessibility are **unchanged
-  pending re-audit** — the owner's 5/10 user scores still stand and the
-  effective scores still drive priority (15/12).
-- **Still open:** GitHub issue #18 (owned flags vs lak.nz Drive); the
-  presentation/UX re-score and re-audit after the owner reviews the new
-  first impression.
-
-Headline results (2026-08-08 independent pass, baseline):
-- **Independent full-stack audit (`archive/FULL_STACK_AUDIT_2026-08-08_INDEPENDENT_ROOT.md`):**
-  all six `--check` modes, 125/125 tests, 91% coverage green from a fresh
-  Python 3.11 venv (pandas 3.0.5 / coverage 7.15.4); independent pandas probes
-  bypassing the project's own validators surfaced 8 catalogue findings
-  (D-01…D-08), 3 build/code findings (B-01…B-03), and 5 doc/handoff drifts
-  (DOC-01…DOC-05). No critical/data-loss issues.
-- **D-01 duplicate-row collapse (owner-selected "collapse"):** two work
-  families contained both a raw `format=streaming` row and a promoted
-  `format=DVD` row sharing the same primary Veritas URL
-  (`w-devotion-to-truth-talk` = 225/311; `w-mind-heart-and-service` =
-  226/227/310). Retired the duplicate streaming masters 225/226/227 and kept
-  311/310 as the single DVD masters with the streaming page in
-  `reference_url_1` (matching the 278–285 precedent). Net counts: 365 →
-  **362 masters**, 281 → **278 codes**, 72 → **75 exclusions**, 341 → **338
-  work-family memberships**, 336 → **333 derived primary relationships**,
-  343 → **340 total relationships**, 365 → **362 filename rows**. 134
-  overrides, 39 promotions, 7 compilations, 191 works, and 5 mapping
-  decisions unchanged. UUID gaps are now `{225, 226, 227, 246, 249, 264,
-  281, 284, 302, 309}`.
-- **Touches for the collapse:** ledger raw rows 249/250/251 `item` →
-  `duplicate`; promoted candidates 54219/55473 now carry `proposed_owned=true`
-  (ownership re-homed from the retired raw rows); `work_families.csv`
-  memberships 225/226/227 removed and the 310/311 evidence notes rewritten;
-  `series_category_mapping.csv` 54219 → 310 and 55473 → 311;
-  `veritas_official_products.csv` mirrors re-derived by
-  `sync_inventory_mirrors.py`; `filename_proposal_YYYYMM.csv` retired rows
-  removed and master 311's `(DVD)` carrier suffix reverted to plain
-  `2003 - Devotion to Truth Talk.mp4`.
-- **Ledger `proposed_month` normalisation:** fixed a pre-existing pandas
-  float-formatting regression (`"1.0"…"12.0"`) back to zero-padded
-  `"01"…"12"`. The broken values were breaking the series-compilation
-  validator's month-range string comparison (exposed mid-fix).
-- **Tests:** 125/125 deterministic (4 fixtures updated for the new mirror
-  state: `DerivedPrimaryRelationships` 336 → 333, the two
-  `SyncInventoryMirrors` drift fixtures, `reduced_pending_view` 365 → 362,
-  and the filename-uniqueness guard reseeded onto the current clean set);
-  coverage remains 91% (lowest module 88%, floor 85%); `node --check` clean;
-  `npm audit` 0 vulns.
-- **Docs refreshed:** README, NEXT_AGENT_HANDOFF (this file),
-  MIGRATION_REVIEW_LEDGER, EDITION_MODEL_PROPOSAL,
-  decisions/FILENAME_PROPOSAL_YYYYMM_DVD01_V4, PRODUCT_RELATIONSHIP_SCHEMA,
-  UX_REWORK_SUGGESTIONS (now `archive/UX_REWORK_SUGGESTIONS.md`), decisions/YEAR_COLUMN_PROVENANCE.
-- **Left open for owner triage (no code/data changes in PR #39):**
-  - **D-04 (Low/Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): Amazon paperback URLs for masters 359–361 no longer duplicate into `reference_url_1`; `build_research_master.py:1394` now treats Amazon URLs as curated-source URLs and `reference_url_1` is blank for 359–361 (verified 0 `amazon==reference` duplicates).
-  - **B-01 (Med):** RESOLVED in branch `arena/019fe5d4-docsheet` (2026-08-09): two Spanish Audible titles moved from hardcoded `build_catalogue_pages.py:797–815` into `data/international_discovery_queue.csv` (36 → 38 rows); `international-products.json` is now fully input-driven (38 → 38 parity) and `catalogue-meta.json` now publishes `international_products: 38`.
-  - **B-02/B-03, D-02 (moot after retirement), D-03, D-05–D-08,
-    DOC-01–DOC-05** — described in the independent audit.
-  - Open Issue #18 (ownership cross-check vs lak.nz Drive) still needs
-    triage; `main` branch-protection / required-status-checks could not be
-    observed with this token (403).
-
-**Previous (2026-08-08 follow-up, branch `arena/019fe244-docsheet`, PR #37
-merged):** independent full-stack audit
-(`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`) plus owner-approved data
-and doc fixes (D-01…D-05 from that audit, S-1…S-8 hygiene). The
-fresh-eyes baseline is preserved in
-`archive/FULL_STACK_AUDIT_2026-08-08_ARENA_FRESH_EYES.md`. Headline results that
-session:
-- **Independent audit:** all six `--check` modes, 125/125 tests, 91% coverage
-  green after the F-01/F-02 follow-up fixes; the original 115-test audit found
-  one new live-data defect (stale Veritas decision row for
-  product 50491) + four doc/CI drifts (D-1…D-5); all fixed — the 50491 overlay
-  row (`matched_by_title→121`) contradicted the inventory/master (primary
-  source of master 278) and would have caused a false Map-Veritas diff;
-  removed, overlay 10→9, decisions doc + handoff updated.
-- **Catalogue-code minting rule documented (D-5):** codes go only to
-  `lecture`/`discussion` rows with a verified year at minting time, explaining
-  why pre-2000 and blank-year candidate/edition rows correctly have none.
-- **Filename-first UX:** **Proposed File Name** is now a visible, frozen lead
-  column right after a compact **CM** record-type badge (full phrase in the
-  tooltip/filter); the curated master reads like a file explorer.
-- **Full UX rework:** faceted filters (Series/Year/Type/Format/Owned) with
-  removable chips + per-view persistence; clickable stats chips; shorter tab
-  labels (Candidates/Exclusions/Decisions/Compilations/Publishers); monospace
-  filename with muted extension; carrier-color dots in Edition; "Copy file
-  name" drawer action; work-group row striping; per-view sort/scroll
-  persistence; keyboard shortcuts (`/`, `j/k`, `y`, `?`) with a help overlay.
-  New `tests/ux-enhancements.spec.js` (9 browser tests; suite now 18 browser
-  tests).
-- **Owner applied CI snippet** in the GitHub web editor: the JS-syntax step
-  now loops `tests/*.spec.js`; `archive/WORKFLOW_WEB_EDITOR_GUIDE.md` +
-  `archive/UNBLOCK_INSTRUCTIONS.md` record it applied.
-- `archive/UX_REWORK_SUGGESTIONS.md` documents the prioritized backlog.
-
-**Previous (2026-08-08 follow-up, branch `arena/019fe0ef-docsheet`, merged):**
-owner streaming-reference ruling applied — raw streaming rows may stand alone,
-while DVD/CD products carry streaming pages in `reference_url_1`; work families
-225/311 and 226/227/310 merged, DVD rows 310/311 no longer store
-`streaming video` as `format_detail`, Unity Church title months backfilled,
-filename metadata mirrors guarded, series-taxonomy queue hides approved
-conflicts, raw CSV hygiene applied, and the site was reworked into a
-minimalist table-first UI with View settings / Expand everything.
-- **C1/C2 master 265 ruled + applied** (Option A): publisher-verbatim URL kept
-  + documented; carrier corrected `audiobook → CD` (`three CD; 2h56m`); format
-  inference hardened (CD markers beat "– Audio"; malformed `https-…` slugs
-  blank); US Audible audiobook tracked as a manual lead.
-- **C3 198X convention applied**: documented in README; site renders
-  `c. 1980s` with a deterministic year sorter (raw value preserved).
-- **C4 owned semantics applied**: README vocabulary + `Owned`/`Not owned`
-  badges.
-- **DP-1/2/3 work-family merge applied**: 11 multi-part groups consolidated
-  (208 → **193 works**, now **191** after the 225/311 and 226/227/310 follow-up merges); master 202 left the `w-power-vs-force` book work;
-  26 PART-marker canonicals cleaned.
-- **QA-5 fixed**: `legacy_title` + `proposed_filename_display` restored to the
-  published Everything view; new **schema-contract test** (suite **115**).
-- **S-a…S-g**: code-order/`candidate:`-prefix docs, test-count house rule,
-  contract test, year-research memo (no authoritative dates for 230–232/268).
-- **Site redesign applied + simplified** (IA groups + stats strip + empty
-  states; a11y roving tabs/focus/reduced-motion/link labels; official inventory tabs;
-  minimalist neutral theme; View settings with wrap cells / density / summary toggle /
-  **Expand everything**): `archive/SITE_UX_REDESIGN_PROPOSAL_2026-08-08.md`.
-- **Raw CSV hygiene applied**: 3 broken Advaita URLs fixed; 13 repeated
-  `2cds each?` tempids cleared; ledger mirrors and generated views refreshed;
-  approved source overrides now 131.
-
-**Previous:** 2026-08-07 — latest refresh: full project audit + post-PR #27 review (branch `arena/019fdd68-docsheet`; see `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR27.md`). **Heads-up:** the PR #27 merge left CI **red on `main`** — the Playwright `csv-export.spec.js` still asserted the candidate review filter exists even though all candidate lanes are now 0; the toolbar is hidden by design when every row is `master`. The spec was made data-driven on this branch; merge its PR to green `main`.
-**Earlier same-day:** full-stack audit + post-PR #26 review (branch `arena/019fdd28-docsheet`; see `archive/FULL_STACK_AUDIT_2026-08-07_DEEP.md` and `archive/TEMP_RESPONSE_AUDIT_2026-08-07_POST_PR26.md`).
-**Earlier branches:** `arena/019fdcc5-docsheet`, `arena/019fdb8b-docsheet`, `arena/019fc9b5-docsheet`, closed out via PRs #24–#26 (merged to `main`); earlier same-day work landed via PRs #11–#23.
-
-If you are the next agent: **read this file top to bottom before touching
-anything.** It is written to give you full context in five minutes.
-
----
-
-## 1. What this project is
-
-DocSheet is a static GitHub Pages catalogue of David R. Hawkins material:
-`_hawkins archive clone - Sheet1.csv_` (374 raw rows) flows through a
-hand-maintained `migration_review_ledger.csv` into generators that emit 19
-`docs/*.json` sheets rendered by Tabulator (`docs/index.html`, `docs/app.js`).
-
-| Generator | Input → Output (committed artifacts; never hand-edit) |
-|---|---|
-| `process_data.py` | raw CSV → `docs/data.json` (`docs/meta.json` was stopped 2026-08-07 — never consumed; footer reads HTTP `Last-Modified`) |
-| `build_research_master.py` | raw CSV + ledger + review overlays → `data/research_master_draft.{csv,json}`, `data/research_master_exclusions.csv` |
-| `build_catalogue_pages.py` | master + all review CSVs → the 19 `docs/*.json` sheets + `docs/catalogue-meta.json` (20 JSON files total) |
-| `map_series_taxonomy.py` | Veritas inventory + mapping review input → `data/series_category_mapping.csv`, `data/series_taxonomy_review_queue.csv` |
-| `fetch_veritas_catalogue.py` | live Veritas API (review-only; never auto-commit) → candidate inventory |
-| `reconcile_research_master.py` | everything → `RECONCILIATION_REPORT.md` |
-| `generate_migration_ledger.py` / `generate_lecture_review.py` | one-off **bootstrap** tools; their outputs are afterwards **hand-maintained** |
-
-## 2. Verify your environment first (60 seconds)
-
-```bash
-python -m py_compile *.py
-python build_research_master.py --check
-python build_catalogue_pages.py --check
-python reconcile_research_master.py --check
-python map_series_taxonomy.py --check
-python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
-python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 149 tests, offline
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 85%
-node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
+```text
+PASS  all six generator --check modes
+PASS  149/149 Python unit/contract/style tests
+PASS  90% Python statement coverage (2327 statements; floor 85%)
+PASS  recursive Python compilation
+PASS  JavaScript syntax for app, all 7 modules, Node/browser specs
+PASS  Node frontend regressions (3/3)
+PASS  full ES-module import-graph hash contract
+PASS  npm audit: 0 vulnerabilities
+PASS  pip check
+PASS  repaired targeted edition formatter runtime probe
+BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
+BLOCK live curl probe (sandbox TLS connection restriction)
 ```
 
-Sandbox traps learned the hard way (all still true):
+Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31378465750` proves the repaired/cleaned frontend passes 3/3 Node and 28/28 browser tests. The exact public deployment still needs verification.
 
-- **pip refuses to install system-wide (PEP 668).** Use a venv:
-  `python3 -m venv /tmp/venv && /tmp/venv/bin/pip install -r requirements-dev.txt`
-- **veritaspub.com is unreachable from the sandbox** via curl/urllib (TLS EOF)
-  but **works via the agent page-fetch tool** with compact `_fields`
-  (`/wp-json/wp/v2/product?per_page=100&page=N&_fields=id,date,link,title,product_cat`).
-- **The Arena GitHub App cannot push workflow-file changes** (historical: the
-  CI workflow was applied to `main` by the owner as commit `6b28e66`, "Add
-  verification and testing steps to CI workflow", and its run passed). Any
-  future `.github/workflows/*` edit may still be rejected; prepared snippets
-  live in `archive/UNBLOCK_INSTRUCTIONS.md` for the owner to apply in the web
-  editor.
-- **Chromium/Playwright cannot download in the sandbox.** CI runs the browser
-  suite (3 spec files / 18 tests: `column-layout` 4, `csv-export` 5,
-  `ux-enhancements` 9); don't burn time installing locally.
-- Python 3.11 / Node 22 in-sandbox; CI uses 3.12 / **Node 22** (owner applied
-  the `node-version: "20" → "22"` bump as commit `406116f` on `main`,
-  2026-08-08 — item K ✅ DONE; snippet remains in
-  `archive/UNBLOCK_INSTRUCTIONS.md` for reference). Workflows are
-  owner-managed; the Arena app cannot push `.github/workflows/*`.
+## Data pipeline rules
 
-## 3. Current verified state (committed, checked)
+### Raw lane
 
-| Layer | Count | Notes |
-|---|---:|---|
-| Raw rows / ledger rows | 374 / 374 | `hawkins archive clone - Sheet1.csv`, `migration_review_ledger.csv` |
-| Curated master | 363 | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other — **no untyped records** (record 246 ruled 2026-08-07: duplicate of the audio edition already held as master 329, excluded; record 309 ruled 2026-08-07: duplicate of the Oxford talk already held as master 221, un-minted); duplicate streaming masters 225/226/227 retired 2026-08-08 (D-01 collapse into promoted DVD masters 311/310 per the one-DVD/CD-master-with-streaming-reference ruling); incl. 24 minted edition rows (320–343) + 9 Satsang monthlies (344–352) + 6 manual candidates (353–358) + 3 academic (359-361) + 7 annual Highlights (362–368, series Lecture Highlights) + The Discovery 369 / Ultimate David Hawkins Library 370 / OM 371 (unique NC+Audible programs) + How to Surrender to God 372 (unique Hay House program, owner rulings 2026-08-07); legacy duplicates 281/284 excluded 2026-08-07 (same 2012 Discussion Series talks as promoted masters 312/313) |
-| Everything view | **363** | 363 master + 0 candidate_veritas (Map poster ruled excluded_related_material 2026-08-07) + 0 candidate_pending_promotion + 0 discovery + 0 hayhouse + 0 audible (all review lanes ruled out 2026-08-07) |
-| Exclusions / source overrides | 75 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 134 incl. the 18 Amazon direct links, the 3 academic-book Amazon links moved onto the curated `source_url_amazon` column on 2026-08-08, and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08); the 3 D-01 duplicate raw rows (249/250/251) were moved from `item` to `duplicate` on 2026-08-08 |
-| Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence); the D-01 collapse re-derived 54219 / 55473 to single master IDs (310 / 311) |
-| Everything relationships | 340 product relationships, 7 series compilations | 333 derived primary + 7 related_material |
-| Candidate pool | 40 reviewed manual candidates (all 40 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
-| Work families | 191 works / 339 members approved; work_id coverage 363/363 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
-| Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **149 tests; coverage 90% total, individual modules 78–100%** | `.coveragerc` enforces `fail_under = 85`; 25 browser specs require CI in this sandbox |
+```text
+hawkins archive clone - Sheet1.csv
+  -> process_data.py
+  -> docs/data.json
+```
 
-All catalogue data was verified against the live Veritas API on 2026-08-03
-(see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,
-`archive/VERITAS_ARTIFACT_REVIEW.md`).
+The CSV has a decorative first row; `process_data.py` reads the real header with `header=1`. The published raw view drops six always-empty columns only.
 
-## 4. Session history (archived)
+### Curated lane
 
-The 2026-08-03 session chronicle (~315 lines) and the 2026-08-04 final-audit
-notes moved to `archive/HANDOFF_HISTORY.md` in the 2026-08-07 hygiene
-checkpoint. Recent sessions (2026-08-07) stay below, between §6 and §7.
+```text
+migration_review_ledger.csv + reviewed data/*.csv overlays
+  -> build_research_master.py
+  -> data/research_master_draft.{csv,json}
+  -> build_catalogue_pages.py
+  -> docs/*.json
+```
 
-## 5. Binding data rules (violating these has caused real defects)
+Never hand-edit generated master or Pages JSON. Owner changes belong in reviewed overlays such as:
 
-- **Never hand-edit generated files** — `data/research_master_draft.*`,
-  `docs/*.json`, `data/series_category_mapping.csv`/`…review_queue.csv` beyond
-  their declared review columns (`review_status`/`reviewed_on`/`review_notes`
-  + dominance overrides). Fix the input, regenerate, re-run every `--check`.
-- **`migration_review_ledger.csv` and `lecture_series_review.csv` are
-  hand-maintained after bootstrap generation.** Regenerating them over the
-  committed copies intentionally produces diffs (title fixes, month "08" vs
-  ""; that is normal, not damage.
-- **`item_type` = what a record IS; `format` = its carrier.** DVD lectures are
-  `lecture`+`DVD`. The `audio`/`video` medium values were **retired from the
-  `item_type` vocabulary 2026-08-03** — validators reject them everywhere;
-  the last unreviewed discovery-triage lane
-  (`data/official_discovery_queue.csv`) was ruled empty on 2026-08-07 (the 3
-  NC programs promoted to masters 369–371, Map poster 1560 excluded), so no
-  free-text `audio` remains anywhere.
-- **No title-based inference for `series`, and a commercial listing is not
-  master identity.** Four records once linked to the wrong edition because of
-  title matching.
-- **Compact master IDs are stable once issued.**
-- **`work_id` comes only from approved `data/work_families.csv` rows** — for
-  minted edition rows (masters 320–343) it comes from the approved `work_id`
-  column of `data/edition_promotions.csv` instead. Never infer work identity
-  from titles alone (C2 lesson); `proposed` rows are validated but never applied.
-- **A book's `year` is its first-publication year, never the storefront
-  listing date.** `backfill_months_from_official_source()` skips `book` rows;
-  book years come only from the reviewed ledger / candidate `proposed_year`.
-  Books never get a catalogue code (codes are lecture/discussion only).
-- **Primary product relationships are derived from the master, not stored.**
-  `data/product_relationships.csv` holds only non-primary rows
-  (`related_material`). A master with a `source_url_veritas` automatically
-  gets its primary relationship; never add a `primary_product_for_item_part`
-  row to that CSV.
-- **A lecture's `month` is never taken from a different-year product listing.**
-  `backfill_months_from_official_source` fills a lecture month from the
-  product date only when the product's year matches the record's year. If a
-  record's recording month is known, set it in the reviewed input
-  (`proposed_month`); otherwise leave it blank (year-only).
-- **Titles are cleaned only against the official listing.** Public lecture
-  titles drop trailing part/disc/transcoding noise only when the stripped form
-  matches the official Veritas title; never guess a title. The verbatim raw
-  text always stays in `legacy_title`.
-- **Relationships stay at the evidence level actually supported** (item-level
-  when proven; series-level for annual Highlights).
-- **Merchandise (card decks, wall charts) are products, not master records.**
+- `data/master_year_overrides.csv`
+- `data/master_notes_overrides.csv`
+- `data/edition_notes.csv`
+- `data/catalogue_display_order.csv`
+- candidate/promotion/work-family/source-override registries in `data/`
 
-## 6. Open work, prioritized
+After approved curated-input changes, rebuild in this order:
 
-**P0 — Owner-actions (current):**
+```bash
+python build_research_master.py
+python map_series_taxonomy.py
+python build_research_master.py
+python build_catalogue_pages.py
+python reconcile_research_master.py
+```
 
-- **P0 — Apply `.scoreboard/manual-workflow-edits.md`** to require CI
-  before merge and gate Pages on successful main CI. The 019fe8d0
-  P0 hotfix shipped the 019fe8a5 module-scope bug (an undeclared
-  `let table`/`let allData` silently broke the page on the
-  "Loading research master…" skeleton) and a regression test
-  caught it before merge — but the same bug class will recur
-  until the documented cutover lands. The 25 Playwright specs
-  in CI run `31341418779` failed for the same reason the
-  prior 2026-08-09 row-delivery incident failed: a broken
-  frontend shipped to production because Pages deploys
-  independently of CI. Detailed in
-  `docs/audits/2026-08-10-row-delivery-p0-hotfix.md` (§5
-  Followups #1).
+Then run all six checks:
 
-**P0 — Module-scope trap (now guarded):**
+```bash
+python process_data.py --check
+python reconcile_research_master.py --check
+python build_research_master.py --check
+python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check
+```
 
-- The 019fe8a5 ES-module refactor of `docs/app.js` silently dropped
-  two IIFE-scope `let` declarations (`table`, `allData`). The page
-  then crashed silently on first `boot()` with `ReferenceError: table
-  is not defined`, never reached `aria-busy="false"`, and stayed
-  on the static "Loading research master…" skeleton. **Reproduction
-  pattern for any future IIFE-into-ES-module refactor: run the new
-  app.js under a minimal browser mock (Node + `document` /
-  `fetch` / `localStorage` stubs) and assert `aria-busy="false"`
-  after boot.** The 019fe8d0 hotfix added
-  `FrontendDeliveryContractTests.test_app_js_declares_critical_module_scope_variables`
-  which statically asserts the critical identifiers are declared
-  with `let`/`var`/`const` at IIFE scope; any future drop of an
-  identifier in the `critical` tuple will fail that test. Full
-  postmortem at `docs/audits/2026-08-10-row-delivery-p0-hotfix.md`.
+## Important semantics
 
-**P0 — Owner-actions (resolved in 019fe8a5):**
+- `item_type` is content class; `format` is carrier.
+- `audio` and `video` are retired item-type/format vocabulary values.
+- One row represents one edition/carrier of a work; `work_id` groups editions.
+- `uuid` is a stable compact integer ID, not a UUID; retired IDs are never reused.
+- Catalogue codes are stable and are not backfilled/renumbered.
+- `year=198X` is a reviewed decade placeholder; blank years can be intentional.
+- `owned` is tri-state: `true`, `false`, or blank/not stated.
+- `notes` is owner-facing only; provenance belongs in `research`/`year_source`.
+- `edition_note` is reviewed free text and currently populated for two Power vs Force rows.
 
-- ✅ **CI is live on `main`** (commit `6b28e66`, "Add verification and testing
-  steps to CI workflow"): `py_compile`, `process_data.py --check`,
-  `map_series_taxonomy.py --check`, all three generator checks, the unittest
-  suite, the 85% coverage gate, JS syntax, and the Playwright browser suite.
-  Latest run passed 2026-08-03 (run `30834666253`). Nothing outstanding here.
-- ⚠️ **Re-run the Map Veritas Catalogue workflow on `main` after this branch
-  merges** — the 2026-08-04 refresh diff was reviewed and accepted (see
-  `archive/HANDOFF_HISTORY.md` (2026-08-03 chronicle, item 15) and
-  `archive/VERITAS_ARTIFACT_REVIEW.md` Addendum 3), the reviewed
-  inventory is LF-normalized like the fetcher output, **and the Veritas 50810
-  title drift (`Vol II` → `Volume II`) was reconciled in branch
-  `arena/019fcbde-docsheet`**, so the next run should print "Candidate matches
-  the reviewed inventory" and pass.
+See `README.md`, `EDITION_MODEL_PROPOSAL.md`, `PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_COMPILATION_SCHEMA.md`, and `decisions/` for the full contracts.
 
-**P1 — Data decisions needing a ruling:**
+## Delivery contract
 
-- **Edition model (owner-directed; see `EDITION_MODEL_PROPOSAL.md`):**
-  **✅ FULLY APPLIED — see §3 "Current verified state" for the authoritative
-  counts** (362 masters, 191 works / 339 memberships in `work_families.csv`
-  plus 24 edition-promotion work_ids covering 363/363, 134 overrides, 340
-  relationships, 278 codes, 24 minted edition rows 320–343, filename proposal
-  v4.1). The paragraph below is the **superseded 2026-08-03/04 proposal
-  snapshot** retained for provenance; do not treat its counts (358 rows,
-  201 works, 127 overrides, 336 relationships, Everything 378) as current.
-  <!-- BEGIN SUPERSEDED 2026-08-03/04 SNAPSHOT -->
-  ~~Master **358 rows** (307 lecture / 40 book / 10
-  discussion / 1 untyped) incl. 24 minted edition rows (320–343, pinned
-  UUIDs in `edition_promotions.csv` — never renumber), 9 promoted
-  Satsang monthlies (344–352), 6 promoted manual candidates (353–358) + 3 academic (359-361, Orthomolecular 1973, Qualitative 1998, Dialogues 1998),
-  with Path duplicate 302 removed and Volume Series years stripped to blank pre-2000 per owner (catalogue codes 284→271 after the strip; **281** as of the 2026-08-07 year-provenance fixes);
-  **201 works / 334 members approved → 209 works / 342 members by
-  2026-08-07 (281/284 excluded as duplicates of 312/313; +7 Highlights;
-  +3 NC/Audible programs 369–371), work_id coverage 366/366**
-  (D6a per-part ruling + C1 split applied + academic families + Volume canonical mapping);
-  overrides 127 (candidate-provenance supported, incl. 316/318 Hay House,
-  the 4 Nightingale-Conant edition URLs, and 18 Amazon direct links;
-  was 109 pre-PR24), 36 approved streaming URLs → 59 master rows
-  (was 34 → 52 pre-PR23);
-  relationships 336 (328 derived + 8 related); Everything 378 (0 pending candidates; Veritas
-  candidate rows 28 → 8 after the 2026-08-04 refresh linked all
-  already-promoted works). Proposed filename column added between Title and Item Type (YYYY-MM - Name [1/3].mp4 safe [1-3] display [1/3], no bracket for single, audiobook label removed). Remaining model
-  work: all 5 New Work Review queue rows and 6 pending manual candidates were
-  promoted 2026-08-03 as master UUIDs 353–358.~~
-  <!-- END SUPERSEDED SNAPSHOT -->
-- ~~**Record 246** (`"In the World But Not of It" – Audio`, the 1 untyped record; reassigned from UUID 264 in the deduplication rebuild):
-  deferred pending physical-edition confirmation~~ — **RULED 2026-08-07**:
-  duplicate of the audio edition already held as master 329; record 246
-  excluded and its uuid un-minted (uuid 246 no longer exists in the master).
-  Product 1661 is mapping-row only — do **not** add a source override.
-- **Candidate promotion path:** All 26 reviewed manual candidates promoted (26/26, 0 pending); 0 New Work Review queue rows remaining.
-- ~~**10 conflicting series-taxonomy proposals**~~ — **RULED 2026-08-04**:
-  **3 approved** (1814 → master 357 re-seriesed to On The Road Talk Series;
-  50485/50488 → masters 312/313 re-seriesed to Discussion Series; build
-  confirms exactly 3 series changes) and **7 rejected** with rationale in
-  the review notes (1546/1548, 1661/1695/1728/1742, 55576 — the curated
-  series stands; editions keep their work's series; the publisher's
-  "Media Miscellaneous" shelf describes the carrier, not the series). Taxonomy is
-  now **177 approved / 9 rejected / 0 queued** (186 mapping rows; the earlier
-  "169 approved / 10 rejected / 179 matched" snapshot was superseded by the
-  50521 resolution and the 2026-08-09 mapping refresh — the master build
-  applies 324 approved master-level mappings with 3 series changes).
-- ~~**`format` blank on 8 records**~~ — **resolved**: 0/362 master rows are
-  blank today (the inference grew to 107 formats from the official inventory;
-  the 2026-08-03 snapshot of 8 blank records and its evidence live in
-  `archive/TEMP_RESPONSE_AUDIT_2026-08-03.md` §11c/§11d, with the second
-  inference pass in `archive/TEMP_FORMAT_POPULATION_PROPOSAL.md`).
-- ~~**Four always-empty master columns**~~ — **resolved 2026-08-07 (owner
-  ruling: drop all four)**: `location_physical`, `location_digital`,
-  `location_streaming`, `reference_url_2` removed from schema, sheet, specs
-  and docs (25 master columns remain; re-adding is a git revert away).
-  Outcome memo: `archive/RULING_PREP_EMPTY_COLUMNS.md`. (`source_url_hay_house`
-  is **not** empty — **27** values after the 2026-08-03 Hay House backfill
-  and later corrections — and `source_url_nightingale_conant` holds **6**
-  values: the four 2026-08-04 NC edition fills plus the NC/Audible program
-  masters 369–370.)
-- ~~**Nightingale-Conant provenance**~~ — **resolved 2026-08-04**: the four
-  NC-published audio editions (masters 327–330) now carry their official
-  NC product URLs via candidate-keyed overrides (110 total). The remaining
-  NC products (The Ultimate David Hawkins Library, The Discovery, Naked)
-  are unmapped compilations/programs that stay in the official discovery
-  queue pending owner ruling; see the decision note in
-  `archive/TEMP_NIGHTINGALE_PROVENANCE.md`.
+If `docs/app.js`, `docs/style.css`, any `docs/js/*.js` module, `docs/master.json`, `docs/data.json`, or `docs/catalogue-block-map.json` changes, refresh:
 
-**P2 — Hygiene:**
+- query-string content versions;
+- visible footer build ID;
+- all matching hashes in `docs/build-manifest.json`.
 
-- ~~Add a `LICENSE`~~ — **done 2026-08-04** (MIT, `LICENSE`; README links it).
-- ~~Remove deprecated `audio`/`video` item types~~ — **done 2026-08-03**
-  (branch `arena/019fc9b5-docsheet`): `DEPRECATED_MEDIUM_ITEM_TYPES` removed;
-  the 8 last candidate rows migrated to owner-approved types; 100 tests incl.
-  4 retirement guards. ~~Remaining: the 4 free-text `audio` values in the
-  unreviewed discovery triage lane (owner ruling)~~ — **resolved 2026-08-07**:
-  the discovery triage lane was ruled empty (3 NC programs promoted to
-  masters 369–371, Map poster 1560 excluded), so no free-text `audio`
-  remains anywhere.
-- Widen browser tests: all 19 tabs (Catalogue · Review workspace · Sources groups), column chooser, drawer, dark mode
-  (added `tests/column-layout.spec.js` 2026-08-04: Work-column placement +
-  measured-width assertions).
+The existing contract tests validate committed hashes but do **not** prove JavaScript execution. Browser tests and a deployed revision check remain mandatory.
 
+## Open work in priority order
 
-## Archived history (2026-08-07–08)
+1. Merge/deploy PR #64, verify the exact live build revision/hashes/screenshots, and obtain owner acceptance.
+2. Owner: require CI and gate Pages deployment.
+3. Optionally add axe-core/Lighthouse automation.
+4. Resolve GitHub issue #18 when owner Drive access is available.
 
-Intermediate 2026-08-07–08 session logs (Post-PR #27 audit, distributor title alignment, Hay House fill, duplicate ruling 309→221, hygiene batches 1–3, empty-column ruling, filename v4.1, 6-part directive, 2026-08-08 audit, follow-up, Session 2, Guard follow-up, audit-policy follow-up, Mobile Browse, Frontend hardening, Mobile shelves, Fresh-eyes PR #37) have been archived to [`archive/HANDOFF_HISTORY.md`](archive/HANDOFF_HISTORY.md) in this hygiene pass. See that file for the full chronicle; the current handoff retains only the 2026-08-09 verification.
-
-## 2026-08-09 Full-stack deep-dive + owner-approved fixes (arena/019fe5fc-docsheet, current)
-
-Branch `arena/019fe5fc-docsheet` at `d731e1b` (PR #40 merged into `main`).
-Deep-dive audit (`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`, read-only,
-then owner-approved fixes applied in this branch).
-
-- **Audit result:** all six `--check` modes green, 126/126 tests (one added),
-  91% coverage, HTTP/CSP/SRI clean, and the 08-09 Arena pass's headline
-  findings (C-01, D-04, B-01, B-02) verified **already resolved at HEAD**.
-  Remaining findings: B-04 (ledger `proposed_owned` validator missing),
-  D-09 (always-empty `Unnamed: 11` still published; `Unnamed: 5` junk column),
-  D-10 (raw CSV note rows), DOC-06…09 (stale audits/README/handoff).
-- **Fixes applied (owner-approved, all checks re-run green):**
-  - B-04: `build_research_master.py` now validates ledger `proposed_owned ∈
-    {"", "true", "false"}` before build (mirrors candidate validators); new
-    test `test_ledger_owned_casing_fails_build` (tests 125 → 126).
-  - D-09: `process_data.py` drops `Unnamed: 11` (view 8 → 7 columns; all six
-    always-empty columns now trimmed); `docs/app.js` `original` priority list
-    replaces dead `"other links"` with `notes`.
-  - D-10: raw CSV row 279 Discord URL moved out of the `format` column and row
-    373's `SETH HAS IT` note out of `title` into the notes column (header
-    added: `notes`); ledger raw mirrors + review_reason updated for both rows
-    (row 373 → "Owner note relocated to notes column; not a catalogue item.");
-    exclusions/migration-review artifacts regenerated.
-  - DOC-06…09: `archive/FULL_STACK_AUDIT_2026-08-09_ARENA.md` +
-    `archive/EXTERNAL_AUDIT.md` got
-    SUPERSEDED banners; README documentation layout now declares the deep-dive
-    current, Everything-view wording softened (candidates only when intake
-    lanes are populated; Record Type filter hidden while all rows are
-    `master`), current-audit pointer updated; INSTRUCTIONS "5 → 6 always-empty
-    columns"; test counts 125 → 126 in README/INSTRUCTIONS.
-- **Left open for owner triage:** none from this pass. Watch items: the
-  ledger validator is the enforced fix for the C-01 class (silent `.lower()`
-  remains as belt-and-braces); `reference_url_1` Veritas links (53) are not
-  mirrored in the 191-product inventory (all live-checked OK, by design).
-
-## 2026-08-09 Full-stack audit + hygiene (arena/019fe620-docsheet, previous)
-
-Branch `arena/019fe620-docsheet` at `2bc99ec`. Full audit
-`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md` (read-only at `f520e9b`, fixes at `80cdcea`/`2bc99ec`).
-
-- **Audit result:** all six `--check` modes green, 126/126 tests, 91% coverage, no duplicate UUIDs/codes/filenames, 0 orphan Veritas URLs, headline defects of every prior pass verified resolved.
-- **Docs hygiene:** normative schemas/policies intentionally kept at root as living policies — owner confirmed `keep_normative`.
-
-## 2026-08-09 CSV export fix + audit note (arena/019fe6ad-docsheet, current — this session)
-
-Branch `arena/019fe6ad-docsheet` (current working branch, from `408f31e` / PR #44 merge). Read-only audit + one fix applied:
-
-- **Audit scope:** CSV export feature (`docs/app.js` `exportCsv()`) — desktop `table.download()` vs mobile/manual fallback inconsistency, BOM effect on parsers, hidden column exclusion.
-- **Findings verified:**
-  1. Desktop download excluded hidden expert columns (`visibleColumnsOnly` defaults `true` in Tabulator).
-  2. Manual fallback included all fields but used JSON insertion order (different from preset order).
-  3. BOM (`\uFEFF`) at file start caused some CSV parsers to treat the first header cell as empty / missing.
-- **Fix applied (docs/app.js):**
-  - Added `visibleColumnsOnly: false` to desktop `table.download()` so all expert/provenance fields are included.
-  - Aligned manual fallback field list with preset order (`orderKeysForView` + hidden fields + data keys) so desktop/mobile exports match.
-  - Removed BOM from both desktop (`bom: false`) and manual fallback (`\uFEFF` removed) — eliminates parser error where the first row/header appeared missing.
-- **Verification:** `node --check docs/app.js` passes; no pipeline module changed; 126 tests unchanged; `docs/*.json` artifacts unaffected.
-- **Scoreboard impact:** improves usability (priority 12, user 5/10) by making CSV exports consistent across desktop/mobile; does not directly change presentation (priority 15) or maintainability (priority 8).
-- **Next open work:** owner should confirm BOM removal is acceptable for their Excel/CSV workflow; if BOM is needed for Excel UTF-8, it can be restored selectively.
-
-- **Verification:** `git diff --stat`: `docs/app.js | 18 insertions(+), 3 deletions(-)`.
-
-## 2026-08-09 Expert full-stack audit + low-severity fixes (arena/019fe659-docsheet, current)
-
-Branch `arena/019fe659-docsheet` from `main` at `556bf48` (main HEAD = merge of PR #43). Full audit at `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_EXPERT.md` (archived 2026-08-09).
-
-- **Expert audit:** all six `--check` modes green, 126/126 tests, 91% coverage; ~20 independent pandas probes bypassing the project's validators reproduced every README count exactly and found no data-loss/correctness defects. Seven low-severity findings (§3 of the audit); the Playwright browser suite could not be re-run in the sandbox (CDN blocked) but CI is green.
-- **Ledger row 371 reclassification (owner-approved):** the last `needs_review` row ("Dialogues on Consciousness and Spirituality: WHAT IS THIS ⚠️⚠️⚠️") → `duplicate` of promoted master 361. Regenerated `research_master_exclusions.csv`, `docs/master-exclusions.json`, `docs/migration-review.json`, `RECONCILIATION_REPORT.md`; updated `MIGRATION_REVIEW_LEDGER.md` and the disposition table in `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`. Counts unchanged (75 exclusions; 0 `needs_review`).
-- **Doc fixes:** SERIES_TAXONOMY_MAPPING.md Highlights paragraph corrected (all seven Highlights products are approved R1 mapping rows, matched to masters 362–368); `decisions/HIGHLIGHTS_COMPILATION_DECISIONS.md` gained the product-1800 `-dvd` slug note; stale §6 counts in this handoff (taxonomy 169/10 → 177/9, blank-format 8 → 0) corrected.
-- **Frontend (audit §3.4):** Original Spreadsheet view hides the 31 blank separator rows by default with a "Show blank separator rows" View setting; added `tests/blank-rows.spec.js` (browser suite now 19 tests). Pass-through wording clarified in README/INSTRUCTIONS/process_data.py (§3.6).
-- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, coverage 91%.
-
-## 2026-08-09 Presentation/UX implementation, Phases A–D (arena/019fe659-docsheet, current)
-
-Owner approved the full plan (`archive/PRESENTATION_UX_PROPOSAL_2026-08-09.md`,
-archived 2026-08-09 after implementation) after
-providing user scores (presentation 5, UX 5, content 7, maintainability 6).
-
-- **Shipped (commit `7ed3a5f`):** catalogue overview hero + collection stats
-  + series strip on Everything; desktop Browse cards toggle (work-card UI +
-  Series/Timeline rails at any width); Review-workspace nav toggle; Series
-  browser tab (client-side, from master.json); search hints; loading
-  skeleton; `prefers-reduced-motion`; a11y labels. New
-  `tests/presentation-ux.spec.js` (7 specs; suite 19 → 26).
-- **Verified:** 6/6 `--check`, 126/126 tests, `node --check` clean, CSS
-  brace-balanced, no duplicate HTML ids. Browser specs run in CI.
-- **Scoreboard:** AI scores unchanged pending re-audit; user scores still
-  make presentation (15) and UX (12) the top priorities. Gate remains
-  `fail` (7.9 < 8) until the owner re-scores or the aspects are re-audited.
-
-## 2026-08-09 Independent fresh-eyes audit + doc cleanup + refactoring (arena/019fe63c-docsheet, previous)
-
-Branch `arena/019fe63c-docsheet` from `main` at `150f080`.
-
-- **Independent audit:** all six `--check` modes green, 126/126 tests, 91% coverage, all README claims match generated data exactly (362 masters, 278 codes, 75 exclusions, 134 overrides, 39 promotions, 340 relationships, 7 compilations, 191 Veritas products). Zero critical/data-loss issues. Full audit at `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_INDEPENDENT_FRESH.md`.
-- **Documentation cleanup (root `.md` count 24 → 18):**
-  - Archived 7 files to `archive/`: `FULL_STACK_AUDIT_2026-08-09_ARENA.md` (superseded), `FULL_STACK_AUDIT_2026-08-08_INDEPENDENT.md` (duplicate of archive copy), `UI_PRINCIPLES_AND_SUGGESTIONS.md`, `UX_REWORK_SUGGESTIONS.md`, `WORKFLOW_FIX_DROPINS_2026-08-09.md`, `WORKFLOW_WEB_EDITOR_GUIDE.md`.
-  - Renamed `EXTERNAL_AUDIT` → `EXTERNAL_AUDIT.md`.
-  - Updated cross-references in `README.md`, `NEXT_AGENT_HANDOFF.md`, `archive/README.md`.
-  - Fixed README "Documentation layout" section to match current state.
-- **Code refactoring:**
-  - Extracted `apply_year_source_provenance()` from `build_master()` (296 → 192 lines).
-  - Extracted `build_review_overview()` from `build_catalogue()` (346 → 239 lines).
-  - All 6 `--check` modes and 126/126 tests pass after refactoring.
-- **Verification:** all six `--check` modes PASS, 126/126 tests PASS, `coverage 91%`.
+Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.

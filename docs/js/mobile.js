@@ -5,10 +5,9 @@
 // =============================================================================
 
 import {
-  displayMobileDate, displayMobileEdition, isExtraEditionRow,
-  mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
-} from "./data-utils.js";
-import { rowTitle } from "./formatters.js";
+  displayMobileDate, displayMobileEdition, mobilePrimaryUrl,
+} from "./data-utils.js?v=0288c69670bb";
+import { rowTitle } from "./formatters.js?v=ee2398b737f4";
 
 /**
  * Create a source/stream link element for a mobile edition card.
@@ -59,30 +58,4 @@ export function mobileEditionCard(row, openRowDetails) {
   if (streaming) actions.append(streaming);
   if (actions.childElementCount) article.append(actions);
   return article;
-}
-
-/**
- * Create an overview statistics card for the catalogue hero section.
- */
-export function overviewCard(title, statLine, owned, total) {
-  const card = document.createElement("div");
-  card.className = "overview-card";
-  const name = document.createElement("strong");
-  name.textContent = title;
-  const stat = document.createElement("span");
-  stat.className = "overview-stat";
-  stat.textContent = statLine;
-  card.append(name, stat);
-  if (total > 0) {
-    const track = document.createElement("div");
-    track.className = "progress-track";
-    track.setAttribute("role", "img");
-    track.setAttribute("aria-label", `${owned} of ${total} owned`);
-    const fill = document.createElement("div");
-    fill.className = "progress-fill";
-    fill.style.width = `${Math.round((owned / total) * 100)}%`;
-    track.append(fill);
-    card.append(track);
-  }
-  return card;
 }

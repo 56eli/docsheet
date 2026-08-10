@@ -67,7 +67,7 @@ python -m unittest discover tests          # 149 tests, no browser/network neede
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **85%** as of
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
 2026-08-10 (with 149 deterministic pipeline, style, and delivery-contract tests;
 individual module coverage is 78–100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
@@ -191,12 +191,10 @@ verified field-by-field against the Veritas Publishing API: 191/191 products
 reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (363 master records,
-191 Veritas products, 340 relationships). See
-[`docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md`](docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md)
-(declared-current) alongside
-[`archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md`](archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md)
-for full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
-for open work; the archive reports preserve earlier checkpoints.
+191 Veritas products, 340 relationships). See the declared-current
+[`docs/audits/2026-08-10-arena-019feaf6-full-audit.md`](docs/audits/2026-08-10-arena-019feaf6-full-audit.md)
+for the latest full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
+for open work; older audit reports preserve their historical checkpoints.
 
 ### Field semantics
 
