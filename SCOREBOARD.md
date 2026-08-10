@@ -33,7 +33,7 @@ The data pipeline is healthy. **The previously release-blocking frontend defect 
 | 3 | Content quality | Resolve the owner-scored gap when new content direction is provided |
 | — | Issue #18 | Ownership cross-check needs owner Drive access (open mismatch: ~12 owned=true with no matching file) |
 
-Recent work: full audit + scoreboard reconciliation, `.dataset-tab` dead-code removal, mobile bloat reduction (P1–P4), and retirement of the Original Spreadsheet view. On 2026-08-10, the earlier broad owned-status edit was corrected: unrelated raw-ledger ownership was restored and all 27 audiobook records were set to blank/not stated (289 true / 25 false / 49 blank overall).
+Recent work: session 019febb6 added dependency-free XLSX, JSON, and TSV exports beside CSV/ODS, with contract/browser tests, and fixed the ODS Lecture Series color mapping (`lectures-2002-2011`, 201 rows). Earlier work completed the full audit, dead-code/mobile cleanup, Original Spreadsheet retirement, and audiobook ownership correction (289 true / 25 false / 49 blank overall).
 
 ## Scoreboard table
 
