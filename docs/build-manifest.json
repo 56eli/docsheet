@@ -1,15 +1,15 @@
 {
-  "revision": "row-delivery-p0-20260810.2",
+  "revision": "mobile-header-white-highlights-20260810.1",
   "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "9f03af76cabb690d08e5e1b059a5fa625cbcf73a52ffdc3ac1db55a410450f48",
-    "style.css": "805701f0ca917daf396b21d738632117cf46e0d8d7e27fff0f185f6d6e276b65"
+    "app.js": "d9b655dc2d2be38d33a554f32e17d8fcb02d1ea2e5d6577969222f3d6773d6f8",
+    "style.css": "14f650f17a85d02d52baa2a56774482050b5483e19a3c5f5c44df4820e6215c3"
   },
   "data": {
-    "master.json": "6347ed936ddebc042ee284cdf8eef487dd88f71e5fa9f64dd2c89a0311dc7cf7",
+    "master.json": "2fcc0fc7f790920925f8d9e85e7708af0a723a81ab796192de62ef0f2daa5add",
     "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
-    "catalogue-block-map.json": "e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac"
+    "catalogue-block-map.json": "cb31695777afa8cc65558defd5f26018f3fc51c701bb3dca0daeab199cc19461"
   },
   "acceptance": "owner_visual_review_required"
 }

@@ -14,12 +14,12 @@ import {
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js";
+} from "./js/config.js?v=43d122281a7e";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js";
+} from "./js/formatters.js?v=fe5e058c851f";
 
 (function () {
   "use strict";
