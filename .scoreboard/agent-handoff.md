@@ -1,16 +1,27 @@
 # Agent Handoff
 
-Last updated: 2026-08-10 (Arena 019feaaf — Owned Column Enlarged, Extra Badge Constrained to PvF Double, Edition Research Moved to Drawer, Full Multidisciplinary Audit)
+Last updated: 2026-08-10 (Arena 019feabf — Full Multidisciplinary Audit + Hygiene Fixes)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` **(Current — fresh-eyes multidisciplinary audit 019feaaf session)**
+- `docs/audits/2026-08-10-arena-019feabf-full-audit.md` **(Current — fresh-eyes full-stack audit 019feabf session)**
+- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` (Prior 019feaaf session audit)
 - `docs/audits/2026-08-10-full-audit-019fea62-multidisciplinary.md` (Prior 019fea62 session audit)
-- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` (Prior 019fe8d0 audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-10 Session Summary — 019feabf — Full Multidisciplinary Audit + Hygiene
+
+- **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 147 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified against expected counts. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md` and `TEMP_AUDIT_019FEABF.md`.
+- **Key findings:** CSS §14 has ~400 lines of duplication (desktop browse mode duplicates mobile rules); app.js still 2,439 lines (15+ concerns); `escapeRegex`/`renderHighlightedText` duplicated between formatters.js and app.js; deploy workflow has hardcoded 362→363 row count; 4 TEMP/PR files polluting root.
+- **Hygiene fixes applied:**
+  - Removed dead `escapeRegex`/`renderHighlightedText` exports from `docs/js/formatters.js` (app.js defines its own versions with closure over `activeSearchQuery`). Added clarifying comment in app.js.
+  - Archived 4 files from root to `archive/`: `TEMP_AUDIT_RESPONSE.md`, `TEMP_FIX_019fea62_mobile_white_highlights.md`, `TEMP_RESPONSE_019fea62.md`, `PR_60_BODY.md`. Root .md count 18→14 (target 12).
+  - Updated delivery contract: `app.js?v=e76b283c951d`, footer `app-e76b283c951d/css-936c444be89d`, manifest revision `full-audit-019feabf-20260810.1`.
+- **Verification:** All 147 tests pass, 90% coverage (78-100% per module), 6/6 `--check` green, JS syntax clean.
+- **Left open:** P0 CI/Pages gating (owner action), CSS §14 deduplication (P1, ~2 hours), further app.js modularization (P3, 4-6 hours), deploy workflow hardcoded row count fix.
 
 ## 2026-08-10 Session Summary — 019feaaf — Owned Width, Extra Badge Constrain, Edition Research to Drawer
 

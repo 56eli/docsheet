@@ -1,9 +1,9 @@
 {
-  "revision": "owned-width-extra-clean-20260810.1",
-  "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
+  "revision": "full-audit-019feabf-20260810.1",
+  "source_baseline": "3768fe74cff593a9674855c37a2aa52869649dec",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "49ca59628f20c9e54691ddce867883b39986be814956e8a2275d96078e43864b",
+    "app.js": "e76b283c951d28ceef6175d68129d5e7077bc2a3906b2ac78fb4d0aaaae23c32",
     "style.css": "936c444be89d38951d09d60bfb53c8e4043eda10ecb611ea2783fc8c75876047"
   },
   "data": {

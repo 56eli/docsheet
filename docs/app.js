@@ -1421,6 +1421,11 @@ import {
    *  Earlier char-count heuristics truncated real content and oversized
    *  URL columns; measuring rendered text is what finally fits.
    * ------------------------------------------------------------------ */
+  // NOTE: escapeRegex and renderHighlightedText are defined here (not imported
+  // from formatters.js) because renderHighlightedText's default query parameter
+  // is a closure over module-scope activeSearchQuery. formatters.js exports
+  // statusClass, formatClass, statusLabel, statusFormatter, rowTitle,
+  // primaryIdentifier, loadCatalogueBlockMap, and getRowBlockId only.
   const measureContext = document.createElement("canvas").getContext("2d");
   const CELL_FONT = '14px Roboto, "Segoe UI", Arial, sans-serif';
   const BADGE_FONT = '600 11px Roboto, "Segoe UI", Arial, sans-serif';
