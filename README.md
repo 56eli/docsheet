@@ -5,7 +5,7 @@
 Renders the repository CSV as an interactive, searchable web table on
 GitHub Pages (built with [Tabulator](https://tabulator.info/)).
 
-- **Live site:** `https://56eli.github.io/docsheet` (once GitHub Pages is enabled)
+- **Live site:** `https://56eli.github.io/docsheet` (verified on 2026-08-10)
 - **Pipeline:** `process_data.py` reads the CSV with Pandas and publishes
   `docs/data.json` — data is currently passed through **unchanged** (cell
   values are never modified; the published view trims the six always-empty

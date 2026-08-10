@@ -27,7 +27,7 @@ After the audit, the owner selected the recommended P0 repair. This branch now i
 - `tests/frontend-modules.test.mjs` invokes the edition formatter directly and verifies that only Power vs. Force row 373 renders the Extra badge;
 - a new Playwright case records page errors, searches for the original hardcover, and asserts its rendered Extra badge, bringing the browser suite from 25 to 26 specs.
 
-`pretest:e2e` runs the Node tests automatically before Playwright. Follow-up work removed all 10 absent-ID overview/stats/review-nav paths plus their builders/styles (411 net lines), completed the shortcuts modal focus lifecycle, restored live search highlighting through a query getter, and hash-versioned every local ES-module edge. The Python contract now traverses the full import graph. Local results are green for 3/3 Node tests, 149/149 Python tests, 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`, but PR #64 CI run `31378465750` passed **28/28 Playwright specs**. The baseline scores below preserve the audited/deployed `aa1f1b7` snapshot; the current scoreboard rises to 7.9/10 and remains gate-failing only because the exact public deployment is unverified, Pages is ungated, and the total is below 8.
+`pretest:e2e` runs the Node tests automatically before Playwright. Follow-up work removed all 10 absent-ID overview/stats/review-nav paths plus their builders/styles (411 net lines), completed the shortcuts modal focus lifecycle, restored live search highlighting through a query getter, and hash-versioned every local ES-module edge. The Python contract now traverses the full import graph. PR #64 merged as `54b37f7`; main CI run `31379726756` passed 149 offline, 3 Node, and **28/28 Playwright tests**, and Pages run `31379725585` deployed successfully. Live fetch verification confirms the exact revision/asset/module/data hashes, `master_items=363`, and rendered catalogue rows. The baseline scores below preserve the audited `aa1f1b7` snapshot; the current scoreboard is 8.0/10 with a warning only because Pages remains ungated and explicit owner visual acceptance is pending.
 
 ## Priority findings
 
@@ -318,9 +318,9 @@ Live-site curl/hash probe                                        NOT RUN
 
 ## Recommended sequence
 
-1. **P0 completed on branch:** repaired the missing `isExtraEditionRow` import and added executable Node/browser formatter coverage.
-2. **P0/cleanup/P1 CI completed:** PR #64 run `31378465750` passed 149 offline, 3 Node, and all 28 Playwright tests; merge/deploy and verify the exact build ID/hashes/screenshots next.
-3. **P0 owner action:** require CI and switch Pages from legacy branch deployment to the gated workflow.
+1. **P0/cleanup/P1 completed and live:** merge `54b37f7`, main CI `31379726756`, Pages `31379725585`, exact manifest hashes, and 363-row render are verified.
+2. **Owner acceptance:** explicitly accept/reject live revision `live-search-versioned-module-graph-019feaf6-20260810.1`.
+3. **Owner workflow action:** require CI and switch Pages from legacy branch deployment to the gated workflow.
 4. **Optional quality tooling:** add axe-core, Lighthouse, and ESLint if their maintenance cost is accepted.
 5. **P3:** continue splitting `app.js` only behind the Node/browser and full import-graph contracts.
 6. **Owner/data:** resolve issue #18 when the Drive inventory is available.
