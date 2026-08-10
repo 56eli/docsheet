@@ -91,6 +91,41 @@ function format(formatter, row) {
   });
 }
 
+// The intended, owner-reviewed REVISION1 block palette. Keeping the expected
+// color values explicit here makes them reviewable; the set of production
+// block ids is derived from the committed block map below so coverage cannot
+// drift from the published data.
+const EXPECTED_BLOCK_COLORS = {
+  "lectures-2002-2011": { border: "#059669", bg: "#EAF6F2" },
+  discussion: { border: "#E11D48", bg: "#FCECEF" },
+  satsang: { border: "#D97706", bg: "#FDF4E8" },
+  "on-the-road": { border: "#0D9488", bg: "#EBF7F6" },
+  "volume-series": { border: "#6366F1", bg: "#F1F2FE" },
+  "office-series": { border: "#0284C7", bg: "#E7F4FC" },
+  books: { border: "#7C3AED", bg: "#F4EEFE" },
+  "transcription-books": { border: "#C026D3", bg: "#FAF0FC" },
+  "media-misc": { border: "#71717A", bg: "#F3F3F3" },
+  "lecture-highlights": { border: "#EA580C", bg: "#FEEFE8" },
+  "fran-grace": { border: "#BE123C", bg: "#FAECEF" },
+  undecided: { border: "#E2E8F0", bg: "#FFFFFF" },
+};
+
+// Derive the real production block ids from the committed published block
+// map (uuid -> block_id), never from assumed names.
+const catalogueBlockMap = JSON.parse(
+  await readFile(new URL("../docs/catalogue-block-map.json", import.meta.url), "utf8"),
+);
+const productionBlocks = [...new Set(Object.values(catalogueBlockMap))].sort();
+
+function odsBlockStyleXml(content, blockId) {
+  const marker = `style:name="ce-block-left-${blockId}"`;
+  const start = content.indexOf(marker);
+  assert.notEqual(start, -1, `ODS must define the left style for block "${blockId}"`);
+  const close = content.indexOf("/>", start);
+  assert.notEqual(close, -1, `ODS left style for "${blockId}" must close with "/>"`);
+  return content.slice(start, close);
+}
+
 test("removed overview UI has no dormant JavaScript or CSS", async () => {
   const [app, style] = await Promise.all([
     readFile(new URL("../docs/app.js", import.meta.url), "utf8"),
@@ -262,4 +297,130 @@ test("JSON and TSV exports preserve structured values and neutralise formulas", 
   assert.ok(tsv.includes("'=2+2"), "formula-like cells must be neutralised");
   assert.ok(tsv.includes('"Tab\there\nnext"'), "tabs and newlines must be quoted");
   assert.ok(tsv.endsWith("\r\n"));
+});
+
+test("export block styles cover every production block with the intended REVISION1 palette", async () => {
+  const { EXPORT_BLOCK_STYLES } = await import("../docs/js/ods-export.js");
+  const styleKeys = Object.keys(EXPORT_BLOCK_STYLES).sort();
+
+  // Every block id present in the published block map must have an export
+  // style. This fails loudly when a production block is added or renamed
+  // without updating the export palette.
+  for (const blockId of productionBlocks) {
+    assert.ok(
+      styleKeys.includes(blockId),
+      `production block "${blockId}" is missing an export style`,
+    );
+  }
+  // No export style may exist without a matching production block. This fails
+  // when a production block is removed (or renamed) without removing/updating
+  // the now-orphaned export style.
+  for (const blockId of styleKeys) {
+    assert.ok(
+      productionBlocks.includes(blockId),
+      `export style "${blockId}" has no corresponding production block`,
+    );
+  }
+  // The committed export palette must exactly match the reviewable intended
+  // palette (colors are explicit here; coverage is derived from the map above).
+  assert.deepEqual(EXPORT_BLOCK_STYLES, EXPECTED_BLOCK_COLORS);
+});
+
+test("ODS export colors every production block and falls back to undecided for unknown blocks", async () => {
+  const { createOdsArchive } = await import("../docs/js/ods-export.js");
+  const rows = productionBlocks.map((blockId) => ({
+    uuid: blockId,
+    title: `Row for ${blockId}`,
+    series: blockId,
+  }));
+  const archive = createOdsArchive(rows, "master", (row) => row.series);
+  const text = new TextDecoder().decode(archive);
+
+  for (const blockId of productionBlocks) {
+    const colors = EXPECTED_BLOCK_COLORS[blockId];
+    // A data row must reference the exact block-specific left style.
+    assert.ok(
+      text.includes(`table:style-name="ce-block-left-${blockId}"`),
+      `ODS data row for production block "${blockId}" must use its exact left style`,
+    );
+    // The block style must declare the intended border and background colors.
+    const styleXml = odsBlockStyleXml(text, blockId);
+    assert.ok(
+      styleXml.includes(`fo:background-color="${colors.bg}"`),
+      `ODS style "${blockId}" must use background ${colors.bg}`,
+    );
+    assert.ok(
+      styleXml.includes(`fo:border-left="0.04in solid ${colors.border}"`),
+      `ODS style "${blockId}" must use border-left ${colors.border}`,
+    );
+  }
+
+  // Unknown block ids must safely fall back to the undecided style, and no
+  // style may be minted for the unknown id.
+  const unknownOnly = createOdsArchive(
+    [{ uuid: "x", title: "X", series: "totally-unknown-block" }],
+    "master",
+    (row) => row.series,
+  );
+  const unknownText = new TextDecoder().decode(unknownOnly);
+  assert.ok(
+    unknownText.includes('table:style-name="ce-block-left-undecided"'),
+    "ODS unknown block id must fall back to the undecided style",
+  );
+  assert.ok(
+    !unknownText.includes("ce-block-left-totally-unknown-block"),
+    "ODS must not mint a style for an unknown block id",
+  );
+});
+
+test("XLSX export colors every production block and falls back to undecided for unknown blocks", async () => {
+  const { createXlsxArchive, EXPORT_BLOCK_STYLES } = await import("../docs/js/ods-export.js");
+  const styleKeys = Object.keys(EXPORT_BLOCK_STYLES);
+
+  const rows = productionBlocks.map((blockId) => ({
+    uuid: blockId,
+    title: `Row for ${blockId}`,
+    series: blockId,
+  }));
+  const archive = createXlsxArchive(rows, "master", (row) => row.series);
+  const text = new TextDecoder().decode(archive);
+
+  // Parse the fills from styles.xml. Order: [none, gray125, header(1A1A1A),
+  // blocks...], so block i lives at fillColors[i + 1].
+  const styleSheet = text.slice(text.indexOf("<styleSheet"), text.indexOf("</styleSheet>"));
+  const fillColors = [...styleSheet.matchAll(/fgColor rgb="FF([0-9A-F]{6})"/g)].map((m) => m[1]);
+  assert.ok(
+    fillColors.length >= productionBlocks.length + 1,
+    "XLSX styles must include a fill for every production block plus the header",
+  );
+
+  rows.forEach((row, i) => {
+    const bi = styleKeys.indexOf(row.series);
+    assert.notEqual(bi, -1, `XLSX must style production block "${row.series}"`);
+    // The first data cell of this row must carry the exact style index for its block.
+    const expectedStyle = 2 + bi;
+    assert.ok(
+      text.includes(`<c r="A${i + 2}" s="${expectedStyle}"`),
+      `XLSX row for production block "${row.series}" must use style index ${expectedStyle}`,
+    );
+    // That style's fill must be the intended background color.
+    assert.equal(
+      fillColors[bi + 1],
+      EXPECTED_BLOCK_COLORS[row.series].bg.slice(1),
+      `XLSX fill for "${row.series}" must be ${EXPECTED_BLOCK_COLORS[row.series].bg}`,
+    );
+  });
+
+  // Unknown block ids fall back to the undecided style index.
+  const undecidedIndex = 2 + styleKeys.indexOf("undecided");
+  const unknownOnly = createXlsxArchive(
+    [{ uuid: "x", title: "X", series: "totally-unknown-block" }],
+    "master",
+    (row) => row.series,
+  );
+  const unknownText = new TextDecoder().decode(unknownOnly);
+  assert.ok(
+    unknownText.includes(`<c r="A2" s="${undecidedIndex}"`),
+    "XLSX unknown block id must fall back to the undecided style index",
+  );
 });

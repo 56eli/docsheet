@@ -16,10 +16,12 @@ export function updateViewSummary(viewName, rowCount, viewTitleEl, viewDescEl, v
   if (viewDescEl) viewDescEl.textContent = details.description || "Search, filter, sort, and export this spreadsheet view.";
   if (viewMetaEl) {
     viewMetaEl.innerHTML = "";
+    // The Export formats are listed in the Export button menu (XLSX, ODS,
+    // CSV, JSON, TSV); we deliberately omit a summary chip here so a partial
+    // "csv / .ods" listing cannot mislead when other formats exist.
     const metaItems = [
       ["Rows", rowCount === null ? "Loading…" : rowCount.toLocaleString()],
       ["Type", details.type || "Spreadsheet"],
-      ["Export", `${view.exportName} / .ods`],
     ];
     metaItems.forEach(([label, value]) => {
       const wrapper = document.createElement("div");

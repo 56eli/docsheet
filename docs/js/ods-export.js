@@ -28,6 +28,12 @@ const BLOCK_STYLES = {
   "undecided":           { border: "#E2E8F0", bg: "#FFFFFF" },
 };
 
+// Public read-only view of the block→color palette. Exported so the
+// deterministic tests can assert that every production block id derived from
+// the published block map is coloured (and that none is orphaned), keeping
+// the expected REVISION1 colors explicit and reviewable.
+export const EXPORT_BLOCK_STYLES = BLOCK_STYLES;
+
 function escapeXml(str) {
   return String(str ?? "")
     .replace(/&/g, "&amp;")
@@ -374,8 +380,14 @@ function generateXlsxSheet(data, viewName, getRowBlockId) {
   const rows = data.map((row, rowIndex) => {
     const rawBlock = getRowBlockId ? getRowBlockId(row) : "undecided";
     const blockIds = Object.keys(BLOCK_STYLES);
-    const blockIndex = Math.max(blockIds.indexOf(rawBlock), blockIds.indexOf("undecided"));
-    const styleIndex = 2 + blockIndex;
+    // Resolve to the block's own style index when it is a known production
+    // block, and only fall back to the undecided style for unknown ids.
+    // (Previously Math.max of the two indexes collapsed every block that
+    // precedes "undecided" in the key order onto the undecided style, so all
+    // XLSX rows rendered uncolored.)
+    const blockIndex = blockIds.indexOf(rawBlock);
+    const resolvedIndex = blockIndex === -1 ? blockIds.indexOf("undecided") : blockIndex;
+    const styleIndex = 2 + resolvedIndex;
     const cells = keys.map((key, columnIndex) => xlsxCell(
       `${excelColumnName(columnIndex)}${rowIndex + 2}`, row[key], styleIndex,
     )).join("");

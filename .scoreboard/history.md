@@ -187,3 +187,15 @@ Independent verification of the merged `34f4466` baseline (`arena/019febd6-docsh
 | 2026-08-10 | multidisciplinary_audit | 8.1 | 8.1 | — | 8.1 | Arena 019febd6 | Re-ran all six `--check` modes, 149/149 Python tests (90% coverage, 2,327 stmts), 6/6 Node export/module tests, JS syntax on all modules, and full manifest-vs-file hash comparison (all 13 match). Data counts recomputed directly from published payloads (363 master / 374 raw; 363 unique UUIDs; 363 unique filenames; 191 work IDs; ownership 289/25/49) match the handoff exactly. No new defect found. |
 | 2026-08-10 | readme_onboarding | 8 | 8 | null | 8 | Arena 019febd6 | Corrected INSTRUCTIONS.md coverage drift (stated 85% total → measured 90%, matching README). House-rule doc-sync correction; score unchanged. |
 | 2026-08-10 | tests | 9 | 9 | null | 9 | Arena 019febd6 | Corrected stale `scoreboard.yml` tests-aspect Node-test count (3 → 6; `frontend-modules.test.mjs` now runs 6 tests after 019febb6 added XLSX/JSON/TSV/ODS coverage). Score unchanged. |
+
+## 2026-08-10 — Arena 019febd6 export block-colour audit + XLSX colour fix + Export chip removal
+
+Exhaustive export block-colour regression work requested by the owner (handoff from the prior export session). No AI score changes; documented evidence below.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | feature_completeness | 8 | 8 | null | 8 | Arena 019febd6 | Added an exhaustive block→colour test derived from the committed `docs/catalogue-block-map.json` (12 production block ids) asserting: every production block has an export style and none is orphaned; the committed palette exactly matches the explicit REVISION1 palette; ODS rows reference the exact `ce-block-left-<id>` style with the expected bg/border; XLSX rows use the exact per-block style index and fill; and unknown ids fall back to `undecided`. Suite 6 → 9 Node tests. |
+| 2026-08-10 | feature_completeness | 8 | 8 | null | 8 | Arena 019febd6 | **Real bug found & fixed:** the XLSX block→style resolution used `Math.max(indexOf(rawBlock), indexOf("undecided"))`. Because `undecided` is the last `BLOCK_STYLES` key, every block preceding it resolved to the undecided style, so **all XLSX rows exported uncolored/white**. Corrected to use the raw block's own index and only fall back to `undecided` for unknown ids. ODS was unaffected (correct ternary). |
+| 2026-08-10 | ux_usability | 8 | 8 | 8 | 8 | Arena 019febd6 | Removed the "Export: hawkins-everything.csv / .ods" chip from the view-summary meta (`updateViewSummary` in view-utils.js). It listed only 2 formats while the export menu offers 5 (XLSX/ODS/CSV/JSON/TSV); owners preferred no partial list. Formats remain discoverable via the Export button menu. |
+
+Delivery contract refreshed: app.js, ods-export.js, and view-utils.js hashes + version strings + manifest updated; footer build ID `app-36a70a60728c/css-3a0ae4223b26`. All six `--check` modes, 149/149 Python tests (90% coverage), 9/9 Node tests, and JS syntax pass.
