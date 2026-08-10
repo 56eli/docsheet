@@ -44,7 +44,7 @@ export const DEFAULT_EMPTY_MESSAGE = "No rows in this view.";
 export const VIEW_DETAILS = {
   master: {
     type: "Complete curated catalogue",
-    description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. On phones it opens in Browse mode: compact work stacks with source and streaming actions; use Spreadsheet for the full grid. Product facts come first: title, series, type, edition, date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
+    description: "The full curated catalogue of David R. Hawkins works — one row per edition, grouped by work. On phones it opens in Browse mode: compact work stacks with source and streaming actions; use Spreadsheet for the full grid. Product facts come first: title, series, type, edition (carrier), edition note (free-text distinction for same-work editions, e.g. Power vs Force B&W vs non-B&W), date, official store and streaming links, notes. Technical columns (Master ID, Work, proposed file names, provenance) stay hidden until you switch on Expert columns next to the Columns menu; clicking any row still shows every stored field. Candidate rows, when present, are marked by the Record Type badge and are not master records.",
   },
   series: {
     type: "Series browser",
@@ -129,6 +129,7 @@ export const COLUMN_LABELS = {
   uuid: "Master ID",
   work_id: "Work",
   edition: "Edition",
+  edition_note: "Edition Note",
   master_uuid: "Master ID",
   year_month: "Year-Month",
   year_source: "Year Source",
@@ -223,17 +224,18 @@ export const LOW_PRIORITY_FIELDS = [
 
 export const COLUMN_BUDGETS = {
   record_type: { width: 52, minWidth: 48, maxWidth: 58 },
-  owned: { width: 72, minWidth: 62, maxWidth: 85 },
+  owned: { width: 58, minWidth: 52, maxWidth: 68 },
   proposed_filename: { minWidth: 220 },
   title: { minWidth: 150 },
   series: { minWidth: 180 },
+  edition_note: { minWidth: 180 },
 };
 
 export const COLUMN_PRESETS = {
   master: {
-    priority: ["record_type", "proposed_filename", "item_type", "owned", "notes", "edition", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "catalog_code", "title", "series", "year_month"],
+    priority: ["record_type", "proposed_filename", "item_type", "owned", "notes", "edition", "edition_note", "source_url_veritas", "source_url_hay_house", "source_url_audible", "source_url_amazon", "source_url_nightingale_conant", "reference_url_1", "catalog_code", "title", "series", "year_month"],
     frozen: ["record_type", "proposed_filename"],
-    hidden: ["title", "series", "year", "month", "uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title", "research"],
+    hidden: ["title", "series", "year", "month", "uuid", "work_id", "legacy_tempid", "proposed_filename_display", "year_source", "raw_row_number", "legacy_title", "research", "edition_note"],
     moveAfter: { work_id: "legacy_tempid" },
   },
   original: {
@@ -257,7 +259,7 @@ export const COLUMN_PRESETS = {
 // Detail-section layout for the row-details drawer.
 export const DETAIL_SECTIONS = [
   { title: "Identity", fields: ["record_type", "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "proposed_filename_display", "legacy_title"] },
-  { title: "Content", fields: ["item_type", "series", "year", "month", "year_source", "edition", "format", "format_detail"] },
+  { title: "Content", fields: ["item_type", "series", "year", "month", "year_source", "edition", "edition_note", "format", "format_detail"] },
   { title: "Ownership", fields: ["owned"] },
   { title: "Official sources", fields: ["source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant", "source_url_audible", "source_url_amazon", "reference_url_1"] },
   { title: "Notes", fields: ["notes"] },

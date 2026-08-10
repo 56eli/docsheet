@@ -87,14 +87,14 @@ test('Master ID column sorts numerically, not lexically', async ({ page }) => {
   await expect(uuidCellInRow(page, 1)).toHaveText('2');
   await expect(uuidCellInRow(page, 2)).toHaveText('3');
 
-  // Descending: the highest Master ID first (IDs run 1-372; 225/226/227/246/249/
-  // 264/281/284/302/309 are retired, so max is 372 after the 2026-08-07
-  // promotions 362-372 and the 2026-08-08 D-01 collapse).
+  // Descending: the highest Master ID first (IDs run 1-373; 225/226/227/246/249/
+  // 264/281/284/302/309 are retired, so max is 373 after the 2026-08-10
+  // extra edition 373 and the 2026-08-08 D-01 collapse).
   // Empty candidate IDs must stay pinned to the bottom, not jump to the top.
   await uuidHeader.evaluate((el) => el.click());
   await expect(uuidHeader).toHaveAttribute('aria-sort', 'descending');
-  await expect(uuidCellInRow(page, 0)).toHaveText('372');
-  await expect(uuidCellInRow(page, 1)).toHaveText('371');
+  await expect(uuidCellInRow(page, 0)).toHaveText('373');
+  await expect(uuidCellInRow(page, 1)).toHaveText('372');
 });
 
 test('Everything view opens visitor-first and the Expert toggle reveals technical columns', async ({ page }) => {

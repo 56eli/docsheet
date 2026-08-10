@@ -1,15 +1,15 @@
 {
-  "revision": "row-delivery-p0-20260810.2",
+  "revision": "edition-note-physical-specs-owned-20260810.1",
   "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "9f03af76cabb690d08e5e1b059a5fa625cbcf73a52ffdc3ac1db55a410450f48",
-    "style.css": "805701f0ca917daf396b21d738632117cf46e0d8d7e27fff0f185f6d6e276b65"
+    "app.js": "14aab6395429828417e629e3f9fe4459fc20943542c783ff4e0f2d5d8ee8a80e",
+    "style.css": "936c444be89d38951d09d60bfb53c8e4043eda10ecb611ea2783fc8c75876047"
   },
   "data": {
-    "master.json": "6347ed936ddebc042ee284cdf8eef487dd88f71e5fa9f64dd2c89a0311dc7cf7",
+    "master.json": "5bc032a378e4ebea63d9f59815c9b745d232ad32a99991cfe2e347ea849328e0",
     "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
-    "catalogue-block-map.json": "e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac"
+    "catalogue-block-map.json": "810ec37280a36a7225f4b228f7249aa5ae6275a389db88760214785050765f93"
   },
   "acceptance": "owner_visual_review_required"
 }

@@ -10,17 +10,17 @@ This report compares the committed `data/research_master_draft.csv` with the in-
 
 | Measure | Committed state | Current ledger projection |
 |---|---:|---:|
-| Research-master CSV records | 362 | 362 |
-| Research-master JSON records | 362 | 362 |
+| Research-master CSV records | 363 | 363 |
+| Research-master JSON records | 363 | 363 |
 | Research-master exclusion records | 75 | 75 |
 | Committed draft records without matching raw/candidate provenance | 0 | 0 |
 | Projected records absent from committed draft | 0 | 0 |
 | Matched records with one or more field differences | 0 | 0 |
-| `docs/master.json` / ledger-projected Everything records | 362 | 362 |
+| `docs/master.json` / ledger-projected Everything records | 363 | 363 |
 
 All checked master, exclusion, and Everything Pages outputs match the current ledger and approved source overrides.
 
-The reviewed build applies 134 approved official-source overrides and validates 39 reviewed manual candidates; unresolved research leads remain outside the master in their review inputs.
+The reviewed build applies 134 approved official-source overrides and validates 40 reviewed manual candidates; unresolved research leads remain outside the master in their review inputs.
 
 ## Committed draft records without matching provenance
 
@@ -46,8 +46,8 @@ No matching-record field differences were found.
 
 | `catalogue-meta.json` field | Committed Pages value | Ledger-projected value |
 |---|---:|---:|
-| `master_items` | 362 | 362 |
-| `migrated_items` | 362 | 362 |
+| `master_items` | 363 | 363 |
+| `migrated_items` | 363 | 363 |
 | `implemented_unreviewed` | 0 | 0 |
 
 ## Current verification result

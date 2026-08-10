@@ -16,6 +16,7 @@ from pathlib import Path
 
 from _common import ISO_DATE, json_text, read_csv, render_csv
 from pipeline.enrichments import (
+    apply_edition_notes,
     apply_filename_proposal,
     apply_notes_overrides,
     apply_official_title_cleanup,
@@ -65,7 +66,7 @@ NOTES_OVERRIDES = Path("data/master_notes_overrides.csv")
 
 FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename", "legacy_title", "item_type",
-    "series", "year", "month", "year_source", "format", "format_detail", "owned",
+    "series", "year", "month", "year_source", "format", "format_detail", "edition_note", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "source_url_amazon", "reference_url_1", "notes", "research",
     "raw_row_number", "candidate_key",
@@ -274,6 +275,7 @@ def load_edition_promotions(existing_ids: set[str]) -> list[tuple[dict[str, str]
             "item_type": item_type, "series": row["series"].strip(),
             "year": candidate["proposed_year"].strip(), "month": "",
             "format": media_format, "format_detail": candidate["proposed_format_detail"].strip(),
+            "edition_note": "",
             "owned": candidate["proposed_owned"].strip().lower(),
             "source_url_veritas": "", "source_url_hay_house": "",
             "source_url_nightingale_conant": "", "source_url_audible": "", "source_url_amazon": "",
@@ -337,6 +339,7 @@ def build_master() -> MasterBuild:
             "month": row["proposed_month"],
             "format": row["proposed_format"],
             "format_detail": row["proposed_format_detail"],
+            "edition_note": "",
             "owned": row["proposed_owned"].strip().lower(),
             "source_url_veritas": row["proposed_source_url_veritas"],
             "source_url_hay_house": "",
@@ -379,7 +382,7 @@ def build_master() -> MasterBuild:
             "item_type": item_type, "series": candidate["series"],
             "year": year, "month": month_from_title(candidate["candidate_title"], year),
             "format": candidate["proposed_format"],
-            "format_detail": candidate["proposed_format_detail"], "owned": candidate["proposed_owned"].strip().lower(),
+            "format_detail": candidate["proposed_format_detail"], "edition_note": "", "owned": candidate["proposed_owned"].strip().lower(),
             "source_url_veritas": veritas_url, "source_url_hay_house": hay_url,
             "source_url_nightingale_conant": "", "source_url_audible": audible_url, "source_url_amazon": amazon_url,
             "reference_url_1": ref1,
@@ -426,6 +429,7 @@ def build_master() -> MasterBuild:
 
     apply_year_overrides(items)
     apply_notes_overrides(items)
+    apply_edition_notes(items)
 
     # Move provenance/research notes out of the notes column into a dedicated
     # research column. Only the FRAN GRACE owner marker stays in notes.
@@ -435,6 +439,7 @@ def build_master() -> MasterBuild:
         it.setdefault("year_source", "")
         it.setdefault("source_url_amazon", "")
         it.setdefault("research", "")
+        it.setdefault("edition_note", "")
 
     validate_filename_proposal_mirrors(items)
     validate_master_items_integrity(items)

@@ -14,12 +14,12 @@ import {
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js";
+} from "./js/config.js?v=cfced6b202ba";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js";
+} from "./js/formatters.js?v=fe5e058c851f";
 
 (function () {
   "use strict";
@@ -606,6 +606,20 @@ import {
     return [row.format, row.format_detail].filter(Boolean).join(" · ") || "Edition not stated";
   }
 
+  function isExtraEditionRow(row) {
+    const workId = String(row.work_id || "").trim();
+    if (!workId) return Boolean(row.candidate_key && String(row.candidate_key).startsWith("candidate:edition-"));
+    let minUuid = null;
+    for (const r of allData) {
+      if (String(r.work_id || "").trim() === workId) {
+        const u = String(r.uuid || "").trim();
+        if (!u) continue;
+        if (minUuid === null || Number(u) < Number(minUuid)) minUuid = u;
+      }
+    }
+    return minUuid !== null && String(row.uuid || "").trim() !== minUuid;
+  }
+
   function mobilePrimaryUrl(row) {
     return row.source_url_veritas || row.source_url_hay_house ||
       row.source_url_audible || row.source_url_nightingale_conant ||
@@ -642,6 +656,13 @@ import {
     meta.className = "mobile-edition-meta";
     meta.textContent = `${displayMobileDate(row)} · ${displayMobileEdition(row)}`;
     button.append(filename, title, meta);
+    if (row.edition_note && String(row.edition_note).trim()) {
+      const note = document.createElement("span");
+      note.className = "mobile-edition-note";
+      note.textContent = String(row.edition_note).trim();
+      note.title = String(row.edition_note).trim();
+      button.append(note);
+    }
     button.addEventListener("click", () => openRowDetails(row, button));
     article.append(button);
 
@@ -1590,6 +1611,8 @@ import {
       } else if (key === "edition") {
         // Edition cell: a small color dot by carrier (DVD/CD/audiobook/
         // streaming/book), then the merged "format · detail" label.
+        // Extra editions (candidate:edition- rows, i.e. the 24+1 minted
+        // edition rows under a work) get a small "Extra" badge.
         col.formatter = (cell) => {
           const value = String(cell.getValue() ?? "");
           if (!value) return "";
@@ -1606,6 +1629,15 @@ import {
             frag.append(dot);
           }
           frag.append(renderHighlightedText(value));
+          const isExtraEdition = isExtraEditionRow(row);
+          if (isExtraEdition) {
+            const badge = document.createElement("span");
+            badge.className = "extra-edition-badge";
+            badge.textContent = "Extra";
+            badge.title = "Extra edition of this work (same work, different carrier or printing) — see Edition Note for distinction";
+            frag.append(document.createTextNode(" "));
+            frag.append(badge);
+          }
           return frag;
         };
       } else if (FORMAT_FIELDS.has(key)) {

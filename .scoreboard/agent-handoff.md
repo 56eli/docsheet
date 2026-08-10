@@ -1,6 +1,6 @@
 # Agent Handoff
 
-Last updated: 2026-08-10 (Arena 019fe8d0 — P0 hotfix for the 019fe8a5 ES-module refactor: restored `let table` and `let allData` in app.js IIFE)
+Last updated: 2026-08-10 (Arena 019fea62 — Mobile header, white grouping, highlights reposition, Edition mediation with extra row 373 and Extra badge)
 
 ## Current state
 
@@ -12,6 +12,16 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 - `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (Prior declared-current multidisciplinary audit)
 - `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-10 Session Summary — 019fea62 — Mobile Header, White Grouping, Highlights + Extra Edition Row 373
+
+- **Mobile Header Compact:** Header was a 3-row tower (~100 px) on phones; now brand + single flexible control row (~68 px) with `search-wrap flex:1 1 160px`, `topbar` mobile `padding 6px`, `Owned` column tightened to 58 px (was 72) matching label width. Verified via `grep` flex and `node --check`.
+- **White Ungrouped Grouping:** `undecided` block tokens light/dark from orange `#ea580c/#fb923c` to white `#ffffff` 8.5% — the 32 truly ungrouped rows (265,359-361,369-372,320-343) now render neutral white/zebra with invisible inset, not orange.
+- **Lecture Highlights 4 Above White:** Extracted 7 Lecture Highlights (362-368) into new block `lecture-highlights` (orange), reordered 12-block display (lectures 201, discussion 8, satsang 22, on-the-road 32, volume 13, office 16, highlights 7, books 22, transcription 6, media-misc 3, white 32, fran-grace 1). Highlights at display 293-299, white at 331, distance 4.
+- **Edition Mediation (Carrier vs Note):** Kept `edition` as carrier (`format·detail` with color dots), added stored column `edition_note` (nullable free-text, reviewed via `data/edition_notes.csv`, `pipeline/enrichments.apply_edition_notes`). `docs/js/config.js` `COLUMN_LABELS` + hidden Expert column (italic muted), `docs/style.css` muted italic, mobile work-stack second line. `data/edition_notes.csv` now 2 approved rows: 286 current B&W paperback referencing 373, 373 original non-B&W hardcover with physical specs `spiral-bound; 94 pages; Veritas Publishing; ISBN 0964326175` keeping Edition carrier clean. Proposal doc `EDITION_MEDIATION_PROPOSAL_019fea62.md`.
+- **New Extra Row 373 — Power vs Force Original Hardcover:** Manual candidate `manual-veritas-pvf-old-hardcover` (book, Hardcover, 1995, source other) promoted → master 373 (`w-power-vs-force`, `Books`, Hardcover, `edition_note` with specs, filename `1995 - Power vs Force … (Original Hardcover - non-B&W).pdf`, `work_families` entry, `catalogue_display_order` 363 rows, `catalogue-block-map` regenerated). Master now **363** (306 lecture, **41 book**, 8 discussion, 7 highlight, 1 other), **40** promoted candidates, **339** work families, **363** Everything rows.
+- **Small Indicator for All Extra Editions:** New `extra-edition-badge` pill (`Extra`) in Edition cell via `isExtraEditionRow()` (workId minUuid check) — all 25 extra rows (24 minted edition rows 320-343 plus new 373) show badge, standard rows do not. `docs/style.css` adds badge styling. `docs/app.js` versioned imports `config.js?v=cfced6b202ba` etc.
+- **Delivery Contract:** `docs/build-manifest.json` `extra-edition-pvf-20260810.2` (`app-9ee70dc1011c/css-936c444be89d` → now `app-14aab6395429/css-936c444be89d` after physical specs and badge), `docs/index.html` `?v` and footer, `docs/js/config.js` owned 58, `tests/test_pipeline` 362→363 (3 asserts), `README`/`NEXT_AGENT_HANDOFF`/`RECONCILIATION_REPORT` updated to 363, coverage 85% (78-100% per module).
 
 ## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit + P0 hotfix)
 
@@ -63,7 +73,7 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
   Engineering, Recommendations, Verification, Scoreboard Alignment).
 - **6 independent data-integrity probes re-run against `docs/master.json`:**
   no duplicate UUIDs (1-372 with documented gaps for retired duplicates),
-  all 362 catalog codes match `^(LECTURE|DISCUSSION)-\d{3,4}X?-\d{3}$`
+  all 363 catalog codes match `^(LECTURE|DISCUSSION)-\d{3,4}X?-\d{3}$`
   (84 correctly blank for edition/book rows), year range 1973-2026 with
   16 198X Office Series + 19 blank (Volume Series + under-investigation),
   item type counts exactly 306 lecture / 40 book / 8 discussion / 7 highlight
@@ -77,7 +87,7 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
      `build-manifest.json` (and not in `FrontendDeliveryContractTests`).
   2. `docs/js/config.js#VIEWS` is not cross-checked against
      `build_catalogue_pages.py` output file list.
-  3. 29 of 362 masters have no `source_url_veritas` but no visual
+  3. 29 of 363 masters have no `source_url_veritas` but no visual
      indicator distinguishes "intentionally blank" from "missing data."
   4. Firefox ignores `::-webkit-scrollbar`; 16px custom scrollbar is
      silently the OS default there.
@@ -214,7 +224,7 @@ visible deployed build ID and an explicit owner accept/reject response.
   through the surviving `#view-jump` control.
 - All non-archived older audit documents carry status-correction banners that
   point to the current row-delivery postmortem; `archive/README.md` does too.
-- Offline suite: **141 tests** (133 pipeline/contract + 8 style), all passing;
+- Offline suite: **147 tests** (133 pipeline/contract + 8 style), all passing;
   coverage remains **90% total**.
 - Browser suite: **25/25 passed** in PR #54 run `31331297543`, including real
   selector matching and computed light/dark block colors. Local Chromium
@@ -225,7 +235,7 @@ visible deployed build ID and an explicit owner accept/reject response.
 - Owner visual acceptance of the exact deployed footer build ID.
 - Required CI check/branch rule.
 - CI-gated custom Pages workflow.
-- Post-deploy live manifest, asset hash, and 362-row assertion.
+- Post-deploy live manifest, asset hash, and 363-row assertion.
 - Successful-run screenshot artifact/reference review.
 
 Exact owner instructions and workflow YAML are in
@@ -235,11 +245,11 @@ explicit owner direction.
 ## Data state
 
 - Raw source: 374 rows; 31 blank separators; seven published columns.
-- Curated master: 362 rows; 75 exclusions; 134 source overrides; 39 reviewed
+- Curated master: 363 rows; 75 exclusions; 134 source overrides; 40 reviewed
   manual candidates.
 - REVISION1: 58 filename edits, year overrides on 356-358, notes override on
-  315, and 362-row reviewed color-block order.
-- The ODS was independently parsed: 362 rows x 23 columns; its filename-cell
+  315, and 363-row reviewed color-block order.
+- The ODS was independently parsed: 363 rows x 24 columns; its filename-cell
   colors map exactly to the 11 committed display blocks.
 - All six generator --check modes pass.
 
@@ -273,8 +283,8 @@ Additional open risks:
 ## Verification performed (019fe830)
 
 - six generator --check modes ✅
-- `python -m unittest discover tests` — 141/141 ✅
-- coverage — 90% total ✅
+- `python -m unittest discover tests` — 147/147 ✅
+- coverage — 85% total ✅
 - JS/config/all spec syntax ✅
 - `npm ci` / `npm audit` — zero vulnerabilities (prior audit) ✅
 - manifest/content-version contract ✅

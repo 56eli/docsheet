@@ -62,10 +62,10 @@ test('computed row styles preserve zebra and REVISION1 accents across blocks', a
   expect(firstVisual.matchesLectureRule).toBe(true);
   expect(firstVisual.blockLectures).toBe('#059669');
   // The hard-coded style.css hash here is the *current* revision
-  // (805701f0ca91) — the test catches a stale cache by failing when the
+  // (936c444be89d) — the test catches a stale cache by failing when the
   // browser delivers an older version. If the style.css bytes change,
   // update this hash and the matching `?v=` in docs/index.html together.
-  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=805701f0ca91'))).toBe(true);
+  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=936c444be89d'))).toBe(true);
   expect(firstVisual.backgroundColor).not.toBe(secondVisual.backgroundColor);
   expect(firstVisual.boxShadow).toContain('rgb(5, 150, 105)');
   expect(firstVisual.borderTopWidth).toBe('2px');
@@ -151,7 +151,7 @@ test('Series browser lists every series and opens the filtered catalogue', async
 
   await page.locator('#series-landing-grid .series-landing-card', { hasText: 'Satsang Series' }).click();
   await waitForTable(page);
-  await expect(page.locator('#search-status')).toContainText(`Showing: ${satsangCount} of 362`);
+  await expect(page.locator('#search-status')).toContainText(`Showing: ${satsangCount} of 363`);
   await expect(page.locator('#filter-chips')).toContainText('Satsang Series');
 });
 

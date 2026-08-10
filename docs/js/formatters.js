@@ -130,6 +130,7 @@ export function getRowBlockId(data) {
   const notes = String(data.notes || "").trim();
 
   if (uuid === "315" || notes.includes("FRAN GRACE")) return "fran-grace";
+  if (series === "Lecture Highlights" || type === "highlight") return "lecture-highlights";
   if (series === "Discussion Series" || type === "discussion") return "discussion";
   if (series === "Satsang Series") return "satsang";
   if (series === "On The Road Talk Series") return "on-the-road";
