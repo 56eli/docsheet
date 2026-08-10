@@ -1,12 +1,12 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feb3e full audit (post-PR-#64, live-verified)
-**Audited baseline:** `54b37f7` ("Merge PR #64") — current `main` HEAD and current live deployment
-**Session branch:** `arena/019feb3e-docsheet`
+**Updated:** 2026-08-10 — Arena 019feb8c independent full-stack audit
+**Audited baseline:** `f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5` (merged PR #66 baseline)
+**Session branch:** `arena/019feb8c-docsheet`
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feb3e-full-audit.md` for the complete multidisciplinary evidence, the byte-verification of the live deployment, and the current scoring.
+Read `docs/audits/2026-08-10-arena-019feb8c-full-audit.md` for the current independent full-stack evidence and verification limitations. It corroborates the existing 8.1 conditional-pass score without changing owner scores. The previous live byte-verification evidence remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
 
 ## State change this session
 
