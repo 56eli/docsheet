@@ -29,13 +29,13 @@ import {
 } from "./js/columns.js?v=d185ba911b42";
 import {
   exportOds, exportXlsx, exportJson, exportTsv,
-} from "./js/ods-export.js?v=22b292e99cf3";
+} from "./js/ods-export.js?v=444889c5ca99";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=e824f86e241c";
 import {
   updateViewSummary, renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=0c20adc6e220";
+} from "./js/view-utils.js?v=81e2396d0d64";
 
 (function () {
   "use strict";

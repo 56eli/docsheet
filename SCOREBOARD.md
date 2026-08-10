@@ -7,7 +7,7 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 - **History:** [`.scoreboard/history.md`](.scoreboard/history.md)
 - **Current handoff:** [`.scoreboard/agent-handoff.md`](.scoreboard/agent-handoff.md)
 - **Owner workflow actions:** [`.scoreboard/manual-workflow-edits.md`](.scoreboard/manual-workflow-edits.md)
-- **Current audit:** [`docs/audits/2026-08-10-arena-019febb6-full-audit.md`](docs/audits/2026-08-10-arena-019febb6-full-audit.md)
+- **Current audit:** [`docs/audits/2026-08-10-arena-019febd6-full-audit.md`](docs/audits/2026-08-10-arena-019febd6-full-audit.md)
 
 ## Scoring policy
 

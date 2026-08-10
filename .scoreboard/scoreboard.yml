@@ -320,7 +320,7 @@ aspects:
   status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 149 offline tests, 3 Node frontend tests, 90% Python coverage, and 28 Playwright specs pass in PR CI.
+  ai_basis: 149 offline tests, 9 Node frontend tests, 90% Python coverage, and 28 Playwright specs pass in PR CI.
   user_basis: null
   evidence:
   - 149/149 unittest pass; 2,327 statements at 90%, floor 85%.
@@ -353,7 +353,7 @@ aspects:
   status: blocked_manual_workflow_edit
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: CI proves the P0, cleanup, live search, and full module graph with 149 offline, 3 Node, and 28 browser tests; required checks and
+  ai_basis: CI proves the P0, cleanup, live search, and full module graph with 149 offline, 9 Node, and 28 browser tests; required checks and
     Pages gating remain owner-applied.
   user_basis: null
   evidence:

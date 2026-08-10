@@ -1,6 +1,6 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feb9b multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering
+**Updated:** 2026-08-10 — Arena 019febd6 export block-colour regression tests + XLSX colour fix + Export chip removal (no score changes)
 **Audited baseline:** `8c59a912b133331dd34cd06a452317d24b332e5b` (merged PR #68 baseline)
 **Session branch:** `arena/019feb9b-docsheet`
 
