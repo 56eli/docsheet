@@ -1,6 +1,18 @@
 # Next-Agent Handoff
 
-**Prepared:** 2026-08-09 (Session 019fe844 — Block Map Extraction, Column Layout & Archive.org Ownership Promotion) — current branch `arena/019fe844-docsheet`.  
+**Prepared:** 2026-08-10 (Session 019fea62 — Mobile Header, White Grouping, Highlights Reposition, Edition Mediation with Extra Row 373) — current branch `arena/019fea62-docsheet`.
+
+## 2026-08-10 Session Summary 019fea62 — Mobile Header, White Grouping, Highlights + Edition Mediation (Current)
+
+- **Mobile Header Compact:** Fixed 3-row tower (`brand` + search full-width + buttons) that made the header ~100 px on phones. New flex: `search-wrap flex:1 1 160px` shares the control line with Jump-to/Export, `topbar` mobile `padding 6px` + `min-height 44`, `settings-tools` stays auto-width. Header now collapses to brand + single control row (~68 px).
+- **White Ungrouped Grouping:** Changed `undecided` block tokens light/dark from orange `#ea580c/#fb923c` 8.5% to white `#ffffff` 8.5% (`color-mix` white into surface is pure white/zebra) — 32 truly ungrouped rows (265,359-361,369-372,320-343) now render neutral white, not orange.
+- **Lecture Highlights 4 Above White:** Extracted 7 Lecture Highlights (362-368) from the orange lump into new block `lecture-highlights` with orange tokens, reordered 12-block display: lectures 201, discussion 8, satsang 22, on-the-road 32, volume 13, office 16, highlights 7, books 22, transcription 6, media-misc 3, white 32, fran-grace 1. Highlights now at display 293-299, white at 331, distance 4 blocks as requested.
+- **Edition Mediation (Carrier vs Note):** Kept `edition` as carrier (`format·detail` with color dots), added new stored column `edition_note` (nullable free-text, reviewed via `data/edition_notes.csv`, `pipeline/enrichments.apply_edition_notes`). New sheet concept: `edition_note` shows physical specs (e.g. *spiral-bound; 94 pages; Veritas Publishing; ISBN 0964326175*) keeping Edition column clean. Config `COLUMN_LABELS` + `COLUMN_BUDGETS 180` + `DETAIL_SECTIONS`, style italic muted, mobile work-stack second line.
+- **New Extra Row 373 — Power vs Force Original Hardcover:** Manual candidate `manual-veritas-pvf-old-hardcover` (book, 1995, Hardcover, source other) promoted via `manual_candidate_promotions` → master 373 (`w-power-vs-force`, `Books`, `Hardcover`, placed in books block position 2 directly under standard 286). Filename `1995 - Power vs Force … (Original Hardcover - non-B&W).pdf`, `work_families` entry added, `catalogue_display_order` now 363 rows, `catalogue-block-map` regenerated. `edition_notes` now 2 rows: 286 current B&W paperback referencing 373, 373 original non-B&W hardcover with physical specs referencing 286.
+- **Small Indicator for All Extra Editions:** New `extra-edition-badge` pill (accent 10%, `Extra`) in Edition cell via `isExtraEditionRow()` (workId minUuid check) — all 25 extra rows (24 minted edition rows 320–343 plus new 373) show badge, standard rows do not. Mobile edition cards also show `edition_note` when present.
+- **Owned Column Tightened:** `COLUMN_BUDGETS.owned` `72/62/85 → 58/52/68` defaulting to Owned label width, reducing horizontal bloat (per owner request).
+- **Delivery Contract & Verification:** Updated `docs/index.html` `?v` and footer build ID, `docs/build-manifest.json` revision `extra-edition-pvf-20260810.2` (`app-9ee70dc1011c/css-936c444be89d`), `docs/js/config.js?v=cfced6b202ba`, `docs/js/formatters.js?v=fe5e058c851f`. All 147 tests, 85% coverage (78-100% per module), 6/6 --check, `ruff` clean, `node --check` pass. Master now **363** (306 lecture, **41 book**, 8 discussion, 7 highlight, 1 other), **40** promoted candidates, **339** work families.
+  
 **Read first:** `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, `.scoreboard/agent-handoff.md`, `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`, and `AGENTS.md`.
 
 ## 2026-08-09 Session Summary 019fe844 — Block Map Extraction, Column Layout & Archive.org Holdings (Current)
@@ -371,8 +383,8 @@ python reconcile_research_master.py --check
 python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check   # derived inventory mirrors (clean since the 2026-08-07 flip-both ruling)
 python process_data.py --check        # if wired into your tooling
-python -m unittest discover tests     # 141 tests, offline
-coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 90%
+python -m unittest discover tests     # 147 tests, offline
+coverage run -m unittest discover tests && coverage report   # gate: 85%; currently 85%
 node --check docs/app.js && node --check playwright.config.js && for spec in tests/*.spec.js; do node --check "$spec"; done
 ```
 
@@ -408,10 +420,10 @@ Sandbox traps learned the hard way (all still true):
 | Exclusions / source overrides | 75 / 134 | includes the 4 Nightingale-Conant audio-edition URLs filled 2026-08-04 and the Audible/NC/Hay House URLs of masters 369–372 (now 134 incl. the 18 Amazon direct links, the 3 academic-book Amazon links moved onto the curated `source_url_amazon` column on 2026-08-08, and the product-53277 link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed on 2026-08-08); the 3 D-01 duplicate raw rows (249/250/251) were moved from `item` to `duplicate` on 2026-08-08 |
 | Veritas inventory | 191 products | categories populated 191/191; **5** approved mapping decisions, all excluded-related-material rows (the 7 Highlights, 50411/1542, and stale 50491 overlays were lifted; 53062/50398/50378/50432 were also removed 2026-08-08 after exact primary-URL evidence); the D-01 collapse re-derived 54219 / 55473 to single master IDs (310 / 311) |
 | Everything relationships | 340 product relationships, 7 series compilations | 333 derived primary + 7 related_material |
-| Candidate pool | 39 reviewed manual candidates (all 39 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
+| Candidate pool | 40 reviewed manual candidates (all 40 promoted — candidate manual-veritas-53277 un-minted 2026-08-07 as duplicate of master 221 — incl. 9 Satsang monthlies, 6 manual candidates, 3 academic, 7 Highlights, 3 NC/Audible programs, 1 Hay House program, 0 pending), 2 manual leads; 24 edition candidates all promoted | |
 | Work families | 191 works / 339 members approved; work_id coverage 363/363 | `data/work_families.csv` (338 rows) plus the 24 edition-promotion work_ids in `data/edition_promotions.csv` |
 | Series taxonomy | 186 matched products → **177 approved / 0 proposed / 9 rejected**; all proposals ruled; conflict queue 0 rows (50521's former R3 conflict is retained as an approved mapping, not a pending queue item) | 3 approvals re-series masters 357 (On The Road Talk Series) + 312/313 (Discussion Series); 7 Highlights → Lecture Highlights (R1, owner ruling 2026-08-07); 50411 approved R4 no-op after owner ruling moved it to 286; 1542 stays rejected (Media Miscellaneous category must not re-series 331); 9 rejections carry documented rationale |
-| Test suite | **141 tests; coverage 90% total, individual modules 78–100%** | `.coveragerc` enforces `fail_under = 85`; 25 browser specs require CI in this sandbox |
+| Test suite | **147 tests; coverage 85% total, individual modules 78–100%** | `.coveragerc` enforces `fail_under = 85`; 25 browser specs require CI in this sandbox |
 
 All catalogue data was verified against the live Veritas API on 2026-08-03
 (see `archive/FULL_STACK_AUDIT_2026-08-03.md` and `archive/AUDIT_2026-08-03_FULL.md`,

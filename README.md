@@ -67,8 +67,8 @@ python -m unittest discover tests          # 147 tests, no browser/network neede
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-09 (with 141 deterministic pipeline, style, and delivery-contract tests;
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **85%** as of
+2026-08-10 (with 147 deterministic pipeline, style, and delivery-contract tests;
 individual module coverage is 78–100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
