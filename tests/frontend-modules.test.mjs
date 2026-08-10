@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 class MockNode {
@@ -71,6 +72,22 @@ function format(formatter, row) {
     getRow: () => ({ getData: () => row }),
   });
 }
+
+test("removed overview UI has no dormant JavaScript or CSS", async () => {
+  const [app, style] = await Promise.all([
+    readFile(new URL("../docs/app.js", import.meta.url), "utf8"),
+    readFile(new URL("../docs/style.css", import.meta.url), "utf8"),
+  ]);
+  const removedTokens = [
+    "catalogue-intro", "hero-dismiss", "overview-btn", "overview-cards",
+    "series-strip-list", "review-nav-toggle", "review-nav-groups",
+    "show-stats-toggle", "stats-strip", "stat-chip",
+  ];
+  for (const token of removedTokens) {
+    assert.equal(app.includes(token), false, `${token} must not remain in app.js`);
+    assert.equal(style.includes(token), false, `${token} must not remain in style.css`);
+  }
+});
 
 test("edition formatter imports and executes the extra-edition helper", () => {
   const formatter = editionFormatter();

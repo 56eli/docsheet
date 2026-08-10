@@ -1074,8 +1074,8 @@ mark.search-highlight, .search-highlight {
 }
 
 /* ================================================================== *
- *  2026-08-08 IA redesign (Phase 1): tab groups, stats strip,
- *  empty-state card. Keeps the existing token variables.
+ *  2026-08-08 IA redesign (Phase 1): tab groups and empty-state card.
+ *  Keeps the existing token variables.
  * ================================================================== */
 
 /* --- grouped tab bar ------------------------------------------------- */
@@ -1102,32 +1102,6 @@ mark.search-highlight, .search-highlight {
 @media (max-width: 900px) {
   .tab-group-label { display: none; }
   .tab-group + .tab-group { margin-left: 4px; padding-left: 6px; }
-}
-
-/* --- catalogue overview chips ---------------------------------------- */
-.stats-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-.stat-chip {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface-2);
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.stat-chip b {
-  font-size: 13px;
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
 }
 
 /* --- empty-state card (standing intake lanes) ------------------------ */
@@ -1176,12 +1150,9 @@ mark.search-highlight, .search-highlight {
   }
 }
 
-/* Mobile: touch-friendly tabs and tighter Phase-1 components. */
+/* Mobile: touch-friendly tabs and a tighter empty state. */
 @media (max-width: 720px) {
   .dataset-tab { min-height: 44px; }            /* WCAG-friendly hit target */
-  .stats-strip { padding: 6px 10px; gap: 6px; }
-  .stat-chip { padding: 3px 8px; font-size: 11px; }
-  .stat-chip b { font-size: 12px; }
   .empty-state { margin: 16px 8px; padding: 20px 14px; font-size: 13px; }
 }
 
@@ -1222,10 +1193,8 @@ mark.search-highlight, .search-highlight {
 }
 .footer-build:hover code { color: var(--accent); }
 
-/* View summary + stats strip: soft cards. */
+/* View summary: soft card. */
 .view-summary { box-shadow: var(--shadow-sm); }
-.stat-chip { box-shadow: var(--shadow-sm); transition: border-color 0.15s ease, box-shadow 0.15s ease; }
-.stat-chip:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
 
 /* Tabulator skin upgrades: header separation, selection, link affordance. */
 #spreadsheet.tabulator .tabulator-header .tabulator-col .tabulator-col-content { font-weight: 600; }
@@ -1404,19 +1373,11 @@ body {
   border-color: var(--accent);
 }
 
-.stats-strip,
 .view-summary,
 .review-toolbar,
 .active-filters,
 .footerbar {
   background: var(--surface);
-  box-shadow: none;
-}
-.stats-strip { padding: 7px 14px; }
-.stat-chip {
-  padding: 3px 8px;
-  background: transparent;
-  border-color: var(--border);
   box-shadow: none;
 }
 .view-summary { padding: 10px 14px; }
@@ -1547,16 +1508,6 @@ body {
   color: var(--text-muted);
   font-weight: 700;
 }
-
-/* ---- Stats chips are now buttons ---- */
-button.stat-chip {
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-}
-button.stat-chip:hover b { color: var(--accent); }
 
 /* ---- Proposed file name: the lead column reads like a file explorer ---- */
 #spreadsheet.tabulator .tabulator-cell[tabulator-field="proposed_filename"] {
@@ -1714,7 +1665,7 @@ button.stat-chip:hover b { color: var(--accent); }
   .row-details-actions { flex-direction: column; align-items: flex-end; }
 }
 
-/* ---- Minimize description and stats-strip spacing ---- */
+/* ---- Compact description toggle ---- */
 .desc-toggle-btn {
   display: inline-flex;
   align-items: center;
@@ -1742,27 +1693,6 @@ button.stat-chip:hover b { color: var(--accent); }
   color: var(--accent-contrast);
   border-color: var(--accent);
 }
-
-/* Minimizing stats-strip height globally */
-.stats-strip {
-  padding: 4px 14px;
-  gap: 6px;
-}
-.stat-chip {
-  padding: 2px 7px;
-  font-size: 11px;
-  border-radius: 6px;
-}
-.stat-chip b {
-  font-size: 11px;
-}
-
-@media (max-width: 720px) {
-  .stats-strip { padding: 3px 8px; gap: 4px; }
-  .stat-chip { padding: 1px 5px; font-size: 10px; border-radius: 4px; }
-  .stat-chip b { font-size: 10px; }
-}
-
 
 /* ══════════════════════════════════════════════════════════════════════════
    §12  MOBILE BROWSE MODE — work-card catalogue for small screens,
@@ -2059,196 +1989,8 @@ button.stat-chip:hover b { color: var(--accent); }
 #mobile-discovery-clear:focus-visible { outline-offset: 1px; }
 
 
-/* ══════════════════════════════════════════════════════════════════════════
-   §11  CATALOGUE OVERVIEW — hero banner, collection stats cards, series
-        strip, description toggle, review nav groups.
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* ========================================================================
-   Catalogue overview (hero, collection stats, series strip) — 2026-08-09
-   ======================================================================== */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0;
-  overflow: hidden; clip: rect(0 0 0 0);
-  white-space: nowrap; border: 0;
-}
-
-.catalogue-intro {
-  flex: 0 0 auto;
-  padding: 12px 16px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-
-/* The overview lives in the page flow: when it is visible the page scrolls
-   naturally and the spreadsheet keeps a usable fixed height instead of
-   being squeezed out of the viewport (2026-08-09 CI fix). */
-body.intro-visible {
-  height: auto;
-  min-height: 100%;
-  overflow-y: auto;
-}
-body.intro-visible #table-container {
-  flex: 0 0 auto;
-  min-height: 480px;
-}
-
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 55%),
-    var(--surface);
-}
-.hero-copy { min-width: 0; }
-.hero-eyebrow {
-  margin: 0 0 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.hero-copy h2 {
-  margin: 0 0 6px;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-}
-.hero-copy p {
-  margin: 0;
-  max-width: 640px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 8px;
-  max-width: 340px;
-}
-.hero-actions button {
-  min-height: 32px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent);
-  background: transparent;
-  border: 1px solid var(--accent);
-  cursor: pointer;
-}
-.hero-actions button:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-.hero-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.hero-actions #hero-dismiss {
-  margin-left: auto;
-  min-width: 32px;
-  padding: 6px 10px;
-  color: var(--text-muted);
-  border-color: var(--border);
-}
-
-.overview-section { margin-top: 12px; }
-.overview-section h3 {
-  margin: 0 0 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.overview-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 8px;
-}
-.overview-card {
-  padding: 10px 12px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.overview-card strong {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 13px;
-  color: var(--text);
-}
-.overview-card .overview-stat {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.progress-track {
-  height: 6px;
-  margin-top: 10px;
-  overflow: hidden;
-  border-radius: 3px;
-  background: var(--border);
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 3px;
-  background: var(--accent);
-}
-
-.series-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-.series-chip {
-  flex: 0 0 auto;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font: inherit;
-  font-size: 13px;
-  color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  cursor: pointer;
-}
-.series-chip:hover { border-color: var(--accent); color: var(--accent); }
-.series-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-/* ---- Review workspace nav toggle (2026-08-09) ---- */
-#review-nav-groups { display: flex; align-items: stretch; gap: 4px; }
-#review-nav-groups[hidden] { display: none; }
-#review-nav-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex: 0 0 auto;
-  margin: 0 2px 0 10px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  white-space: nowrap;
-}
-#review-nav-toggle:hover { color: var(--text); border-color: var(--accent); }
-#review-nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-#review-nav-toggle .chevron { transition: transform 0.15s ease; }
-#review-nav-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
-
 /* ---- Presentation controls in the top bar ---- */
-#master-browse-toggle,
-#overview-btn {
+#master-browse-toggle {
   min-height: 32px;
   padding: 6px 11px;
   border-radius: 999px;
@@ -2260,10 +2002,8 @@ body.intro-visible #table-container {
   border: 1px solid var(--border);
   cursor: pointer;
 }
-#master-browse-toggle:hover,
-#overview-btn:hover { border-color: var(--accent); color: var(--accent); }
-#master-browse-toggle:focus-visible,
-#overview-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#master-browse-toggle:hover { border-color: var(--accent); color: var(--accent); }
+#master-browse-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 #master-browse-toggle[aria-pressed="true"] {
   color: var(--accent);
   border-color: var(--accent);
@@ -2394,5 +2134,4 @@ body.intro-visible #table-container {
 @media (prefers-reduced-motion: reduce) {
   .skeleton-line { animation: none; }
   .series-landing-card { transition: none; }
-  #review-nav-toggle .chevron { transition: none; }
 }

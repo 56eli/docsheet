@@ -35,9 +35,9 @@ test('desktop interface opens directly into the clean spreadsheet', async ({ pag
   await page.goto('/docs/');
   await waitForTable(page);
 
-  // Hero, overview cards, and stats strip have been removed as requested for an unbloated desktop view.
-  await expect(page.locator('#catalogue-intro')).toBeHidden();
-  await expect(page.locator('#stats-strip')).toBeHidden();
+  // Removed overview/stats components must not leave hidden DOM placeholders.
+  await expect(page.locator('#catalogue-intro')).toHaveCount(0);
+  await expect(page.locator('#stats-strip')).toHaveCount(0);
   await expect(page.locator('#spreadsheet')).toBeVisible();
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
 });

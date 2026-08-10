@@ -1,19 +1,19 @@
 {
-  "revision": "p0-edition-formatter-import-019feaf6-20260810.1",
+  "revision": "dead-ui-cleanup-shortcuts-a11y-019feaf6-20260810.1",
   "source_baseline": "aa1f1b76465e140b9cb62761d365765f0541d7d8",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "4ddb10f6c825b290bb3682682fec48fcce67f1afc552efcfcf395afb99586da3",
-    "style.css": "379a32190e85f032c09c254e482901b0dcaa5151cc8b8dc66a556942673ed57d"
+    "app.js": "a4726fb22193fe3ace9b24073d030fc7f0f4c75792e57efe734bc3a33ac0d55e",
+    "style.css": "f58adda186fa282c65af9d6ce894de5909b6734cec7c19ebde9aff833dfd727c"
   },
   "modules": {
     "js/config.js": "5189225f358d678fe714ee445afeb804d9a0baa44f6bcdf01618ab10ec8fd49a",
     "js/formatters.js": "0d8f985fe469e82db477593820024c3377e088df7f22699399794a68371e222b",
     "js/data-utils.js": "0288c69670bba17c88d29c29086fd382f2315f86dd68e37a9333981dca50a306",
-    "js/mobile.js": "e9073af462141cf4cce499e84cb6dfad80852433156f85a14a3aa0b5ef06f270",
+    "js/mobile.js": "f760e9da7326ef9b44561b2e27e637dae6bc9461c8cfe3d8e09781b6ab3cd851",
     "js/columns.js": "99afccdb287b7b9e3cf4504187919c77e62155cafe7a62131d943966623516b8",
     "js/filter-utils.js": "daefe257ffd2b575693cfc15469d4d523fcedc2001f591bf06bedb9c6cf7bb4c",
-    "js/view-utils.js": "7fb1cc9ec1dd50232250d924256d4febbbe32a4bdbe4fdefd1d92674935a978f"
+    "js/view-utils.js": "4398fee0b0648c7103dca5e3e6679285520892c65f96623107833a28f3a28749"
   },
   "data": {
     "master.json": "5bc032a378e4ebea63d9f59815c9b745d232ad32a99991cfe2e347ea849328e0",

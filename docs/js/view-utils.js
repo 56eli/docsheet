@@ -1,11 +1,10 @@
 // =============================================================================
-// docs/js/view-utils.js — View configuration, summary, and catalogue overview
-// helpers. DOM-dependent but self-contained. Imported by app.js.
+// docs/js/view-utils.js — View summary, Series browser, and navigation helpers.
+// DOM-dependent but self-contained. Imported by app.js.
 // =============================================================================
 
 import { VIEWS, VIEW_DETAILS, COLUMN_LABELS, humanizeField } from "./config.js";
 import { ownedValue, yearSpanFor } from "./data-utils.js";
-import { overviewCard } from "./mobile.js";
 
 /**
  * Update the view summary section (title, description, meta chips).
@@ -32,72 +31,6 @@ export function updateViewSummary(viewName, rowCount, viewTitleEl, viewDescEl, v
       viewMetaEl.append(wrapper);
     });
   }
-}
-
-/**
- * Render the catalogue collection overview cards.
- */
-export function renderCollectionOverview(data, overviewCardsEl) {
-  if (!overviewCardsEl) return;
-  overviewCardsEl.replaceChildren();
-  let ownedTrue = 0, ownedFalse = 0, ownedBlank = 0;
-  data.forEach((row) => {
-    const v = ownedValue(row);
-    if (v === "true") ownedTrue += 1;
-    else if (v === "false") ownedFalse += 1;
-    else ownedBlank += 1;
-  });
-  const total = data.length;
-  overviewCardsEl.append(overviewCard(
-    "Overall collection",
-    `${ownedTrue} owned · ${ownedFalse} not owned · ${ownedBlank} not stated`,
-    ownedTrue,
-    total,
-  ));
-  const bySeries = new Map();
-  data.forEach((row) => {
-    const series = row.series || "(unassigned)";
-    if (!bySeries.has(series)) bySeries.set(series, { total: 0, owned: 0 });
-    const stats = bySeries.get(series);
-    stats.total += 1;
-    if (ownedValue(row) === "true") stats.owned += 1;
-  });
-  [...bySeries.entries()]
-    .sort((a, b) => b[1].total - a[1].total)
-    .slice(0, 8)
-    .forEach(([series, stats]) => {
-      overviewCardsEl.append(overviewCard(
-        series,
-        `${stats.owned} of ${stats.total} owned`,
-        stats.owned,
-        stats.total,
-      ));
-    });
-}
-
-/**
- * Render the series strip chips in the catalogue overview.
- */
-export function renderSeriesStrip(data, seriesStripListEl, onChipClick) {
-  if (!seriesStripListEl) return;
-  seriesStripListEl.replaceChildren();
-  const counts = new Map();
-  data.forEach((row) => {
-    const series = row.series || "(unassigned)";
-    counts.set(series, (counts.get(series) || 0) + 1);
-  });
-  [...counts.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .forEach(([series, count]) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "series-chip";
-      chip.textContent = `${series} (${count})`;
-      chip.setAttribute("data-series", series);
-      chip.title = `Filter the catalogue to ${series}`;
-      chip.addEventListener("click", () => onChipClick(series));
-      seriesStripListEl.append(chip);
-    });
 }
 
 /**
