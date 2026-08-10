@@ -1,15 +1,15 @@
 {
-  "master_items": 362,
-  "migrated_items": 362,
+  "master_items": 363,
+  "migrated_items": 363,
   "everything_record_types": {
-    "master": 362,
+    "master": 363,
     "candidate_discovery": 0,
     "candidate_veritas": 0,
     "candidate_hayhouse": 0,
     "candidate_audible": 0,
     "candidate_pending_promotion": 0
   },
-  "reviewed_manual_candidates": 39,
+  "reviewed_manual_candidates": 40,
   "manual_research_leads": 4,
   "master_exclusion_rows": 75,
   "migration_review_rows": 374,

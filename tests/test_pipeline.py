@@ -236,7 +236,7 @@ class PipelineIntegrationTests(unittest.TestCase):
         self.assertEqual(result_full.returncode, 0, result_full.stderr)
         meta = json.loads((self.sandbox / "docs" / "catalogue-meta.json").read_text(encoding="utf-8"))
         self.assertEqual(meta["master_items"], meta["migrated_items"])
-        self.assertEqual(meta["master_items"], 362)
+        self.assertEqual(meta["master_items"], 363)
         self.assertEqual(meta["everything_record_types"]["candidate_pending_promotion"], 1)
 
 
@@ -2065,7 +2065,7 @@ class OwnerOverrideAndDisplayOrderTests(unittest.TestCase):
         """
         with (REPO / "data/catalogue_display_order.csv").open(encoding="utf-8", newline="") as handle:
             order = list(csv.DictReader(handle))
-        self.assertEqual(len(order), 362)
+        self.assertEqual(len(order), 363)
         rows = json.loads((REPO / "docs/master.json").read_text(encoding="utf-8"))
         self.assertEqual([row["uuid"] for row in rows], [row["uuid"] for row in order])
         blocks = [row["block_id"] for row in order]
@@ -2079,7 +2079,7 @@ class OwnerOverrideAndDisplayOrderTests(unittest.TestCase):
         for row in order:
             seen[row["block_id"]] = seen.get(row["block_id"], 0) + 1
             self.assertEqual(int(row["block_position"]), seen[row["block_id"]])
-        self.assertEqual(sum(counts.values()), 362)
+        self.assertEqual(sum(counts.values()), 363)
 
     def test_display_order_duplicate_uuid_fails_build(self) -> None:
         tempdir = make_sandbox()

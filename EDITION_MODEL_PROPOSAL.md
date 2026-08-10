@@ -2,10 +2,10 @@
 
 **Prepared:** 2026-08-03
 **Status:** ✅ **Applied and current (2026-08-08).** The edition model is
-implemented through the reviewed work-family and promotion inputs: **362
-master rows**, **191 works / 338 approved work-family memberships + 24
-edition-promotion memberships = 362/362 coverage**, **24 promoted edition
-rows (320–343)**, **362 Everything rows**, and **340 rendered relationships**.
+implemented through the reviewed work-family and promotion inputs: **363
+master rows**, **191 works / 339 approved work-family memberships + 24
+edition-promotion memberships = 363/363 coverage**, **24 promoted edition
+rows (320–343)**, **363 Everything rows**, and **340 rendered relationships**.
 D3 (audiobook URLs moved into their edition rows) remains applied. The older
 341/387/318 counts below are a historical 2026-08-03 proposal snapshot, not
 current state. Current machine truth lives in `data/work_families.csv`,

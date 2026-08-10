@@ -91,7 +91,7 @@ replacements, e.g. the `FRAN GRACE` author marker on master 315). The
 order (2002–2011 lectures first, then discussion / satsang / on-the-road /
 volume / office / books / transcription / media-misc blocks, undecided rows,
 Fran Grace last); `build_catalogue_pages.py` fails the build if the order file
-is not a dense 1..n approved covering of all 362 masters. The change record
+is not a dense 1..n approved covering of all 363 masters. The change record
 behind all three inputs is the colour-coded
 `review/hawkins-everything-REVISION1.ods` (committed for provenance; the CSVs
 are the pipeline inputs, the ODS is the human review artifact).
@@ -129,7 +129,7 @@ an explicit `record_type`:
 
 | `record_type` | Meaning |
 |---|---|
-| `master` | A curated master catalogue record (362) |
+| `master` | A curated master catalogue record (363) |
 | `candidate_veritas` / `candidate_hayhouse` / `candidate_audible` | An official product listing shown for review; **not** a master record |
 | `candidate_discovery` | An entry from the official discovery queue |
 | `candidate_pending_promotion` | A reviewed manual candidate awaiting an owner promotion decision; **not** a master record |
@@ -170,7 +170,7 @@ refresh lands its unmatched products there instead of in the curated views.
 
 ## Current reviewed catalogue state
 
-The current curated master has **362** records (306 `lecture`, 40 `book`,
+The current curated master has **363** records (306 `lecture`, 41 `book`,
 8 `discussion`, 7 `highlight`, 1 `other` — no untyped records remain since the
 2026-08-07 rulings that record 246 was the audio edition already held as master
 329 and that record 309 duplicated the Oxford talk already held as master 221;
@@ -182,7 +182,7 @@ per the owner's "one DVD/CD master with streaming in `reference_url_1`" ruling),
 editions, two Amazon Office Series links, the Audible/NC/Hay House program URLs,
 the three academic-book Amazon links moved onto the curated column on 2026-08-08,
 and the official Veritas product link moved from retired duplicate 309 onto master 221; the three Advaita URL overlays were retired after the raw CSV was fixed),
-**39** promoted and **0** unpromoted official candidates, **340** item-to-product relationships,
+**40** promoted and **0** unpromoted official candidates, **340** item-to-product relationships,
 and **7** series-compilation relationships. The master exposes `legacy_title` alongside the cleaned public title
 so the verbatim raw spreadsheet text is always exportable. Since 2026-08-04 the master also exposes `proposed_filename` between `title` and `item_type` using pattern `YYYY-MM - Name [1/3].mp4` (safe `[1-3]` on-disk, display `[1/3]`), no bracket for single part, audiobook label removed from name (`.m4b` indicates) except an explicit publisher suffix when two same-work audiobook editions would otherwise collide, Volume Series stripped of years (pre-2000 unknown) and standardized via `[1/2]` etc, Satsang month stripped. Since 2026-08-07 it also exposes `year_source` next to Year-Month (Ledger recording/first-pub, Veritas listing backfill, Manual candidate, Edition inherited, Blank intentional etc) and `source_url_amazon` as a curated direct Amazon product link where one has been approved (blank otherwise).
 
@@ -190,7 +190,7 @@ At the 2026-08-03 live-source checkpoint (historical snapshot), every entry was
 verified field-by-field against the Veritas Publishing API: 191/191 products
 reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
-additions are reflected in the current generated inventory (362 master records,
+additions are reflected in the current generated inventory (363 master records,
 191 Veritas products, 340 relationships). See
 [`docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md`](docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md)
 (declared-current) alongside

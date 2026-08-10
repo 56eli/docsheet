@@ -1,10 +1,10 @@
 [
   {
     "review_sheet": "Master Candidates",
-    "record_count": 39,
+    "record_count": 40,
     "purpose": "All reviewed official candidates have been promoted to the master.",
     "source_file": "data/manual_master_candidates.csv",
-    "current_state": "39/39 promoted"
+    "current_state": "40/40 promoted"
   },
   {
     "review_sheet": "Manual Leads",
@@ -78,7 +78,7 @@
   },
   {
     "review_sheet": "Filename Proposal",
-    "record_count": 362,
+    "record_count": 363,
     "purpose": "Reviewed proposed filenames plus derived master metadata mirrors used by the filename guard.",
     "source_file": "data/filename_proposal_YYYYMM.csv",
     "current_state": "reviewed filename proposal"

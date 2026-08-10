@@ -1605,6 +1605,26 @@ button.stat-chip:hover b { color: var(--accent); }
 .carrier-dot.dot-streaming { background: #9334e6; }
 .carrier-dot.dot-book { background: #5f6368; }
 
+.extra-edition-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 999px;
+  vertical-align: middle;
+}
+:root.dark .extra-edition-badge {
+  color: var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent-2) 35%, transparent);
+}
+
 /* ---- Edition note: muted italic distinction for same-work, same-carrier editions ---- */
 #spreadsheet.tabulator .tabulator-cell[tabulator-field="edition_note"] {
   font-style: italic;

@@ -1,15 +1,15 @@
 {
-  "revision": "edition-note-mediation-20260810.1",
+  "revision": "extra-edition-pvf-20260810.2",
   "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "d19077e333f75484a03abb05fbb3516405939755a29941a4ae90bd18adbcc718",
-    "style.css": "beb7dd11dfa92176dfd7befe7339650973f52e8206c8e7a8342389476c2af1ce"
+    "app.js": "9ee70dc1011c7a527f6bba5fc3c23639a97464416b5c73af26ec766a789bc68f",
+    "style.css": "936c444be89d38951d09d60bfb53c8e4043eda10ecb611ea2783fc8c75876047"
   },
   "data": {
-    "master.json": "7e9738f6c65a869cc71d60f63c9d653ed4349b82a21779f75ae154cbef3c649b",
+    "master.json": "0716b2c2840f34a882f87eaa917be862b863f339db4d4fb3fcc003a9445d3ba8",
     "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
-    "catalogue-block-map.json": "cb31695777afa8cc65558defd5f26018f3fc51c701bb3dca0daeab199cc19461"
+    "catalogue-block-map.json": "810ec37280a36a7225f4b228f7249aa5ae6275a389db88760214785050765f93"
   },
   "acceptance": "owner_visual_review_required"
 }

@@ -700,5 +700,23 @@
     "reviewed_on": "2026-08-07",
     "promotion_status": "promoted",
     "promotion_notes": "Promoted to curated master as record 372 (owner ruling 2026-08-07: unique Hay House program; series Hay House, year 2019)."
+  },
+  {
+    "candidate_key": "manual-veritas-pvf-old-hardcover",
+    "candidate_title": "Power vs. Force — Original Hardcover (non-B&W dust jacket)",
+    "proposed_item_type": "book",
+    "proposed_year": "1995",
+    "proposed_format": "book",
+    "proposed_format_detail": "Hardcover",
+    "proposed_owned": "true",
+    "source_name": "other",
+    "source_product_id": "other-pvf-old-hardcover",
+    "official_product_url": "https://veritaspub.com/product/power-vs-force-original-hardcover-non-bw/",
+    "official_product_title": "Power vs. Force — Original Hardcover (non-B&W dust jacket)",
+    "evidence_note": "Original 1995 Veritas hardcover with non-B&W dust jacket, distinct from current Hay House B&W paperback (master 286); see manual lead manual-power-vs-force-old-edition; owner approved distinct printing as extra edition row under standard item with small indicator",
+    "review_status": "reviewed_candidate",
+    "reviewed_on": "2026-08-10",
+    "promotion_status": "promoted",
+    "promotion_notes": "Promoted as master 373 — extra hardcover edition of w-power-vs-force; edition_note carries non-B&W vs B&W distinction; Extra badge will mark it"
   }
 ]

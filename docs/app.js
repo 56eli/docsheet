@@ -606,6 +606,20 @@ import {
     return [row.format, row.format_detail].filter(Boolean).join(" · ") || "Edition not stated";
   }
 
+  function isExtraEditionRow(row) {
+    const workId = String(row.work_id || "").trim();
+    if (!workId) return Boolean(row.candidate_key && String(row.candidate_key).startsWith("candidate:edition-"));
+    let minUuid = null;
+    for (const r of allData) {
+      if (String(r.work_id || "").trim() === workId) {
+        const u = String(r.uuid || "").trim();
+        if (!u) continue;
+        if (minUuid === null || Number(u) < Number(minUuid)) minUuid = u;
+      }
+    }
+    return minUuid !== null && String(row.uuid || "").trim() !== minUuid;
+  }
+
   function mobilePrimaryUrl(row) {
     return row.source_url_veritas || row.source_url_hay_house ||
       row.source_url_audible || row.source_url_nightingale_conant ||
@@ -1597,6 +1611,8 @@ import {
       } else if (key === "edition") {
         // Edition cell: a small color dot by carrier (DVD/CD/audiobook/
         // streaming/book), then the merged "format · detail" label.
+        // Extra editions (candidate:edition- rows, i.e. the 24+1 minted
+        // edition rows under a work) get a small "Extra" badge.
         col.formatter = (cell) => {
           const value = String(cell.getValue() ?? "");
           if (!value) return "";
@@ -1613,6 +1629,15 @@ import {
             frag.append(dot);
           }
           frag.append(renderHighlightedText(value));
+          const isExtraEdition = isExtraEditionRow(row);
+          if (isExtraEdition) {
+            const badge = document.createElement("span");
+            badge.className = "extra-edition-badge";
+            badge.textContent = "Extra";
+            badge.title = "Extra edition of this work (same work, different carrier or printing) — see Edition Note for distinction";
+            frag.append(document.createTextNode(" "));
+            frag.append(badge);
+          }
           return frag;
         };
       } else if (FORMAT_FIELDS.has(key)) {
