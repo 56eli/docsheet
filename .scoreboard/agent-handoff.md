@@ -16,6 +16,11 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 
 - **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 147 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified against expected counts. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md` and `TEMP_AUDIT_019FEABF.md`.
 - **CSS §12/§13 Deduplication (P1):** Extracted shared browse-mode component styles (work cards, edition cards, discovery chips, edition links) from `@media (max-width: 720px)` into a viewport-agnostic block. Stripped ~200 lines of duplicate rules from the `@media (min-width: 721px) { html.browse-active }` block in §13. CSS reduced 2563→2398 lines (−165, −6.4%). `browse-active` references dropped 41→9. Layout-specific overrides (grid columns, gap, padding) remain in §14.
+- **Frontend Modularization (P3, started):** Extracted 3 new ES modules from app.js:
+  - `docs/js/data-utils.js` (94 lines): debounce, formatTimestamp, displayMobileDate, displayMobileEdition, isExtraEditionRow, mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor
+  - `docs/js/mobile.js` (88 lines): mobileSourceLink, mobileEditionCard, overviewCard
+  - `docs/js/columns.js` (279 lines): looksLikeUrl, urlLabelFor, urlFormatter, columnPresetFor, orderKeysForView, measuredColumnWidth, buildColumns
+  - app.js reduced 2439→2062 lines (−15.4%). Frontend now 6 modules (config + formatters + data-utils + mobile + columns + app).
 - **Hygiene fixes applied:**
   - Removed dead `escapeRegex`/`renderHighlightedText` exports from `docs/js/formatters.js` (app.js defines its own versions with closure over `activeSearchQuery`). Added clarifying comment in app.js.
   - Archived 4 files from root to `archive/`: `TEMP_AUDIT_RESPONSE.md`, `TEMP_FIX_019fea62_mobile_white_highlights.md`, `TEMP_RESPONSE_019fea62.md`, `PR_60_BODY.md`. Root .md count 18→14 (target 12).
