@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Live Spreadsheet — app.js
+   Live Spreadsheet — app.js (audiobook ownership payload refresh 2026-08-10)
    Loads the per-view sheet JSON files and renders them as
    interactive Tabulator table: sortable headers, global live search,
    all rows in a scrollable view, CSV export, column resizing,

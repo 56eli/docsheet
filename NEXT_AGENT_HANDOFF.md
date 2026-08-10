@@ -48,7 +48,7 @@ A PR from this branch is being opened for review + merge. After merge, the live 
 | Proposed filenames | 363 unique |
 | Item types | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other |
 | Formats | 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming |
-| Ownership | 282 true / 13 false / 68 blank |
+| Ownership | 289 true / 25 false / 49 blank (all 27 audiobooks blank) |
 | Exclusions / source overrides | 75 / 134 |
 | Manual candidates / leads | 40 / 4 |
 | Everything relationships | 340 product relationships, 7 series compilations |

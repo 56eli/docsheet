@@ -70,8 +70,10 @@ environment with the declared constrained dependencies passed.
 - Current taxonomy: **306 lecture**, **41 book**, **8 discussion**, **7 highlight**,
   and **1 other**. Carrier formats are separately modeled: 253 DVD, 32 CD, 32 book,
   27 audiobook, and 19 streaming.
-- Ownership uses the documented tri-state model: **282 true / 13 false / 68 blank**.
-  Blank means not stated, not “not owned.”
+- Ownership uses the documented tri-state model: **289 true / 25 false / 49 blank**.
+  Blank means not stated, not “not owned.” Following the owner’s 2026-08-10
+  correction, all 27 audiobook rows are blank; the correction record is
+  `review/OWNED_AUDIOBOOKS_2026-08-10.md`.
 - The approved display-order file is dense and complete, so every master appears
   exactly once in the curated Everything view.
 - Master data has 30 verified Veritas links; all non-empty Pages JSON URL fields

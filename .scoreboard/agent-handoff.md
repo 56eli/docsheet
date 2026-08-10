@@ -21,7 +21,7 @@ The 019feaf6 session repaired the P0 import, added Node/browser edition-formatte
 - **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
 - **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
 - **P3 (agent-safe, DONE this session):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
-- **Branch work this session:** mobile-only bloat reduction (P1–P4, ~55% less mobile chrome, desktop untouched); retired the Original Spreadsheet view; blanked `owned` for master 373 + raw rows 297–end (312/25/26 → 282/13/68). A PR is being opened for merge.
+- **Ownership correction (019feb8c):** the PR #66 broad raw-ledger blanking was reverted because it did not target the promoted audiobook rows rendered in Everything and also altered unrelated media/print records. The actual promoted-edition sources now blank `owned` for every `format=audiobook`: 27/27 audiobook records are blank; overall ownership is 289 true / 25 false / 49 blank. See `review/OWNED_AUDIOBOOKS_2026-08-10.md`.
 - The CSS duplicate-`:root` issue flagged in an earlier audit is confirmed **fixed** (single `:root`/`:root.dark` token block).
 - `error_handling_logging` basis no longer says the formatter has an uncaught ReferenceError — that risk flag is retired; `activateView` exposes a visible fatal-render state on async load failures.
 
