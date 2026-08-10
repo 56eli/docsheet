@@ -217,6 +217,11 @@ test('keyboard shortcuts help behaves as a focus-managed modal', async ({ page }
   await expect(dialog).toHaveAttribute('aria-labelledby', 'shortcuts-help-title');
   await expect(close).toBeFocused();
 
+  // The overlay must not advertise shortcuts that have no handler. The
+  // tab-bar arrow-key block was removed with the .dataset-tab cleanup
+  // (019feb3e); the "← / → Switch tabs" help entry went stale with it.
+  await expect(dialog).not.toContainText('Switch tabs');
+
   // The close button is currently the modal's only control, so Tab must wrap.
   await page.keyboard.press('Tab');
   await expect(close).toBeFocused();

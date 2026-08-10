@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Live Spreadsheet — app.js (audiobook ownership payload refresh 2026-08-10)
+   Live Spreadsheet — app.js (shortcuts overlay cleanup 2026-08-10)
    Loads the per-view sheet JSON files and renders them as
    interactive Tabulator table: sortable headers, global live search,
    all rows in a scrollable view, CSV export, column resizing,
@@ -1827,7 +1827,6 @@ import {
           <dt><kbd>/</kbd></dt><dd>Focus search</dd>
           <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>Next / previous row (opens details)</dd>
           <dt><kbd>y</kbd></dt><dd>Copy the proposed file name of the open row</dd>
-          <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Switch tabs</dd>
           <dt><kbd>Esc</kbd></dt><dd>Close dialogs / menus / clear search</dd>
           <dt><kbd>?</kbd></dt><dd>Toggle this help</dd>
         </dl>
