@@ -1,16 +1,34 @@
 # Agent Handoff
 
-Last updated: 2026-08-10 (Arena 019feaaf — Owned Column Enlarged, Extra Badge Constrained to PvF Double, Edition Research Moved to Drawer, Full Multidisciplinary Audit)
+Last updated: 2026-08-10 (Arena 019feabf — Full Multidisciplinary Audit + Hygiene Fixes)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` **(Current — fresh-eyes multidisciplinary audit 019feaaf session)**
+- `docs/audits/2026-08-10-arena-019feabf-full-audit.md` **(Current — fresh-eyes full-stack audit 019feabf session)**
+- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` (Prior 019feaaf session audit)
 - `docs/audits/2026-08-10-full-audit-019fea62-multidisciplinary.md` (Prior 019fea62 session audit)
-- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` (Prior 019fe8d0 audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-10 Session Summary — 019feabf — Full Multidisciplinary Audit + Hygiene + CSS Dedup + Modularization + Module Contract
+
+- **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 149 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md`.
+- **CSS §12/§13 Deduplication:** Extracted shared browse-mode component styles into viewport-agnostic block. CSS reduced 2563→2398 lines (−165). `browse-active` references 41→9.
+- **Frontend Modularization (Phases 1+2):** Extracted 5 new ES modules from app.js:
+  - `docs/js/data-utils.js` (94 lines): debounce, formatTimestamp, displayMobileDate, displayMobileEdition, isExtraEditionRow, mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor
+  - `docs/js/mobile.js` (88 lines): mobileSourceLink, mobileEditionCard, overviewCard
+  - `docs/js/columns.js` (279 lines): looksLikeUrl, urlLabelFor, urlFormatter, columnPresetFor, orderKeysForView, measuredColumnWidth, buildColumns
+  - `docs/js/filter-utils.js` (41 lines): rowMatchesFacets, facetsEmpty, mobileFacetLabel
+  - `docs/js/view-utils.js` (152 lines): updateViewSummary, renderCollectionOverview, renderSeriesStrip, renderSeriesLanding, configureViewJump
+  - app.js reduced 2769→1933 lines (−30%). Frontend now 8 modules.
+- **Module Hash Contract:** All 7 JS modules tracked in `build-manifest.json#modules` with SHA-256 hashes. 2 new contract tests verify manifest hashes and `?v=` import hashes. Tests 147→149.
+- **Deploy Workflow Fix:** Replaced hardcoded 362 row count in deploy_pages.yml with dynamic `catalogue-meta.json` lookup.
+- **Hygiene:** Archived 4 TEMP/PR files from root (18→14 .md). Removed dead formatters.js exports. Fixed stale import hashes.
+- **Documentation:** Updated test counts (149) in README, INSTRUCTIONS, NEXT_AGENT_HANDOFF, SCOREBOARD. Updated Maintainability note (8 modules).
+- **Verification:** All 149 tests pass, 90% coverage (78-100% per module), 6/6 `--check` green, JS syntax clean.
+- **Left open:** P0 CI/Pages gating (owner action), further app.js modularization (P3, optional), Issue #18 (owner Drive access).
 
 ## 2026-08-10 Session Summary — 019feaaf — Owned Width, Extra Badge Constrain, Edition Research to Drawer
 

@@ -2381,6 +2381,56 @@ class FrontendDeliveryContractTests(unittest.TestCase):
         self.assertIn('href="build-manifest.json"', index)
         self.assertEqual(manifest["acceptance"], "owner_visual_review_required")
 
+    def test_module_hashes_in_manifest_match_committed_bytes(self) -> None:
+        """Every JS module listed in build-manifest.json#modules must match its committed SHA-256.
+
+        app.js and style.css are primary assets tracked in manifest#assets;
+        the ES modules (config, formatters, data-utils, mobile, columns,
+        filter-utils, view-utils) are tracked in manifest#modules. A stale
+        module hash paired with a fresh app.js would silently serve an old
+        cached module to the browser.
+        """
+        manifest = json.loads((REPO / "docs/build-manifest.json").read_text(encoding="utf-8"))
+        modules = manifest.get("modules", {})
+        self.assertTrue(modules, "build-manifest.json must have a 'modules' section")
+
+        for rel_path, expected_hash in modules.items():
+            full_path = REPO / "docs" / rel_path
+            self.assertTrue(full_path.exists(), f"module {rel_path} listed in manifest but not found")
+            actual_hash = self.sha256(full_path)
+            self.assertEqual(
+                actual_hash, expected_hash,
+                f"module {rel_path} hash mismatch: manifest has {expected_hash[:16]}... "
+                f"but file is {actual_hash[:16]}...",
+            )
+
+    def test_app_js_module_import_hashes_match_manifest(self) -> None:
+        """The ?v= hash in each import line in app.js must match the module's SHA-256 prefix.
+
+        Catches a stale import hash (e.g. updating config.js but forgetting
+        to bump the ?v= query in app.js's import line).
+        """
+        app_js = (REPO / "docs/app.js").read_text(encoding="utf-8")
+        manifest = json.loads((REPO / "docs/build-manifest.json").read_text(encoding="utf-8"))
+        modules = manifest.get("modules", {})
+
+        for match in re.finditer(r'from\s*"\./js/([^"?]+)\?v=([0-9a-f]{12})"', app_js):
+            module_rel = f"js/{match.group(1)}"
+            import_hash = match.group(2)
+            full_path = REPO / "docs" / module_rel
+            self.assertTrue(full_path.exists(), f"imported module {module_rel} not found")
+            actual_hash = self.sha256(full_path)
+            self.assertEqual(
+                import_hash, actual_hash[:12],
+                f"app.js imports {module_rel}?v={import_hash} but file hash is {actual_hash[:12]}",
+            )
+            # Cross-check against manifest
+            if module_rel in modules:
+                self.assertEqual(
+                    modules[module_rel], actual_hash,
+                    f"manifest modules.{module_rel} hash doesn't match file",
+                )
+
     def test_block_map_drift_fails_manifest_contract(self) -> None:
         """A drift between the block map and its manifest hash must fail loudly.
 

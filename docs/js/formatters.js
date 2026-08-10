@@ -55,39 +55,9 @@ export function statusFormatter(cell) {
 }
 
 // ---------------------------------------------------------------------------
-// Search highlighting — wraps matching substrings in <mark> elements.
+// Search highlighting lives in app.js (closure over activeSearchQuery).
+// escapeRegex and renderHighlightedText are defined there, not here.
 // ---------------------------------------------------------------------------
-
-export function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-/**
- * Wrap substrings matching `query` in <mark class="search-highlight"> elements.
- * Returns a DocumentFragment. Callers that depend on live search state should
- * pass the current query explicitly (the default is empty → plain text node).
- */
-export function renderHighlightedText(text, query = "") {
-  const raw = String(text ?? "");
-  if (!raw) return "";
-  const q = (query || "").trim();
-  if (!q) return document.createTextNode(raw);
-  const regex = new RegExp(`(${escapeRegex(q)})`, "gi");
-  const parts = raw.split(regex);
-  if (parts.length <= 1) return document.createTextNode(raw);
-  const frag = document.createDocumentFragment();
-  parts.forEach((part) => {
-    if (part.toLowerCase() === q.toLowerCase()) {
-      const mark = document.createElement("mark");
-      mark.className = "search-highlight";
-      mark.textContent = part;
-      frag.append(mark);
-    } else if (part) {
-      frag.append(document.createTextNode(part));
-    }
-  });
-  return frag;
-}
 
 // ---------------------------------------------------------------------------
 // Row title — the display title for row details and mobile browse cards.

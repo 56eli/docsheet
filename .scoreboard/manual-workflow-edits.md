@@ -110,7 +110,10 @@ jobs:
           curl --fail --silent --show-error --location \
             "${PAGE_URL}master.json?revision=${expected_revision}" \
             --output /tmp/live-master.json
-          test "$(jq length /tmp/live-master.json)" -eq 362
+          expected_count=$(jq -r .master_items docs/catalogue-meta.json)
+          actual_count=$(jq length /tmp/live-master.json)
+          test "$actual_count" -eq "$expected_count" \
+            || { echo "Row count mismatch: expected $expected_count, got $actual_count" >&2; exit 1; }
 
           for asset in app.js style.css; do
             expected=$(jq -r --arg asset "$asset" '.assets[$asset]' docs/build-manifest.json)
