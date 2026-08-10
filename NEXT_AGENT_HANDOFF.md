@@ -36,7 +36,7 @@ The repair on this branch:
 5. adds a focused browser regression, bringing the Playwright suite to 26 specs;
 6. refreshes module/app versions, visible build ID, and `docs/build-manifest.json`.
 
-Local Node, Python, coverage, syntax, dependency, and six-check verification passes. GitHub browser validation is the remaining P0 acceptance gate.
+Local Node, Python, coverage, syntax, dependency, and six-check verification passes. PR #64 CI run `31375672387` also passes the Node test and all 26 Playwright specs; merge/deploy plus exact live-build verification remain.
 
 ### Other confirmed frontend findings
 
@@ -84,7 +84,7 @@ BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
 BLOCK live curl probe (sandbox TLS connection restriction)
 ```
 
-Main CI run `31373716254` is the runtime authority for the audited baseline: it failed 25/25 browser specs with no rendered table rows. A prior commit's green browser run does not validate PR #63's extracted modules.
+Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31375672387` proves the repair passes the Node regression and 26/26 browser specs. The exact public deployment still needs verification.
 
 ## Data pipeline rules
 
@@ -163,7 +163,7 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 ## Open work in priority order
 
-1. Obtain a green 26-spec browser run for the P0 repair and verify the exact deployed build revision.
+1. Merge/deploy PR #64, verify the exact live build revision/hashes/screenshots, and obtain owner acceptance.
 2. Owner: require CI and gate Pages deployment.
 3. Repair live search highlighting after extraction.
 4. Make nested module cache versioning consistent.

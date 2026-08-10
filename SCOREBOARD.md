@@ -19,22 +19,20 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 ## Current verdict
 
-**Repo-ready gate: FAIL — 7.1/10 effective (614 weighted points / 86).**
+**Repo-ready gate: FAIL — 7.7/10 effective (664 weighted points / 86).**
 
-The data pipeline is healthy, but audited/deployed baseline `aa1f1b7` has a confirmed frontend runtime defect: `docs/js/columns.js` calls `isExtraEditionRow()` without importing it. Main CI failed 25/25 browser specs after legacy Pages had already deployed it. This branch carries the import repair plus executable Node/browser regression coverage; the gate stays failed until GitHub browser CI and the exact deployed revision are verified.
+The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the missing import and PR CI run `31375672387` passes the Node formatter test, all 149 offline tests, and all 26 browser specs. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
 
 ## Current priorities
 
 | Priority | Aspect | Immediate action |
 |---:|---|---|
-| 16 | Deployment readiness | Repair frontend P0, then owner gates Pages on successful CI |
-| 15 | GitHub Pages presentation | Import missing helper, execute formatters in tests, verify deployed build |
-| 8 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
-| 8 | Feature completeness | Restore primary grid; restore or remove dormant overview/stats UI |
-| 6 | Error handling / logging | Cover async formatter failure and visible fatal-render state |
-| 5 | Agent readiness | Keep one current handoff/audit and synchronized scoreboards |
-| 4 | Code hygiene | Add no-undef/import lint; remove redundant/dead module code |
+| 8 | Deployment readiness | Merge/deploy the green repair, verify exact build, then owner gates Pages on CI |
+| 5 | GitHub Pages presentation | Verify the exact public build and obtain owner acceptance |
+| 4 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
 | 4 | Maintainability | Correct module graph/cache strategy before more extraction |
+| 3 | Error handling / logging | Add a generic visible fatal-render state for async table failures |
+| 3 | Accessibility | Complete shortcuts-dialog modal behavior and add axe coverage |
 | — | Issue #18 | Ownership cross-check needs owner Drive access |
 
 ## Scoreboard table
@@ -44,33 +42,33 @@ The data pipeline is healthy, but audited/deployed baseline `aa1f1b7` has a conf
 | Project purpose / scope | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | README / onboarding | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo organization | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Code hygiene | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work |
+| Code hygiene | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Architecture | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Maintainability | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Error handling / logging | 3 | 8 | 6 | — | 6 | 2 | 6 | needs_work |
+| Error handling / logging | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy |
-| Tests | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| CI/CD | 4 | 8 | 6 | — | 6 | 2 | 8 | blocked_manual_workflow_edit |
+| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy |
+| CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Performance | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
-| GitHub Pages presentation | 5 | 8 | 5 | — | 5 | 3 | 15 | needs_work |
-| UX / usability | 4 | 8 | 6 | 8 | 8 | 0 | 0 | accepted_debt |
+| GitHub Pages presentation | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
+| UX / usability | 4 | 8 | 8 | 8 | 8 | 0 | 0 | healthy |
 | Accessibility | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
 | Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy |
-| Feature completeness | 4 | 8 | 6 | — | 6 | 2 | 8 | needs_work |
-| Deployment readiness | 4 | 8 | 4 | — | 4 | 4 | 16 | blocked_manual_workflow_edit |
-| Agent readiness | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
-| Task hygiene | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
+| Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
+| Deployment readiness | 4 | 8 | 6 | — | 6 | 2 | 8 | blocked_manual_workflow_edit |
+| Agent readiness | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
+| Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Auditability | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo transparency | 3 | 8 | 7 | 7 | 7 | 1 | 3 | needs_work |
-| **Overall effective** | **86** | **8** | — | — | **7.1** | — | — | **fail** |
+| **Overall effective** | **86** | **8** | — | — | **7.7** | — | — | **fail** |
 
 ## User-score notes
 
 The canonical owner scores remain unchanged:
 
-- UX / usability: **8/10**. Current AI score is 6 because the owner score predates the audited frontend regression; status is `accepted_debt`, and the P0 risk remains visible.
+- UX / usability: **8/10**. Current AI score is also 8 after the browser-verified P0 repair.
 - Content quality: **7/10**. AI data audit remains 9; status is `user_unhappy` until explicit owner input changes it.
 - Repo transparency: **7/10**.
 
@@ -78,19 +76,20 @@ No other user score is inferred.
 
 ## Critical risk flags
 
-1. **Production JavaScript defect:** missing `isExtraEditionRow` import in `columns.js`.
+1. **Broken public baseline:** the repair passes PR CI, but legacy Pages still serves `aa1f1b7` until merge/deploy.
 2. **Ungated delivery:** Pages API reports legacy `main:/docs`; deployment can outrun CI.
 3. **Incomplete module cache contract:** nested imports omit content versions and can load duplicate/stale module URLs.
-4. **Browser acceptance pending:** byte/hash consistency does not prove application execution or owner visual acceptance.
+4. **Owner acceptance pending:** the exact public build still needs hash/screenshot verification and explicit acceptance.
 5. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
 
 ## Quality gate details
 
-- Overall 7.1 < required 8: **fail**.
+- Overall 7.7 < required 8: **fail**.
 - Security/privacy 8 ≥ 8: pass.
-- Tests 8 ≥ 7: pass.
+- Tests 9 ≥ 7: pass.
 - README 8 ≥ 7: pass.
-- CI/CD 6 < 7: fail.
-- Agent readiness 7 < 8: fail.
+- CI/CD 7 ≥ 7: pass.
+- Agent readiness 8 ≥ 8: pass.
+- Remaining blockers are the overall score, legacy ungated deployment, exact live-build verification, and owner acceptance.
 
 See the current audit for full evidence, verification limitations, independent data counts, and the remediation sequence.

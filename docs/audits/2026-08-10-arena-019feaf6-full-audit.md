@@ -27,7 +27,7 @@ After the audit, the owner selected the recommended P0 repair. This branch now i
 - `tests/frontend-modules.test.mjs` invokes the edition formatter directly and verifies that only Power vs. Force row 373 renders the Extra badge;
 - a new Playwright case records page errors, searches for the original hardcover, and asserts its rendered Extra badge, bringing the browser suite from 25 to 26 specs.
 
-`pretest:e2e` runs the Node test automatically before Playwright. Local results are green for the Node test (1/1), Python suite (149/149), 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`; a dispatched GitHub browser run is therefore the remaining P0 acceptance gate. The scores below intentionally describe the audited/deployed `aa1f1b7` baseline until that browser run and deployment are verified.
+`pretest:e2e` runs the Node test automatically before Playwright. Local results are green for the Node test (1/1), Python suite (149/149), 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`, but PR #64 CI run `31375672387` passed the Node test and **26/26 Playwright specs**. The baseline scores below preserve the audited/deployed `aa1f1b7` snapshot; the post-repair scoreboard rises to 7.7/10 and remains gate-failing only because the exact public deployment is unverified, Pages is ungated, and the total is below 8.
 
 ## Priority findings
 
@@ -318,8 +318,8 @@ Live-site curl/hash probe                                        NOT RUN
 
 ## Recommended sequence
 
-1. **P0:** repair the missing `isExtraEditionRow` import and add executable module/formatter coverage.
-2. **P0:** run the added Node formatter regression plus all 26 Playwright specs, then verify the exact deployed build ID/hashes/screenshots.
+1. **P0 completed on branch:** repaired the missing `isExtraEditionRow` import and added executable Node/browser formatter coverage.
+2. **P0 CI completed:** PR #64 run `31375672387` passed the Node regression and all 26 Playwright specs; merge/deploy and verify the exact build ID/hashes/screenshots next.
 3. **P0 owner action:** require CI and switch Pages from legacy branch deployment to the gated workflow.
 4. **P1:** fix the stale search-highlight closure and test highlighting, not only filtering.
 5. **P1:** make cache versioning consistent across the full module graph.

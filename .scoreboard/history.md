@@ -93,3 +93,21 @@ All user scores were preserved. AI scores below changed only after the evidence-
 | 2026-08-10 | auditability | 9 | 8 | null | 8 | Arena 019feaf6 | Provenance remains strong; repeated stale declared-current audits require stricter one-current-pointer discipline. |
 | 2026-08-10 | repo_transparency | null | 7 | 7 | 7 | Arena 019feaf6 | Owner 7 preserved; current audit independently confirms documentation depth plus current-state contradiction debt. |
 | 2026-08-10 | overall_effective_score | 8.3 (canonical summary; inconsistent with fields) | 7.1 | preserved | 7.1 | Arena 019feaf6 | Recomputed 614/86 after current audit; gate is FAIL due P0 runtime, CI 6, agent readiness 7, and legacy Pages. |
+
+## 2026-08-10 — Arena 019feaf6 P0 repair follow-up
+
+PR #64 CI run `31375672387` passed all stages, including the new Node formatter test and 26/26 Playwright specs. User scores remain unchanged.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | code_hygiene | 7 | 8 | null | 8 | Arena 019feaf6 | Restored columns.js import, removed redundant app/mobile imports, and added executable formatter coverage. |
+| 2026-08-10 | error_handling_logging | 6 | 7 | null | 7 | Arena 019feaf6 | P0 throw removed and directly executed in Node/browser tests; generic async fatal-render fallback remains follow-up. |
+| 2026-08-10 | tests | 8 | 9 | null | 9 | Arena 019feaf6 | Added 1 Node formatter test through pretest:e2e and one focused Playwright case; PR CI passed 149 offline + 1 Node + 26 browser. |
+| 2026-08-10 | ci_cd | 6 | 7 | null | 7 | Arena 019feaf6 | PR #64 CI run 31375672387 green in 1m26s; required check/Pages gating remains owner-applied. |
+| 2026-08-10 | github_pages_presentation | 5 | 7 | null | 7 | Arena 019feaf6 | Repaired branch renders all rows and Extra badge in 26/26 browser specs; exact public deployment/acceptance pending. |
+| 2026-08-10 | ux_usability | 6 | 8 | 8 | 8 | Arena 019feaf6 | Owner 8 preserved; AI returns to 8 after browser-verified primary grid repair. |
+| 2026-08-10 | feature_completeness | 6 | 8 | null | 8 | Arena 019feaf6 | Primary grid and documented sheets pass browser CI; dormant removed-interface code remains maintainability debt. |
+| 2026-08-10 | deployment_readiness | 4 | 6 | null | 6 | Arena 019feaf6 | Repair is PR-CI green with refreshed manifest; legacy public baseline and ungated Pages remain. |
+| 2026-08-10 | agent_readiness | 7 | 8 | null | 8 | Arena 019feaf6 | Audit, handoffs, scoreboards, incident and repair evidence synchronized. |
+| 2026-08-10 | task_hygiene | 7 | 8 | null | 8 | Arena 019feaf6 | P0 repaired/validated and remaining work prioritized. |
+| 2026-08-10 | overall_effective_score | 7.1 | 7.7 | preserved | 7.7 | Arena 019feaf6 | Recomputed 664/86; gate remains FAIL until overall ≥8 and deployment risks are resolved. |

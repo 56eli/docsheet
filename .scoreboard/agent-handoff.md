@@ -17,7 +17,7 @@ ReferenceError: isExtraEditionRow is not defined
 
 The main Pages API reports legacy deployment from `main:/docs`; Pages successfully deployed this baseline while browser CI was still running. Main CI run `31373716254` then failed all 25 Playwright specs because no `.tabulator-row` rendered. Do not treat the Pages badge or static hash contract as runtime acceptance.
 
-The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, `tests/frontend-modules.test.mjs` executes the formatter through `pretest:e2e`, and a focused browser regression raises the suite to 26 specs. Local Node (1/1), Python (149/149), 90% coverage, syntax, dependency, and six-check validation passes. A green GitHub browser run and exact deployed-revision check remain the P0 acceptance gates.
+The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, `tests/frontend-modules.test.mjs` executes the formatter through `pretest:e2e`, and a focused browser regression raises the suite to 26 specs. Local Node (1/1), Python (149/149), 90% coverage, syntax, dependency, and six-check validation passes. PR #64 CI run `31375672387` also passes all 26 Playwright specs. Merge/deploy and exact live-revision/owner acceptance remain.
 
 ## Other confirmed findings
 

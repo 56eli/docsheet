@@ -14,16 +14,16 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 7.1
+  overall_effective_score: 7.7
   repo_ready_gate_status: fail
   top_priorities:
-    - github_pages_presentation
     - deployment_readiness
+    - github_pages_presentation
     - ci_cd
     - maintainability
   active_risk_flags:
     - "P0 baseline: deployed aa1f1b7 calls isExtraEditionRow without importing it; CI run 31373716254 failed 25/25 browser specs with no rendered rows."
-    - "P0 branch repair adds the import plus Node/browser regression coverage; GitHub browser CI and exact deployment are not yet verified."
+    - "P0 branch repair adds the import plus Node/browser regression coverage; PR CI run 31375672387 passed all 26 browser specs, but exact deployment is not yet verified."
     - "Pages API reports legacy main:/docs deployment, so the broken baseline deployed before its CI failure."
     - "Nested ES-module imports are unversioned even though top-level app imports are content-versioned, permitting duplicate/stale module identities."
     - "CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned."
@@ -31,7 +31,7 @@ summary:
 quality_gates:
   repo_ready:
     status: fail
-    overall_effective_score: 7.1
+    overall_effective_score: 7.7
     last_evaluated: "2026-08-10"
     minimum_overall_effective_score: 8
     required:
@@ -41,9 +41,9 @@ quality_gates:
       ci_cd: 7
       agent_readiness: 8
     notes:
-      - "Overall effective score is 614/86 = 7.1."
-      - "CI/CD (6) and agent readiness (7) miss required thresholds."
-      - "A confirmed production JavaScript ReferenceError and legacy ungated Pages deployment block readiness."
+      - "Overall effective score is 664/86 = 7.7."
+      - "Required aspect thresholds pass after the P0 repair, but the overall score remains below 8."
+      - "PR CI run 31375672387 passed all 26 browser specs; legacy Pages still serves the broken baseline until merge/deploy and remains ungated."
       - "User scores are preserved and never inferred from merge, silence, or PR approval."
 
 aspects:
@@ -124,15 +124,15 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 4
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Syntax is clean, but extracted modules contain a missing import, redundant imports, duplicated comments, and unreachable overview/stats code; no enforced no-undef lint exists."
+    ai_basis: "The missing import and redundant imports are repaired with executable Node/browser coverage; dormant overview code and absent no-undef lint remain."
     user_basis: null
     evidence:
       - "Direct columns.js formatter probe raises ReferenceError for isExtraEditionRow."
@@ -229,15 +229,15 @@ aspects:
     category: engineering
     weight: 3
     target: 8
-    ai_score: 6
+    ai_score: 7
     user_score: null
-    effective_score: 6
-    gap: 2
-    priority: 6
+    effective_score: 7
+    gap: 1
+    priority: 3
     status: needs_work
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Generators and fetch/view errors are handled well, but formatter execution can throw outside the app's load try/catch and break the primary grid."
+    ai_basis: "The formatter regression is repaired and directly tested; generic asynchronous Tabulator-render failures still lack a dedicated fatal state."
     user_basis: null
     evidence:
       - "process_data and fetcher failure paths are tested."
@@ -279,15 +279,15 @@ aspects:
     category: quality
     weight: 5
     target: 8
-    ai_score: 8
+    ai_score: 9
     user_score: null
-    effective_score: 8
+    effective_score: 9
     gap: 0
     priority: 0
     status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "149 offline tests and 90% coverage are strong, and 25 browser specs are broad; the offline suite does not execute extracted formatter modules and local browser execution was environment-blocked."
+    ai_basis: "149 offline tests, one Node formatter test, 90% Python coverage, and 26 Playwright specs now pass in PR CI; executable module coverage closes the P0 blind spot."
     user_basis: null
     evidence:
       - "149/149 unittest pass; 2327 statements at 90%, floor 85%."
@@ -307,15 +307,15 @@ aspects:
     category: operations
     weight: 4
     target: 8
-    ai_score: 6
+    ai_score: 7
     user_score: null
-    effective_score: 6
-    gap: 2
-    priority: 8
+    effective_score: 7
+    gap: 1
+    priority: 4
     status: blocked_manual_workflow_edit
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "CI validates data, coverage, syntax, and browser behavior, but it is serial and not required before legacy Pages deployment."
+    ai_basis: "CI now proves the P0 repair with a green 26-spec browser run, but required checks and Pages gating remain owner-applied."
     user_basis: null
     evidence:
       - "Pages for aa1f1b7 completed while its CI browser step was still running."
@@ -387,27 +387,27 @@ aspects:
     category: presentation
     weight: 5
     target: 8
-    ai_score: 5
+    ai_score: 7
     user_score: null
-    effective_score: 5
-    gap: 3
-    priority: 15
+    effective_score: 7
+    gap: 1
+    priority: 5
     status: needs_work
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "The visual system is strong statically, but the deployed baseline has a confirmed formatter ReferenceError and cannot be considered presentation-ready."
+    ai_basis: "The repaired branch passes all 26 browser specs and its content contract; legacy Pages still serves the broken baseline until merge/deploy and owner acceptance."
     user_basis: "Owner previously indicated an older 5/10 score was outdated; no new score is inferred."
     evidence:
-      - "Direct edition formatter probe raises ReferenceError."
-      - "Content hashes are synchronized but prove bytes, not execution."
-      - "Local live/browser probes were environment-blocked; Pages deployed before main browser CI result."
+      - "The baseline formatter probe failed; the repaired Node probe and 26/26 PR browser specs pass."
+      - "Content hashes and visible build ID are synchronized on the repaired branch."
+      - "Legacy Pages still serves the broken baseline until merge/deploy."
     user_notes: "Do not treat Pages artifact success as proof that the presentation reached the end user."
     desired_direction:
       - "Versioned, browser-verified delivery with explicit owner acceptance."
     next_actions:
-      - "Repair P0, pass Playwright, verify exact live hashes/screenshots, request owner acceptance."
+      - "Merge/deploy PR #64, verify exact live hashes/screenshots, and request owner acceptance."
     risk_flags:
-      - "Current baseline has a production JavaScript defect."
+      - "Public Pages still serves the broken baseline until merge/deploy."
       - "Owner visual acceptance remains pending."
     files_reviewed: [docs/index.html, docs/app.js, docs/style.css, docs/js/columns.js, docs/build-manifest.json]
 
@@ -416,15 +416,15 @@ aspects:
     category: presentation
     weight: 4
     target: 8
-    ai_score: 6
+    ai_score: 8
     user_score: 8
     effective_score: 8
     gap: 0
     priority: 0
-    status: accepted_debt
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Interaction design is capable, but the current formatter defect, stale search highlighting, dormant interface layers, and shortcuts-dialog behavior reduce current AI assessment."
+    ai_basis: "The primary grid and Extra badge are browser-verified after repair; search highlighting, dormant UI layers, and shortcuts-dialog behavior remain follow-up debt."
     user_basis: "Owner explicitly provided UX Presentation 8/10 in the 2026-08-09 session; preserved unchanged."
     evidence:
       - "Facets, Browse cards, Series view, export, persistence, expert columns, and row details are implemented."
@@ -495,15 +495,15 @@ aspects:
     category: product
     weight: 4
     target: 8
-    ai_score: 6
+    ai_score: 8
     user_score: null
-    effective_score: 6
-    gap: 2
-    priority: 8
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "All documented catalogue/review sheets exist, but the primary grid runtime is regressed and the hero/stats/review-navigation feature set is half-removed."
+    ai_basis: "All documented catalogue/review sheets and the repaired primary grid pass browser CI; dormant removed-interface code is maintainability debt rather than a blocker."
     user_basis: null
     evidence:
       - "View registry covers all 19 user-facing JSON sheets plus client-side Series view."
@@ -522,15 +522,15 @@ aspects:
     category: operations
     weight: 4
     target: 8
-    ai_score: 4
+    ai_score: 6
     user_score: null
-    effective_score: 4
-    gap: 4
-    priority: 16
+    effective_score: 6
+    gap: 2
+    priority: 8
     status: blocked_manual_workflow_edit
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Static manifest observability is good, but a known-regressed commit deployed before CI and no post-deploy browser/hash gate runs."
+    ai_basis: "The repair is green in PR CI with observable content hashes, but the exact public deployment is unverified and legacy Pages remains ungated."
     user_basis: null
     evidence:
       - "GitHub Pages API: build_type legacy, source main:/docs."
@@ -549,15 +549,15 @@ aspects:
     category: operations
     weight: 5
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 5
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Commands and data rules are excellent, but prior canonical/human scoreboards contradicted each other and handoffs accumulated stale session history."
+    ai_basis: "Current audit, concise handoffs, scoreboards, commands, incident evidence, and P0 repair status are synchronized; history remains in dated files."
     user_basis: null
     evidence:
       - "Before reconciliation, canonical summary said pass/8.3 while its gate said fail/7.8 and SCOREBOARD said pass/8.5."
@@ -575,15 +575,15 @@ aspects:
     category: operations
     weight: 3
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Root temporary documents were cleaned and one issue remains open, but the P0 runtime defect and dormant frontend work are now active tasks."
+    ai_basis: "The P0 is repaired and PR-validated, root temporary documents are archived, and remaining work is explicitly prioritized."
     user_basis: null
     evidence:
       - "Root Markdown reduced to 12; completed session docs archived."
