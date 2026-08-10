@@ -320,10 +320,10 @@ aspects:
   status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 149 offline tests, 9 Node frontend tests, 90% Python coverage, and 28 Playwright specs pass in PR CI.
+  ai_basis: 158 offline tests, 10 Node frontend tests, 92% Python coverage (helpers.py and relationships.py at 100%), and 28 Playwright specs pass in PR CI; ESLint no-undef lint on the shipped frontend is clean locally (ci.yml step owner-applied via committed patch).
   user_basis: null
   evidence:
-  - 149/149 unittest pass; 2,327 statements at 90%, floor 85%.
+  - 158/158 unittest pass; 2,327 statements at 92%, floor 85% (helpers/relationships 100%; 019febe9).
   - Node tests cover edition helper execution, live search query state, and removed-UI guards.
   - PR CI run 31378465750 passes 28/28 browser specs.
   - All six checks and the complete asset/module delivery contract pass.
@@ -353,8 +353,8 @@ aspects:
   status: blocked_manual_workflow_edit
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: CI proves the P0, cleanup, live search, and full module graph with 149 offline, 9 Node, and 28 browser tests; required checks and
-    Pages gating remain owner-applied.
+  ai_basis: CI proves the P0, cleanup, live search, and full module graph with 158 offline, 10 Node, and 28 browser tests; required checks and
+    Pages gating remain owner-applied; the reviewed lint/module-syntax ci.yml edit is committed as a patch for the owner (GitHub App lacks workflows permission).
   user_basis: null
   evidence:
   - 'PR #64 run 31378465750 passes all stages.'
