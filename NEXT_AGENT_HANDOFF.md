@@ -32,6 +32,7 @@ A PR from this branch is being opened for review + merge. After merge, the live 
 
 ### Remaining findings
 
+- Mobile Spreadsheet touch scrolling was corrected on 2026-08-10 with explicit two-axis Tabulator scrolling, a dynamic-viewport non-scrolling shell, and a new mobile regression test. See `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`; local browser execution is still blocked by the sandbox package network.
 - Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
 - Axe/Lighthouse automation is optional follow-up, not a current release blocker.
 - Issue #18 (owned vs lak.nz Drive) still needs owner Drive access.

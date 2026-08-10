@@ -18,6 +18,7 @@ The 019feaf6 session repaired the P0 import, added Node/browser edition-formatte
 
 ## New findings this session (019feb3e)
 
+- **Mobile spreadsheet fix (019feb8c):** Spreadsheet mode now has an explicit two-axis Tabulator scroll owner and a non-scrolling dynamic-viewport shell, fixing the reported horizontal-pan failure and vertical rubber-banding. Regression coverage lives in `tests/ux-enhancements.spec.js`; details in `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
 - **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
 - **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
 - **P3 (agent-safe, DONE this session):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
