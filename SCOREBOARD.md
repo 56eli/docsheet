@@ -19,9 +19,9 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 ## Current verdict
 
-**Repo-ready gate: FAIL — 7.8/10 effective (671 weighted points / 86).**
+**Repo-ready gate: FAIL — 7.9/10 effective (678 weighted points / 86).**
 
-The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the P0, removes dormant UI, and hardens shortcuts accessibility. PR CI run `31377436991` passes 149 offline, 2 Node, and 27 browser tests. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
+The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the P0, removes dormant UI, hardens shortcuts accessibility, restores live search highlights, and hash-versions the full module graph. PR CI run `31378465750` passes 149 offline, 3 Node, and 28 browser tests. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
 
 ## Current priorities
 
@@ -31,7 +31,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | 5 | GitHub Pages presentation | Verify the exact public build and obtain owner acceptance |
 | 4 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
 | 3 | Error handling / logging | Add a generic visible fatal-render state for async table failures |
-| 3 | Performance | Measure Lighthouse/Web Vitals and eliminate duplicate module identities |
+| 3 | Content quality | Resolve the owner-scored gap when new content direction is provided |
 | — | Issue #18 | Ownership cross-check needs owner Drive access |
 
 ## Scoreboard table
@@ -42,7 +42,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | README / onboarding | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo organization | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Code hygiene | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Architecture | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
+| Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Error handling / logging | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
@@ -50,7 +50,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy |
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Performance | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
+| Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | GitHub Pages presentation | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
 | UX / usability | 4 | 8 | 8 | 8 | 8 | 0 | 0 | healthy |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
@@ -61,7 +61,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Auditability | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo transparency | 3 | 8 | 7 | 7 | 7 | 1 | 3 | needs_work |
-| **Overall effective** | **86** | **8** | — | — | **7.8** | — | — | **fail** |
+| **Overall effective** | **86** | **8** | — | — | **7.9** | — | — | **fail** |
 
 ## User-score notes
 
@@ -77,13 +77,12 @@ No other user score is inferred.
 
 1. **Broken public baseline:** the repair passes PR CI, but legacy Pages still serves `aa1f1b7` until merge/deploy.
 2. **Ungated delivery:** Pages API reports legacy `main:/docs`; deployment can outrun CI.
-3. **Incomplete module cache contract:** nested imports omit content versions and can load duplicate/stale module URLs.
-4. **Owner acceptance pending:** the exact public build still needs hash/screenshot verification and explicit acceptance.
-5. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
+3. **Owner acceptance pending:** the exact public build still needs hash/screenshot verification and explicit acceptance.
+4. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
 
 ## Quality gate details
 
-- Overall 7.8 < required 8: **fail**.
+- Overall 7.9 < required 8: **fail**.
 - Security/privacy 8 ≥ 8: pass.
 - Tests 9 ≥ 7: pass.
 - README 8 ≥ 7: pass.

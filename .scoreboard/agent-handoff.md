@@ -1,59 +1,55 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feaf6 full multidisciplinary audit
+**Updated:** 2026-08-10 — Arena 019feaf6 full audit + P0/cleanup/P1 implementation
 **Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
+**Current branch head:** PR #64 on `arena/019feaf6-docsheet`
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for evidence, scores, commands, and the remediation sequence.
+Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for the complete multidisciplinary evidence and baseline scoring.
 
-## Immediate P0 status
+## Baseline incident
 
-PR #63 extracted frontend modules but the audited baseline's `docs/js/columns.js:242` called `isExtraEditionRow(row)` without importing it. A direct formatter invocation reproduced:
+PR #63's extracted `columns.js` called `isExtraEditionRow` without importing it. Legacy Pages deployed the commit before main CI run `31373716254` failed all 25 browser specs with no rendered rows. Static hashes proved byte consistency but did not prove JavaScript execution.
 
-```text
-ReferenceError: isExtraEditionRow is not defined
-```
+## Completed on PR #64
 
-The main Pages API reports legacy deployment from `main:/docs`; Pages successfully deployed this baseline while browser CI was still running. Main CI run `31373716254` then failed all 25 Playwright specs because no `.tabulator-row` rendered. Do not treat the Pages badge or static hash contract as runtime acceptance.
+- Restored the missing import and removed redundant imports.
+- Added Node/browser edition-formatter execution coverage.
+- Removed all 10 absent-ID overview/stats/review-nav paths and 411 net lines.
+- Added a Node guard rejecting return of the removed UI tokens.
+- Completed shortcuts-dialog `aria-modal`/labelledby, initial focus, Tab trap, Escape close, and focus restoration.
+- Fixed search highlighting by passing a live query getter to column formatters.
+- Added a browser assertion that visible marks update after search.
+- Hash-versioned every local ES-module edge so nested and top-level imports resolve to one module identity.
+- Extended the delivery contract to traverse every local app/module import and reject unversioned, escaping, unmanifested, or stale edges.
+- Refreshed app/module/style hashes, visible build ID, and `docs/build-manifest.json`.
 
-The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, and executable Node/browser regressions cover the formatter. The selected cleanup follow-up also removes all 10 absent-ID paths and 411 net lines, guards against their return, and completes shortcuts-dialog focus trapping/Escape/restoration. Local checks pass; PR #64 CI run `31377436991` passes 149 offline, 2 Node, and 27/27 Playwright tests. Merge/deploy and exact live-revision/owner acceptance remain.
+PR CI run `31378465750` passes:
 
-## Other confirmed findings
+- all six generator checks;
+- 149/149 offline Python tests;
+- 90% coverage across 2,327 statements;
+- 3/3 Node frontend tests;
+- 28/28 Playwright specs;
+- Python/JavaScript syntax and dependency installation.
 
-- Extracted column formatter closures capture the empty search query passed at table creation, so later filtering works but `<mark>` highlighting is stale.
-- Nested module imports omit version queries, creating duplicate versioned/unversioned module URLs and a stale-cache path.
-- Ruff/ESLint/axe/Lighthouse are not enforced in CI.
-- Pages gating and required branch checks remain owner-applied work in `.scoreboard/manual-workflow-edits.md`.
+## Current scores and remaining risks
+
+Canonical effective score is **7.9/10** (678/86), gate **FAIL** only because the total remains below 8 and deployment risks remain.
+
+- Public Pages still serves the broken `aa1f1b7` baseline until PR #64 merges/deploys.
+- Pages remains legacy `main:/docs` and is not CI-gated; owner instructions are in `.scoreboard/manual-workflow-edits.md`.
+- Exact live hashes/screenshots and explicit owner acceptance remain pending.
+- CSP `style-src 'unsafe-inline'` is low-severity debt.
+- Optional future automation: axe-core, Lighthouse, ESLint.
 - Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
 
-## Verification evidence
-
-- All six generator `--check` modes: pass.
-- Python suite: 149/149 pass.
-- Coverage: 90% across 2,327 statements (85% floor).
-- Python/JavaScript syntax: pass.
-- Node frontend regressions: 2/2 pass.
-- PR #64 CI run `31377436991`: 27/27 Playwright specs pass.
-- npm audit: 0 vulnerabilities; pip check: pass.
-- Independent data integrity: 363 unique masters, 191 works, 278 unique codes, 363 unique filenames, complete 12-block order, no relationship or URL defect found.
-- Local Playwright could not run because Chromium download failed with sandbox `ECONNRESET`; GitHub browser CI is authoritative.
-- Live curl was blocked by sandbox TLS; GitHub API evidence was available.
+All recorded user scores were preserved unchanged.
 
 ## Current data state
 
-363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: 312 true / 25 false / 26 blank. Also: 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 reviewed product relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products.
-
-## Documentation work completed in this audit
-
-- Published the new declared-current audit.
-- Replaced the 741-line cumulative `NEXT_AGENT_HANDOFF.md` with a concise current handoff and pointers to history.
-- Archived completed session/temp documents:
-  - `archive/TEMP_AUDIT_019FEABF.md`
-  - `archive/IMPLEMENTATION_SUMMARY_019fea62.md`
-  - `archive/EDITION_MEDIATION_PROPOSAL_019fea62.md`
-- Root Markdown count is now 12 and matches the README layout.
-- Reconciled scoreboard summaries/gate status and current test-count documentation.
+363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: 312 true / 25 false / 26 blank. Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products.
 
 ## Safe commands
 
@@ -66,7 +62,8 @@ python map_series_taxonomy.py --check
 python sync_inventory_mirrors.py --check
 python -m unittest discover tests
 coverage run -m unittest discover tests && coverage report
+npm run test:unit
 npm run test:e2e
 ```
 
-Never hand-edit generated master/Pages data. Never edit `.github/workflows/*` without explicit owner authorization. Preserve all recorded user scores.
+Never hand-edit generated master/Pages data. Never edit `.github/workflows/*` without explicit owner authorization.

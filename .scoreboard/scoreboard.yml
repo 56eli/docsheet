@@ -1,38 +1,33 @@
-# DocSheet — Persistent Repo Scoreboard (canonical machine-readable source)
 meta:
   project_name: docsheet
   scoreboard_version: 1
-  last_updated: "2026-08-10"
+  last_updated: '2026-08-10'
   stale_after_days: 45
   agent_model: arena_sandboxed_agent
   effective_score_policy: user_score_overrides_ai_score
   context_policy: repo_files_are_durable_memory
-  arena_context: "Agent sessions are sandboxed and may expire after PR merge; durable context must live in repo files."
-
+  arena_context: Agent sessions are sandboxed and may expire after PR merge; durable context must live in repo files.
 manual_workflow_policy:
   may_edit_github_workflows: false
-  instruction: "Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md."
-
+  instruction: Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md.
 summary:
-  overall_effective_score: 7.8
+  overall_effective_score: 7.9
   repo_ready_gate_status: fail
   top_priorities:
-    - deployment_readiness
-    - github_pages_presentation
-    - ci_cd
-    - performance
+  - deployment_readiness
+  - github_pages_presentation
+  - ci_cd
+  - error_handling_logging
   active_risk_flags:
-    - "P0 baseline: deployed aa1f1b7 calls isExtraEditionRow without importing it; CI run 31373716254 failed 25/25 browser specs with no rendered rows."
-    - "PR #64 repair and cleanup pass 149 offline, 2 Node, and 27 browser tests in CI run 31377436991; exact public deployment is not yet verified."
-    - "Pages API reports legacy main:/docs deployment, so the broken baseline deployed before its CI failure."
-    - "Nested ES-module imports are unversioned even though top-level app imports are content-versioned, permitting duplicate/stale module identities."
-    - "CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned."
-
+  - 'Public Pages still serves the broken aa1f1b7 baseline until PR #64 merges and deploys; exact live hashes/screenshots and owner acceptance
+    remain pending.'
+  - Pages API reports legacy main:/docs deployment, so public deployment can outrun CI until owner-applied gating.
+  - CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned.
 quality_gates:
   repo_ready:
     status: fail
-    overall_effective_score: 7.8
-    last_evaluated: "2026-08-10"
+    overall_effective_score: 7.9
+    last_evaluated: '2026-08-10'
     minimum_overall_effective_score: 8
     required:
       security_privacy: 8
@@ -41,607 +36,687 @@ quality_gates:
       ci_cd: 7
       agent_readiness: 8
     notes:
-      - "Overall effective score is 671/86 = 7.8."
-      - "Required aspect thresholds pass after the P0 repair, but the overall score remains below 8."
-      - "PR CI run 31375672387 passed all 26 browser specs; legacy Pages still serves the broken baseline until merge/deploy and remains ungated."
-      - "User scores are preserved and never inferred from merge, silence, or PR approval."
-
+    - Overall effective score is 678/86 = 7.9.
+    - All required aspect thresholds pass, but the overall score remains below 8.
+    - PR CI run 31378465750 passed 149 offline, 3 Node, and 28 browser tests; legacy Pages still serves the broken baseline until merge/deploy.
+    - User scores are preserved and never inferred from merge, silence, or PR approval.
 aspects:
-  - id: project_purpose_scope
-    name: Project purpose / scope
-    category: product
-    weight: 4
-    target: 8
-    ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "README and INSTRUCTIONS clearly distinguish the raw live spreadsheet from the reviewed curated catalogue."
-    user_basis: null
-    evidence:
-      - "README.md and INSTRUCTIONS.md reviewed against both pipeline entry points."
-    user_notes: null
-    desired_direction: []
-    next_actions: []
-    risk_flags: []
-    files_reviewed: [README.md, INSTRUCTIONS.md]
-
-  - id: readme_onboarding
-    name: README / onboarding
-    category: documentation
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Setup, pipeline safeguards, field semantics, and current counts are thorough; historical current-audit drift was corrected in this audit."
-    user_basis: null
-    evidence:
-      - "Quick-start commands reproduced in a fresh venv; README counts match generated data."
-      - "Declared-current audit link and coverage wording refreshed."
-    user_notes: null
-    desired_direction: []
-    next_actions: []
-    risk_flags: []
-    files_reviewed: [README.md, INSTRUCTIONS.md]
-
-  - id: repo_organization
-    name: Repo organization
-    category: repo
-    weight: 3
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Logical data/docs/tests/decisions/archive layout; root Markdown reduced to the 12 files declared by README."
-    user_basis: null
-    evidence:
-      - "Archived three completed temporary/session documents; root Markdown count is 12."
-      - "NEXT_AGENT_HANDOFF reduced from 741 lines to current-state guidance with history pointers."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Keep dated audits and superseded proposals out of the root."
-    risk_flags: []
-    files_reviewed: [README.md, NEXT_AGENT_HANDOFF.md, archive/README.md, decisions/README.md]
-
-  - id: code_hygiene
-    name: Code hygiene
-    category: engineering
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The missing import and redundant imports are repaired with executable Node/browser coverage; dormant overview code and absent no-undef lint remain."
-    user_basis: null
-    evidence:
-      - "Direct columns.js formatter probe raises ReferenceError for isExtraEditionRow."
-      - "Ten app ID lookups are absent from index.html; several imported names are unused."
-      - "Ruff/ESLint are absent from declared tooling and CI."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Repair the missing import and add ESLint no-undef or equivalent full-module checking."
-    risk_flags:
-      - "Production free-variable defect on the audited baseline."
-    files_reviewed: [docs/app.js, docs/js/columns.js, docs/js/data-utils.js, docs/js/mobile.js, docs/index.html]
-
-  - id: architecture
-    name: Architecture
-    category: engineering
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Two-lane deterministic static architecture is strong; frontend module boundaries and cache/version strategy need correction."
-    user_basis: null
-    evidence:
-      - "All six check modes pass and raw/curated generation chains were traced end to end."
-      - "Seven extracted modules exist, but nested imports bypass top-level content versions."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Adopt one complete import-graph versioning/bundling strategy."
-    risk_flags:
-      - "Versioned and unversioned URLs identify duplicate module instances."
-    files_reviewed: [process_data.py, build_research_master.py, build_catalogue_pages.py, pipeline, docs/app.js, docs/js]
-
-  - id: maintainability
-    name: Maintainability
-    category: engineering
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Frontend cleanup removed 411 net lines, all 10 absent-ID paths, overview/stats/review-nav modules/styles, and leaves app.js 1,801 lines/CSS 2,137 lines; module cache strategy remains follow-up."
-    user_basis: null
-    evidence:
-      - "app.js has 83 named functions; style.css has 11 media-query blocks."
-      - "Dormant hero/stats/review-navigation implementation remains in app/modules/CSS without HTML."
-      - "Build-manifest refresh is manually maintained."
-    user_notes: null
-    desired_direction:
-      - "Prioritize executable boundary tests before further modularization."
-    next_actions:
-      - "Remove or restore dormant UI, then split orchestration only behind tests."
-    risk_flags: []
-    files_reviewed: [docs/app.js, docs/style.css, docs/js, docs/build-manifest.json]
-
-  - id: type_safety_validation
-    name: Type safety / validation
-    category: engineering
-    weight: 3
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Data validators and controlled vocabularies are deep; runtime JavaScript identifiers and module contracts are not statically validated."
-    user_basis: null
-    evidence:
-      - "Validators cover IDs, relationships, candidates, formats, display order, filenames, and mirrors."
-      - "Missing JavaScript import escaped syntax and Python contract tests."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Add frontend no-undef/import analysis; consider TypedDict or schema generation for Python rows."
-    risk_flags: []
-    files_reviewed: [pipeline/validators.py, tests/test_pipeline.py, docs/js]
-
-  - id: error_handling_logging
-    name: Error handling / logging
-    category: engineering
-    weight: 3
-    target: 8
-    ai_score: 7
-    user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: needs_work
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The formatter regression is repaired and directly tested; generic asynchronous Tabulator-render failures still lack a dedicated fatal state."
-    user_basis: null
-    evidence:
-      - "process_data and fetcher failure paths are tested."
-      - "activateView handles AbortError/load failures; columns.js formatter has an uncaught ReferenceError."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Execute formatter paths in tests and provide a visible fatal-render state if table initialization fails asynchronously."
-    risk_flags:
-      - "Primary UI may fail inside Tabulator formatter execution."
-    files_reviewed: [process_data.py, fetch_veritas_catalogue.py, docs/app.js, docs/js/columns.js]
-
-  - id: dependency_hygiene
-    name: Dependency hygiene
-    category: engineering
-    weight: 3
-    target: 8
-    ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Dependencies are minimal, CI Python versions are constrained, Playwright is exactly locked, and audits are clean."
-    user_basis: null
-    evidence:
-      - "npm audit reports 0 vulnerabilities; npm ls is clean; pip check passes."
-      - "Fresh constrained venv installed pandas 3.0.5 and coverage 7.15.4."
-    user_notes: null
-    desired_direction: []
-    next_actions: []
-    risk_flags: []
-    files_reviewed: [requirements.txt, requirements-dev.txt, requirements-ci.txt, package.json, package-lock.json]
-
-  - id: tests
-    name: Tests
-    category: quality
-    weight: 5
-    target: 8
-    ai_score: 9
-    user_score: null
-    effective_score: 9
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "149 offline tests, one Node formatter test, 90% Python coverage, and 26 Playwright specs now pass in PR CI; executable module coverage closes the P0 blind spot."
-    user_basis: null
-    evidence:
-      - "149/149 unittest pass; 2327 statements at 90%, floor 85%."
-      - "Six check modes and delivery hashes pass."
-      - "Targeted formatter execution finds the missing import that static tests miss."
-      - "Local Chromium download failed with ECONNRESET; GitHub browser CI is authoritative."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Add JS unit/runtime tests for every column formatter and a search-highlight assertion."
-    risk_flags:
-      - "Static contract checks can be green while JavaScript execution is broken."
-    files_reviewed: [tests/test_pipeline.py, tests/test_style_contrast.py, tests/blank-rows.spec.js, tests/column-layout.spec.js, tests/csv-export.spec.js, tests/presentation-ux.spec.js, tests/ux-enhancements.spec.js]
-
-  - id: ci_cd
-    name: CI/CD
-    category: operations
-    weight: 4
-    target: 8
-    ai_score: 7
-    user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 4
-    status: blocked_manual_workflow_edit
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "CI now proves the P0 repair with a green 26-spec browser run, but required checks and Pages gating remain owner-applied."
-    user_basis: null
-    evidence:
-      - "Pages for aa1f1b7 completed while its CI browser step was still running."
-      - "GitHub Pages API reports build_type legacy and source main:/docs."
-      - "Required branch-protection state is inaccessible to the integration; prior merge timing proves the risk."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Owner: require the aggregate CI check and apply the gated Pages workflow in manual-workflow-edits.md."
-    risk_flags:
-      - "Deployment can publish a browser-regressed commit before CI completes."
-    files_reviewed: [.github/workflows/ci.yml, .github/workflows/update_spreadsheet.yml, .github/workflows/map_veritas_catalogue.yml, .scoreboard/manual-workflow-edits.md]
-
-  - id: security_privacy
-    name: Security / privacy
-    category: risk
-    weight: 5
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Static read-only site, restrictive CSP, SRI-pinned Tabulator, safe link attributes, and no secrets or PII collection."
-    user_basis: null
-    evidence:
-      - "Tracked-file secret-pattern scan found no credentials."
-      - "Dynamic record values are inserted with DOM/text APIs; external links use noopener noreferrer."
-      - "npm audit found zero vulnerabilities."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Optionally remove inline style dependencies and self-host fonts/CDN assets."
-    risk_flags:
-      - "CSP style-src permits unsafe-inline (low severity for current read-only data)."
-    files_reviewed: [docs/index.html, docs/app.js, docs/js, package-lock.json]
-
-  - id: performance
-    name: Performance
-    category: quality
-    weight: 3
-    target: 8
-    ai_score: 7
-    user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: needs_work
-    confidence: medium
-    last_audited: "2026-08-10"
-    ai_basis: "Payloads and algorithms are appropriate for 374 rows, but there is no measured browser budget and duplicate module URL identities add avoidable work."
-    user_basis: null
-    evidence:
-      - "Largest JSON payload is 394 KB; app/style are approximately 78/80 KB before compression."
-      - "Tabulator virtual DOM, linear filters, and full-row width measurement are reasonable at current scale."
-      - "No Lighthouse/Web Vitals run was available."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Measure Lighthouse/Web Vitals after the P0 repair; eliminate duplicate nested module loads."
-    risk_flags: []
-    files_reviewed: [docs/app.js, docs/js, docs/*.json]
-
-  - id: github_pages_presentation
-    name: GitHub Pages presentation
-    category: presentation
-    weight: 5
-    target: 8
-    ai_score: 7
-    user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 5
-    status: needs_work
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The repaired branch passes all 26 browser specs and its content contract; legacy Pages still serves the broken baseline until merge/deploy and owner acceptance."
-    user_basis: "Owner previously indicated an older 5/10 score was outdated; no new score is inferred."
-    evidence:
-      - "The baseline formatter probe failed; the repaired Node probe and 26/26 PR browser specs pass."
-      - "Content hashes and visible build ID are synchronized on the repaired branch."
-      - "Legacy Pages still serves the broken baseline until merge/deploy."
-    user_notes: "Do not treat Pages artifact success as proof that the presentation reached the end user."
-    desired_direction:
-      - "Versioned, browser-verified delivery with explicit owner acceptance."
-    next_actions:
-      - "Merge/deploy PR #64, verify exact live hashes/screenshots, and request owner acceptance."
-    risk_flags:
-      - "Public Pages still serves the broken baseline until merge/deploy."
-      - "Owner visual acceptance remains pending."
-    files_reviewed: [docs/index.html, docs/app.js, docs/style.css, docs/js/columns.js, docs/build-manifest.json]
-
-  - id: ux_usability
-    name: UX / usability
-    category: presentation
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: 8
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The primary grid and Extra badge are browser-verified after repair; search highlighting, dormant UI layers, and shortcuts-dialog behavior remain follow-up debt."
-    user_basis: "Owner explicitly provided UX Presentation 8/10 in the 2026-08-09 session; preserved unchanged."
-    evidence:
-      - "Facets, Browse cards, Series view, export, persistence, expert columns, and row details are implemented."
-      - "Search highlight formatter captures initialization query rather than live state."
-      - "Ten JS-managed UI IDs are absent from HTML."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Repair runtime and highlighting, then ask owner to reassess the exact deployed build if desired."
-    risk_flags:
-      - "User score predates the audited frontend regression; it is preserved but does not erase the risk."
-    files_reviewed: [docs/index.html, docs/app.js, docs/js, docs/style.css]
-
-  - id: accessibility
-    name: Accessibility
-    category: presentation
-    weight: 3
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: medium
-    last_audited: "2026-08-10"
-    ai_basis: "Labels, focus styles, reduced motion, roving tabs, row drawer, and shortcuts modal now provide focus entry/trap/Escape/restore behavior; an automated axe scan remains optional follow-up."
-    user_basis: null
-    evidence:
-      - "Row-details modal moves/traps/restores focus."
-      - "Shortcuts dialog now uses aria-modal/labelledby, initial focus, Tab wrap, Escape close, and focus restoration."
-      - "PR CI run 31377436991 passed the focused modal browser regression and 27/27 specs."
-      - "No axe-core/Lighthouse accessibility job is configured."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Optionally add axe-core coverage for desktop, mobile Browse, empty lanes, and both dialogs."
-    risk_flags: []
-    files_reviewed: [docs/index.html, docs/app.js, docs/style.css, tests/presentation-ux.spec.js]
-
-  - id: content_quality
-    name: Content quality
-    category: presentation
-    weight: 3
-    target: 8
-    ai_score: 9
-    user_score: 7
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: user_unhappy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Independent probes found complete required fields, valid identifiers/URLs, dense display order, and no duplicate IDs/codes/filenames."
-    user_basis: "Owner explicitly provided content_quality 7/10 on 2026-08-09; canonical score preserved unchanged."
-    evidence:
-      - "363 masters: 306 lecture, 41 book, 8 discussion, 7 highlight, 1 other."
-      - "278 unique codes, 363 unique filenames, 191 works, no unresolved relationship IDs."
-      - "All six checks and reconciliation pass."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Resolve issue #18 ownership cross-check when owner Drive access is available."
-    risk_flags: []
-    files_reviewed: [data, docs/master.json, docs/catalogue-meta.json, migration_review_ledger.csv, RECONCILIATION_REPORT.md]
-
-  - id: feature_completeness
-    name: Feature completeness
-    category: product
-    weight: 4
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "All documented catalogue/review sheets and the repaired primary grid pass browser CI; dormant removed-interface code is maintainability debt rather than a blocker."
-    user_basis: null
-    evidence:
-      - "View registry covers all 19 user-facing JSON sheets plus client-side Series view."
-      - "Edition formatter has a confirmed missing import."
-      - "Overview/stats/review-navigation JS/CSS exists without HTML."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Repair the primary grid; restore or remove dormant features; triage issue #18."
-    risk_flags:
-      - "Primary catalogue rendering is not release-ready."
-    files_reviewed: [docs/js/config.js, docs/index.html, docs/app.js, docs/js/columns.js]
-
-  - id: deployment_readiness
-    name: Deployment readiness
-    category: operations
-    weight: 4
-    target: 8
-    ai_score: 6
-    user_score: null
-    effective_score: 6
-    gap: 2
-    priority: 8
-    status: blocked_manual_workflow_edit
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The repair is green in PR CI with observable content hashes, but the exact public deployment is unverified and legacy Pages remains ungated."
-    user_basis: null
-    evidence:
-      - "GitHub Pages API: build_type legacy, source main:/docs."
-      - "Pages aa1f1b7 succeeded before its browser CI completed."
-      - "Manifest hashes match committed bytes; this did not detect the missing import."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Owner: apply gated Pages workflow/settings after P0 repair and green CI."
-    risk_flags:
-      - "No enforced validation barrier exists between merge and public deployment."
-    files_reviewed: [docs/build-manifest.json, docs/index.html, .scoreboard/manual-workflow-edits.md]
-
-  - id: agent_readiness
-    name: Agent readiness
-    category: operations
-    weight: 5
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Current audit, concise handoffs, scoreboards, commands, incident evidence, and P0 repair status are synchronized; history remains in dated files."
-    user_basis: null
-    evidence:
-      - "Before reconciliation, canonical summary said pass/8.3 while its gate said fail/7.8 and SCOREBOARD said pass/8.5."
-      - "NEXT_AGENT_HANDOFF opened on an old branch and was 741 lines."
-      - "This audit replaced current handoffs and synchronized the scoreboard."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Keep handoffs current and move history to dated audit/history files rather than appending indefinitely."
-    risk_flags: []
-    files_reviewed: [AGENTS.md, NEXT_AGENT_HANDOFF.md, SCOREBOARD.md, .scoreboard]
-
-  - id: task_hygiene
-    name: Task hygiene
-    category: operations
-    weight: 3
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The P0 is repaired and PR-validated, root temporary documents are archived, and remaining work is explicitly prioritized."
-    user_basis: null
-    evidence:
-      - "Root Markdown reduced to 12; completed session docs archived."
-      - "GitHub issue #18 is the only open issue; P0 findings are documented in current audit/handoff."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Repair P0 first; convert remaining findings into issues only if they will not be handled immediately."
-    risk_flags: []
-    files_reviewed: [NEXT_AGENT_HANDOFF.md, .scoreboard/agent-handoff.md, GitHub issue list]
-
-  - id: auditability
-    name: Auditability
-    category: operations
-    weight: 3
-    target: 8
-    ai_score: 8
-    user_score: null
-    effective_score: 8
-    gap: 0
-    priority: 0
-    status: healthy
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "Row-level provenance, reviewed overlays, deterministic reports, manifests, decisions, and dated audits are strong; repeated stale audits require disciplined current pointers."
-    user_basis: null
-    evidence:
-      - "Reconciliation is byte-current and all generated outputs are reproducible."
-      - "Current audit records commands, limitations, GitHub evidence, counts, and runtime reproducer."
-    user_notes: null
-    desired_direction: []
-    next_actions:
-      - "Maintain one declared-current audit and archive superseded response/temp files."
-    risk_flags: []
-    files_reviewed: [RECONCILIATION_REPORT.md, migration_review_ledger.csv, decisions, docs/audits]
-
-  - id: repo_transparency
-    name: Repo transparency
-    category: product
-    weight: 3
-    target: 8
-    ai_score: 7
-    user_score: 7
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: needs_work
-    confidence: high
-    last_audited: "2026-08-10"
-    ai_basis: "The architecture is documented in depth, but contradictory scoreboards, repeated audits, and dormant UI claims obscured the actual current state."
-    user_basis: "Owner explicitly provided repo transparency 7/10 on 2026-08-09; preserved unchanged."
-    evidence:
-      - "Current audit and concise handoff now distinguish verified data health from the active frontend blocker."
-      - "Historical details are pointed to rather than repeated in the current handoff."
-    user_notes: "Owner self-assessment of how well the repo's structure, data flow, and current state are understood."
-    desired_direction: []
-    next_actions:
-      - "Keep README, scoreboard, current audit, and handoff synchronized after each release."
-    risk_flags: []
-    files_reviewed: [README.md, SCOREBOARD.md, NEXT_AGENT_HANDOFF.md, .scoreboard]
+- id: project_purpose_scope
+  name: Project purpose / scope
+  category: product
+  weight: 4
+  target: 8
+  ai_score: 9
+  user_score: null
+  effective_score: 9
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: README and INSTRUCTIONS clearly distinguish the raw live spreadsheet from the reviewed curated catalogue.
+  user_basis: null
+  evidence:
+  - README.md and INSTRUCTIONS.md reviewed against both pipeline entry points.
+  user_notes: null
+  desired_direction: []
+  next_actions: []
+  risk_flags: []
+  files_reviewed:
+  - README.md
+  - INSTRUCTIONS.md
+- id: readme_onboarding
+  name: README / onboarding
+  category: documentation
+  weight: 4
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Setup, pipeline safeguards, field semantics, and current counts are thorough; historical current-audit drift was corrected in this
+    audit.
+  user_basis: null
+  evidence:
+  - Quick-start commands reproduced in a fresh venv; README counts match generated data.
+  - Declared-current audit link and coverage wording refreshed.
+  user_notes: null
+  desired_direction: []
+  next_actions: []
+  risk_flags: []
+  files_reviewed:
+  - README.md
+  - INSTRUCTIONS.md
+- id: repo_organization
+  name: Repo organization
+  category: repo
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Logical data/docs/tests/decisions/archive layout; root Markdown reduced to the 12 files declared by README.
+  user_basis: null
+  evidence:
+  - Archived three completed temporary/session documents; root Markdown count is 12.
+  - NEXT_AGENT_HANDOFF reduced from 741 lines to current-state guidance with history pointers.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Keep dated audits and superseded proposals out of the root.
+  risk_flags: []
+  files_reviewed:
+  - README.md
+  - NEXT_AGENT_HANDOFF.md
+  - archive/README.md
+  - decisions/README.md
+- id: code_hygiene
+  name: Code hygiene
+  category: engineering
+  weight: 4
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: The P0 import, redundant imports, and absent-ID UI paths are repaired with executable Node/browser coverage; Ruff/ESLint remain optional
+    tooling gaps.
+  user_basis: null
+  evidence:
+  - Node tests execute the edition formatter, live-query getter, and removed-UI guard.
+  - All app.js element lookups resolve to current HTML IDs.
+  - PR CI run 31378465750 passes 149 offline, 3 Node, and 28 browser tests.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Optionally add ESLint no-undef; executable regressions already cover the incidents.
+  risk_flags: []
+  files_reviewed:
+  - docs/app.js
+  - docs/js/columns.js
+  - docs/js/data-utils.js
+  - docs/js/mobile.js
+  - docs/index.html
+- id: architecture
+  name: Architecture
+  category: engineering
+  weight: 4
+  target: 8
+  ai_score: 9
+  user_score: null
+  effective_score: 9
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Two-lane deterministic data architecture is strong; every local ES-module edge now carries its target hash and the full graph is traversed
+    by the delivery contract.
+  user_basis: null
+  evidence:
+  - All six check modes pass and raw/curated generation chains were traced end to end.
+  - Every app/module import edge carries the target SHA-256 prefix.
+  - FrontendDeliveryContractTests traverses the full local graph and rejects unversioned, escaping, unmanifested, or stale edges.
+  user_notes: null
+  desired_direction: []
+  next_actions: []
+  risk_flags: []
+  files_reviewed:
+  - process_data.py
+  - build_research_master.py
+  - build_catalogue_pages.py
+  - pipeline
+  - docs/app.js
+  - docs/js
+- id: maintainability
+  name: Maintainability
+  category: engineering
+  weight: 4
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Frontend cleanup removed 411 net lines and all absent-ID paths; app.js is 1,801 lines and style.css 2,137 lines, with executable and
+    full-graph contracts guarding future extraction.
+  user_basis: null
+  evidence:
+  - app.js 1,933→1,801; style.css 2,398→2,137; mobile.js/view-utils.js 88/152→61/85.
+  - Node cleanup guard proves all removed UI tokens remain absent.
+  - Full module graph and manifest hashes are contract-tested.
+  user_notes: null
+  desired_direction:
+  - Prioritize executable boundary tests before further modularization.
+  next_actions:
+  - Keep future extraction behind Node/browser and full import-graph contracts.
+  risk_flags: []
+  files_reviewed:
+  - docs/app.js
+  - docs/style.css
+  - docs/js
+  - docs/build-manifest.json
+- id: type_safety_validation
+  name: Type safety / validation
+  category: engineering
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Data schemas/vocabularies and the frontend import graph are validated deeply; Python row dictionaries remain structurally typed rather
+    than schema-generated.
+  user_basis: null
+  evidence:
+  - Validators cover IDs, relationships, candidates, formats, display order, filenames, and mirrors.
+  - Full module-graph contract validates every local import path and target digest.
+  - Node tests execute formatter state and helper paths.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Consider TypedDict or generated schema documentation for Python rows.
+  risk_flags: []
+  files_reviewed:
+  - pipeline/validators.py
+  - tests/test_pipeline.py
+  - docs/js
+- id: error_handling_logging
+  name: Error handling / logging
+  category: engineering
+  weight: 3
+  target: 8
+  ai_score: 7
+  user_score: null
+  effective_score: 7
+  gap: 1
+  priority: 3
+  status: needs_work
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: The formatter regression is repaired and directly tested; generic asynchronous Tabulator-render failures still lack a dedicated fatal
+    state.
+  user_basis: null
+  evidence:
+  - process_data and fetcher failure paths are tested.
+  - activateView handles AbortError/load failures; columns.js formatter has an uncaught ReferenceError.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Execute formatter paths in tests and provide a visible fatal-render state if table initialization fails asynchronously.
+  risk_flags:
+  - Primary UI may fail inside Tabulator formatter execution.
+  files_reviewed:
+  - process_data.py
+  - fetch_veritas_catalogue.py
+  - docs/app.js
+  - docs/js/columns.js
+- id: dependency_hygiene
+  name: Dependency hygiene
+  category: engineering
+  weight: 3
+  target: 8
+  ai_score: 9
+  user_score: null
+  effective_score: 9
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Dependencies are minimal, CI Python versions are constrained, Playwright is exactly locked, and audits are clean.
+  user_basis: null
+  evidence:
+  - npm audit reports 0 vulnerabilities; npm ls is clean; pip check passes.
+  - Fresh constrained venv installed pandas 3.0.5 and coverage 7.15.4.
+  user_notes: null
+  desired_direction: []
+  next_actions: []
+  risk_flags: []
+  files_reviewed:
+  - requirements.txt
+  - requirements-dev.txt
+  - requirements-ci.txt
+  - package.json
+  - package-lock.json
+- id: tests
+  name: Tests
+  category: quality
+  weight: 5
+  target: 8
+  ai_score: 9
+  user_score: null
+  effective_score: 9
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: 149 offline tests, 3 Node frontend tests, 90% Python coverage, and 28 Playwright specs pass in PR CI.
+  user_basis: null
+  evidence:
+  - 149/149 unittest pass; 2,327 statements at 90%, floor 85%.
+  - Node tests cover edition helper execution, live search query state, and removed-UI guards.
+  - PR CI run 31378465750 passes 28/28 browser specs.
+  - All six checks and the complete asset/module delivery contract pass.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Optionally add axe-core and Lighthouse automation.
+  risk_flags: []
+  files_reviewed:
+  - tests/test_pipeline.py
+  - tests/test_style_contrast.py
+  - tests/blank-rows.spec.js
+  - tests/column-layout.spec.js
+  - tests/csv-export.spec.js
+  - tests/presentation-ux.spec.js
+  - tests/ux-enhancements.spec.js
+- id: ci_cd
+  name: CI/CD
+  category: operations
+  weight: 4
+  target: 8
+  ai_score: 7
+  user_score: null
+  effective_score: 7
+  gap: 1
+  priority: 4
+  status: blocked_manual_workflow_edit
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: CI proves the P0, cleanup, live search, and full module graph with 149 offline, 3 Node, and 28 browser tests; required checks and
+    Pages gating remain owner-applied.
+  user_basis: null
+  evidence:
+  - 'PR #64 run 31378465750 passes all stages.'
+  - Legacy Pages deployed aa1f1b7 before its 25/25 browser failure.
+  - Manual required-check and gated Pages instructions are current.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - 'Owner: require the aggregate CI check and apply the gated Pages workflow in manual-workflow-edits.md.'
+  risk_flags:
+  - Deployment can publish a browser-regressed commit before CI completes.
+  files_reviewed:
+  - .github/workflows/ci.yml
+  - .github/workflows/update_spreadsheet.yml
+  - .github/workflows/map_veritas_catalogue.yml
+  - .scoreboard/manual-workflow-edits.md
+- id: security_privacy
+  name: Security / privacy
+  category: risk
+  weight: 5
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Static read-only site, restrictive CSP, SRI-pinned Tabulator, safe link attributes, and no secrets or PII collection.
+  user_basis: null
+  evidence:
+  - Tracked-file secret-pattern scan found no credentials.
+  - Dynamic record values are inserted with DOM/text APIs; external links use noopener noreferrer.
+  - npm audit found zero vulnerabilities.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Optionally remove inline style dependencies and self-host fonts/CDN assets.
+  risk_flags:
+  - CSP style-src permits unsafe-inline (low severity for current read-only data).
+  files_reviewed:
+  - docs/index.html
+  - docs/app.js
+  - docs/js
+  - package-lock.json
+- id: performance
+  name: Performance
+  category: quality
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: medium
+  last_audited: '2026-08-10'
+  ai_basis: Payloads and algorithms are appropriate for 374 rows, and consistent module URL identities remove duplicate versioned/unversioned
+    loads; Lighthouse remains optional measurement.
+  user_basis: null
+  evidence:
+  - Largest JSON payload is 394 KB; app/style are approximately 73/71 KB before compression.
+  - Tabulator virtual DOM, linear filters, and full-row width measurement are reasonable at current scale.
+  - All local module imports resolve to the same hash-versioned absolute URLs.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Optionally establish a Lighthouse/Web Vitals budget.
+  risk_flags: []
+  files_reviewed:
+  - docs/app.js
+  - docs/js
+  - docs/*.json
+- id: github_pages_presentation
+  name: GitHub Pages presentation
+  category: presentation
+  weight: 5
+  target: 8
+  ai_score: 7
+  user_score: null
+  effective_score: 7
+  gap: 1
+  priority: 5
+  status: needs_work
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: The repaired branch passes 28 browser specs and the complete content contract; legacy Pages still serves the broken baseline until
+    merge/deploy and owner acceptance.
+  user_basis: Owner previously indicated an older 5/10 score was outdated; no new score is inferred.
+  evidence:
+  - Live-query highlights, edition badge, row styling, navigation, mobile Browse, exports, and both modal flows pass browser CI.
+  - App/style/module hashes and visible build ID are synchronized.
+  - Legacy Pages still serves aa1f1b7 until merge/deploy.
+  user_notes: Do not treat Pages artifact success as proof that the presentation reached the end user.
+  desired_direction:
+  - Versioned, browser-verified delivery with explicit owner acceptance.
+  next_actions:
+  - 'Merge/deploy PR #64, verify exact live hashes/screenshots, and request owner acceptance.'
+  risk_flags:
+  - Public Pages still serves the broken baseline until merge/deploy.
+  - Owner visual acceptance remains pending.
+  files_reviewed:
+  - docs/index.html
+  - docs/app.js
+  - docs/style.css
+  - docs/js/columns.js
+  - docs/build-manifest.json
+- id: ux_usability
+  name: UX / usability
+  category: presentation
+  weight: 4
+  target: 8
+  ai_score: 8
+  user_score: 8
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Primary grid, live search highlighting, facets, Browse, exports, persistence, and focus-managed dialogs are browser-verified.
+  user_basis: Owner explicitly provided UX Presentation 8/10 in the 2026-08-09 session; preserved unchanged.
+  evidence:
+  - Search formatters read a live query getter on every redraw and browser tests assert visible marks.
+  - All 10 dormant absent-ID paths were removed.
+  - PR CI passes 28/28 UX/browser specs.
+  user_notes: null
+  desired_direction: []
+  next_actions: []
+  risk_flags: []
+  files_reviewed:
+  - docs/index.html
+  - docs/app.js
+  - docs/js
+  - docs/style.css
+- id: accessibility
+  name: Accessibility
+  category: presentation
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: medium
+  last_audited: '2026-08-10'
+  ai_basis: Labels, focus styles, reduced motion, roving tabs, row drawer, and shortcuts modal now provide focus entry/trap/Escape/restore behavior;
+    an automated axe scan remains optional follow-up.
+  user_basis: null
+  evidence:
+  - Row-details modal moves/traps/restores focus.
+  - Shortcuts dialog uses aria-modal/labelledby, initial focus, Tab wrap, Escape close, and focus restoration.
+  - PR CI run 31378465750 passes focused modal tests and all 28 browser specs.
+  - No axe-core accessibility job is configured.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Optionally add axe-core coverage for desktop, mobile Browse, empty lanes, and both dialogs.
+  risk_flags: []
+  files_reviewed:
+  - docs/index.html
+  - docs/app.js
+  - docs/style.css
+  - tests/presentation-ux.spec.js
+- id: content_quality
+  name: Content quality
+  category: presentation
+  weight: 3
+  target: 8
+  ai_score: 9
+  user_score: 7
+  effective_score: 7
+  gap: 1
+  priority: 3
+  status: user_unhappy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Independent probes found complete required fields, valid identifiers/URLs, dense display order, and no duplicate IDs/codes/filenames.
+  user_basis: Owner explicitly provided content_quality 7/10 on 2026-08-09; canonical score preserved unchanged.
+  evidence:
+  - '363 masters: 306 lecture, 41 book, 8 discussion, 7 highlight, 1 other.'
+  - 278 unique codes, 363 unique filenames, 191 works, no unresolved relationship IDs.
+  - All six checks and reconciliation pass.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - 'Resolve issue #18 ownership cross-check when owner Drive access is available.'
+  risk_flags: []
+  files_reviewed:
+  - data
+  - docs/master.json
+  - docs/catalogue-meta.json
+  - migration_review_ledger.csv
+  - RECONCILIATION_REPORT.md
+- id: feature_completeness
+  name: Feature completeness
+  category: product
+  weight: 4
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: All documented catalogue/review sheets, live search, Series/Browse modes, exports, and dialogs pass browser CI; removed overview layers
+    are guarded against returning.
+  user_basis: null
+  evidence:
+  - View registry covers all 19 user-facing JSON sheets plus client-side Series view.
+  - Primary grid and edition formatter pass browser/Node execution.
+  - Node guard confirms removed overview/stats/review-nav tokens stay absent.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - 'Triage issue #18 when owner Drive access is available.'
+  risk_flags: []
+  files_reviewed:
+  - docs/js/config.js
+  - docs/index.html
+  - docs/app.js
+  - docs/js/columns.js
+- id: deployment_readiness
+  name: Deployment readiness
+  category: operations
+  weight: 4
+  target: 8
+  ai_score: 6
+  user_score: null
+  effective_score: 6
+  gap: 2
+  priority: 8
+  status: blocked_manual_workflow_edit
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: 'PR #64 is fully green with observable hashes, but exact public deployment is unverified and legacy Pages remains ungated.'
+  user_basis: null
+  evidence:
+  - 'GitHub Pages API: build_type legacy, source main:/docs.'
+  - PR CI run 31378465750 passes 149 offline, 3 Node, and 28 browser tests.
+  - Manifest and visible build revision cover app, style, data, and every module.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - 'Merge/deploy PR #64 and verify the live revision; owner then applies gated Pages workflow/settings.'
+  risk_flags:
+  - No enforced validation barrier exists between merge and public deployment.
+  files_reviewed:
+  - docs/build-manifest.json
+  - docs/index.html
+  - .scoreboard/manual-workflow-edits.md
+- id: agent_readiness
+  name: Agent readiness
+  category: operations
+  weight: 5
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Current audit, concise handoffs, synchronized scoreboards, executable checks, incident history, and repair/cleanup/P1 evidence give
+    a fresh agent current context.
+  user_basis: null
+  evidence:
+  - NEXT_AGENT_HANDOFF is concise and current.
+  - Canonical and human scoreboards reconcile to 7.9.
+  - All safe build/check/test commands are documented.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Keep handoffs current and move history to dated audit/history files rather than appending indefinitely.
+  risk_flags: []
+  files_reviewed:
+  - AGENTS.md
+  - NEXT_AGENT_HANDOFF.md
+  - SCOREBOARD.md
+  - .scoreboard
+- id: task_hygiene
+  name: Task hygiene
+  category: operations
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: 'P0, dead-UI cleanup, shortcuts accessibility, live highlighting, and module graph debt are resolved and PR-validated; remaining work
+    is owner deployment plus issue #18.'
+  user_basis: null
+  evidence:
+  - Root Markdown count is 12; completed session docs are archived.
+  - 'PR #64 is green; GitHub issue #18 is the only open data issue.'
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - 'Merge/deploy PR #64; then resolve issue #18 when Drive access exists.'
+  risk_flags: []
+  files_reviewed:
+  - NEXT_AGENT_HANDOFF.md
+  - .scoreboard/agent-handoff.md
+  - GitHub issue list
+- id: auditability
+  name: Auditability
+  category: operations
+  weight: 3
+  target: 8
+  ai_score: 8
+  user_score: null
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: Row-level provenance, reviewed overlays, deterministic reports, manifests, decisions, and dated audits are strong; repeated stale
+    audits require disciplined current pointers.
+  user_basis: null
+  evidence:
+  - Reconciliation is byte-current and all generated outputs are reproducible.
+  - Current audit records commands, limitations, GitHub evidence, counts, and runtime reproducer.
+  user_notes: null
+  desired_direction: []
+  next_actions:
+  - Maintain one declared-current audit and archive superseded response/temp files.
+  risk_flags: []
+  files_reviewed:
+  - RECONCILIATION_REPORT.md
+  - migration_review_ledger.csv
+  - decisions
+  - docs/audits
+- id: repo_transparency
+  name: Repo transparency
+  category: product
+  weight: 3
+  target: 8
+  ai_score: 7
+  user_score: 7
+  effective_score: 7
+  gap: 1
+  priority: 3
+  status: needs_work
+  confidence: high
+  last_audited: '2026-08-10'
+  ai_basis: The architecture, baseline incident, repairs, cleanup, live-query fix, module graph, scores, tests, and remaining owner actions are
+    now synchronized and directly evidenced.
+  user_basis: Owner explicitly provided repo transparency 7/10 on 2026-08-09; preserved unchanged.
+  evidence:
+  - Current audit and handoffs distinguish baseline failure, branch validation, and public deployment status.
+  - Historical details remain in dated audits/history rather than current handoff repetition.
+  user_notes: Owner self-assessment of how well the repo's structure, data flow, and current state are understood.
+  desired_direction: []
+  next_actions:
+  - Keep README, scoreboard, current audit, and handoff synchronized after merge/deploy.
+  risk_flags: []
+  files_reviewed:
+  - README.md
+  - SCOREBOARD.md
+  - NEXT_AGENT_HANDOFF.md
+  - .scoreboard

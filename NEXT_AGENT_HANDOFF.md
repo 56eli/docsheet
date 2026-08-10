@@ -15,36 +15,30 @@
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression; this branch now carries a targeted repair with local executable coverage, pending GitHub browser validation.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression and was deployed before CI; PR #64 now repairs that incident plus all selected cleanup and P1 findings.
 
-## 2. P0 repair status
+## 2. Incident and completed frontend work
 
-The audited baseline's `docs/js/columns.js:242` called `isExtraEditionRow(row)` without importing it from `docs/js/data-utils.js`. A direct module/formatter probe reproduced:
+The baseline's `docs/js/columns.js` called `isExtraEditionRow(row)` without importing it. Main CI run `31373716254` failed **25/25 Playwright specs** because no row rendered, after legacy Pages had already deployed the commit.
 
-```text
-ReferenceError: isExtraEditionRow is not defined
-```
+This branch now:
 
-Main CI run `31373716254` independently confirmed end-user impact: **25/25 Playwright specs failed** because no `.tabulator-row` rendered, even though the legacy Pages deployment had already succeeded.
+1. restores the missing import and removes redundant imports;
+2. executes edition formatting in Node and browser regressions;
+3. removes all 10 absent-ID overview/stats/review-nav paths and 411 net lines;
+4. completes shortcuts-modal labelling, focus entry/trap, Escape close, and focus restoration;
+5. passes a live search-query getter into formatters so highlights update on every redraw;
+6. applies target-hash query versions to every local ES-module edge;
+7. traverses the full import graph in `FrontendDeliveryContractTests`;
+8. refreshes module/app/style hashes, visible build ID, and the build manifest.
 
-The repair on this branch:
+Local checks pass. PR #64 CI run `31378465750` passes 149 offline, 3 Node, and **28/28 Playwright tests**. Merge/deploy plus exact live-build verification remain.
 
-1. imports `isExtraEditionRow` in `columns.js`;
-2. removes redundant imports from `app.js` and `mobile.js`;
-3. adds `tests/frontend-modules.test.mjs`, which executes the edition formatter and checks the row-373 Extra badge;
-4. runs that Node test automatically through `pretest:e2e` before Playwright;
-5. adds a focused browser regression, bringing the Playwright suite to 26 specs;
-6. refreshes module/app versions, visible build ID, and `docs/build-manifest.json`.
+### Remaining findings
 
-Local Node, Python, coverage, syntax, dependency, and six-check verification passes. PR #64 CI run `31375672387` also passes the Node test and all 26 Playwright specs; merge/deploy plus exact live-build verification remain.
-
-### Other confirmed frontend findings
-
-- Search filtering is live, but extracted column formatters captured the empty string passed at initialization, so later search terms are not highlighted. Pass a query getter or otherwise read current state at formatter execution.
-- Nested ES-module imports are unversioned even though `app.js` imports each module with `?v=`. This produces duplicate URL identities and permits stale nested modules; fix the whole import graph or bundle it.
-- Ten app lookups have no matching HTML element: `catalogue-intro`, `hero`, `hero-dismiss`, `overview-btn`, `overview-cards`, `review-nav-groups`, `review-nav-toggle`, `series-strip-list`, `show-stats-toggle`, `stats-strip`. Restore and test that interface or remove its dormant JS/CSS.
-- The keyboard-shortcuts dialog lacks complete modal focus/Escape behavior.
 - Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Axe/Lighthouse automation is optional follow-up, not a current release blocker.
+- Issue #18 still needs owner Drive access.
 
 ## 3. Current verified state
 
@@ -76,7 +70,8 @@ PASS  149/149 Python unit/contract/style tests
 PASS  90% Python statement coverage (2327 statements; floor 85%)
 PASS  recursive Python compilation
 PASS  JavaScript syntax for app, all 7 modules, Node/browser specs
-PASS  Node edition-formatter regression (1/1)
+PASS  Node frontend regressions (3/3)
+PASS  full ES-module import-graph hash contract
 PASS  npm audit: 0 vulnerabilities
 PASS  pip check
 PASS  repaired targeted edition formatter runtime probe
@@ -84,7 +79,7 @@ BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
 BLOCK live curl probe (sandbox TLS connection restriction)
 ```
 
-Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31375672387` proves the repair passes the Node regression and 26/26 browser specs. The exact public deployment still needs verification.
+Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31378465750` proves the repaired/cleaned frontend passes 3/3 Node and 28/28 browser tests. The exact public deployment still needs verification.
 
 ## Data pipeline rules
 
@@ -165,9 +160,7 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 1. Merge/deploy PR #64, verify the exact live build revision/hashes/screenshots, and obtain owner acceptance.
 2. Owner: require CI and gate Pages deployment.
-3. Repair live search highlighting after extraction.
-4. Make nested module cache versioning consistent.
-5. Optionally add axe-core/Lighthouse automation.
-6. Resolve GitHub issue #18 when owner Drive access is available.
+3. Optionally add axe-core/Lighthouse automation.
+4. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.

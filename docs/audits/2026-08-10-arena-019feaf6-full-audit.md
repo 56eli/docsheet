@@ -27,7 +27,7 @@ After the audit, the owner selected the recommended P0 repair. This branch now i
 - `tests/frontend-modules.test.mjs` invokes the edition formatter directly and verifies that only Power vs. Force row 373 renders the Extra badge;
 - a new Playwright case records page errors, searches for the original hardcover, and asserts its rendered Extra badge, bringing the browser suite from 25 to 26 specs.
 
-`pretest:e2e` runs the Node tests automatically before Playwright. The selected cleanup follow-up removed all 10 absent-ID overview/stats/review-nav paths plus their builders/styles (411 net lines), added a Node guard against their return, and completed the shortcuts modal's `aria-modal`/labelledby, initial focus, Tab trap, Escape close, and focus restoration. Local results are green for the Node tests (2/2), Python suite (149/149), 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`, but PR #64 CI run `31377436991` passed **27/27 Playwright specs**. The baseline scores below preserve the audited/deployed `aa1f1b7` snapshot; the post-cleanup scoreboard rises to 7.8/10 and remains gate-failing only because the exact public deployment is unverified, Pages is ungated, and the total is below 8.
+`pretest:e2e` runs the Node tests automatically before Playwright. Follow-up work removed all 10 absent-ID overview/stats/review-nav paths plus their builders/styles (411 net lines), completed the shortcuts modal focus lifecycle, restored live search highlighting through a query getter, and hash-versioned every local ES-module edge. The Python contract now traverses the full import graph. Local results are green for 3/3 Node tests, 149/149 Python tests, 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`, but PR #64 CI run `31378465750` passed **28/28 Playwright specs**. The baseline scores below preserve the audited/deployed `aa1f1b7` snapshot; the current scoreboard rises to 7.9/10 and remains gate-failing only because the exact public deployment is unverified, Pages is ungated, and the total is below 8.
 
 ## Priority findings
 
@@ -73,13 +73,13 @@ The Pages build for `aa1f1b7` completed successfully at 09:15 UTC while the `CI`
 2. deploy Pages only after successful `main` CI;
 3. verify the manifest revision, asset hashes, row count, and browser screenshot after deploy.
 
-### P1 — Search highlighting became stale during module extraction
+### P1 — Search highlighting became stale during module extraction (resolved on PR #64)
 
 `app.js` passes the current string value of `activeSearchQuery` into `buildColumns(...)` once, during table initialization. The extracted formatter closures in `columns.js` capture that primitive value. A targeted formatter probe confirms the query received later is still `""`; changing the app's module variable cannot mutate the copied argument.
 
 Filtering still uses the live `activeSearchQuery`, but cell `<mark class="search-highlight">` rendering no longer follows later search input. Pass a getter such as `() => activeSearchQuery`, or pass the live query during formatter execution, and add a browser assertion that searched text receives `.search-highlight`.
 
-### P1 — Nested module imports bypass the new content-version contract
+### P1 — Nested module imports bypass the new content-version contract (resolved on PR #64)
 
 `app.js` imports all seven modules with `?v=<sha-prefix>`, and the manifest records their hashes. However, extracted modules import one another with unversioned URLs:
 
@@ -93,7 +93,7 @@ In browser module identity, `config.js?v=...` and `config.js` are different URLs
 
 Use one consistent strategy: version every edge, generate an import map, or bundle the frontend. Extend the contract test to traverse every static import, not only imports originating in `app.js`.
 
-### P1 — Frontend contains a removed UI still implemented in JavaScript and CSS
+### P1 — Frontend contains a removed UI still implemented in JavaScript and CSS (resolved on PR #64)
 
 Ten IDs looked up by `app.js` do not exist in `index.html`:
 
@@ -112,7 +112,7 @@ Choose one direction explicitly:
 
 Do not keep both a simplified interface and the old interface's dormant implementation.
 
-### P2 — Keyboard-shortcuts dialog is not a complete modal
+### P2 — Keyboard-shortcuts dialog is not a complete modal (resolved on PR #64)
 
 `toggleShortcutsHelp()` creates `role="dialog"`, but it does not set `aria-modal`, move focus to the Close button, trap focus, restore prior focus, or close on Escape. The dialog itself promises “Esc — Close dialogs,” while the global Escape handler closes menus and row details only. The row-details drawer already implements the correct focus lifecycle and can be reused.
 
@@ -319,15 +319,11 @@ Live-site curl/hash probe                                        NOT RUN
 ## Recommended sequence
 
 1. **P0 completed on branch:** repaired the missing `isExtraEditionRow` import and added executable Node/browser formatter coverage.
-2. **P0/cleanup CI completed:** PR #64 run `31377436991` passed 149 offline, 2 Node, and all 27 Playwright tests; merge/deploy and verify the exact build ID/hashes/screenshots next.
+2. **P0/cleanup/P1 CI completed:** PR #64 run `31378465750` passed 149 offline, 3 Node, and all 28 Playwright tests; merge/deploy and verify the exact build ID/hashes/screenshots next.
 3. **P0 owner action:** require CI and switch Pages from legacy branch deployment to the gated workflow.
-4. **P1:** fix the stale search-highlight closure and test highlighting, not only filtering.
-5. **P1:** make cache versioning consistent across the full module graph.
-6. **P1:** decide whether to restore or delete the absent hero/stats/review-nav feature set.
-7. **P2:** complete shortcuts-dialog accessibility and add axe-core checks.
-8. **P2:** add ESLint `no-undef` (or equivalent) and execute pure JS modules in unit tests.
-9. **P3:** continue splitting `app.js` by orchestration boundary only after the regression tests exist.
-10. **Owner/data:** resolve issue #18 when the Drive inventory is available.
+4. **Optional quality tooling:** add axe-core, Lighthouse, and ESLint if their maintenance cost is accepted.
+5. **P3:** continue splitting `app.js` only behind the Node/browser and full import-graph contracts.
+6. **Owner/data:** resolve issue #18 when the Drive inventory is available.
 
 ## Final assessment
 

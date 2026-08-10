@@ -121,3 +121,13 @@ User-selected cleanup removed dormant interface layers and completed modal keybo
 | 2026-08-10 | maintainability | 7 | 8 | null | 8 | Arena 019feaf6 | Removed all 10 absent-ID app paths and overview/stats/review-nav builders/styles: app.js 1933→1801, CSS 2398→2137, mobile/view-utils 88/152→61/85; Node guard prevents return. |
 | 2026-08-10 | accessibility | 7 | 8 | null | 8 | Arena 019feaf6 | Shortcuts dialog now has aria-modal/labelledby, initial focus, Tab wrap, Escape close, and trigger-focus restoration; focused browser regression passes. |
 | 2026-08-10 | overall_effective_score | 7.7 | 7.8 | preserved | 7.8 | Arena 019feaf6 | Recomputed 671/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |
+
+## 2026-08-10 — Arena 019feaf6 live-search and full module-graph follow-up
+
+User-selected P1 work restored dynamic search highlighting and made every local module edge content-versioned. PR #64 CI run `31378465750` passed 149 offline, 3 Node, and 28/28 browser tests; user scores remain unchanged.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | architecture | 8 | 9 | null | 9 | Arena 019feaf6 | Every local ES-module edge now carries its target hash; delivery contract traverses and validates the complete graph. |
+| 2026-08-10 | performance | 7 | 8 | null | 8 | Arena 019feaf6 | Nested/top-level imports now share one hash-versioned URL identity, eliminating duplicate/stale module loads. |
+| 2026-08-10 | overall_effective_score | 7.8 | 7.9 | preserved | 7.9 | Arena 019feaf6 | Recomputed 678/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |
