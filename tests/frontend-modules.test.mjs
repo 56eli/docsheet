@@ -167,6 +167,14 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
   const { createOdsArchive } = await import("../docs/js/ods-export.js");
   const sample = [
     {
+      uuid: 99,
+      work_id: "w-lecture",
+      title: "Lecture Series Sample",
+      series: "Lecture Series",
+      year_month: "2002-01",
+      notes: "",
+    },
+    {
       uuid: 100,
       work_id: "w-power-vs-force",
       title: "Power vs. Force",
@@ -184,7 +192,11 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
     },
   ];
 
-  const getRowBlockId = (row) => (row.series === "Books" ? "books" : "lecture-highlights");
+  const getRowBlockId = (row) => {
+    if (row.series === "Books") return "books";
+    if (row.series === "Lecture Series") return "lectures-2002-2011";
+    return "lecture-highlights";
+  };
   const archive = createOdsArchive(sample, "master", getRowBlockId);
 
   assert.ok(archive instanceof Uint8Array, "createOdsArchive must return Uint8Array");
@@ -200,6 +212,10 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
   assert.ok(text.includes("content.xml"), "must contain content path");
 
   // Verify REVISION1 block background colors are in content.xml
+  assert.ok(text.includes("#059669"), "must include Lecture Series block border color (#059669)");
+  assert.ok(text.includes("#EAF6F2"), "must include Lecture Series background tint (#EAF6F2)");
+  assert.ok((text.match(/table:style-name="ce-block-left-lectures-2002-2011"/g) || []).length >= 1,
+    "a Lecture Series data row must use the exact published block style");
   assert.ok(text.includes("#7C3AED"), "must include Books block border color (#7C3AED)");
   assert.ok(text.includes("#F4EEFE"), "must include Books block background tint (#F4EEFE)");
   assert.ok(text.includes("#EA580C"), "must include Lecture Highlights block border (#EA580C)");
@@ -212,3 +228,38 @@ test("ODS export creates valid OpenDocument Spreadsheet archives with colored gr
   assert.ok(text.includes('office:value-type="float" office:value="100"'), "must export numeric cell value");
 });
 
+
+test("XLSX export creates a styled Excel workbook with frozen header and filters", async () => {
+  const { createXlsxArchive } = await import("../docs/js/ods-export.js");
+  const archive = createXlsxArchive([
+    { uuid: "001", title: "=Unsafe title", series: "Books", year_month: "1995" },
+    { uuid: "002", title: "Healing & Recovery", series: "Lecture Highlights", year_month: "2009" },
+  ], "master", (row) => row.series === "Books" ? "books" : "lecture-highlights");
+  assert.ok(archive instanceof Uint8Array);
+  assert.deepEqual([...archive.slice(0, 4)], [0x50, 0x4b, 0x03, 0x04]);
+  const text = new TextDecoder().decode(archive);
+  assert.ok(text.includes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"));
+  assert.ok(text.includes("xl/worksheets/sheet1.xml"));
+  assert.ok(text.includes('state="frozen"'));
+  assert.ok(text.includes("<autoFilter"));
+  assert.ok(text.includes("FF7C3AED") || text.includes("FFF4EEFE"));
+  assert.ok(text.includes("=Unsafe title"), "inline strings must preserve the displayed value");
+  assert.ok(!text.includes("<f>"), "text values must never become Excel formulas");
+});
+
+test("JSON and TSV exports preserve structured values and neutralise formulas", async () => {
+  const { createJsonExport, createTsv } = await import("../docs/js/ods-export.js");
+  const rows = [{ uuid: "001", title: "=2+2", notes: "Tab\there\nnext", owned: false }];
+  const payload = JSON.parse(createJsonExport(rows, "master"));
+  assert.equal(payload.schema_version, 1);
+  assert.equal(payload.view, "master");
+  assert.equal(payload.row_count, 1);
+  assert.equal(payload.rows[0].uuid, "001");
+  assert.equal(payload.rows[0].owned, false);
+
+  const tsv = createTsv(rows, "master");
+  assert.ok(tsv.startsWith("\uFEFF"), "TSV must include a UTF-8 BOM");
+  assert.ok(tsv.includes("'=2+2"), "formula-like cells must be neutralised");
+  assert.ok(tsv.includes('"Tab\there\nnext"'), "tabs and newlines must be quoted");
+  assert.ok(tsv.endsWith("\r\n"));
+});

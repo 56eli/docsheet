@@ -27,7 +27,9 @@ import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
 } from "./js/columns.js?v=d185ba911b42";
-import { exportOds } from "./js/ods-export.js?v=c1a8d09da3aa";
+import {
+  exportOds, exportXlsx, exportJson, exportTsv,
+} from "./js/ods-export.js?v=22b292e99cf3";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=e824f86e241c";
@@ -47,7 +49,10 @@ import {
   const exportBtn = $("export-btn");
   const exportMenu = $("export-menu");
   const exportCsvBtn = $("export-csv-btn");
+  const exportXlsxBtn = $("export-xlsx-btn");
   const exportOdsBtn = $("export-ods-btn");
+  const exportJsonBtn = $("export-json-btn");
+  const exportTsvBtn = $("export-tsv-btn");
   const settingsBtn = $("settings-btn");
   const settingsMenu = $("settings-menu");
   const expandEverythingBtn = $("expand-everything-btn");
@@ -1544,10 +1549,28 @@ import {
         exportCsv();
       });
     }
+    if (exportXlsxBtn) {
+      exportXlsxBtn.addEventListener("click", () => {
+        closeExportMenu();
+        exportXlsx(allData, activeView, getRowBlockId);
+      });
+    }
     if (exportOdsBtn) {
       exportOdsBtn.addEventListener("click", () => {
         closeExportMenu();
         exportOds(allData, activeView, getRowBlockId);
+      });
+    }
+    if (exportJsonBtn) {
+      exportJsonBtn.addEventListener("click", () => {
+        closeExportMenu();
+        exportJson(allData, activeView);
+      });
+    }
+    if (exportTsvBtn) {
+      exportTsvBtn.addEventListener("click", () => {
+        closeExportMenu();
+        exportTsv(allData, activeView);
       });
     }
     applyViewSettings();

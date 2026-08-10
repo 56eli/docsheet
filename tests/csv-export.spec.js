@@ -190,3 +190,58 @@ test('ODS export downloads a styled OpenDocument Spreadsheet (.ods) archive with
   expect(text).toContain('Master ID');
   expect(text).toContain('Work');
 });
+
+test('XLSX export downloads a styled Excel workbook', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+  await page.locator('#export-btn').click();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#export-xlsx-btn').click(),
+  ]);
+  expect(download.suggestedFilename()).toBe('hawkins-everything.xlsx');
+  const buf = await fs.readFile(await download.path());
+  expect([...buf.slice(0, 4)]).toEqual([0x50, 0x4b, 0x03, 0x04]);
+  const text = buf.toString('utf8');
+  expect(text).toContain('xl/worksheets/sheet1.xml');
+  expect(text).toContain('state="frozen"');
+  expect(text).toContain('<autoFilter');
+  expect(text).toContain('Power vs. Force');
+});
+
+test('JSON export downloads the complete active view with metadata', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+  await page.getByRole('searchbox', { name: /search across all columns/i }).fill('Causality');
+  await page.locator('#export-btn').click();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#export-json-btn').click(),
+  ]);
+  expect(download.suggestedFilename()).toBe('hawkins-everything.json');
+  const payload = JSON.parse(await fs.readFile(await download.path(), 'utf8'));
+  expect(payload.schema_version).toBe(1);
+  expect(payload.view).toBe('master');
+  expect(payload.row_count).toBe(363);
+  // Whole-sheet semantics: rows that do not match the active "Causality"
+  // search must still be present in the exported payload.
+  expect(payload.rows.some((row) => !String(row.title).toLowerCase().includes('causality'))).toBeTruthy();
+  expect(payload.columns).toContain('uuid');
+});
+
+test('TSV export downloads a UTF-8 tab-separated complete view', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+  await page.locator('#view-jump').selectOption('manualLeads');
+  await waitForTable(page);
+  await page.locator('#export-btn').click();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#export-tsv-btn').click(),
+  ]);
+  expect(download.suggestedFilename()).toBe('hawkins-manual-leads.tsv');
+  const tsv = await fs.readFile(await download.path(), 'utf8');
+  expect(tsv.charCodeAt(0)).toBe(0xFEFF);
+  expect(tsv).toContain('\t');
+  expect(tsv.toLowerCase()).toContain('lead status');
+});

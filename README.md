@@ -24,7 +24,7 @@ python process_data.py --check  # verify committed raw-Pages outputs are current
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
 
-Browser smoke tests, including CSV and ODS export, are available with Playwright:
+Browser smoke tests, including XLSX, ODS, CSV, JSON, and TSV export, are available with Playwright:
 
 ```bash
 npm ci
@@ -192,7 +192,7 @@ reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (363 master records,
 191 Veritas products, 340 relationships). See the declared-current
-[`docs/audits/2026-08-10-arena-019feb3e-full-audit.md`](docs/audits/2026-08-10-arena-019feb3e-full-audit.md)
+[`docs/audits/2026-08-10-arena-019febb6-full-audit.md`](docs/audits/2026-08-10-arena-019febb6-full-audit.md)
 for the latest full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; older audit reports preserve their historical checkpoints.
 
