@@ -2039,3 +2039,78 @@ body {
   .skeleton-line { animation: none; }
   .series-landing-card { transition: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   §18  MOBILE BLOAT REDUCTION (019feb3e) — mobile-only (≤720px): compact
+        topbar, dismissible Browse intro, collapsible discovery rails, and a
+        condensed view summary so the first catalogue card lands in the first
+        viewport. Desktop (≥721px) is untouched (the two new controls are
+        display:none outside this breakpoint).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* The settings button gains a gear icon (desktop keeps its text label); the
+   two mobile-only controls are hidden on desktop by default and revealed only
+   inside the ≤720px breakpoint below. */
+#settings-btn { display: inline-flex; align-items: center; gap: 6px; }
+#mobile-discovery-toggle,
+#mobile-browse-intro-dismiss { display: none; }
+
+@media (max-width: 720px) {
+  /* P1 — collapse the topbar to one controls row: icon-only Export/Settings,
+     no "Jump to" label, and a search that shrinks further so all controls fit
+     a single ~340px row instead of wrapping to three. */
+  #export-btn .btn-label,
+  #settings-btn .btn-label { display: none; }
+  #export-btn,
+  #settings-btn { padding: 6px 9px; }
+  .view-jump > span { display: none; }
+  .view-jump select { max-width: 112px; }
+  .search-wrap { flex: 1 1 100px; }
+
+  /* P2 — compact, dismissible Browse intro (one slim line: eyebrow + actions). */
+  .mobile-browse-intro { padding: 8px 10px; gap: 8px; }
+  .mobile-browse-intro p { display: none; }
+  .mobile-browse-intro-actions { display: flex; gap: 6px; align-items: center; }
+  #mobile-browse-intro-dismiss {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 9px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .mobile-browse-intro.mobile-intro-dismissed { display: none; }
+
+  /* P3 — discovery rails collapsed by default; one tap expands (auto-expands
+     when a series/year facet is active, set from app.js). Desktop browse keeps
+     the title heading and the always-visible 2-column rails. */
+  .mobile-discovery-title { display: none; }
+  #mobile-discovery-toggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  #mobile-discovery-toggle::after { content: " ▾"; color: var(--text-muted); font-weight: 400; }
+  #mobile-discovery-toggle[aria-expanded="true"]::after { content: " ▴"; }
+  .mobile-discovery .mobile-discovery-group { display: none; }
+  .mobile-discovery.mobile-discovery-expanded .mobile-discovery-group { display: grid; }
+
+  /* P4 — condensed view summary: hide the redundant Type card and tighten the
+     spacing (the Rows count + toolbar remain). */
+  .view-summary { padding: 8px 10px; gap: 8px; }
+  .view-meta div:nth-child(2) { display: none; }
+  .view-meta div { min-width: 0; padding: 5px 8px; }
+}

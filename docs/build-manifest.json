@@ -1,10 +1,10 @@
 {
-  "revision": "remove-dead-tabbar-019feb3e-2026-08-10.1",
+  "revision": "mobile-bloat-reduction-019feb3e-2026-08-10.1",
   "source_baseline": "aa1f1b76465e140b9cb62761d365765f0541d7d8",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "e3006ddb94871c6996e4b4ca4ccf81ede046fc504d648ece7f999a6029261d09",
-    "style.css": "309214a6f6b0e8745c4b2557c79cd3868a52d787a64bf0ca393cd16237298291"
+    "app.js": "0e5d4333bbb675266398af6e63be865cb85002b340178765beace5926f475a25",
+    "style.css": "5da9feff6603f667735d6550c310afa26fac21371a87088a5da8124933a6ae5d"
   },
   "modules": {
     "js/config.js": "5189225f358d678fe714ee445afeb804d9a0baa44f6bcdf01618ab10ec8fd49a",

@@ -65,6 +65,10 @@ import {
   const mobileSeriesShelf = $("mobile-series-shelf");
   const mobileYearRail = $("mobile-year-rail");
   const mobileDiscoveryClear = $("mobile-discovery-clear");
+  const mobileDiscoveryToggle = $("mobile-discovery-toggle");
+  const mobileDiscoverySection = document.querySelector(".mobile-discovery");
+  const mobileBrowseIntro = document.querySelector(".mobile-browse-intro");
+  const mobileBrowseIntroDismiss = $("mobile-browse-intro-dismiss");
   const resetViewBtn = $("reset-view-btn");
   const darkToggle = $("dark-toggle");
   const footerStats = $("footer-stats");
@@ -109,6 +113,8 @@ import {
   let activeFacets = {};
   let mobileBrowseRows = [];
   let renderedAsMobileBrowse = false;
+  let mobileDiscoveryExpanded = false;
+  const MOBILE_INTRO_KEY = "docsheet-mobile-intro-dismissed";
   let viewActivation = 0;
   let activeDataRequest = null;
   // Track the in-flight block-map load so the first activateView call can
@@ -647,6 +653,20 @@ import {
     );
     renderRail(mobileYearRail, yearFacet, yearFacet.sort);
     if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty(activeFacets, FACETS);
+    // Mobile discovery rails are collapsed by default and auto-expand when a
+    // series/year facet is active so a set filter stays visible. Desktop browse
+    // mode ignores this class (the collapse rules live in the ≤720px media query).
+    const hasFacets = !facetsEmpty(activeFacets, FACETS);
+    if (hasFacets) mobileDiscoveryExpanded = true;
+    if (mobileDiscoverySection) {
+      mobileDiscoverySection.classList.toggle("mobile-discovery-expanded", mobileDiscoveryExpanded);
+    }
+    if (mobileDiscoveryToggle) {
+      mobileDiscoveryToggle.setAttribute("aria-expanded", String(mobileDiscoveryExpanded));
+      mobileDiscoveryToggle.textContent = mobileDiscoveryExpanded
+        ? "Hide series / year filters"
+        : "Filter by series / year";
+    }
   }
 
   function renderMobileBrowse(data = allData) {
@@ -1530,6 +1550,24 @@ import {
       button.addEventListener("click", toggleMobilePresentation);
     });
     if (mobileDiscoveryClear) mobileDiscoveryClear.addEventListener("click", clearFacets);
+    if (mobileDiscoveryToggle) {
+      mobileDiscoveryToggle.addEventListener("click", () => {
+        mobileDiscoveryExpanded = !mobileDiscoveryExpanded;
+        if (mobileDiscoverySection) {
+          mobileDiscoverySection.classList.toggle("mobile-discovery-expanded", mobileDiscoveryExpanded);
+        }
+        mobileDiscoveryToggle.setAttribute("aria-expanded", String(mobileDiscoveryExpanded));
+        mobileDiscoveryToggle.textContent = mobileDiscoveryExpanded
+          ? "Hide series / year filters"
+          : "Filter by series / year";
+      });
+    }
+    if (mobileBrowseIntroDismiss) {
+      mobileBrowseIntroDismiss.addEventListener("click", () => {
+        if (mobileBrowseIntro) mobileBrowseIntro.classList.add("mobile-intro-dismissed");
+        try { localStorage.setItem(MOBILE_INTRO_KEY, "1"); } catch (err) { /* storage unavailable */ }
+      });
+    }
     if (masterBrowseToggle) {
       masterBrowseToggle.addEventListener("click", () => {
         if (activeView !== "master") return;
@@ -1633,6 +1671,14 @@ import {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { searchInput.value = ""; applySearch(""); closeColumnMenu(); }
     });
+    // Restore a previously dismissed mobile Browse intro (mobile-only effect:
+    // the hiding rule lives inside the ≤720px media query, so desktop browse
+    // mode is unaffected even if the flag is set).
+    try {
+      if (localStorage.getItem(MOBILE_INTRO_KEY) === "1" && mobileBrowseIntro) {
+        mobileBrowseIntro.classList.add("mobile-intro-dismissed");
+      }
+    } catch (err) { /* storage unavailable */ }
     await activateView(activeView);
     document.addEventListener("keydown", handleGlobalShortcuts);
   }
