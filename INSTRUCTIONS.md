@@ -105,7 +105,7 @@ python -m http.server 8000
 # open http://localhost:8000/docs/
 ```
 
-To verify browser behavior, including CSV export from the active spreadsheet view:
+To verify browser behavior, including XLSX, ODS, CSV, JSON, and TSV export from the active spreadsheet view:
 
 ```bash
 npm ci

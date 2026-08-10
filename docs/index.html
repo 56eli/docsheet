@@ -72,13 +72,25 @@
         </button>
         <div id="export-menu" class="export-menu" hidden>
           <div class="export-menu-header">Download format</div>
-          <button id="export-csv-btn" type="button" class="export-option" title="Download plain text CSV table">
-            <span class="export-title">CSV (.csv)</span>
-            <span class="export-desc">Plain text spreadsheet table</span>
+          <button id="export-xlsx-btn" type="button" class="export-option" title="Download styled Microsoft Excel workbook with colored groupings">
+            <span class="export-title">Excel (.xlsx)</span>
+            <span class="export-desc">Styled workbook with filters and frozen header</span>
           </button>
           <button id="export-ods-btn" type="button" class="export-option" title="Download styled OpenDocument Spreadsheet with colored groupings">
             <span class="export-title">ODS (.ods)</span>
-            <span class="export-desc">Styled spreadsheet with REVISION1 colored groupings</span>
+            <span class="export-desc">Styled open-standard spreadsheet</span>
+          </button>
+          <button id="export-csv-btn" type="button" class="export-option" title="Download plain text CSV table">
+            <span class="export-title">CSV (.csv)</span>
+            <span class="export-desc">Universal plain-text spreadsheet table</span>
+          </button>
+          <button id="export-json-btn" type="button" class="export-option" title="Download structured JSON with schema and view metadata">
+            <span class="export-title">JSON (.json)</span>
+            <span class="export-desc">Structured data with columns and row count</span>
+          </button>
+          <button id="export-tsv-btn" type="button" class="export-option" title="Download tab-separated plain text table">
+            <span class="export-title">TSV (.tsv)</span>
+            <span class="export-desc">Tab-separated data for tools and copy/paste</span>
           </button>
         </div>
       </div>
@@ -241,12 +253,12 @@
     <span id="search-status" role="status" aria-live="polite">Showing: —</span>
     <span id="footer-updated">Last Updated: —</span>
     <span class="footer-note" id="footer-note">Click a row for details; published views are read-only</span>
-    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-155ef898c0c5/css-3a0ae4223b26</code></a>
+    <a class="footer-build" href="build-manifest.json" title="Open the deployed asset/data revision manifest"><span>Build:</span> <code id="build-revision">app-5f71af7d7fb1/css-3a0ae4223b26</code></a>
     <a class="footer-link" href="https://github.com/56eli/docsheet" target="_blank" rel="noopener noreferrer" aria-label="DocSheet source repository (opens in new tab)">Docs · GitHub</a>
   </footer>
 
   <!-- Tabulator (pinned) -->
   <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.5.2/dist/js/tabulator.min.js" integrity="sha384-ZlfxHB5fIn8MOAuKJe8YBMi7snQXYvhy+0b3K4rGBBY2UvrJwho2jciJ5NKt0WtC" crossorigin="anonymous"></script>
-  <script type="module" src="app.js?v=155ef898c0c5"></script>
+  <script type="module" src="app.js?v=5f71af7d7fb1"></script>
 </body>
 </html>

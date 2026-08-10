@@ -24,7 +24,7 @@ python process_data.py --check  # verify committed raw-Pages outputs are current
 python -m http.server 8000   # then open http://localhost:8000/docs/
 ```
 
-Browser smoke tests, including CSV and ODS export, are available with Playwright:
+Browser smoke tests, including XLSX, ODS, CSV, JSON, and TSV export, are available with Playwright:
 
 ```bash
 npm ci

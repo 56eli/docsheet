@@ -1,9 +1,9 @@
 {
-  "revision": "ods-export-menu-019feb9b-2026-08-10.1",
-  "source_baseline": "8c59a912b133331dd34cd06a452317d24b332e5b",
+  "revision": "multi-export-xlsx-json-tsv-019febb6-2026-08-10.1",
+  "source_baseline": "f71843a1222b23d088a386d1f3a71acfac7da2bd",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "155ef898c0c5d8c15598b689987033e86bb555f893bac86e12e20688c076cf19",
+    "app.js": "5f71af7d7fb13f0d6115e62ba25954a45ac2d42775f23e588212b9ec4966e9dc",
     "style.css": "3a0ae4223b2623d6edc7c0f9878e5ef4a1ed7e90df2e594248c00836837bb8f0"
   },
   "modules": {
@@ -14,7 +14,7 @@
     "js/columns.js": "d185ba911b424e323e2db66bc3fec1c2e2740ae6c9d4cad0ce999aa1742efafd",
     "js/filter-utils.js": "e824f86e241cca4b774b333b24d5ae6eeb1b1a80f6f2a3d940163577918789f6",
     "js/view-utils.js": "0c20adc6e22010868d36d6948db355e527dd5dfafaeb5f4ef1ab2740db2be74d",
-    "js/ods-export.js": "c1a8d09da3aafcd080872808cc01b4b669a3521949b59e1d3a6767ed6578175f"
+    "js/ods-export.js": "5e4004e8995b40fce202f215513ee55e3fea9f9fc24f4885a089aa5dbce8efd0"
   },
   "data": {
     "master.json": "220052cb68e7df4e5e9864655c09c12513fdbf9e2e89fc8c8c61047265dafd4a",

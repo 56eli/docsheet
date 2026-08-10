@@ -281,3 +281,153 @@ export function exportOds(data, viewName, getRowBlockId) {
   anchor.remove();
   URL.revokeObjectURL(href);
 }
+
+/* --------------------------------------------------------------------------- *
+ *  Shared structured/plain exports and Excel Open XML (.xlsx)
+ * --------------------------------------------------------------------------- */
+function exportKeys(data, viewName) {
+  const preset = columnPresetFor(viewName);
+  const allKeys = new Set([
+    ...(preset.priority || []),
+    ...(preset.hidden || []),
+    ...data.flatMap((row) => Object.keys(row)),
+  ]);
+  let keys = orderKeysForView([...allKeys], viewName);
+  if (keys.includes("year_month")) keys = keys.filter((key) => key !== "year" && key !== "month");
+  if (keys.includes("edition")) keys = keys.filter((key) => key !== "format" && key !== "format_detail");
+  return keys;
+}
+
+function baseExportName(viewName) {
+  const viewConfig = VIEWS[viewName] || {};
+  return (viewConfig.exportName || "hawkins-export.csv").replace(/\.[a-z0-9]+$/i, "");
+}
+
+function triggerDownload(payload, mimeType, filename) {
+  const blob = new Blob([payload], { type: mimeType });
+  const href = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = href;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(href);
+}
+
+function safeSpreadsheetText(value) {
+  const text = String(value ?? "");
+  // Prevent spreadsheet applications from interpreting untrusted text as a
+  // formula. Preserve ordinary negative numbers while neutralising formulas.
+  return /^[=+@]|^-\D/.test(text) ? `'${text}` : text;
+}
+
+function tsvCell(value) {
+  const text = safeSpreadsheetText(value).replace(/\r\n?/g, "\n");
+  return /[\t\n"]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+export function createTsv(data, viewName) {
+  if (!Array.isArray(data) || !data.length) return "";
+  const keys = exportKeys(data, viewName);
+  const rows = [keys.map((key) => tsvCell(humanizeField(key))).join("\t")];
+  data.forEach((row) => rows.push(keys.map((key) => tsvCell(row[key])).join("\t")));
+  return `\uFEFF${rows.join("\r\n")}\r\n`;
+}
+
+export function createJsonExport(data, viewName) {
+  const rows = Array.isArray(data) ? data : [];
+  const keys = rows.length ? exportKeys(rows, viewName) : [];
+  return JSON.stringify({
+    schema_version: 1,
+    view: viewName,
+    columns: keys,
+    row_count: rows.length,
+    rows: rows.map((row) => Object.fromEntries(keys.map((key) => [key, row[key] ?? ""]))),
+  }, null, 2) + "\n";
+}
+
+function excelColumnName(index) {
+  let name = "";
+  for (let value = index + 1; value; value = Math.floor((value - 1) / 26)) {
+    name = String.fromCharCode(65 + ((value - 1) % 26)) + name;
+  }
+  return name;
+}
+
+function xlsxCell(reference, value, styleIndex) {
+  // Inline-string cells are never interpreted as formulas by Excel, so the
+  // displayed value can remain exact (unlike delimited text imports).
+  const text = String(value ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+  return `<c r="${reference}" s="${styleIndex}" t="inlineStr"><is><t xml:space="preserve">${escapeXml(text)}</t></is></c>`;
+}
+
+function generateXlsxSheet(data, viewName, getRowBlockId) {
+  const keys = exportKeys(data, viewName);
+  const lastCell = `${excelColumnName(Math.max(keys.length - 1, 0))}${data.length + 1}`;
+  const cols = keys.map((key, index) => {
+    const longest = Math.max(humanizeField(key).length, ...data.map((row) => String(row[key] ?? "").length));
+    const width = Math.min(Math.max(longest + 2, 10), 60);
+    return `<col min="${index + 1}" max="${index + 1}" width="${width}" customWidth="1"/>`;
+  }).join("");
+  const header = keys.map((key, index) => xlsxCell(`${excelColumnName(index)}1`, humanizeField(key), 1)).join("");
+  const rows = data.map((row, rowIndex) => {
+    const rawBlock = getRowBlockId ? getRowBlockId(row) : "undecided";
+    const blockIds = Object.keys(BLOCK_STYLES);
+    const blockIndex = Math.max(blockIds.indexOf(rawBlock), blockIds.indexOf("undecided"));
+    const styleIndex = 2 + blockIndex;
+    const cells = keys.map((key, columnIndex) => xlsxCell(
+      `${excelColumnName(columnIndex)}${rowIndex + 2}`, row[key], styleIndex,
+    )).join("");
+    return `<row r="${rowIndex + 2}">${cells}</row>`;
+  }).join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+  <cols>${cols}</cols><sheetData><row r="1">${header}</row>${rows}</sheetData>
+  <autoFilter ref="A1:${lastCell}"/>
+</worksheet>`;
+}
+
+function generateXlsxStyles() {
+  const blocks = Object.values(BLOCK_STYLES);
+  const fills = blocks.map((style) => `<fill><patternFill patternType="solid"><fgColor rgb="FF${style.bg.slice(1)}"/><bgColor indexed="64"/></patternFill></fill>`).join("");
+  const xfs = blocks.map((_, index) => `<xf numFmtId="0" fontId="0" fillId="${index + 3}" borderId="1" xfId="0" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>`).join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <fonts count="2"><font><sz val="10"/><name val="Aptos"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Aptos Display"/></font></fonts>
+  <fills count="${blocks.length + 3}"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1A1A1A"/><bgColor indexed="64"/></patternFill></fill>${fills}</fills>
+  <borders count="2"><border/><border><left style="thin"><color rgb="FFE2E8F0"/></left><right style="thin"><color rgb="FFE2E8F0"/></right><top style="thin"><color rgb="FFE2E8F0"/></top><bottom style="thin"><color rgb="FFE2E8F0"/></bottom></border></borders>
+  <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+  <cellXfs count="${blocks.length + 2}"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="center"/></xf>${xfs}</cellXfs>
+  <cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
+</styleSheet>`;
+}
+
+export function createXlsxArchive(data, viewName, getRowBlockId) {
+  if (!Array.isArray(data) || !data.length) return new Uint8Array();
+  const files = [
+    { name: "[Content_Types].xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>` },
+    { name: "_rels/.rels", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>` },
+    { name: "xl/workbook.xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${escapeXml((VIEWS[viewName] || {}).label || "Export")}" sheetId="1" r:id="rId1"/></sheets></workbook>` },
+    { name: "xl/_rels/workbook.xml.rels", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
+    { name: "xl/styles.xml", data: generateXlsxStyles() },
+    { name: "xl/worksheets/sheet1.xml", data: generateXlsxSheet(data, viewName, getRowBlockId) },
+  ];
+  return buildZip(files);
+}
+
+export function exportXlsx(data, viewName, getRowBlockId) {
+  if (!Array.isArray(data) || !data.length) return;
+  triggerDownload(createXlsxArchive(data, viewName, getRowBlockId), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", `${baseExportName(viewName)}.xlsx`);
+}
+
+export function exportJson(data, viewName) {
+  if (!Array.isArray(data) || !data.length) return;
+  triggerDownload(createJsonExport(data, viewName), "application/json;charset=utf-8", `${baseExportName(viewName)}.json`);
+}
+
+export function exportTsv(data, viewName) {
+  if (!Array.isArray(data) || !data.length) return;
+  triggerDownload(createTsv(data, viewName), "text/tab-separated-values;charset=utf-8", `${baseExportName(viewName)}.tsv`);
+}
