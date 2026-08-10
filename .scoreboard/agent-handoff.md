@@ -1,55 +1,57 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019feaf6 full audit + P0/cleanup/P1 implementation
+**Updated:** 2026-08-10 — Arena 019feaf6 audit through merged/live verification
 **Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
-**Current branch head:** PR #64 on `arena/019feaf6-docsheet`
+**Merged result:** PR #64 → `54b37f7097b6d6830d09f0825f7cfb8539b5360e`
 
-## Current audit
+## Current status
 
-Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for the complete multidisciplinary evidence and baseline scoring.
+PR #64 is merged and live. Main CI run `31379726756` passed 149 offline, 3 Node, and 28/28 Playwright tests. Pages run `31379725585` deployed successfully.
 
-## Baseline incident
+Live verification through the web fetch path confirms:
 
-PR #63's extracted `columns.js` called `isExtraEditionRow` without importing it. Legacy Pages deployed the commit before main CI run `31373716254` failed all 25 browser specs with no rendered rows. Static hashes proved byte consistency but did not prove JavaScript execution.
+- revision `live-search-versioned-module-graph-019feaf6-20260810.1`;
+- exact committed hashes for app, style, all seven modules, master/data/block-map payloads;
+- `master_items=363`, 340 relationships, 7 compilations, and the expected inventory counts;
+- fetched index content renders `Rows 363`, catalogue columns, facets, and record rows.
 
-## Completed on PR #64
+## Incident and completed work
 
-- Restored the missing import and removed redundant imports.
-- Added Node/browser edition-formatter execution coverage.
-- Removed all 10 absent-ID overview/stats/review-nav paths and 411 net lines.
-- Added a Node guard rejecting return of the removed UI tokens.
-- Completed shortcuts-dialog `aria-modal`/labelledby, initial focus, Tab trap, Escape close, and focus restoration.
-- Fixed search highlighting by passing a live query getter to column formatters.
-- Added a browser assertion that visible marks update after search.
-- Hash-versioned every local ES-module edge so nested and top-level imports resolve to one module identity.
-- Extended the delivery contract to traverse every local app/module import and reject unversioned, escaping, unmanifested, or stale edges.
-- Refreshed app/module/style hashes, visible build ID, and `docs/build-manifest.json`.
+The PR #63 baseline called `isExtraEditionRow` without importing it. Legacy Pages deployed before main CI run `31373716254` failed all 25 browser specs with no rendered rows.
 
-PR CI run `31378465750` passes:
+PR #64:
 
-- all six generator checks;
-- 149/149 offline Python tests;
-- 90% coverage across 2,327 statements;
-- 3/3 Node frontend tests;
-- 28/28 Playwright specs;
-- Python/JavaScript syntax and dependency installation.
+- repaired the missing import and added executable formatter/browser coverage;
+- removed all 10 absent-ID UI paths and 411 net lines;
+- completed shortcuts-dialog focus/accessibility behavior;
+- restored live search highlighting with a query getter;
+- hash-versioned every local ES-module edge;
+- extended the delivery contract across the complete import graph;
+- refreshed every delivery hash and visible build ID;
+- published the full multidisciplinary audit and reconciled all current documentation.
 
-## Current scores and remaining risks
+## Current score and remaining risks
 
-Canonical effective score is **7.9/10** (678/86), gate **FAIL** only because the total remains below 8 and deployment risks remain.
+Canonical effective score is **8.0/10** (687/86), gate **WARNING**.
 
-- Public Pages still serves the broken `aa1f1b7` baseline until PR #64 merges/deploys.
-- Pages remains legacy `main:/docs` and is not CI-gated; owner instructions are in `.scoreboard/manual-workflow-edits.md`.
-- Exact live hashes/screenshots and explicit owner acceptance remain pending.
+- Pages remains legacy `main:/docs` and is not gated on successful CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Exact live delivery is objectively verified, but explicit owner visual acceptance is still pending.
 - CSP `style-src 'unsafe-inline'` is low-severity debt.
 - Optional future automation: axe-core, Lighthouse, ESLint.
 - Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
 
-All recorded user scores were preserved unchanged.
+All user scores were preserved unchanged.
 
 ## Current data state
 
 363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: 312 true / 25 false / 26 blank. Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products.
+
+## Next actions
+
+1. Owner explicitly accepts/rejects live revision `live-search-versioned-module-graph-019feaf6-20260810.1`.
+2. Owner applies required checks and CI-gated Pages deployment.
+3. Resolve issue #18 when Drive access exists.
+4. Optionally add axe/Lighthouse/ESLint automation.
 
 ## Safe commands
 

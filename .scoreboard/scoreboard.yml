@@ -11,22 +11,21 @@ manual_workflow_policy:
   may_edit_github_workflows: false
   instruction: Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md.
 summary:
-  overall_effective_score: 7.9
-  repo_ready_gate_status: fail
+  overall_effective_score: 8.0
+  repo_ready_gate_status: warning
   top_priorities:
   - deployment_readiness
-  - github_pages_presentation
   - ci_cd
   - error_handling_logging
+  - content_quality
   active_risk_flags:
-  - 'Public Pages still serves the broken aa1f1b7 baseline until PR #64 merges and deploys; exact live hashes/screenshots and owner acceptance
-    remain pending.'
-  - Pages API reports legacy main:/docs deployment, so public deployment can outrun CI until owner-applied gating.
+  - Pages remains legacy main:/docs and is not gated on successful CI; owner-applied workflow/settings remain pending.
+  - The exact live revision and 363-row render are verified, but explicit owner visual acceptance remains pending.
   - CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned.
 quality_gates:
   repo_ready:
-    status: fail
-    overall_effective_score: 7.9
+    status: warning
+    overall_effective_score: 8.0
     last_evaluated: '2026-08-10'
     minimum_overall_effective_score: 8
     required:
@@ -36,9 +35,11 @@ quality_gates:
       ci_cd: 7
       agent_readiness: 8
     notes:
-    - Overall effective score is 678/86 = 7.9.
-    - All required aspect thresholds pass, but the overall score remains below 8.
-    - PR CI run 31378465750 passed 149 offline, 3 Node, and 28 browser tests; legacy Pages still serves the broken baseline until merge/deploy.
+    - Overall effective score is 687/86 = 8.0 rounded.
+    - All required aspect thresholds pass.
+    - Main CI run 31379726756 passed 149 offline, 3 Node, and 28 browser tests after merge commit 54b37f7.
+    - Pages run 31379725585 deployed successfully; live manifest hashes/revision and catalogue-meta master_items=363 are verified.
+    - Gate remains warning because legacy Pages is not CI-gated and explicit owner visual acceptance is pending.
     - User scores are preserved and never inferred from merge, silence, or PR approval.
 aspects:
 - id: project_purpose_scope
@@ -427,28 +428,28 @@ aspects:
   category: presentation
   weight: 5
   target: 8
-  ai_score: 7
+  ai_score: 8
   user_score: null
-  effective_score: 7
-  gap: 1
-  priority: 5
-  status: needs_work
+  effective_score: 8
+  gap: 0
+  priority: 0
+  status: healthy
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: The repaired branch passes 28 browser specs and the complete content contract; legacy Pages still serves the broken baseline until
-    merge/deploy and owner acceptance.
+  ai_basis: 'PR #64 is merged and the exact live manifest, module/asset hashes, 363-row metadata, and rendered table are verified; explicit owner
+    visual acceptance remains pending.'
   user_basis: Owner previously indicated an older 5/10 score was outdated; no new score is inferred.
   evidence:
-  - Live-query highlights, edition badge, row styling, navigation, mobile Browse, exports, and both modal flows pass browser CI.
-  - App/style/module hashes and visible build ID are synchronized.
-  - Legacy Pages still serves aa1f1b7 until merge/deploy.
+  - Merge commit 54b37f7 passed main CI run 31379726756 with 28/28 browser specs.
+  - Pages run 31379725585 completed successfully.
+  - Live build manifest revision live-search-versioned-module-graph-019feaf6-20260810.1 exactly matches committed asset/module/data hashes.
+  - Live catalogue-meta reports 363 master items and fetched index content renders Rows 363 plus catalogue rows.
   user_notes: Do not treat Pages artifact success as proof that the presentation reached the end user.
   desired_direction:
   - Versioned, browser-verified delivery with explicit owner acceptance.
   next_actions:
-  - 'Merge/deploy PR #64, verify exact live hashes/screenshots, and request owner acceptance.'
+  - Obtain explicit owner visual acceptance for the live revision.
   risk_flags:
-  - Public Pages still serves the broken baseline until merge/deploy.
   - Owner visual acceptance remains pending.
   files_reviewed:
   - docs/index.html
@@ -580,24 +581,25 @@ aspects:
   category: operations
   weight: 4
   target: 8
-  ai_score: 6
+  ai_score: 7
   user_score: null
-  effective_score: 6
-  gap: 2
-  priority: 8
+  effective_score: 7
+  gap: 1
+  priority: 4
   status: blocked_manual_workflow_edit
   confidence: high
   last_audited: '2026-08-10'
-  ai_basis: 'PR #64 is fully green with observable hashes, but exact public deployment is unverified and legacy Pages remains ungated.'
+  ai_basis: 'PR #64 merged, main CI is green, Pages deployed, and live revision/rows are verified; legacy Pages still deploys independently of
+    CI.'
   user_basis: null
   evidence:
-  - 'GitHub Pages API: build_type legacy, source main:/docs.'
-  - PR CI run 31378465750 passes 149 offline, 3 Node, and 28 browser tests.
-  - Manifest and visible build revision cover app, style, data, and every module.
+  - Main CI run 31379726756 passed after merge commit 54b37f7.
+  - Pages run 31379725585 deployed the matching live manifest and 363-row catalogue.
+  - GitHub Pages API remains build_type legacy, source main:/docs.
   user_notes: null
   desired_direction: []
   next_actions:
-  - 'Merge/deploy PR #64 and verify the live revision; owner then applies gated Pages workflow/settings.'
+  - Owner applies required checks and CI-gated Pages workflow/settings.
   risk_flags:
   - No enforced validation barrier exists between merge and public deployment.
   files_reviewed:
