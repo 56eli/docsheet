@@ -31,8 +31,9 @@ The data pipeline is healthy. **The previously release-blocking frontend defect 
 | 5 | GitHub Pages presentation | Owner: give explicit visual acceptance of the now-live, byte-verified build |
 | 4 | Deployment readiness | Owner: switch Pages from legacy to Actions `workflow` build type (deploy depends on green CI) |
 | 3 | Content quality | Resolve the owner-scored gap when new content direction is provided |
-| 2 | Code hygiene | Remove residual `.dataset-tab` dead code (4 app.js lookups + CSS, zero matching elements) |
-| — | Issue #18 | Ownership cross-check needs owner Drive access |
+| — | Issue #18 | Ownership cross-check needs owner Drive access (open mismatch: ~12 owned=true with no matching file) |
+
+Done this session (019feb3e): full audit + scoreboard reconciliation, `.dataset-tab` dead-code removal, mobile bloat reduction (P1–P4), retirement of the Original Spreadsheet view, and owner-directed `owned` edits (master 373 + raw rows 297–end → 282 true / 13 false / 68 blank).
 
 ## Scoreboard table
 

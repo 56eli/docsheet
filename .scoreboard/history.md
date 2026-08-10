@@ -154,3 +154,13 @@ User selected the `.dataset-tab` dead-code removal. Removed the 4 no-op JS looku
 | Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
 |---|---|---:|---:|---:|---:|---|---|
 | 2026-08-10 | code_hygiene | 8 | 8 | null | 8 | Arena 019feb3e | Score unchanged; residual .dataset-tab tab-bar dead code removed (app.js 1798→1768, style.css 2137→2041; 149 tests + delivery contract + Node tests green). |
+
+## 2026-08-10 — Arena 019feb3e mobile redesign + retire Original view + owned edits
+
+Owner-directed follow-ups; all user scores preserved. No AI score changes (the work is UX polish, a view retirement, and data edits within reviewed semantics).
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | ux_usability | 8 | 8 | 8 | 8 | Arena 019feb3e | Mobile-only bloat reduction P1–P4 (single-row icon topbar, dismissible Browse intro, collapsible discovery rails, condensed view summary); ~55% less mobile chrome, desktop untouched. Score unchanged (owner UX 8 preserved). |
+| 2026-08-10 | feature_completeness | 8 | 8 | null | 8 | Arena 019feb3e | Retired the Original Spreadsheet view (config/UI/specs; data.json still generated but unsurfaced). 19 Jump-to entries remain. Score unchanged. |
+| 2026-08-10 | content_quality | 9 | 9 | 7 | 7 | Arena 019feb3e | Owner-directed owned edits: blanked master 373 + 41 ledger item rows (raw ≥ 297). Ownership 312/25/26 → 282/13/68. AI 9 unchanged; owner 7 preserved (issue #18 cross-check still open). |
