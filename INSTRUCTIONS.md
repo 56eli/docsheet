@@ -230,7 +230,7 @@ inspect the artifact before accepting any live-source update.
 | `process_data.py` | Reads the CSV with Pandas, applies your rules (none yet), writes `docs/data.json` (array of objects; 6 always-empty raw columns are trimmed from the view per owner ruling 2026-08-07 — the source CSV keeps them). Handles errors gracefully and exits non-zero on failure so CI shows the error. |
 | `requirements.txt` | Flexible Python runtime dependencies (pandas only, for now). |
 | `requirements-ci.txt` | Exact tested Python constraints used by CI and the raw-data updater. |
-| `docs/index.html` | Page shell: top bar (search + export + dark-mode toggle), table area, footer bar. |
+| `docs/index.html` | Page shell: top bar (search + export dropdown menu + dark-mode toggle), table area, footer bar. |
 | `docs/app.js` | Boots the read-only catalogue UI: Tabulator sorting/columns/exports and review filters on desktop; on phones, the Everything view defaults to work-card Browse mode with Source/Stream actions, Series and Timeline discovery rails, and a persistent Spreadsheet escape hatch. It also owns row details, footer stats, and View settings (wrap cells, compact rows, summary cards, Expand everything). |
 | `docs/style.css` | Google Sheets–inspired styling, zebra rows, hover highlight, frozen header, dark mode. |
 | `.github/workflows/update_spreadsheet.yml` | Rebuilds `docs/data.json` on demand (manual) or when the CSV changes on `main`. No schedule yet. |
@@ -251,7 +251,7 @@ inspect the artifact before accepting any live-source update.
   in their declared input file, regenerate the derived outputs, and run the
   checks before publishing.
 - **Search:** the search box filters **all** columns live as you type.
-- **Export CSV:** downloads all rows of the active sheet (filters/search affect the on-screen view, not the exported dataset).
+- **Export menu:** downloads all rows of the active sheet as a plain text CSV (`.csv`) table or a styled OpenDocument Spreadsheet (`.ods`) file featuring REVISION1 colored block groupings (filters/search affect the on-screen view, not the exported dataset).
 - **Dark mode:** toggle in the top-right; your choice is remembered
   (localStorage) and respects your OS preference the first time.
 

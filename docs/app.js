@@ -27,12 +27,13 @@ import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
 } from "./js/columns.js?v=d185ba911b42";
+import { exportOds } from "./js/ods-export.js?v=c1a8d09da3aa";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=e824f86e241c";
 import {
   updateViewSummary, renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=3bd210e98a0b";
+} from "./js/view-utils.js?v=0c20adc6e220";
 
 (function () {
   "use strict";
@@ -44,6 +45,9 @@ import {
   const clearSearchBtn = $("clear-search-btn");
   const viewJump = $("view-jump");
   const exportBtn = $("export-btn");
+  const exportMenu = $("export-menu");
+  const exportCsvBtn = $("export-csv-btn");
+  const exportOdsBtn = $("export-ods-btn");
   const settingsBtn = $("settings-btn");
   const settingsMenu = $("settings-menu");
   const expandEverythingBtn = $("expand-everything-btn");
@@ -392,6 +396,12 @@ import {
     if (!settingsMenu || !settingsBtn) return;
     settingsMenu.hidden = true;
     settingsBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function closeExportMenu() {
+    if (!exportMenu || !exportBtn) return;
+    exportMenu.hidden = true;
+    exportBtn.setAttribute("aria-expanded", "false");
   }
 
   function expandEverything() {
@@ -1359,7 +1369,7 @@ import {
     ]);
     const fields = orderKeysForView([...allKeys], activeView);
     const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
-    const csv = [fields.map(quote).join(","), ...allData.map((row) =>
+    const csv = [fields.map((field) => quote(humanizeField(field))).join(","), ...allData.map((row) =>
       fields.map((field) => quote(row[field])).join(",")
     )].join("\n");
     const href = URL.createObjectURL(new Blob([`${csv}\n`], { type: "text/csv;charset=utf-8" }));
@@ -1517,7 +1527,29 @@ import {
       searchInput.focus();
     });
     clearAllFiltersBtn.addEventListener("click", clearAllFilters);
-    exportBtn.addEventListener("click", exportCsv);
+    if (exportBtn && exportMenu) {
+      exportBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const willOpen = exportMenu.hidden;
+        exportMenu.hidden = !willOpen;
+        exportBtn.setAttribute("aria-expanded", String(willOpen));
+        closeColumnMenu();
+        closeSettingsMenu();
+      });
+      exportMenu.addEventListener("click", (event) => event.stopPropagation());
+    }
+    if (exportCsvBtn) {
+      exportCsvBtn.addEventListener("click", () => {
+        closeExportMenu();
+        exportCsv();
+      });
+    }
+    if (exportOdsBtn) {
+      exportOdsBtn.addEventListener("click", () => {
+        closeExportMenu();
+        exportOds(allData, activeView, getRowBlockId);
+      });
+    }
     applyViewSettings();
     if (settingsBtn && settingsMenu) {
       settingsBtn.addEventListener("click", (event) => {
@@ -1526,6 +1558,7 @@ import {
         settingsMenu.hidden = !willOpen;
         settingsBtn.setAttribute("aria-expanded", String(willOpen));
         closeColumnMenu();
+        closeExportMenu();
       });
       settingsMenu.addEventListener("click", (event) => event.stopPropagation());
     }
@@ -1608,6 +1641,7 @@ import {
       columnMenu.hidden = !willOpen;
       columnMenuBtn.setAttribute("aria-expanded", String(willOpen));
       closeSettingsMenu();
+      closeExportMenu();
     });
     columnMenu.addEventListener("click", (event) => event.stopPropagation());
     if (expertToggleBtn) {
@@ -1637,11 +1671,13 @@ import {
     document.addEventListener("click", () => {
       closeColumnMenu();
       closeSettingsMenu();
+      closeExportMenu();
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeColumnMenu();
         closeSettingsMenu();
+        closeExportMenu();
         closeRowDetails();
         closeShortcutsHelp();
       }

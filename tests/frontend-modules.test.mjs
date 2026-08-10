@@ -162,3 +162,53 @@ test("edition formatter imports and executes the extra-edition helper", () => {
     "the primary edition must not receive the Extra badge",
   );
 });
+
+test("ODS export creates valid OpenDocument Spreadsheet archives with colored groupings", async () => {
+  const { createOdsArchive } = await import("../docs/js/ods-export.js");
+  const sample = [
+    {
+      uuid: 100,
+      work_id: "w-power-vs-force",
+      title: "Power vs. Force",
+      series: "Books",
+      year_month: "1995",
+      notes: "Seminal work",
+    },
+    {
+      uuid: 101,
+      work_id: "w-healing-and-recovery",
+      title: "Healing and Recovery",
+      series: "Lecture Highlights",
+      year_month: "2009",
+      notes: "",
+    },
+  ];
+
+  const getRowBlockId = (row) => (row.series === "Books" ? "books" : "lecture-highlights");
+  const archive = createOdsArchive(sample, "master", getRowBlockId);
+
+  assert.ok(archive instanceof Uint8Array, "createOdsArchive must return Uint8Array");
+  assert.equal(archive[0], 0x50, "must start with PK signature (0x50)");
+  assert.equal(archive[1], 0x4b, "must start with PK signature (0x4b)");
+  assert.equal(archive[2], 0x03, "must start with PK signature (0x03)");
+  assert.equal(archive[3], 0x04, "must start with PK signature (0x04)");
+
+  const text = new TextDecoder().decode(archive);
+  assert.ok(text.includes("application/vnd.oasis.opendocument.spreadsheet"), "must contain uncompressed mimetype");
+  assert.ok(text.includes("META-INF/manifest.xml"), "must contain manifest path");
+  assert.ok(text.includes("styles.xml"), "must contain styles path");
+  assert.ok(text.includes("content.xml"), "must contain content path");
+
+  // Verify REVISION1 block background colors are in content.xml
+  assert.ok(text.includes("#7C3AED"), "must include Books block border color (#7C3AED)");
+  assert.ok(text.includes("#F4EEFE"), "must include Books block background tint (#F4EEFE)");
+  assert.ok(text.includes("#EA580C"), "must include Lecture Highlights block border (#EA580C)");
+  assert.ok(text.includes("#FEEFE8"), "must include Lecture Highlights block background (#FEEFE8)");
+
+  // Verify humanized column headers are in content.xml
+  assert.ok(text.includes("Master ID"), "must export humanized header 'Master ID'");
+  assert.ok(text.includes("Work"), "must export humanized header 'Work'");
+  assert.ok(text.includes("Power vs. Force"), "must export string cell value");
+  assert.ok(text.includes('office:value-type="float" office:value="100"'), "must export numeric cell value");
+});
+

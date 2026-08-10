@@ -1,8 +1,8 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019feb8c (audit, audiobook correction, mobile-scroll repair)
-**Branch for this session:** `arena/019feb8c-docsheet`
-**Audited baseline:** `f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5` (merged PR #66 baseline)
+**Updated:** 2026-08-10 — Arena session 019feb9b (multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering)
+**Branch for this session:** `arena/019feb9b-docsheet`
+**Audited baseline:** `8c59a912b133331dd34cd06a452317d24b332e5b` (merged PR #68 baseline)
 
 ## Read first
 
@@ -10,16 +10,14 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feb8c-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019feb9b-full-audit.md`
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`f7c58bc`, PR #66) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`8c59a91`, PR #68) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
 
-**This branch (`arena/019feb8c-docsheet`) adds:** an independent declared-current audit, an owner-directed audiobook ownership correction, a mobile Spreadsheet scrolling repair, and synchronized documentation/handoff updates. The earlier broad raw-ledger ownership blanking was restored because it changed unrelated items and missed the rendered promoted audiobooks; now all 27 `format=audiobook` records are blank/not stated for `owned`. Details: `docs/audits/2026-08-10-arena-019feb8c-full-audit.md`, `review/OWNED_AUDIOBOOKS_2026-08-10.md`, and `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
-
-PR #67 passed `Validate data pipeline and site` in 1m28s and was merged to `main` as `b226135` on 2026-08-10. Pages deployment and owner visual acceptance remain the normal owner-controlled follow-up.
+**This branch (`arena/019feb9b-docsheet`) adds:** a comprehensive independent multidisciplinary audit across Web Design / UX / Accessibility, Full-Stack Frontend Engineering, and Data Engineering (`docs/audits/2026-08-10-arena-019feb9b-full-audit.md`), plus a dedicated deep audit of the CSV & ODS export engine (`docs/audits/2026-08-10-arena-019feb9b-csv-export-audit.md`). It implements a zero-dependency ODS (`.ods`) spreadsheet export engine (`docs/js/ods-export.js`) featuring REVISION1 colored block groupings, an Export dropdown menu for selecting between CSV and ODS, and aligns mobile Browse mode fallback CSV exports with desktop Spreadsheet humanized headers (`humanizeField`). All six generator checks (`--check`), 149 Python tests (90% total coverage), and Node module syntax checks pass cleanly.
 
 ## 2. What this branch changes (on top of `main`)
 
