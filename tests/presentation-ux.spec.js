@@ -75,11 +75,17 @@ test('computed row styles preserve zebra and REVISION1 accents across blocks', a
   expect(firstVisual.className).toContain('row-block-lectures-2002-2011');
   expect(firstVisual.matchesLectureRule).toBe(true);
   expect(firstVisual.blockLectures).toBe('#059669');
-  // The hard-coded style.css hash here is the *current* revision
-  // (936c444be89d) — the test catches a stale cache by failing when the
-  // browser delivers an older version. If the style.css bytes change,
-  // update this hash and the matching `?v=` in docs/index.html together.
-  expect(firstVisual.styleSheets.some((href) => href.includes('/docs/style.css?v=936c444be89d'))).toBe(true);
+  // Resolve the expected content version from the deployed manifest. The
+  // offline delivery contract already proves that the manifest, stylesheet
+  // bytes, and index URL agree; this browser assertion proves that the page
+  // actually loaded that exact version without another hand-maintained hash.
+  const expectedStyleVersion = await page.evaluate(async () => {
+    const manifest = await fetch('/docs/build-manifest.json').then((response) => response.json());
+    return manifest.assets['style.css'].slice(0, 12);
+  });
+  expect(firstVisual.styleSheets.some(
+    (href) => href.includes(`/docs/style.css?v=${expectedStyleVersion}`),
+  )).toBe(true);
   expect(firstVisual.backgroundColor).not.toBe(secondVisual.backgroundColor);
   expect(firstVisual.boxShadow).toContain('rgb(5, 150, 105)');
   expect(firstVisual.borderTopWidth).toBe('2px');
