@@ -1,17 +1,23 @@
 # Agent Handoff
 
-Last updated: 2026-08-10 (Arena 019fea62 — Mobile header, white grouping, highlights reposition, Edition mediation with extra row 373 and Extra badge)
+Last updated: 2026-08-10 (Arena 019feaaf — Owned Column Enlarged, Extra Badge Constrained to PvF Double, Edition Research Moved to Drawer, Full Multidisciplinary Audit)
 
 ## Current state
 
 DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 (`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
 
-- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` **(Current — fresh-eyes audit 019fe8d0 session)**
-- `docs/audits/2026-08-09-full-audit-019fe8a5.md` (Prior session — 019fe8a5)
-- `docs/audits/2026-08-09-full-audit-019fe830-multidisciplinary.md` (Prior declared-current multidisciplinary audit)
-- `docs/audits/2026-08-09-expert-multidisciplinary-audit.md` (Prior 019fe80c multidisciplinary audit)
+- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` **(Current — fresh-eyes multidisciplinary audit 019feaaf session)**
+- `docs/audits/2026-08-10-full-audit-019fea62-multidisciplinary.md` (Prior 019fea62 session audit)
+- `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md` (Prior 019fe8d0 audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+
+## 2026-08-10 Session Summary — 019feaaf — Owned Width, Extra Badge Constrain, Edition Research to Drawer
+
+- **Owned Column Enlarged:** `COLUMN_BUDGETS.owned` widened to `78px` (70–90px) in `docs/js/config.js` to comfortably accommodate the "Owned" header text, sort indicators, and cell badges without truncation.
+- **Constrained "Extra" Badge to PvF Double:** `isExtraEditionRow(row)` in `docs/app.js` returns `true` exclusively for the Power vs. Force double (`w-power-vs-force` row 373). All other secondary carrier rows no longer show the badge.
+- **Edition Column Cleaned & Research Moved to Details Panel:** Removed inline edition note spans from mobile cards, omitted `edition_note` from the visible table priority, and assigned `edition_note` to the **Research** section in `DETAIL_SECTIONS` within `docs/js/config.js` (viewable in on-click drawer).
+- **Delivery Contract & Tests:** Asset digests synchronized in `docs/index.html` and `docs/build-manifest.json` (`revision: owned-width-extra-clean-20260810.1`, `app-49ca59628f20/css-936c444be89d`). All 147 tests pass, coverage 90%, 6/6 `--check` green.
 
 ## 2026-08-10 Session Summary — 019fea62 — Mobile Header, White Grouping, Highlights + Extra Edition Row 373
 
