@@ -173,3 +173,21 @@ No workflow can infer subjective acceptance. Before closing the row incident:
   regenerates only `docs/data.json` when the raw source changes.
 - `.github/workflows/map_veritas_catalogue.yml` — intentionally review-only; a
   candidate diff exits non-zero to demand review and is not a deployment error.
+
+## Prepared by agent, push blocked (owner-approved 2026-08-10)
+
+- **ci.yml — frontend static-quality quick win (owner go-ahead given, but the
+  push was rejected because the GitHub App token lacks `workflows`
+  permission).** The exact reviewed change is committed as
+  `.scoreboard/ci-lint-workflow-edit-2026-08-10.patch` (apply with
+  `git apply .scoreboard/ci-lint-workflow-edit-2026-08-10.patch`): the
+  "Check JavaScript syntax" step also runs `node --check` on every
+  `docs/js/*.js` module, and a new "Lint shipped frontend for undefined
+  references" step runs `npm run lint` (ESLint 9 flat config, `no-undef` on
+  the delivered `docs/app.js` + `docs/js/*.js`, browser globals). This closes
+  the P2 gap recorded in the scoreboard: the 019fe8a5 P0-class defect (a
+  module-scope variable dropped during a refactor) is now caught pre-browser.
+  The lint infrastructure is already merged on the branch: `eslint.config.mjs`,
+  the `lint` script, and the `eslint` devDependency (`npm audit`: 0
+  vulnerabilities). Alternatively grant the GitHub App `workflows` permission
+  and the owner can merge the prepared patch from the branch.

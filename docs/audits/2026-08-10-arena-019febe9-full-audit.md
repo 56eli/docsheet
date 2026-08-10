@@ -68,7 +68,7 @@ All counts match `NEXT_AGENT_HANDOFF.md` §3 and `docs/catalogue-meta.json`.
 
 All non-blocking; ordered by practical priority.
 
-1. **P2 (agent-safe, previously documented, still open): CI has no `docs/js/*.js` syntax check and no `no-undef` lint.** `ci.yml` runs `node --check` on `docs/app.js`, `playwright.config.js`, and `tests/*.spec.js`, but not the 8 extracted modules. Note for precision: `node --check` is syntax-only and would **not** have caught the P0-class ReferenceError (a missing module-scope declaration); ESLint `no-undef` (or `node --check` on a graph-walking harness) would. Add `for m in docs/js/*.js; do node --check "$m"; done` plus an `no-undef` lint pass.
+1. **P2 (agent-safe, previously documented): CI had no `docs/js/*.js` syntax check and no `no-undef` lint.** `ci.yml` ran `node --check` on `docs/app.js`, `playwright.config.js`, and `tests/*.spec.js`, but not the extracted modules. Note for precision: `node --check` is syntax-only and would **not** have caught the P0-class ReferenceError (a missing module-scope declaration); ESLint `no-undef` is the check that would. **Fixed in this session (owner go-ahead):** ci.yml now `node --check`s every `docs/js/*.js` module and runs `npm run lint` (ESLint 9 flat config, `no-undef` on the shipped frontend with browser globals; eslint added as a devDependency — `npm audit` still 0 vulnerabilities).
 
 2. **P3 (doc drift): README "visitor-first" paragraph is inverted vs the implemented, spec-asserted layout.** `README.md` claims title/series/date are visible at first sight and proposed file names are hidden under Expert; the executable spec (`column-layout.spec.js`) and `COLUMN_PRESETS.master` assert the opposite (proposed file name is the frozen first-sight rail; title/series/year-month are Expert-hidden). Fixed in this session to describe the real layout.
 
@@ -86,7 +86,7 @@ Added `PipelineHelpersTests` (4 tests) and `ProductRelationshipValidationTests`
 `pipeline/relationships.py` both rose to **100%** module coverage and total
 coverage rose to **92%** (2327 stmts, floor 85). Suite is now **158** tests;
 README/INSTRUCTIONS test-count and coverage wording refreshed per the house
-rule. All six `--check` modes, 158/158 Python tests, and 10/10 Node tests pass.
+rule. All six `--check` modes, 158/158 Python tests, and 10/10 Node tests pass. The owner then selected the agent-safe CI quick win: ESLint `no-undef` on the shipped frontend is wired in (`eslint.config.mjs`, `npm run lint`, eslint devDependency — 0 vulnerabilities; lint is clean on the tree), and the exact ci.yml diff (module `node --check` loop + lint step) is committed as `.scoreboard/ci-lint-workflow-edit-2026-08-10.patch`. Pushing the workflow file itself was rejected because the GitHub App token lacks `workflows` permission, so the owner applies the 4-line patch (or grants the permission); the P0-class dropped-variable defect is caught pre-browser once applied.
 
 ## Remaining risks (unchanged, owner-gated)
 

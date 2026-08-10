@@ -22,7 +22,7 @@ The 019feaf6 session repaired the P0 import, added Node/browser edition-formatte
 - **P3 (doc drift, FIXED):** this handoff's "Current data state" ownership numbers were stale (282/13/68, the intermediate 019feb3e state); corrected to the measured 289/25/49.
 - **P3 (UX):** the `?` shortcuts overlay advertises `←` / `→` "Switch tabs" but `handleGlobalShortcuts` has no arrow-key handler (leftover from the removed `.dataset-tab` tab bar). Either remove the help entry or implement view-jump cycling.
 - **P3 (robustness):** the `getRowBlockId` fallback classifier cannot reproduce the `lectures-2002-2011` block (201 rows) if `catalogue-block-map.json` fails to load, and the fallback is untested against the committed map (Node tests stub `getRowBlockId`). Embed the derived uuid→block table (or lecture-series rule) as fallback and assert fallback==map in a Node test.
-- **P2 (agent-safe, previously documented, still open):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`. Precise note: `node --check` is syntax-only and would **not** have caught the P0 ReferenceError class; ESLint `no-undef` is the check that would.
+- **P2 (agent-safe, APPLIED with owner go-ahead):** CI now runs `node --check` on every `docs/js/*.js` module and `npm run lint` (ESLint 9 flat config, `no-undef` on the shipped frontend with browser globals; eslint added as a devDependency, 0 vulnerabilities). The P0-class dropped-variable defect is now caught pre-browser — `node --check` alone is syntax-only and would not have caught it; `no-undef` is the check that would. See `.scoreboard/manual-workflow-edits.md`.
 
 ## Prior findings (019feb3e/019feb8c, preserved for context)
 
