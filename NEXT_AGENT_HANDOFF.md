@@ -15,7 +15,7 @@
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression and was deployed before CI; PR #64 now repairs that incident plus all selected cleanup and P1 findings.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. PR #64 merged as `54b37f7`, main CI and Pages deployment passed, and the live manifest plus 363-row catalogue are verified.
 
 ## 2. Incident and completed frontend work
 
@@ -32,11 +32,12 @@ This branch now:
 7. traverses the full import graph in `FrontendDeliveryContractTests`;
 8. refreshes module/app/style hashes, visible build ID, and the build manifest.
 
-Local checks pass. PR #64 CI run `31378465750` passes 149 offline, 3 Node, and **28/28 Playwright tests**. Merge/deploy plus exact live-build verification remain.
+Main CI run `31379726756` passes 149 offline, 3 Node, and **28/28 Playwright tests**. Pages run `31379725585` deployed successfully. Live verification confirms the exact revision `live-search-versioned-module-graph-019feaf6-20260810.1`, matching asset/module/data hashes, `master_items=363`, and rendered catalogue rows.
 
 ### Remaining findings
 
-- Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Pages is still legacy `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Explicit owner visual acceptance remains pending despite objective live verification.
 - Axe/Lighthouse automation is optional follow-up, not a current release blocker.
 - Issue #18 still needs owner Drive access.
 
@@ -79,7 +80,7 @@ BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
 BLOCK live curl probe (sandbox TLS connection restriction)
 ```
 
-Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31378465750` proves the repaired/cleaned frontend passes 3/3 Node and 28/28 browser tests. The exact public deployment still needs verification.
+Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. Main CI run `31379726756` and Pages run `31379725585` prove merge commit `54b37f7` passes and is live; fetched manifest/meta/index content confirms the exact revision and 363-row render.
 
 ## Data pipeline rules
 
@@ -158,7 +159,7 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 ## Open work in priority order
 
-1. Merge/deploy PR #64, verify the exact live build revision/hashes/screenshots, and obtain owner acceptance.
+1. Owner: explicitly accept/reject live revision `live-search-versioned-module-graph-019feaf6-20260810.1`.
 2. Owner: require CI and gate Pages deployment.
 3. Optionally add axe-core/Lighthouse automation.
 4. Resolve GitHub issue #18 when owner Drive access is available.

@@ -19,16 +19,15 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 ## Current verdict
 
-**Repo-ready gate: FAIL — 7.9/10 effective (678 weighted points / 86).**
+**Repo-ready gate: WARNING — 8.0/10 effective (687 weighted points / 86).**
 
-The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the P0, removes dormant UI, hardens shortcuts accessibility, restores live search highlights, and hash-versions the full module graph. PR CI run `31378465750` passes 149 offline, 3 Node, and 28 browser tests. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
+The data pipeline is healthy. Baseline `aa1f1b7` failed after deployment, but PR #64 merged as `54b37f7`; main CI run `31379726756` passes 149 offline, 3 Node, and 28 browser tests, and Pages run `31379725585` deployed successfully. The live manifest exactly matches committed app/style/module/data hashes, live metadata reports 363 masters, and the fetched site renders the 363-row catalogue. The gate remains warning because legacy Pages is not CI-gated and explicit owner visual acceptance is pending.
 
 ## Current priorities
 
 | Priority | Aspect | Immediate action |
 |---:|---|---|
-| 8 | Deployment readiness | Merge/deploy the green repair, verify exact build, then owner gates Pages on CI |
-| 5 | GitHub Pages presentation | Verify the exact public build and obtain owner acceptance |
+| 4 | Deployment readiness | Owner gates Pages on successful CI and enables required checks |
 | 4 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
 | 3 | Error handling / logging | Add a generic visible fatal-render state for async table failures |
 | 3 | Content quality | Resolve the owner-scored gap when new content direction is provided |
@@ -51,17 +50,17 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| GitHub Pages presentation | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
+| GitHub Pages presentation | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | UX / usability | 4 | 8 | 8 | 8 | 8 | 0 | 0 | healthy |
 | Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy |
 | Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Deployment readiness | 4 | 8 | 6 | — | 6 | 2 | 8 | blocked_manual_workflow_edit |
+| Deployment readiness | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit |
 | Agent readiness | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Auditability | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo transparency | 3 | 8 | 7 | 7 | 7 | 1 | 3 | needs_work |
-| **Overall effective** | **86** | **8** | — | — | **7.9** | — | — | **fail** |
+| **Overall effective** | **86** | **8** | — | — | **8.0** | — | — | **warning** |
 
 ## User-score notes
 
@@ -75,19 +74,18 @@ No other user score is inferred.
 
 ## Critical risk flags
 
-1. **Broken public baseline:** the repair passes PR CI, but legacy Pages still serves `aa1f1b7` until merge/deploy.
-2. **Ungated delivery:** Pages API reports legacy `main:/docs`; deployment can outrun CI.
-3. **Owner acceptance pending:** the exact public build still needs hash/screenshot verification and explicit acceptance.
-4. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
+1. **Ungated delivery:** Pages API reports legacy `main:/docs`; deployment can outrun CI.
+2. **Owner acceptance pending:** the exact live revision and 363-row render are verified, but explicit visual acceptance is still required.
+3. **Low-severity CSP debt:** `style-src 'unsafe-inline'`; script policy remains hash-pinned and Tabulator uses SRI.
 
 ## Quality gate details
 
-- Overall 7.9 < required 8: **fail**.
+- Overall 8.0 ≥ required 8: numeric pass.
 - Security/privacy 8 ≥ 8: pass.
 - Tests 9 ≥ 7: pass.
 - README 8 ≥ 7: pass.
 - CI/CD 7 ≥ 7: pass.
 - Agent readiness 8 ≥ 8: pass.
-- Remaining blockers are the overall score, legacy ungated deployment, exact live-build verification, and owner acceptance.
+- Gate remains **warning** because legacy Pages is ungated and explicit owner visual acceptance is pending.
 
 See the current audit for full evidence, verification limitations, independent data counts, and the remediation sequence.

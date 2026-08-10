@@ -131,3 +131,13 @@ User-selected P1 work restored dynamic search highlighting and made every local 
 | 2026-08-10 | architecture | 8 | 9 | null | 9 | Arena 019feaf6 | Every local ES-module edge now carries its target hash; delivery contract traverses and validates the complete graph. |
 | 2026-08-10 | performance | 7 | 8 | null | 8 | Arena 019feaf6 | Nested/top-level imports now share one hash-versioned URL identity, eliminating duplicate/stale module loads. |
 | 2026-08-10 | overall_effective_score | 7.8 | 7.9 | preserved | 7.9 | Arena 019feaf6 | Recomputed 678/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |
+
+## 2026-08-10 — PR #64 merge and live verification
+
+PR #64 merged as `54b37f7`. Main CI run `31379726756` and Pages run `31379725585` succeeded. Live fetch verification matched the complete manifest and returned `master_items=363` plus rendered catalogue rows. User scores remain unchanged.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | github_pages_presentation | 7 | 8 | null | 8 | Arena 019feaf6 | Exact live revision, all hashes, 363-row metadata, and rendered index rows verified after green main CI/Pages deploy. |
+| 2026-08-10 | deployment_readiness | 6 | 7 | null | 7 | Arena 019feaf6 | Merge/main CI/Pages/live verification complete; legacy Pages remains ungated pending owner settings/workflow. |
+| 2026-08-10 | overall_effective_score | 7.9 | 8.0 | preserved | 8.0 | Arena 019feaf6 | Recomputed 687/86; gate becomes WARNING (numeric pass with ungated Pages and owner acceptance pending). |
