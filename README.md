@@ -63,12 +63,12 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 147 tests, no browser/network needed
+python -m unittest discover tests          # 149 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **85%** as of
-2026-08-10 (with 147 deterministic pipeline, style, and delivery-contract tests;
+2026-08-10 (with 149 deterministic pipeline, style, and delivery-contract tests;
 individual module coverage is 78–100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full

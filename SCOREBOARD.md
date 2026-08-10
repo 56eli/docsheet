@@ -39,11 +39,11 @@ files** — this scoreboard is part of that memory. See
 | Repo organization | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work | high | Consolidated 21→12 root .md; consider moving 6 normative docs |
 | Code hygiene | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
 | Architecture | 4 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Frontend modularized (config.js + formatters.js); app.js 2,769→2,392 |
+| Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | Frontend modularized (8 modules); app.js 2,769→1,933 |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Error handling / logging | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | — |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | — |
-| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | 141 offline + 25 browser green |
+| Tests | 5 | 8 | 9 | — | 9 | 0 | 0 | healthy | high | 149 offline + 25 browser green |
 | CI/CD | 4 | 8 | 7 | — | 7 | 1 | 4 | blocked_manual_workflow_edit | high | Require CI; gate Pages |
 | Security / privacy | 5 | 8 | 8 | — | 8 | 0 | 0 | healthy | high | See risk flags below |
 | Performance | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy | medium | Optional Lighthouse pass |

@@ -12,21 +12,23 @@ DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
 - `docs/audits/2026-08-10-full-audit-019fea62-multidisciplinary.md` (Prior 019fea62 session audit)
 - `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
 
-## 2026-08-10 Session Summary — 019feabf — Full Multidisciplinary Audit + Hygiene + CSS Dedup
+## 2026-08-10 Session Summary — 019feabf — Full Multidisciplinary Audit + Hygiene + CSS Dedup + Modularization + Module Contract
 
-- **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 147 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified against expected counts. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md` and `TEMP_AUDIT_019FEABF.md`.
-- **CSS §12/§13 Deduplication (P1):** Extracted shared browse-mode component styles (work cards, edition cards, discovery chips, edition links) from `@media (max-width: 720px)` into a viewport-agnostic block. Stripped ~200 lines of duplicate rules from the `@media (min-width: 721px) { html.browse-active }` block in §13. CSS reduced 2563→2398 lines (−165, −6.4%). `browse-active` references dropped 41→9. Layout-specific overrides (grid columns, gap, padding) remain in §14.
-- **Frontend Modularization (P3, started):** Extracted 3 new ES modules from app.js:
+- **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 149 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md`.
+- **CSS §12/§13 Deduplication:** Extracted shared browse-mode component styles into viewport-agnostic block. CSS reduced 2563→2398 lines (−165). `browse-active` references 41→9.
+- **Frontend Modularization (Phases 1+2):** Extracted 5 new ES modules from app.js:
   - `docs/js/data-utils.js` (94 lines): debounce, formatTimestamp, displayMobileDate, displayMobileEdition, isExtraEditionRow, mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor
   - `docs/js/mobile.js` (88 lines): mobileSourceLink, mobileEditionCard, overviewCard
   - `docs/js/columns.js` (279 lines): looksLikeUrl, urlLabelFor, urlFormatter, columnPresetFor, orderKeysForView, measuredColumnWidth, buildColumns
-  - app.js reduced 2439→2062 lines (−15.4%). Frontend now 6 modules (config + formatters + data-utils + mobile + columns + app).
-- **Hygiene fixes applied:**
-  - Removed dead `escapeRegex`/`renderHighlightedText` exports from `docs/js/formatters.js` (app.js defines its own versions with closure over `activeSearchQuery`). Added clarifying comment in app.js.
-  - Archived 4 files from root to `archive/`: `TEMP_AUDIT_RESPONSE.md`, `TEMP_FIX_019fea62_mobile_white_highlights.md`, `TEMP_RESPONSE_019fea62.md`, `PR_60_BODY.md`. Root .md count 18→14 (target 12).
-  - Updated delivery contract: `app.js?v=e76b283c951d`, `style.css?v=379a32190e85`, footer `app-e76b283c951d/css-379a32190e85`, manifest revision `css-dedup-019feabf-20260810.1`.
-- **Verification:** All 147 tests pass, 90% coverage (78-100% per module), 6/6 `--check` green, JS syntax clean.
-- **Left open:** P0 CI/Pages gating (owner action), further app.js modularization (P3, 4-6 hours), deploy workflow hardcoded row count fix.
+  - `docs/js/filter-utils.js` (41 lines): rowMatchesFacets, facetsEmpty, mobileFacetLabel
+  - `docs/js/view-utils.js` (152 lines): updateViewSummary, renderCollectionOverview, renderSeriesStrip, renderSeriesLanding, configureViewJump
+  - app.js reduced 2769→1933 lines (−30%). Frontend now 8 modules.
+- **Module Hash Contract:** All 7 JS modules tracked in `build-manifest.json#modules` with SHA-256 hashes. 2 new contract tests verify manifest hashes and `?v=` import hashes. Tests 147→149.
+- **Deploy Workflow Fix:** Replaced hardcoded 362 row count in deploy_pages.yml with dynamic `catalogue-meta.json` lookup.
+- **Hygiene:** Archived 4 TEMP/PR files from root (18→14 .md). Removed dead formatters.js exports. Fixed stale import hashes.
+- **Documentation:** Updated test counts (149) in README, INSTRUCTIONS, NEXT_AGENT_HANDOFF, SCOREBOARD. Updated Maintainability note (8 modules).
+- **Verification:** All 149 tests pass, 90% coverage (78-100% per module), 6/6 `--check` green, JS syntax clean.
+- **Left open:** P0 CI/Pages gating (owner action), further app.js modularization (P3, optional), Issue #18 (owner Drive access).
 
 ## 2026-08-10 Session Summary — 019feaaf — Owned Width, Extra Badge Constrain, Edition Research to Drawer
 
