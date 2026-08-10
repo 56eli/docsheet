@@ -10,7 +10,7 @@
    ========================================================================== */
 import {
   VIEWS, VIEW_GROUPS, EMPTY_STATE_MESSAGES, DEFAULT_EMPTY_MESSAGE,
-  VIEW_DETAILS, COLUMN_LABELS, STATUS_FIELDS,
+  COLUMN_LABELS, STATUS_FIELDS,
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
 } from "./js/config.js?v=5189225f358d";
@@ -23,14 +23,21 @@ import {
   displayMobileDate, displayMobileEdition, isExtraEditionRow,
   mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
   formatTimestamp, debounce,
-} from "./js/data-utils.js?v=cf0d7f42b088";
+} from "./js/data-utils.js?v=0288c69670bb";
 import {
   mobileEditionCard, overviewCard,
-} from "./js/mobile.js?v=8b0a1a00b57b";
+} from "./js/mobile.js?v=84a5d471cc0f";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=4a3a433c8d5b";
+} from "./js/columns.js?v=a96a86b836f3";
+import {
+  rowMatchesFacets, facetsEmpty, mobileFacetLabel,
+} from "./js/filter-utils.js?v=daefe257ffd2";
+import {
+  updateViewSummary, renderCollectionOverview, renderSeriesStrip,
+  renderSeriesLanding, configureViewJump,
+} from "./js/view-utils.js?v=7fb1cc9ec1dd";
 
 (function () {
   "use strict";
@@ -263,14 +270,7 @@ import {
     applyActiveFilters();
   }
 
-  function rowMatchesFacets(row) {
-    return FACETS.every((facet) => {
-      const selected = activeFacets[facet.id];
-      if (!selected || selected.length === 0) return true;
-      const value = String(row[facet.field] ?? "").trim();
-      return selected.includes(value);
-    });
-  }
+
 
   /* ------------------------------------------------------------------ *
    *  Expert columns (per-view, persisted): views whose preset declares a
@@ -444,7 +444,7 @@ import {
     const visibleRows = table
       ? table.getData("active").length
       : (renderedAsMobileBrowse ? mobileBrowseRows.length : allData.length);
-    const isFiltering = Boolean(activeSearchQuery || activeReviewFilter || !facetsEmpty());
+    const isFiltering = Boolean(activeSearchQuery || activeReviewFilter || !facetsEmpty(activeFacets, FACETS));
     searchStatus.textContent = isFiltering
       ? `Showing: ${visibleRows} of ${allData.length}`
       : `Showing: ${visibleRows}`;
@@ -602,13 +602,7 @@ import {
     [...select.options].forEach((option) => { option.selected = selected.has(option.value); });
   }
 
-  function mobileFacetLabel(facet, value) {
-    if (facet.id === "year") {
-      if (!value) return "Unknown date";
-      return value === "198X" ? "c. 1980s" : value;
-    }
-    return facet.buildOptionLabel ? facet.buildOptionLabel(value) : (value || "Not stated");
-  }
+
 
   function toggleMobileFacet(facet, value) {
     const selected = new Set(activeFacets[facet.id] || []);
@@ -617,7 +611,7 @@ import {
     activeFacets[facet.id] = [...selected];
     writeFacetState(activeView, activeFacets);
     syncFacetSelect(facet.id);
-    if (facetClear) facetClear.hidden = facetsEmpty();
+    if (facetClear) facetClear.hidden = facetsEmpty(activeFacets, FACETS);
     applyActiveFilters();
   }
 
@@ -656,7 +650,7 @@ import {
         activeFacets[facet.id] = [];
         writeFacetState(activeView, activeFacets);
         syncFacetSelect(facet.id);
-        if (facetClear) facetClear.hidden = facetsEmpty();
+        if (facetClear) facetClear.hidden = facetsEmpty(activeFacets, FACETS);
         applyActiveFilters();
       });
       container.append(clear);
@@ -672,7 +666,7 @@ import {
       (a, b) => (data.filter((row) => row.series === b).length - data.filter((row) => row.series === a).length) || a.localeCompare(b)
     );
     renderRail(mobileYearRail, yearFacet, yearFacet.sort);
-    if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty();
+    if (mobileDiscoveryClear) mobileDiscoveryClear.hidden = facetsEmpty(activeFacets, FACETS);
   }
 
   function renderMobileBrowse(data = allData) {
@@ -797,71 +791,15 @@ import {
     // and the spreadsheet keeps a fixed minimum height (CI fix 2026-08-09).
     document.body.classList.toggle("intro-visible", show);
     if (!show) return;
-    renderCollectionOverview(data);
-    renderSeriesStrip(data);
+    renderCollectionOverview(data, overviewCards);
+    renderSeriesStrip(data, seriesStripList, openSeriesFromStrip);
   }
 
 
 
-  function renderCollectionOverview(data) {
-    if (!overviewCards) return;
-    overviewCards.replaceChildren();
-    let ownedTrue = 0, ownedFalse = 0, ownedBlank = 0;
-    data.forEach((row) => {
-      const v = ownedValue(row);
-      if (v === "true") ownedTrue += 1;
-      else if (v === "false") ownedFalse += 1;
-      else ownedBlank += 1;
-    });
-    const total = data.length;
-    overviewCards.append(overviewCard(
-      "Overall collection",
-      `${ownedTrue} owned · ${ownedFalse} not owned · ${ownedBlank} not stated`,
-      ownedTrue,
-      total,
-    ));
-    const bySeries = new Map();
-    data.forEach((row) => {
-      const series = row.series || "(unassigned)";
-      if (!bySeries.has(series)) bySeries.set(series, { total: 0, owned: 0 });
-      const stats = bySeries.get(series);
-      stats.total += 1;
-      if (ownedValue(row) === "true") stats.owned += 1;
-    });
-    [...bySeries.entries()]
-      .sort((a, b) => b[1].total - a[1].total)
-      .slice(0, 8)
-      .forEach(([series, stats]) => {
-        overviewCards.append(overviewCard(
-          series,
-          `${stats.owned} of ${stats.total} owned`,
-          stats.owned,
-          stats.total,
-        ));
-      });
-  }
 
-  function renderSeriesStrip(data) {
-    if (!seriesStripList) return;
-    seriesStripList.replaceChildren();
-    const counts = new Map();
-    data.forEach((row) => {
-      const series = row.series || "(unassigned)";
-      counts.set(series, (counts.get(series) || 0) + 1);
-    });
-    [...counts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .forEach(([series, count]) => {
-        const chip = document.createElement("button");
-        chip.type = "button";
-        chip.className = "series-chip";
-        chip.textContent = `${series} (${count})`;
-        chip.setAttribute("data-series", series);
-        chip.title = `Filter the catalogue to ${series}`;
-        chip.addEventListener("click", () => openSeriesFromStrip(series));
-        seriesStripList.append(chip);
-      });
-  }
+
+
 
   // Apply a facet value to the master view (used by the strip and the Series
   // browser). The facet state is written for "master" regardless of the view
@@ -871,7 +809,7 @@ import {
     activeFacets[facetId] = [value];
     writeFacetState("master", activeFacets);
     syncFacetSelect(facetId);
-    if (facetClear) facetClear.hidden = facetsEmpty();
+    if (facetClear) facetClear.hidden = facetsEmpty(activeFacets, FACETS);
   }
 
   function ensureTablePresentation() {
@@ -901,81 +839,11 @@ import {
 
 
 
-  function renderSeriesLanding(data) {
-    if (!seriesLanding || !seriesLandingGrid) return;
-    spreadsheet.hidden = true;
-    mobileBrowse.hidden = true;
-    emptyState.hidden = true;
-    seriesLanding.hidden = false;
-    // Spreadsheet-only controls don't apply to the card browser.
-    if (expertToggleBtn) expertToggleBtn.hidden = true;
-    if (columnMenuBtn) columnMenuBtn.hidden = true;
-    seriesLandingGrid.replaceChildren();
-    const bySeries = new Map();
-    data.forEach((row) => {
-      const series = row.series || "(unassigned)";
-      if (!bySeries.has(series)) bySeries.set(series, []);
-      bySeries.get(series).push(row);
-    });
-    const entries = [...bySeries.entries()].sort((a, b) => b[1].length - a[1].length);
-    entries.forEach(([series, rows]) => {
-      const owned = rows.filter((row) => ownedValue(row) === "true").length;
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "series-landing-card";
-      const name = document.createElement("strong");
-      name.textContent = series;
-      const meta = document.createElement("span");
-      meta.textContent = `${rows.length} record${rows.length === 1 ? "" : "s"} · ${owned} owned`;
-      const years = document.createElement("span");
-      years.className = "series-card-years";
-      years.textContent = yearSpanFor(rows);
-      card.append(name, meta, years);
-      card.addEventListener("click", () => openSeriesFromLanding(series));
-      seriesLandingGrid.append(card);
-    });
-    footerStats.textContent = `Series: ${entries.length} series`;
-    searchStatus.textContent = `${entries.length} series · ${data.length} records`;
-    spreadsheet.setAttribute("aria-busy", "false");
-  }
 
-  function updateViewSummary(viewName, rowCount = null) {
-    const view = VIEWS[viewName];
-    const details = VIEW_DETAILS[viewName] || {};
-    viewTitle.textContent = view.label;
-    viewDescription.textContent = details.description || "Search, filter, sort, and export this spreadsheet view.";
-    viewMeta.innerHTML = "";
 
-    const metaItems = [
-      ["Rows", rowCount === null ? "Loading…" : rowCount.toLocaleString()],
-      ["Type", details.type || "Spreadsheet"],
-      ["Export", view.exportName],
-    ];
-    metaItems.forEach(([label, value]) => {
-      const wrapper = document.createElement("div");
-      const term = document.createElement("dt");
-      const description = document.createElement("dd");
-      term.textContent = label;
-      description.textContent = value;
-      wrapper.append(term, description);
-      viewMeta.append(wrapper);
-    });
-  }
 
-  function configureViewJump() {
-    if (!viewJump) return;
-    viewJump.replaceChildren();
-    VIEW_GROUPS.forEach((group) => {
-      const optgroup = document.createElement("optgroup");
-      optgroup.label = group.label;
-      group.views.forEach((viewName) => {
-        const option = new Option(VIEWS[viewName].label, viewName);
-        optgroup.append(option);
-      });
-      viewJump.append(optgroup);
-    });
-    viewJump.value = activeView;
-  }
+
+
 
   function closeColumnMenu() {
     columnMenu.hidden = true;
@@ -1331,7 +1199,7 @@ import {
     );
     const reviewMatches = !activeReviewFilter ||
       String(data[activeReviewFilter.field] ?? "") === activeReviewFilter.value;
-    return searchMatches && reviewMatches && rowMatchesFacets(data);
+    return searchMatches && reviewMatches && rowMatchesFacets(data, activeFacets, FACETS);
   }
 
   function applyActiveFilters() {
@@ -1340,7 +1208,7 @@ import {
       return;
     }
     if (!table) return;
-    if (!activeSearchQuery && !activeReviewFilter && facetsEmpty()) {
+    if (!activeSearchQuery && !activeReviewFilter && facetsEmpty(activeFacets, FACETS)) {
       table.clearFilter();
       table.redraw(true);
       updateSearchStatus();
@@ -1351,12 +1219,7 @@ import {
     updateSearchStatus();
   }
 
-  function facetsEmpty() {
-    return FACETS.every((facet) => {
-      const selected = activeFacets[facet.id];
-      return !selected || selected.length === 0;
-    });
-  }
+
 
   /* Work-family stripe grouping: rows sharing the same work_id (e.g. a 3-set DVD)
      share the same row background color, while alternating work families change color. */
@@ -1637,7 +1500,7 @@ import {
     reviewToolbar.hidden = true;
     updateActiveFilterChips();
     closeRowDetails();
-    updateViewSummary(viewName);
+    updateViewSummary(viewName, null, viewTitle, viewDescription, viewMeta);
     spreadsheet.setAttribute("aria-busy", "true");
     if (table) {
       table.destroy();
@@ -1668,7 +1531,7 @@ import {
       if (activation !== viewActivation) return;
       if (activeDataRequest === request) activeDataRequest = null;
       applyLoadedViewMeta(viewName, data, lastModified);
-      updateViewSummary(viewName, data.length);
+      updateViewSummary(viewName, data.length, viewTitle, viewDescription, viewMeta);
       if (data.length === 0) {
         // Standing intake lanes (and any future empty view) get an
         // explanatory card instead of a blank grid (IA redesign 2026-08-08).
@@ -1684,7 +1547,15 @@ import {
       }
       emptyState.hidden = true;
       if (viewName === "series") {
-        renderSeriesLanding(data);
+        // Series landing: show the grid, hide other views
+        spreadsheet.hidden = true;
+        mobileBrowse.hidden = true;
+        emptyState.hidden = true;
+        seriesLanding.hidden = false;
+        if (expertToggleBtn) expertToggleBtn.hidden = true;
+        if (columnMenuBtn) columnMenuBtn.hidden = true;
+        renderSeriesLanding(data, seriesLanding, seriesLandingGrid, footerStats, searchStatus, openSeriesFromLanding);
+        spreadsheet.setAttribute("aria-busy", "false");
         console.info(`[docsheet] Loaded ${data.length} ${viewName} rows`);
         return;
       }
@@ -1742,7 +1613,7 @@ import {
     // until a full-page reload re-fetched the JSON.
     blockMapReady = loadCatalogueBlockMap();
     loadStatsStrip();
-    configureViewJump();
+    configureViewJump(viewJump, VIEW_GROUPS, activeView);
     if (viewJump) {
       viewJump.addEventListener("change", () => activateView(viewJump.value));
     }
@@ -1921,7 +1792,7 @@ import {
         activeFacets[facet.id] = [...select.selectedOptions].map((option) => option.value);
         writeFacetState(activeView, activeFacets);
         if (facetClear) {
-          facetClear.hidden = facetsEmpty();
+          facetClear.hidden = facetsEmpty(activeFacets, FACETS);
         }
         applyActiveFilters();
       });
