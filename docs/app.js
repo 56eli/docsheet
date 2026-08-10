@@ -14,7 +14,7 @@ import {
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js?v=ec8f43384b2a";
+} from "./js/config.js?v=cfced6b202ba";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,

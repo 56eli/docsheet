@@ -1,3 +1,3 @@
 uuid,edition_note,review_status,reviewed_on,reason
 286,"Current Hay House paperback, B&W cover (2014 printing) — see 373 for original 1995 Veritas hardcover, non-B&W dust jacket (extra edition under this work)",approved,2026-08-10,Updated mediation: 373 now holds the original hardcover as distinct row; 286 note references it
-373,"Original 1995 Veritas hardcover, non-B&W dust jacket — special edition (extra edition of w-power-vs-force, see 286 for current B&W paperback)",approved,2026-08-10,Distinct printing for old Power vs Force non-B&W cover — new row under standard item with small extra-edition indicator
+373,"Original 1995 Veritas hardcover, non-B&W dust jacket; spiral-bound; 94 pages; Veritas Publishing; ISBN 0964326175 — special edition (extra edition of w-power-vs-force, see 286 for current B&W paperback)",approved,2026-08-10,"Distinct printing with physical specs (binding, pages, publisher, ISBN) via edition_note, keeping Edition carrier column clean"

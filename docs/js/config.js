@@ -224,7 +224,7 @@ export const LOW_PRIORITY_FIELDS = [
 
 export const COLUMN_BUDGETS = {
   record_type: { width: 52, minWidth: 48, maxWidth: 58 },
-  owned: { width: 72, minWidth: 62, maxWidth: 85 },
+  owned: { width: 58, minWidth: 52, maxWidth: 68 },
   proposed_filename: { minWidth: 220 },
   title: { minWidth: 150 },
   series: { minWidth: 180 },
