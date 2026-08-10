@@ -78,6 +78,16 @@ All non-blocking; ordered by practical priority.
 
 5. **P3 (robustness): the `getRowBlockId` fallback classifier cannot reproduce the block map.** If `catalogue-block-map.json` fails to load, the fallback (series/type rules in `formatters.js`) mapped only 9 blocks and could not express `lectures-2002-2011` — the largest block (201 rows) — so those rows and the ODS/XLSX exports would silently lose their REVISION1 grouping, and a handful of other rows would receive *wrong* fallback colors. **Fixed in this session:** a generated snapshot module `docs/js/block-map-fallback.js` (uuid→block for all 363 approved display-order rows) is embedded as the fallback, and a Node test asserts `getRowBlockId` equals the approved CSV for every row (fallback == map for all 363); the module is registered in the delivery contract.
 
+## Follow-up in this session (owner-selected coverage work)
+
+After the audit, the owner selected "raise helpers.py/relationships.py coverage".
+Added `PipelineHelpersTests` (4 tests) and `ProductRelationshipValidationTests`
+(5 tests) to `tests/test_pipeline.py`: `pipeline/helpers.py` and
+`pipeline/relationships.py` both rose to **100%** module coverage and total
+coverage rose to **92%** (2327 stmts, floor 85). Suite is now **158** tests;
+README/INSTRUCTIONS test-count and coverage wording refreshed per the house
+rule. All six `--check` modes, 158/158 Python tests, and 10/10 Node tests pass.
+
 ## Remaining risks (unchanged, owner-gated)
 
 - **Deployment race (P1, owner):** Pages still deploys from legacy `main:/docs` and can publish before CI fails; the reviewed Actions-gated `deploy_pages.yml` is ready in `.scoreboard/manual-workflow-edits.md`.

@@ -6,7 +6,7 @@
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019febe9-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering. It corroborates the existing 8.1 conditional-pass score without changing owner scores. All six `--check` modes, 149/149 Python tests (90% coverage), 9/9 Node tests, the 13-hash delivery contract, and the live deployed `build-manifest.json` (byte-identical to source) verified; data counts recomputed directly from the payloads (363 masters, 289/25/49 ownership, 191 works, 278 codes, 340 relationships, 12 dense display blocks). The live byte-verification evidence from prior sessions remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
+Read `docs/audits/2026-08-10-arena-019febe9-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering. It corroborates the existing 8.1 conditional-pass score without changing owner scores. All six `--check` modes, 158/158 Python tests (92% coverage; helpers/relationships at 100%), 10/10 Node tests, the 14-hash delivery contract, and the live deployed `build-manifest.json` (byte-identical to source) verified; data counts recomputed directly from the payloads (363 masters, 289/25/49 ownership, 191 works, 278 codes, 340 relationships, 12 dense display blocks). The live byte-verification evidence from prior sessions remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
 
 ## State change this session
 

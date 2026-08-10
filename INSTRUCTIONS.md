@@ -186,16 +186,16 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 149 deterministic tests
+python -m unittest discover tests      # 158 deterministic tests
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149 → 158).
 
-Current coverage: **90% total; individual modules 78–100%** (2026-08-10;
+Current coverage: **92% total; individual modules 85–100%** (2026-08-10;
 style tests are excluded from the coverage denominator).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare
