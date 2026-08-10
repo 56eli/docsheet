@@ -1,8 +1,8 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019febb6 (independent multidisciplinary full audit)
-**Branch for this session:** `arena/019febb6-docsheet`
-**Audited baseline:** `f71843a1222b23d088a386d1f3a71acfac7da2bd` (merged PR #69 baseline)
+**Updated:** 2026-08-10 — Arena session 019febe9 (independent multidisciplinary full audit)
+**Branch for this session:** `arena/019febe9-docsheet`
+**Audited baseline:** `b40133a8ae826d14ee2aed4578f1500165d25650` (main, merged PR #71)
 
 ## Read first
 
@@ -10,14 +10,14 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feb9b-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019febe9-full-audit.md`
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`8c59a91`, PR #68) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`b40133a`, PR #71) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` byte-identical to source); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
 
-**This branch (`arena/019febb6-docsheet`) adds:** the declared-current independent multidisciplinary audit (`docs/audits/2026-08-10-arena-019febb6-full-audit.md`) and expands the export engine from CSV/ODS to five formats: styled Excel (`.xlsx`), styled OpenDocument (`.ods`), CSV, metadata-wrapped JSON, and UTF-8 TSV. XLSX is generated dependency-free with frozen headers, autofilter, bounded content-aware widths, wrapped inline-string cells, and REVISION1 colors; JSON preserves value types in a versioned envelope; TSV quotes tabs/newlines and neutralizes formula prefixes. A user-reported ODS defect was also fixed: the exporter used `lectures` while the published block map uses `lectures-2002-2011`, causing all 201 lecture-series rows to fall back to uncolored `undecided` styling. Regression coverage now asserts the exact production block ID. All six generator checks, 149 Python tests, and 6 Node export/module tests pass cleanly; three new Playwright download tests await CI because local Chromium download is sandbox-network-blocked.
+**This session (`arena/019febe9-docsheet`) adds:** the declared-current independent multidisciplinary audit (`docs/audits/2026-08-10-arena-019febe9-full-audit.md`) with two documentation-drift corrections (README "visitor-first" paragraph aligned to the spec-asserted layout; `.scoreboard/agent-handoff.md` ownership numbers corrected to 289/25/49) and three recorded non-blocking findings (stale `←`/`→` shortcuts-help entry, `getRowBlockId` fallback gap for the `lectures-2002-2011` block, and the still-open CI `docs/js/*.js` syntax/`no-undef` gap). No score changes; all six generator checks, 149 Python tests, 9 Node tests, and the 13-hash delivery contract pass.
 
 ## 2. What this branch changes (on top of `main`)
 

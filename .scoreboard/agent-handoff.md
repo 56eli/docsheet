@@ -1,27 +1,35 @@
 # Agent Handoff
 
-**Updated:** 2026-08-10 — Arena 019febd6 export block-colour regression tests + XLSX colour fix + Export chip removal (no score changes)
-**Audited baseline:** `8c59a912b133331dd34cd06a452317d24b332e5b` (merged PR #68 baseline)
-**Session branch:** `arena/019feb9b-docsheet`
+**Updated:** 2026-08-10 — Arena 019febe9 independent full audit + README/handoff doc-drift corrections (no score changes)
+**Audited baseline:** `b40133a8ae826d14ee2aed4578f1500165d25650` (main, merged PR #71)
+**Session branch:** `arena/019febe9-docsheet`
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feb9b-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering, and `docs/audits/2026-08-10-arena-019feb9b-csv-export-audit.md` for the deep audit of the CSV & ODS export engine. It corroborates the existing 8.1 conditional-pass score without changing owner scores. This session implemented a zero-dependency ODS (`.ods`) export engine (`docs/js/ods-export.js`) with REVISION1 colored block groupings, an interactive Export format dropdown menu, and mobile Browse header alignment (`humanizeField`). PR #67 (audiobook ownership correction + mobile Spreadsheet scrolling repair) passed CI in 1m28s and merged to `main` as `b226135` on 2026-08-10. The previous live byte-verification evidence remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
+Read `docs/audits/2026-08-10-arena-019febe9-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering. It corroborates the existing 8.1 conditional-pass score without changing owner scores. All six `--check` modes, 149/149 Python tests (90% coverage), 9/9 Node tests, the 13-hash delivery contract, and the live deployed `build-manifest.json` (byte-identical to source) verified; data counts recomputed directly from the payloads (363 masters, 289/25/49 ownership, 191 works, 278 codes, 340 relationships, 12 dense display blocks). The live byte-verification evidence from prior sessions remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
 
 ## State change this session
 
-PR #64 is **merged to `main`, deployed, and verified live.** GitHub Pages built `54b37f7` @10:34Z; main CI run `31379726756` passed in 1m31s. Using the network fetch tool (which bypasses the sandbox TLS block that stopped prior sessions), this audit confirmed the public `build-manifest.json` is byte-identical to the committed manifest and the deployed `columns.js` contains the `isExtraEditionRow` import. **The broken-baseline blocker from the 019feaf6 audit is closed.** Effective score is **8.1/10 (694/86), gate conditional_pass.**
+Independent audit of merged `b40133a` (PR #71). No release-blocking or data-integrity defect found; effective score remains **8.1/10 (694/86), gate conditional_pass.** Corrected two documentation drifts found by the audit: README's "visitor-first" paragraph was inverted vs the spec-asserted layout (proposed file name is the frozen first-sight rail; title/series/year-month are Expert-hidden — `tests/column-layout.spec.js`), and this handoff's "Current data state" ownership numbers were stale (282/13/68 → 289/25/49). Recorded three non-blocking findings: (1) the `?` shortcuts overlay advertises `←`/`→` "Switch tabs" but no handler exists; (2) the `getRowBlockId` fallback classifier cannot reproduce the `lectures-2002-2011` block (201 rows) if the block-map fetch fails, and is untested against the committed map; (3) CI still lacks `docs/js/*.js` syntax check + `no-undef` lint (note: `node --check` is syntax-only and would not have caught the P0 ReferenceError class; `no-undef` would).
 
 ## What was true on PR #64 (preserved for context)
 
 The 019feaf6 session repaired the P0 import, added Node/browser edition-formatter coverage, removed the 10 absent-ID overview/stats/review-nav UI paths (411 net lines), completed the shortcuts-dialog focus lifecycle, wired live search highlights via a query getter, hash-versioned every ES-module edge, extended the delivery contract to traverse the full graph, and refreshed the manifest. PR CI `31378465750` passed 149 offline + 3 Node + 28 browser tests.
 
-## New findings this session (019feb3e)
+## New findings this session (019febe9)
+
+- **P3 (doc drift, FIXED):** README's "visitor-first" paragraph was inverted vs the spec-asserted layout — the proposed file name is the frozen first-sight rail and title/series/year-month are Expert-hidden (`tests/column-layout.spec.js`); README now describes the real layout.
+- **P3 (doc drift, FIXED):** this handoff's "Current data state" ownership numbers were stale (282/13/68, the intermediate 019feb3e state); corrected to the measured 289/25/49.
+- **P3 (UX):** the `?` shortcuts overlay advertises `←` / `→` "Switch tabs" but `handleGlobalShortcuts` has no arrow-key handler (leftover from the removed `.dataset-tab` tab bar). Either remove the help entry or implement view-jump cycling.
+- **P3 (robustness):** the `getRowBlockId` fallback classifier cannot reproduce the `lectures-2002-2011` block (201 rows) if `catalogue-block-map.json` fails to load, and the fallback is untested against the committed map (Node tests stub `getRowBlockId`). Embed the derived uuid→block table (or lecture-series rule) as fallback and assert fallback==map in a Node test.
+- **P2 (agent-safe, previously documented, still open):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`. Precise note: `node --check` is syntax-only and would **not** have caught the P0 ReferenceError class; ESLint `no-undef` is the check that would.
+
+## Prior findings (019feb3e/019feb8c, preserved for context)
 
 - **Mobile spreadsheet fix (019feb8c):** Spreadsheet mode now has an explicit two-axis Tabulator scroll owner and a non-scrolling dynamic-viewport shell, fixing the reported horizontal-pan failure and vertical rubber-banding. Regression coverage lives in `tests/ux-enhancements.spec.js`; details in `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
 - **P2 (agent-safe):** CI syntax-checks `app.js` but not `docs/js/*.js`; add `for m in docs/js/*.js; do node --check "$m"; done` to `ci.yml`.
 - **P2 (agent-safe):** No `no-undef` lint for the frontend — the P0 class is only caught by browser execution today. Add ESLint `no-undef`/`no-unused-vars`.
-- **P3 (agent-safe, DONE this session):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
+- **P3 (agent-safe, DONE 019feb3e):** Residual `.dataset-tab` tab-bar dead code removed (4 app.js lookups + arrow-key block + CSS).
 - **Ownership correction (019feb8c):** the PR #66 broad raw-ledger blanking was reverted because it did not target the promoted audiobook rows rendered in Everything and also altered unrelated media/print records. The actual promoted-edition sources now blank `owned` for every `format=audiobook`: 27/27 audiobook records are blank; overall ownership is 289 true / 25 false / 49 blank. See `review/OWNED_AUDIOBOOKS_2026-08-10.md`.
 - The CSS duplicate-`:root` issue flagged in an earlier audit is confirmed **fixed** (single `:root`/`:root.dark` token block).
 - `error_handling_logging` basis no longer says the formatter has an uncaught ReferenceError — that risk flag is retired; `activateView` exposes a visible fatal-render state on async load failures.
@@ -38,7 +46,7 @@ All recorded user scores were preserved unchanged.
 
 ## Current data state
 
-363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: **282 true / 13 false / 68 blank** (was 312/25/26 before the owner-directed blanks for master 373 + raw rows 297–end). Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products. The Original Spreadsheet view is retired (19 Jump-to entries remain; `data.json` still generated by the raw lane).
+363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: **289 true / 25 false / 49 blank** (all 27 audiobook records blank; see review/OWNED_AUDIOBOOKS_2026-08-10.md). Also: 191 works, 278 unique codes, 363 unique filenames, 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products. The Original Spreadsheet view is retired (19 Jump-to entries remain; `data.json` still generated by the raw lane).
 
 ## Safe commands
 
