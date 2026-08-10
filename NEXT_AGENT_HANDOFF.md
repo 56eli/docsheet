@@ -19,7 +19,7 @@ DocSheet is a static GitHub Pages catalogue with separate raw and curated data l
 
 **This branch (`arena/019feb8c-docsheet`) adds:** an independent declared-current audit, an owner-directed audiobook ownership correction, a mobile Spreadsheet scrolling repair, and synchronized documentation/handoff updates. The earlier broad raw-ledger ownership blanking was restored because it changed unrelated items and missed the rendered promoted audiobooks; now all 27 `format=audiobook` records are blank/not stated for `owned`. Details: `docs/audits/2026-08-10-arena-019feb8c-full-audit.md`, `review/OWNED_AUDIOBOOKS_2026-08-10.md`, and `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`.
 
-This branch is ready for a reviewable PR and merge after required CI checks pass.
+PR #67 passed `Validate data pipeline and site` in 1m28s and was merged to `main` as `b226135` on 2026-08-10. Pages deployment and owner visual acceptance remain the normal owner-controlled follow-up.
 
 ## 2. What this branch changes (on top of `main`)
 
