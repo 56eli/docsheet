@@ -10,9 +10,8 @@
    ========================================================================== */
 import {
   VIEWS, VIEW_GROUPS, EMPTY_STATE_MESSAGES, DEFAULT_EMPTY_MESSAGE,
-  VIEW_DETAILS, COLUMN_LABELS, STATUS_FIELDS, FORMAT_FIELDS,
+  VIEW_DETAILS, COLUMN_LABELS, STATUS_FIELDS,
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
-  DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
 } from "./js/config.js?v=5189225f358d";
 import {
@@ -20,6 +19,18 @@ import {
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
 } from "./js/formatters.js?v=fe5e058c851f";
+import {
+  displayMobileDate, displayMobileEdition, isExtraEditionRow,
+  mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
+  formatTimestamp, debounce,
+} from "./js/data-utils.js?v=cf0d7f42b088";
+import {
+  mobileEditionCard, overviewCard,
+} from "./js/mobile.js?v=8b0a1a00b57b";
+import {
+  looksLikeUrl, urlLabelFor,
+  columnPresetFor, orderKeysForView, buildColumns,
+} from "./js/columns.js?v=4a3a433c8d5b";
 
 (function () {
   "use strict";
@@ -427,22 +438,7 @@ import {
   /* ------------------------------------------------------------------ *
    *  Helpers
    * ------------------------------------------------------------------ */
-  function debounce(fn, ms) {
-    let t;
-    return function (...args) {
-      clearTimeout(t);
-      t = setTimeout(() => fn.apply(this, args), ms);
-    };
-  }
 
-  function formatTimestamp(iso) {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return iso;
-    return d.toLocaleString(undefined, {
-      year: "numeric", month: "short", day: "numeric",
-      hour: "2-digit", minute: "2-digit",
-    });
-  }
 
   function updateSearchStatus() {
     const visibleRows = table
@@ -596,83 +592,7 @@ import {
     }
   }
 
-  function displayMobileDate(row) {
-    if (!row.year) return "Date unknown";
-    const year = row.year === "198X" ? "c. 1980s" : row.year;
-    return row.month ? `${year} · ${row.month}` : year;
-  }
 
-  function displayMobileEdition(row) {
-    return [row.format, row.format_detail].filter(Boolean).join(" · ") || "Edition not stated";
-  }
-
-  function isExtraEditionRow(row) {
-    const workId = String(row.work_id || "").trim();
-    const uuid = String(row.uuid || "").trim();
-    // Only the Power vs. Force double (extra hardcover row 373 under w-power-vs-force) shows the Extra badge
-    return workId === "w-power-vs-force" && uuid === "373";
-  }
-
-  function mobilePrimaryUrl(row) {
-    return row.source_url_veritas || row.source_url_hay_house ||
-      row.source_url_audible || row.source_url_nightingale_conant ||
-      row.source_url_amazon || "";
-  }
-
-  function mobileSourceLink(row, url, label) {
-    if (!url) return null;
-    const anchor = document.createElement("a");
-    anchor.className = "mobile-edition-link";
-    anchor.href = url;
-    anchor.target = "_blank";
-    anchor.rel = "noopener noreferrer";
-    anchor.textContent = label;
-    anchor.setAttribute("aria-label", `${label} for ${rowTitle(row)} (opens in new tab)`);
-    return anchor;
-  }
-
-  function mobileEditionCard(row) {
-    const article = document.createElement("article");
-    article.className = "mobile-edition-card";
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "mobile-edition-main";
-    button.setAttribute("aria-label", `Inspect ${rowTitle(row)}`);
-
-    const filename = document.createElement("span");
-    filename.className = "mobile-edition-filename";
-    filename.textContent = row.proposed_filename || rowTitle(row);
-    const title = document.createElement("strong");
-    title.className = "mobile-edition-title";
-    title.textContent = rowTitle(row);
-    const meta = document.createElement("span");
-    meta.className = "mobile-edition-meta";
-    meta.textContent = `${displayMobileDate(row)} · ${displayMobileEdition(row)}`;
-    button.append(filename, title, meta);
-    button.addEventListener("click", () => openRowDetails(row, button));
-    article.append(button);
-
-    const actions = document.createElement("div");
-    actions.className = "mobile-edition-actions";
-    const source = mobileSourceLink(row, mobilePrimaryUrl(row), "Source");
-    const streaming = row.reference_url_1 && row.reference_url_1 !== mobilePrimaryUrl(row)
-      ? mobileSourceLink(row, row.reference_url_1, "Stream")
-      : null;
-    if (source) actions.append(source);
-    if (streaming) actions.append(streaming);
-    if (actions.childElementCount) article.append(actions);
-    return article;
-  }
-
-  function mobileWorkGroups(rows) {
-    const groups = new Map();
-    rows.forEach((row, index) => {
-      const key = row.work_id || row.uuid || row.candidate_key || `record-${index}`;
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push(row);
-    });
-    return [...groups.values()];
-  }
 
   function syncFacetSelect(facetId) {
     const facet = FACETS.find((item) => item.id === facetId);
@@ -775,7 +695,7 @@ import {
       if (group.length === 1) {
         const single = document.createElement("section");
         single.className = "mobile-work-card mobile-work-card-single";
-        single.append(mobileEditionCard(first));
+        single.append(mobileEditionCard(first, openRowDetails));
         mobileBrowseList.append(single);
         return;
       }
@@ -798,7 +718,7 @@ import {
 
       const editions = document.createElement("div");
       editions.className = "mobile-work-editions";
-      group.forEach((row) => editions.append(mobileEditionCard(row)));
+      group.forEach((row) => editions.append(mobileEditionCard(row, openRowDetails)));
       card.append(editions);
       mobileBrowseList.append(card);
     });
@@ -866,9 +786,7 @@ import {
     }
   }
 
-  function ownedValue(row) {
-    return String(row.owned ?? "").toLowerCase();
-  }
+
 
   function updateCatalogueIntro(data = allData) {
     if (!catalogueIntro) return;
@@ -883,28 +801,7 @@ import {
     renderSeriesStrip(data);
   }
 
-  function overviewCard(title, statLine, owned, total) {
-    const card = document.createElement("div");
-    card.className = "overview-card";
-    const name = document.createElement("strong");
-    name.textContent = title;
-    const stat = document.createElement("span");
-    stat.className = "overview-stat";
-    stat.textContent = statLine;
-    card.append(name, stat);
-    if (total > 0) {
-      const track = document.createElement("div");
-      track.className = "progress-track";
-      track.setAttribute("role", "img");
-      track.setAttribute("aria-label", `${owned} of ${total} owned`);
-      const fill = document.createElement("div");
-      fill.className = "progress-fill";
-      fill.style.width = `${Math.round((owned / total) * 100)}%`;
-      track.append(fill);
-      card.append(track);
-    }
-    return card;
-  }
+
 
   function renderCollectionOverview(data) {
     if (!overviewCards) return;
@@ -1002,15 +899,7 @@ import {
     });
   }
 
-  function yearSpanFor(rows) {
-    const years = [...new Set(
-      rows.map((row) => String(row.year || "").trim())
-        .filter((year) => /^\d{4}$/.test(year))
-        .map(Number),
-    )].sort((a, b) => a - b);
-    if (!years.length) return "years unrecorded";
-    return years.length === 1 ? String(years[0]) : `${years[0]}–${years[years.length - 1]}`;
-  }
+
 
   function renderSeriesLanding(data) {
     if (!seriesLanding || !seriesLandingGrid) return;
@@ -1342,74 +1231,7 @@ import {
   /* ------------------------------------------------------------------ *
    *  Column definitions (built from the JSON keys — order preserved)
    * ------------------------------------------------------------------ */
-  function looksLikeUrl(value) {
-    return typeof value === "string" && /^https?:\/\//i.test(value.trim());
-  }
 
-  function urlLabelFor(field, value) {
-    const normalizedField = field.toLowerCase();
-    const sourceLabels = [
-      ["veritas", "Veritas product"],
-      ["hay_house", "Hay House product"],
-      ["nightingale_conant", "Nightingale-Conant listing"],
-      ["amazon", "Amazon page"],
-      ["audible", "Audible listing"],
-      ["evidence", "Evidence"],
-      ["reference", "Streaming link"],
-      ["catalogue", "Catalogue"],
-      ["official", "Official product"],
-      ["source", "Source"],
-    ];
-    const matched = sourceLabels.find(([needle]) => normalizedField.includes(needle));
-    if (matched) return matched[1];
-
-    try {
-      return new URL(value).hostname.replace(/^www\./, "");
-    } catch (err) {
-      return "Open link";
-    }
-  }
-
-  function urlFormatter(cell) {
-    const value = String(cell.getValue() ?? "").trim();
-    if (!looksLikeUrl(value)) return value;
-    const anchor = document.createElement("a");
-    anchor.className = "url-link";
-    anchor.href = value;
-    anchor.target = "_blank";
-    anchor.rel = "noopener noreferrer";
-    anchor.title = value;
-    anchor.textContent = urlLabelFor(cell.getColumn().getField(), value);
-    anchor.setAttribute("aria-label", `${anchor.textContent} (opens in new tab)`);
-    return anchor;
-  }
-
-
-  function columnPresetFor(viewName) {
-    return COLUMN_PRESETS[viewName] || { priority: DEFAULT_PRIORITY_FIELDS, frozen: [] };
-  }
-
-  function orderKeysForView(keys, viewName) {
-    const preset = columnPresetFor(viewName);
-    const priority = [...new Set([...(preset.priority || []), ...DEFAULT_PRIORITY_FIELDS])]
-      .filter((key) => keys.includes(key));
-    const lowPriority = LOW_PRIORITY_FIELDS.filter((key) => keys.includes(key));
-    const ordered = [
-      ...priority,
-      ...keys.filter((key) => !priority.includes(key) && !lowPriority.includes(key)),
-      ...lowPriority,
-    ];
-    const deduped = [...new Set(ordered)];
-    // Per-view placement overrides: park a column immediately after another.
-    Object.entries(preset.moveAfter || {}).forEach(([field, anchor]) => {
-      const from = deduped.indexOf(field);
-      if (from === -1) return;
-      deduped.splice(from, 1);
-      const at = deduped.indexOf(anchor);
-      deduped.splice(at === -1 ? deduped.length : at + 1, 0, field);
-    });
-    return deduped;
-  }
 
   /* ------------------------------------------------------------------ *
    *  Column width engine — every column is sized to its widest rendered
@@ -1426,21 +1248,9 @@ import {
   // is a closure over module-scope activeSearchQuery. formatters.js exports
   // statusClass, formatClass, statusLabel, statusFormatter, rowTitle,
   // primaryIdentifier, loadCatalogueBlockMap, and getRowBlockId only.
-  const measureContext = document.createElement("canvas").getContext("2d");
-  const CELL_FONT = '14px Roboto, "Segoe UI", Arial, sans-serif';
-  const BADGE_FONT = '600 11px Roboto, "Segoe UI", Arial, sans-serif';
-  const HEADER_FONT = '600 13px Roboto, "Segoe UI", Arial, sans-serif';
-  const CELL_PADDING = 20;   // left/right cell padding + breathing room
-  const BADGE_PADDING = 14;  // badge inner padding
-  const HEADER_EXTRA = 24;   // header padding + sort-indicator reserve
-  const MAX_TEXT_WIDTH = 560;      // guardrail for title/note-style columns
-  const MAX_COLUMN_WIDTH = 720;    // absolute guardrail for anything else
-
-  function measureText(text, font) {
-    measureContext.font = font;
-    return measureContext.measureText(text).width;
-  }
-
+  // NOTE: escapeRegex and renderHighlightedText are defined here (not imported
+  // from formatters.js) because renderHighlightedText's default query parameter
+  // is a closure over module-scope activeSearchQuery.
   function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
@@ -1467,198 +1277,6 @@ import {
       }
     });
     return frag;
-  }
-
-  function renderedValueForWidth(key, value) {
-    const raw = String(value ?? "").trim();
-    if (!raw) return "";
-    if (looksLikeUrl(raw)) return urlLabelFor(key, raw);
-    if (STATUS_FIELDS.has(key)) return statusLabel(key, raw);
-    return raw;
-  }
-
-  function measuredColumnWidth(key, headerTitle, rows) {
-    const isBadge = STATUS_FIELDS.has(key) || FORMAT_FIELDS.has(key);
-    // The proposed-filename column renders in a smaller monospace face, so
-    // measure it with that face — otherwise the Roboto estimate is too narrow
-    // and the frozen lead column's content overlaps the next header's click
-    // target (caught by the column-layout sort spec in CI).
-    const isMono = key === "proposed_filename";
-    const font = isMono
-      ? '13.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace'
-      : (isBadge ? BADGE_FONT : CELL_FONT);
-    const padding = isBadge ? BADGE_PADDING : CELL_PADDING;
-    let maxPx = measureText(headerTitle, HEADER_FONT) + HEADER_EXTRA;
-    for (const row of rows) {
-      const text = renderedValueForWidth(key, row[key]);
-      if (!text) continue;
-      const px = measureText(text, font) + padding;
-      if (px > maxPx) maxPx = px;
-    }
-    return Math.ceil(maxPx);
-  }
-
-  function buildColumns(data) {
-    if (!Array.isArray(data) || data.length === 0) return [];
-
-    let keys = orderKeysForView(Object.keys(data[0]), activeView);
-    // Hide the raw Year/Month columns when the merged "Year-Month" column is
-    // present (see loadData).
-    if (keys.includes("year_month")) {
-      keys = keys.filter((key) => key !== "year" && key !== "month");
-    }
-    // Hide the raw Format columns when the merged "Edition" column is present.
-    if (keys.includes("edition")) {
-      keys = keys.filter((key) => key !== "format" && key !== "format_detail");
-    }
-    const preset = columnPresetFor(activeView);
-    // Expert columns (preset.hidden) stay out of the first-sight view unless
-    // the user has switched them on for this view (persisted per view).
-    const hiddenByDefault = new Set(expertColumnsOn(activeView) ? [] : expertHiddenFields(activeView));
-
-    return keys.map((key) => {
-      const nonEmpty = data.map((r) => r[key]).filter((v) => v !== null && v !== undefined && v !== "");
-      const urlRatio = nonEmpty.length
-        ? nonEmpty.filter(looksLikeUrl).length / nonEmpty.length
-        : 0;
-
-      const budget = COLUMN_BUDGETS[key] || {};
-      const col = {
-        title: humanizeField(key),
-        field: key,
-        headerSort: true,          // click header to sort asc/desc
-        resizable: true,           // drag column edge to resize
-        minWidth: budget.minWidth ?? 60,
-        maxWidth: budget.maxWidth,
-        // Pages publishes generated catalogue/review data. Edits must occur in
-        // the declared CSV review inputs, never as misleading session-only UI edits.
-        editor: false,
-        tooltip: (e, cell) => String(cell.getValue() ?? ""),
-      };
-
-      // Size the column to its widest rendered entry (see width engine above);
-      // explicit budgets override the measurement for identity/control fields.
-      const measured = measuredColumnWidth(key, col.title, data);
-      let cap = budget.maxWidth ?? MAX_COLUMN_WIDTH;
-      if (/title|note|reason|purpose|role/i.test(key)) cap = Math.min(cap, MAX_TEXT_WIDTH);
-      if (budget.width != null) {
-        col.width = budget.width;
-      } else {
-        col.width = Math.min(measured, cap);
-      }
-
-      // Numeric columns count up in numeric order, never lexically. Without an
-      // explicit number sorter Tabulator guesses the sorter from the FIRST
-      // row's value, and when that row is blank (official candidates sit
-      // above some sheets) it fell back to a string sort — the "Master ID
-      // counts 1, 10, 100, 2, 20, ..." bug. Tabulator's built-in number
-      // sorter with alignEmptyValues "bottom" pins empty cells (candidate
-      // rows without a Master ID) to the bottom in BOTH sort directions.
-      if (nonEmpty.length > 0 &&
-          nonEmpty.every((v) => /^-?\d+(\.\d+)?$/.test(String(v).trim()))) {
-        col.sorter = "number";
-        col.sorterParams = { alignEmptyValues: "bottom" };
-      }
-
-      // Pre-2000 Office Series lectures carry the evidence-backed decade
-      // placeholder "198X" in year / year_month / proposed_year (ledger:
-      // "most are believed 1982"; see README field semantics and
-      // archive/RULING_PREP_YEAR_198X_OFFICE_SERIES.md). Display it as
-      // "c. 1980s" while the raw value stays in the data (search, CSV export,
-      // row details), and force a deterministic string sort — a number sorter
-      // would turn the placeholder into NaN and place the 16 rows arbitrarily.
-      if (key === "year" || key === "year_month" || key === "proposed_year") {
-        col.formatter = (cell) => {
-          const value = String(cell.getValue() ?? "");
-          const display = value === "198X" ? "c. 1980s" : value;
-          return renderHighlightedText(display);
-        };
-        col.sorter = "string";
-        col.sorterParams = { alignEmptyValues: "bottom" };
-      }
-
-      if ((preset.frozen || []).includes(key)) {
-        col.frozen = true;
-      }
-      if (STATUS_FIELDS.has(key)) {
-        col.formatter = statusFormatter;
-      }
-      if (key === "proposed_filename") {
-        // The lead column renders like a file explorer: monospace (CSS) with
-        // the extension shown in a muted color so the carrier is scannable.
-        col.formatter = (cell) => {
-          const value = String(cell.getValue() ?? "");
-          if (!value) return "";
-          const match = value.match(/^(.*?)(\.[A-Za-z0-9]+)$/);
-          if (!match) return renderHighlightedText(value);
-          const frag = document.createDocumentFragment();
-          frag.append(renderHighlightedText(match[1]));
-          const ext = document.createElement("span");
-          ext.className = "ext";
-          ext.textContent = match[2];
-          frag.append(ext);
-          return frag;
-        };
-      } else if (key === "edition") {
-        // Edition cell: a small color dot by carrier (DVD/CD/audiobook/
-        // streaming/book), then the merged "format · detail" label.
-        // Extra editions (candidate:edition- rows, i.e. the 24+1 minted
-        // edition rows under a work) get a small "Extra" badge.
-        col.formatter = (cell) => {
-          const value = String(cell.getValue() ?? "");
-          if (!value) return "";
-          const row = cell.getRow().getData();
-          const carrier = (row.format || value.split(" · ")[0] || "").trim();
-          const dotClass = ["DVD", "CD", "audiobook", "streaming", "book"].includes(carrier)
-            ? `dot-${carrier}`
-            : "";
-          const frag = document.createDocumentFragment();
-          if (dotClass) {
-            const dot = document.createElement("span");
-            dot.className = `carrier-dot ${dotClass}`;
-            dot.title = carrier;
-            frag.append(dot);
-          }
-          frag.append(renderHighlightedText(value));
-          const isExtraEdition = isExtraEditionRow(row);
-          if (isExtraEdition) {
-            const badge = document.createElement("span");
-            badge.className = "extra-edition-badge";
-            badge.textContent = "Extra";
-            badge.title = "Extra edition of this work (same work, different carrier or printing) — see Edition Note for distinction";
-            frag.append(document.createTextNode(" "));
-            frag.append(badge);
-          }
-          return frag;
-        };
-      } else if (FORMAT_FIELDS.has(key)) {
-        col.formatter = (cell) => {
-          const value = String(cell.getValue() ?? "");
-          if (!value) return "";
-          const badge = document.createElement("span");
-          badge.className = `status-badge ${formatClass(value)}`;
-          badge.replaceChildren(renderHighlightedText(value));
-          badge.title = value;
-          return badge;
-        };
-      }
-      // Presentation-only nicety: render URL-heavy columns as clickable links.
-      // This does NOT modify the underlying data.
-      if (urlRatio >= 0.6 && !STATUS_FIELDS.has(key)) {
-        col.formatter = urlFormatter;
-      }
-      if (!col.formatter && !STATUS_FIELDS.has(key)) {
-        col.formatter = (cell) => {
-          const val = cell.getValue();
-          if (val === null || val === undefined || val === "") return "";
-          return renderHighlightedText(val);
-        };
-      }
-      if (hiddenByDefault.has(key)) {
-        col.visible = false;
-      }
-      return col;
-    });
   }
 
   function configureFacetBar(data) {
@@ -1771,7 +1389,7 @@ import {
     spreadsheet.innerHTML = "";
     table = new Tabulator(spreadsheet, {
       data,
-      columns: buildColumns(data),
+      columns: buildColumns(data, activeView, expertColumnsOn, expertHiddenFields, renderHighlightedText, activeSearchQuery),
       layout: "fitDataFill",
       renderHorizontal: "basic",
       height: "100%",              // fixed virtual scroll viewport prevents rubberbanding
