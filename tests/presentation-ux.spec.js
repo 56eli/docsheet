@@ -151,7 +151,7 @@ test('Series browser lists every series and opens the filtered catalogue', async
 
   await page.locator('#series-landing-grid .series-landing-card', { hasText: 'Satsang Series' }).click();
   await waitForTable(page);
-  await expect(page.locator('#search-status')).toContainText(`Showing: ${satsangCount} of 362`);
+  await expect(page.locator('#search-status')).toContainText(`Showing: ${satsangCount} of 363`);
   await expect(page.locator('#filter-chips')).toContainText('Satsang Series');
 });
 
