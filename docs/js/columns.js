@@ -11,6 +11,7 @@ import {
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
 } from "./formatters.js";
+import { isExtraEditionRow } from "./data-utils.js";
 
 /**
  * Check if a string looks like a URL.

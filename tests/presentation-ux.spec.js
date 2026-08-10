@@ -42,6 +42,20 @@ test('desktop interface opens directly into the clean spreadsheet', async ({ pag
   await expect(page.locator('.tabulator-row').first()).toBeVisible();
 });
 
+test('edition formatter executes its imported helper and renders the Extra badge', async ({ page }) => {
+  const pageErrors = [];
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+
+  await page.goto('/docs/');
+  await waitForTable(page);
+  await page.locator('#global-search').fill('Original Hardcover');
+
+  const row = page.locator('.tabulator-row').first();
+  await expect(row).toBeVisible();
+  await expect(row.locator('.tabulator-cell[tabulator-field="edition"] .extra-edition-badge')).toHaveText('Extra');
+  expect(pageErrors).toEqual([]);
+});
+
 test('computed row styles preserve zebra and REVISION1 accents across blocks', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('docsheet-dark-mode', '0');

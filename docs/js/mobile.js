@@ -5,8 +5,7 @@
 // =============================================================================
 
 import {
-  displayMobileDate, displayMobileEdition, isExtraEditionRow,
-  mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
+  displayMobileDate, displayMobileEdition, mobilePrimaryUrl,
 } from "./data-utils.js";
 import { rowTitle } from "./formatters.js";
 

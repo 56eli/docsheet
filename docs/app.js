@@ -20,17 +20,13 @@ import {
   loadCatalogueBlockMap, getRowBlockId,
 } from "./js/formatters.js?v=0d8f985fe469";
 import {
-  displayMobileDate, displayMobileEdition, isExtraEditionRow,
-  mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor,
-  formatTimestamp, debounce,
+  mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import {
-  mobileEditionCard, overviewCard,
-} from "./js/mobile.js?v=84a5d471cc0f";
+import { mobileEditionCard } from "./js/mobile.js?v=e9073af46214";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=a96a86b836f3";
+} from "./js/columns.js?v=99afccdb287b";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=daefe257ffd2";

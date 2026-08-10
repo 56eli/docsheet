@@ -7,9 +7,9 @@
 
 Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for evidence, scores, commands, and the remediation sequence.
 
-## Immediate P0
+## Immediate P0 status
 
-PR #63 extracted frontend modules but `docs/js/columns.js:242` calls `isExtraEditionRow(row)` without importing it. A direct formatter invocation reproduces:
+PR #63 extracted frontend modules but the audited baseline's `docs/js/columns.js:242` called `isExtraEditionRow(row)` without importing it. A direct formatter invocation reproduced:
 
 ```text
 ReferenceError: isExtraEditionRow is not defined
@@ -17,14 +17,7 @@ ReferenceError: isExtraEditionRow is not defined
 
 The main Pages API reports legacy deployment from `main:/docs`; Pages successfully deployed this baseline while browser CI was still running. Main CI run `31373716254` then failed all 25 Playwright specs because no `.tabulator-row` rendered. Do not treat the Pages badge or static hash contract as runtime acceptance.
 
-Required repair:
-
-1. import `isExtraEditionRow` in `columns.js`;
-2. remove redundant imports;
-3. add executable JS/module formatter coverage (prefer ESLint `no-undef` plus a unit/runtime test);
-4. refresh content versions/manifest;
-5. pass all 149 offline tests, six checks, and 25 Playwright specs;
-6. verify the exact deployed revision.
+The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, `tests/frontend-modules.test.mjs` executes the formatter through `pretest:e2e`, and a focused browser regression raises the suite to 26 specs. Local Node (1/1), Python (149/149), 90% coverage, syntax, dependency, and six-check validation passes. A green GitHub browser run and exact deployed-revision check remain the P0 acceptance gates.
 
 ## Other confirmed findings
 

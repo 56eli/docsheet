@@ -13,13 +13,13 @@
 5. `docs/audits/2026-08-10-arena-019feaf6-full-audit.md`
 6. `INSTRUCTIONS.md`
 
-## Current status
+## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy; the audited PR #63 frontend baseline has a release-blocking JavaScript regression.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The data pipeline is healthy. The audited PR #63 baseline had a release-blocking JavaScript regression; this branch now carries a targeted repair with local executable coverage, pending GitHub browser validation.
 
-### P0 frontend defect
+## 2. P0 repair status
 
-`docs/js/columns.js:242` calls `isExtraEditionRow(row)` without importing it from `docs/js/data-utils.js`. A direct module/formatter probe reproduces:
+The audited baseline's `docs/js/columns.js:242` called `isExtraEditionRow(row)` without importing it from `docs/js/data-utils.js`. A direct module/formatter probe reproduced:
 
 ```text
 ReferenceError: isExtraEditionRow is not defined
@@ -27,13 +27,16 @@ ReferenceError: isExtraEditionRow is not defined
 
 Main CI run `31373716254` independently confirmed end-user impact: **25/25 Playwright specs failed** because no `.tabulator-row` rendered, even though the legacy Pages deployment had already succeeded.
 
-Treat this as the first implementation task. The correct repair should:
+The repair on this branch:
 
-1. import `isExtraEditionRow` in `columns.js`;
-2. remove redundant imports in `app.js` and `mobile.js`;
-3. add an executable test that invokes the edition formatter (syntax/hash checks are insufficient);
-4. refresh module/app versions, visible build ID, and `docs/build-manifest.json`;
-5. run all checks plus all 25 Playwright specs before deployment.
+1. imports `isExtraEditionRow` in `columns.js`;
+2. removes redundant imports from `app.js` and `mobile.js`;
+3. adds `tests/frontend-modules.test.mjs`, which executes the edition formatter and checks the row-373 Extra badge;
+4. runs that Node test automatically through `pretest:e2e` before Playwright;
+5. adds a focused browser regression, bringing the Playwright suite to 26 specs;
+6. refreshes module/app versions, visible build ID, and `docs/build-manifest.json`.
+
+Local Node, Python, coverage, syntax, dependency, and six-check verification passes. GitHub browser validation is the remaining P0 acceptance gate.
 
 ### Other confirmed frontend findings
 
@@ -43,40 +46,40 @@ Treat this as the first implementation task. The correct repair should:
 - The keyboard-shortcuts dialog lacks complete modal focus/Escape behavior.
 - Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
 
-## Verified catalogue state
+## 3. Current verified state
 
 | Metric | Current |
 |---|---:|
 | Raw published rows | 374 (31 blank separators, hidden by default) |
 | Curated master | 363 |
+| Everything view | **363** |
 | Work IDs | 191 |
 | Catalogue codes | 278 unique |
 | Proposed filenames | 363 unique |
 | Item types | 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other |
 | Formats | 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming |
 | Ownership | 312 true / 25 false / 26 blank |
-| Exclusions | 75 |
-| Source overrides | 134 approved |
+| Exclusions / source overrides | 75 / 134 |
 | Manual candidates / leads | 40 / 4 |
-| Product relationships | 340 reviewed (333 primary + 7 related) |
-| Series compilations | 7 |
+| Everything relationships | 340 product relationships, 7 series compilations |
 | Veritas / Hay House / Audible | 191 / 29 / 26 |
 | International products | 38 |
 | Display blocks | 12, complete and dense |
 
 No duplicate master ID, catalogue code, or filename was found. All non-empty master URLs are HTTPS. Display order covers all 363 masters exactly.
 
-## Verification at this audit
+## 4. Verification at this audit
 
 ```text
 PASS  all six generator --check modes
 PASS  149/149 Python unit/contract/style tests
 PASS  90% Python statement coverage (2327 statements; floor 85%)
 PASS  recursive Python compilation
-PASS  JavaScript syntax for app, all 7 modules, Playwright config/specs
+PASS  JavaScript syntax for app, all 7 modules, Node/browser specs
+PASS  Node edition-formatter regression (1/1)
 PASS  npm audit: 0 vulnerabilities
 PASS  pip check
-FAIL  targeted edition formatter runtime probe (missing import above)
+PASS  repaired targeted edition formatter runtime probe
 BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
 BLOCK live curl probe (sandbox TLS connection restriction)
 ```
@@ -160,13 +163,12 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 
 ## Open work in priority order
 
-1. Repair the missing module import and add executable formatter/module coverage.
-2. Obtain a green 25-spec browser run and verify the deployed build revision.
-3. Owner: require CI and gate Pages deployment.
-4. Repair live search highlighting after extraction.
-5. Make nested module cache versioning consistent.
-6. Restore or remove dormant hero/stats/review-navigation code.
-7. Fix shortcuts-dialog accessibility; add axe-core.
-8. Resolve GitHub issue #18 when owner Drive access is available.
+1. Obtain a green 26-spec browser run for the P0 repair and verify the exact deployed build revision.
+2. Owner: require CI and gate Pages deployment.
+3. Repair live search highlighting after extraction.
+4. Make nested module cache versioning consistent.
+5. Restore or remove dormant hero/stats/review-navigation code.
+6. Fix shortcuts-dialog accessibility; add axe-core.
+7. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.

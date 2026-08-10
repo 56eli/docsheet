@@ -4,6 +4,8 @@
   "private": true,
   "description": "Browser smoke tests for the DocSheet GitHub Pages spreadsheet.",
   "scripts": {
+    "test:unit": "node --no-warnings --test tests/frontend-modules.test.mjs",
+    "pretest:e2e": "npm run test:unit",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps chromium"
   },

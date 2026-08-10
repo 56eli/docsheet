@@ -20,6 +20,15 @@ DocSheet has an excellent deterministic data pipeline and a thoughtful static ca
 | Delivery / operations | **4.5/10** | CI is broad but Pages is still legacy and deployed the baseline before browser validation |
 | **Overall repo readiness** | **7.1/10** | **Fail until the P0 frontend defect is repaired and browser CI is green** |
 
+## P0 follow-up implementation on branch 019feaf6
+
+After the audit, the owner selected the recommended P0 repair. This branch now imports `isExtraEditionRow` in `columns.js`, removes redundant imports from `app.js`/`mobile.js`, refreshes the content-version contract, and adds two executable regression layers:
+
+- `tests/frontend-modules.test.mjs` invokes the edition formatter directly and verifies that only Power vs. Force row 373 renders the Extra badge;
+- a new Playwright case records page errors, searches for the original hardcover, and asserts its rendered Extra badge, bringing the browser suite from 25 to 26 specs.
+
+`pretest:e2e` runs the Node test automatically before Playwright. Local results are green for the Node test (1/1), Python suite (149/149), 90% coverage, all six checks, syntax, npm audit, and pip check. Local Playwright remains blocked by the sandbox's Chromium-download `ECONNRESET`; a dispatched GitHub browser run is therefore the remaining P0 acceptance gate. The scores below intentionally describe the audited/deployed `aa1f1b7` baseline until that browser run and deployment are verified.
+
 ## Priority findings
 
 ### P0 — `columns.js` has a production `ReferenceError`
@@ -310,7 +319,7 @@ Live-site curl/hash probe                                        NOT RUN
 ## Recommended sequence
 
 1. **P0:** repair the missing `isExtraEditionRow` import and add executable module/formatter coverage.
-2. **P0:** run all 25 Playwright specs and verify the exact deployed build ID/hashes/screenshots.
+2. **P0:** run the added Node formatter regression plus all 26 Playwright specs, then verify the exact deployed build ID/hashes/screenshots.
 3. **P0 owner action:** require CI and switch Pages from legacy branch deployment to the gated workflow.
 4. **P1:** fix the stale search-highlight closure and test highlighting, not only filtering.
 5. **P1:** make cache versioning consistent across the full module graph.

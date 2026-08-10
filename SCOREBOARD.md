@@ -21,7 +21,7 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 **Repo-ready gate: FAIL — 7.1/10 effective (614 weighted points / 86).**
 
-The data pipeline is healthy, but audited baseline `aa1f1b7` has a confirmed frontend runtime defect: `docs/js/columns.js` calls `isExtraEditionRow()` without importing it. A direct formatter invocation raises `ReferenceError`. GitHub Pages still deploys legacy `main:/docs`, and this baseline deployed before browser CI completed.
+The data pipeline is healthy, but audited/deployed baseline `aa1f1b7` has a confirmed frontend runtime defect: `docs/js/columns.js` calls `isExtraEditionRow()` without importing it. Main CI failed 25/25 browser specs after legacy Pages had already deployed it. This branch carries the import repair plus executable Node/browser regression coverage; the gate stays failed until GitHub browser CI and the exact deployed revision are verified.
 
 ## Current priorities
 

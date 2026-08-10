@@ -22,8 +22,9 @@ summary:
     - ci_cd
     - maintainability
   active_risk_flags:
-    - "P0: audited baseline aa1f1b7 deploys docs/js/columns.js calling isExtraEditionRow without importing it; a direct formatter probe raises ReferenceError."
-    - "Pages API reports legacy main:/docs deployment; the baseline deployed before CI run 31373716254 failed 25/25 browser specs with no rendered table rows."
+    - "P0 baseline: deployed aa1f1b7 calls isExtraEditionRow without importing it; CI run 31373716254 failed 25/25 browser specs with no rendered rows."
+    - "P0 branch repair adds the import plus Node/browser regression coverage; GitHub browser CI and exact deployment are not yet verified."
+    - "Pages API reports legacy main:/docs deployment, so the broken baseline deployed before its CI failure."
     - "Nested ES-module imports are unversioned even though top-level app imports are content-versioned, permitting duplicate/stale module identities."
     - "CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned."
 
