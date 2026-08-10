@@ -162,6 +162,17 @@ test('mobile Browse mode groups works and preserves the Spreadsheet escape hatch
   await expect(browse).toBeVisible();
 });
 
+test('search redraw highlights the live query in visible cells', async ({ page }) => {
+  await page.goto('/docs/');
+  await waitForTable(page);
+
+  await page.locator('#global-search').fill('Power');
+  const highlight = page.locator('.tabulator-row .search-highlight').first();
+  await expect(highlight).toBeVisible();
+  await expect(highlight).toHaveText(/Power/i);
+  await expect(page.locator('#search-status')).toContainText('Showing:');
+});
+
 test('keyboard shortcuts help behaves as a focus-managed modal', async ({ page }) => {
   await page.goto('/docs/');
   await waitForTable(page);

@@ -1,19 +1,19 @@
 {
-  "revision": "dead-ui-cleanup-shortcuts-a11y-019feaf6-20260810.1",
+  "revision": "live-search-versioned-module-graph-019feaf6-20260810.1",
   "source_baseline": "aa1f1b76465e140b9cb62761d365765f0541d7d8",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "d0c82352916c2078ee656737962f7218baa557d578e205a6831e4b37d0d0c751",
+    "app.js": "caf0106271013f8fb2bef42482ec4ce13fe7bc5da26fa3404140ecd465caebb3",
     "style.css": "f58adda186fa282c65af9d6ce894de5909b6734cec7c19ebde9aff833dfd727c"
   },
   "modules": {
     "js/config.js": "5189225f358d678fe714ee445afeb804d9a0baa44f6bcdf01618ab10ec8fd49a",
-    "js/formatters.js": "0d8f985fe469e82db477593820024c3377e088df7f22699399794a68371e222b",
+    "js/formatters.js": "ee2398b737f43b7abf1e9150e7597a5978c97a8628405da9e9e38907455866fe",
     "js/data-utils.js": "0288c69670bba17c88d29c29086fd382f2315f86dd68e37a9333981dca50a306",
-    "js/mobile.js": "f760e9da7326ef9b44561b2e27e637dae6bc9461c8cfe3d8e09781b6ab3cd851",
-    "js/columns.js": "99afccdb287b7b9e3cf4504187919c77e62155cafe7a62131d943966623516b8",
-    "js/filter-utils.js": "daefe257ffd2b575693cfc15469d4d523fcedc2001f591bf06bedb9c6cf7bb4c",
-    "js/view-utils.js": "4398fee0b0648c7103dca5e3e6679285520892c65f96623107833a28f3a28749"
+    "js/mobile.js": "ac823d0b9eb56b1a63dd43449f0192776836780b799ede1f3446abebc5bc7579",
+    "js/columns.js": "9a29e21695021e30ba09b81f0367c58cdcaca89b748ae8f0f16e043b978590c1",
+    "js/filter-utils.js": "ad7cda5641cf2587f93f265724617bc259ae430fb136b731b89ecceaa432e2a8",
+    "js/view-utils.js": "7d59133a7f37e219096595c9ee9acddfcb29969b5d0c056d3876eb9213686c3d"
   },
   "data": {
     "master.json": "5bc032a378e4ebea63d9f59815c9b745d232ad32a99991cfe2e347ea849328e0",

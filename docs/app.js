@@ -18,21 +18,21 @@ import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=0d8f985fe469";
+} from "./js/formatters.js?v=ee2398b737f4";
 import {
   mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import { mobileEditionCard } from "./js/mobile.js?v=f760e9da7326";
+import { mobileEditionCard } from "./js/mobile.js?v=ac823d0b9eb5";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=99afccdb287b";
+} from "./js/columns.js?v=9a29e2169502";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
-} from "./js/filter-utils.js?v=daefe257ffd2";
+} from "./js/filter-utils.js?v=ad7cda5641cf";
 import {
   updateViewSummary, renderSeriesLanding, configureViewJump,
-} from "./js/view-utils.js?v=4398fee0b064";
+} from "./js/view-utils.js?v=7d59133a7f37";
 
 (function () {
   "use strict";
@@ -1044,9 +1044,6 @@ import {
   // is a closure over module-scope activeSearchQuery. formatters.js exports
   // statusClass, formatClass, statusLabel, statusFormatter, rowTitle,
   // primaryIdentifier, loadCatalogueBlockMap, and getRowBlockId only.
-  // NOTE: escapeRegex and renderHighlightedText are defined here (not imported
-  // from formatters.js) because renderHighlightedText's default query parameter
-  // is a closure over module-scope activeSearchQuery.
   function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
@@ -1180,7 +1177,7 @@ import {
     spreadsheet.innerHTML = "";
     table = new Tabulator(spreadsheet, {
       data,
-      columns: buildColumns(data, activeView, expertColumnsOn, expertHiddenFields, renderHighlightedText, activeSearchQuery),
+      columns: buildColumns(data, activeView, expertColumnsOn, expertHiddenFields, renderHighlightedText, () => activeSearchQuery),
       layout: "fitDataFill",
       renderHorizontal: "basic",
       height: "100%",              // fixed virtual scroll viewport prevents rubberbanding

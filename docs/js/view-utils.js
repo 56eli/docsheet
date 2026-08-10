@@ -3,8 +3,8 @@
 // DOM-dependent but self-contained. Imported by app.js.
 // =============================================================================
 
-import { VIEWS, VIEW_DETAILS, COLUMN_LABELS, humanizeField } from "./config.js";
-import { ownedValue, yearSpanFor } from "./data-utils.js";
+import { VIEWS, VIEW_DETAILS, COLUMN_LABELS, humanizeField } from "./config.js?v=5189225f358d";
+import { ownedValue, yearSpanFor } from "./data-utils.js?v=0288c69670bb";
 
 /**
  * Update the view summary section (title, description, meta chips).

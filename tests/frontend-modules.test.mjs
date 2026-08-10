@@ -58,7 +58,7 @@ function editionFormatter() {
     () => true,
     () => [],
     (text) => document.createTextNode(text),
-    "",
+    () => "",
   );
   const column = columns.find(({ field }) => field === "edition");
   assert.ok(column, "edition column must be generated");
@@ -87,6 +87,31 @@ test("removed overview UI has no dormant JavaScript or CSS", async () => {
     assert.equal(app.includes(token), false, `${token} must not remain in app.js`);
     assert.equal(style.includes(token), false, `${token} must not remain in style.css`);
   }
+});
+
+test("column formatters read the current search query on every redraw", () => {
+  let query = "";
+  const seenQueries = [];
+  const row = { title: "Power vs Force" };
+  const columns = buildColumns(
+    [row],
+    "master",
+    () => true,
+    () => [],
+    (text, currentQuery) => {
+      seenQueries.push(currentQuery);
+      return document.createTextNode(text);
+    },
+    () => query,
+  );
+  const formatter = columns.find(({ field }) => field === "title").formatter;
+  const cell = { getValue: () => row.title };
+
+  formatter(cell);
+  query = "power";
+  formatter(cell);
+
+  assert.deepEqual(seenQueries, ["", "power"]);
 });
 
 test("edition formatter imports and executes the extra-edition helper", () => {
