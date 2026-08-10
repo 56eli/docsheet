@@ -193,7 +193,7 @@ coverage report                        # exits non-zero below the 85% floor (.co
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149..
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149).
 
 Current coverage: **85% total; individual modules 78–100%** (2026-08-10;
 style tests are excluded from the coverage denominator).

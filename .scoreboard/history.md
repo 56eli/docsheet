@@ -67,3 +67,29 @@
 - CSS organized with 17 numbered section markers (§1–§17).
 - Notes column cleaned: 83 provenance entries migrated to new research column; only FRAN GRACE remains in notes.
 - Owned column width constrained (62–85px); "Not owned" badge hidden.
+
+## 2026-08-10 — Arena 019feaf6 full multidisciplinary audit
+
+All user scores were preserved. AI scores below changed only after the evidence-based audit in `docs/audits/2026-08-10-arena-019feaf6-full-audit.md`.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | readme_onboarding | 9 | 8 | null | 8 | Arena 019feaf6 | Excellent setup/data semantics, but declared-current links and coverage/current-state prose had drifted; corrected this session. |
+| 2026-08-10 | repo_organization | 7 | 8 | null | 8 | Arena 019feaf6 | Archived 3 completed session/temp docs, root Markdown now 12, and replaced 741-line cumulative handoff with concise current state. |
+| 2026-08-10 | code_hygiene | 9 | 7 | null | 7 | Arena 019feaf6 | Direct columns.js formatter execution raises missing-import ReferenceError; redundant imports and 10 absent-ID code paths found; no no-undef lint. |
+| 2026-08-10 | architecture | 9 | 8 | null | 8 | Arena 019feaf6 | Data architecture remains strong; nested versioned/unversioned ES-module identities and incomplete runtime boundary reduce score. |
+| 2026-08-10 | maintainability | 8 | 7 | null | 7 | Arena 019feaf6 | app.js is 1,933 lines and CSS 2,398; extracted module regression and dormant hero/stats layers demonstrate boundary debt. |
+| 2026-08-10 | error_handling_logging | 8 | 6 | null | 6 | Arena 019feaf6 | Generator/fetch paths are good, but the edition formatter throws outside effective load-error handling. |
+| 2026-08-10 | tests | 9 | 8 | null | 8 | Arena 019feaf6 | 149/149 and 90% pass, but static/offline checks missed executable extracted-module defect; local Playwright download environment-blocked. |
+| 2026-08-10 | ci_cd | 7 | 6 | null | 6 | Arena 019feaf6 | Pages deployed aa1f1b7 before CI run 31373716254 then failed 25/25 browser specs; required/gated workflow remains owner-blocked. |
+| 2026-08-10 | performance | 8 | 7 | null | 7 | Arena 019feaf6 | Payloads are modest; no measured Lighthouse budget and duplicate module URL identities add avoidable work. |
+| 2026-08-10 | github_pages_presentation | 8 | 5 | null | 5 | Arena 019feaf6 | Confirmed production `isExtraEditionRow` ReferenceError on the deployed baseline; byte hashes do not prove rendering. |
+| 2026-08-10 | ux_usability | 9 | 6 | 8 | 8 | Arena 019feaf6 | Owner 8 preserved; current AI lowered for runtime defect, stale search highlighting, dormant UI, and shortcuts dialog gap (`accepted_debt`). |
+| 2026-08-10 | accessibility | 8 | 7 | null | 7 | Arena 019feaf6 | Strong row drawer/focus foundations; shortcuts dialog lacks complete modal behavior and no axe scan exists. |
+| 2026-08-10 | feature_completeness | 8 | 6 | null | 6 | Arena 019feaf6 | All sheets exist, but primary grid runtime regressed and hero/stats/review-nav implementation is half-removed. |
+| 2026-08-10 | deployment_readiness | 7 | 4 | null | 4 | Arena 019feaf6 | GitHub API confirms legacy main:/docs; a known-regressed commit deployed before browser validation. |
+| 2026-08-10 | agent_readiness | 9 | 7 | null | 7 | Arena 019feaf6 | Canonical summary/gate and human scoreboard contradicted; current handoffs were stale and cumulative before reconciliation. |
+| 2026-08-10 | task_hygiene | 8 | 7 | null | 7 | Arena 019feaf6 | Root cleanup completed, but P0 runtime repair and dormant frontend work are active. |
+| 2026-08-10 | auditability | 9 | 8 | null | 8 | Arena 019feaf6 | Provenance remains strong; repeated stale declared-current audits require stricter one-current-pointer discipline. |
+| 2026-08-10 | repo_transparency | null | 7 | 7 | 7 | Arena 019feaf6 | Owner 7 preserved; current audit independently confirms documentation depth plus current-state contradiction debt. |
+| 2026-08-10 | overall_effective_score | 8.3 (canonical summary; inconsistent with fields) | 7.1 | preserved | 7.1 | Arena 019feaf6 | Recomputed 614/86 after current audit; gate is FAIL due P0 runtime, CI 6, agent readiness 7, and legacy Pages. |

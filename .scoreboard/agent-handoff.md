@@ -1,329 +1,79 @@
 # Agent Handoff
 
-Last updated: 2026-08-10 (Arena 019feabf — Full Multidisciplinary Audit + Hygiene Fixes)
+**Updated:** 2026-08-10 — Arena 019feaf6 full multidisciplinary audit
+**Audited baseline:** `aa1f1b76465e140b9cb62761d365765f0541d7d8`
 
-## Current state
+## Current audit
 
-DocSheet is a static GitHub Pages spreadsheet/catalogue with separate raw
-(`docs/data.json`) and curated (`docs/master.json`) lanes. The current audits are:
+Read `docs/audits/2026-08-10-arena-019feaf6-full-audit.md` for evidence, scores, commands, and the remediation sequence.
 
-- `docs/audits/2026-08-10-arena-019feabf-full-audit.md` **(Current — fresh-eyes full-stack audit 019feabf session)**
-- `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` (Prior 019feaaf session audit)
-- `docs/audits/2026-08-10-full-audit-019fea62-multidisciplinary.md` (Prior 019fea62 session audit)
-- `docs/audits/2026-08-09-end-user-row-delivery-postmortem.md` (Authoritative incident/postmortem)
+## Immediate P0
 
-## 2026-08-10 Session Summary — 019feabf — Full Multidisciplinary Audit + Hygiene + CSS Dedup + Modularization + Module Contract
+PR #63 extracted frontend modules but `docs/js/columns.js:242` calls `isExtraEditionRow(row)` without importing it. A direct formatter invocation reproduces:
 
-- **Comprehensive Audit:** Full independent audit as Expert Web Designer (8.5/10), Full-Stack Developer (8.5/10), Data Engineer (9.0/10). All 149 tests pass, 90% coverage, 6/6 `--check` green, all 363 master records and 20 JSON sheets verified. Published at `docs/audits/2026-08-10-arena-019feabf-full-audit.md`.
-- **CSS §12/§13 Deduplication:** Extracted shared browse-mode component styles into viewport-agnostic block. CSS reduced 2563→2398 lines (−165). `browse-active` references 41→9.
-- **Frontend Modularization (Phases 1+2):** Extracted 5 new ES modules from app.js:
-  - `docs/js/data-utils.js` (94 lines): debounce, formatTimestamp, displayMobileDate, displayMobileEdition, isExtraEditionRow, mobilePrimaryUrl, mobileWorkGroups, ownedValue, yearSpanFor
-  - `docs/js/mobile.js` (88 lines): mobileSourceLink, mobileEditionCard, overviewCard
-  - `docs/js/columns.js` (279 lines): looksLikeUrl, urlLabelFor, urlFormatter, columnPresetFor, orderKeysForView, measuredColumnWidth, buildColumns
-  - `docs/js/filter-utils.js` (41 lines): rowMatchesFacets, facetsEmpty, mobileFacetLabel
-  - `docs/js/view-utils.js` (152 lines): updateViewSummary, renderCollectionOverview, renderSeriesStrip, renderSeriesLanding, configureViewJump
-  - app.js reduced 2769→1933 lines (−30%). Frontend now 8 modules.
-- **Module Hash Contract:** All 7 JS modules tracked in `build-manifest.json#modules` with SHA-256 hashes. 2 new contract tests verify manifest hashes and `?v=` import hashes. Tests 147→149.
-- **Deploy Workflow Fix:** Replaced hardcoded 362 row count in deploy_pages.yml with dynamic `catalogue-meta.json` lookup.
-- **Hygiene:** Archived 4 TEMP/PR files from root (18→14 .md). Removed dead formatters.js exports. Fixed stale import hashes.
-- **Documentation:** Updated test counts (149) in README, INSTRUCTIONS, NEXT_AGENT_HANDOFF, SCOREBOARD. Updated Maintainability note (8 modules).
-- **Verification:** All 149 tests pass, 90% coverage (78-100% per module), 6/6 `--check` green, JS syntax clean.
-- **Left open:** P0 CI/Pages gating (owner action), further app.js modularization (P3, optional), Issue #18 (owner Drive access).
+```text
+ReferenceError: isExtraEditionRow is not defined
+```
 
-## 2026-08-10 Session Summary — 019feaaf — Owned Width, Extra Badge Constrain, Edition Research to Drawer
+The main Pages API reports legacy deployment from `main:/docs`; Pages successfully deployed this baseline while browser CI was still running. Main CI run `31373716254` then failed all 25 Playwright specs because no `.tabulator-row` rendered. Do not treat the Pages badge or static hash contract as runtime acceptance.
 
-- **Owned Column Enlarged:** `COLUMN_BUDGETS.owned` widened to `78px` (70–90px) in `docs/js/config.js` to comfortably accommodate the "Owned" header text, sort indicators, and cell badges without truncation.
-- **Constrained "Extra" Badge to PvF Double:** `isExtraEditionRow(row)` in `docs/app.js` returns `true` exclusively for the Power vs. Force double (`w-power-vs-force` row 373). All other secondary carrier rows no longer show the badge.
-- **Edition Column Cleaned & Research Moved to Details Panel:** Removed inline edition note spans from mobile cards, omitted `edition_note` from the visible table priority, and assigned `edition_note` to the **Research** section in `DETAIL_SECTIONS` within `docs/js/config.js` (viewable in on-click drawer).
-- **Delivery Contract & Tests:** Asset digests synchronized in `docs/index.html` and `docs/build-manifest.json` (`revision: owned-width-extra-clean-20260810.1`, `app-49ca59628f20/css-936c444be89d`). All 147 tests pass, coverage 90%, 6/6 `--check` green.
+Required repair:
 
-## 2026-08-10 Session Summary — 019fea62 — Mobile Header, White Grouping, Highlights + Extra Edition Row 373
+1. import `isExtraEditionRow` in `columns.js`;
+2. remove redundant imports;
+3. add executable JS/module formatter coverage (prefer ESLint `no-undef` plus a unit/runtime test);
+4. refresh content versions/manifest;
+5. pass all 149 offline tests, six checks, and 25 Playwright specs;
+6. verify the exact deployed revision.
 
-- **Mobile Header Compact:** Header was a 3-row tower (~100 px) on phones; now brand + single flexible control row (~68 px) with `search-wrap flex:1 1 160px`, `topbar` mobile `padding 6px`, `Owned` column tightened to 58 px (was 72) matching label width. Verified via `grep` flex and `node --check`.
-- **White Ungrouped Grouping:** `undecided` block tokens light/dark from orange `#ea580c/#fb923c` to white `#ffffff` 8.5% — the 32 truly ungrouped rows (265,359-361,369-372,320-343) now render neutral white/zebra with invisible inset, not orange.
-- **Lecture Highlights 4 Above White:** Extracted 7 Lecture Highlights (362-368) into new block `lecture-highlights` (orange), reordered 12-block display (lectures 201, discussion 8, satsang 22, on-the-road 32, volume 13, office 16, highlights 7, books 22, transcription 6, media-misc 3, white 32, fran-grace 1). Highlights at display 293-299, white at 331, distance 4.
-- **Edition Mediation (Carrier vs Note):** Kept `edition` as carrier (`format·detail` with color dots), added stored column `edition_note` (nullable free-text, reviewed via `data/edition_notes.csv`, `pipeline/enrichments.apply_edition_notes`). `docs/js/config.js` `COLUMN_LABELS` + hidden Expert column (italic muted), `docs/style.css` muted italic, mobile work-stack second line. `data/edition_notes.csv` now 2 approved rows: 286 current B&W paperback referencing 373, 373 original non-B&W hardcover with physical specs `spiral-bound; 94 pages; Veritas Publishing; ISBN 0964326175` keeping Edition carrier clean. Proposal doc `EDITION_MEDIATION_PROPOSAL_019fea62.md`.
-- **New Extra Row 373 — Power vs Force Original Hardcover:** Manual candidate `manual-veritas-pvf-old-hardcover` (book, Hardcover, 1995, source other) promoted → master 373 (`w-power-vs-force`, `Books`, Hardcover, `edition_note` with specs, filename `1995 - Power vs Force … (Original Hardcover - non-B&W).pdf`, `work_families` entry, `catalogue_display_order` 363 rows, `catalogue-block-map` regenerated). Master now **363** (306 lecture, **41 book**, 8 discussion, 7 highlight, 1 other), **40** promoted candidates, **339** work families, **363** Everything rows.
-- **Small Indicator for All Extra Editions:** New `extra-edition-badge` pill (`Extra`) in Edition cell via `isExtraEditionRow()` (workId minUuid check) — all 25 extra rows (24 minted edition rows 320-343 plus new 373) show badge, standard rows do not. `docs/style.css` adds badge styling. `docs/app.js` versioned imports `config.js?v=cfced6b202ba` etc.
-- **Delivery Contract:** `docs/build-manifest.json` `extra-edition-pvf-20260810.2` (`app-9ee70dc1011c/css-936c444be89d` → now `app-14aab6395429/css-936c444be89d` after physical specs and badge), `docs/index.html` `?v` and footer, `docs/js/config.js` owned 58, `tests/test_pipeline` 362→363 (3 asserts), `README`/`NEXT_AGENT_HANDOFF`/`RECONCILIATION_REPORT` updated to 363, coverage 85% (78-100% per module).
+## Other confirmed findings
 
-## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit + P0 hotfix)
+- Extracted column formatter closures capture the empty search query passed at table creation, so later filtering works but `<mark>` highlighting is stale.
+- Nested module imports omit version queries, creating duplicate versioned/unversioned module URLs and a stale-cache path.
+- Ten app-managed overview/stats/review-navigation IDs are absent from HTML; their JS/CSS is unreachable while docs still describe portions as shipped.
+- Shortcuts dialog lacks modal focus/Escape lifecycle.
+- Ruff/ESLint/axe/Lighthouse are not enforced in CI.
+- Pages gating and required branch checks remain owner-applied work in `.scoreboard/manual-workflow-edits.md`.
+- Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
 
-## 2026-08-10 P0 hotfix (019fe8d0 follow-up)
+## Verification evidence
 
-- **P0 incident: site stuck on "Loading research master…"** — reported by
-  the owner immediately after the gap-fix commit. Browser test run 31341418779
-  on main also failed 25/25 specs at `waitForTable()`.
-- **Root cause:** the 019fe8a5 ES-module refactor of `docs/app.js` dropped
-  two IIFE-scope declarations when extracting config.js and formatters.js:
-  `let table = null;` (held the active Tabulator instance) and
-  `let allData = [];` (held the current view's data array). On first
-  `boot()` call, `applyViewSettings` referenced the undeclared `table`,
-  throwing `ReferenceError: table is not defined` — the page then stayed
-  on the static "Loading research master…" skeleton from `index.html`
-  forever. `allData` blew up the next call when the `await loadData(...)`
-  resolved. The 25 Playwright specs all timed out at `waitForTable()`
-  waiting for `aria-busy="false"`.
-- **Detection:** I reproduced the failure locally by running app.js through
-  Node with a minimal browser mock (document, fetch, localStorage). The
-  first run reported `ReferenceError: table is not defined at line 365`.
-- **Fix:** restored both module-scope declarations in `docs/app.js` with
-  comments cross-referencing the 019fe8a5 refactor. Updated
-  `docs/index.html` (script `?v=...` + footer build ID) and
-  `docs/build-manifest.json` (asset/data SHA-256s, revision
-  `row-delivery-p0-20260810.1`) to the new app.js hash. Bumped the
-  manifest's `source_baseline` to `1a442001` (the broken PR #59 merge).
-- **Regression test added:** `FrontendDeliveryContractTests
-  .test_app_js_declares_critical_module_scope_variables` re-reads
-  `docs/app.js` and asserts that `table` and `allData` are declared
-  with `let`/`var`/`const` at IIFE scope. A future refactor that
-  re-introduces a free-variable reference to one of these (or any
-  future critical identifier added to the `critical` tuple) will
-  fail this test before it can ship.
-- **Verified locally:** Node-with-mock shows `aria-busy: false` after
-  boot, master.json fetch completes, no `console.error` calls.
-- **Test count:** 145 → 146 deterministic tests. README +
-  INSTRUCTIONS test-count lines updated per the project house rule.
-- **Outcome:** once this branch merges to main, the site should load
-  normally and the 25 Playwright specs should pass again.
+- All six generator `--check` modes: pass.
+- Python suite: 149/149 pass.
+- Coverage: 90% across 2,327 statements (85% floor).
+- Python/JavaScript syntax: pass.
+- npm audit: 0 vulnerabilities; pip check: pass.
+- Independent data integrity: 363 unique masters, 191 works, 278 unique codes, 363 unique filenames, complete 12-block order, no relationship or URL defect found.
+- Local Playwright could not run because Chromium download failed with sandbox `ECONNRESET`; this is an environment constraint.
+- Live curl was blocked by sandbox TLS; GitHub API evidence was available.
 
-## 2026-08-09 Session Summary — 019fe8d0 (Fresh-eyes Multidisciplinary Audit)
+## Current data state
 
-- **Independent audit** of all 5 prior 2026-08-09 audits (019fe7ff, 019fe80c,
-  019fe830, 019fe844, 019fe8a5) — every claim re-verified, not copied.
-- **Committed at `docs/audits/2026-08-09-arena-expert-full-audit-019fe8d0.md`**
-  (14 sections: TL;DR, Architecture, Web Design, Full-Stack, Security,
-  Performance, A11y, Repo Org, CI/CD, Maintainability, Auditability, Data
-  Engineering, Recommendations, Verification, Scoreboard Alignment).
-- **6 independent data-integrity probes re-run against `docs/master.json`:**
-  no duplicate UUIDs (1-372 with documented gaps for retired duplicates),
-  all 363 catalog codes match `^(LECTURE|DISCUSSION)-\d{3,4}X?-\d{3}$`
-  (84 correctly blank for edition/book rows), year range 1973-2026 with
-  16 198X Office Series + 19 blank (Volume Series + under-investigation),
-  item type counts exactly 306 lecture / 40 book / 8 discussion / 7 highlight
-  / 1 other (sum 362), format distribution 253 DVD / 32 CD / 31 book /
-  27 audiobook / 19 streaming, owned distribution 311 true / 25 false /
-  26 blank, all 6 URL fields use https:// schemes.
-- **5 `--check` modes re-run in this session** (process_data.py needs
-  pandas which the sandbox doesn't have, but the other 5 pass): all green.
-- **6 gaps surfaced** that the prior 5 audits didn't explicitly call out:
-  1. `docs/catalogue-block-map.json` is build-emitted but not in
-     `build-manifest.json` (and not in `FrontendDeliveryContractTests`).
-  2. `docs/js/config.js#VIEWS` is not cross-checked against
-     `build_catalogue_pages.py` output file list.
-  3. 29 of 363 masters have no `source_url_veritas` but no visual
-     indicator distinguishes "intentionally blank" from "missing data."
-  4. Firefox ignores `::-webkit-scrollbar`; 16px custom scrollbar is
-     silently the OS default there.
-  5. Work-family stripe grouping has no legend / toggle in View settings.
-  6. The "Not owned" badge was hidden in 019fe8a5 per owner request, but
-     `owned: false` rows now have a fully empty cell — a subtle visual
-     cue (faint strikethrough on title? outlined "✕" badge?) would
-     communicate the distinction without re-introducing the noisy pill.
-- **P1 gaps 1+2 fixed in this session** (delivery-contract only, per
-  the owner-aligned scope decision):
-  - **Gap 1** — `docs/catalogue-block-map.json` added to
-    `build-manifest.json#data` with SHA-256 hash
-    (`e4c435a8818ebc78376a0443f488b81224883ec3cd5863554b0139fc3fecddac`).
-    New test `FrontendDeliveryContractTests.test_block_map_drift_fails_manifest_contract`
-    re-reads the file, recomputes the hash, and asserts it matches
-    the manifest entry — a tampered block map now fails the
-    contract test loudly.
-  - **Gap 2** — new `ViewsConfigConsistencyTests` class with three
-    tests: (1) every VIEWS `file:` key matches a build-emitted
-    user-facing JSON (excludes the non-Jump-to outputs
-    `catalogue-meta.json`, `catalogue-block-map.json`,
-    `build-manifest.json`); (2) every VIEWS file actually exists
-    in `docs/`; (3) no two view keys share a file (with the
-    documented `master`+`series` → `master.json` exception
-    pinned so it cannot silently grow).
-  - **Test count** — 141 → 145 deterministic tests
-    (`tests/test_pipeline.py`); 137 pre-existing + 4 new
-    manifest/contract + 3 new VIEWS = 4 net new in
-    `test_pipeline.py`; 8 unchanged in `test_style_contrast.py`
-    = 153 total. README + INSTRUCTIONS test-count lines updated
-    per the project house rule. Drift test proved: manually
-    tampered block map now fails the contract test with the
-    exact expected error message.
-  - **All `--check` modes still green** (5/5 that don't need
-    pandas); 4 new tests pass; no regressions in the 137
-    pre-existing tests; 8 process_data failures are
-    pre-existing (sandbox lacks pandas).
-- **P1 gaps 3-6 not touched in this session** (deferred per
-  the owner-aligned scope decision: 4 UI/data polish items
-  need owner visual review before any change).
-- **Scoreboard alignment:** My independent re-audit agrees with the current
-  scoreboard (overall_effective 8.5 / gate pass) on every aspect except
-  performance (I'd add a Lighthouse budget step before declaring 8/10
-  confident — currently 8 with medium confidence per the scoreboard,
-  which is fair). No score changes recommended.
+363 masters: 306 lecture / 41 book / 8 discussion / 7 highlight / 1 other. Formats: 253 DVD / 32 CD / 32 book / 27 audiobook / 19 streaming. Ownership: 312 true / 25 false / 26 blank. Also: 75 exclusions, 134 overrides, 40 candidates, 4 manual leads, 340 reviewed product relationships, 7 compilations, 191 Veritas, 29 Hay House, 26 Audible, and 38 international products.
 
-## 2026-08-09 Session Summary — 019fe8a5 (Audit, Consolidation, Modularization)
+## Documentation work completed in this audit
 
-- **Full-Stack Audit:** Published comprehensive audit at `docs/audits/2026-08-09-full-audit-019fe8a5.md` covering web design (8/10), architecture (9/10), data integrity (9/10), security (8/10), testing (9/10), maintainability (6→8/10).
-- **Root Document Consolidation (21→12 .md files):**
-  - 5 historical audits moved to `archive/` (FULL_STACK_AUDIT_2026-08-09_ARENA_019FE767, _DEEP_DIVE, _EXPERT, _FULL, AUDIT_REPEATED_FAILURE_STYLING)
-  - 3 decision/provenance docs moved to `decisions/` (FILENAME_PROPOSAL_V4, YEAR_COLUMN_PROVENANCE, OFFICIAL_SOURCE_REGISTRY)
-  - All cross-references updated across README.md, INSTRUCTIONS.md, NEXT_AGENT_HANDOFF.md, .scoreboard/scoreboard.yml, tests/test_style_contrast.py, and docs/audits/*.md
-  - README "Documentation layout" rewritten as a 5-row table
-- **UX Fixes (per owner feedback):**
-  - Owned column width constrained to 62–85px (fits "Owned" badge tightly)
-  - "Not owned" badge hidden — `owned: false` rows now show empty cell instead
-  - Notes column walkthrough: 84 entries documented (provenance, title corrections, FRAN GRACE marker)
-- **Frontend Modularization:**
-  - `docs/js/config.js` (274 lines) — Pure data: VIEWS, COLUMN_LABELS, COLUMN_PRESETS, COLUMN_BUDGETS, RECORD_TYPE_LABELS, DETAIL_SECTIONS, humanizeField()
-  - `docs/js/formatters.js` (142 lines) — Rendering: statusClass, statusLabel, statusFormatter, getRowBlockId, loadCatalogueBlockMap, rowTitle, primaryIdentifier
-  - `docs/app.js` reduced from 2,769 → 2,392 lines (loads as `<script type="module">`)
-  - CSP `script-src 'self'` already permits same-origin ES modules
-- **CSS Organization:** 17 numbered section markers (§1 Design Tokens through §17 Responsive) added throughout 2,498-line `docs/style.css`
-- **Scoreboard Updated:**
-  - Owner confirmed prior 5/10 UX and Pages scores are outdated → cleared to null → effective = AI
-  - Overall effective score 7.8 → 8.5; quality gate `fail` → `pass`
-  - Maintainability AI 8, user null, effective 8 (frontend modularized)
-  - Repo organization updated with consolidation evidence
-- **Delivery Contract:** All hashes updated: app.js v=359f7c6d889a, style.css v=805701f0ca91, build-manifest.json refreshed
-- **Verification:** 141/141 offline tests pass, all 6 --check modes green, all 3 JS files syntax-valid
+- Published the new declared-current audit.
+- Replaced the 741-line cumulative `NEXT_AGENT_HANDOFF.md` with a concise current handoff and pointers to history.
+- Archived completed session/temp documents:
+  - `archive/TEMP_AUDIT_019FEABF.md`
+  - `archive/IMPLEMENTATION_SUMMARY_019fea62.md`
+  - `archive/EDITION_MEDIATION_PROPOSAL_019fea62.md`
+- Root Markdown count is now 12 and matches the README layout.
+- Reconciled scoreboard summaries/gate status and current test-count documentation.
 
-## 2026-08-09 Session Summary - 019fe844 (Block Map Extraction, Column Layout & Archive.org Holdings)
+## Safe commands
 
-- **Block Map Build Extraction:** Removed 362 hardcoded UUID literals from `docs/app.js` and replaced them with build-generated `docs/catalogue-block-map.json` emitted by `build_catalogue_pages.py` from `data/catalogue_display_order.csv`.
-- **CSS Token Layer Consolidation:** Consolidated `:root` and `:root.dark` layers in `docs/style.css`, eliminating duplicate override blocks.
-- **Column Layout & Single-Line Headers:**
-  - Reduced Record Type column width to tight `CM` badge width (52px).
-  - Enforced single-line column headers (`white-space: nowrap`, `overflow: hidden`, `text-overflow: ellipsis`) so header height stays strictly one line.
-  - Hidden `Title`, `Series`, and `Year-Month` under Expert columns by default.
-  - Placed `Owned` and `Notes` immediately to the right of `Item Type`.
-  - Moved `Catalogue Code` to the back.
-  - Reduced row heights to compact single-line content heights matching largest items (~32–34px).
-- **Archive.org Ownership Verification & Holdings Promotion:**
-  - Cross-checked the entire catalogue against `https://archive.org/download/Hawkins_Lectures_transcoded_actual_files`.
-  - Confirmed and promoted 16 master records to `owned: true` in `data/manual_master_candidates.csv` and `data/edition_candidates.csv` (How to Surrender to God, Book of Slides, Orthomolecular Psychiatry 1973, 2006 Satsang Series 1–6, Discussion talks, Audiobooks; total owned increased 295 → **311 owned / 25 false / 26 blank**).
-  - Tracked newly discovered audio materials (BTO Radio Interviews 14 eps, Unity Church Phoenix 2005) as manual leads in `data/research_manual_leads.csv` (leads 2 → 4).
-- **Delivery Contract & Verification:** Updated asset hashes in `docs/index.html` and `docs/build-manifest.json`. All 141 deterministic unit tests pass, all 6 `--check` modes pass, `ruff check .` clean (0 issues), 90% statement coverage.
+```bash
+python process_data.py --check
+python reconcile_research_master.py --check
+python build_research_master.py --check
+python build_catalogue_pages.py --check
+python map_series_taxonomy.py --check
+python sync_inventory_mirrors.py --check
+python -m unittest discover tests
+coverage run -m unittest discover tests && coverage report
+npm run test:e2e
+```
 
-Do not claim that a successful Pages artifact proves a row change reached the
-end user. The owner explicitly rejected that conclusion. Acceptance requires a
-visible deployed build ID and an explicit owner accept/reject response.
-
-## End-user row-delivery P0 (branch `arena/019fe7c9-docsheet`)
-
-### Root causes found
-
-1. All 70 intended table selectors used `#spreadsheet .tabulator ...`, but
-   Tabulator attaches `.tabulator` to `#spreadsheet` itself. None of those
-   descendant-root rules matched, so the browser kept the external theme's
-   default grey rows while agents edited dead CSS.
-2. A latent equal-specificity `.work-group-start` shadow would have replaced
-   REVISION1 block colors on 105 odd rows after activating the selectors.
-3. `index.html` loaded bare `style.css` and `app.js`; JSON alone used
-   `cache: "no-store"`. Pages build success could not prove matching assets.
-4. The page exposed no build/SHA/content identity.
-5. Existing tests checked CSS tokens and one row class, not selector matching,
-   computed styles, block transitions, dark mode, cache versions, or deployment.
-6. PRs #48-#52 merged before checks completed; Pages deployed independently of
-   red CI.
-7. Mobile/persisted Browse mode contains cards, not Tabulator rows; presentation
-   mode must be explicit during acceptance.
-
-### Implemented on this branch
-
-- All table rules now use the real `#spreadsheet.tabulator ...` root, with a
-  static regression guard against the dead descendant topology.
-- Block rules target stable `data-block` attributes.
-- Work-family grouping uses a horizontal `border-top`; it cannot replace the
-  block-specific inset `box-shadow`.
-- `style.css` and `app.js` use 12-character SHA-256 query versions in
-  `docs/index.html`.
-- `docs/build-manifest.json` records full app/style/master/raw hashes and
-  revision `row-delivery-p0-20260809.1`.
-- Footer visibly identifies `app-cf43f33a062c/css-71a1e6b2ca25` and links the
-  manifest.
-- `FrontendDeliveryContractTests` fails on stale asset query versions, manifest
-  hashes, footer build ID, or payload hashes.
-- Style tests fail if `.work-group-start` reintroduces a competing box-shadow.
-- `presentation-ux.spec.js` now checks computed odd/even backgrounds and exact
-  light/dark accent colors for lecture, discussion, and office rows, including
-  the filtered first-row/work-start case that exposed the bug.
-- The stale `#show-stats-toggle` Playwright path is removed; navigation is tested
-  through the surviving `#view-jump` control.
-- All non-archived older audit documents carry status-correction banners that
-  point to the current row-delivery postmortem; `archive/README.md` does too.
-- Offline suite: **147 tests** (133 pipeline/contract + 8 style), all passing;
-  coverage remains **90% total**.
-- Browser suite: **25/25 passed** in PR #54 run `31331297543`, including real
-  selector matching and computed light/dark block colors. Local Chromium
-  download remains CDN-blocked.
-
-### Not complete until owner/settings action
-
-- Owner visual acceptance of the exact deployed footer build ID.
-- Required CI check/branch rule.
-- CI-gated custom Pages workflow.
-- Post-deploy live manifest, asset hash, and 363-row assertion.
-- Successful-run screenshot artifact/reference review.
-
-Exact owner instructions and workflow YAML are in
-`.scoreboard/manual-workflow-edits.md`. Do not edit `.github/workflows/*` without
-explicit owner direction.
-
-## Data state
-
-- Raw source: 374 rows; 31 blank separators; seven published columns.
-- Curated master: 363 rows; 75 exclusions; 134 source overrides; 40 reviewed
-  manual candidates.
-- REVISION1: 58 filename edits, year overrides on 356-358, notes override on
-  315, and 363-row reviewed color-block order.
-- The ODS was independently parsed: 363 rows x 24 columns; its filename-cell
-  colors map exactly to the 11 committed display blocks.
-- All six generator --check modes pass.
-
-## Current scores / risks
-
-Owner scores remain authoritative and unchanged:
-
-| Aspect | User score |
-|---|---:|
-| GitHub Pages presentation | 5 |
-| UX / usability | 5 |
-| Content quality | 7 |
-| Maintainability | 6 |
-
-Corrected AI scores (019fe830):
-
-- Maintainability: 7 (effective 6 due owner score) — frontend monoliths 2755/2399L + hard-coded block map.
-- GitHub Pages presentation: 8 (effective 5 due owner score) — delivery contract verified at 9e4ee4d.
-- CI/CD: 7 (`blocked_manual_workflow_edit`).
-- Deployment readiness: 7 (`blocked_manual_workflow_edit`).
-- Tests: 9.
-- Overall effective score: **7.8**, gate **fail**.
-
-Additional open risks:
-
-- owner visual acceptance pending;
-- legacy Pages remains independent of CI;
-- CSP `style-src 'unsafe-inline'` remains low-severity debt;
-- issue #18 still needs the owner's Drive export/access.
-
-## Verification performed (019fe830)
-
-- six generator --check modes ✅
-- `python -m unittest discover tests` — 147/147 ✅
-- coverage — 85% total ✅
-- JS/config/all spec syntax ✅
-- `npm ci` / `npm audit` — zero vulnerabilities (prior audit) ✅
-- manifest/content-version contract ✅
-- neutral tokens / selector topology / washes ✅
-- Hay House typo grep 0 ✅
-- PR #54 GitHub CI 31331297543: 25/25 browser specs ✅ (prior branch; this branch re-uses same manifest)
-- Chromium install locally ❌ environment TLS reset; GitHub CI is authoritative
-
-## Next-agent rules
-
-1. Read this file, `SCOREBOARD.md`, `.scoreboard/scoreboard.yml`, and the
-   corrective audit before changing rows.
-2. Never infer owner satisfaction from CI, Pages, PR merge, or silence.
-3. Do not call the row incident resolved before branch browser CI, deployment,
-   visible-build verification, and owner acceptance.
-4. If app/style/master/raw bytes change, update `docs/build-manifest.json` and
-   the versioned references/footer ID; the offline contract test enforces this.
-5. Preserve all owner scores.
+Never hand-edit generated master/Pages data. Never edit `.github/workflows/*` without explicit owner authorization. Preserve all recorded user scores.
