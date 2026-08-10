@@ -6,7 +6,7 @@
 
 ## Current audit
 
-Read `docs/audits/2026-08-10-arena-019feb9b-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering. It corroborates the existing 8.1 conditional-pass score without changing owner scores. PR #67 (audiobook ownership correction + mobile Spreadsheet scrolling repair) passed CI in 1m28s and merged to `main` as `b226135` on 2026-08-10. The previous live byte-verification evidence remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
+Read `docs/audits/2026-08-10-arena-019feb9b-full-audit.md` for the current independent multidisciplinary full-stack audit across Web Design, Frontend Architecture, and Data Engineering, and `docs/audits/2026-08-10-arena-019feb9b-csv-export-audit.md` for the deep audit of the CSV export feature and mobile Browse fallback header alignment. Both corroborate the existing 8.1 conditional-pass score without changing owner scores. PR #67 (audiobook ownership correction + mobile Spreadsheet scrolling repair) passed CI in 1m28s and merged to `main` as `b226135` on 2026-08-10. The previous live byte-verification evidence remains in `docs/audits/2026-08-10-arena-019feb3e-full-audit.md`.
 
 ## State change this session
 

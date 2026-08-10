@@ -17,7 +17,7 @@
 
 DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`8c59a91`, PR #68) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
 
-**This branch (`arena/019feb9b-docsheet`) adds:** a comprehensive independent multidisciplinary audit across Web Design / UX / Accessibility, Full-Stack Frontend Engineering, and Data Engineering, recorded in `docs/audits/2026-08-10-arena-019feb9b-full-audit.md`. All six generator checks (`--check`), 149 Python tests (90% total coverage), and Node module syntax checks pass cleanly.
+**This branch (`arena/019feb9b-docsheet`) adds:** a comprehensive independent multidisciplinary audit across Web Design / UX / Accessibility, Full-Stack Frontend Engineering, and Data Engineering (`docs/audits/2026-08-10-arena-019feb9b-full-audit.md`), plus a dedicated deep audit of the CSV Export feature (`docs/audits/2026-08-10-arena-019feb9b-csv-export-audit.md`). It also aligns the mobile Browse mode fallback CSV exporter with desktop Spreadsheet humanized headers (`humanizeField`). All six generator checks (`--check`), 149 Python tests (90% total coverage), and Node module syntax checks pass cleanly.
 
 ## 2. What this branch changes (on top of `main`)
 

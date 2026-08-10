@@ -1,9 +1,9 @@
 {
-  "revision": "mobile-table-scroll-019feb8c-2026-08-10.1",
-  "source_baseline": "f7c58bc2d2cbfbc27979b63e2947ca65a120dbd5",
+  "revision": "audit-csv-export-019feb9b-2026-08-10.1",
+  "source_baseline": "8c59a912b133331dd34cd06a452317d24b332e5b",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "99d22aab7166c96979e442b9c40c0271ee8f1e75124c638de54cc526a3fd2ab3",
+    "app.js": "eac2f880d4028a68a197d1883152a9970eaf7bec9fd8e1f29cfde5e1e5ed0e2a",
     "style.css": "d4a51b981016ff3958652f88c96546cbda4ba185bfef958984f3137773d81977"
   },
   "modules": {

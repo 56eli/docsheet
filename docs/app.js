@@ -1359,7 +1359,7 @@ import {
     ]);
     const fields = orderKeysForView([...allKeys], activeView);
     const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
-    const csv = [fields.map(quote).join(","), ...allData.map((row) =>
+    const csv = [fields.map((field) => quote(humanizeField(field))).join(","), ...allData.map((row) =>
       fields.map((field) => quote(row[field])).join(",")
     )].join("\n");
     const href = URL.createObjectURL(new Blob([`${csv}\n`], { type: "text/csv;charset=utf-8" }));
