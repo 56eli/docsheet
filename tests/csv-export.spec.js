@@ -63,8 +63,9 @@ test('CSV export uses the selected view filename', async ({ page }) => {
 
   const csv = await fs.readFile(downloadPath, 'utf8');
   const lowerCsv = csv.toLowerCase();
+  // Export headers are humanized column titles (e.g. "Title", "Lead Status").
   expect(lowerCsv).toContain('title');
-  expect(lowerCsv).toContain('lead_status');
+  expect(lowerCsv).toContain('lead status');
 });
 
 test('published catalogue views are read-only', async ({ page }) => {
