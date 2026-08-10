@@ -169,7 +169,7 @@ year/month/year_source corrections), `data/master_notes_overrides.csv`
 (verbatim notes replacements), and `data/catalogue_display_order.csv` (the
 owner-approved block order of the Everything view and its CSV export; the
 change record is the colour-coded `review/hawkins-everything-REVISION1.ods`).
-See `docs/audits/2026-08-10-multidisciplinary-expert-full-audit.md` (declared-current multidisciplinary audit) alongside
+See `docs/audits/2026-08-10-arena-019febe9-full-audit.md` (declared-current multidisciplinary audit) alongside
 `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
 extension `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for full-stack evidence and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
 status (`archive/` material is historical and not normative).
@@ -186,16 +186,17 @@ inference, validators) are unit-tested directly.
 
 ```bash
 pip install -r requirements-dev.txt    # runtime deps + coverage
-python -m unittest discover tests      # 149 deterministic tests
+python -m unittest discover tests      # 158 deterministic tests
+npm run lint                           # ESLint no-undef on the shipped frontend
 coverage run -m unittest discover tests
 coverage report                        # exits non-zero below the 85% floor (.coveragerc)
 ```
 
 > House rule: when the suite grows or shrinks, update the test count here and
 > in the README's quick-start line in the same change — it has drifted three
-> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149).
+> times (103 → 107 → 110 → 112 → 115 → 117 → 121 → 123 → 125 → 126 → 132 → 139 ... 141 → 145 → 146 → 147 → 149 → 158).
 
-Current coverage: **90% total; individual modules 78–100%** (2026-08-10;
+Current coverage: **92% total; individual modules 85–100%** (2026-08-10;
 style tests are excluded from the coverage denominator).
 For exact CI reproduction, install with `pip install -r requirements-dev.txt -c requirements-ci.txt`.
 The remaining misses are `if __name__ == "__main__"` guards and rare

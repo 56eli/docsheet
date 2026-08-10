@@ -198,6 +198,35 @@ test("edition formatter imports and executes the extra-edition helper", () => {
   );
 });
 
+test("block-map fallback equals the approved display order for all masters", async () => {
+  // In Node the block-map fetch cannot resolve a relative URL, so the
+  // module-level _catalogueBlockMap stays empty and getRowBlockId exercises
+  // the embedded FALLBACK_BLOCK_MAP snapshot. Every approved row of
+  // data/catalogue_display_order.csv must classify to its own block — a
+  // drift (e.g. a display-order change without refreshing the snapshot)
+  // fails here, and a failed block-map fetch in the browser can no longer
+  // strip the REVISION1 groupings (incl. the 201-row lectures block).
+  const { getRowBlockId } = await import("../docs/js/formatters.js");
+  const csv = await readFile(
+    new URL("../data/catalogue_display_order.csv", import.meta.url),
+    "utf8",
+  );
+  const lines = csv.split(/\r?\n/).slice(1);
+  let checked = 0;
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const [uuid, blockId] = line.split(",");
+    if (!uuid || !blockId) continue;
+    assert.equal(
+      getRowBlockId({ uuid: uuid.trim() }),
+      blockId.trim(),
+      `approved display-order uuid ${uuid.trim()} must map to its block`,
+    );
+    checked += 1;
+  }
+  assert.ok(checked >= 363, `expected >=363 approved rows, checked ${checked}`);
+});
+
 test("ODS export creates valid OpenDocument Spreadsheet archives with colored groupings", async () => {
   const { createOdsArchive } = await import("../docs/js/ods-export.js");
   const sample = [

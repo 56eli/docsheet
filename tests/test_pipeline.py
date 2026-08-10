@@ -1101,6 +1101,179 @@ class DerivedPrimaryRelationshipTests(unittest.TestCase):
             tempdir.cleanup()
 
 
+class PipelineHelpersTests(unittest.TestCase):
+    """Unit coverage for pipeline/helpers.py failure and edge branches."""
+
+    def test_require_columns_missing_file_raises(self) -> None:
+        from pipeline.helpers import require_columns
+        with self.assertRaises(FileNotFoundError):
+            require_columns(Path("definitely-missing-review-file.csv"), {"a"})
+
+    def test_assign_compact_ids_skips_existing_and_collisions(self) -> None:
+        from pipeline.helpers import assign_compact_ids
+        items = [
+            {"id": "m-1", "name": "kept"},
+            {"id": "m-3", "name": "kept"},
+            {"name": "first-gap"},
+            {"name": "second-gap"},
+            {"name": "third-gap"},
+        ]
+        # m-1/m-3 are reserved; the while loop must skip the taken m-1 and
+        # m-3 prefixes when minting the gaps.
+        count = assign_compact_ids("m", items)
+        self.assertEqual(count, 3)
+        self.assertEqual([item["id"] for item in items], ["m-1", "m-3", "m-2", "m-4", "m-5"])
+
+    def test_assign_compact_ids_empty_and_custom_key(self) -> None:
+        from pipeline.helpers import assign_compact_ids
+        self.assertEqual(assign_compact_ids("x", []), 0)
+        items = [{"code": ""}, {"code": "x-1"}, {"code": ""}]
+        self.assertEqual(assign_compact_ids("x", items, key="code"), 2)
+        self.assertEqual([item["code"] for item in items], ["x-2", "x-1", "x-3"])
+
+    def test_veritas_products_helpers_fall_back_to_empty(self) -> None:
+        # Both helpers return {} when the inventory file is absent; the
+        # present-file path (indexing by id and by url) is exercised too.
+        from unittest import mock
+        from pipeline.helpers import veritas_products_by_id, veritas_products_by_url
+        import build_research_master as brm
+
+        by_id = veritas_products_by_id()
+        by_url = veritas_products_by_url()
+        self.assertGreater(len(by_id), 100)
+        self.assertEqual(len(by_id), len(by_url))
+        sample = next(iter(by_id))
+        self.assertIn("official_product_url", by_id[sample])
+
+        with mock.patch.object(brm, "VERITAS_PRODUCTS", Path("no-such-inventory.csv")):
+            self.assertEqual(veritas_products_by_id(), {})
+            self.assertEqual(veritas_products_by_url(), {})
+
+
+class ProductRelationshipValidationTests(unittest.TestCase):
+    """Failure branches of validate_product_relationships (sandboxed inputs)."""
+
+    HEADER = ("relationship_id,master_uuid,raw_row_number,source_name,source_product_id,"
+              "official_product_url,official_product_title,relationship_type,review_status,"
+              "reviewed_on,evidence_url,evidence_note")
+
+    PRODUCT = {
+        "veritas_product_id": "7",
+        "official_product_url": "https://veritaspub.com/product/a/",
+        "official_title": "Alpha",
+        "published_date": "2002-01-01",
+        "mapping_status": "matched_by_primary_source",
+    }
+    MASTER = {
+        "uuid": "10", "source_url_veritas": "https://veritaspub.com/product/a/",
+        "raw_row_number": "7", "candidate_key": "", "catalog_code": "LECTURE-2002-001",
+        "title": "Alpha", "item_type": "lecture", "year": "2002",
+    }
+
+    def valid_row(self, **overrides) -> dict[str, str]:
+        row = {
+            "relationship_id": "rel-veritas-7-10",
+            "master_uuid": "10",
+            "raw_row_number": "7",
+            "source_name": "veritas",
+            "source_product_id": "7",
+            "official_product_url": self.PRODUCT["official_product_url"],
+            "official_product_title": "Alpha",
+            "relationship_type": "related_material",
+            "review_status": "reviewed",
+            "reviewed_on": "2026-08-03",
+            "evidence_url": "https://veritaspub.com/product/a/",
+            "evidence_note": "Reviewed by owner.",
+        }
+        row.update(overrides)
+        return row
+
+    def run_validation(self, rows, master_items=None, veritas_products=None):
+        from unittest import mock
+        import pipeline.relationships as rel
+        with tempfile.TemporaryDirectory() as td:
+            data_dir = Path(td) / "data"
+            data_dir.mkdir()
+            csv_path = data_dir / "product_relationships.csv"
+            lines = [self.HEADER] + [",".join(row.values()) for row in rows]
+            csv_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            # The default-argument branch (veritas_products=None) reads this
+            # file, so the sandbox always carries the one-product inventory.
+            (data_dir / "veritas_official_products.csv").write_text(
+                "veritas_product_id,official_product_url,official_title,published_date,mapping_status\n"
+                "7,https://veritaspub.com/product/a/,Alpha,2002-01-01,matched_by_primary_source\n",
+                encoding="utf-8",
+            )
+            with mock.patch.object(rel, "PRODUCT_RELATIONSHIPS", csv_path), \
+                    mock.patch.object(rel, "DATA_DIR", data_dir):
+                return rel.validate_product_relationships(
+                    master_items if master_items is not None else [self.MASTER],
+                    veritas_products,
+                )
+
+    def test_valid_related_material_round_trips_enriched(self) -> None:
+        result = self.run_validation([self.valid_row()])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["master_catalog_code"], "LECTURE-2002-001")
+        self.assertEqual(result[0]["master_item_type"], "lecture")
+        self.assertEqual(result[0]["source_product_published_date"], "2002-01-01")
+        self.assertEqual(result[0]["source_product_mapping_status"], "matched_by_primary_source")
+
+    def test_default_veritas_products_reads_inventory_file(self) -> None:
+        # veritas_products=None reads DATA_DIR/veritas_official_products.csv;
+        # cover both the present and the absent file branches.
+        from unittest import mock
+        import pipeline.relationships as rel
+        with tempfile.TemporaryDirectory() as td:
+            data_dir = Path(td) / "data"
+            data_dir.mkdir()
+            (data_dir / "product_relationships.csv").write_text(self.HEADER + "\n", encoding="utf-8")
+            (data_dir / "veritas_official_products.csv").write_text(
+                "veritas_product_id,official_product_url,official_title,published_date,mapping_status\n"
+                "7,https://veritaspub.com/product/a/,Alpha,2002-01-01,matched_by_primary_source\n",
+                encoding="utf-8",
+            )
+            with mock.patch.object(rel, "PRODUCT_RELATIONSHIPS", data_dir / "product_relationships.csv"), \
+                    mock.patch.object(rel, "DATA_DIR", data_dir):
+                self.assertEqual(rel.validate_product_relationships([self.MASTER]), [])
+            with mock.patch.object(rel, "PRODUCT_RELATIONSHIPS", data_dir / "product_relationships.csv"), \
+                    mock.patch.object(rel, "DATA_DIR", Path(td) / "empty-data"):
+                self.assertEqual(rel.validate_product_relationships([self.MASTER]), [])
+
+    def test_validation_rejects_each_rule_violation(self) -> None:
+        cases = [
+            ({"relationship_id": ""}, "missing or duplicate relationship_id"),
+            ({"relationship_id": "veritas-7-10"}, "must start with 'rel-'"),
+            ({"master_uuid": "999"}, "unknown master ID"),
+            ({"source_name": "audible"}, "unsupported source_name"),
+            ({"source_product_id": "888"}, "unknown Veritas product"),
+            ({"relationship_type": "bogus"}, "invalid relationship_type"),
+            ({"review_status": "pending"}, "invalid review_status"),
+            ({"reviewed_on": "2026/08/03"}, "ISO reviewed_on"),
+            ({"evidence_url": "http://insecure.example/"}, "HTTPS evidence_url"),
+            ({"evidence_note": "   "}, "must explain the relationship"),
+            ({"raw_row_number": "42"}, "raw_row_number does not match"),
+            ({"official_product_url": "https://veritaspub.com/product/other/"}, "product URL differs"),
+            ({"official_product_title": "Beta"}, "product title differs"),
+        ]
+        for overrides, fragment in cases:
+            with self.subTest(overrides=overrides):
+                with self.assertRaisesRegex(ValueError, fragment):
+                    self.run_validation([self.valid_row(**overrides)])
+
+    def test_duplicate_relationship_id_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "duplicate relationship_id"):
+            self.run_validation([self.valid_row(), self.valid_row()])
+
+    def test_primary_relationship_must_match_master_veritas_url(self) -> None:
+        master = {**self.MASTER, "source_url_veritas": "https://veritaspub.com/product/other/"}
+        row = self.valid_row(relationship_type="primary_product_for_item_part")
+        # URL/title match the product inventory; only the master's own
+        # primary Veritas URL differs, which is the final validation rule.
+        with self.assertRaisesRegex(ValueError, "primary product must match"):
+            self.run_validation([row], master_items=[master])
+
+
 class WorkFamilyTests(unittest.TestCase):
     """Reviewed work-family input: validation and work_id assignment."""
 

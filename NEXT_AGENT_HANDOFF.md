@@ -1,8 +1,8 @@
 # Next-Agent Handoff
 
-**Updated:** 2026-08-10 — Arena session 019febb6 (independent multidisciplinary full audit)
-**Branch for this session:** `arena/019febb6-docsheet`
-**Audited baseline:** `f71843a1222b23d088a386d1f3a71acfac7da2bd` (merged PR #69 baseline)
+**Updated:** 2026-08-10 — Arena session 019febe9 (independent multidisciplinary full audit + owner-selected follow-ups)
+**Branch for this session:** `arena/019febe9-docsheet`
+**Audited baseline:** `b40133a8ae826d14ee2aed4578f1500165d25650` (main, merged PR #71)
 
 ## Read first
 
@@ -10,32 +10,28 @@
 2. `SCOREBOARD.md` and `.scoreboard/scoreboard.yml`
 3. `.scoreboard/agent-handoff.md`
 4. `.scoreboard/manual-workflow-edits.md`
-5. `docs/audits/2026-08-10-arena-019feb9b-full-audit.md`
+5. `docs/audits/2026-08-10-arena-019febe9-full-audit.md` (declared-current audit)
 6. `INSTRUCTIONS.md`
 
 ## 1. Current status
 
-DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`8c59a91`, PR #68) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` + deployed `columns.js`); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
+DocSheet is a static GitHub Pages catalogue with separate raw and curated data lanes. The merged baseline (`b40133a`, PR #71) is healthy: the previously release-blocking frontend defect is fixed, deployed, and **byte-verified live** (public `build-manifest.json` byte-identical to source); main CI is green; effective score remains **8.1/10, gate conditional_pass**.
 
-**This branch (`arena/019febb6-docsheet`) adds:** the declared-current independent multidisciplinary audit (`docs/audits/2026-08-10-arena-019febb6-full-audit.md`) and expands the export engine from CSV/ODS to five formats: styled Excel (`.xlsx`), styled OpenDocument (`.ods`), CSV, metadata-wrapped JSON, and UTF-8 TSV. XLSX is generated dependency-free with frozen headers, autofilter, bounded content-aware widths, wrapped inline-string cells, and REVISION1 colors; JSON preserves value types in a versioned envelope; TSV quotes tabs/newlines and neutralizes formula prefixes. A user-reported ODS defect was also fixed: the exporter used `lectures` while the published block map uses `lectures-2002-2011`, causing all 201 lecture-series rows to fall back to uncolored `undecided` styling. Regression coverage now asserts the exact production block ID. All six generator checks, 149 Python tests, and 6 Node export/module tests pass cleanly; three new Playwright download tests await CI because local Chromium download is sandbox-network-blocked.
+**This session (`arena/019febe9-docsheet`) adds:** the declared-current independent multidisciplinary audit (`docs/audits/2026-08-10-arena-019febe9-full-audit.md`) with two documentation-drift corrections (README "visitor-first" paragraph aligned to the spec-asserted layout; `.scoreboard/agent-handoff.md` ownership numbers corrected to 289/25/49) and, from owner-selected follow-ups: (1) the stale `←`/`→` "Switch tabs" help entry removed with a Playwright regression guard; (2) a `getRowBlockId` offline fallback snapshot (`docs/js/block-map-fallback.js`, all 363 approved display-order rows) so a failed block-map fetch cannot strip/miscolor the REVISION1 groupings, guarded by a Node test; (3) `helpers.py`/`relationships.py` raised to **100%** module coverage (total 90% → **92%**, suite 149 → **158**); (4) ESLint `no-undef` lint on the shipped frontend wired as `npm run lint` (clean), with the exact ci.yml diff committed as `.scoreboard/ci-lint-workflow-edit-2026-08-10.patch` + a web-editor guide (`review/APPLY_CI_LINT_PATCH_2026-08-10.md`) because the GitHub App token lacks `workflows` permission. No score changes.
 
 ## 2. What this branch changes (on top of `main`)
 
-- **Current audit:** adds the session 019febb6 multidisciplinary audit and refreshes canonical README/scoreboard/handoff pointers while retaining the verified 8.1 conditional-pass state.
-- **Five-format exports:** adds XLSX, JSON, and TSV beside ODS and CSV, with shared active-view ordering/humanized headers, safe text handling, complete-sheet semantics, deterministic filenames, and Node/Playwright coverage.
-- **ODS color repair:** maps the exact `lectures-2002-2011` production block ID, restoring green styling to all 201 Lecture Series rows; the prior `lectures` key never matched published data.
-- **Audit + scoreboard reconciliation (in the merged baseline):** the prior session corrected stale "FAIL / broken baseline / unverified deployment" state to the verified 8.1 conditional pass.
-- **Dead-code removal:** `.dataset-tab`/`.dataset-tabs`/`.tab-group` JS (4 no-op lookups + arrow-key block) and CSS removed (zero matching elements).
-- **Mobile bloat reduction (P1–P4):** single-row icon topbar, dismissible Browse intro, collapsible discovery rails, condensed view summary — all `≤720px`, desktop untouched.
-- **Retire Original Spreadsheet view:** removed from `config.js` + UI + specs; `data.json` still generated but unsurfaced.
-- **Owned correction:** restored the unrelated prior raw-ledger edits, then cleared `proposed_owned` at the actual promoted audiobook sources (21 edition candidates plus one manual candidate). Rebuilt output: all 27 audiobooks blank/not stated; no non-audiobook ownership value is changed by this correction.
-- **Mobile Spreadsheet scrolling:** the dynamic-viewport shell no longer scrolls; Tabulator’s table holder explicitly owns touch-enabled horizontal and vertical scrolling, covered by a 390×844 Playwright regression spec.
-- Full module-graph delivery contract refreshed (fixpoint). 149/149 Python tests, 3/3 Node tests, 6/6 checks, 90% coverage; browser specs await CI because local Chromium installation is sandbox-network-blocked.
+- **Current audit:** adds the session 019febe9 audit as declared-current and refreshes canonical README/scoreboard/handoff/INSTRUCTIONS pointers; archives `AUDIT_019febd6_SUMMARY.md` (root Markdown back to the documented 12).
+- **Doc drift fixes:** README "visitor-first" paragraph now matches the spec-asserted layout (proposed file name is the frozen first-sight rail; title/series/year-month are Expert-hidden); `.scoreboard/agent-handoff.md` "Current data state" ownership corrected to 289 true / 25 false / 49 blank.
+- **Shortcuts overlay cleanup:** removed the stale `←` / `→` "Switch tabs" entry (no handler since the `.dataset-tab` cleanup); Playwright guard asserts the overlay no longer advertises it. Delivery contract refreshed (app.js `189f2dcde0f3`).
+- **Block-fallback hardening:** new module `docs/js/block-map-fallback.js` (generated from `data/catalogue_display_order.csv`; block→uuids + flat map) consulted by `getRowBlockId` between the fetched map and the series/type heuristic. Node test asserts `getRowBlockId` == approved CSV for all 363 rows (in Node the map fetch cannot resolve, so the snapshot path is exercised). Import-graph hash chain refreshed to fixpoint; manifest now tracks 9 modules + 2 assets + 3 data = 14 entries.
+- **Coverage:** `PipelineHelpersTests` (4) and `ProductRelationshipValidationTests` (5) added; `pipeline/helpers.py` and `pipeline/relationships.py` are now 100%; total 92% (2,327 stmts; floor 85). Suite 158 Python tests + 10 Node tests.
+- **Lint infrastructure (owner-apply step 1):** `eslint.config.mjs` (ESLint 9 flat config, `no-undef`, explicit browser globals incl. `Tabulator`, `HTMLElement`, `Option`), `npm run lint` script, `eslint ^9.39.5` devDependency (npm audit: 0 vulnerabilities). The matching ci.yml change is committed as a patch + web-editor guide (see `.scoreboard/manual-workflow-edits.md`) because the sandbox GitHub App cannot push `.github/workflows/*`; **the owner applies the 4-line patch (or grants `workflows` permission)** — merge this branch first so `npm run lint` has its config on `main`.
 
-### Remaining findings
+### Remaining findings (from the audit; all non-blocking)
 
-- Mobile Spreadsheet touch scrolling was corrected on 2026-08-10 with explicit two-axis Tabulator scrolling, a dynamic-viewport non-scrolling shell, and a new mobile regression test. See `review/MOBILE_SPREADSHEET_SCROLL_FIX_2026-08-10.md`; local browser execution is still blocked by the sandbox package network.
-- Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`.
+- Legacy Pages is still `main:/docs` and can deploy before CI; owner steps are in `.scoreboard/manual-workflow-edits.md`. This is the single remaining delivery risk.
+- Owner visual acceptance of the live build is still pending (`acceptance: owner_visual_review_required`).
 - Axe/Lighthouse automation is optional follow-up, not a current release blocker.
 - Issue #18 (owned vs lak.nz Drive) still needs owner Drive access.
 
@@ -57,28 +53,28 @@ DocSheet is a static GitHub Pages catalogue with separate raw and curated data l
 | Everything relationships | 340 product relationships, 7 series compilations |
 | Veritas / Hay House / Audible | 191 / 29 / 26 |
 | International products | 38 |
-| Display blocks | 12, complete and dense |
+| Display blocks | 12, complete and dense (block-map covers all 363) |
 
-No duplicate master ID, catalogue code, or filename was found. All non-empty master URLs are HTTPS. Display order covers all 363 masters exactly.
+No duplicate master ID, catalogue code, or filename was found. All non-empty master URLs are HTTPS. Display order covers all 363 masters exactly; `normalized_title_match_count` equals its matched-ID count on every Veritas row; all 340 relationships resolve to existing masters.
 
-## 4. Verification at this audit
+## 4. Verification at this audit (019febe9)
 
 ```text
 PASS  all six generator --check modes
-PASS  149/149 Python unit/contract/style tests
-PASS  90% Python statement coverage (2327 statements; floor 85%)
+PASS  158/158 Python unit/contract/style tests
+PASS  92% Python statement coverage (2,327 statements; floor 85%; helpers/relationships 100%)
 PASS  recursive Python compilation
-PASS  JavaScript syntax for app, all 7 modules, Node/browser specs
-PASS  Node frontend regressions (3/3)
-PASS  full ES-module import-graph hash contract
-PASS  npm audit: 0 vulnerabilities
-PASS  pip check
-PASS  repaired targeted edition formatter runtime probe
-BLOCK local Playwright browser download (sandbox CDN ECONNRESET)
-BLOCK live curl probe (sandbox TLS connection restriction)
+PASS  JavaScript syntax for app, all 9 modules, Node/browser specs
+PASS  ESLint no-undef on the shipped frontend (npm run lint)
+PASS  Node frontend regressions (10/10)
+PASS  full ES-module import-graph hash contract (14-hash manifest, fixpoint)
+PASS  live deployed build-manifest.json byte-identical to committed manifest
+PASS  npm audit: 0 vulnerabilities / pip check clean
+BLOCK local Playwright browser download (sandbox network restriction; CI runs the 28 specs)
+BLOCK live-source Veritas fetch (sandbox TLS restriction; offline replay tests cover it)
 ```
 
-Main CI run `31373716254` proves the audited baseline failed 25/25 browser specs with no rendered rows. PR #64 CI run `31378465750` proves the repaired/cleaned frontend passes 3/3 Node and 28/28 browser tests. The exact public deployment still needs verification.
+Historical CI evidence: main CI run `31379726756` (PR #64) proves the repaired frontend passes 3/3 Node and 28/28 browser tests; PR CI run `31378465750` is the same-era green run.
 
 ## Data pipeline rules
 
@@ -107,7 +103,7 @@ Never hand-edit generated master or Pages JSON. Owner changes belong in reviewed
 - `data/master_year_overrides.csv`
 - `data/master_notes_overrides.csv`
 - `data/edition_notes.csv`
-- `data/catalogue_display_order.csv`
+- `data/catalogue_display_order.csv` (also the source of `docs/js/block-map-fallback.js` — refresh that snapshot + its `?v=` edge + the manifest hash when the order changes; the Node test enforces it)
 - candidate/promotion/work-family/source-override registries in `data/`
 
 After approved curated-input changes, rebuild in this order:
@@ -142,25 +138,26 @@ python sync_inventory_mirrors.py --check
 - `owned` is tri-state: `true`, `false`, or blank/not stated.
 - `notes` is owner-facing only; provenance belongs in `research`/`year_source`.
 - `edition_note` is reviewed free text and currently populated for two Power vs Force rows.
+- Row block colors come from `docs/catalogue-block-map.json` (build-emitted from the display order); `docs/js/block-map-fallback.js` is the offline snapshot and must equal it (Node test).
 
 See `README.md`, `EDITION_MODEL_PROPOSAL.md`, `PRODUCT_RELATIONSHIP_SCHEMA.md`, `SERIES_COMPILATION_SCHEMA.md`, and `decisions/` for the full contracts.
 
 ## Delivery contract
 
-If `docs/app.js`, `docs/style.css`, any `docs/js/*.js` module, `docs/master.json`, `docs/data.json`, or `docs/catalogue-block-map.json` changes, refresh:
+If `docs/app.js`, `docs/style.css`, any `docs/js/*.js` module (now 9, incl. `block-map-fallback.js`), `docs/master.json`, `docs/data.json`, or `docs/catalogue-block-map.json` changes, refresh:
 
-- query-string content versions;
+- query-string content versions (and every import edge's `?v=` hash — to fixpoint);
 - visible footer build ID;
-- all matching hashes in `docs/build-manifest.json`.
+- all matching hashes in `docs/build-manifest.json` (14 entries).
 
-The existing contract tests validate committed hashes but do **not** prove JavaScript execution. Browser tests and a deployed revision check remain mandatory.
+The existing contract tests validate committed hashes and the full import graph but do **not** prove JavaScript execution. Browser tests and a deployed revision check remain mandatory.
 
 ## Open work in priority order
 
 1. **Owner:** switch Pages from legacy `main:/docs` to the Actions `workflow` build type so deploy depends on a green `Validate data pipeline and site` job (`.scoreboard/manual-workflow-edits.md`). This is the single remaining delivery risk.
 2. **Owner:** give explicit visual acceptance of the now-live, byte-verified build.
-3. **Agent-safe quick wins:** add `node --check docs/js/*.js` + ESLint `no-undef` to `ci.yml` (the `.dataset-tab` dead code is already removed on this branch).
-4. Optionally add axe-core/Lighthouse automation; raise `helpers.py`/`relationships.py` coverage.
+3. **Owner (small):** apply `.scoreboard/ci-lint-workflow-edit-2026-08-10.patch` to `ci.yml` (or use `review/APPLY_CI_LINT_PATCH_2026-08-10.md` in the web editor) once this branch is merged — closes the last agent-safe static-quality gap; alternatively grant the GitHub App `workflows` permission.
+4. Optionally add axe-core/Lighthouse automation; `pipeline/enrichments.py` (89%) / `map_series_taxonomy.py` (88%) are the next coverage candidates.
 5. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.

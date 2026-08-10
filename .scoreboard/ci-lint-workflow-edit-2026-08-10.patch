@@ -1,0 +1,18 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 2726faa..7e0f5c7 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -59,10 +59,13 @@ jobs:
+       - name: Check JavaScript syntax
+         run: |
+           node --check docs/app.js
++          for module in docs/js/*.js; do node --check "$module"; done
+           node --check playwright.config.js
+           for spec in tests/*.spec.js; do node --check "$spec"; done
+       - name: Install Node dependencies
+         run: npm ci
++      - name: Lint shipped frontend for undefined references
++        run: npm run lint
+       - name: Install Chromium for browser tests
+         run: npx playwright install --with-deps chromium
+       - name: Run browser smoke tests

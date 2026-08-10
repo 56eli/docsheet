@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Live Spreadsheet — app.js (audiobook ownership payload refresh 2026-08-10)
+   Live Spreadsheet — app.js (shortcuts overlay cleanup 2026-08-10)
    Loads the per-view sheet JSON files and renders them as
    interactive Tabulator table: sortable headers, global live search,
    all rows in a scrollable view, CSV export, column resizing,
@@ -18,18 +18,18 @@ import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
   loadCatalogueBlockMap, getRowBlockId,
-} from "./js/formatters.js?v=8c3288758a64";
+} from "./js/formatters.js?v=c89180e0eb48";
 import {
   mobileWorkGroups, formatTimestamp, debounce,
 } from "./js/data-utils.js?v=0288c69670bb";
-import { mobileEditionCard } from "./js/mobile.js?v=326d76c01d1e";
+import { mobileEditionCard } from "./js/mobile.js?v=c73a8995e315";
 import {
   looksLikeUrl, urlLabelFor,
   columnPresetFor, orderKeysForView, buildColumns,
-} from "./js/columns.js?v=d185ba911b42";
+} from "./js/columns.js?v=62935373b686";
 import {
   exportOds, exportXlsx, exportJson, exportTsv,
-} from "./js/ods-export.js?v=444889c5ca99";
+} from "./js/ods-export.js?v=f58918d20189";
 import {
   rowMatchesFacets, facetsEmpty, mobileFacetLabel,
 } from "./js/filter-utils.js?v=e824f86e241c";
@@ -1827,7 +1827,6 @@ import {
           <dt><kbd>/</kbd></dt><dd>Focus search</dd>
           <dt><kbd>j</kbd> / <kbd>k</kbd></dt><dd>Next / previous row (opens details)</dd>
           <dt><kbd>y</kbd></dt><dd>Copy the proposed file name of the open row</dd>
-          <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Switch tabs</dd>
           <dt><kbd>Esc</kbd></dt><dd>Close dialogs / menus / clear search</dd>
           <dt><kbd>?</kbd></dt><dd>Toggle this help</dd>
         </dl>

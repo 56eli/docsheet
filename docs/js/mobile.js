@@ -7,7 +7,7 @@
 import {
   displayMobileDate, displayMobileEdition, mobilePrimaryUrl,
 } from "./data-utils.js?v=0288c69670bb";
-import { rowTitle } from "./formatters.js?v=8c3288758a64";
+import { rowTitle } from "./formatters.js?v=c89180e0eb48";
 
 /**
  * Create a source/stream link element for a mobile edition card.

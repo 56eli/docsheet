@@ -3,18 +3,19 @@
   "source_baseline": "34f4466573688fea0a4867e7424e55742ddf44f4",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "36a70a60728c21b1e970d64cbf3d811af3fe3bc6013dc44149a1e9bd70ec04aa",
+    "app.js": "189f2dcde0f33bf6d8c54f006be5c3355af2206f2dacebee621defaee4d7ae17",
     "style.css": "3a0ae4223b2623d6edc7c0f9878e5ef4a1ed7e90df2e594248c00836837bb8f0"
   },
   "modules": {
     "js/config.js": "94f497018c49c6660a04984a5a89bc59d1a9884f881c0a6ed329615335ee9aef",
-    "js/formatters.js": "8c3288758a6406c265fe17a460fc571c98fca7bcae4f90a433205c381c545d3d",
+    "js/formatters.js": "c89180e0eb487d6034cea303dff9bee271b2f714c3bf57d5eda1bcfe218dcaa9",
     "js/data-utils.js": "0288c69670bba17c88d29c29086fd382f2315f86dd68e37a9333981dca50a306",
-    "js/mobile.js": "326d76c01d1e1390d7296b90493dae68405cc43757139ee1b61e3682f239ca5d",
-    "js/columns.js": "d185ba911b424e323e2db66bc3fec1c2e2740ae6c9d4cad0ce999aa1742efafd",
+    "js/mobile.js": "c73a8995e3153b06944bf20b62d0712025bc2028638a296b4de21b4a45863a90",
+    "js/columns.js": "62935373b6861b083a887797b0973986e55cad6585e27a3ef1c2bbe446769bfd",
     "js/filter-utils.js": "e824f86e241cca4b774b333b24d5ae6eeb1b1a80f6f2a3d940163577918789f6",
     "js/view-utils.js": "81e2396d0d64986d683d2683f48319e12a977d65e7b33cceaf478b32620f40a6",
-    "js/ods-export.js": "444889c5ca99cb8b20c7242988901b429f5a4460784fc1d807edf44c2594c03d"
+    "js/ods-export.js": "f58918d20189e4730910575514d58e51f286907cb2ef57c0929a5febba5383e8",
+    "js/block-map-fallback.js": "d97878fffe62fd7d36435c53c7545257e4746618ff99f8bdff28829498b51101"
   },
   "data": {
     "master.json": "220052cb68e7df4e5e9864655c09c12513fdbf9e2e89fc8c8c61047265dafd4a",

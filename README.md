@@ -63,13 +63,14 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 149 tests, no browser/network needed
+python -m unittest discover tests          # 158 tests, no browser/network needed
 coverage run -m unittest discover tests && coverage report
 ```
 
-The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **90%** as of
-2026-08-10 (with 149 deterministic pipeline, style, and delivery-contract tests;
-individual module coverage is 78–100%). `requirements-ci.txt` records the
+The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **92%** as of
+2026-08-10 (with 158 deterministic pipeline, style, and delivery-contract tests;
+individual module coverage is 85–100%, and the shared `helpers.py`/
+`relationships.py` modules are at 100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
 the constraint file to `main`, and the subsequent main CI run passed. The full
 replacement record is in `archive/WORKFLOW_WEB_EDITOR_GUIDE.md`. Approved official links added after the ledger
@@ -142,11 +143,13 @@ hidden until a candidate lands). Counts per class are published in
 
 The **Everything** view opens in the owner-approved REVISION1 presentation
 order (lecture series first, then the colour-group blocks, Fran Grace last)
-and visitor-first: product facts (title, series,
-type, edition, date, official store and streaming links, notes) are visible at
-first sight, while technical metadata (Master ID, Work grouping, proposed file
-names, provenance columns) stays hidden until the **Expert columns** toggle —
-next to the Columns menu — is switched on; the choice persists per browser.
+and visitor-first: the proposed output file name (which carries the work
+title), item type, owned, notes, edition, and the official store and
+streaming links are visible at first sight, while title, series, year-month,
+and the technical metadata (Master ID, Work grouping, year source, legacy
+IDs, provenance) stay hidden until the **Expert columns** toggle — next to
+the Columns menu — is switched on; the choice persists per browser. The
+row-details drawer and every export always include all stored fields.
 A **Series** tab (Catalogue group) lists every series as a card (records, owned,
 year span) and opens the Everything view pre-filtered.
 Clicking any row always shows every stored field in the clean details drawer, and the **View settings** menu can wrap long cells, switch row density, hide/show summary cards, or **Expand everything** (all columns + wrapped, roomy rows) for deep review. The Everything view opens in **Browse mode** on phone screens — compact work stacks that expand into editions/parts with quick Source and Streaming actions, plus tap-friendly **Series** and **Timeline** rails that reuse the normal facet filters — and the same work-card browser is available on desktop via the **Browse cards** toolbar toggle; **Spreadsheet** restores the full Tabulator grid for expert comparison. All 19 catalogue and review workspace sheets are accessed directly via the clean **Jump to** dropdown selector in the top bar. Full-width row details and responsive table scrolling remain available in all views.
@@ -192,7 +195,7 @@ reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (363 master records,
 191 Veritas products, 340 relationships). See the declared-current
-[`docs/audits/2026-08-10-arena-019febb6-full-audit.md`](docs/audits/2026-08-10-arena-019febb6-full-audit.md)
+[`docs/audits/2026-08-10-arena-019febe9-full-audit.md`](docs/audits/2026-08-10-arena-019febe9-full-audit.md)
 for the latest full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; older audit reports preserve their historical checkpoints.
 

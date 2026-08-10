@@ -10,7 +10,7 @@ import {
 } from "./config.js?v=94f497018c49";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
-} from "./formatters.js?v=8c3288758a64";
+} from "./formatters.js?v=c89180e0eb48";
 import { isExtraEditionRow } from "./data-utils.js?v=0288c69670bb";
 
 /**
