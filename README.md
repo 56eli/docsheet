@@ -192,7 +192,7 @@ reconciled exactly and all 195 verifiable lecture months matched the publisher's
 own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (363 master records,
 191 Veritas products, 340 relationships). See the declared-current
-[`docs/audits/2026-08-10-arena-019feb3e-full-audit.md`](docs/audits/2026-08-10-arena-019feb3e-full-audit.md)
+[`docs/audits/2026-08-10-arena-019febb6-full-audit.md`](docs/audits/2026-08-10-arena-019febb6-full-audit.md)
 for the latest full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
 for open work; older audit reports preserve their historical checkpoints.
 
