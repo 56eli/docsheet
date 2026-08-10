@@ -17,14 +17,12 @@ ReferenceError: isExtraEditionRow is not defined
 
 The main Pages API reports legacy deployment from `main:/docs`; Pages successfully deployed this baseline while browser CI was still running. Main CI run `31373716254` then failed all 25 Playwright specs because no `.tabulator-row` rendered. Do not treat the Pages badge or static hash contract as runtime acceptance.
 
-The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, `tests/frontend-modules.test.mjs` executes the formatter through `pretest:e2e`, and a focused browser regression raises the suite to 26 specs. Local Node (1/1), Python (149/149), 90% coverage, syntax, dependency, and six-check validation passes. PR #64 CI run `31375672387` also passes all 26 Playwright specs. Merge/deploy and exact live-revision/owner acceptance remain.
+The repair is implemented on this branch: the import is restored, redundant imports are removed, content versions/manifest are refreshed, and executable Node/browser regressions cover the formatter. The selected cleanup follow-up also removes all 10 absent-ID paths and 411 net lines, guards against their return, and completes shortcuts-dialog focus trapping/Escape/restoration. Local checks pass; PR #64 CI run `31377436991` passes 149 offline, 2 Node, and 27/27 Playwright tests. Merge/deploy and exact live-revision/owner acceptance remain.
 
 ## Other confirmed findings
 
 - Extracted column formatter closures capture the empty search query passed at table creation, so later filtering works but `<mark>` highlighting is stale.
 - Nested module imports omit version queries, creating duplicate versioned/unversioned module URLs and a stale-cache path.
-- Ten app-managed overview/stats/review-navigation IDs are absent from HTML; their JS/CSS is unreachable while docs still describe portions as shipped.
-- Shortcuts dialog lacks modal focus/Escape lifecycle.
 - Ruff/ESLint/axe/Lighthouse are not enforced in CI.
 - Pages gating and required branch checks remain owner-applied work in `.scoreboard/manual-workflow-edits.md`.
 - Issue #18 remains blocked on owner access to the lak.nz Drive inventory.
@@ -35,9 +33,11 @@ The repair is implemented on this branch: the import is restored, redundant impo
 - Python suite: 149/149 pass.
 - Coverage: 90% across 2,327 statements (85% floor).
 - Python/JavaScript syntax: pass.
+- Node frontend regressions: 2/2 pass.
+- PR #64 CI run `31377436991`: 27/27 Playwright specs pass.
 - npm audit: 0 vulnerabilities; pip check: pass.
 - Independent data integrity: 363 unique masters, 191 works, 278 unique codes, 363 unique filenames, complete 12-block order, no relationship or URL defect found.
-- Local Playwright could not run because Chromium download failed with sandbox `ECONNRESET`; this is an environment constraint.
+- Local Playwright could not run because Chromium download failed with sandbox `ECONNRESET`; GitHub browser CI is authoritative.
 - Live curl was blocked by sandbox TLS; GitHub API evidence was available.
 
 ## Current data state

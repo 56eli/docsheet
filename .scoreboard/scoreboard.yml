@@ -14,16 +14,16 @@ manual_workflow_policy:
   instruction: "Do not edit .github/workflows/* unless the user explicitly instructs it; record required owner actions in .scoreboard/manual-workflow-edits.md."
 
 summary:
-  overall_effective_score: 7.7
+  overall_effective_score: 7.8
   repo_ready_gate_status: fail
   top_priorities:
     - deployment_readiness
     - github_pages_presentation
     - ci_cd
-    - maintainability
+    - performance
   active_risk_flags:
     - "P0 baseline: deployed aa1f1b7 calls isExtraEditionRow without importing it; CI run 31373716254 failed 25/25 browser specs with no rendered rows."
-    - "P0 branch repair adds the import plus Node/browser regression coverage; PR CI run 31375672387 passed all 26 browser specs, but exact deployment is not yet verified."
+    - "PR #64 repair and cleanup pass 149 offline, 2 Node, and 27 browser tests in CI run 31377436991; exact public deployment is not yet verified."
     - "Pages API reports legacy main:/docs deployment, so the broken baseline deployed before its CI failure."
     - "Nested ES-module imports are unversioned even though top-level app imports are content-versioned, permitting duplicate/stale module identities."
     - "CSP style-src 'unsafe-inline' remains low-severity debt; scripts are hash-pinned and Tabulator is SRI-pinned."
@@ -31,7 +31,7 @@ summary:
 quality_gates:
   repo_ready:
     status: fail
-    overall_effective_score: 7.7
+    overall_effective_score: 7.8
     last_evaluated: "2026-08-10"
     minimum_overall_effective_score: 8
     required:
@@ -41,7 +41,7 @@ quality_gates:
       ci_cd: 7
       agent_readiness: 8
     notes:
-      - "Overall effective score is 664/86 = 7.7."
+      - "Overall effective score is 671/86 = 7.8."
       - "Required aspect thresholds pass after the P0 repair, but the overall score remains below 8."
       - "PR CI run 31375672387 passed all 26 browser specs; legacy Pages still serves the broken baseline until merge/deploy and remains ungated."
       - "User scores are preserved and never inferred from merge, silence, or PR approval."
@@ -177,15 +177,15 @@ aspects:
     category: engineering
     weight: 4
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 4
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: high
     last_audited: "2026-08-10"
-    ai_basis: "Pipeline modules are good and app.js shrank to 1,933 lines, but frontend extraction regressed runtime behavior; style.css remains 2,398 lines and includes absent-component layers."
+    ai_basis: "Frontend cleanup removed 411 net lines, all 10 absent-ID paths, overview/stats/review-nav modules/styles, and leaves app.js 1,801 lines/CSS 2,137 lines; module cache strategy remains follow-up."
     user_basis: null
     evidence:
       - "app.js has 83 named functions; style.css has 11 media-query blocks."
@@ -443,24 +443,25 @@ aspects:
     category: presentation
     weight: 3
     target: 8
-    ai_score: 7
+    ai_score: 8
     user_score: null
-    effective_score: 7
-    gap: 1
-    priority: 3
-    status: needs_work
+    effective_score: 8
+    gap: 0
+    priority: 0
+    status: healthy
     confidence: medium
     last_audited: "2026-08-10"
-    ai_basis: "Strong labels, focus styles, reduced motion, roving tabs, and row-drawer focus handling; shortcuts dialog is incomplete and no automated accessibility scan exists."
+    ai_basis: "Labels, focus styles, reduced motion, roving tabs, row drawer, and shortcuts modal now provide focus entry/trap/Escape/restore behavior; an automated axe scan remains optional follow-up."
     user_basis: null
     evidence:
       - "Row-details modal moves/traps/restores focus."
-      - "Shortcuts role=dialog does not set aria-modal, move/trap/restore focus, or close on Escape."
+      - "Shortcuts dialog now uses aria-modal/labelledby, initial focus, Tab wrap, Escape close, and focus restoration."
+      - "PR CI run 31377436991 passed the focused modal browser regression and 27/27 specs."
       - "No axe-core/Lighthouse accessibility job is configured."
     user_notes: null
     desired_direction: []
     next_actions:
-      - "Reuse row-drawer modal lifecycle for shortcuts and add axe-core coverage."
+      - "Optionally add axe-core coverage for desktop, mobile Browse, empty lanes, and both dialogs."
     risk_flags: []
     files_reviewed: [docs/index.html, docs/app.js, docs/style.css, tests/presentation-ux.spec.js]
 

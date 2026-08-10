@@ -19,9 +19,9 @@ Persistent quality scoreboard for agents and the owner. Durable context lives in
 
 ## Current verdict
 
-**Repo-ready gate: FAIL — 7.7/10 effective (664 weighted points / 86).**
+**Repo-ready gate: FAIL — 7.8/10 effective (671 weighted points / 86).**
 
-The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the missing import and PR CI run `31375672387` passes the Node formatter test, all 149 offline tests, and all 26 browser specs. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
+The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 browser specs after legacy Pages had already deployed it; this branch repairs the P0, removes dormant UI, and hardens shortcuts accessibility. PR CI run `31377436991` passes 149 offline, 2 Node, and 27 browser tests. The gate stays failed because legacy Pages still serves the broken baseline until merge/deploy, is not CI-gated, and the overall score remains below 8.
 
 ## Current priorities
 
@@ -30,9 +30,8 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | 8 | Deployment readiness | Merge/deploy the green repair, verify exact build, then owner gates Pages on CI |
 | 5 | GitHub Pages presentation | Verify the exact public build and obtain owner acceptance |
 | 4 | CI/CD | Require aggregate CI before merge/deploy; split data and browser jobs |
-| 4 | Maintainability | Correct module graph/cache strategy before more extraction |
 | 3 | Error handling / logging | Add a generic visible fatal-render state for async table failures |
-| 3 | Accessibility | Complete shortcuts-dialog modal behavior and add axe coverage |
+| 3 | Performance | Measure Lighthouse/Web Vitals and eliminate duplicate module identities |
 | — | Issue #18 | Ownership cross-check needs owner Drive access |
 
 ## Scoreboard table
@@ -44,7 +43,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Repo organization | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Code hygiene | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Architecture | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
-| Maintainability | 4 | 8 | 7 | — | 7 | 1 | 4 | needs_work |
+| Maintainability | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Type safety / validation | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Error handling / logging | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
 | Dependency hygiene | 3 | 8 | 9 | — | 9 | 0 | 0 | healthy |
@@ -54,7 +53,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Performance | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
 | GitHub Pages presentation | 5 | 8 | 7 | — | 7 | 1 | 5 | needs_work |
 | UX / usability | 4 | 8 | 8 | 8 | 8 | 0 | 0 | healthy |
-| Accessibility | 3 | 8 | 7 | — | 7 | 1 | 3 | needs_work |
+| Accessibility | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Content quality | 3 | 8 | 9 | 7 | 7 | 1 | 3 | user_unhappy |
 | Feature completeness | 4 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Deployment readiness | 4 | 8 | 6 | — | 6 | 2 | 8 | blocked_manual_workflow_edit |
@@ -62,7 +61,7 @@ The data pipeline is healthy. Audited/deployed baseline `aa1f1b7` failed 25/25 b
 | Task hygiene | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Auditability | 3 | 8 | 8 | — | 8 | 0 | 0 | healthy |
 | Repo transparency | 3 | 8 | 7 | 7 | 7 | 1 | 3 | needs_work |
-| **Overall effective** | **86** | **8** | — | — | **7.7** | — | — | **fail** |
+| **Overall effective** | **86** | **8** | — | — | **7.8** | — | — | **fail** |
 
 ## User-score notes
 
@@ -84,7 +83,7 @@ No other user score is inferred.
 
 ## Quality gate details
 
-- Overall 7.7 < required 8: **fail**.
+- Overall 7.8 < required 8: **fail**.
 - Security/privacy 8 ≥ 8: pass.
 - Tests 9 ≥ 7: pass.
 - README 8 ≥ 7: pass.

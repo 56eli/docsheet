@@ -111,3 +111,13 @@ PR #64 CI run `31375672387` passed all stages, including the new Node formatter 
 | 2026-08-10 | agent_readiness | 7 | 8 | null | 8 | Arena 019feaf6 | Audit, handoffs, scoreboards, incident and repair evidence synchronized. |
 | 2026-08-10 | task_hygiene | 7 | 8 | null | 8 | Arena 019feaf6 | P0 repaired/validated and remaining work prioritized. |
 | 2026-08-10 | overall_effective_score | 7.1 | 7.7 | preserved | 7.7 | Arena 019feaf6 | Recomputed 664/86; gate remains FAIL until overall ≥8 and deployment risks are resolved. |
+
+## 2026-08-10 — Arena 019feaf6 dead-UI and shortcuts accessibility cleanup
+
+User-selected cleanup removed dormant interface layers and completed modal keyboard behavior. PR #64 CI run `31377436991` passed 149 offline, 2 Node, and 27/27 browser tests; user scores remain unchanged.
+
+| Date | Aspect | AI Before | AI After | User | Effective After | Actor | Evidence |
+|---|---|---:|---:|---:|---:|---|---|
+| 2026-08-10 | maintainability | 7 | 8 | null | 8 | Arena 019feaf6 | Removed all 10 absent-ID app paths and overview/stats/review-nav builders/styles: app.js 1933→1801, CSS 2398→2137, mobile/view-utils 88/152→61/85; Node guard prevents return. |
+| 2026-08-10 | accessibility | 7 | 8 | null | 8 | Arena 019feaf6 | Shortcuts dialog now has aria-modal/labelledby, initial focus, Tab wrap, Escape close, and trigger-focus restoration; focused browser regression passes. |
+| 2026-08-10 | overall_effective_score | 7.7 | 7.8 | preserved | 7.8 | Arena 019feaf6 | Recomputed 671/86; gate remains FAIL pending merge/live verification and CI-gated Pages. |

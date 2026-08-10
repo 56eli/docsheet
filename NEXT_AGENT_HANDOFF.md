@@ -167,8 +167,7 @@ The existing contract tests validate committed hashes but do **not** prove JavaS
 2. Owner: require CI and gate Pages deployment.
 3. Repair live search highlighting after extraction.
 4. Make nested module cache versioning consistent.
-5. Restore or remove dormant hero/stats/review-navigation code.
-6. Fix shortcuts-dialog accessibility; add axe-core.
-7. Resolve GitHub issue #18 when owner Drive access is available.
+5. Optionally add axe-core/Lighthouse automation.
+6. Resolve GitHub issue #18 when owner Drive access is available.
 
 Historical session details remain in `archive/`, `docs/audits/`, `.scoreboard/history.md`, and the dated decision records; they are not repeated here.
