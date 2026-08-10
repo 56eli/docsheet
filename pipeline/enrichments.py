@@ -33,6 +33,7 @@ VERITAS_STREAMING = DATA_DIR / "veritas_streaming_urls.csv"
 FILENAME_PROPOSAL = DATA_DIR / "filename_proposal_YYYYMM.csv"
 YEAR_OVERRIDES = DATA_DIR / "master_year_overrides.csv"
 NOTES_OVERRIDES = DATA_DIR / "master_notes_overrides.csv"
+EDITION_NOTES = DATA_DIR / "edition_notes.csv"
 
 SOURCE_OVERRIDE_FIELDS = {
     "source_url_veritas",
@@ -483,6 +484,36 @@ def apply_notes_overrides(items: list[dict[str, str]]) -> int:
         applied += 1
     if applied:
         print(f"[notes-overrides] Applied {applied} owner notes overrides from {NOTES_OVERRIDES.name}")
+    return applied
+
+
+def apply_edition_notes(items: list[dict[str, str]]) -> int:
+    """Apply reviewed edition-note overlays — free-text per-edition distinction.
+
+    The carrier stays in ``format``/``format_detail`` → virtual ``edition``.
+    This overlay holds the descriptive note that distinguishes two rows of the
+    same work that share a carrier (e.g. Power vs Force B&W vs non-B&W cover).
+    """
+    if not EDITION_NOTES.exists():
+        return 0
+    require_columns(EDITION_NOTES, {"uuid", "edition_note", "review_status"})
+    overrides = read_csv(EDITION_NOTES)
+    by_uuid = {item["uuid"]: item for item in items}
+    applied = 0
+    for line_number, row in enumerate(overrides, start=2):
+        uuid = row["uuid"].strip()
+        if row["review_status"].strip() != "approved":
+            raise ValueError(
+                f"{EDITION_NOTES.name}:{line_number} uuid {uuid} is not approved"
+            )
+        if uuid not in by_uuid:
+            raise ValueError(
+                f"{EDITION_NOTES.name}:{line_number} uuid {uuid} is not a master record"
+            )
+        by_uuid[uuid]["edition_note"] = row["edition_note"].strip()
+        applied += 1
+    if applied:
+        print(f"[edition-notes] Applied {applied} edition notes from {EDITION_NOTES.name}")
     return applied
 
 

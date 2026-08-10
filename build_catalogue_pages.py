@@ -114,7 +114,7 @@ PUBLISHERS = [
 EVERYTHING_FIELDS = [
     "uuid", "work_id", "catalog_code", "legacy_tempid", "title", "proposed_filename",
     "proposed_filename_display", "legacy_title", "item_type",
-    "series", "year", "month", "year_source", "format", "format_detail", "owned",
+    "series", "year", "month", "year_source", "format", "format_detail", "edition_note", "owned",
     "source_url_veritas", "source_url_hay_house", "source_url_nightingale_conant",
     "source_url_audible", "source_url_amazon", "reference_url_1", "notes", "research",
     "raw_row_number",

@@ -14,7 +14,7 @@ import {
   REVIEW_FILTER_FIELDS, RECORD_TYPE_TITLES,
   DEFAULT_PRIORITY_FIELDS, LOW_PRIORITY_FIELDS, COLUMN_BUDGETS,
   COLUMN_PRESETS, DETAIL_SECTIONS, humanizeField,
-} from "./js/config.js?v=43d122281a7e";
+} from "./js/config.js?v=ec8f43384b2a";
 import {
   statusClass, formatClass, statusLabel, statusFormatter,
   rowTitle, primaryIdentifier,
@@ -642,6 +642,13 @@ import {
     meta.className = "mobile-edition-meta";
     meta.textContent = `${displayMobileDate(row)} · ${displayMobileEdition(row)}`;
     button.append(filename, title, meta);
+    if (row.edition_note && String(row.edition_note).trim()) {
+      const note = document.createElement("span");
+      note.className = "mobile-edition-note";
+      note.textContent = String(row.edition_note).trim();
+      note.title = String(row.edition_note).trim();
+      button.append(note);
+    }
     button.addEventListener("click", () => openRowDetails(row, button));
     article.append(button);
 

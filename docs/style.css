@@ -1604,6 +1604,18 @@ button.stat-chip:hover b { color: var(--accent); }
 .carrier-dot.dot-audiobook { background: #e8710a; }
 .carrier-dot.dot-streaming { background: #9334e6; }
 .carrier-dot.dot-book { background: #5f6368; }
+
+/* ---- Edition note: muted italic distinction for same-work, same-carrier editions ---- */
+#spreadsheet.tabulator .tabulator-cell[tabulator-field="edition_note"] {
+  font-style: italic;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:root.wrap-cells #spreadsheet.tabulator .tabulator-cell[tabulator-field="edition_note"] {
+  white-space: normal;
+}
 :root.dark .carrier-dot.dot-DVD { background: #7aa7ff; }
 :root.dark .carrier-dot.dot-CD { background: #6fd38a; }
 :root.dark .carrier-dot.dot-audiobook { background: #f5a25d; }
@@ -1896,6 +1908,16 @@ button.stat-chip:hover b { color: var(--accent); }
   .mobile-edition-meta {
     color: var(--text-muted);
     font-size: 11px;
+  }
+  .mobile-edition-note {
+    display: block;
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-style: italic;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .mobile-edition-actions {
     display: flex;

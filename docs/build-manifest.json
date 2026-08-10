@@ -1,13 +1,13 @@
 {
-  "revision": "mobile-header-white-highlights-20260810.1",
+  "revision": "edition-note-mediation-20260810.1",
   "source_baseline": "1a442001a4e6e0edb9e4e69b7aad02092a077b33",
   "generated_on": "2026-08-10",
   "assets": {
-    "app.js": "d9b655dc2d2be38d33a554f32e17d8fcb02d1ea2e5d6577969222f3d6773d6f8",
-    "style.css": "14f650f17a85d02d52baa2a56774482050b5483e19a3c5f5c44df4820e6215c3"
+    "app.js": "d19077e333f75484a03abb05fbb3516405939755a29941a4ae90bd18adbcc718",
+    "style.css": "beb7dd11dfa92176dfd7befe7339650973f52e8206c8e7a8342389476c2af1ce"
   },
   "data": {
-    "master.json": "2fcc0fc7f790920925f8d9e85e7708af0a723a81ab796192de62ef0f2daa5add",
+    "master.json": "7e9738f6c65a869cc71d60f63c9d653ed4349b82a21779f75ae154cbef3c649b",
     "data.json": "51227dc53f83a2ee3627b9848be9c1b37cfc7a10c49bf12973154a6e8269cc37",
     "catalogue-block-map.json": "cb31695777afa8cc65558defd5f26018f3fc51c701bb3dca0daeab199cc19461"
   },
