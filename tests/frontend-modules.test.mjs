@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import test from "node:test";
+import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import test, { after } from "node:test";
 
 class MockNode {
   constructor(tagName = "") {
@@ -42,7 +45,22 @@ globalThis.document = {
   },
 };
 
-const { buildColumns } = await import("../docs/js/columns.js");
+// Browser cache-busting query strings are valid URL identities, but Node's
+// module mode differs across CI platforms. Mirror the browser modules into an
+// explicit ESM temp package and strip only the query suffixes for this runtime
+// unit test; the Python delivery contract independently verifies every real
+// import edge and hash in the committed graph.
+const sourceModules = new URL("../docs/js/", import.meta.url);
+const moduleSandbox = await mkdtemp(join(tmpdir(), "docsheet-frontend-modules-"));
+await writeFile(join(moduleSandbox, "package.json"), '{"type":"module"}\n');
+for (const filename of await readdir(sourceModules)) {
+  if (!filename.endsWith(".js")) continue;
+  const source = await readFile(new URL(filename, sourceModules), "utf8");
+  await writeFile(join(moduleSandbox, filename), source.replace(/\?v=[0-9a-f]{12}/g, ""));
+}
+after(() => rm(moduleSandbox, { recursive: true, force: true }));
+
+const { buildColumns } = await import(pathToFileURL(join(moduleSandbox, "columns.js")).href);
 
 function editionFormatter() {
   const seed = {
