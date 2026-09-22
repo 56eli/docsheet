@@ -16,7 +16,7 @@
 
 | Seq | Prompt path | Task | Agent branch | PR | Status |
 |---|---|---|---|---|---|
-| 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | docs/project-state-tracker (planned) | — | Published — dispatching now |
+| 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | MERGE verdict 2026-09-22 — awaiting operator merge (3-stage gate green; CI pass on final commit) |
 
 ## Active Milestone
 
@@ -24,7 +24,7 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 
 ## Task Queue
 
-- [ ] 001: Create `docs/PROJECT_STATE.md` (Knowledge Bridge structure + CORE v4.9.1 anchor) and correct the stale anchor row in `orchestrator/INIT-RECORD.md` (Pending — dispatching 2026-09-22)
+- [ ] PR #74: 001 Create `docs/PROJECT_STATE.md` (Knowledge Bridge structure + CORE v4.9.1 anchor) and correct the stale anchor row in `orchestrator/INIT-RECORD.md` (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cb14-docsheet`; Stage 1 exact 2-file scope, Stage 2 CI pass 1m27s incl. 158 tests/coverage/lint/e2e, Stage 3 all deliverables 1:1; local independent run blocked only by missing pandas in sandbox — environmental, not a defect)
 - [ ] 002 (queued): Scoreboard remnant cleanup — dead `.scoreboard/manual-workflow-edits.md` references in `.github/pull_request_template.md` (current files only; archive/audits stay historical)
 - [ ] 003 (queued): Orchestrator behavior gate — repo-adaptive mechanical checker covering the five duties, with honest boundary statement (CORE "Orchestrator behavior gating")
 - [ ] 004 (queued): Handoff-pointer hygiene — reconcile retired `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` pointers (prompts-README still claims the superseded prompts-on-main shape) with the canonical tracker
@@ -32,7 +32,7 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 
 ## Interrupted Work
 
-None.
+None. (001 agent completed normally — PR #74 open, MERGE reviewed.)
 
 ## Deferred / Technical Debt
 
@@ -60,10 +60,12 @@ None.
 
 ## Known Gaps
 
-- No canonical tracker existed at boot (created by 001); until 001 merges, the CORE anchor is unrecorded on `main` — this state pins it in the meantime.
-- Shallow clone (depth-1 fetches): `main` history beyond the tip is unreadable; all claims cite commands run this session.
-- INIT-RECORD anchor row still stale on `main` until 001 merges (points at v4.9.0 file that no longer exists).
+- No canonical tracker existed at boot (created by 001); until PR #74 merges, the CORE anchor is unrecorded on `main` — this state pins it in the meantime. (Gap closes on merge of #74.)
+- Shallow clone (depth-1 fetches): `main` history beyond the tip was unreadable at boot; a depth-50 `_orch` fetch later revealed `bdebc4c` "Delete orchestrator/ORCHESTRATOR CORE v4.9.0 — GENERAL PURPOSE.md" + `7fc942e` "Add files via upload", confirming the in-place v4.9.1 upgrade and the missing-lineage-file finding.
+- INIT-RECORD anchor row still stale on `main` until #74 merges (points at v4.9.0 file that no longer exists).
 - No express PR-authorization quotes exist (none given; none needed yet).
+- Platform rewind observed 2026-09-22 after the001 publish: worktree returned to `06572b5` while remote pin stayed at `4d71a55`; reconciled by byte-comparing local records against the pin (both equal — no unpublished loss), then reset to the pin per the guarded recovery path. Expected platform behavior, not an irregularity.
+- `.orchestrator/local/recovery/` is untracked-by-design (never staged; allowlist enforces). Repo `.gitignore` does not list it — candidate one-line addition for hygiene task 004, since only `main` may change `.gitignore`.
 
 ## Hardening Log
 
