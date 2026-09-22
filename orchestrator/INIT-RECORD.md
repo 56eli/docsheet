@@ -10,3 +10,5 @@
 - **CORE Specification SHA-256:** `e33886acbd12448bd2f91ce477c8dd733a49d1fbf12f9bd96f96734433bc18da` (`orchestrator/ORCHESTRATOR CORE v4.9.0 — GENERAL PURPOSE.md`)
 - **Version-Class Note:** Repository initialized AT v4.9.0; no prior lineage in `56eli/docsheet`.
 - **Governing Shape:** Prompts live on `main` under `orchestrator/prompts/`. For this repository, `main` IS the orchestrator branch in the dispatch stub standard's `<orchestrator-branch>` slot.
+
+- "2026-09-22: CORE upgraded v4.9.0 → v4.9.1 (D49 correctness patch), hub-gated, owner-applied."
