@@ -17,7 +17,8 @@
 | Seq | Prompt path | Task | Agent branch | PR | Status |
 |---|---|---|---|---|---|
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
-| 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m37s on f662777; exact 2-file scope) |
+| 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
+| 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | session branch (to be reported) | — | Published — dispatching now |
 
 ## Active Milestone
 
@@ -25,15 +26,20 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 
 ## Task Queue
 
-- [x] PR #74: 001 Create `docs/PROJECT_STATE.md` (Knowledge Bridge structure + CORE v4.9.1 anchor) + INIT-RECORD anchor fix (Merged 2026-09-22 — refresh confirmed tracker/anchor on `main` `39c464e`)
-- [ ] PR #75: 002 Scoreboard remnant cleanup — template’s two dead refs → owner policy; tracker Immediate Next Task → behavior gate (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cb4e-docsheet`; CI green on final commit; byte-drift in work-order old sides correctly resolved in favor of `main` per §6 note)
-- [ ] 003 (queued): Orchestrator behavior gate — repo-adaptive mechanical checker covering the five duties, with honest boundary statement (CORE "Orchestrator behavior gating")
-- [ ] 004 (queued): Handoff-pointer hygiene — `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` (still claims superseded prompts-on-main shape) / `.gitignore` line for `.orchestrator/local/recovery/`; root `0001-Init-v4.9.0-…patch` placement question (archive?) flagged for owner at that hand-back
+- [x] PR #74: 001 Tracker bootstrap + CORE anchor (Merged 2026-09-22 — `main` `39c464e`)
+- [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`; zero `.scoreboard` refs in `.github`; tracker Immediate Next Task → behavior gate)
+- [ ] 003: Orchestrator behavior gate — `tests/test_orchestrator_gate.py` five-duty fail-closed stage + tracker declarations (duty 1 golden string, duty 4 run-log line) + Immediate Next Task → 004 + count house-rule (Published — dispatching 2026-09-22; hardening baked in: §8 session-branch target, §6 copy-quoted old sides from grep)
+- [ ] 004 (queued): Handoff-pointer hygiene — `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` / `.gitignore` recovery line; root patch placement question for owner at hand-back
 - [ ] Deferred: owner-picked product/research work — begins only after maintenance queue clears (owner ruling 2026-09-22)
+
+## Run Log
+
+Seed entry (section established 2026-09-22 for CORE duty 4; destination declared on `main` by task 003):
+- 2026-09-22 — engagement initialized (v4.9.1 first orchestrator); not a trigger-phrase fire — section seed only.
 
 ## Interrupted Work
 
-None. (001 agent completed normally — PR #74 open, MERGE reviewed.)
+None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 
 ## Deferred / Technical Debt
 
