@@ -21,6 +21,8 @@ Canonical project tracker.
 - Controlled vocabularies hold: `item_type` is content class, `format` is carrier; retired values `audio`/`video` stay rejected; master ids (`uuid`, stable compact integers) and catalogue codes are never renumbered or reissued.
 - Raw CSV contract: a PR that changes `hawkins archive clone - Sheet1.csv` must include regenerated `docs/data.json`; CI on `main` ignores raw-only pushes so the Update Spreadsheet workflow owns regeneration (do not race it).
 - `.github/workflows/*` change only on explicit owner instruction. The former `.scoreboard/manual-workflow-edits.md` tracking path is defunct with the scoreboard; any pending manual workflow edit must be raised with the owner before dispatch.
+- **Run-log declaration (CORE duty 4):** trigger-phrase fires ("handoff", "timeout", "new orchestrator", plus milestone re-grounding runs) append a dated entry to `## Run Log` in `.orchestrator/local/ORCHESTRATOR_STATE.md` on the orchestrator branch — entries are never silently dropped; this declared line is what `tests/test_orchestrator_gate.py` verifies on `main`.
+- **Dispatch-stub first line (CORE duty 1):** every dispatch stub's first line is exactly `<repo> agent. Fetch your work order from the orchestrator branch:` where `<repo>` is the name part of `git remote get-url origin` (here: `docsheet`).
 
 ## 3. Settled Decisions & Rationale
 
@@ -35,4 +37,4 @@ Canonical project tracker.
 
 - **Active Milestone:** Maintenance & governance hardening — tracker/anchor bootstrap, scoreboard remnants, orchestrator behavior gate, handoff-pointer hygiene — before any research or feature work.
 - **Current State:** 363-record curated catalogue; six generator `--check` gates green in CI; 158 Python tests at 92% coverage (floor 85 in `.coveragerc`); 9 Node unit tests; ESLint + Playwright e2e in CI; declared-current audit `docs/audits/2026-08-10-arena-019febe9-full-audit.md` (healthy / conditional pass, 8.1/10). Orchestrator initialized at CORE v4.9.1; this tracker is the first governance artifact on `main`.
-- **Immediate Next Task:** Orchestrator behavior gate — repo-adaptive mechanical check covering the five CORE duties (dispatch-stub first line, guarded publish/verify form, CORE anchor sha256 match, trigger-phrase run-log entry, no merges to the orchestrator branch), with an explicit boundary statement that judgment duties stay with review lanes; then handoff-pointer hygiene (`AGENTS.md`, `NEXT_AGENT_HANDOFF.md`, `orchestrator/prompts/README.md`, `.gitignore` recovery-dir line).
+- **Immediate Next Task:** Handoff-pointer hygiene — reconcile the retired `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` stubs, the superseded `orchestrator/prompts/README.md` claims-on-main text, and add `.orchestrator/local/recovery/` to `.gitignore`; surface the root `0001-Init-v4.9.0-orchestrator-and-dismantle-scoreboard.patch` placement question to the owner at that hand-back.
