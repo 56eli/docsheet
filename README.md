@@ -115,7 +115,7 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 
 | Location | Contents |
 |---|---|
-| Root (essential) | `README`, `INSTRUCTIONS`, `AGENTS`, [`SCOREBOARD.md`](SCOREBOARD.md) + [`.scoreboard/`](.scoreboard/scoreboard.yml), `NEXT_AGENT_HANDOFF`, `RECONCILIATION_REPORT` (generated) |
+| Root (essential) | `README`, `INSTRUCTIONS`, `AGENTS`, `NEXT_AGENT_HANDOFF`, `RECONCILIATION_REPORT` (generated) |
 | Root (normative) | `EDITION_MODEL_PROPOSAL`, `SERIES_TAXONOMY_MAPPING`, `PRODUCT_RELATIONSHIP_SCHEMA`, `SERIES_COMPILATION_SCHEMA`, `CATEGORY_DOMINANCE_POLICY`, `MIGRATION_REVIEW_LEDGER` |
 | [`docs/audits/`](docs/audits/) | **Declared-current** independent full-stack audit, corrective postmortem, prior audits |
 | [`decisions/`](decisions/README.md) | Approved ruling records, filename proposals, provenance docs, source registry |
