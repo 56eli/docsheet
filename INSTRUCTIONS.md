@@ -84,8 +84,7 @@ The footer shows the exact content versions of `app.js` and `style.css` and
 links `build-manifest.json`, which also records raw/curated payload hashes. When
 investigating a stale or incorrect page, record that visible build ID; do not
 use a green Pages badge as a substitute for the browser revision or owner
-acceptance. Required-check and CI-gated Pages cutover steps are maintained in
-`.scoreboard/manual-workflow-edits.md`.
+acceptance.
 
 ---
 
