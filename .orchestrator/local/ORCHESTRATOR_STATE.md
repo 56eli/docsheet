@@ -17,7 +17,7 @@
 | Seq | Prompt path | Task | Agent branch | PR | Status |
 |---|---|---|---|---|---|
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
-| 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | fix/scoreboard-remnant-cleanup (planned) | — | Published — dispatching now |
+| 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m37s on f662777; exact 2-file scope) |
 
 ## Active Milestone
 
@@ -26,7 +26,7 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 ## Task Queue
 
 - [x] PR #74: 001 Create `docs/PROJECT_STATE.md` (Knowledge Bridge structure + CORE v4.9.1 anchor) + INIT-RECORD anchor fix (Merged 2026-09-22 — refresh confirmed tracker/anchor on `main` `39c464e`)
-- [ ] 002: Scoreboard remnant cleanup — `.github/pull_request_template.md` two dead refs → owner policy; tracker Immediate Next Task → behavior gate (Published — dispatching 2026-09-22)
+- [ ] PR #75: 002 Scoreboard remnant cleanup — template’s two dead refs → owner policy; tracker Immediate Next Task → behavior gate (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cb4e-docsheet`; CI green on final commit; byte-drift in work-order old sides correctly resolved in favor of `main` per §6 note)
 - [ ] 003 (queued): Orchestrator behavior gate — repo-adaptive mechanical checker covering the five duties, with honest boundary statement (CORE "Orchestrator behavior gating")
 - [ ] 004 (queued): Handoff-pointer hygiene — `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` (still claims superseded prompts-on-main shape) / `.gitignore` line for `.orchestrator/local/recovery/`; root `0001-Init-v4.9.0-…patch` placement question (archive?) flagged for owner at that hand-back
 - [ ] Deferred: owner-picked product/research work — begins only after maintenance queue clears (owner ruling 2026-09-22)
@@ -74,4 +74,6 @@ None. (001 agent completed normally — PR #74 open, MERGE reviewed.)
 |---|---|---|---|---|---|---|
 | 2026-09-22 | boot | Repository | CORE anchor absent for governing v4.9.1 file (INIT-RECORD still pins v4.9.0 sha; v4.9.0 lineage file missing from main) | boot mismatch under Initialization spec record law; recovery = record anchor via 001 | Hardening candidate | 001 records anchor in docs/PROJECT_STATE.md + fixes INIT-RECORD row |
 | 2026-09-22 | boot | Prompt | INIT-RECORD "Governing Shape" (prompts on main) conflicts with CORE v4.9.1 branch model | would have dispatched from wrong ref | Scoped | owner resolved 2026-09-22 (Q5): CORE default; supersession to be recorded on tracker by 001 |
-| 2026-09-22 | boot | Repository | .github/pull_request_template.md mandates dead `.scoreboard/manual-workflow-edits.md` path | every PR template shows nonexistent path | Hardening candidate | queued as task 002 |
+| 2026-09-22 | boot | Repository | .github/pull_request_template.md mandates dead `.scoreboard/manual-workflow-edits.md` path | every PR template shows nonexistent path | Hardening candidate | fixed by PR #75 (pending merge) |
+| 2026-09-22 | 002 | Prompt | Work order §8 prescribed free target branch `fix/scoreboard-remnant-cleanup`, but Arena coding sessions are branch-locked to their provisioned `arena/*` branch | agent deviated (content/base correct); branch-name bookkeeping drift | Hardening candidate | from 003 on: §8 target = provisioned session branch; prescribe free-name fallback only for non-locked environments |
+| 2026-09-22 | 002 | Prompt | Orchestrator quoted §6 old-side bytes from memory (`docs/audits` slash; Replacement B wrap) instead of copy-pasting command output | no block — §6 prefer-grep note steered agent to `main` bytes | Hardening candidate | authoring rule for self: run the anchor grep at authoring time; paste its literal output as every old side (quote-by-copy) |
