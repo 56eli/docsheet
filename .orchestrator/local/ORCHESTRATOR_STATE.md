@@ -18,7 +18,7 @@
 |---|---|---|---|---|---|
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
-| 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | session branch (to be reported) | — | Published — dispatching now |
+| 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m27s on ceca7e0; 4-file scope; independent local gate run 8/8 OK + hatch OK; duty-5 baseline judgment call df85a20 documented and verified) |
 
 ## Active Milestone
 
@@ -28,7 +28,7 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 
 - [x] PR #74: 001 Tracker bootstrap + CORE anchor (Merged 2026-09-22 — `main` `39c464e`)
 - [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`; zero `.scoreboard` refs in `.github`; tracker Immediate Next Task → behavior gate)
-- [ ] 003: Orchestrator behavior gate — `tests/test_orchestrator_gate.py` five-duty fail-closed stage + tracker declarations (duty 1 golden string, duty 4 run-log line) + Immediate Next Task → 004 + count house-rule (Published — dispatching 2026-09-22; hardening baked in: §8 session-branch target, §6 copy-quoted old sides from grep)
+- [ ] PR #76: 003 Orchestrator behavior gate — `tests/test_orchestrator_gate.py` (8 tests, five duties, boundary verbatim, fail-closed, `ORCH_GATE_OFFLINE=1` hatch) + tracker duty-1/duty-4 declarations + Immediate Next Task → 004 + counts 158→166 (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cb73-docsheet`; Stage 1 exact 4-file scope, byte-exact inserts; Stage 2 CI green + independent local 8/8 + hatch; Stage 3 1:1 with disclosed judgment calls — duty-5 baseline `df85a20` = merges-since-governance semantics, verified against live DAG)
 - [ ] 004 (queued): Handoff-pointer hygiene — `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` / `.gitignore` recovery line; root patch placement question for owner at hand-back
 - [ ] Deferred: owner-picked product/research work — begins only after maintenance queue clears (owner ruling 2026-09-22)
 
@@ -73,6 +73,8 @@ None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 - No express PR-authorization quotes exist (none given; none needed yet).
 - Platform rewind observed 2026-09-22 after the001 publish: worktree returned to `06572b5` while remote pin stayed at `4d71a55`; reconciled by byte-comparing local records against the pin (both equal — no unpublished loss), then reset to the pin per the guarded recovery path. Expected platform behavior, not an irregularity.
 - `.orchestrator/local/recovery/` is untracked-by-design (never staged; allowlist enforces). Repo `.gitignore` does not list it — candidate one-line addition for hygiene task 004, since only `main` may change `.gitignore`.
+- Duty-5 gate baseline `df85a20` must stay inside the bounded depth-50 fetch window as orchestrator history grows (failure is fail-closed with a deepen/re-anchor message). Revisit when the orch branch accumulates ~40+ publishes.
+- Tracker §4 "Current State" still says "158 Python tests" after PR #76 makes the suite 166 (work order forbade touching that line); fold a one-line count refresh into task 004's tracker edit so the canonical tracker stops contradicting README/INSTRUCTIONS.
 
 ## Hardening Log
 
@@ -83,3 +85,4 @@ None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 | 2026-09-22 | boot | Repository | .github/pull_request_template.md mandates dead `.scoreboard/manual-workflow-edits.md` path | every PR template shows nonexistent path | Hardening candidate | fixed by PR #75 (pending merge) |
 | 2026-09-22 | 002 | Prompt | Work order §8 prescribed free target branch `fix/scoreboard-remnant-cleanup`, but Arena coding sessions are branch-locked to their provisioned `arena/*` branch | agent deviated (content/base correct); branch-name bookkeeping drift | Hardening candidate | from 003 on: §8 target = provisioned session branch; prescribe free-name fallback only for non-locked environments |
 | 2026-09-22 | 002 | Prompt | Orchestrator quoted §6 old-side bytes from memory (`docs/audits` slash; Replacement B wrap) instead of copy-pasting command output | no block — §6 prefer-grep note steered agent to `main` bytes | Hardening candidate | authoring rule for self: run the anchor grep at authoring time; paste its literal output as every old side (quote-by-copy) |
+| 2026-09-22 | 003 | Prompt | §6 example duty-5 assertion ("zero merge commits") was derived from doctrine, not the live DAG — branch history carries 26 pre-governance PR merges | ~10 min DAG investigation; agent re-derived assertion (merges-since-baseline `df85a20`) | Hardening candidate | authoring rule for self: any history/DAG-sensitive mechanical claim gets verified against the live DAG before authoring, or is marked advisory |
