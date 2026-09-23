@@ -19,6 +19,9 @@ test-results/
 data/veritas_official_products_candidate.csv
 data/veritas_inventory_diff.patch
 
+# Orchestrator local recovery overlay (guarded-publish recovery aid; never staged)
+.orchestrator/local/recovery/
+
 # OS / editor
 .DS_Store
 Thumbs.db

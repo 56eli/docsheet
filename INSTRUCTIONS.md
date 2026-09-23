@@ -170,7 +170,7 @@ owner-approved block order of the Everything view and its CSV export; the
 change record is the colour-coded `review/hawkins-everything-REVISION1.ods`).
 See `docs/audits/2026-08-10-arena-019febe9-full-audit.md` (declared-current multidisciplinary audit) alongside
 `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_DEEP_DIVE.md` (with its
-extension `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for full-stack evidence and `NEXT_AGENT_HANDOFF.md` §6 for current risk and roadmap
+extension `archive/FULL_STACK_AUDIT_2026-08-09_ARENA_FULL.md`) for full-stack evidence and `docs/PROJECT_STATE.md` for current risk and roadmap
 status (`archive/` material is historical and not normative).
 
 ### Pipeline test suite and coverage gate

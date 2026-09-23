@@ -125,3 +125,12 @@ were absorbed into the root policies, schemas, and handoff.
 - `RELATIONSHIP_EXPANSION_AUDIT.md` — relationship-coverage audit; its
   finding F1 was closed with the primary-relationship coverage hard-fail in
   `build_catalogue_pages.py`.
+
+## 2026-09-23 orchestrator init patch (owner-ruled placement)
+
+- `0001-Init-v4.9.0-orchestrator-and-dismantle-scoreboard.patch` — the
+  init-era `git format-patch` commit; moved from the repository root to
+  `archive/` per the owner's structured ruling of 2026-09-22 ("Move to
+  `archive/`"), keeping the root clean. Provenance only; superseded
+  governance lives in `../orchestrator/INIT-RECORD.md`.
+
