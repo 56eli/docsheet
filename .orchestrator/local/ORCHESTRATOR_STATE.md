@@ -22,11 +22,11 @@
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
 | 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day |
-| 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | arena/01a0cbd3-docsheet (session-locked) | #78 | Reviewed 2026-09-22 — **MERGE** advised (awaiting operator merge); CI 1m28s green, 213 tests (166+47), `--check` exit 0, A+B+C=259 reconciled, analysis-only freeze intact |
+| 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | arena/01a0cbd3-docsheet (session-locked) | #78 | Merged 2026-09-23 (main `1f7dab4`); MERGE reviewed same day; analysis-only deliverables on main (script/report/CSV/tests), registry input untouched |
 
 ## Active Milestone
 
-Owner-directed phase — maintenance & governance hardening CLOSED 2026-09-22 (PRs #74–#77); awaiting the owner's first product/research work order (research follows maintenance per owner ruling).
+Owner-directed analysis task **005 closed** — PR #78 merged 2026-09-23 (`main` `1f7dab4`); crosscheck deliverables live, registry input byte-intact. Maintenance & governance hardening CLOSED 2026-09-22 (PRs #74–#77). Awaiting owner's next directive (bucket D/E rulings / research unfreeze / new task); research phase remains byte-frozen until explicit instruction.
 
 ## Task Queue
 
@@ -34,15 +34,17 @@ Owner-directed phase — maintenance & governance hardening CLOSED 2026-09-22 (P
 - [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`)
 - [x] PR #76: 003 Orchestrator behavior gate (Merged 2026-09-22 — `main` `923ba55`; gate live in CI; suite 166)
 - [x] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Merged 2026-09-22 — `main` `ac6608a`; redirects/pointers → tracker, §4 marks milestone COMPLETE, init patch in `archive/` blob-identical; MERGE verdict had noted non-blocking 9-line-vs-"one-line" archive note overshoot, disclosed by agent)
-- [ ] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved
-- [ ] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — awaiting owner selection
-- [ ] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) — PR #78 open, reviewed 2026-09-22 → **MERGE** advised; awaiting operator merge, then milestone sweep (§4 analysis-result counts refresh)
+- [x] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved (published `13c8b0d`)
+- [x] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — **owner selected analysis task 005** (registry directive 2026-09-22)
+- [x] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) — PR #78 **merged 2026-09-23** (`main` `1f7dab4`); MERGE reviewed same day; triage: 2 Session Irregularities → both Scoped
+- [ ] AWAITING OWNER NEXT: options surfaced 2026-09-23 — (a) owner rulings on report buckets D (15 works) / E (41 evidence matches), (b) research-phase unfreeze instruction, (c) new directed task
 
 ## Run Log
 
 Seed entry (section established 2026-09-22 for CORE duty 4; destination declared on `main` by task 003):
 - 2026-09-22 — engagement initialized (v4.9.1 first orchestrator); not a trigger-phrase fire — section seed only.
 - 2026-09-22 — ANTI-DEGRADATION FRESHNESS (milestone: maintenance theme closed — PRs #74/#75/#76/#77 merged, `main` `ac6608a`): boot gate re-run against the canon — CORE sha256 `37b4c4254aa0e2cb418431a28d282041f233c442a1411f20024ea4fa2c697d52` matches tracker anchor (duty 3); five-duty gate **8/8 OK** in a clean clone of merged `main` (duty 5 live); discipline block re-quoted from tracker §1/§2 (research byte-freeze, scoreboard ban, CORE anchor authority, distribution shape). Discipline intact; no degradation signals.
+- 2026-09-23 — ANTI-DEGRADATION FRESHNESS (milestone: owner-directed analysis 005 closed — PR #78 merged, `main` `1f7dab4`): CORE sha256 `37b4c4254aa0e2cb418431a28d282041f233c442a1411f20024ea4fa2c697d52` matches tracker anchor in a fresh clone (duty 3); five-duty gate **8/8 OK** online against merged `main` (duty 5 live); CI "Validate data pipeline and site" SUCCESS on `1f7dab4`; suite headcount 213 on main. Discipline re-quoted from tracker §1/§2: research byte-freeze intact through 005 (analysis-only: zero writes to `data/`, `final_registry.csv`, owned flags, `docs/*.json`), scoreboard ban intact (no `.scoreboard/` paths), CORE anchor authority intact, distribution shape intact (prompts+state on `arena/01a0cb00-docsheet` only), one-agent-at-a-time held (005 dispatch singular). Known local-only gap: sandbox lacks pandas (8 env failures locally; CI authoritative — recorded gap, not degradation).
 
 ## Interrupted Work
 
@@ -76,6 +78,7 @@ None. (001–004 → PRs #74–#77 merged; 005 → PR #78 reviewed MERGE, awaiti
 
 - Live: shallow clone (boot fetches are depth-1 — deepen per operation as this session already does); duty-5 gate baseline `df85a20` must stay inside the depth-50 window (revisit ~40 orch publishes, fail-closed message guides); no express PR-authorization quotes exist (none given, none needed yet); session `GH_TOKEN` can expire mid-task (orchestrator publishes + PR #78 authoring, 2026-09-22) — halt, report, request operator reconnect; never route around an auth failure.
 - CLOSED-2026-09-22 tombstones (full text in this file's git history): boot anchor gap + stale INIT-RECORD row (closed by #74, `main` `39c464e`); `.gitignore` recovery declaration + tracker 158→166 count + handoff/prompt pointers (closed by #77, `main` `ac6608a`); two platform-rewind reconciliations (expected behavior — byte-verified recoveries with zero record loss; 4d71a55 and e9fce19 pin cycles).
+- Tracker `docs/PROJECT_STATE.md` §4 still reads 166 tests / "next=owner-directed" — stale after #78 (suite now 213; 005 complete). Orchestrator never pushes `main`; refresh lands inside the next governed PR or by owner instruction.
 
 ## Hardening Log
 
