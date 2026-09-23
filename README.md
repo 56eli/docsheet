@@ -63,12 +63,12 @@ detection and the rule matrices in one command:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m unittest discover tests          # 166 tests; offline except the orchestrator gate's bounded fetch (ORCH_GATE_OFFLINE=1 skips it)
+python -m unittest discover tests          # 213 tests; offline except the orchestrator gate's bounded fetch (ORCH_GATE_OFFLINE=1 skips it)
 coverage run -m unittest discover tests && coverage report
 ```
 
 The coverage gate (`fail_under = 85` in `.coveragerc`) passes at **92%** as of
-2026-08-10 (with 166 deterministic pipeline, style, and delivery-contract tests;
+2026-08-10 (with 213 deterministic pipeline, style, and delivery-contract tests;
 individual module coverage is 85–100%, and the shared `helpers.py`/
 `relationships.py` modules are at 100%). `requirements-ci.txt` records the
 exact Python dependency set used by the owner-applied workflows. PR #34 merged
