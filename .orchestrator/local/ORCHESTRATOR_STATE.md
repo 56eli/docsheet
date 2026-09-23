@@ -21,7 +21,8 @@
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
-| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day | |
+| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day |
+| 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | session branch (to be reported) | — | Published — dispatching now (owner directive 2026-09-22: registry on `main` `cc7c5e8`; analysis-only, byte-freeze stands) | |
 
 ## Active Milestone
 
@@ -35,6 +36,7 @@ Owner-directed phase — maintenance & governance hardening CLOSED 2026-09-22 (P
 - [x] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Merged 2026-09-22 — `main` `ac6608a`; redirects/pointers → tracker, §4 marks milestone COMPLETE, init patch in `archive/` blob-identical; MERGE verdict had noted non-blocking 9-line-vs-"one-line" archive note overshoot, disclosed by agent)
 - [ ] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved
 - [ ] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — awaiting owner selection
+- [ ] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) (Published — dispatching 2026-09-22)
 
 ## Run Log
 
