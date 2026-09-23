@@ -22,7 +22,7 @@
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
 | 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day |
-| 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | session branch (to be reported) | — | Published — dispatching now (owner directive 2026-09-22: registry on `main` `cc7c5e8`; analysis-only, byte-freeze stands) | |
+| 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | arena/01a0cbd3-docsheet (session-locked) | #78 | Reviewed 2026-09-22 — **MERGE** advised (awaiting operator merge); CI 1m28s green, 213 tests (166+47), `--check` exit 0, A+B+C=259 reconciled, analysis-only freeze intact |
 
 ## Active Milestone
 
@@ -36,7 +36,7 @@ Owner-directed phase — maintenance & governance hardening CLOSED 2026-09-22 (P
 - [x] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Merged 2026-09-22 — `main` `ac6608a`; redirects/pointers → tracker, §4 marks milestone COMPLETE, init patch in `archive/` blob-identical; MERGE verdict had noted non-blocking 9-line-vs-"one-line" archive note overshoot, disclosed by agent)
 - [ ] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved
 - [ ] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — awaiting owner selection
-- [ ] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) (Published — dispatching 2026-09-22)
+- [ ] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) — PR #78 open, reviewed 2026-09-22 → **MERGE** advised; awaiting operator merge, then milestone sweep (§4 analysis-result counts refresh)
 
 ## Run Log
 
@@ -46,7 +46,7 @@ Seed entry (section established 2026-09-22 for CORE duty 4; destination declared
 
 ## Interrupted Work
 
-None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
+None. (001–004 → PRs #74–#77 merged; 005 → PR #78 reviewed MERGE, awaiting operator merge.)
 
 ## Deferred / Technical Debt
 
@@ -74,7 +74,7 @@ None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 
 ## Known Gaps
 
-- Live: shallow clone (boot fetches are depth-1 — deepen per operation as this session already does); duty-5 gate baseline `df85a20` must stay inside the depth-50 window (revisit ~40 orch publishes, fail-closed message guides); no express PR-authorization quotes exist (none given, none needed yet).
+- Live: shallow clone (boot fetches are depth-1 — deepen per operation as this session already does); duty-5 gate baseline `df85a20` must stay inside the depth-50 window (revisit ~40 orch publishes, fail-closed message guides); no express PR-authorization quotes exist (none given, none needed yet); session `GH_TOKEN` can expire mid-task (orchestrator publishes + PR #78 authoring, 2026-09-22) — halt, report, request operator reconnect; never route around an auth failure.
 - CLOSED-2026-09-22 tombstones (full text in this file's git history): boot anchor gap + stale INIT-RECORD row (closed by #74, `main` `39c464e`); `.gitignore` recovery declaration + tracker 158→166 count + handoff/prompt pointers (closed by #77, `main` `ac6608a`); two platform-rewind reconciliations (expected behavior — byte-verified recoveries with zero record loss; 4d71a55 and e9fce19 pin cycles).
 
 ## Hardening Log
@@ -87,3 +87,5 @@ None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 | 2026-09-22 | 002 | Prompt | Work order §8 prescribed free target branch `fix/scoreboard-remnant-cleanup`, but Arena coding sessions are branch-locked to their provisioned `arena/*` branch | agent deviated (content/base correct); branch-name bookkeeping drift | Hardening candidate | from 003 on: §8 target = provisioned session branch; prescribe free-name fallback only for non-locked environments |
 | 2026-09-22 | 002 | Prompt | Orchestrator quoted §6 old-side bytes from memory (`docs/audits` slash; Replacement B wrap) instead of copy-pasting command output | no block — §6 prefer-grep note steered agent to `main` bytes | Hardening candidate | authoring rule for self: run the anchor grep at authoring time; paste its literal output as every old side (quote-by-copy) |
 | 2026-09-22 | 003 | Prompt | §6 example duty-5 assertion ("zero merge commits") was derived from doctrine, not the live DAG — branch history carries 26 pre-governance PR merges | ~10 min DAG investigation; agent re-derived assertion (merges-since-baseline `df85a20`) | Hardening candidate | authoring rule for self: any history/DAG-sensitive mechanical claim gets verified against the live DAG before authoring, or is marked advisory |
+| 2026-09-22 | 005 | Environment | PR #78 authoring: session `GH_TOKEN` expired mid-task; agent halted and requested operator reconnect, retried after re-auth | blocked push until reconnect (minutes); no workaround attempted | Scoped | known platform class; reconnect procedure executed as designed — no new hardening needed |
+| 2026-09-22 | 005 | Environment | Sandbox restore reverted local commits AND pushed session branch to base `cc7c5e8` (working tree survived; `/tmp` task copy lost) | checkpoint cadence destroyed — author recommitted as one commit `c86699b`, pushed clean fast-forward | Scoped | expected platform class (same as prior rewinds); author re-verified clean status/ancestry before push, CI green on final SHA — discipline held, no record loss |
