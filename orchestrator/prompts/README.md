@@ -1,1 +1,1 @@
-Task prompts for the docsheet orchestrator live here; dispatch stubs fetch from this path (v4.9.0 canon standard).
+Task prompts for the docsheet orchestrator live on the orchestrator branch at `.orchestrator/prompts/` (owner-confirmed distribution shape 2026-09-22, CORE v4.9.1 branch model; dispatch stubs fetch `arena/01a0cb00-docsheet` into `refs/remotes/origin/_orch`). This directory is retained as init-era lineage from the superseded "Governing Shape" note in `orchestrator/INIT-RECORD.md`; no new prompts are published here.
