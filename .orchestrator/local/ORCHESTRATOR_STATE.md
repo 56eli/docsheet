@@ -27,10 +27,10 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 ## Task Queue
 
 - [x] PR #74: 001 Tracker bootstrap + CORE anchor (Merged 2026-09-22 — `main` `39c464e`)
-- [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`; zero `.scoreboard` refs in `.github`; tracker Immediate Next Task → behavior gate)
-- [ ] PR #76: 003 Orchestrator behavior gate — `tests/test_orchestrator_gate.py` (8 tests, five duties, boundary verbatim, fail-closed, `ORCH_GATE_OFFLINE=1` hatch) + tracker duty-1/duty-4 declarations + Immediate Next Task → 004 + counts 158→166 (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cb73-docsheet`; Stage 1 exact 4-file scope, byte-exact inserts; Stage 2 CI green + independent local 8/8 + hatch; Stage 3 1:1 with disclosed judgment calls — duty-5 baseline `df85a20` = merges-since-governance semantics, verified against live DAG)
-- [ ] 004 (queued): Handoff-pointer hygiene — `AGENTS.md` / `NEXT_AGENT_HANDOFF.md` / `orchestrator/prompts/README.md` / `.gitignore` recovery line; root patch placement question for owner at hand-back
-- [ ] Deferred: owner-picked product/research work — begins only after maintenance queue clears (owner ruling 2026-09-22)
+- [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`)
+- [x] PR #76: 003 Orchestrator behavior gate (Merged 2026-09-22 — `main` `923ba55`; gate live in CI; suite 166)
+- [ ] 004: Handoff-pointer hygiene + owner-ruled patch move — stub redirects (v4.9.1), prompts-README corrected shape, `.gitignore` recovery line, README/INSTRUCTIONS pointers → tracker, tracker §4 (milestone complete / 166 / next=owner-directed), `git mv` init patch → `archive/` (Published — dispatching 2026-09-22; §2 byte-frozen for gate)
+- [ ] After 004: owner-directed product/research work — owner picks first work order (ruling 2026-09-22)
 
 ## Run Log
 
