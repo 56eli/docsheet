@@ -23,10 +23,11 @@
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
 | 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day |
 | 005 | .orchestrator/prompts/005-final-registry-crosscheck.md | Scope and crosscheck final_registry.csv against the curated master | arena/01a0cbd3-docsheet (session-locked) | #78 | Merged 2026-09-23 (main `1f7dab4`); MERGE reviewed same day; analysis-only deliverables on main (script/report/CSV/tests), registry input untouched |
+| 006 | .orchestrator/prompts/006-proposed-filename-underscores.md | Adopt underscore convention for proposed_filename columns | session branch (to be reported) | — | Published — dispatching now (owner directive 2026-09-23: standard `2002-03_The_…_[1-3].mp4`; dash ruling = collapse ` - ` → `_`; scoped unfreeze of proposal sheet + generator outputs only) |
 
 ## Active Milestone
 
-Owner-directed analysis task **005 closed** — PR #78 merged 2026-09-23 (`main` `1f7dab4`); crosscheck deliverables live, registry input byte-intact. Maintenance & governance hardening CLOSED 2026-09-22 (PRs #74–#77). Awaiting owner's next directive (bucket D/E rulings / research unfreeze / new task); research phase remains byte-frozen until explicit instruction.
+Owner-directed phase resumed with task **006 dispatched 2026-09-23** — underscore standard for `proposed_filename` (scoped owner instruction; proposal sheet + generator outputs only). Task **005 closed** — PR #78 merged 2026-09-23 (`main` `1f7dab4`); crosscheck deliverables live, registry input byte-intact; buckets D/E await owner rulings alongside 006. Maintenance & governance hardening CLOSED 2026-09-22 (PRs #74–#77). General research phase remains byte-frozen except the scoped 006 surfaces.
 
 ## Task Queue
 
@@ -37,7 +38,8 @@ Owner-directed analysis task **005 closed** — PR #78 merged 2026-09-23 (`main`
 - [x] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved (published `13c8b0d`)
 - [x] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — **owner selected analysis task 005** (registry directive 2026-09-22)
 - [x] 005: Scope + crosscheck `final_registry.csv` (owner's 259 personally-owned files, on `main` `cc7c5e8`) vs curated master — script + review CSV + report buckets A/B/C/D/E + focused tests + count house-rule; ANALYSIS ONLY (byte-freeze stands; no owned-flag writes; issue #18 = cited context, non-authoritative) — PR #78 **merged 2026-09-23** (`main` `1f7dab4`); MERGE reviewed same day; triage: 2 Session Irregularities → both Scoped
-- [ ] AWAITING OWNER NEXT: options surfaced 2026-09-23 — (a) owner rulings on report buckets D (15 works) / E (41 evidence matches), (b) research-phase unfreeze instruction, (c) new directed task
+- [ ] AWAITING OWNER NEXT: options surfaced 2026-09-23 — (a) owner rulings on report buckets D (15 works) / E (41 evidence matches), (b) research-phase unfreeze instruction, (c) new directed task — **owner chose (c): 006 underscore standard** (D/E rulings remain open in the meantime)
+- [ ] 006: Underscore convention for `proposed_filename` (both columns; collapse ` - ` → `_`, then spaces → `_`) — transform `data/filename_proposal_YYYYMM.csv` (363 rows, scoped owner-authorized input edit), crosscheck `proposed_stem` hardening with proven no-op BEFORE transform (bucket counts must hold 234/11/14, D15/E41, Σ259), regenerate generator outputs, delivery-contract refresh, tests/prose/counts (Published — dispatching 2026-09-23)
 
 ## Run Log
 
@@ -59,6 +61,7 @@ None. (001–004 → PRs #74–#77 merged; 005 → PR #78 reviewed MERGE, awaiti
 ## Scope Boundaries
 
 - Research byte-freeze (standing until owner opens the research phase): `data/`, the schemas, and research docs/outputs untouched by maintenance tasks. Owner 2026-09-22: "We'll do research after we cleaned up the maintenance stuff."
+- Scoped owner instruction 2026-09-23 (task 006): underscore standard for `proposed_filename` authorizes writes ONLY to the two filename columns of `data/filename_proposal_YYYYMM.csv` plus that sheet's generator outputs (discovered via build `--check` gates + `git status`). Every other freeze surface stands; raw lane and workflows untouched.
 - Scoreboard is dismantled ("it definitely has to go"); no reintroduction, no new `.scoreboard/` paths.
 - One agent at a time per repository; no dispatch overlap.
 - Archive/ and superseded audits are historical, non-normative, never rewritten.
