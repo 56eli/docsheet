@@ -23,10 +23,10 @@ Veritas slugs are month-prefixed and `proposed_filename` follows the
 
 - Registry `VolumeSeries/volume-i-power-vs-force.mp4` ↔ master 202
   `Volume I: Power vs. Force Muscle Testing`; Veritas slug `volume i power vs force muscle testing`;
-  `proposed_filename` `Volume I Power vs. Force Muscle Testing [1-2].mp4`.
+  `proposed_filename` `Volume_I_Power_vs._Force_Muscle_Testing_[1-2].mp4`.
 - Registry `DocandSusantalks/what-is-meant-by-spiritual--the-importance-of-family-2014.mp4`
   ↔ master 283 `What is Meant by Spiritual`; Veritas slug `what is meant by spiritual`;
-  `proposed_filename` `2012 - DISCUSSION - What is Meant by Spiritual.mp4`.
+  `proposed_filename` `2012_DISCUSSION_What_is_Meant_by_Spiritual.mp4`.
 
 Exact slug-to-slug equality therefore fails in general; normalized-title
 matching with folder/series priors is the bridge.
