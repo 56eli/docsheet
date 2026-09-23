@@ -19,7 +19,7 @@
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
-| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | session branch (to be reported) | — | Published — dispatching now (owner ruling folded in: patch → archive/) |
+| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m16s on 93fe35b; 9-path scope exact; rename 100% blob-identical; §2 untouched) | |
 
 ## Active Milestone
 
@@ -30,8 +30,8 @@ Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard r
 - [x] PR #74: 001 Tracker bootstrap + CORE anchor (Merged 2026-09-22 — `main` `39c464e`)
 - [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`)
 - [x] PR #76: 003 Orchestrator behavior gate (Merged 2026-09-22 — `main` `923ba55`; gate live in CI; suite 166)
-- [ ] 004: Handoff-pointer hygiene + owner-ruled patch move — stub redirects (v4.9.1), prompts-README corrected shape, `.gitignore` recovery line, README/INSTRUCTIONS pointers → tracker, tracker §4 (milestone complete / 166 / next=owner-directed), `git mv` init patch → `archive/` (Published — dispatching 2026-09-22; §2 byte-frozen for gate)
-- [ ] After 004: owner-directed product/research work — owner picks first work order (ruling 2026-09-22)
+- [ ] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cbb0-docsheet`; Stage 1 exact 9-path scope incl. 100% blob-identical rename to `archive/`, §1–§3 untouched, redirects/pointers byte-exact per §6; Stage 2 CI green 1m16s + agent table w/ environmental caveats honestly pre-verified vs pristine main; Stage 3 1:1 — minor disclosed overshoot: `archive/README.md` note is a 9-line section vs "one line" (accurate content, ruling quoted in-text, non-blocking); Session Irregularities `None significant`)
+- [ ] After #77 merges: MILESTONE ROLLUP of this state file (maintenance theme closed — page-file trigger), then open owner-directed phase: owner picks first product/research work order (ruling 2026-09-22)
 
 ## Run Log
 
