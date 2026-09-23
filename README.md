@@ -116,6 +116,7 @@ build otherwise. The latest refresh review is in `archive/VERITAS_ARTIFACT_REVIE
 | Location | Contents |
 |---|---|
 | Root (essential) | `README`, `INSTRUCTIONS`, `AGENTS`, `NEXT_AGENT_HANDOFF`, `RECONCILIATION_REPORT` (generated) |
+| Canonical tracker | `docs/PROJECT_STATE.md` — owner vision, invariants, settled decisions, active milestone & queue |
 | Root (normative) | `EDITION_MODEL_PROPOSAL`, `SERIES_TAXONOMY_MAPPING`, `PRODUCT_RELATIONSHIP_SCHEMA`, `SERIES_COMPILATION_SCHEMA`, `CATEGORY_DOMINANCE_POLICY`, `MIGRATION_REVIEW_LEDGER` |
 | [`docs/audits/`](docs/audits/) | **Declared-current** independent full-stack audit, corrective postmortem, prior audits |
 | [`decisions/`](decisions/README.md) | Approved ruling records, filename proposals, provenance docs, source registry |
@@ -196,8 +197,7 @@ own dates. Subsequent reviewed promotions, source corrections, and new-work
 additions are reflected in the current generated inventory (363 master records,
 191 Veritas products, 340 relationships). See the declared-current
 [`docs/audits/2026-08-10-arena-019febe9-full-audit.md`](docs/audits/2026-08-10-arena-019febe9-full-audit.md)
-for the latest full-stack evidence and [NEXT_AGENT_HANDOFF.md](NEXT_AGENT_HANDOFF.md)
-for open work; older audit reports preserve their historical checkpoints.
+for the latest full-stack evidence and [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md) for the current queue and open work; older audit reports preserve their historical checkpoints.
 
 ### Field semantics
 
