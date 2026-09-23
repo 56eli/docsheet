@@ -94,6 +94,12 @@ class T1KeyTests(unittest.TestCase):
     def test_proposed_stem(self) -> None:
         stem = cfr.proposed_stem("2002-01 - Causality The Ego's Foundation [1-3].mp4")
         self.assertEqual(cfr.compact(stem), "causalitytheegosfoundation")
+        # Underscored owner standard (2026-09-23): the same record name in the
+        # underscore convention must fold to an identical key, so the crosscheck
+        # keys never shift when the CSV moves between conventions.
+        underscored = cfr.proposed_stem("2002-01_Causality_The_Ego's_Foundation_[1-3].mp4")
+        self.assertEqual(cfr.compact(underscored), "causalitytheegosfoundation")
+        self.assertEqual(cfr.content_compact(underscored), cfr.content_compact(stem))
 
     def test_master_keys_cover_title_head_and_edition_variants(self) -> None:
         keys = cfr.MasterIndex.master_keys(master_row(

@@ -2025,11 +2025,11 @@ class DocumentationCurrencyTests(unittest.TestCase):
         # added by the 2026-08-09 REVISION1 ODS owner revision.
         self.assertEqual(
             by_uuid["311"]["proposed_filename"],
-            "2003 - OTR - Devotion to Truth Talk.mp4",
+            "2003_OTR_Devotion_to_Truth_Talk.mp4",
         )
         self.assertEqual(
             by_uuid["310"]["proposed_filename"],
-            "2003 - OTR - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
+            "2003_OTR_Mind,_Heart_and_Service_The_Pathway_of_Devotional_Non-Duality.mp4",
         )
 
     def test_same_work_audiobooks_use_source_suffixes_not_audiobook_labels(self) -> None:
@@ -2040,8 +2040,8 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(rows["331"]["clean_title"], "Power vs. Force")
         self.assertEqual(rows["320"]["part_index"], "")
         self.assertEqual(rows["331"]["part_total"], "")
-        self.assertEqual(rows["320"]["proposed_filename"], "1995 - Power vs. Force (Audible).m4b")
-        self.assertEqual(rows["331"]["proposed_filename"], "1995 - Power vs. Force (Veritas).m4b")
+        self.assertEqual(rows["320"]["proposed_filename"], "1995_Power_vs._Force_(Audible).m4b")
+        self.assertEqual(rows["331"]["proposed_filename"], "1995_Power_vs._Force_(Veritas).m4b")
 
     def test_cleaned_multi_part_titles_keep_part_detail_in_master(self) -> None:
         """Title cleanup must not hide Part 1–3 from the edition/export contract."""
@@ -2064,10 +2064,12 @@ class DocumentationCurrencyTests(unittest.TestCase):
             # Introduce a deliberate duplicate: rename master 310's proposed
             # filename onto master 311's. The exact 225/311 carrier-suffix
             # collision was retired by the 2026-08-08 D-01 collapse, so seed
-            # the duplicate from the current clean set.
+            # the duplicate from the current clean set. Seeded and seed are
+            # both written in the underscore convention (2026-09-23 owner
+            # standard), matching the transformed proposal CSV.
             seeded = text.replace(
-                "2003 - OTR - Mind, Heart and Service The Pathway of Devotional Non-Duality.mp4",
-                "2003 - OTR - Devotion to Truth Talk.mp4",
+                "2003_OTR_Mind,_Heart_and_Service_The_Pathway_of_Devotional_Non-Duality.mp4",
+                "2003_OTR_Devotion_to_Truth_Talk.mp4",
                 1,
             )
             self.assertNotEqual(seeded, text)
@@ -2110,11 +2112,12 @@ class DocumentationCurrencyTests(unittest.TestCase):
             self.assertEqual(row["part_total"], part_total)
             # Filenames sanitize the clean title per the v4 rule (`/` maps
             # to `-`; other illegal chars <>:"\|?* stripped) before adding
-            # the part suffix.
+            # the part suffix, and the 2026-09-23 owner standard then writes
+            # the name with spaces (and any ` - ` separator) as underscores.
             safe_title = re.sub(r'[<>:"\\|?*]', "", clean_title.replace("/", "-"))
             self.assertTrue(
-                row["proposed_filename"].startswith(safe_title),
-                f"UUID {uuid} filename must start with its own volume title",
+                row["proposed_filename"].startswith(safe_title.replace(" ", "_")),
+                f"UUID {uuid} filename must start with its own underscored volume title",
             )
 
     def test_backfill_month_guard_skips_listing_month_for_year_mismatch(self) -> None:

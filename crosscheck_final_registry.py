@@ -376,13 +376,23 @@ def strip_edition_markers(title: str) -> str:
 
 
 def proposed_stem(name: str) -> str:
-    """'2002-01 - Causality The Ego's Foundation [1-3].mp4' → 'causality the egos foundation'."""
+    """Strip the date prefix and part suffix from a proposed filename.
+
+    Accepts both filename conventions: the legacy ``2002-01 - Causality The
+    Ego's Foundation [1-3].mp4`` and the underscored owner standard adopted
+    2026-09-23 (``2002-01_Causality_The_Ego's_Foundation_[1-3].mp4``). At the
+    date and part-suffix boundaries a ``_`` is treated exactly like
+    whitespace, and every remaining ``_`` folds to a space before the stem is
+    returned, so both conventions yield the same key. The old convention
+    contains no underscores at all, which keeps this change byte-neutral on
+    pre-standard inputs.
+    """
     if not name:
         return ""
     stem = name.rsplit(".", 1)[0]
-    stem = re.sub(r"^\d{4}-\d{2}\s*-\s*", "", stem)
-    stem = re.sub(r"\s*\[\d+-\d+\]$", "", stem)
-    return stem
+    stem = re.sub(r"^\d{4}-\d{2}[\s_]*-?[\s_]*", "", stem)
+    stem = re.sub(r"[\s_]*\[\d+-\d+\]$", "", stem)
+    return stem.replace("_", " ")
 
 
 def slug_tail(url: str) -> str:
