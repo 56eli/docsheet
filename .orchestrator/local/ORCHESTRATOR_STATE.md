@@ -1,5 +1,7 @@
 # Orchestrator Working State
 
+> **ROLLUP NOTICE — 2026-09-22.** Trigger fired: **milestone completion** (maintenance theme closed with PR #77 merge; `main` `ac6608a`). Size before → after: **10335 B → 10210 B**. Pointer statement: the full text of every condensed record lives in this file's git history (`git log -p .orchestrator/local/ORCHESTRATOR_STATE.md` on `arena/01a0cb00-docsheet`). Condensed blocks are marked CLOSED-2026-09-22 tombstones; verbatim core (branch/continuation/tracker fields, lane registry, invariants, task queue, run log) preserved byte-intact; history not rewritten — this notice page commits on top of the old one.
+
 ## Orchestrator Branch
 
 `arena/01a0cb00-docsheet` — provisioned by Arena for this session (CORE v4.9.1 Step 8). Distribution channel only; never merges; never an agent base; receives only `.orchestrator/prompts/*` and `.orchestrator/local/ORCHESTRATOR_STATE.md`.
@@ -19,24 +21,26 @@
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
 | 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
-| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m16s on 93fe35b; 9-path scope exact; rename 100% blob-identical; §2 untouched) | |
+| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | arena/01a0cbb0-docsheet (session-locked) | #77 | Merged 2026-09-22 (main `ac6608a`); maintenance milestone COMPLETE; MERGE reviewed same day | |
 
 ## Active Milestone
 
-Maintenance & governance hardening — tracker/anchor bootstrap → scoreboard remnants → orchestrator behavior gate → handoff-pointer hygiene — before any research or feature work (owner: "We'll do research after we cleaned up the maintenance stuff.").
+Owner-directed phase — maintenance & governance hardening CLOSED 2026-09-22 (PRs #74–#77); awaiting the owner's first product/research work order (research follows maintenance per owner ruling).
 
 ## Task Queue
 
 - [x] PR #74: 001 Tracker bootstrap + CORE anchor (Merged 2026-09-22 — `main` `39c464e`)
 - [x] PR #75: 002 Scoreboard remnant cleanup (Merged 2026-09-22 — `main` `ff0f35b`)
 - [x] PR #76: 003 Orchestrator behavior gate (Merged 2026-09-22 — `main` `923ba55`; gate live in CI; suite 166)
-- [ ] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Open — **MERGE** verdict 2026-09-22; branch `arena/01a0cbb0-docsheet`; Stage 1 exact 9-path scope incl. 100% blob-identical rename to `archive/`, §1–§3 untouched, redirects/pointers byte-exact per §6; Stage 2 CI green 1m16s + agent table w/ environmental caveats honestly pre-verified vs pristine main; Stage 3 1:1 — minor disclosed overshoot: `archive/README.md` note is a 9-line section vs "one line" (accurate content, ruling quoted in-text, non-blocking); Session Irregularities `None significant`)
-- [ ] After #77 merges: MILESTONE ROLLUP of this state file (maintenance theme closed — page-file trigger), then open owner-directed phase: owner picks first product/research work order (ruling 2026-09-22)
+- [x] PR #77: 004 Handoff-pointer hygiene + owner-ruled patch move (Merged 2026-09-22 — `main` `ac6608a`; redirects/pointers → tracker, §4 marks milestone COMPLETE, init patch in `archive/` blob-identical; MERGE verdict had noted non-blocking 9-line-vs-"one-line" archive note overshoot, disclosed by agent)
+- [ ] ROLLUP: milestone trigger fired at #77 merge — condensed page committed on top of full history (pointer: `git log -p .orchestrator/local/ORCHESTRATOR_STATE.md`); verbatim core preserved
+- [ ] NEXT PHASE (owner-directed): owner picks first product/research work order (ruling 2026-09-22: research follows maintenance) — awaiting owner selection
 
 ## Run Log
 
 Seed entry (section established 2026-09-22 for CORE duty 4; destination declared on `main` by task 003):
 - 2026-09-22 — engagement initialized (v4.9.1 first orchestrator); not a trigger-phrase fire — section seed only.
+- 2026-09-22 — ANTI-DEGRADATION FRESHNESS (milestone: maintenance theme closed — PRs #74/#75/#76/#77 merged, `main` `ac6608a`): boot gate re-run against the canon — CORE sha256 `37b4c4254aa0e2cb418431a28d282041f233c442a1411f20024ea4fa2c697d52` matches tracker anchor (duty 3); five-duty gate **8/8 OK** in a clean clone of merged `main` (duty 5 live); discipline block re-quoted from tracker §1/§2 (research byte-freeze, scoreboard ban, CORE anchor authority, distribution shape). Discipline intact; no degradation signals.
 
 ## Interrupted Work
 
@@ -68,14 +72,8 @@ None. (001 → PR #74 merged; 002 → PR #75 merged; 003 publishing now.)
 
 ## Known Gaps
 
-- Canonical tracker EXISTS on `main` since 2026-09-22 (PR #74 merged, `main` `39c464e`); CORE v4.9.1 anchor recorded there and in INIT-RECORD — boot anchor gap CLOSED. Recompute `sha256sum` against the tracker anchor at every boot/gate.
-- Shallow clone (depth-1 fetches): `main` history beyond the tip was unreadable at boot; a depth-50 `_orch` fetch later revealed `bdebc4c` "Delete orchestrator/ORCHESTRATOR CORE v4.9.0 — GENERAL PURPOSE.md" + `7fc942e` "Add files via upload", confirming the in-place v4.9.1 upgrade and the missing-lineage-file finding.
-- INIT-RECORD anchor row corrected on `main` by PR #74 (stale-row gap CLOSED).
-- No express PR-authorization quotes exist (none given; none needed yet).
-- Platform rewind observed 2026-09-22 after the001 publish: worktree returned to `06572b5` while remote pin stayed at `4d71a55`; reconciled by byte-comparing local records against the pin (both equal — no unpublished loss), then reset to the pin per the guarded recovery path. Expected platform behavior, not an irregularity.
-- `.orchestrator/local/recovery/` is untracked-by-design (never staged; allowlist enforces). Repo `.gitignore` does not list it — candidate one-line addition for hygiene task 004, since only `main` may change `.gitignore`.
-- Duty-5 gate baseline `df85a20` must stay inside the bounded depth-50 fetch window as orchestrator history grows (failure is fail-closed with a deepen/re-anchor message). Revisit when the orch branch accumulates ~40+ publishes.
-- Tracker §4 "Current State" still says "158 Python tests" after PR #76 makes the suite 166 (work order forbade touching that line); fold a one-line count refresh into task 004's tracker edit so the canonical tracker stops contradicting README/INSTRUCTIONS.
+- Live: shallow clone (boot fetches are depth-1 — deepen per operation as this session already does); duty-5 gate baseline `df85a20` must stay inside the depth-50 window (revisit ~40 orch publishes, fail-closed message guides); no express PR-authorization quotes exist (none given, none needed yet).
+- CLOSED-2026-09-22 tombstones (full text in this file's git history): boot anchor gap + stale INIT-RECORD row (closed by #74, `main` `39c464e`); `.gitignore` recovery declaration + tracker 158→166 count + handoff/prompt pointers (closed by #77, `main` `ac6608a`); two platform-rewind reconciliations (expected behavior — byte-verified recoveries with zero record loss; 4d71a55 and e9fce19 pin cycles).
 
 ## Hardening Log
 
