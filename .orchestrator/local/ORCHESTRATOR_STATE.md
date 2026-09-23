@@ -18,7 +18,8 @@
 |---|---|---|---|---|---|
 | 001 | .orchestrator/prompts/001-bootstrap-project-state-tracker.md | Bootstrap canonical tracker docs/PROJECT_STATE.md and record CORE v4.9.1 anchor | arena/01a0cb14-docsheet | #74 | Merged 2026-09-22 (main `39c464e`); tracker + anchor live on main; MERGE reviewed same day |
 | 002 | .orchestrator/prompts/002-scoreboard-remnant-cleanup.md | Remove dead .scoreboard/ references from the PR template | arena/01a0cb4e-docsheet (session-locked; work order said fix/scoreboard-remnant-cleanup) | #75 | Merged 2026-09-22 (main `ff0f35b`); zero .scoreboard refs in .github; MERGE reviewed same day |
-| 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | MERGE verdict 2026-09-22 — awaiting operator merge (CI pass 1m27s on ceca7e0; 4-file scope; independent local gate run 8/8 OK + hatch OK; duty-5 baseline judgment call df85a20 documented and verified) |
+| 003 | .orchestrator/prompts/003-orchestrator-behavior-gate.md | Add orchestrator behavior gate as a deterministic test stage | arena/01a0cb73-docsheet (session-locked) | #76 | Merged 2026-09-22 (main `923ba55`); gate file on main, duty lines intact; MERGE reviewed same day |
+| 004 | .orchestrator/prompts/004-handoff-pointer-hygiene.md | Complete handoff-pointer hygiene and archive the init patch | session branch (to be reported) | — | Published — dispatching now (owner ruling folded in: patch → archive/) |
 
 ## Active Milestone
 
